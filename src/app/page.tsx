@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
+import KYCSection from "@/components/KYCSection";
 import Features from "@/components/Features";
 import Clients from "@/components/Clients";
 import Certifications from "@/components/Certifications";
@@ -15,6 +16,7 @@ export default function Home() {
       <Header />
       <main>
         <Hero />
+        <KYCSection />
         <Features />
         <Clients />
         <Certifications />

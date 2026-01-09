@@ -13,11 +13,11 @@ export default function ContactForm() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
   const benefits = [
-    "Soluciones con IA",
-    "Cumplimiento normativo",
-    "Reducción de suplantación",
-    "Verificación de documentos",
-    "Disminución de tiempo en mesa de control",
+    "Soluciones potenciadas con Inteligencia Artificial",
+    "Cumplimiento normativo (CNBV, LFPIORPI, LFPDPPP, CUB)",
+    "Reducción del riesgo por suplantación de identidad",
+    "Verificación y validación de documentos",
+    "Disminuye el tiempo de tu mesa de control",
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -43,16 +43,19 @@ export default function ContactForm() {
   };
 
   return (
-    <section className="section-padding bg-[#f8fafc]" id="contacto">
+    <section className="section-padding bg-[#FAFAFA]" id="contacto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
           {/* Left side - Info */}
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold text-[#0E1133] mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-[#000000] mb-4">
               Contáctanos
             </h2>
-            <p className="text-xl text-[#2DB6C1] font-semibold mb-8">
+            <p className="text-xl text-[#2DB6C1] font-semibold mb-4">
               Lleva la seguridad de tu empresa al siguiente nivel
+            </p>
+            <p className="text-[#53535B] mb-8">
+              Con JAAK, la seguridad no es una opción, es una garantía. Completa el formulario y accede a una demostración personalizada que te mostrará cómo nuestras soluciones integradas pueden transformar tu operación.
             </p>
             <div className="space-y-4">
               {benefits.map((benefit, index) => (
@@ -73,7 +76,7 @@ export default function ContactForm() {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-[#0E1133] mb-2">
+                  <label htmlFor="name" className="block text-sm font-medium text-[#000000] mb-2">
                     Nombre completo *
                   </label>
                   <input
@@ -87,7 +90,7 @@ export default function ContactForm() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-[#0E1133] mb-2">
+                  <label htmlFor="email" className="block text-sm font-medium text-[#000000] mb-2">
                     Correo electrónico *
                   </label>
                   <input
@@ -103,7 +106,7 @@ export default function ContactForm() {
               </div>
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="company" className="block text-sm font-medium text-[#0E1133] mb-2">
+                  <label htmlFor="company" className="block text-sm font-medium text-[#000000] mb-2">
                     Empresa
                   </label>
                   <input
@@ -116,7 +119,7 @@ export default function ContactForm() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-[#0E1133] mb-2">
+                  <label htmlFor="phone" className="block text-sm font-medium text-[#000000] mb-2">
                     Teléfono
                   </label>
                   <input
@@ -130,7 +133,7 @@ export default function ContactForm() {
                 </div>
               </div>
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-[#0E1133] mb-2">
+                <label htmlFor="message" className="block text-sm font-medium text-[#000000] mb-2">
                   Mensaje
                 </label>
                 <textarea
@@ -145,7 +148,7 @@ export default function ContactForm() {
               <button
                 type="submit"
                 disabled={status === "loading"}
-                className="w-full btn-green disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full btn-cyan disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {status === "loading" ? "Enviando..." : "Enviar mensaje"}
               </button>

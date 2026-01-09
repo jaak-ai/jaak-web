@@ -4,7 +4,7 @@ export default function Features() {
   const features = [
     {
       icon: "/images/icons/comprobado.png",
-      title: "Verificación en menos de 1 minuto",
+      title: "Verificación de identidad en menos de 1 minuto",
     },
     {
       icon: "/images/icons/aprobar.png",
@@ -12,7 +12,7 @@ export default function Features() {
     },
     {
       icon: "/images/icons/saas.png",
-      title: "Disponible SaaS y On Premise",
+      title: "Disponible en SaaS y On Premise",
     },
     {
       icon: "/images/icons/chip-de-ia.png",
@@ -24,7 +24,7 @@ export default function Features() {
     },
     {
       icon: "/images/icons/ley-internacional.png",
-      title: "Cumplimiento de certificaciones internacionales",
+      title: "Cumplimiento de certificaciones y estándares internacionales",
     },
   ];
 
@@ -35,10 +35,10 @@ export default function Features() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-[#000000] mb-4">
-            Lo que ofrecemos
-          </h2>
-          <p className="text-xl text-[#53535B] max-w-3xl mx-auto">
             Con JAAK, la seguridad no es una opción, es una garantía
+          </h2>
+          <p className="text-xl text-[#53535B] max-w-4xl mx-auto">
+            Combinamos innovación y seguridad para ofrecerte una verificación de identidad rápida y confiable. Nuestra tecnología impulsada por IA garantiza precisión y eficiencia en cada proceso.
           </p>
         </div>
 
@@ -66,7 +66,7 @@ export default function Features() {
 
         {/* Regulations */}
         <div className="text-center">
-          <p className="text-[#666666] mb-6">Cumplimos con las regulaciones:</p>
+          <p className="text-[#666666] mb-6">Cumplimiento de regulaciones por sector:</p>
           <div className="flex flex-wrap justify-center gap-4">
             {regulations.map((reg) => (
               <span
