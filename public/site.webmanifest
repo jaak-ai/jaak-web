@@ -1,0 +1,14 @@
+{
+  "name": "JAAK",
+  "short_name": "JAAK",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "theme_color": "#212A45",
+  "background_color": "#ffffff",
+  "display": "standalone"
+}
