@@ -112,6 +112,24 @@ body {
   box-shadow: 0 8px 25px rgba(45, 182, 193, 0.3);
 }
 
+.btn-blue {
+  background: var(--primary);
+  color: white;
+  padding: 16px 40px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1.125rem;
+  transition: all 0.2s ease;
+  display: inline-block;
+  text-align: center;
+}
+
+.btn-blue:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(33, 42, 69, 0.3);
+}
+
 .section-padding {
   padding: 80px 0;
 }

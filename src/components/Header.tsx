@@ -47,9 +47,9 @@ export default function Header() {
             <Image
               src="/images/logos/jaak-logo-azul.png"
               alt="JAAK"
-              width={140}
-              height={72}
-              className="h-12 w-auto"
+              width={180}
+              height={93}
+              className="h-16 w-auto"
               priority
             />
           </Link>
