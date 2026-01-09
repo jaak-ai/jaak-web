@@ -1,12 +1,12 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
-import KYCSection from "@/components/KYCSection";
-import Features from "@/components/Features";
-import Clients from "@/components/Clients";
-import Certifications from "@/components/Certifications";
-import Problem from "@/components/Problem";
-import Solutions from "@/components/Solutions";
-import Sectors from "@/components/Sectors";
+import SubHero from "@/components/SubHero";
+import Services from "@/components/Services";
+import Differentiator from "@/components/Differentiator";
+import TargetAudience from "@/components/TargetAudience";
+import Integration from "@/components/Integration";
+import Trust from "@/components/Trust";
+import FinalCTA from "@/components/FinalCTA";
 import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
 
@@ -16,13 +16,13 @@ export default function Home() {
       <Header />
       <main>
         <Hero />
-        <KYCSection />
-        <Features />
-        <Clients />
-        <Certifications />
-        <Problem />
-        <Solutions />
-        <Sectors />
+        <SubHero />
+        <Services />
+        <Differentiator />
+        <TargetAudience />
+        <Integration />
+        <Trust />
+        <FinalCTA />
         <ContactForm />
       </main>
       <Footer />
