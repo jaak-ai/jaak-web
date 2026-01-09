@@ -3,13 +3,34 @@ import Link from "next/link";
 
 export default function Footer() {
   const certifications = [
-    { name: "ISO 27001", logo: "https://jaak.ai/images/certifications/iso-27001.png" },
-    { name: "ISO 9001", logo: "https://jaak.ai/images/certifications/iso-9001.png" },
-    { name: "iBeta Level 1", logo: "https://jaak.ai/images/certifications/ibeta.png" },
-    { name: "NIST", logo: "https://jaak.ai/images/certifications/nist.png" },
-    { name: "IQNET", logo: "https://jaak.ai/images/certifications/iqnet.png" },
-    { name: "Distintivo Oro", logo: "https://jaak.ai/images/certifications/distintivo-oro.png" },
-    { name: "Hecho en México", logo: "https://jaak.ai/images/certifications/hecho-en-mexico.png" },
+    {
+      name: "ISO 27001",
+      logo: "https://jaak.ai/hs-fs/hubfs/JAAK-OrganizacionCertificada-ISO-27001.png?width=962&height=962"
+    },
+    {
+      name: "ISO 9001",
+      logo: "https://jaak.ai/hs-fs/hubfs/JAAK-OrganizacionCertificada-ISO-9001.png?width=962&height=962"
+    },
+    {
+      name: "iBeta Level 1",
+      logo: "https://jaak.ai/hs-fs/hubfs/JAAK-OrganizacionCertificada-iBeta-Level-1.png?width=962&height=962"
+    },
+    {
+      name: "NIST",
+      logo: "https://jaak.ai/hs-fs/hubfs/JAAK-OrganizacionCertificada-NIST.png?width=962&height=962"
+    },
+    {
+      name: "IQNET",
+      logo: "https://jaak.ai/hs-fs/hubfs/JAAK-OrganizacionCertificada-IQNET.png?width=962&height=962"
+    },
+    {
+      name: "Distintivo Oro",
+      logo: "https://jaak.ai/hs-fs/hubfs/JAAK-OrganizacionCertificada-Distintivo-Oro.png?width=962&height=962"
+    },
+    {
+      name: "Hecho en México",
+      logo: "https://jaak.ai/hs-fs/hubfs/JAAK-OrganizacionCertificada-Hecho-En-Mexico-1.png?width=962&height=962"
+    },
   ];
 
   const legalLinks = [
@@ -26,11 +47,11 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-12">
           <Link href="/">
             <Image
-              src="https://jaak.ai/images/JAAK-Logo-Blanco.svg"
+              src="https://jaak.ai/hs-fs/hubfs/JAAK-Logo-Azul@2x.png?width=492&height=255&name=JAAK-Logo-Azul@2x.png"
               alt="JAAK"
               width={120}
-              height={40}
-              className="h-10 w-auto"
+              height={62}
+              className="h-10 w-auto brightness-0 invert"
             />
           </Link>
           <div className="flex flex-wrap gap-4">
@@ -39,9 +60,9 @@ export default function Footer() {
                 <Image
                   src={cert.logo}
                   alt={cert.name}
-                  width={50}
+                  width={40}
                   height={40}
-                  className="h-8 w-auto object-contain filter brightness-0 invert"
+                  className="h-8 w-8 object-contain"
                 />
               </div>
             ))}

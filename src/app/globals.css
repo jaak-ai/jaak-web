@@ -6,12 +6,14 @@
   --accent: #2DB6C1;
   --accent-hover: #25969f;
   --accent-green: #2AD796;
-  --text-dark: #0E1133;
+  --text-dark: #000000;
   --text-body: #53535B;
   --text-muted: #666666;
+  --text-gray: #696969;
   --background: #ffffff;
-  --foreground: #0E1133;
-  --section-alt: #f8fafc;
+  --foreground: #000000;
+  --section-alt: #FAFAFA;
+  --section-light: #F3F4F8;
   --border-light: #EEEEEE;
 }
 
@@ -22,8 +24,7 @@
   --color-primary-dark: var(--primary-dark);
   --color-accent: var(--accent);
   --color-accent-green: var(--accent-green);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-montserrat);
 }
 
 html {
@@ -33,7 +34,7 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-family: var(--font-montserrat), "Montserrat", system-ui, sans-serif;
 }
 
 .gradient-bg {
@@ -93,6 +94,24 @@ body {
   transform: translateY(-1px);
 }
 
+.btn-cyan {
+  background: var(--accent);
+  color: white;
+  padding: 16px 40px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1.125rem;
+  transition: all 0.2s ease;
+  display: inline-block;
+  text-align: center;
+}
+
+.btn-cyan:hover {
+  background: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(45, 182, 193, 0.3);
+}
+
 .section-padding {
   padding: 80px 0;
 }
@@ -137,4 +156,12 @@ body {
 
 .animate-fade-in-up {
   animation: fade-in-up 0.6s ease-out forwards;
+}
+
+/* Hero background styles */
+.hero-bg {
+  background-image: url('https://19644701.fs1.hubspotusercontent-na1.net/hub/19644701/hubfs/Hero-BG.jpg?width=2000&height=843.75');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }

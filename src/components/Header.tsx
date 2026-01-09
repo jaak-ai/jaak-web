@@ -45,11 +45,12 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <Image
-              src="https://jaak.ai/images/JAAK-Logo-Azul.svg"
+              src="https://jaak.ai/hs-fs/hubfs/JAAK-Logo-Azul@2x.png?width=492&height=255&name=JAAK-Logo-Azul@2x.png"
               alt="JAAK"
-              width={120}
-              height={40}
-              className="h-10 w-auto"
+              width={140}
+              height={72}
+              className="h-12 w-auto"
+              priority
             />
           </Link>
 
@@ -102,7 +103,7 @@ export default function Header() {
 
           {/* CTA Button */}
           <div className="hidden lg:block">
-            <Link href="#contacto" className="btn-green">
+            <Link href="#contacto" className="btn-cyan">
               Agendar demo
             </Link>
           </div>
@@ -176,7 +177,7 @@ export default function Header() {
             <div className="pt-4 mt-4 border-t border-[#EEEEEE]">
               <Link
                 href="#contacto"
-                className="btn-green block text-center"
+                className="btn-cyan block text-center"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Agendar demo

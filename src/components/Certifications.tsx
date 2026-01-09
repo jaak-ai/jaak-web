@@ -2,13 +2,34 @@ import Image from "next/image";
 
 export default function Certifications() {
   const certifications = [
-    { name: "ISO 27001", logo: "https://jaak.ai/images/certifications/iso-27001.png" },
-    { name: "ISO 9001", logo: "https://jaak.ai/images/certifications/iso-9001.png" },
-    { name: "iBeta Level 1", logo: "https://jaak.ai/images/certifications/ibeta.png" },
-    { name: "NIST", logo: "https://jaak.ai/images/certifications/nist.png" },
-    { name: "IQNET", logo: "https://jaak.ai/images/certifications/iqnet.png" },
-    { name: "Distintivo Oro", logo: "https://jaak.ai/images/certifications/distintivo-oro.png" },
-    { name: "Hecho en México", logo: "https://jaak.ai/images/certifications/hecho-en-mexico.png" },
+    {
+      name: "ISO 27001",
+      logo: "https://jaak.ai/hs-fs/hubfs/JAAK-OrganizacionCertificada-ISO-27001.png?width=962&height=962"
+    },
+    {
+      name: "ISO 9001",
+      logo: "https://jaak.ai/hs-fs/hubfs/JAAK-OrganizacionCertificada-ISO-9001.png?width=962&height=962"
+    },
+    {
+      name: "iBeta Level 1",
+      logo: "https://jaak.ai/hs-fs/hubfs/JAAK-OrganizacionCertificada-iBeta-Level-1.png?width=962&height=962"
+    },
+    {
+      name: "NIST",
+      logo: "https://jaak.ai/hs-fs/hubfs/JAAK-OrganizacionCertificada-NIST.png?width=962&height=962"
+    },
+    {
+      name: "IQNET",
+      logo: "https://jaak.ai/hs-fs/hubfs/JAAK-OrganizacionCertificada-IQNET.png?width=962&height=962"
+    },
+    {
+      name: "Distintivo Oro",
+      logo: "https://jaak.ai/hs-fs/hubfs/JAAK-OrganizacionCertificada-Distintivo-Oro.png?width=962&height=962"
+    },
+    {
+      name: "Hecho en México",
+      logo: "https://jaak.ai/hs-fs/hubfs/JAAK-OrganizacionCertificada-Hecho-En-Mexico-1.png?width=962&height=962"
+    },
   ];
 
   return (
@@ -33,8 +54,8 @@ export default function Certifications() {
                 src={cert.logo}
                 alt={cert.name}
                 width={100}
-                height={80}
-                className="h-16 w-auto object-contain filter brightness-0 invert"
+                height={100}
+                className="h-20 w-20 object-contain"
               />
             </div>
           ))}

@@ -1,30 +1,30 @@
-import Image from "next/image";
+import Link from "next/link";
 
 export default function Clients() {
   const clients = [
-    { name: "Duppla Doctor", logo: "https://jaak.ai/images/clients/duppla-doctor.png" },
-    { name: "Impulsemos", logo: "https://jaak.ai/images/clients/impulsemos.png" },
-    { name: "Casandra Soft", logo: "https://jaak.ai/images/clients/casandra-soft.png" },
-    { name: "Mural Med", logo: "https://jaak.ai/images/clients/mural-med.png" },
+    { name: "Duppla Doctor", url: "https://www.duppla.doctor/es-mx/home" },
+    { name: "Impulsemos", url: "https://impulsemos.com/" },
+    { name: "Casandra Soft", url: "https://www.casandrasoft.com/" },
+    { name: "Mural Med", url: "https://muralmed.com/" },
   ];
 
   return (
-    <section className="py-16">
+    <section className="py-16 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2 className="text-center text-xl text-[#666666] mb-10">
           Clientes que confían en nosotros
         </h2>
         <div className="flex flex-wrap justify-center items-center gap-12 md:gap-16">
           {clients.map((client) => (
-            <div key={client.name} className="grayscale hover:grayscale-0 transition-all opacity-60 hover:opacity-100">
-              <Image
-                src={client.logo}
-                alt={client.name}
-                width={150}
-                height={60}
-                className="h-12 w-auto object-contain"
-              />
-            </div>
+            <Link
+              key={client.name}
+              href={client.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#53535B] hover:text-[#2DB6C1] font-semibold text-lg transition-colors"
+            >
+              {client.name}
+            </Link>
           ))}
         </div>
       </div>

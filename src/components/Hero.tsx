@@ -3,23 +3,23 @@ import Link from "next/link";
 
 export default function Hero() {
   return (
-    <section className="pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden">
+    <section className="hero-bg pt-32 pb-20 lg:pt-40 lg:pb-32 min-h-[90vh] flex items-center">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Content */}
           <div className="animate-fade-in-up">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#0E1133] leading-tight mb-6">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#000000] leading-tight mb-6">
               Soluciones de seguridad con{" "}
               <span className="text-[#2DB6C1]">biometría</span>
             </h1>
-            <p className="text-xl md:text-2xl text-[#53535B] mb-4">
+            <p className="text-xl md:text-2xl text-[#53535B] mb-4 font-medium">
               Valida identidades reales en segundos con Inteligencia Artificial
             </p>
-            <p className="text-lg text-[#666666] mb-8">
+            <p className="text-lg text-[#696969] mb-10">
               Verificación de identidad con IA, precisa y segura para tu onboarding KYC.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Link href="#contacto" className="btn-green text-lg">
+              <Link href="#contacto" className="btn-cyan text-lg">
                 Agendar una demo
               </Link>
             </div>
@@ -29,7 +29,7 @@ export default function Hero() {
           <div className="relative animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
             <div className="relative">
               <Image
-                src="https://jaak.ai/images/JAAK-Face-Recognition.png"
+                src="https://jaak.ai/hubfs/JAAK-Face-Recognition.png"
                 alt="JAAK Reconocimiento Facial"
                 width={600}
                 height={500}

@@ -5,25 +5,25 @@ export default function Solutions() {
     {
       title: "KYC con Inteligencia Artificial",
       description: "Optimiza seguridad con procesos automatizados",
-      image: "https://jaak.ai/images/JAAK-Solucion-KYC-01.png",
+      image: "https://jaak.ai/hubfs/JAAK-Solucion-KYC-01.png",
     },
     {
       title: "Cumplimiento de Regulación",
       description: "Garantiza cumplimiento normativo. Reduce sanciones y riesgos reputacionales.",
-      image: "https://jaak.ai/images/JAAK-Solucion-KYC-02.png",
+      image: "https://jaak.ai/hubfs/verificacion-de-identidad.png",
     },
     {
       title: "Adquisición de Clientes",
       description: "Incrementa tasa de conversión. Procesos rápidos sin fricción.",
-      image: "https://jaak.ai/images/JAAK-Solucion-KYC-03.png",
+      image: "https://jaak.ai/hubfs/KYC-TEMP.jpg",
     },
   ];
 
   return (
-    <section className="section-padding bg-[#f8fafc]" id="productos">
+    <section className="section-padding bg-[#FAFAFA]" id="productos">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#0E1133] mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#000000] mb-4">
             Nuestras Soluciones
           </h2>
         </div>
@@ -34,16 +34,16 @@ export default function Solutions() {
               key={index}
               className="card hover-lift text-center"
             >
-              <div className="mb-6 relative h-48 flex items-center justify-center">
+              <div className="mb-6 relative h-48 flex items-center justify-center overflow-hidden rounded-lg">
                 <Image
                   src={solution.image}
                   alt={solution.title}
-                  width={200}
-                  height={180}
-                  className="object-contain"
+                  width={300}
+                  height={200}
+                  className="object-cover w-full h-full"
                 />
               </div>
-              <h3 className="text-xl font-bold text-[#0E1133] mb-3">
+              <h3 className="text-xl font-bold text-[#000000] mb-3">
                 {solution.title}
               </h3>
               <p className="text-[#53535B]">
