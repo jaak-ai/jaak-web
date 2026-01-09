@@ -45,7 +45,7 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <Image
-              src="https://jaak.ai/hs-fs/hubfs/JAAK-Logo-Azul@2x.png?width=492&height=255&name=JAAK-Logo-Azul@2x.png"
+              src="/images/logos/jaak-logo-azul.png"
               alt="JAAK"
               width={140}
               height={72}

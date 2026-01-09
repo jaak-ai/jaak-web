@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Hero() {
   return (
-    <section className="hero-bg pt-32 pb-20 lg:pt-40 lg:pb-32 min-h-[90vh] flex items-center relative overflow-hidden">
+    <section className="pt-32 pb-20 lg:pt-40 lg:pb-32 min-h-[90vh] flex items-center relative overflow-hidden" style={{ backgroundImage: "url('/images/hero-bg.jpg')", backgroundSize: "cover", backgroundPosition: "center" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Content */}
@@ -35,9 +35,9 @@ export default function Hero() {
                 muted
                 className="w-full h-auto"
               >
-                <source src="https://jaak.ai/hubfs/JAAK-KYC-Status-Faces.mp4" type="video/webm" />
-                <source src="https://jaak.ai/hubfs/JAAK-KYC-Status-Faces.mp4" type="video/mp4" />
-                <source src="https://jaak.ai/hubfs/JAAK-KYC-Status-Faces.mp4" type="video/ogg" />
+                <source src="/images/jaak-kyc-video.mp4" type="video/webm" />
+                <source src="/images/jaak-kyc-video.mp4" type="video/mp4" />
+                <source src="/images/jaak-kyc-video.mp4" type="video/ogg" />
               </video>
             </div>
           </div>

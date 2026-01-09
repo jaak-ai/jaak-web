@@ -3,27 +3,27 @@ import Image from "next/image";
 export default function Features() {
   const features = [
     {
-      icon: "https://jaak.ai/hubfs/comprobado.png",
+      icon: "/images/icons/comprobado.png",
       title: "Verificación en menos de 1 minuto",
     },
     {
-      icon: "https://jaak.ai/hubfs/aprobar.png",
+      icon: "/images/icons/aprobar.png",
       title: "Precisión mayor al 99%",
     },
     {
-      icon: "https://jaak.ai/hubfs/saas.png",
+      icon: "/images/icons/saas.png",
       title: "Disponible SaaS y On Premise",
     },
     {
-      icon: "https://jaak.ai/hubfs/chip-de-ia.png",
+      icon: "/images/icons/chip-de-ia.png",
       title: "Tecnología potenciada con IA",
     },
     {
-      icon: "https://jaak.ai/hubfs/buscar-palabra-clave.png",
+      icon: "/images/icons/buscar-palabra-clave.png",
       title: "Más de 1.2 millones de verificaciones diarias",
     },
     {
-      icon: "https://jaak.ai/hubfs/ley-internacional.png",
+      icon: "/images/icons/ley-internacional.png",
       title: "Cumplimiento de certificaciones internacionales",
     },
   ];

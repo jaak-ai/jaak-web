@@ -3,34 +3,13 @@ import Link from "next/link";
 
 export default function Footer() {
   const certifications = [
-    {
-      name: "ISO 27001",
-      logo: "https://jaak.ai/hs-fs/hubfs/JAAK-OrganizacionCertificada-ISO-27001.png?width=962&height=962"
-    },
-    {
-      name: "ISO 9001",
-      logo: "https://jaak.ai/hs-fs/hubfs/JAAK-OrganizacionCertificada-ISO-9001.png?width=962&height=962"
-    },
-    {
-      name: "iBeta Level 1",
-      logo: "https://jaak.ai/hs-fs/hubfs/JAAK-OrganizacionCertificada-iBeta-Level-1.png?width=962&height=962"
-    },
-    {
-      name: "NIST",
-      logo: "https://jaak.ai/hs-fs/hubfs/JAAK-OrganizacionCertificada-NIST.png?width=962&height=962"
-    },
-    {
-      name: "IQNET",
-      logo: "https://jaak.ai/hs-fs/hubfs/JAAK-OrganizacionCertificada-IQNET.png?width=962&height=962"
-    },
-    {
-      name: "Distintivo Oro",
-      logo: "https://jaak.ai/hs-fs/hubfs/JAAK-OrganizacionCertificada-Distintivo-Oro.png?width=962&height=962"
-    },
-    {
-      name: "Hecho en México",
-      logo: "https://jaak.ai/hs-fs/hubfs/JAAK-OrganizacionCertificada-Hecho-En-Mexico-1.png?width=962&height=962"
-    },
+    { name: "ISO 27001", logo: "/images/certifications/iso-27001.png" },
+    { name: "ISO 9001", logo: "/images/certifications/iso-9001.png" },
+    { name: "iBeta Level 1", logo: "/images/certifications/ibeta.png" },
+    { name: "NIST", logo: "/images/certifications/nist.png" },
+    { name: "IQNET", logo: "/images/certifications/iqnet.png" },
+    { name: "Distintivo Oro", logo: "/images/certifications/distintivo-oro.png" },
+    { name: "Hecho en México", logo: "/images/certifications/hecho-en-mexico.png" },
   ];
 
   const legalLinks = [
@@ -47,7 +26,7 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-12">
           <Link href="/">
             <Image
-              src="https://jaak.ai/hs-fs/hubfs/JAAK-Logo-Azul@2x.png?width=492&height=255&name=JAAK-Logo-Azul@2x.png"
+              src="/images/logos/jaak-logo-azul.png"
               alt="JAAK"
               width={120}
               height={62}

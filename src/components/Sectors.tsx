@@ -3,32 +3,32 @@ import Image from "next/image";
 export default function Sectors() {
   const sectors = [
     {
-      icon: "https://jaak.ai/hs-fs/hubfs/151.png?width=1080&height=1080&name=151.png",
+      icon: "/images/sectors/fintech.png",
       title: "Fintech",
       description: "Capta clientes con onboarding ágil y seguro",
     },
     {
-      icon: "https://jaak.ai/hs-fs/hubfs/150.png?width=1080&height=1080&name=150.png",
+      icon: "/images/sectors/bancos.png",
       title: "Bancos",
       description: "Disminuye fraude mediante validaciones confiables",
     },
     {
-      icon: "https://jaak.ai/hs-fs/hubfs/152.png?width=1080&height=1080&name=152.png",
+      icon: "/images/sectors/aseguradoras.png",
       title: "Aseguradoras",
       description: "Reduce riesgo de identidades falsas",
     },
     {
-      icon: "https://jaak.ai/hs-fs/hubfs/153.png?width=1080&height=1080&name=153.png",
+      icon: "/images/sectors/prestamos.png",
       title: "Préstamos",
       description: "Analiza documentación de manera eficiente",
     },
     {
-      icon: "https://jaak.ai/hs-fs/hubfs/154.png?width=1080&height=1080&name=154.png",
+      icon: "/images/sectors/gaming.png",
       title: "Gaming",
       description: "Asegura autenticidad de participantes",
     },
     {
-      icon: "https://jaak.ai/hs-fs/hubfs/155.png?width=1080&height=1080&name=155.png",
+      icon: "/images/sectors/pagos.png",
       title: "Procesadores de Pagos",
       description: "Valida autenticidad de personas e identificaciones",
     },

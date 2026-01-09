@@ -5,17 +5,17 @@ export default function Solutions() {
     {
       title: "KYC con Inteligencia Artificial",
       description: "Optimiza seguridad con procesos automatizados",
-      image: "https://jaak.ai/hubfs/JAAK-Solucion-KYC-01.png",
+      image: "/images/solutions/kyc-ia.png",
     },
     {
       title: "Cumplimiento de Regulación",
       description: "Garantiza cumplimiento normativo. Reduce sanciones y riesgos reputacionales.",
-      image: "https://jaak.ai/hubfs/verificacion-de-identidad.png",
+      image: "/images/solutions/verificacion.png",
     },
     {
       title: "Adquisición de Clientes",
       description: "Incrementa tasa de conversión. Procesos rápidos sin fricción.",
-      image: "https://jaak.ai/hubfs/KYC-TEMP.jpg",
+      image: "/images/solutions/adquisicion.jpg",
     },
   ];
 

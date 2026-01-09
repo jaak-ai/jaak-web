@@ -157,11 +157,3 @@ body {
 .animate-fade-in-up {
   animation: fade-in-up 0.6s ease-out forwards;
 }
-
-/* Hero background styles */
-.hero-bg {
-  background-image: url('https://19644701.fs1.hubspotusercontent-na1.net/hub/19644701/hubfs/Hero-BG.jpg?width=2000&height=843.75');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
