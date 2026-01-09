@@ -1,0 +1,16 @@
+name: jaak-web
+id: ari:cloud:compass:3bb16e59-5eaf-47cb-a0aa-3c3febc65466:component/656b16c9-c93c-439c-be64-701e12e8301a/24f13f9a-97d6-4207-977b-3b70dd5c5178
+description: JAAK landing page - Next.js 16 + Tailwind CSS
+configVersion: 1
+typeId: SERVICE
+fields:
+  tier: 4
+links:
+  - name: null
+    type: REPOSITORY
+    url: https://github.com/jaak-ai/jaak-web
+relationships:
+  DEPENDS_ON: []
+labels:
+  - source:github
+customFields: null
