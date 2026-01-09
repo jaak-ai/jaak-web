@@ -1,10 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
 
 export default function Hero() {
   return (
-    <section className="hero-bg pt-32 pb-20 lg:pt-40 lg:pb-32 min-h-[90vh] flex items-center">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="hero-bg pt-32 pb-20 lg:pt-40 lg:pb-32 min-h-[90vh] flex items-center relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Content */}
           <div className="animate-fade-in-up">
@@ -25,17 +24,21 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Image */}
+          {/* Video */}
           <div className="relative animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
-            <div className="relative">
-              <Image
-                src="https://jaak.ai/hubfs/JAAK-Face-Recognition.png"
-                alt="JAAK Reconocimiento Facial"
-                width={600}
-                height={500}
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+              <video
+                playsInline
+                autoPlay
+                preload="auto"
+                loop
+                muted
                 className="w-full h-auto"
-                priority
-              />
+              >
+                <source src="https://jaak.ai/hubfs/JAAK-KYC-Status-Faces.mp4" type="video/webm" />
+                <source src="https://jaak.ai/hubfs/JAAK-KYC-Status-Faces.mp4" type="video/mp4" />
+                <source src="https://jaak.ai/hubfs/JAAK-KYC-Status-Faces.mp4" type="video/ogg" />
+              </video>
             </div>
           </div>
         </div>
