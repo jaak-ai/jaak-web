@@ -1,12 +1,12 @@
 import Header from "@/components/Header";
-import Hero from "@/components/Hero";
-import SocialProof from "@/components/SocialProof";
-import Problem from "@/components/Problem";
-import Solution from "@/components/Solution";
-import Results from "@/components/Results";
-import UseCases from "@/components/UseCases";
-import Implementation from "@/components/Implementation";
-import Compliance from "@/components/Compliance";
+import HeroRegulated from "@/components/HeroRegulated";
+import RegulatoryProof from "@/components/RegulatoryProof";
+import RegulatoryProblem from "@/components/RegulatoryProblem";
+import JaakSolution from "@/components/JaakSolution";
+import ComplianceEvidence from "@/components/ComplianceEvidence";
+import RegulatedUseCases from "@/components/RegulatedUseCases";
+import BusinessOutcomes from "@/components/BusinessOutcomes";
+import ImplementationSteps from "@/components/ImplementationSteps";
 import FinalCTA from "@/components/FinalCTA";
 import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
@@ -16,14 +16,14 @@ export default function Home() {
     <>
       <Header />
       <main>
-        <Hero />
-        <SocialProof />
-        <Problem />
-        <Solution />
-        <Results />
-        <UseCases />
-        <Implementation />
-        <Compliance />
+        <HeroRegulated />
+        <RegulatoryProof />
+        <RegulatoryProblem />
+        <JaakSolution />
+        <ComplianceEvidence />
+        <RegulatedUseCases />
+        <BusinessOutcomes />
+        <ImplementationSteps />
         <FinalCTA />
         <ContactForm />
       </main>

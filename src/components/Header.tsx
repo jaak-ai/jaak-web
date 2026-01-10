@@ -45,10 +45,10 @@ export default function Header() {
               Iniciar sesión
             </Link>
             <Link
-              href="#contacto"
+              href="/contact?type=regulatory-review"
               className="px-4 py-2 bg-[#0a0f1c] text-white font-semibold text-sm rounded-lg hover:bg-[#1a2744] transition-all"
             >
-              Agenda demo
+              Solicitar evaluación
             </Link>
           </div>
         </div>
