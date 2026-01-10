@@ -6,51 +6,51 @@ export default function Footer() {
     platform: {
       title: "Plataforma",
       links: [
-        { name: "KYC", href: "#kyc" },
-        { name: "KYB", href: "#kyb" },
-        { name: "Firma Electrónica", href: "#firma" },
-        { name: "Onboarding Digital", href: "#onboarding" },
-        { name: "API & SDKs", href: "https://docs.jaak.ai" },
+        { name: "Verificación de identidad", href: "/plataforma/verificacion-identidad" },
+        { name: "Verificación empresarial", href: "/plataforma/verificacion-empresarial" },
+        { name: "Firma electrónica", href: "/plataforma/firma-electronica" },
+        { name: "Gestión de evidencia", href: "/plataforma/gestion-evidencia" },
+        { name: "API & SDKs", href: "/documentacion" },
       ],
     },
     useCases: {
-      title: "Casos de Uso",
+      title: "Soluciones",
       links: [
-        { name: "Fintech", href: "#fintech" },
-        { name: "Banca", href: "#banca" },
-        { name: "Seguros", href: "#seguros" },
-        { name: "Inmobiliario", href: "#inmobiliario" },
-        { name: "Legal", href: "#legal" },
+        { name: "Instituciones financieras", href: "/soluciones/instituciones-financieras" },
+        { name: "Empresas reguladas", href: "/soluciones/empresas-reguladas" },
+        { name: "Onboarding digital", href: "/soluciones/onboarding-digital" },
+        { name: "Firma de contratos", href: "/soluciones/firma-contratos" },
+        { name: "Prevención de fraude", href: "/soluciones/prevencion-fraude" },
       ],
     },
     compliance: {
       title: "Cumplimiento",
       links: [
-        { name: "LFPIORPI", href: "#lfpiorpi" },
-        { name: "AML / CFT", href: "#aml" },
-        { name: "CNBV", href: "#cnbv" },
-        { name: "NOM-151", href: "#nom151" },
-        { name: "GDPR", href: "#gdpr" },
+        { name: "Cumplimiento normativo", href: "/cumplimiento" },
+        { name: "LFPIORPI", href: "/cumplimiento" },
+        { name: "CNBV", href: "/cumplimiento" },
+        { name: "NOM-151", href: "/cumplimiento" },
+        { name: "Seguridad", href: "/seguridad" },
       ],
     },
     resources: {
       title: "Recursos",
       links: [
-        { name: "Documentación", href: "https://docs.jaak.ai" },
+        { name: "Documentación", href: "/documentacion" },
+        { name: "Blog", href: "/blog" },
         { name: "API Reference", href: "https://docs.jaak.ai/api" },
-        { name: "Sandbox", href: "https://sandbox.jaak.ai" },
+        { name: "Sandbox", href: "https://platform.dev.jaak.ai/#/signup" },
         { name: "Status", href: "https://status.jaak.ai" },
-        { name: "Blog", href: "#blog" },
       ],
     },
     company: {
       title: "Empresa",
       links: [
-        { name: "Sobre nosotros", href: "#sobre" },
-        { name: "Carreras", href: "#carreras" },
-        { name: "Contacto", href: "#contacto" },
-        { name: "Socios", href: "#socios" },
-        { name: "Prensa", href: "#prensa" },
+        { name: "Sobre nosotros", href: "/nosotros" },
+        { name: "Contacto", href: "/contacto" },
+        { name: "Carreras", href: "/contacto" },
+        { name: "Socios", href: "/contacto" },
+        { name: "Prensa", href: "/contacto" },
       ],
     },
   };
@@ -159,7 +159,7 @@ export default function Footer() {
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <div className="flex items-center gap-3">
                 <span className="px-2.5 py-1 bg-white/5 text-white/60 text-xs font-medium rounded border border-white/10">ISO 27001</span>
-                <span className="px-2.5 py-1 bg-white/5 text-white/60 text-xs font-medium rounded border border-white/10">SOC 2</span>
+                <span className="px-2.5 py-1 bg-white/5 text-white/60 text-xs font-medium rounded border border-white/10">ISO 9001</span>
                 <span className="px-2.5 py-1 bg-white/5 text-white/60 text-xs font-medium rounded border border-white/10">iBeta</span>
               </div>
               <span className="text-white/40 text-sm">Ciudad de México, México</span>
