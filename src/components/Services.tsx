@@ -13,7 +13,7 @@ export default function Services() {
       features: [
         "OCR de INE, pasaporte y documentos oficiales",
         "Prueba de vida con detección de ataques",
-        "Anti-spoofing certificado iBeta Level 1",
+        "Anti-spoofing certificado iBeta",
         "Face match con 99.8% de precisión",
         "Evidencia forense con timestamps",
       ],

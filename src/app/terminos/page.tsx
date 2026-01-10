@@ -192,7 +192,7 @@ export default function TerminosPage() {
 
                 <div className="bg-[#0066ff]/5 border border-[#0066ff]/20 rounded-xl p-6 mt-6">
                   <p className="text-gray-700">
-                    <strong className="text-[#0066ff]">Nota:</strong> Nuestros servicios de verificacion estan certificados por iBeta Level 1 para prueba de vida y cumplen con estandares NIST para verificacion de identidad, lo que proporciona altos niveles de precision y confiabilidad.
+                    <strong className="text-[#0066ff]">Nota:</strong> Nuestros servicios de verificacion estan certificados por iBeta para prueba de vida y cumplen con estandares NIST para verificacion de identidad, lo que proporciona altos niveles de precision y confiabilidad.
                   </p>
                 </div>
               </div>

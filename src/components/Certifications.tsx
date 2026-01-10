@@ -4,7 +4,7 @@ export default function Certifications() {
   const certifications = [
     { name: "ISO 27001", logo: "/images/certifications/iso-27001.png" },
     { name: "ISO 9001", logo: "/images/certifications/iso-9001.png" },
-    { name: "iBeta Level 1", logo: "/images/certifications/ibeta.png" },
+    { name: "iBeta", logo: "/images/certifications/ibeta.png" },
     { name: "NIST", logo: "/images/certifications/nist.png" },
     { name: "IQNET", logo: "/images/certifications/iqnet.png" },
     { name: "Distintivo Oro", logo: "/images/certifications/distintivo-oro.png" },

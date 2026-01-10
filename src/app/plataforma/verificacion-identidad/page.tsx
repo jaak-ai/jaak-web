@@ -165,7 +165,7 @@ export default function VerificacionIdentidad() {
               <div className="flex items-center gap-4 px-6 py-4 bg-gray-50 rounded-xl">
                 <Image src="/images/certifications/ibeta.png" alt="iBeta" width={60} height={60} />
                 <div>
-                  <div className="font-bold text-gray-900">iBeta Level 1</div>
+                  <div className="font-bold text-gray-900">iBeta</div>
                   <div className="text-sm text-gray-600">Prueba de vida certificada</div>
                 </div>
               </div>
@@ -181,6 +181,13 @@ export default function VerificacionIdentidad() {
                 <div>
                   <div className="font-bold text-gray-900">ISO 27001</div>
                   <div className="text-sm text-gray-600">Seguridad de información</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-4 px-6 py-4 bg-gray-50 rounded-xl">
+                <Image src="/images/certifications/iso-9001.png" alt="ISO 9001" width={60} height={60} />
+                <div>
+                  <div className="font-bold text-gray-900">ISO 9001</div>
+                  <div className="text-sm text-gray-600">Gestión de calidad</div>
                 </div>
               </div>
             </div>

@@ -32,7 +32,7 @@ const blogPosts: BlogPost[] = [
   },
   {
     title: "Seguridad biométrica: Cómo la prueba de vida previene el fraude",
-    excerpt: "La tecnología de liveness detection es fundamental para prevenir ataques de presentación. Exploramos cómo funciona la certificación iBeta Level 1 y por qué es esencial para tu proceso de onboarding.",
+    excerpt: "La tecnología de liveness detection es fundamental para prevenir ataques de presentación. Exploramos cómo funciona la certificación iBeta y por qué es esencial para tu proceso de onboarding.",
     date: "27 de diciembre, 2024",
     category: "Seguridad",
     slug: "seguridad-biometrica-prueba-de-vida",

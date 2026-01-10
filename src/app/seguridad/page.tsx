@@ -35,7 +35,7 @@ export default function SeguridadPage() {
       ],
     },
     {
-      name: "iBeta Level 1",
+      name: "iBeta",
       subtitle: "Prueba de Vida Certificada",
       description:
         "Certificacion de deteccion de ataques de presentacion (PAD) segun el estandar ISO 30107-3. Nuestro sistema de prueba de vida ha sido evaluado por un laboratorio acreditado para resistir intentos de suplantacion.",
@@ -204,7 +204,7 @@ export default function SeguridadPage() {
                   ISO 9001
                 </span>
                 <span className="px-4 py-2 bg-white/10 text-white rounded-lg text-sm font-medium">
-                  iBeta Level 1
+                  iBeta
                 </span>
                 <span className="px-4 py-2 bg-white/10 text-white rounded-lg text-sm font-medium">
                   NIST 800-63-3

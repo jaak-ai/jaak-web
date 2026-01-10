@@ -23,7 +23,7 @@ export default function CumplimientoPage() {
         "Trazabilidad completa de operaciones",
       ],
       jaakSolution:
-        "JAAK proporciona verificacion de identidad biometrica certificada con prueba de vida iBeta Level 1, validacion de INE/IFE en tiempo real, y expedientes digitales que cumplen con los lineamientos de identificacion remota de la CNBV.",
+        "JAAK proporciona verificacion de identidad biometrica certificada con prueba de vida iBeta, validacion de INE/IFE en tiempo real, y expedientes digitales que cumplen con los lineamientos de identificacion remota de la CNBV.",
     },
     {
       acronym: "LFPIORPI",
@@ -101,7 +101,7 @@ export default function CumplimientoPage() {
         "Sistema de gestion de calidad que asegura procesos consistentes, mejora continua y satisfaccion del cliente en todos los servicios.",
     },
     {
-      name: "iBeta Level 1",
+      name: "iBeta",
       description: "Prueba de Vida Certificada",
       detail:
         "Certificacion de deteccion de ataques de presentacion (PAD) segun ISO 30107-3. Protege contra fotos, videos y mascaras.",

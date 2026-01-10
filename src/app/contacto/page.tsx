@@ -26,7 +26,7 @@ export default function ContactoPage() {
     },
     {
       title: "Tecnologia certificada",
-      description: "ISO 27001, SOC 2 Type II, iBeta Level 1 para prueba de vida.",
+      description: "ISO 27001, ISO 9001, iBeta para prueba de vida.",
     },
     {
       title: "Reduccion de fraude comprobada",

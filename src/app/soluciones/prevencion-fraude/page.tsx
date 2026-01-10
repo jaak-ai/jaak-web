@@ -121,7 +121,7 @@ export default function PrevencionFraude() {
                       <span className="text-white font-bold">1</span>
                     </div>
                     <div>
-                      <div className="font-bold text-gray-900">iBeta Level 1</div>
+                      <div className="font-bold text-gray-900">iBeta</div>
                       <div className="text-gray-600 text-sm">Certificación de prueba de vida contra ataques de presentación</div>
                     </div>
                   </div>

@@ -152,7 +152,7 @@ export default function HeroRegulated() {
                 ISO 27001
               </div>
               <div className="absolute -bottom-4 -left-4 px-3 py-1.5 bg-[#0066ff] text-white text-xs font-bold rounded-full shadow-lg">
-                iBeta Level 1
+                iBeta
               </div>
             </div>
           </div>

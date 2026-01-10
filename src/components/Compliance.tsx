@@ -5,7 +5,7 @@ export default function Compliance() {
     "Alineación con estándares regulatorios y legales",
   ];
 
-  const certifications = ["ISO 27001", "ISO 9001", "iBeta Level 1", "NIST"];
+  const certifications = ["ISO 27001", "ISO 9001", "iBeta", "NIST"];
 
   return (
     <section className="py-20 bg-[#f9fafb]">

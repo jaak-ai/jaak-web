@@ -152,7 +152,7 @@ export default function NosotrosPage() {
       logo: "/images/certifications/iso-9001.png",
     },
     {
-      name: "iBeta Level 1",
+      name: "iBeta",
       description: "Prueba de vida certificada",
       logo: "/images/certifications/ibeta.png",
     },
