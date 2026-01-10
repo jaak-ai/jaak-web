@@ -20,16 +20,36 @@ export default function FinalCTA() {
             En 15 minutos te decimos si JAAK cumple lo que tu regulación exige.
           </p>
 
-          {/* CTA Button */}
-          <Link
-            href="/contact?type=regulatory-review"
-            className="inline-flex items-center justify-center px-8 py-4 bg-white text-[#0066ff] font-bold text-lg rounded-lg hover:bg-white/90 transition-all group"
-          >
-            Solicitar revisión regulatoria
-            <svg className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-            </svg>
-          </Link>
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Link
+              href="/contacto"
+              className="inline-flex items-center justify-center px-8 py-4 bg-white text-[#0066ff] font-bold text-lg rounded-lg hover:bg-white/90 transition-all group"
+            >
+              Solicitar revisión regulatoria
+              <svg className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </Link>
+          </div>
+
+          {/* Alternative CTA */}
+          <div className="mt-8 pt-8 border-t border-white/20">
+            <p className="text-white/70 mb-4">
+              ¿No quieres esperar? Puedes usar nuestra plataforma desde hoy mismo
+            </p>
+            <Link
+              href="https://platform.dev.jaak.ai/#/signup"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center px-6 py-3 bg-white/10 border border-white/30 text-white font-semibold rounded-lg hover:bg-white/20 transition-all"
+            >
+              Crear cuenta gratis
+              <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </Link>
+          </div>
         </div>
       </div>
     </section>

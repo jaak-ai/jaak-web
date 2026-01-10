@@ -43,18 +43,18 @@ export default function ContactForm() {
   };
 
   return (
-    <section className="py-24 bg-[#111111]" id="contacto">
+    <section className="py-24 bg-gray-50" id="contacto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
           {/* Left side - Info */}
           <div>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white mb-4">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 mb-4">
               Contáctanos
             </h2>
-            <p className="text-xl text-[#00d4aa] font-semibold mb-4">
+            <p className="text-xl text-[#0066ff] font-semibold mb-4">
               Lleva la seguridad de tu empresa al siguiente nivel
             </p>
-            <p className="text-white/60 mb-8">
+            <p className="text-gray-600 mb-8">
               Con JAAK, la seguridad no es una opción, es una garantía. Completa el formulario y accede a una demostración personalizada que te mostrará cómo nuestras soluciones integradas pueden transformar tu operación.
             </p>
             <div className="space-y-4">
@@ -65,18 +65,18 @@ export default function ContactForm() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
-                  <span className="text-white/70">{benefit}</span>
+                  <span className="text-gray-700">{benefit}</span>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Right side - Form */}
-          <div className="bg-white/5 border border-white/10 rounded-xl p-8">
+          <div className="bg-white border border-gray-200 rounded-xl p-8 shadow-sm">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-white mb-2">
+                  <label htmlFor="name" className="block text-sm font-medium text-gray-900 mb-2">
                     Nombre completo *
                   </label>
                   <input
@@ -85,12 +85,12 @@ export default function ContactForm() {
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:ring-2 focus:ring-[#0066ff] focus:border-transparent outline-none transition-all text-white placeholder:text-white/40"
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0066ff] focus:border-transparent outline-none transition-all text-gray-900 placeholder:text-gray-400"
                     placeholder="Tu nombre"
                   />
                 </div>
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-white mb-2">
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-900 mb-2">
                     Correo electrónico *
                   </label>
                   <input
@@ -99,14 +99,14 @@ export default function ContactForm() {
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:ring-2 focus:ring-[#0066ff] focus:border-transparent outline-none transition-all text-white placeholder:text-white/40"
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0066ff] focus:border-transparent outline-none transition-all text-gray-900 placeholder:text-gray-400"
                     placeholder="tu@email.com"
                   />
                 </div>
               </div>
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="company" className="block text-sm font-medium text-white mb-2">
+                  <label htmlFor="company" className="block text-sm font-medium text-gray-900 mb-2">
                     Empresa
                   </label>
                   <input
@@ -114,12 +114,12 @@ export default function ContactForm() {
                     id="company"
                     value={formData.company}
                     onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:ring-2 focus:ring-[#0066ff] focus:border-transparent outline-none transition-all text-white placeholder:text-white/40"
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0066ff] focus:border-transparent outline-none transition-all text-gray-900 placeholder:text-gray-400"
                     placeholder="Tu empresa"
                   />
                 </div>
                 <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-white mb-2">
+                  <label htmlFor="phone" className="block text-sm font-medium text-gray-900 mb-2">
                     Teléfono
                   </label>
                   <input
@@ -127,13 +127,13 @@ export default function ContactForm() {
                     id="phone"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:ring-2 focus:ring-[#0066ff] focus:border-transparent outline-none transition-all text-white placeholder:text-white/40"
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0066ff] focus:border-transparent outline-none transition-all text-gray-900 placeholder:text-gray-400"
                     placeholder="+52 55 1234 5678"
                   />
                 </div>
               </div>
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-white mb-2">
+                <label htmlFor="message" className="block text-sm font-medium text-gray-900 mb-2">
                   Mensaje
                 </label>
                 <textarea
@@ -141,7 +141,7 @@ export default function ContactForm() {
                   rows={4}
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:ring-2 focus:ring-[#0066ff] focus:border-transparent outline-none transition-all resize-none text-white placeholder:text-white/40"
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0066ff] focus:border-transparent outline-none transition-all resize-none text-gray-900 placeholder:text-gray-400"
                   placeholder="¿Cómo podemos ayudarte?"
                 />
               </div>
@@ -153,10 +153,10 @@ export default function ContactForm() {
                 {status === "loading" ? "Enviando..." : "Enviar mensaje"}
               </button>
               {status === "success" && (
-                <p className="text-[#00d4aa] text-center">¡Mensaje enviado con éxito! Nos pondremos en contacto contigo pronto.</p>
+                <p className="text-green-600 text-center">¡Mensaje enviado con éxito! Nos pondremos en contacto contigo pronto.</p>
               )}
               {status === "error" && (
-                <p className="text-[#ff6b6b] text-center">Hubo un error al enviar el mensaje. Por favor, intenta de nuevo.</p>
+                <p className="text-red-600 text-center">Hubo un error al enviar el mensaje. Por favor, intenta de nuevo.</p>
               )}
             </form>
           </div>

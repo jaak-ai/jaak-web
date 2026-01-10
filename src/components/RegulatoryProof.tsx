@@ -1,6 +1,6 @@
 export default function RegulatoryProof() {
   return (
-    <section className="py-16 bg-[#0a0a0a] border-y border-white/10">
+    <section className="py-16 bg-[#0a0a0a]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto text-center">
           <p className="text-white/60 leading-relaxed mb-4">

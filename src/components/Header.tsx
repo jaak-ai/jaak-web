@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -10,6 +10,7 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<DropdownKey>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,11 +21,17 @@ export default function Header() {
   }, []);
 
   const handleMouseEnter = (dropdown: DropdownKey) => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
     setActiveDropdown(dropdown);
   };
 
   const handleMouseLeave = () => {
-    setActiveDropdown(null);
+    timeoutRef.current = setTimeout(() => {
+      setActiveDropdown(null);
+    }, 150);
   };
 
   return (
@@ -32,8 +39,8 @@ export default function Header() {
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
-            ? "bg-[#0a0a0a]/95 backdrop-blur-xl border-b border-white/10"
-            : "bg-transparent"
+            ? "bg-white/95 backdrop-blur-xl border-b border-gray-200 shadow-sm"
+            : "bg-white border-b border-gray-100"
         }`}
       >
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -45,7 +52,7 @@ export default function Header() {
                 alt="JAAK"
                 width={120}
                 height={48}
-                className="h-10 w-auto brightness-0 invert"
+                className="h-10 w-auto"
                 priority
               />
             </Link>
@@ -59,7 +66,7 @@ export default function Header() {
                 onMouseLeave={handleMouseLeave}
               >
                 <button className={`flex items-center gap-1.5 px-4 py-2 text-[15px] font-medium transition-colors ${
-                  activeDropdown === "platform" ? "text-white" : "text-white/70 hover:text-white"
+                  activeDropdown === "platform" ? "text-[#0066ff]" : "text-gray-700 hover:text-[#0066ff]"
                 }`}>
                   Plataforma
                   <svg
@@ -80,7 +87,7 @@ export default function Header() {
                 onMouseLeave={handleMouseLeave}
               >
                 <button className={`flex items-center gap-1.5 px-4 py-2 text-[15px] font-medium transition-colors ${
-                  activeDropdown === "solutions" ? "text-white" : "text-white/70 hover:text-white"
+                  activeDropdown === "solutions" ? "text-[#0066ff]" : "text-gray-700 hover:text-[#0066ff]"
                 }`}>
                   Soluciones
                   <svg
@@ -101,7 +108,7 @@ export default function Header() {
                 onMouseLeave={handleMouseLeave}
               >
                 <button className={`flex items-center gap-1.5 px-4 py-2 text-[15px] font-medium transition-colors ${
-                  activeDropdown === "resources" ? "text-white" : "text-white/70 hover:text-white"
+                  activeDropdown === "resources" ? "text-[#0066ff]" : "text-gray-700 hover:text-[#0066ff]"
                 }`}>
                   Recursos
                   <svg
@@ -117,8 +124,8 @@ export default function Header() {
 
               {/* Cumplimiento - Direct link */}
               <Link
-                href="#compliance"
-                className="px-4 py-2 text-[15px] font-medium text-white/70 hover:text-white transition-colors"
+                href="/cumplimiento"
+                className="px-4 py-2 text-[15px] font-medium text-gray-700 hover:text-[#0066ff] transition-colors"
               >
                 Cumplimiento
               </Link>
@@ -128,7 +135,7 @@ export default function Header() {
             <div className="flex items-center gap-4">
               <Link
                 href="https://platform.jaak.ai"
-                className="hidden sm:block text-white/70 hover:text-white font-medium text-[15px] transition-colors"
+                className="hidden sm:block text-gray-700 hover:text-[#0066ff] font-medium text-[15px] transition-colors"
               >
                 Iniciar sesión
               </Link>
@@ -141,7 +148,7 @@ export default function Header() {
 
               {/* Mobile menu button */}
               <button
-                className="lg:hidden p-2 text-white/70 hover:text-white"
+                className="lg:hidden p-2 text-gray-700 hover:text-[#0066ff]"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -158,22 +165,22 @@ export default function Header() {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden bg-[#111111] border-t border-white/10 max-h-[calc(100vh-72px)] overflow-y-auto">
+          <div className="lg:hidden bg-white border-t border-gray-200 max-h-[calc(100vh-72px)] overflow-y-auto">
             <div className="px-4 py-6 space-y-6">
               {/* Platform Section */}
               <div>
-                <h3 className="text-xs font-bold text-white/50 uppercase tracking-wider mb-3">Plataforma</h3>
+                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Plataforma</h3>
                 <div className="space-y-3">
-                  <Link href="#" className="block text-white/70 hover:text-white" onClick={() => setMobileMenuOpen(false)}>
+                  <Link href="/plataforma/verificacion-identidad" className="block text-gray-700 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
                     Verificación de identidad
                   </Link>
-                  <Link href="#" className="block text-white/70 hover:text-white" onClick={() => setMobileMenuOpen(false)}>
+                  <Link href="/plataforma/verificacion-empresarial" className="block text-gray-700 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
                     Verificación empresarial (KYB)
                   </Link>
-                  <Link href="#" className="block text-white/70 hover:text-white" onClick={() => setMobileMenuOpen(false)}>
+                  <Link href="/plataforma/firma-electronica" className="block text-gray-700 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
                     Firma electrónica
                   </Link>
-                  <Link href="#" className="block text-white/70 hover:text-white" onClick={() => setMobileMenuOpen(false)}>
+                  <Link href="/plataforma/gestion-evidencia" className="block text-gray-700 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
                     Gestión de evidencia
                   </Link>
                 </div>
@@ -181,15 +188,15 @@ export default function Header() {
 
               {/* Solutions Section */}
               <div>
-                <h3 className="text-xs font-bold text-white/50 uppercase tracking-wider mb-3">Soluciones</h3>
+                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Soluciones</h3>
                 <div className="space-y-3">
-                  <Link href="#" className="block text-white/70 hover:text-white" onClick={() => setMobileMenuOpen(false)}>
+                  <Link href="/soluciones/instituciones-financieras" className="block text-gray-700 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
                     Instituciones financieras
                   </Link>
-                  <Link href="#" className="block text-white/70 hover:text-white" onClick={() => setMobileMenuOpen(false)}>
+                  <Link href="/soluciones/empresas-reguladas" className="block text-gray-700 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
                     Empresas reguladas
                   </Link>
-                  <Link href="#" className="block text-white/70 hover:text-white" onClick={() => setMobileMenuOpen(false)}>
+                  <Link href="/soluciones/operaciones-alto-riesgo" className="block text-gray-700 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
                     Operaciones de alto riesgo
                   </Link>
                 </div>
@@ -197,31 +204,31 @@ export default function Header() {
 
               {/* Resources Section */}
               <div>
-                <h3 className="text-xs font-bold text-white/50 uppercase tracking-wider mb-3">Recursos</h3>
+                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Recursos</h3>
                 <div className="space-y-3">
-                  <Link href="#" className="block text-white/70 hover:text-white" onClick={() => setMobileMenuOpen(false)}>
+                  <Link href="/documentacion" className="block text-gray-700 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
                     Documentación
                   </Link>
-                  <Link href="#" className="block text-white/70 hover:text-white" onClick={() => setMobileMenuOpen(false)}>
+                  <Link href="/blog" className="block text-gray-700 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
                     Blog
                   </Link>
-                  <Link href="#contacto" className="block text-white/70 hover:text-white" onClick={() => setMobileMenuOpen(false)}>
+                  <Link href="/contacto" className="block text-gray-700 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
                     Contacto
                   </Link>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-white/10">
+              <div className="pt-4 border-t border-gray-200">
                 <Link
                   href="https://platform.jaak.ai"
-                  className="block text-white/70 hover:text-white mb-4"
+                  className="block text-gray-700 hover:text-[#0066ff] mb-4"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Iniciar sesión
                 </Link>
                 <Link
-                  href="/contact?type=regulatory-review"
-                  className="block w-full text-center px-5 py-3 bg-[#0a0f1c] text-white font-semibold rounded-lg"
+                  href="/contacto"
+                  className="block w-full text-center px-5 py-3 bg-[#0066ff] text-white font-semibold rounded-lg hover:bg-[#0052cc]"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Solicitar revisión regulatoria
@@ -237,11 +244,16 @@ export default function Header() {
         className={`fixed top-[72px] left-0 right-0 z-40 transition-all duration-200 ${
           activeDropdown ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
         }`}
-        onMouseEnter={() => activeDropdown && setActiveDropdown(activeDropdown)}
+        onMouseEnter={() => {
+          if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+            timeoutRef.current = null;
+          }
+        }}
         onMouseLeave={handleMouseLeave}
       >
         {/* Platform Mega Menu */}
-        <div className={`bg-[#111111] border-b border-white/10 shadow-[0_8px_24px_rgba(0,0,0,0.4)] ${
+        <div className={`bg-[#0a0a0a] border-b border-white/10 shadow-[0_8px_24px_rgba(0,0,0,0.4)] ${
           activeDropdown === "platform" ? "block" : "hidden"
         }`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -369,7 +381,7 @@ export default function Header() {
         </div>
 
         {/* Solutions Mega Menu */}
-        <div className={`bg-[#111111] border-b border-white/10 shadow-[0_8px_24px_rgba(0,0,0,0.4)] ${
+        <div className={`bg-[#0a0a0a] border-b border-white/10 shadow-[0_8px_24px_rgba(0,0,0,0.4)] ${
           activeDropdown === "solutions" ? "block" : "hidden"
         }`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -513,7 +525,7 @@ export default function Header() {
         </div>
 
         {/* Resources Mega Menu */}
-        <div className={`bg-[#111111] border-b border-white/10 shadow-[0_8px_24px_rgba(0,0,0,0.4)] ${
+        <div className={`bg-[#0a0a0a] border-b border-white/10 shadow-[0_8px_24px_rgba(0,0,0,0.4)] ${
           activeDropdown === "resources" ? "block" : "hidden"
         }`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">

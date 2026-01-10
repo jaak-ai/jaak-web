@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
 import HeroRegulated from "@/components/HeroRegulated";
+import ClientLogos from "@/components/ClientLogos";
 import RegulatoryProof from "@/components/RegulatoryProof";
 import RegulatoryProblem from "@/components/RegulatoryProblem";
 import JaakSolution from "@/components/JaakSolution";
@@ -17,6 +18,7 @@ export default function Home() {
       <Header />
       <main>
         <HeroRegulated />
+        <ClientLogos />
         <RegulatoryProof />
         <RegulatoryProblem />
         <JaakSolution />
