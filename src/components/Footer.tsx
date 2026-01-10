@@ -95,9 +95,9 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-white">
+    <footer className="bg-[#0a0a0a]">
       {/* Main footer */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-[#e5e7eb]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-white/10">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-8 lg:gap-12">
           {/* Logo and social */}
           <div className="col-span-2 sm:col-span-3 lg:col-span-2">
@@ -107,10 +107,10 @@ export default function Footer() {
                 alt="JAAK"
                 width={100}
                 height={40}
-                className="h-8 w-auto"
+                className="h-8 w-auto brightness-0 invert"
               />
             </Link>
-            <p className="text-[#6b7280] text-sm mb-6 leading-relaxed">
+            <p className="text-white/50 text-sm mb-6 leading-relaxed">
               La infraestructura de identidad regulada para empresas que necesitan cumplimiento real.
             </p>
             {/* Social links */}
@@ -121,7 +121,7 @@ export default function Footer() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-full flex items-center justify-center text-[#9ca3af] hover:text-[#0a0f1c] hover:bg-[#f3f4f6] transition-all"
+                  className="w-9 h-9 rounded-full flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 transition-all"
                   aria-label={social.name}
                 >
                   {social.icon}
@@ -133,13 +133,13 @@ export default function Footer() {
           {/* Link columns */}
           {Object.values(footerLinks).map((section) => (
             <div key={section.title}>
-              <h3 className="font-semibold text-[#0a0f1c] text-sm mb-4">{section.title}</h3>
+              <h3 className="font-semibold text-white text-sm mb-4">{section.title}</h3>
               <ul className="space-y-3">
                 {section.links.map((link) => (
                   <li key={link.name}>
                     <Link
                       href={link.href}
-                      className="text-[#6b7280] hover:text-[#0a0f1c] text-sm transition-colors"
+                      className="text-white/50 hover:text-white text-sm transition-colors"
                     >
                       {link.name}
                     </Link>
@@ -152,34 +152,34 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-[#e5e7eb]">
+      <div className="border-t border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
             {/* Left side - certifications and address */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <div className="flex items-center gap-3">
-                <span className="px-2.5 py-1 bg-[#f3f4f6] text-[#6b7280] text-xs font-medium rounded">ISO 27001</span>
-                <span className="px-2.5 py-1 bg-[#f3f4f6] text-[#6b7280] text-xs font-medium rounded">SOC 2</span>
-                <span className="px-2.5 py-1 bg-[#f3f4f6] text-[#6b7280] text-xs font-medium rounded">iBeta</span>
+                <span className="px-2.5 py-1 bg-white/5 text-white/60 text-xs font-medium rounded border border-white/10">ISO 27001</span>
+                <span className="px-2.5 py-1 bg-white/5 text-white/60 text-xs font-medium rounded border border-white/10">SOC 2</span>
+                <span className="px-2.5 py-1 bg-white/5 text-white/60 text-xs font-medium rounded border border-white/10">iBeta</span>
               </div>
-              <span className="text-[#9ca3af] text-sm">Ciudad de México, México</span>
+              <span className="text-white/40 text-sm">Ciudad de México, México</span>
             </div>
 
             {/* Right side - legal links */}
             <div className="flex flex-wrap items-center gap-6">
-              <Link href="/privacidad" className="text-[#6b7280] hover:text-[#0a0f1c] text-sm transition-colors">
+              <Link href="/privacidad" className="text-white/50 hover:text-white text-sm transition-colors">
                 Privacidad
               </Link>
-              <Link href="/terminos" className="text-[#6b7280] hover:text-[#0a0f1c] text-sm transition-colors">
+              <Link href="/terminos" className="text-white/50 hover:text-white text-sm transition-colors">
                 Términos
               </Link>
-              <Link href="/cookies" className="text-[#6b7280] hover:text-[#0a0f1c] text-sm transition-colors">
+              <Link href="/cookies" className="text-white/50 hover:text-white text-sm transition-colors">
                 Cookies
               </Link>
-              <Link href="/seguridad" className="text-[#6b7280] hover:text-[#0a0f1c] text-sm transition-colors">
+              <Link href="/seguridad" className="text-white/50 hover:text-white text-sm transition-colors">
                 Seguridad
               </Link>
-              <span className="text-[#9ca3af] text-sm">
+              <span className="text-white/40 text-sm">
                 © {new Date().getFullYear()} JAAK IT SAPI de CV
               </span>
             </div>

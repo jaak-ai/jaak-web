@@ -43,40 +43,40 @@ export default function ContactForm() {
   };
 
   return (
-    <section className="section-padding bg-[#FAFAFA]" id="contacto">
+    <section className="py-24 bg-[#111111]" id="contacto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
           {/* Left side - Info */}
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold text-[#000000] mb-4">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white mb-4">
               Contáctanos
             </h2>
-            <p className="text-xl text-[#2DB6C1] font-semibold mb-4">
+            <p className="text-xl text-[#00d4aa] font-semibold mb-4">
               Lleva la seguridad de tu empresa al siguiente nivel
             </p>
-            <p className="text-[#53535B] mb-8">
+            <p className="text-white/60 mb-8">
               Con JAAK, la seguridad no es una opción, es una garantía. Completa el formulario y accede a una demostración personalizada que te mostrará cómo nuestras soluciones integradas pueden transformar tu operación.
             </p>
             <div className="space-y-4">
               {benefits.map((benefit, index) => (
                 <div key={index} className="flex items-center gap-3">
-                  <div className="w-6 h-6 bg-[#2AD796] rounded-full flex items-center justify-center flex-shrink-0">
+                  <div className="w-6 h-6 bg-gradient-to-br from-[#0066ff] to-[#00d4aa] rounded-full flex items-center justify-center flex-shrink-0">
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
-                  <span className="text-[#53535B]">{benefit}</span>
+                  <span className="text-white/70">{benefit}</span>
                 </div>
               ))}
             </div>
           </div>
 
           {/* Right side - Form */}
-          <div className="card">
+          <div className="bg-white/5 border border-white/10 rounded-xl p-8">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-[#000000] mb-2">
+                  <label htmlFor="name" className="block text-sm font-medium text-white mb-2">
                     Nombre completo *
                   </label>
                   <input
@@ -85,12 +85,12 @@ export default function ContactForm() {
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-3 border border-[#EEEEEE] rounded-lg focus:ring-2 focus:ring-[#2DB6C1] focus:border-transparent outline-none transition-all"
+                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:ring-2 focus:ring-[#0066ff] focus:border-transparent outline-none transition-all text-white placeholder:text-white/40"
                     placeholder="Tu nombre"
                   />
                 </div>
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-[#000000] mb-2">
+                  <label htmlFor="email" className="block text-sm font-medium text-white mb-2">
                     Correo electrónico *
                   </label>
                   <input
@@ -99,14 +99,14 @@ export default function ContactForm() {
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 py-3 border border-[#EEEEEE] rounded-lg focus:ring-2 focus:ring-[#2DB6C1] focus:border-transparent outline-none transition-all"
+                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:ring-2 focus:ring-[#0066ff] focus:border-transparent outline-none transition-all text-white placeholder:text-white/40"
                     placeholder="tu@email.com"
                   />
                 </div>
               </div>
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="company" className="block text-sm font-medium text-[#000000] mb-2">
+                  <label htmlFor="company" className="block text-sm font-medium text-white mb-2">
                     Empresa
                   </label>
                   <input
@@ -114,12 +114,12 @@ export default function ContactForm() {
                     id="company"
                     value={formData.company}
                     onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                    className="w-full px-4 py-3 border border-[#EEEEEE] rounded-lg focus:ring-2 focus:ring-[#2DB6C1] focus:border-transparent outline-none transition-all"
+                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:ring-2 focus:ring-[#0066ff] focus:border-transparent outline-none transition-all text-white placeholder:text-white/40"
                     placeholder="Tu empresa"
                   />
                 </div>
                 <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-[#000000] mb-2">
+                  <label htmlFor="phone" className="block text-sm font-medium text-white mb-2">
                     Teléfono
                   </label>
                   <input
@@ -127,13 +127,13 @@ export default function ContactForm() {
                     id="phone"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full px-4 py-3 border border-[#EEEEEE] rounded-lg focus:ring-2 focus:ring-[#2DB6C1] focus:border-transparent outline-none transition-all"
+                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:ring-2 focus:ring-[#0066ff] focus:border-transparent outline-none transition-all text-white placeholder:text-white/40"
                     placeholder="+52 55 1234 5678"
                   />
                 </div>
               </div>
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-[#000000] mb-2">
+                <label htmlFor="message" className="block text-sm font-medium text-white mb-2">
                   Mensaje
                 </label>
                 <textarea
@@ -141,22 +141,22 @@ export default function ContactForm() {
                   rows={4}
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full px-4 py-3 border border-[#EEEEEE] rounded-lg focus:ring-2 focus:ring-[#2DB6C1] focus:border-transparent outline-none transition-all resize-none"
+                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:ring-2 focus:ring-[#0066ff] focus:border-transparent outline-none transition-all resize-none text-white placeholder:text-white/40"
                   placeholder="¿Cómo podemos ayudarte?"
                 />
               </div>
               <button
                 type="submit"
                 disabled={status === "loading"}
-                className="w-full btn-cyan disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full px-6 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {status === "loading" ? "Enviando..." : "Enviar mensaje"}
               </button>
               {status === "success" && (
-                <p className="text-[#2AD796] text-center">¡Mensaje enviado con éxito! Nos pondremos en contacto contigo pronto.</p>
+                <p className="text-[#00d4aa] text-center">¡Mensaje enviado con éxito! Nos pondremos en contacto contigo pronto.</p>
               )}
               {status === "error" && (
-                <p className="text-red-500 text-center">Hubo un error al enviar el mensaje. Por favor, intenta de nuevo.</p>
+                <p className="text-[#ff6b6b] text-center">Hubo un error al enviar el mensaje. Por favor, intenta de nuevo.</p>
               )}
             </form>
           </div>
