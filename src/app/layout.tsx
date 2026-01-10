@@ -89,10 +89,10 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   metadataBase: new URL("https://jaak.ai"),
   title: {
-    default: "JAAK - KYC, KYB y Firma Electrónica con Biometría e IA | Verificación de Identidad",
+    default: "JAAK - Reduce fraude y cumple regulación sin perder clientes",
     template: "%s | JAAK",
   },
-  description: "Verifica identidades en segundos con Inteligencia Artificial y biometría avanzada. KYC, KYB y firma electrónica con evidencia auditable y valor legal. Cumple LFPIORPI, AML y estándares internacionales.",
+  description: "Verificación de identidad, KYC/KYB y firma electrónica con evidencia legal auditable. Reduce fraude, aumenta conversión y pasa auditorías CNBV, UIF y GDPR sin fricción.",
   keywords: [
     "KYC",
     "KYC México",

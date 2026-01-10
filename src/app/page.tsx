@@ -1,11 +1,12 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
-import SubHero from "@/components/SubHero";
-import Services from "@/components/Services";
-import Differentiator from "@/components/Differentiator";
-import TargetAudience from "@/components/TargetAudience";
-import Integration from "@/components/Integration";
-import Trust from "@/components/Trust";
+import SocialProof from "@/components/SocialProof";
+import Problem from "@/components/Problem";
+import Solution from "@/components/Solution";
+import Results from "@/components/Results";
+import UseCases from "@/components/UseCases";
+import Implementation from "@/components/Implementation";
+import Compliance from "@/components/Compliance";
 import FinalCTA from "@/components/FinalCTA";
 import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
@@ -16,12 +17,13 @@ export default function Home() {
       <Header />
       <main>
         <Hero />
-        <SubHero />
-        <Services />
-        <Differentiator />
-        <TargetAudience />
-        <Integration />
-        <Trust />
+        <SocialProof />
+        <Problem />
+        <Solution />
+        <Results />
+        <UseCases />
+        <Implementation />
+        <Compliance />
         <FinalCTA />
         <ContactForm />
       </main>
