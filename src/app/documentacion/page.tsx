@@ -88,40 +88,40 @@ export default function Documentacion() {
 
   const integrationGuides = [
     {
-      title: "Inicio rapido",
-      description: "Configura tu primera verificacion de identidad en menos de 10 minutos.",
+      title: "Inicio rápido",
+      description: "Configura tu primera verificación de identidad en menos de 10 minutos.",
       time: "10 min",
-      href: "#",
+      href: "/documentacion/guias/inicio-rapido",
     },
     {
       title: "Flujo de onboarding",
-      description: "Implementa un flujo completo de KYC con verificacion de documentos y biometria.",
+      description: "Implementa un flujo completo de KYC con verificación de documentos y biometría.",
       time: "30 min",
-      href: "#",
+      href: "/documentacion/guias/flujo-onboarding",
     },
     {
-      title: "Firma electronica",
-      description: "Agrega firma electronica con validez legal a tus documentos.",
+      title: "Firma electrónica",
+      description: "Agrega firma electrónica con validez legal a tus documentos.",
       time: "20 min",
-      href: "#",
+      href: "/documentacion/guias/firma-electronica",
     },
     {
-      title: "Verificacion empresarial",
+      title: "Verificación empresarial",
       description: "Implementa KYB para verificar personas morales y sus representantes.",
       time: "25 min",
-      href: "#",
+      href: "/documentacion/guias/verificacion-empresarial",
     },
     {
       title: "Consultas PLD/AML",
-      description: "Configura consultas automaticas a listas de personas bloqueadas.",
+      description: "Configura consultas automáticas a listas de personas bloqueadas.",
       time: "15 min",
-      href: "#",
+      href: "/documentacion/guias/consultas-pld-aml",
     },
     {
-      title: "Gestion de evidencia",
+      title: "Gestión de evidencia",
       description: "Almacena y recupera expedientes digitales con trazabilidad completa.",
       time: "20 min",
-      href: "#",
+      href: "/documentacion/guias/gestion-evidencia",
     },
   ];
 
