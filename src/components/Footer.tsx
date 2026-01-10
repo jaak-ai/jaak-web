@@ -162,7 +162,7 @@ export default function Footer() {
                 <span className="px-2.5 py-1 bg-white/5 text-white/60 text-xs font-medium rounded border border-white/10">ISO 9001</span>
                 <span className="px-2.5 py-1 bg-white/5 text-white/60 text-xs font-medium rounded border border-white/10">iBeta</span>
               </div>
-              <span className="text-white/40 text-sm">Ciudad de México, México</span>
+              <span className="text-white/40 text-sm">CDMX, México</span>
             </div>
 
             {/* Right side - legal links */}

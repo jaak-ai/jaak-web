@@ -321,10 +321,10 @@ export default function ContactoPage() {
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">Email</h3>
                 <a
-                  href="mailto:contacto@jaak.ai"
+                  href="mailto:hello@jaak.ai"
                   className="text-[#0066ff] hover:underline"
                 >
-                  contacto@jaak.ai
+                  hello@jaak.ai
                 </a>
               </div>
 
@@ -347,10 +347,10 @@ export default function ContactoPage() {
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">Telefono</h3>
                 <a
-                  href="tel:+525512345678"
+                  href="tel:+525535091788"
                   className="text-[#0066ff] hover:underline"
                 >
-                  +52 55 1234 5678
+                  +52 55 3509 1788
                 </a>
               </div>
 
@@ -378,7 +378,7 @@ export default function ContactoPage() {
                   </svg>
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">Ubicacion</h3>
-                <p className="text-white/60">Ciudad de Mexico, Mexico</p>
+                <p className="text-white/60 text-sm">Av. Insurgentes Sur 1602, Piso 4<br />Credito Constructor, Benito Juarez<br />03940 Ciudad de Mexico, CDMX</p>
               </div>
             </div>
           </div>

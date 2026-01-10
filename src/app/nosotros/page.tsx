@@ -13,9 +13,9 @@ export const metadata: Metadata = {
 export default function NosotrosPage() {
   const values = [
     {
-      title: "Seguridad primero",
+      title: "Orden",
       description:
-        "La proteccion de datos y la privacidad de los usuarios son nuestra maxima prioridad en cada decision que tomamos.",
+        "Poner las cosas en el lugar que les corresponden.",
       icon: (
         <svg
           className="w-8 h-8"
@@ -27,15 +27,35 @@ export default function NosotrosPage() {
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth={1.5}
-            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+            d="M4 6h16M4 10h16M4 14h16M4 18h16"
           />
         </svg>
       ),
     },
     {
-      title: "Innovacion constante",
+      title: "Coherencia",
       description:
-        "Desarrollamos tecnologia de punta en biometria e inteligencia artificial para mantenernos a la vanguardia del sector.",
+        "La actitud logica y consecuente con los principios que profesamos. Responsabilidad y colaboracion con nuestro equipo y clientes.",
+      icon: (
+        <svg
+          className="w-8 h-8"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1.5}
+            d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: "Innovacion",
+      description:
+        "Facilitar tareas, procedimientos y sistemas productivos. Uso del conocimiento, creatividad, diseno y tecnologia para generar cambios.",
       icon: (
         <svg
           className="w-8 h-8"
@@ -53,9 +73,9 @@ export default function NosotrosPage() {
       ),
     },
     {
-      title: "Cumplimiento regulatorio",
+      title: "Confianza",
       description:
-        "Disenamos soluciones que cumplen con las regulaciones mas estrictas de Mexico y estandares internacionales.",
+        "Es lo que hace que el mundo gire. La disposicion positiva respecto de las intenciones o comportamientos de otro.",
       icon: (
         <svg
           className="w-8 h-8"
@@ -67,35 +87,15 @@ export default function NosotrosPage() {
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth={1.5}
-            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
           />
         </svg>
       ),
     },
     {
-      title: "Compromiso con el cliente",
+      title: "Calidad",
       description:
-        "Trabajamos de la mano con nuestros clientes para entender sus necesidades y ofrecer soluciones a la medida.",
-      icon: (
-        <svg
-          className="w-8 h-8"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={1.5}
-            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-          />
-        </svg>
-      ),
-    },
-    {
-      title: "Excelencia operativa",
-      description:
-        "Mantenemos los mas altos estandares de calidad en todos nuestros procesos, respaldados por certificaciones internacionales.",
+        "Brindar servicios, productos y resultados con valor, superioridad y excelencia. Cuidar relaciones personales.",
       icon: (
         <svg
           className="w-8 h-8"
@@ -112,31 +112,43 @@ export default function NosotrosPage() {
         </svg>
       ),
     },
+  ];
+
+  const fundamentals = [
     {
-      title: "Transparencia",
-      description:
-        "Operamos con honestidad y claridad en todas nuestras interacciones con clientes, socios y colaboradores.",
-      icon: (
-        <svg
-          className="w-8 h-8"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={1.5}
-            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-          />
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={1.5}
-            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-          />
-        </svg>
-      ),
+      letter: "S",
+      title: "Simple",
+      description: "Ir de lo general a lo particular, enfocado y al punto. Lo que sirve es para no perderse en historias, datos incorrectos o suposiciones.",
+    },
+    {
+      letter: "S",
+      title: "Sistematico",
+      description: "Lo que hagamos debe tener un proceso, orden y coherencia con el objetivo de replicarlo.",
+    },
+    {
+      letter: "S",
+      title: "Sistemico",
+      description: "Vision integral de los sistemas y su interrelacion para conocer la totalidad. Integrar todas las partes.",
+    },
+    {
+      letter: "S",
+      title: "Sustentado",
+      description: "Partir de la realidad e informacion, investigacion, analisis, asesorias; para generar estrategias y accionar desde una base real.",
+    },
+    {
+      letter: "S",
+      title: "Sostenible",
+      description: "Generar estrategias y accionar desde una base real y conveniente para el largo plazo.",
+    },
+    {
+      letter: "S",
+      title: "Seguro",
+      description: "Sostener la confianza en la empresa desde productos, servicios, socios, personal y clientes con analisis, prevencion y contencion de riesgos.",
+    },
+    {
+      letter: "S",
+      title: "Sincero",
+      description: "Fundamentado sobre el respeto y apego a la verdad como valor esencial. Pulcritud, honestidad y sencillez.",
     },
   ];
 
@@ -177,18 +189,112 @@ export default function NosotrosPage() {
             <div className="text-center max-w-4xl mx-auto">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full text-sm text-white/70 mb-8">
                 <span className="w-2 h-2 bg-[#00d4aa] rounded-full" />
-                Conoce nuestra historia
+                Proposito de JAAK
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-                Construyendo el futuro de la{" "}
-                <span className="text-[#0066ff]">identidad digital</span> en
-                Mexico
+                <span className="text-[#0066ff]">Seguridad</span> confiable
               </h1>
               <p className="text-xl text-white/70 max-w-3xl mx-auto leading-relaxed">
-                En JAAK, nuestra mision es empoderar a las empresas mexicanas
-                con tecnologia de verificacion de identidad de clase mundial,
-                disenada para cumplir con las regulaciones mas exigentes.
+                Tecnologia 100% mexicana disenada para resolver los retos
+                unicos de verificacion de identidad que enfrentan las empresas
+                en nuestro pais y Latinoamerica.
               </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Vision & Mission Section */}
+        <section className="py-20 lg:py-28 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid md:grid-cols-2 gap-12 lg:gap-20">
+              {/* Vision */}
+              <div className="bg-gradient-to-br from-[#0066ff]/5 to-[#00d4aa]/5 rounded-3xl p-8 lg:p-12">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#0066ff]/10 rounded-full text-sm text-[#0066ff] font-medium mb-6">
+                  Vision
+                </div>
+                <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
+                  Ofrecer a nuestros clientes globales una plataforma segura y completa para la gestion y verificacion de identidades.
+                </h2>
+                <div className="w-16 h-1 bg-[#0066ff] rounded-full"></div>
+              </div>
+
+              {/* Mission */}
+              <div className="bg-gradient-to-br from-[#00d4aa]/5 to-[#0066ff]/5 rounded-3xl p-8 lg:p-12">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#00d4aa]/10 rounded-full text-sm text-[#00d4aa] font-medium mb-6">
+                  Mision
+                </div>
+                <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
+                  Brindar facilidad, innovacion y seguridad para nuestros clientes con la tecnologia JAAK.
+                </h2>
+                <div className="w-16 h-1 bg-[#00d4aa] rounded-full"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Fundamentals Section (7 S's) */}
+        <section className="py-20 lg:py-28 bg-[#0a0a0a]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-sm text-white/70 mb-6">
+                Nuestros fundamentos
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                Las 7 S de JAAK
+              </h2>
+              <p className="text-lg text-white/70">
+                Los principios fundamentales que guian cada accion y decision en nuestra organizacion.
+              </p>
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {fundamentals.map((item, index) => (
+                <div
+                  key={index}
+                  className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors"
+                >
+                  <div className="w-12 h-12 bg-[#0066ff] rounded-xl flex items-center justify-center text-white font-bold text-xl mb-4">
+                    {item.letter}
+                  </div>
+                  <h3 className="text-lg font-bold text-white mb-2">
+                    {item.title}
+                  </h3>
+                  <p className="text-sm text-white/60 leading-relaxed">
+                    {item.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Values Section */}
+        <section className="py-20 lg:py-28 bg-gray-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                Nuestros valores
+              </h2>
+              <p className="text-lg text-gray-600">
+                Los valores que definen nuestra cultura y la forma en que trabajamos.
+              </p>
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {values.map((value, index) => (
+                <div
+                  key={index}
+                  className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow"
+                >
+                  <div className="w-14 h-14 bg-[#0066ff]/10 rounded-xl flex items-center justify-center text-[#0066ff] mb-6">
+                    {value.icon}
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">
+                    {value.title}
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    {value.description}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -317,50 +423,17 @@ export default function NosotrosPage() {
           </div>
         </section>
 
-        {/* Values Section */}
+        {/* Certifications Section */}
         <section className="py-20 lg:py-28 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-3xl mx-auto mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Nuestros valores
-              </h2>
-              <p className="text-lg text-gray-600">
-                Los principios que guian cada decision que tomamos y cada
-                producto que construimos.
-              </p>
-            </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {values.map((value, index) => (
-                <div
-                  key={index}
-                  className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow"
-                >
-                  <div className="w-14 h-14 bg-[#0066ff]/10 rounded-xl flex items-center justify-center text-[#0066ff] mb-6">
-                    {value.icon}
-                  </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">
-                    {value.title}
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    {value.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Certifications Section */}
-        <section className="py-20 lg:py-28 bg-[#0a0a0a]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto mb-16">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-sm text-white/70 mb-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#0066ff]/10 rounded-full text-sm text-[#0066ff] font-medium mb-6">
                 Certificaciones internacionales
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                 Respaldados por los estandares mas altos
               </h2>
-              <p className="text-lg text-white/70">
+              <p className="text-lg text-gray-600">
                 Nuestras certificaciones avalan nuestro compromiso con la
                 seguridad, calidad y precision en cada verificacion.
               </p>
@@ -369,9 +442,9 @@ export default function NosotrosPage() {
               {certifications.map((cert, index) => (
                 <div
                   key={index}
-                  className="bg-white/5 border border-white/10 rounded-2xl p-8 text-center hover:bg-white/10 transition-colors"
+                  className="bg-white border border-gray-200 rounded-2xl p-8 text-center hover:shadow-lg transition-shadow"
                 >
-                  <div className="w-24 h-24 mx-auto mb-6 bg-white rounded-xl flex items-center justify-center p-4">
+                  <div className="w-24 h-24 mx-auto mb-6 bg-gray-50 rounded-xl flex items-center justify-center p-4">
                     <Image
                       src={cert.logo}
                       alt={cert.name}
@@ -380,15 +453,15 @@ export default function NosotrosPage() {
                       className="w-full h-full object-contain"
                     />
                   </div>
-                  <h3 className="text-lg font-bold text-white mb-2">
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">
                     {cert.name}
                   </h3>
-                  <p className="text-sm text-white/60">{cert.description}</p>
+                  <p className="text-sm text-gray-600">{cert.description}</p>
                 </div>
               ))}
             </div>
             <div className="mt-12 text-center">
-              <p className="text-white/50 text-sm">
+              <p className="text-gray-500 text-sm">
                 Ademas contamos con certificacion IQNET, Distintivo Oro y sello
                 Hecho en Mexico
               </p>
@@ -410,7 +483,7 @@ export default function NosotrosPage() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
-                  href="#contacto"
+                  href="/contacto"
                   className="inline-flex items-center justify-center px-8 py-4 bg-white text-[#0066ff] font-semibold rounded-xl hover:bg-gray-100 transition-colors"
                 >
                   Contactanos
