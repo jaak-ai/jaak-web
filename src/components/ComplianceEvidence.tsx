@@ -9,8 +9,13 @@ export default function ComplianceEvidence() {
           </h2>
 
           {/* Subtitle */}
-          <p className="text-xl text-[#4b5563] mb-10">
+          <p className="text-xl text-[#4b5563] mb-4">
             No solo cumplimos. Puedes demostrar que cumples.
+          </p>
+
+          {/* Legal defense line */}
+          <p className="text-lg text-[#0a0f1c] font-medium mb-10">
+            Cada validación genera evidencia legal defendible, no solo registros técnicos.
           </p>
 
           {/* Principles List */}

@@ -20,7 +20,7 @@ export default function FinalCTA() {
             href="/contact?type=regulatory-review"
             className="inline-flex items-center justify-center px-8 py-4 bg-white text-[#0a0f1c] font-bold text-lg rounded-lg hover:bg-[#f3f4f6] transition-all"
           >
-            Solicitar evaluación regulatoria
+            Solicitar revisión regulatoria
           </Link>
         </div>
       </div>

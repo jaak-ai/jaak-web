@@ -11,10 +11,15 @@ export default function HeroRegulated() {
           </h1>
 
           {/* Subheadline */}
-          <p className="text-xl md:text-2xl text-[#4b5563] mb-8 leading-relaxed">
+          <p className="text-xl md:text-2xl text-[#4b5563] mb-6 leading-relaxed">
             KYC, KYB y firma electrónica con evidencia legal auditable,
             <br className="hidden md:block" />
             operando bajo marcos regulatorios exigidos por empresas reguladas.
+          </p>
+
+          {/* Tension Question */}
+          <p className="text-lg md:text-xl text-[#991b1b] font-medium mb-10 italic">
+            ¿Podrías demostrar hoy, con evidencia, cómo validaste cada identidad ante una auditoría?
           </p>
 
           {/* Bullets */}
@@ -34,17 +39,22 @@ export default function HeroRegulated() {
           </ul>
 
           {/* Primary CTA */}
-          <div className="mb-4">
+          <div className="mb-3">
             <Link
               href="/contact?type=regulatory-review"
               className="inline-flex items-center justify-center px-8 py-4 bg-[#0a0f1c] text-white font-bold text-lg rounded-lg hover:bg-[#1a2744] transition-all"
             >
-              Solicitar evaluación regulatoria
+              Solicitar revisión regulatoria
             </Link>
           </div>
 
+          {/* Filter text */}
+          <p className="text-sm text-[#6b7280] mb-2">
+            Diseñado para organizaciones sujetas a supervisión y auditorías regulatorias.
+          </p>
+
           {/* Microcopy */}
-          <p className="text-sm text-[#6b7280]">
+          <p className="text-xs text-[#9ca3af]">
             En 15 minutos te decimos si JAAK cumple lo que tu regulación exige.
           </p>
         </div>
