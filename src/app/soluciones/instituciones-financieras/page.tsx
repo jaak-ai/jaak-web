@@ -1,11 +1,18 @@
+import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import Image from "next/image";
 
-export const metadata = {
-  title: "Instituciones Financieras | JAAK",
-  description: "Verificación de identidad para bancos, fintechs y entidades financieras. Cumple con CNBV, UIF y regulación antilavado.",
+export const metadata: Metadata = {
+  title: "KYC para Instituciones Financieras | JAAK",
+  description: "Verificación de identidad para bancos, fintechs y entidades financieras. Cumple CNBV, UIF, LFPIORPI y regulación antilavado en México.",
+  keywords: ["KYC bancos", "verificación identidad fintech", "CNBV", "UIF", "LFPIORPI", "antilavado", "onboarding bancario", "compliance financiero"],
+  openGraph: {
+    title: "KYC para Instituciones Financieras | JAAK",
+    description: "Verificación de identidad para bancos y fintechs. Cumple CNBV, UIF y regulación antilavado.",
+    type: "website",
+  },
 };
 
 export default function InstitucionesFinancieras() {

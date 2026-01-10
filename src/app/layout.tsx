@@ -12,14 +12,23 @@ const jsonLd = {
       "@id": "https://jaak.ai/#organization",
       name: "JAAK",
       url: "https://jaak.ai",
-      logo: "https://jaak.ai/logo.png",
+      logo: "https://jaak.ai/images/logos/jaak-logo-azul.png",
       description: "Plataforma de verificación de identidad (KYC), validación de empresas (KYB) y firma electrónica avanzada con valor legal. Cumplimiento LFPIORPI, AML y estándares internacionales.",
       address: {
         "@type": "PostalAddress",
+        streetAddress: "Av. Insurgentes Sur 1602, Piso 4",
         addressLocality: "Ciudad de México",
+        addressRegion: "CDMX",
+        postalCode: "03940",
         addressCountry: "MX"
       },
-      sameAs: []
+      telephone: "+525535091788",
+      email: "hello@jaak.ai",
+      sameAs: [
+        "https://linkedin.com/company/jaak-ai",
+        "https://github.com/jaak-ai",
+        "https://twitter.com/jaak_ai"
+      ]
     },
     {
       "@type": "WebSite",
@@ -147,9 +156,9 @@ export const metadata: Metadata = {
     description: "Verifica identidades en segundos con IA y biometría avanzada. Evidencia auditable y valor legal real. Cumple LFPIORPI y AML.",
     images: [
       {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
+        url: "/images/logos/jaak-logo-azul.png",
+        width: 800,
+        height: 400,
         alt: "JAAK - Plataforma de KYC, KYB y Firma Electrónica",
       },
     ],
@@ -158,7 +167,9 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "JAAK - KYC, KYB y Firma Electrónica con Biometría e IA",
     description: "Verifica identidades en segundos con IA y biometría avanzada. Evidencia auditable y valor legal real.",
-    images: ["/og-image.png"],
+    images: ["/images/logos/jaak-logo-azul.png"],
+    creator: "@jaak_ai",
+    site: "@jaak_ai",
   },
   alternates: {
     canonical: "https://jaak.ai",

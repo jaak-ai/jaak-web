@@ -272,7 +272,7 @@ export default function PrivacidadPage() {
                     </a>
                   </p>
                   <p className="text-white">
-                    <strong className="text-[#0066ff]">Direccion:</strong> Ciudad de Mexico, Mexico
+                    <strong className="text-[#0066ff]">Dirección:</strong> Av. Insurgentes Sur 1602, Piso 4, Crédito Constructor, Benito Juárez, 03940 CDMX
                   </p>
                 </div>
               </div>

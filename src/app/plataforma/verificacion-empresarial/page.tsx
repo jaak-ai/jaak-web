@@ -1,10 +1,17 @@
+import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Verificación Empresarial KYB | JAAK",
-  description: "Verifica personas morales y beneficiarios finales. KYB automatizado para cumplir con regulación antilavado.",
+  description: "KYB automatizado para verificar personas morales en México. Identifica beneficiarios finales, consulta SAT, RFC y listas PEP. Cumple LFPIORPI y CNBV.",
+  keywords: ["KYB", "verificación empresarial", "beneficiarios finales", "personas morales", "due diligence", "SAT", "RFC", "listas PEP", "LFPIORPI"],
+  openGraph: {
+    title: "Verificación Empresarial KYB | JAAK",
+    description: "Verifica personas morales y beneficiarios finales. KYB automatizado para regulación antilavado.",
+    type: "website",
+  },
 };
 
 export default function VerificacionEmpresarial() {

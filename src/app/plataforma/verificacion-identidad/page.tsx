@@ -1,11 +1,18 @@
+import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import Image from "next/image";
 
-export const metadata = {
-  title: "Verificación de Identidad | JAAK",
-  description: "KYC biométrico con prueba de vida certificada. Verifica la identidad de tus usuarios en segundos con tecnología de IA.",
+export const metadata: Metadata = {
+  title: "Verificación de Identidad (KYC) | JAAK",
+  description: "KYC biométrico con prueba de vida certificada iBeta. Verifica identidad en segundos con IA. Cumple LFPIORPI, CNBV y regulación antilavado.",
+  keywords: ["KYC", "verificación de identidad", "prueba de vida", "biometría facial", "iBeta", "LFPIORPI", "onboarding digital", "anti-spoofing"],
+  openGraph: {
+    title: "Verificación de Identidad (KYC) | JAAK",
+    description: "KYC biométrico con prueba de vida certificada. Verifica identidad en segundos con IA.",
+    type: "website",
+  },
 };
 
 export default function VerificacionIdentidad() {

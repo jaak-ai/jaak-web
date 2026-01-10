@@ -1,11 +1,18 @@
+import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Cumplimiento Regulatorio | JAAK",
   description:
-    "Cumple con CNBV, LFPIORPI, UIF, CONDUSEF y LFPDPPP. Verificacion de identidad certificada ISO 27001, ISO 9001, iBeta y NIST para instituciones financieras en Mexico.",
+    "Cumple con CNBV, LFPIORPI, UIF, CONDUSEF y LFPDPPP. Verificación de identidad certificada ISO 27001, ISO 9001, iBeta y NIST para instituciones financieras en México.",
+  keywords: ["cumplimiento regulatorio", "CNBV", "LFPIORPI", "UIF", "CONDUSEF", "antilavado", "compliance México", "regulación financiera", "ISO 27001"],
+  openGraph: {
+    title: "Cumplimiento Regulatorio | JAAK",
+    description: "Verificación de identidad que cumple con regulación mexicana: CNBV, LFPIORPI, UIF y más.",
+    type: "website",
+  },
 };
 
 export default function CumplimientoPage() {
@@ -32,7 +39,7 @@ export default function CumplimientoPage() {
         "Marco legal que establece obligaciones de identificacion y reporte para actividades vulnerables y prevencion de lavado de dinero.",
       requirements: [
         "Identificacion plena de clientes y usuarios",
-        "Conservacion de documentacion por 5 anios",
+        "Conservación de documentación por 5 años",
         "Avisos a la UIF para operaciones relevantes",
         "Politicas de conocimiento del cliente (KYC)",
         "Monitoreo de operaciones inusuales",
@@ -301,9 +308,9 @@ export default function CumplimientoPage() {
               </div>
               <div className="text-center">
                 <div className="text-3xl md:text-4xl font-black text-gray-900 mb-2">
-                  5 anios
+                  5 años
                 </div>
-                <div className="text-gray-600">Retencion de expedientes</div>
+                <div className="text-gray-600">Retención de expedientes</div>
               </div>
             </div>
           </div>

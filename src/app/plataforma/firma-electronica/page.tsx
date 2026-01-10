@@ -1,10 +1,17 @@
+import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 
-export const metadata = {
-  title: "Firma Electrónica | JAAK",
-  description: "Firma electrónica con validez legal en México. Vincula la identidad verificada del firmante con el documento.",
+export const metadata: Metadata = {
+  title: "Firma Electrónica con Identidad Verificada | JAAK",
+  description: "Firma electrónica avanzada con validez legal en México. Vincula biometría facial del firmante con el documento. Cumple NOM-151 y Código de Comercio.",
+  keywords: ["firma electrónica", "firma digital", "NOM-151", "e-signature México", "firma biométrica", "validez legal", "no repudio", "constancia conservación"],
+  openGraph: {
+    title: "Firma Electrónica con Identidad Verificada | JAAK",
+    description: "Firma electrónica avanzada vinculada a identidad biométrica. Validez legal completa.",
+    type: "website",
+  },
 };
 
 export default function FirmaElectronica() {
