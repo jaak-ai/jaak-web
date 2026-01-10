@@ -502,7 +502,7 @@ export default function NosotrosPage() {
                   </svg>
                 </Link>
                 <Link
-                  href="https://www.linkedin.com/company/jaak-ai/jobs/"
+                  href="https://www.linkedin.com/company/jaakmx/jobs/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center px-8 py-4 bg-white/10 text-white font-semibold rounded-xl border border-white/20 hover:bg-white/20 transition-colors"

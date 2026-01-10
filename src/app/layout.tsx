@@ -25,7 +25,7 @@ const jsonLd = {
       telephone: "+525535091788",
       email: "hello@jaak.ai",
       sameAs: [
-        "https://linkedin.com/company/jaak-ai",
+        "https://www.linkedin.com/company/jaakmx/",
         "https://github.com/jaak-ai",
         "https://twitter.com/jaak_ai"
       ]
