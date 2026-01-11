@@ -26,11 +26,11 @@ export default function Footer() {
     compliance: {
       title: "Cumplimiento",
       links: [
-        { name: "Cumplimiento normativo", href: "/cumplimiento" },
-        { name: "LFPIORPI", href: "/cumplimiento" },
-        { name: "CNBV", href: "/cumplimiento" },
-        { name: "NOM-151", href: "/cumplimiento" },
-        { name: "Seguridad", href: "/seguridad" },
+        { name: "Ver todo", href: "/cumplimiento" },
+        { name: "LFPIORPI", href: "/cumplimiento/lfpiorpi" },
+        { name: "CNBV", href: "/cumplimiento/cnbv" },
+        { name: "UIF", href: "/cumplimiento/uif" },
+        { name: "NOM-151", href: "/cumplimiento/nom-151" },
       ],
     },
     resources: {

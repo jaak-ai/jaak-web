@@ -8,6 +8,7 @@ export default function ContactForm() {
     email: "",
     company: "",
     phone: "",
+    role: "",
     message: "",
   });
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -33,7 +34,7 @@ export default function ContactForm() {
 
       if (response.ok) {
         setStatus("success");
-        setFormData({ name: "", email: "", company: "", phone: "", message: "" });
+        setFormData({ name: "", email: "", company: "", phone: "", role: "", message: "" });
       } else {
         setStatus("error");
       }
@@ -120,17 +121,39 @@ export default function ContactForm() {
                 </div>
                 <div>
                   <label htmlFor="phone" className="block text-sm font-medium text-gray-900 mb-2">
-                    Teléfono
+                    Teléfono *
                   </label>
                   <input
                     type="tel"
                     id="phone"
+                    required
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0066ff] focus:border-transparent outline-none transition-all text-gray-900 placeholder:text-gray-400"
                     placeholder="+52 55 1234 5678"
                   />
                 </div>
+              </div>
+              <div>
+                <label htmlFor="role" className="block text-sm font-medium text-gray-900 mb-2">
+                  ¿Cuál es tu función en la empresa? *
+                </label>
+                <select
+                  id="role"
+                  required
+                  value={formData.role}
+                  onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0066ff] focus:border-transparent outline-none transition-all text-gray-900"
+                >
+                  <option value="">Selecciona una opción</option>
+                  <option value="Director/CEO">Director/CEO</option>
+                  <option value="Gerente">Gerente</option>
+                  <option value="Cumplimiento/Compliance">Cumplimiento/Compliance</option>
+                  <option value="Tecnología/IT">Tecnología/IT</option>
+                  <option value="Operaciones">Operaciones</option>
+                  <option value="Legal">Legal</option>
+                  <option value="Otro">Otro</option>
+                </select>
               </div>
               <div>
                 <label htmlFor="message" className="block text-sm font-medium text-gray-900 mb-2">
