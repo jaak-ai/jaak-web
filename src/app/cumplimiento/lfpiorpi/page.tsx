@@ -210,8 +210,11 @@ export default function LFPIORPIPage() {
             </div>
 
             <div className="mt-12 p-6 bg-white rounded-xl border border-gray-200">
-              <p className="text-gray-700 text-center">
+              <p className="text-gray-700 text-center mb-3">
                 <strong>En todos los casos, el principio es el mismo:</strong> identificar correctamente, conservar evidencia y poder demostrar cumplimiento ante la autoridad.
+              </p>
+              <p className="text-[#0066ff] font-medium text-center">
+                Este estándar de identificación y evidencia es el mismo que exigen instituciones financieras reguladas.
               </p>
             </div>
           </div>

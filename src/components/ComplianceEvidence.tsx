@@ -26,7 +26,7 @@ export default function ComplianceEvidence() {
 
           {/* Legal defense line */}
           <p className="text-lg text-[#0066ff] font-medium mb-10">
-            Cada validación genera evidencia legal defendible, no solo registros técnicos.
+            Cada validación genera evidencia legal defendible ante auditorías internas y externas, no solo registros técnicos.
           </p>
 
           {/* Principles List */}

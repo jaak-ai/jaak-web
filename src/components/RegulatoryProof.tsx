@@ -11,7 +11,7 @@ export default function RegulatoryProof() {
             Operación continua bajo marcos regulatorios estrictos.
           </p>
           <p className="text-white font-medium">
-            JAAK opera en entornos financieros con exigencias equivalentes a banca tradicional.
+            Procesos utilizados en entornos financieros con exigencias regulatorias equivalentes a banca tradicional y entidades supervisadas.
           </p>
         </div>
       </div>
