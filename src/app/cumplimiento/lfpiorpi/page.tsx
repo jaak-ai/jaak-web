@@ -29,36 +29,203 @@ export const metadata: Metadata = {
 };
 
 export default function LFPIORPIPage() {
-  const vulnerableActivities = [
+  // Umbrales de Actividades Vulnerables - Art. 17 LFPIORPI
+  const actividadesVulnerablesArt17 = [
     {
-      name: "Juegos, sorteos y concursos",
-      description: "Casinos, apuestas y juegos con premios en efectivo",
-      threshold: "Operaciones desde $25,000 pesos",
+      fraccion: "I",
+      actividad: "Juegos con apuesta, concursos y sorteos",
+      identificacion: "$38,125.75",
+      identificacionUmas: "325",
+      aviso: "$75,664.95",
+      avisoUmas: "645",
     },
     {
-      name: "Compraventa de bienes inmuebles",
-      description: "Inmobiliarias, desarrolladores y corredores",
-      threshold: "Operaciones desde $500,000 pesos",
+      fraccion: "II",
+      actividad: "Tarjetas de crédito o de servicios",
+      identificacion: "$94,434.55",
+      identificacionUmas: "805",
+      aviso: "$150,743.35",
+      avisoUmas: "1,285",
     },
     {
-      name: "Compraventa de vehículos",
-      description: "Agencias, distribuidores y compraventa habitual",
-      threshold: "Operaciones en efectivo desde $200,000 pesos",
+      fraccion: "II",
+      actividad: "Tarjetas prepagadas, vales, cupones, monederos electrónicos",
+      identificacion: "$75,664.95",
+      identificacionUmas: "645",
+      aviso: "$75,664.95",
+      avisoUmas: "645",
     },
     {
-      name: "Servicios de blindaje",
-      description: "Blindaje de vehículos y servicios relacionados",
-      threshold: "Todas las operaciones",
+      fraccion: "III",
+      actividad: "Cheques de viajero",
+      identificacion: "Siempre",
+      identificacionUmas: "---",
+      aviso: "$75,664.95",
+      avisoUmas: "645",
     },
     {
-      name: "Activos virtuales",
-      description: "Exchanges, wallets y servicios de criptomonedas",
-      threshold: "Operaciones desde 645 UMAs",
+      fraccion: "IV",
+      actividad: "Préstamos, créditos y mutuo",
+      identificacion: "Siempre",
+      identificacionUmas: "---",
+      aviso: "$188,282.55",
+      avisoUmas: "1,605",
     },
     {
-      name: "Obras de arte y antigüedades",
-      description: "Galerías, subastas y comercio de arte",
-      threshold: "Operaciones desde $200,000 pesos",
+      fraccion: "V",
+      actividad: "Bienes inmuebles: venta, intermediación y desarrollo",
+      identificacion: "Siempre",
+      identificacionUmas: "---",
+      aviso: "$941,412.75",
+      avisoUmas: "8,025",
+    },
+    {
+      fraccion: "V BIS",
+      actividad: "Desarrollo inmobiliario",
+      identificacion: "Siempre",
+      identificacionUmas: "---",
+      aviso: "$941,412.75",
+      avisoUmas: "8,025",
+    },
+    {
+      fraccion: "VI",
+      actividad: "Venta de piedras y metales preciosos, joyas y relojes",
+      identificacion: "$94,434.55",
+      identificacionUmas: "805",
+      aviso: "$188,282.55",
+      avisoUmas: "1,605",
+    },
+    {
+      fraccion: "VII",
+      actividad: "Subasta y venta de obras de arte",
+      identificacion: "$282,717.10",
+      identificacionUmas: "2,410",
+      aviso: "$564,847.65",
+      avisoUmas: "4,815",
+    },
+    {
+      fraccion: "VIII",
+      actividad: "Venta de vehículos (terrestres, marinos, aéreos)",
+      identificacion: "$376,565.10",
+      identificacionUmas: "3,210",
+      aviso: "$753,130.20",
+      avisoUmas: "6,420",
+    },
+    {
+      fraccion: "IX",
+      actividad: "Servicios de blindaje (vehículos y bienes inmuebles)",
+      identificacion: "$282,717.10",
+      identificacionUmas: "2,410",
+      aviso: "$564,847.65",
+      avisoUmas: "4,815",
+    },
+    {
+      fraccion: "X",
+      actividad: "Traslado o custodia de valores",
+      identificacion: "Siempre",
+      identificacionUmas: "---",
+      aviso: "$376,565.10",
+      avisoUmas: "3,210",
+    },
+    {
+      fraccion: "XI",
+      actividad: "Prestación de servicios profesionales de manera independiente, sin relación laboral",
+      identificacion: "Siempre",
+      identificacionUmas: "---",
+      aviso: "Cuando en nombre y representación de un cliente se realice alguna operación financiera relacionada",
+      avisoUmas: "---",
+    },
+    {
+      fraccion: "XIV",
+      actividad: "Comercio exterior: joyas, piedras, metales",
+      identificacion: "Siempre",
+      identificacionUmas: "---",
+      aviso: "$56,895.35",
+      avisoUmas: "485",
+    },
+    {
+      fraccion: "XIV",
+      actividad: "Comercio exterior: obras de arte",
+      identificacion: "Siempre",
+      identificacionUmas: "---",
+      aviso: "$564,847.65",
+      avisoUmas: "4,815",
+    },
+    {
+      fraccion: "XV",
+      actividad: "Uso o goce de inmuebles (derechos personales)",
+      identificacion: "$188,282.55",
+      identificacionUmas: "1,605",
+      aviso: "$376,565.10",
+      avisoUmas: "3,210",
+    },
+    {
+      fraccion: "XVI",
+      actividad: "Activos virtuales: contraprestación por servicios",
+      identificacion: "Siempre",
+      identificacionUmas: "---",
+      aviso: "$469.24",
+      avisoUmas: "4",
+    },
+    {
+      fraccion: "XVI",
+      actividad: "Activos virtuales: operación del cliente",
+      identificacion: "Siempre",
+      identificacionUmas: "---",
+      aviso: "$24,635.10",
+      avisoUmas: "210",
+    },
+  ];
+
+  // Umbrales de Pagos en Efectivo - Art. 32 LFPIORPI
+  const umbralesPagosEfectivo = [
+    {
+      fraccion: "I",
+      actividad: "Bienes inmuebles: venta, intermediación y desarrollo",
+      umbral: "$941,412.75",
+      umas: "8,025",
+    },
+    {
+      fraccion: "II",
+      actividad: "Venta de vehículos (terrestres, marinos, aéreos)",
+      umbral: "$376,565.10",
+      umas: "3,210",
+    },
+    {
+      fraccion: "III",
+      actividad: "Venta de piedras y metales preciosos, joyas y relojes",
+      umbral: "$376,565.10",
+      umas: "3,210",
+    },
+    {
+      fraccion: "IV",
+      actividad: "Juegos con apuesta, concursos y sorteos",
+      umbral: "$376,565.10",
+      umas: "3,210",
+    },
+    {
+      fraccion: "V",
+      actividad: "Servicios de blindaje (vehículos y bienes inmuebles)",
+      umbral: "$376,565.10",
+      umas: "3,210",
+    },
+    {
+      fraccion: "VI",
+      actividad: "Transmisión de dominio o constitución de derechos sobre títulos representativos de partes sociales o acciones de personas morales",
+      umbral: "$376,565.10",
+      umas: "3,210",
+    },
+    {
+      fraccion: "VII",
+      actividad: "Constitución de derechos personales de uso o goce de cualquiera de los bienes a que se refieren las fracciones I, II y V del artículo 32 LFPIORPI",
+      umbral: "$376,565.10",
+      umas: "3,210",
+    },
+    {
+      fraccion: "VIII",
+      actividad: "Consignación de pago relacionada con algún acto u operación a que se refieren las fracciones I a VII",
+      umbral: "Conforme a los umbrales dispuestos en cada fracción al día en que se realice la consignación",
+      umas: "---",
     },
   ];
 
@@ -139,10 +306,10 @@ export default function LFPIORPIPage() {
                   Solicitar evaluación
                 </Link>
                 <Link
-                  href="#actividades"
+                  href="#pagos-efectivo"
                   className="px-6 py-3 bg-white/10 text-white font-semibold rounded-lg hover:bg-white/20 transition-all"
                 >
-                  Ver actividades vulnerables
+                  Ver umbrales
                 </Link>
               </div>
             </div>
@@ -180,36 +347,103 @@ export default function LFPIORPIPage() {
           </div>
         </section>
 
-        {/* Actividades Vulnerables */}
-        <section id="actividades" className="py-20 bg-gray-50">
+        {/* Umbrales de Pagos en Efectivo - Art. 32 */}
+        <section id="pagos-efectivo" className="py-20 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#0066ff]/10 rounded-full mb-4">
+                <span className="text-[#0066ff] text-sm font-medium">Artículo 32</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
+                Umbrales de Pagos en Efectivo
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Restricciones a pagos en efectivo establecidas en el Artículo 32 de la LFPIORPI.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="bg-[#0066ff] text-white">
+                      <th className="px-4 py-3 text-left text-sm font-semibold">Fracción</th>
+                      <th className="px-4 py-3 text-left text-sm font-semibold">Actividad</th>
+                      <th className="px-4 py-3 text-right text-sm font-semibold">Umbral Pagos en Efectivo</th>
+                      <th className="px-4 py-3 text-right text-sm font-semibold">UMAs</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {umbralesPagosEfectivo.map((item, index) => (
+                      <tr key={index} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                        <td className="px-4 py-3 text-sm font-medium text-gray-900">{item.fraccion}</td>
+                        <td className="px-4 py-3 text-sm text-gray-700">{item.actividad}</td>
+                        <td className="px-4 py-3 text-sm text-gray-900 text-right font-medium">{item.umbral}</td>
+                        <td className="px-4 py-3 text-sm text-gray-500 text-right">{item.umas}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="px-4 py-3 bg-gray-50 border-t border-gray-100">
+                <p className="text-sm text-gray-600 text-center">
+                  <strong>Valor UMA:</strong> $117.31 a partir del 01 de febrero de 2026
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Actividades Vulnerables - Art. 17 */}
+        <section id="actividades" className="py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#0066ff]/10 rounded-full mb-4">
                 <span className="text-[#0066ff] text-sm font-medium">Artículo 17</span>
               </div>
               <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
-                Actividades Vulnerables
+                Umbrales de Actividades Vulnerables
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
                 El Artículo 17 de la LFPIORPI define las actividades que, por su naturaleza, están sujetas a obligaciones reforzadas de identificación y reporte.
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {vulnerableActivities.map((activity, index) => (
-                <div key={index} className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow">
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">{activity.name}</h3>
-                  <p className="text-gray-600 mb-4">{activity.description}</p>
-                  <div className="flex items-center gap-2 text-sm">
-                    <span className="px-2 py-1 bg-[#0066ff]/10 text-[#0066ff] rounded font-medium">
-                      {activity.threshold}
-                    </span>
-                  </div>
-                </div>
-              ))}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="bg-[#0066ff] text-white">
+                      <th className="px-3 py-3 text-left text-sm font-semibold">Fracción</th>
+                      <th className="px-3 py-3 text-left text-sm font-semibold">Actividad Vulnerable</th>
+                      <th className="px-3 py-3 text-right text-sm font-semibold">Identificación</th>
+                      <th className="px-3 py-3 text-right text-sm font-semibold">UMAs</th>
+                      <th className="px-3 py-3 text-right text-sm font-semibold">Aviso</th>
+                      <th className="px-3 py-3 text-right text-sm font-semibold">UMAs</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {actividadesVulnerablesArt17.map((item, index) => (
+                      <tr key={index} className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}>
+                        <td className="px-3 py-3 text-sm font-medium text-gray-900">{item.fraccion}</td>
+                        <td className="px-3 py-3 text-sm text-gray-700">{item.actividad}</td>
+                        <td className="px-3 py-3 text-sm text-gray-900 text-right font-medium">{item.identificacion}</td>
+                        <td className="px-3 py-3 text-sm text-gray-500 text-right">{item.identificacionUmas}</td>
+                        <td className="px-3 py-3 text-sm text-gray-900 text-right font-medium">{item.aviso}</td>
+                        <td className="px-3 py-3 text-sm text-gray-500 text-right">{item.avisoUmas}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="px-4 py-3 bg-gray-50 border-t border-gray-100">
+                <p className="text-sm text-gray-600 text-center">
+                  <strong>Valor UMA:</strong> $117.31 a partir del 01 de febrero de 2026
+                </p>
+              </div>
             </div>
 
-            <div className="mt-12 p-6 bg-white rounded-xl border border-gray-200">
+            <div className="mt-12 p-6 bg-gray-50 rounded-xl border border-gray-200">
               <p className="text-gray-700 text-center mb-3">
                 <strong>En todos los casos, el principio es el mismo:</strong> identificar correctamente, conservar evidencia y poder demostrar cumplimiento ante la autoridad.
               </p>
@@ -221,7 +455,7 @@ export default function LFPIORPIPage() {
         </section>
 
         {/* Requirements */}
-        <section className="py-20 bg-white">
+        <section className="py-20 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
