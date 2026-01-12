@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: "Onboarding digital: De días a minutos sin sacrificar cumplimiento",
     description: "Cómo acelerar el proceso de alta de clientes sin comprometer el cumplimiento regulatorio.",
     type: "article",
-    publishedTime: "2024-12-15",
+    publishedTime: "2025-12-15",
     authors: ["JAAK"],
   },
 };
@@ -19,8 +19,8 @@ export const metadata: Metadata = {
 export default function OnboardingDigital() {
   const relatedPosts = [
     {
-      title: "Tendencias KYC 2025: Lo que toda institución financiera debe saber",
-      slug: "tendencias-kyc-2025",
+      title: "Tendencias KYC 2026: Lo que toda institución financiera debe saber",
+      slug: "tendencias-kyc-2026",
       category: "KYC",
     },
     {
@@ -57,7 +57,7 @@ export default function OnboardingDigital() {
               <span className="px-3 py-1 bg-orange-500/10 text-orange-500 text-sm font-semibold rounded-full">
                 Onboarding
               </span>
-              <span className="text-white/40 text-sm">15 de diciembre, 2024</span>
+              <span className="text-white/40 text-sm">15 de diciembre, 2025</span>
               <span className="text-white/40 text-sm">•</span>
               <span className="text-white/40 text-sm">9 min de lectura</span>
             </div>

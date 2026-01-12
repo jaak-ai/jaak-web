@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: "Seguridad biométrica: Cómo la prueba de vida previene el fraude",
     description: "Todo sobre la tecnología de liveness detection y su importancia en la prevención de fraude por suplantación de identidad.",
     type: "article",
-    publishedTime: "2024-12-27",
+    publishedTime: "2025-12-27",
     authors: ["JAAK"],
   },
 };
@@ -19,8 +19,8 @@ export const metadata: Metadata = {
 export default function SeguridadBiometrica() {
   const relatedPosts = [
     {
-      title: "Tendencias KYC 2025: Lo que toda institución financiera debe saber",
-      slug: "tendencias-kyc-2025",
+      title: "Tendencias KYC 2026: Lo que toda institución financiera debe saber",
+      slug: "tendencias-kyc-2026",
       category: "KYC",
     },
     {
@@ -57,7 +57,7 @@ export default function SeguridadBiometrica() {
               <span className="px-3 py-1 bg-[#00d4aa]/10 text-[#00d4aa] text-sm font-semibold rounded-full">
                 Seguridad
               </span>
-              <span className="text-white/40 text-sm">27 de diciembre, 2024</span>
+              <span className="text-white/40 text-sm">27 de diciembre, 2025</span>
               <span className="text-white/40 text-sm">•</span>
               <span className="text-white/40 text-sm">10 min de lectura</span>
             </div>

@@ -4,19 +4,19 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Tendencias KYC 2025: Lo que toda institución financiera debe saber | JAAK",
-  description: "Descubre las principales tendencias en Know Your Customer para 2025: IA generativa, verificación biométrica avanzada, regulación actualizada y más. Prepara tu organización para el futuro del KYC.",
-  keywords: ["KYC 2025", "tendencias KYC", "verificación de identidad", "inteligencia artificial KYC", "biometría", "regulación financiera México"],
+  title: "Tendencias KYC 2026: Lo que toda institución financiera debe saber | JAAK",
+  description: "Descubre las principales tendencias en Know Your Customer para 2026: IA generativa, verificación biométrica avanzada, regulación actualizada y más. Prepara tu organización para el futuro del KYC.",
+  keywords: ["KYC 2026", "tendencias KYC", "verificación de identidad", "inteligencia artificial KYC", "biometría", "regulación financiera México"],
   openGraph: {
-    title: "Tendencias KYC 2025: Lo que toda institución financiera debe saber",
-    description: "Las principales tendencias que transformarán la verificación de identidad en México durante 2025.",
+    title: "Tendencias KYC 2026: Lo que toda institución financiera debe saber",
+    description: "Las principales tendencias que transformarán la verificación de identidad en México durante 2026.",
     type: "article",
-    publishedTime: "2025-01-08",
+    publishedTime: "2026-01-08",
     authors: ["JAAK"],
   },
 };
 
-export default function TendenciasKYC2025() {
+export default function TendenciasKYC2026() {
   const relatedPosts = [
     {
       title: "Guía completa de las disposiciones CNBV para verificación de identidad",
@@ -57,12 +57,12 @@ export default function TendenciasKYC2025() {
               <span className="px-3 py-1 bg-[#0066ff]/10 text-[#0066ff] text-sm font-semibold rounded-full">
                 KYC
               </span>
-              <span className="text-white/40 text-sm">8 de enero, 2025</span>
+              <span className="text-white/40 text-sm">8 de enero, 2026</span>
               <span className="text-white/40 text-sm">•</span>
               <span className="text-white/40 text-sm">12 min de lectura</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-black text-white mb-6">
-              Tendencias KYC 2025: Lo que toda institución financiera debe saber
+              Tendencias KYC 2026: Lo que toda institución financiera debe saber
             </h1>
             <p className="text-xl text-white/60">
               El panorama de Know Your Customer está evolucionando rápidamente. Descubre las principales
@@ -78,7 +78,7 @@ export default function TendenciasKYC2025() {
             <div className="prose prose-lg max-w-none">
 
               <p className="text-xl text-gray-600 leading-relaxed mb-8">
-                El año 2025 marca un punto de inflexión para los procesos de Know Your Customer (KYC)
+                El año 2026 marca un punto de inflexión para los procesos de Know Your Customer (KYC)
                 en el sector financiero mexicano. La convergencia de nuevas tecnologías, regulaciones
                 más estrictas y expectativas cambiantes de los usuarios está redefiniendo cómo las
                 instituciones verifican la identidad de sus clientes.
@@ -101,9 +101,9 @@ export default function TendenciasKYC2025() {
               <div className="bg-[#0066ff]/5 border-l-4 border-[#0066ff] p-6 my-8">
                 <p className="text-gray-700 font-medium mb-2">Dato clave:</p>
                 <p className="text-gray-600">
-                  Se estima que los intentos de fraude con deepfakes aumentaron un 300% en 2024.
+                  Se estima que los intentos de fraude con deepfakes aumentaron un 300% en 2025.
                   Las instituciones que no actualicen sus sistemas de detección enfrentarán
-                  riesgos significativos en 2025.
+                  riesgos significativos en 2026.
                 </p>
               </div>
 
@@ -127,7 +127,7 @@ export default function TendenciasKYC2025() {
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
                 Las autoridades financieras mexicanas continúan fortaleciendo el marco regulatorio.
-                Las disposiciones de la CNBV y la UIF para 2025 enfatizan:
+                Las disposiciones de la CNBV y la UIF para 2026 enfatizan:
               </p>
               <ul className="list-disc pl-6 mb-6 space-y-2 text-gray-600">
                 <li>Mayor rigor en la verificación de identidad no presencial</li>
@@ -149,7 +149,7 @@ export default function TendenciasKYC2025() {
                 crítico para muchas instituciones.
               </p>
               <p className="text-gray-600 leading-relaxed mb-4">
-                Las tendencias para 2025 incluyen:
+                Las tendencias para 2026 incluyen:
               </p>
               <ul className="list-disc pl-6 mb-6 space-y-2 text-gray-600">
                 <li><strong>Verificación en menos de 30 segundos:</strong> Tecnologías que permiten completar el KYC en tiempo real</li>
@@ -163,7 +163,7 @@ export default function TendenciasKYC2025() {
                   El balance perfecto
                 </h3>
                 <p className="text-gray-600">
-                  El reto para 2025 es encontrar el equilibrio entre seguridad robusta y experiencia
+                  El reto para 2026 es encontrar el equilibrio entre seguridad robusta y experiencia
                   fluida. Las instituciones que logren verificar identidades en segundos mientras
                   mantienen el 100% de cumplimiento regulatorio tendrán una ventaja competitiva
                   significativa.
@@ -210,7 +210,7 @@ export default function TendenciasKYC2025() {
               </p>
 
               <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-6">
-                Preparando tu organización para 2025
+                Preparando tu organización para 2026
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
                 Para estar preparado ante estas tendencias, las instituciones financieras deben:
@@ -243,7 +243,7 @@ export default function TendenciasKYC2025() {
                   Conclusión
                 </h3>
                 <p className="text-white/80">
-                  El KYC en 2025 será más sofisticado, más rápido y más integrado que nunca.
+                  El KYC en 2026 será más sofisticado, más rápido y más integrado que nunca.
                   Las instituciones que abracen estas tendencias no solo cumplirán con las
                   regulaciones, sino que también ofrecerán una mejor experiencia a sus clientes
                   y se protegerán mejor contra el fraude. La inversión en tecnología de

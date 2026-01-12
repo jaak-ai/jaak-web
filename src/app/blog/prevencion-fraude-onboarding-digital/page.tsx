@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: "Prevención de fraude en el onboarding digital: Mejores prácticas",
     description: "Estrategias efectivas para detectar y prevenir el fraude por suplantación de identidad en procesos de onboarding.",
     type: "article",
-    publishedTime: "2024-12-20",
+    publishedTime: "2025-12-20",
     authors: ["JAAK"],
   },
 };
@@ -29,8 +29,8 @@ export default function PrevencionFraude() {
       category: "Onboarding",
     },
     {
-      title: "Tendencias KYC 2025: Lo que toda institución financiera debe saber",
-      slug: "tendencias-kyc-2025",
+      title: "Tendencias KYC 2026: Lo que toda institución financiera debe saber",
+      slug: "tendencias-kyc-2026",
       category: "KYC",
     },
   ];
@@ -57,7 +57,7 @@ export default function PrevencionFraude() {
               <span className="px-3 py-1 bg-red-500/10 text-red-500 text-sm font-semibold rounded-full">
                 Fraude
               </span>
-              <span className="text-white/40 text-sm">20 de diciembre, 2024</span>
+              <span className="text-white/40 text-sm">20 de diciembre, 2025</span>
               <span className="text-white/40 text-sm">•</span>
               <span className="text-white/40 text-sm">11 min de lectura</span>
             </div>

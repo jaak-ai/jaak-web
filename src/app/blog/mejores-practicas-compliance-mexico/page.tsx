@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: "Mejores prácticas de compliance para empresas reguladas en México",
     description: "Guía completa para implementar un programa de cumplimiento robusto en el contexto regulatorio mexicano.",
     type: "article",
-    publishedTime: "2024-12-10",
+    publishedTime: "2025-12-10",
     authors: ["JAAK"],
   },
 };
@@ -24,8 +24,8 @@ export default function MejoresPracticasCompliance() {
       category: "Regulación",
     },
     {
-      title: "Tendencias KYC 2025: Lo que toda institución financiera debe saber",
-      slug: "tendencias-kyc-2025",
+      title: "Tendencias KYC 2026: Lo que toda institución financiera debe saber",
+      slug: "tendencias-kyc-2026",
       category: "KYC",
     },
     {
@@ -57,7 +57,7 @@ export default function MejoresPracticasCompliance() {
               <span className="px-3 py-1 bg-indigo-500/10 text-indigo-500 text-sm font-semibold rounded-full">
                 Compliance
               </span>
-              <span className="text-white/40 text-sm">10 de diciembre, 2024</span>
+              <span className="text-white/40 text-sm">10 de diciembre, 2025</span>
               <span className="text-white/40 text-sm">•</span>
               <span className="text-white/40 text-sm">14 min de lectura</span>
             </div>

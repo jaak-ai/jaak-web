@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: "Guía completa de las disposiciones CNBV para verificación de identidad",
     description: "Todo lo que necesitas saber sobre los requisitos de la CNBV para la identificación de clientes en instituciones financieras.",
     type: "article",
-    publishedTime: "2025-01-03",
+    publishedTime: "2026-01-03",
     authors: ["JAAK"],
   },
 };
@@ -19,8 +19,8 @@ export const metadata: Metadata = {
 export default function DisposicionesCNBV() {
   const relatedPosts = [
     {
-      title: "Tendencias KYC 2025: Lo que toda institución financiera debe saber",
-      slug: "tendencias-kyc-2025",
+      title: "Tendencias KYC 2026: Lo que toda institución financiera debe saber",
+      slug: "tendencias-kyc-2026",
       category: "KYC",
     },
     {
@@ -57,7 +57,7 @@ export default function DisposicionesCNBV() {
               <span className="px-3 py-1 bg-purple-500/10 text-purple-500 text-sm font-semibold rounded-full">
                 Regulación
               </span>
-              <span className="text-white/40 text-sm">3 de enero, 2025</span>
+              <span className="text-white/40 text-sm">3 de enero, 2026</span>
               <span className="text-white/40 text-sm">•</span>
               <span className="text-white/40 text-sm">15 min de lectura</span>
             </div>
