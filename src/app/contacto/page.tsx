@@ -121,18 +121,28 @@ export default function ContactoPage() {
                   ))}
                 </div>
 
-                {/* Alternative CTA */}
-                <div className="mt-12 p-6 bg-white/5 rounded-xl border border-white/10">
-                  <p className="text-white/80 mb-4">
-                    No quieres esperar? Puedes usar nuestra plataforma desde hoy mismo.
+                {/* Urgent Demo CTA */}
+                <div className="mt-12 p-6 bg-gradient-to-r from-[#212A45] to-[#0E1133] rounded-xl border border-white/10">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="relative flex h-3 w-3">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#2AD796] opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-[#2AD796]"></span>
+                    </span>
+                    <span className="text-[#2AD796] font-semibold text-sm uppercase tracking-wide">Disponible ahora</span>
+                  </div>
+                  <p className="text-white font-bold text-xl mb-2">
+                    No puedes esperar?
+                  </p>
+                  <p className="text-white/70 mb-4">
+                    Agenda una demo directamente con nuestro equipo de ventas.
                   </p>
                   <Link
-                    href="https://platform.dev.jaak.ai/#/signup"
+                    href="https://meetings.hubspot.com/jaak-demo/reunion-demo?uuid=104e4d38-124f-42c0-8417-e1d728b5b8ce"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-[#00d4aa] text-[#0a0a0a] font-bold rounded-lg hover:bg-[#00b894] transition-all"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-[#2DB6C1] text-white font-bold rounded-lg hover:bg-[#25969f] transition-all hover:scale-105"
                   >
-                    Comenzar ahora
+                    Agenda una demo ahora
                     <svg
                       className="w-5 h-5"
                       fill="none"
@@ -143,7 +153,7 @@ export default function ContactoPage() {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth={2}
-                        d="M17 8l4 4m0 0l-4 4m4-4H3"
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                       />
                     </svg>
                   </Link>
