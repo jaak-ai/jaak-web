@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function HeroRegulated() {
   return (
-    <section className="min-h-screen bg-[#0a0a0a] pt-20 relative overflow-hidden">
+    <section className="min-h-screen bg-[#0a0a0a] pt-32 relative overflow-hidden">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0a0a0a] via-[#0a0a0a] to-[#1a1a2e] pointer-events-none" />
 

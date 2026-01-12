@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import UrgentBanner from "./UrgentBanner";
 
 type DropdownKey = "platform" | "solutions" | "compliance" | "resources" | null;
 
@@ -36,8 +37,13 @@ export default function Header() {
 
   return (
     <>
+      {/* Urgent Banner */}
+      <div className="fixed top-0 left-0 right-0 z-50">
+        <UrgentBanner />
+      </div>
+
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-[42px] left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
             ? "bg-white/95 backdrop-blur-xl border-b border-gray-200 shadow-sm"
             : "bg-white border-b border-gray-100"
@@ -276,7 +282,7 @@ export default function Header() {
 
       {/* Mega Menu Dropdowns - Full Width */}
       <div
-        className={`fixed top-[72px] left-0 right-0 z-40 transition-all duration-200 ${
+        className={`fixed top-[114px] left-0 right-0 z-40 transition-all duration-200 ${
           activeDropdown ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
         }`}
         onMouseEnter={() => {
