@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import Image from "next/image";
 
 export const metadata = {
   title: "Blog | JAAK",
@@ -113,14 +114,25 @@ export default function Blog() {
                     key={index}
                     className="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col"
                   >
-                    {/* Card Header with gradient */}
-                    <div className="h-48 bg-gradient-to-br from-[#0a0a0a] to-[#1a1a2e] flex items-center justify-center p-6">
-                      <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center">
-                        <svg className="w-8 h-8 text-[#0066ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                        </svg>
+                    {/* Card Header with gradient or image */}
+                    {post.slug === "padron-celulares-fallo-verificacion-identidad" ? (
+                      <div className="h-48 relative overflow-hidden">
+                        <Image
+                          src="/images/blog/padron-celulares-fallo.png"
+                          alt={post.title}
+                          fill
+                          className="object-cover object-top"
+                        />
                       </div>
-                    </div>
+                    ) : (
+                      <div className="h-48 bg-gradient-to-br from-[#0a0a0a] to-[#1a1a2e] flex items-center justify-center p-6">
+                        <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center">
+                          <svg className="w-8 h-8 text-[#0066ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                          </svg>
+                        </div>
+                      </div>
+                    )}
 
                     {/* Card Content */}
                     <div className="p-6 flex flex-col flex-grow">
