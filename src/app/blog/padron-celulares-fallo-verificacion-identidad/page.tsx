@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -68,6 +69,22 @@ export default function PadronCelularesFalloVerificacion() {
               Lo que está ocurriendo con el padrón obligatorio de telefonía en México no es una sorpresa.
               Es la consecuencia lógica de haber confundido &quot;cumplimiento&quot; con &quot;seguridad&quot;.
             </p>
+          </div>
+        </section>
+
+        {/* Featured Image */}
+        <section className="bg-white pt-12">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="rounded-2xl overflow-hidden shadow-xl">
+              <Image
+                src="/images/blog/padron-celulares-fallo.png"
+                alt="Ilustración del caos en el padrón obligatorio de celulares en México: mercado negro de CURPs e INEs, deepfakes y suplantación de identidad"
+                width={1200}
+                height={1600}
+                className="w-full h-auto"
+                priority
+              />
+            </div>
           </div>
         </section>
 
