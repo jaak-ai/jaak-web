@@ -131,7 +131,7 @@ export default function PadronCelularesFalloVerificacion() {
               </div>
 
               <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-6">
-                El fallo técnico de fondo (sin rodeos)
+                El fallo técnico de fondo
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
                 El problema no es &quot;la IA&quot;. El problema no es &quot;la gente&quot;.
