@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -69,6 +70,22 @@ export default function DisposicionesCNBV() {
               para el proceso de identificación de clientes. Conoce las obligaciones específicas
               y cómo cumplirlas de manera eficiente.
             </p>
+          </div>
+        </section>
+
+        {/* Featured Image */}
+        <section className="bg-white pt-12">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="rounded-2xl overflow-hidden shadow-xl">
+              <Image
+                src="/images/blog/disposiciones-cnbv-verificacion-identidad.png"
+                alt="Guía de disposiciones CNBV para verificación de identidad en México"
+                width={1200}
+                height={675}
+                className="w-full h-auto"
+                priority
+              />
+            </div>
           </div>
         </section>
 

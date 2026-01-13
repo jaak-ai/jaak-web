@@ -38,6 +38,7 @@ export default function Footer() {
       links: [
         { name: "Documentación", href: "/documentacion" },
         { name: "Blog", href: "/blog" },
+        { name: "RSS Feed", href: "/rss.xml" },
         { name: "API Reference", href: "https://docs.jaak.ai/api" },
         { name: "Sandbox", href: "https://platform.dev.jaak.ai/#/signup" },
         { name: "Status", href: "https://status.jaak.ai" },
@@ -89,6 +90,15 @@ export default function Footer() {
       icon: (
         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
           <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+        </svg>
+      ),
+    },
+    {
+      name: "RSS",
+      href: "/rss.xml",
+      icon: (
+        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20C5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1z"/>
         </svg>
       ),
     },

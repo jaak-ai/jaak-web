@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -69,6 +70,22 @@ export default function TendenciasKYC2026() {
               tendencias que están transformando la verificación de identidad en México y cómo preparar
               tu organización para los nuevos requerimientos regulatorios.
             </p>
+          </div>
+        </section>
+
+        {/* Featured Image */}
+        <section className="bg-white pt-12">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="rounded-2xl overflow-hidden shadow-xl">
+              <Image
+                src="/images/blog/tendencias-kyc-2026.png"
+                alt="Tendencias KYC 2026: IA, biometría y regulación financiera en México"
+                width={1200}
+                height={675}
+                className="w-full h-auto"
+                priority
+              />
+            </div>
           </div>
         </section>
 

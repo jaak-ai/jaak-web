@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -68,6 +69,22 @@ export default function SeguridadBiometrica() {
               La tecnología de liveness detection es fundamental para prevenir ataques de presentación.
               Exploramos cómo funciona la certificación iBeta y por qué es esencial para tu proceso de onboarding.
             </p>
+          </div>
+        </section>
+
+        {/* Featured Image */}
+        <section className="bg-white pt-12">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="rounded-2xl overflow-hidden shadow-xl">
+              <Image
+                src="/images/blog/seguridad-biometrica-prueba-de-vida.png"
+                alt="Seguridad biométrica y prueba de vida para prevención de fraude"
+                width={1200}
+                height={675}
+                className="w-full h-auto"
+                priority
+              />
+            </div>
           </div>
         </section>
 

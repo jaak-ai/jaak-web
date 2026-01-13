@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -69,6 +70,22 @@ export default function MejoresPracticasCompliance() {
               mexicano puede ser complejo. Esta guía te ayuda a implementar un programa de
               cumplimiento robusto y auditable.
             </p>
+          </div>
+        </section>
+
+        {/* Featured Image */}
+        <section className="bg-white pt-12">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="rounded-2xl overflow-hidden shadow-xl">
+              <Image
+                src="/images/blog/mejores-practicas-compliance-mexico.png"
+                alt="Mejores prácticas de compliance para empresas reguladas en México"
+                width={1200}
+                height={675}
+                className="w-full h-auto"
+                priority
+              />
+            </div>
           </div>
         </section>
 

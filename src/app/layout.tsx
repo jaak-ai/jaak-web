@@ -173,6 +173,9 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: "https://jaak.ai",
+    types: {
+      "application/rss+xml": "https://jaak.ai/rss.xml",
+    },
   },
   icons: {
     icon: [

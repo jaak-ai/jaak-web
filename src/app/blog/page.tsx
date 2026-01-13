@@ -1,81 +1,13 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import NewsletterForm from "@/components/NewsletterForm";
 import Link from "next/link";
 import Image from "next/image";
+import { blogPosts, categoryColors } from "@/lib/blog";
 
 export const metadata = {
   title: "Blog | JAAK",
   description: "Artículos sobre verificación de identidad, cumplimiento regulatorio, seguridad biométrica y las últimas tendencias en KYC para el sector financiero mexicano.",
-};
-
-interface BlogPost {
-  title: string;
-  excerpt: string;
-  date: string;
-  category: string;
-  slug: string;
-}
-
-const blogPosts: BlogPost[] = [
-  {
-    title: "El registro obligatorio de celulares: cuando la identidad se diseña mal, el sistema colapsa",
-    excerpt: "Lo que está ocurriendo con el padrón obligatorio de telefonía en México es la consecuencia de confundir cumplimiento con seguridad. Análisis del fallo crítico que permite suplantación de identidad con deepfakes.",
-    date: "13 de enero, 2026",
-    category: "Análisis",
-    slug: "padron-celulares-fallo-verificacion-identidad",
-  },
-  {
-    title: "Tendencias KYC 2026: Lo que toda institución financiera debe saber",
-    excerpt: "El panorama de Know Your Customer está evolucionando rápidamente. Descubre las principales tendencias que están transformando la verificación de identidad en México y cómo preparar tu organización para los nuevos requerimientos regulatorios.",
-    date: "8 de enero, 2026",
-    category: "KYC",
-    slug: "tendencias-kyc-2026",
-  },
-  {
-    title: "Guía completa de las disposiciones CNBV para verificación de identidad",
-    excerpt: "Un análisis detallado de los requisitos de la Comisión Nacional Bancaria y de Valores para el proceso de identificación de clientes. Conoce las obligaciones específicas y cómo cumplirlas de manera eficiente.",
-    date: "3 de enero, 2026",
-    category: "Regulación",
-    slug: "disposiciones-cnbv-verificacion-identidad",
-  },
-  {
-    title: "Seguridad biométrica: Cómo la prueba de vida previene el fraude",
-    excerpt: "La tecnología de liveness detection es fundamental para prevenir ataques de presentación. Exploramos cómo funciona la certificación iBeta y por qué es esencial para tu proceso de onboarding.",
-    date: "27 de diciembre, 2025",
-    category: "Seguridad",
-    slug: "seguridad-biometrica-prueba-de-vida",
-  },
-  {
-    title: "Prevención de fraude en el onboarding digital: Mejores prácticas",
-    excerpt: "El fraude por suplantación de identidad representa pérdidas millonarias cada año. Te compartimos las estrategias más efectivas para detectar y prevenir intentos de fraude durante la verificación de clientes.",
-    date: "20 de diciembre, 2025",
-    category: "Fraude",
-    slug: "prevencion-fraude-onboarding-digital",
-  },
-  {
-    title: "Onboarding digital: De días a minutos sin sacrificar cumplimiento",
-    excerpt: "Transformar tu proceso de alta de clientes no significa comprometer la regulación. Descubre cómo las instituciones financieras están logrando verificaciones en menos de 30 segundos manteniendo el 100% de cumplimiento.",
-    date: "15 de diciembre, 2025",
-    category: "Onboarding",
-    slug: "onboarding-digital-rapido-cumplimiento",
-  },
-  {
-    title: "Mejores prácticas de compliance para empresas reguladas en México",
-    excerpt: "Desde LFPIORPI hasta las disposiciones de la UIF, navegar el ecosistema regulatorio mexicano puede ser complejo. Esta guía te ayuda a implementar un programa de cumplimiento robusto y auditable.",
-    date: "10 de diciembre, 2025",
-    category: "Compliance",
-    slug: "mejores-practicas-compliance-mexico",
-  },
-];
-
-const categoryColors: Record<string, { bg: string; text: string }> = {
-  Análisis: { bg: "bg-red-500/10", text: "text-red-500" },
-  KYC: { bg: "bg-[#0066ff]/10", text: "text-[#0066ff]" },
-  Regulación: { bg: "bg-purple-500/10", text: "text-purple-500" },
-  Seguridad: { bg: "bg-[#00d4aa]/10", text: "text-[#00d4aa]" },
-  Fraude: { bg: "bg-amber-500/10", text: "text-amber-600" },
-  Onboarding: { bg: "bg-orange-500/10", text: "text-orange-500" },
-  Compliance: { bg: "bg-indigo-500/10", text: "text-indigo-500" },
 };
 
 export default function Blog() {
@@ -114,11 +46,11 @@ export default function Blog() {
                     key={index}
                     className="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-xl transition-shadow duration-300 flex flex-col"
                   >
-                    {/* Card Header with gradient or image */}
-                    {post.slug === "padron-celulares-fallo-verificacion-identidad" ? (
+                    {/* Card Header with image or gradient fallback */}
+                    {post.image ? (
                       <div className="h-48 relative overflow-hidden">
                         <Image
-                          src="/images/blog/padron-celulares-fallo.png"
+                          src={post.image}
                           alt={post.title}
                           fill
                           className="object-cover object-top"
@@ -188,16 +120,7 @@ export default function Blog() {
                 Recibe las últimas actualizaciones sobre regulación, seguridad y verificación de identidad
                 directamente en tu correo.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-                <input
-                  type="email"
-                  placeholder="tu@email.com"
-                  className="flex-grow px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-[#0066ff] transition-colors"
-                />
-                <button className="px-6 py-3 bg-[#0066ff] text-white font-semibold rounded-lg hover:bg-[#0052cc] transition-all whitespace-nowrap">
-                  Suscribirse
-                </button>
-              </div>
+              <NewsletterForm />
             </div>
           </div>
         </section>
