@@ -17,6 +17,13 @@ interface BlogPost {
 
 const blogPosts: BlogPost[] = [
   {
+    title: "El registro obligatorio de celulares: cuando la identidad se diseña mal, el sistema colapsa",
+    excerpt: "Lo que está ocurriendo con el padrón obligatorio de telefonía en México es la consecuencia de confundir cumplimiento con seguridad. Análisis del fallo crítico que permite suplantación de identidad con deepfakes.",
+    date: "13 de enero, 2026",
+    category: "Análisis",
+    slug: "padron-celulares-fallo-verificacion-identidad",
+  },
+  {
     title: "Tendencias KYC 2026: Lo que toda institución financiera debe saber",
     excerpt: "El panorama de Know Your Customer está evolucionando rápidamente. Descubre las principales tendencias que están transformando la verificación de identidad en México y cómo preparar tu organización para los nuevos requerimientos regulatorios.",
     date: "8 de enero, 2026",
@@ -61,10 +68,11 @@ const blogPosts: BlogPost[] = [
 ];
 
 const categoryColors: Record<string, { bg: string; text: string }> = {
+  Análisis: { bg: "bg-red-500/10", text: "text-red-500" },
   KYC: { bg: "bg-[#0066ff]/10", text: "text-[#0066ff]" },
   Regulación: { bg: "bg-purple-500/10", text: "text-purple-500" },
   Seguridad: { bg: "bg-[#00d4aa]/10", text: "text-[#00d4aa]" },
-  Fraude: { bg: "bg-red-500/10", text: "text-red-500" },
+  Fraude: { bg: "bg-amber-500/10", text: "text-amber-600" },
   Onboarding: { bg: "bg-orange-500/10", text: "text-orange-500" },
   Compliance: { bg: "bg-indigo-500/10", text: "text-indigo-500" },
 };

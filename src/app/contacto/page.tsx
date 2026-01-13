@@ -21,20 +21,20 @@ export default function ContactoPage() {
       description: "CNBV, LFPIORPI, LFPDPPP, CUB y todas las regulaciones aplicables.",
     },
     {
-      title: "Implementacion rapida",
-      description: "Integracion en dias, no meses. Con soporte tecnico dedicado.",
+      title: "Implementación rápida",
+      description: "Integración en días, no meses. Con soporte técnico dedicado.",
     },
     {
-      title: "Tecnologia certificada",
+      title: "Tecnología certificada",
       description: "ISO 27001, ISO 9001, iBeta para prueba de vida.",
     },
     {
-      title: "Reduccion de fraude comprobada",
-      description: "Hasta 99.9% de precision en deteccion de identidades falsas.",
+      title: "Reducción de fraude comprobada",
+      description: "Hasta 99.9% de precisión en detección de identidades falsas.",
     },
     {
       title: "Soporte especializado",
-      description: "Equipo de expertos en compliance y tecnologia a tu disposicion.",
+      description: "Equipo de expertos en compliance y tecnología a tu disposición.",
     },
   ];
 
@@ -81,8 +81,8 @@ export default function ContactoPage() {
                 </span>
               </h1>
               <p className="text-xl text-white/70">
-                Nuestro equipo de expertos esta listo para ayudarte a implementar
-                la solucion de identidad digital que tu empresa necesita.
+                Nuestro equipo de expertos está listo para ayudarte a implementar
+                la solución de identidad digital que tu empresa necesita.
               </p>
             </div>
 
@@ -91,7 +91,7 @@ export default function ContactoPage() {
               {/* Left Side - Benefits */}
               <div className="order-2 lg:order-1">
                 <h2 className="text-2xl font-bold text-white mb-8">
-                  Por que elegir JAAK
+                  Por qué elegir JAAK
                 </h2>
                 <div className="space-y-6">
                   {benefits.map((benefit, index) => (
@@ -131,7 +131,7 @@ export default function ContactoPage() {
                     <span className="text-[#2AD796] font-semibold text-sm uppercase tracking-wide">Disponible ahora</span>
                   </div>
                   <p className="text-white font-bold text-xl mb-2">
-                    No puedes esperar?
+                    ¿No puedes esperar?
                   </p>
                   <p className="text-white/70 mb-4">
                     Agenda una demo directamente con nuestro equipo de ventas.
@@ -164,10 +164,10 @@ export default function ContactoPage() {
               <div className="order-1 lg:order-2">
                 <div className="bg-white rounded-2xl p-8 shadow-2xl">
                   <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                    Solicita una demostracion
+                    Solicita una demostración
                   </h2>
                   <p className="text-gray-600 mb-8">
-                    Completa el formulario y un especialista te contactara en menos de 24 horas.
+                    Completa el formulario y un especialista te contactará en menos de 24 horas.
                   </p>
 
                   <form onSubmit={handleSubmit} className="space-y-6">
@@ -196,7 +196,7 @@ export default function ContactoPage() {
                           htmlFor="email"
                           className="block text-sm font-medium text-gray-900 mb-2"
                         >
-                          Correo electronico *
+                          Correo electrónico *
                         </label>
                         <input
                           type="email"
@@ -236,7 +236,7 @@ export default function ContactoPage() {
                           htmlFor="phone"
                           className="block text-sm font-medium text-gray-900 mb-2"
                         >
-                          Telefono
+                          Teléfono
                         </label>
                         <input
                           type="tel"
@@ -266,7 +266,7 @@ export default function ContactoPage() {
                           setFormData({ ...formData, message: e.target.value })
                         }
                         className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0066ff] focus:border-transparent outline-none transition-all resize-none text-gray-900 placeholder:text-gray-400"
-                        placeholder="Cuentanos sobre tu proyecto o necesidades..."
+                        placeholder="Cuéntanos sobre tu proyecto o necesidades..."
                       />
                     </div>
 
@@ -281,7 +281,7 @@ export default function ContactoPage() {
                     {status === "success" && (
                       <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
                         <p className="text-green-700 text-center font-medium">
-                          Mensaje enviado con exito! Nos pondremos en contacto contigo pronto.
+                          ¡Mensaje enviado con éxito! Nos pondremos en contacto contigo pronto.
                         </p>
                       </div>
                     )}
@@ -298,7 +298,7 @@ export default function ContactoPage() {
                   <p className="mt-6 text-sm text-gray-500 text-center">
                     Al enviar este formulario, aceptas nuestra{" "}
                     <Link href="/privacidad" className="text-[#0066ff] hover:underline">
-                      Politica de Privacidad
+                      Política de Privacidad
                     </Link>
                     .
                   </p>
@@ -355,7 +355,7 @@ export default function ContactoPage() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2">Telefono</h3>
+                <h3 className="text-lg font-semibold text-white mb-2">Teléfono</h3>
                 <a
                   href="tel:+525535091788"
                   className="text-[#0066ff] hover:underline"
@@ -387,8 +387,8 @@ export default function ContactoPage() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2">Ubicacion</h3>
-                <p className="text-white/60 text-sm">Av. Insurgentes Sur 1602, Piso 4<br />Credito Constructor, Benito Juarez<br />03940 Ciudad de Mexico, CDMX</p>
+                <h3 className="text-lg font-semibold text-white mb-2">Ubicación</h3>
+                <p className="text-white/60 text-sm">Av. Insurgentes Sur 1602, Piso 4<br />Crédito Constructor, Benito Juárez<br />03940 Ciudad de México, CDMX</p>
               </div>
             </div>
           </div>

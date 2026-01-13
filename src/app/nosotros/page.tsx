@@ -5,9 +5,9 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Nosotros | JAAK - Plataforma de Verificacion de Identidad",
+  title: "Nosotros | JAAK - Plataforma de Verificación de Identidad",
   description:
-    "Conoce a JAAK, la plataforma de verificacion de identidad 100% mexicana. Tecnologia biometrica certificada para empresas reguladas en Mexico y Latinoamerica.",
+    "Conoce a JAAK, la plataforma de verificación de identidad 100% mexicana. Tecnología biométrica certificada para empresas reguladas en México y Latinoamérica.",
 };
 
 export default function NosotrosPage() {
@@ -35,7 +35,7 @@ export default function NosotrosPage() {
     {
       title: "Coherencia",
       description:
-        "La actitud logica y consecuente con los principios que profesamos. Responsabilidad y colaboracion con nuestro equipo y clientes.",
+        "La actitud lógica y consecuente con los principios que profesamos. Responsabilidad y colaboración con nuestro equipo y clientes.",
       icon: (
         <svg
           className="w-8 h-8"
@@ -53,9 +53,9 @@ export default function NosotrosPage() {
       ),
     },
     {
-      title: "Innovacion",
+      title: "Innovación",
       description:
-        "Facilitar tareas, procedimientos y sistemas productivos. Uso del conocimiento, creatividad, diseno y tecnologia para generar cambios.",
+        "Facilitar tareas, procedimientos y sistemas productivos. Uso del conocimiento, creatividad, diseño y tecnología para generar cambios.",
       icon: (
         <svg
           className="w-8 h-8"
@@ -75,7 +75,7 @@ export default function NosotrosPage() {
     {
       title: "Confianza",
       description:
-        "Es lo que hace que el mundo gire. La disposicion positiva respecto de las intenciones o comportamientos de otro.",
+        "Es lo que hace que el mundo gire. La disposición positiva respecto de las intenciones o comportamientos de otro.",
       icon: (
         <svg
           className="w-8 h-8"
@@ -122,18 +122,18 @@ export default function NosotrosPage() {
     },
     {
       letter: "S",
-      title: "Sistematico",
+      title: "Sistemático",
       description: "Lo que hagamos debe tener un proceso, orden y coherencia con el objetivo de replicarlo.",
     },
     {
       letter: "S",
-      title: "Sistemico",
-      description: "Vision integral de los sistemas y su interrelacion para conocer la totalidad. Integrar todas las partes.",
+      title: "Sistémico",
+      description: "Visión integral de los sistemas y su interrelación para conocer la totalidad. Integrar todas las partes.",
     },
     {
       letter: "S",
       title: "Sustentado",
-      description: "Partir de la realidad e informacion, investigacion, analisis, asesorias; para generar estrategias y accionar desde una base real.",
+      description: "Partir de la realidad e información, investigación, análisis, asesorías; para generar estrategias y accionar desde una base real.",
     },
     {
       letter: "S",
@@ -143,7 +143,7 @@ export default function NosotrosPage() {
     {
       letter: "S",
       title: "Seguro",
-      description: "Sostener la confianza en la empresa desde productos, servicios, socios, personal y clientes con analisis, prevencion y contencion de riesgos.",
+      description: "Sostener la confianza en la empresa desde productos, servicios, socios, personal y clientes con análisis, prevención y contención de riesgos.",
     },
     {
       letter: "S",
@@ -155,12 +155,12 @@ export default function NosotrosPage() {
   const certifications = [
     {
       name: "ISO 27001",
-      description: "Seguridad de la informacion",
+      description: "Seguridad de la información",
       logo: "/images/certifications/iso-27001.png",
     },
     {
       name: "ISO 9001",
-      description: "Gestion de calidad",
+      description: "Gestión de calidad",
       logo: "/images/certifications/iso-9001.png",
     },
     {
@@ -170,7 +170,7 @@ export default function NosotrosPage() {
     },
     {
       name: "NIST",
-      description: "Estandares biometricos",
+      description: "Estándares biométricos",
       logo: "/images/certifications/nist.png",
     },
   ];
@@ -189,15 +189,15 @@ export default function NosotrosPage() {
             <div className="text-center max-w-4xl mx-auto">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full text-sm text-white/70 mb-8">
                 <span className="w-2 h-2 bg-[#00d4aa] rounded-full" />
-                Proposito de JAAK
+                Propósito de JAAK
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
                 <span className="text-[#0066ff]">Seguridad</span> confiable
               </h1>
               <p className="text-xl text-white/70 max-w-3xl mx-auto leading-relaxed">
-                Tecnologia 100% mexicana disenada para resolver los retos
-                unicos de verificacion de identidad que enfrentan las empresas
-                en nuestro pais y Latinoamerica.
+                Tecnología 100% mexicana diseñada para resolver los retos
+                únicos de verificación de identidad que enfrentan las empresas
+                en nuestro país y Latinoamérica.
               </p>
             </div>
           </div>
@@ -210,10 +210,10 @@ export default function NosotrosPage() {
               {/* Vision */}
               <div className="bg-gradient-to-br from-[#0066ff]/5 to-[#00d4aa]/5 rounded-3xl p-8 lg:p-12">
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#0066ff]/10 rounded-full text-sm text-[#0066ff] font-medium mb-6">
-                  Vision
+                  Visión
                 </div>
                 <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
-                  Ofrecer a nuestros clientes globales una plataforma segura y completa para la gestion y verificacion de identidades.
+                  Ofrecer a nuestros clientes globales una plataforma segura y completa para la gestión y verificación de identidades.
                 </h2>
                 <div className="w-16 h-1 bg-[#0066ff] rounded-full"></div>
               </div>
@@ -221,10 +221,10 @@ export default function NosotrosPage() {
               {/* Mission */}
               <div className="bg-gradient-to-br from-[#00d4aa]/5 to-[#0066ff]/5 rounded-3xl p-8 lg:p-12">
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#00d4aa]/10 rounded-full text-sm text-[#00d4aa] font-medium mb-6">
-                  Mision
+                  Misión
                 </div>
                 <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
-                  Brindar facilidad, innovacion y seguridad para nuestros clientes con la tecnologia JAAK.
+                  Brindar facilidad, innovación y seguridad para nuestros clientes con la tecnología JAAK.
                 </h2>
                 <div className="w-16 h-1 bg-[#00d4aa] rounded-full"></div>
               </div>
@@ -243,7 +243,7 @@ export default function NosotrosPage() {
                 Las 7 S de JAAK
               </h2>
               <p className="text-lg text-white/70">
-                Los principios fundamentales que guian cada accion y decision en nuestra organizacion.
+                Los principios fundamentales que guían cada acción y decisión en nuestra organización.
               </p>
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -308,16 +308,16 @@ export default function NosotrosPage() {
                   Orgullosamente mexicanos
                 </div>
                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-                  Tecnologia{" "}
+                  Tecnología{" "}
                   <span className="text-[#00d4aa]">100% mexicana</span>
                 </h2>
                 <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                  JAAK nacio en Mexico con la vision de resolver los retos
-                  unicos de verificacion de identidad que enfrentan las empresas
-                  en nuestro pais y en Latinoamerica.
+                  JAAK nació en México con la visión de resolver los retos
+                  únicos de verificación de identidad que enfrentan las empresas
+                  en nuestro país y en Latinoamérica.
                 </p>
                 <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                  Nuestra tecnologia esta disenada para funcionar con
+                  Nuestra tecnología está diseñada para funcionar con
                   documentos mexicanos (INE, pasaporte, licencias estatales) y
                   cumplir con regulaciones locales como la LFPIORPI, normativas
                   de la CNBV y la Ley Fintech.
@@ -372,7 +372,7 @@ export default function NosotrosPage() {
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-900 mb-1">
-                        Regulacion mexicana
+                        Regulación mexicana
                       </h3>
                       <p className="text-sm text-gray-600">
                         Cumplimiento con CNBV, LFPIORPI y mas
@@ -413,7 +413,7 @@ export default function NosotrosPage() {
                         &lt;3s
                       </div>
                       <div className="text-sm text-gray-600">
-                        Tiempo de verificacion
+                        Tiempo de verificación
                       </div>
                     </div>
                   </div>
@@ -431,11 +431,11 @@ export default function NosotrosPage() {
                 Certificaciones internacionales
               </div>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Respaldados por los estandares mas altos
+                Respaldados por los estándares más altos
               </h2>
               <p className="text-lg text-gray-600">
                 Nuestras certificaciones avalan nuestro compromiso con la
-                seguridad, calidad y precision en cada verificacion.
+                seguridad, calidad y precisión en cada verificación.
               </p>
             </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -462,8 +462,8 @@ export default function NosotrosPage() {
             </div>
             <div className="mt-12 text-center">
               <p className="text-gray-500 text-sm">
-                Ademas contamos con certificacion IQNET, Distintivo Oro y sello
-                Hecho en Mexico
+                Además contamos con certificación IQNET, Distintivo Oro y sello
+                Hecho en México
               </p>
             </div>
           </div>
@@ -474,11 +474,11 @@ export default function NosotrosPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="bg-gradient-to-br from-[#0066ff] to-[#0052cc] rounded-3xl p-8 lg:p-16 text-center">
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
-                Se parte del equipo JAAK
+                Sé parte del equipo JAAK
               </h2>
               <p className="text-xl text-white/80 max-w-2xl mx-auto mb-10">
-                Estamos buscando talento apasionado por la tecnologia y la
-                innovacion. Unete a nosotros y ayuda a construir el futuro de
+                Estamos buscando talento apasionado por la tecnología y la
+                innovación. Únete a nosotros y ayuda a construir el futuro de
                 la identidad digital.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -486,7 +486,7 @@ export default function NosotrosPage() {
                   href="/contacto"
                   className="inline-flex items-center justify-center px-8 py-4 bg-white text-[#0066ff] font-semibold rounded-xl hover:bg-gray-100 transition-colors"
                 >
-                  Contactanos
+                  Contáctanos
                   <svg
                     className="w-5 h-5 ml-2"
                     fill="none"
