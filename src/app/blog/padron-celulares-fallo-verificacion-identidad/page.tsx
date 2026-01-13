@@ -224,7 +224,7 @@ export default function PadronCelularesFalloVerificacion() {
               </div>
 
               <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-6">
-                Cómo se evita este desastre (y aquí entra JAAK)
+                Cómo se evita este desastre
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
                 La suplantación que estamos viendo no es inevitable.
