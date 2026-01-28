@@ -39,8 +39,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# AI assistant settings
-CLAUDE.md
+# AI assistant settings (CLAUDE.md is kept for documentation)
 .claude/
 .cursorrules
 .cursor/
