@@ -40,7 +40,6 @@ yarn-error.log*
 next-env.d.ts
 
 # AI assistant settings
-CLAUDE.md
 .claude/
 .cursorrules
 .cursor/
