@@ -77,7 +77,7 @@ export default function ProteccionDatosPersonales() {
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="rounded-2xl overflow-hidden shadow-xl">
               <Image
-                src="/images/blog/proteccion-datos-personales.png"
+                src="/images/blog/standard-quality-control-concept-m.jpg"
                 alt="Protección de datos personales: compromiso más allá del cumplimiento"
                 width={1200}
                 height={675}

@@ -18,7 +18,7 @@ export const blogPosts: BlogPost[] = [
     category: "Seguridad",
     slug: "proteccion-datos-personales",
     readTime: "8 min",
-    image: "/images/blog/proteccion-datos-personales.png",
+    image: "/images/blog/standard-quality-control-concept-m.jpg",
   },
   {
     title: "El registro obligatorio de celulares: cuando la identidad se diseña mal, el sistema colapsa",
