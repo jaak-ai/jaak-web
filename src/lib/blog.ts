@@ -11,6 +11,16 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    title: "La protección de datos personales: un compromiso que va más allá del cumplimiento",
+    excerpt: "La protección de datos ya no es solo un requisito legal, es un pilar de confianza, reputación y continuidad operativa. Descubre cómo fortalecer tu estrategia de protección desde la verificación de identidad.",
+    date: "28 de enero, 2026",
+    dateISO: "2026-01-28",
+    category: "Seguridad",
+    slug: "proteccion-datos-personales",
+    readTime: "8 min",
+    image: "/images/blog/proteccion-datos-personales.png",
+  },
+  {
     title: "El registro obligatorio de celulares: cuando la identidad se diseña mal, el sistema colapsa",
     excerpt: "Lo que está ocurriendo con el padrón obligatorio de telefonía en México es la consecuencia de confundir cumplimiento con seguridad. Análisis del fallo crítico que permite suplantación de identidad con deepfakes.",
     date: "13 de enero, 2026",
