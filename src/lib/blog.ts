@@ -11,6 +11,16 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    title: "La inteligencia artificial como infraestructura de confianza: liderazgo, gobernanza y tecnología responsable",
+    excerpt: "La IA en sectores estratégicos exige más que eficiencia: requiere gobernanza, trazabilidad y liderazgo responsable. Analizamos los Principios de Chapultepec y cómo JAAK integra ética y tecnología.",
+    date: "7 de febrero, 2026",
+    dateISO: "2026-02-07",
+    category: "Compliance",
+    slug: "ia-infraestructura-confianza",
+    readTime: "10 min",
+    image: "/images/blog/ia-infraestructura-confianza.jpg",
+  },
+  {
     title: "La protección de datos personales: un compromiso que va más allá del cumplimiento",
     excerpt: "La protección de datos ya no es solo un requisito legal, es un pilar de confianza, reputación y continuidad operativa. Descubre cómo fortalecer tu estrategia de protección desde la verificación de identidad.",
     date: "28 de enero, 2026",
