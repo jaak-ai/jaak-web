@@ -11,6 +11,16 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    title: "Alerta CONDUSEF: ¿Por qué persiste la suplantación de instituciones financieras?",
+    excerpt: "CONDUSEF alertó sobre el nuevo modus operandi de suplantadores. Analizamos por qué la suplantación sigue funcionando, qué vacíos estructurales la permiten y cómo la identidad digital verificable puede cambiar el panorama.",
+    date: "10 de febrero, 2026",
+    dateISO: "2026-02-10",
+    category: "Fraude",
+    slug: "alerta-condusef-suplantacion-identidad",
+    readTime: "10 min",
+    image: "/images/blog/alerta-condusef-suplantacion.jpg",
+  },
+  {
     title: "La inteligencia artificial como infraestructura de confianza: liderazgo, gobernanza y tecnología responsable",
     excerpt: "La IA en sectores estratégicos exige más que eficiencia: requiere gobernanza, trazabilidad y liderazgo responsable. Analizamos los Principios de Chapultepec y cómo JAAK integra ética y tecnología.",
     date: "7 de febrero, 2026",
