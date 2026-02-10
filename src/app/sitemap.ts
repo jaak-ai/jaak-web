@@ -1,8 +1,16 @@
 import { MetadataRoute } from "next";
+import { blogPosts } from "@/lib/blog";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://jaak.ai";
   const now = new Date();
+
+  const blogEntries: MetadataRoute.Sitemap = blogPosts.map((post) => ({
+    url: `${baseUrl}/blog/${post.slug}`,
+    lastModified: new Date(post.dateISO),
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
 
   return [
     // Homepage
@@ -155,6 +163,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.7,
     },
+    ...blogEntries,
     // Company
     {
       url: `${baseUrl}/nosotros`,

@@ -5,16 +5,52 @@ import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Alerta CONDUSEF: ¿Por qué persiste la suplantación de instituciones financieras? | JAAK",
-  description: "CONDUSEF alertó sobre el nuevo modus operandi de suplantadores. Analizamos por qué la suplantación sigue funcionando, qué vacíos estructurales la permiten y cómo la identidad digital verificable puede cambiar el panorama.",
-  keywords: ["CONDUSEF", "suplantación", "fraude financiero", "identidad digital", "verificación de identidad", "instituciones financieras", "deepfakes", "protección de datos", "JAAK"],
+  title: "Alerta CONDUSEF 2026: suplantación de instituciones financieras en México | JAAK",
+  description: "CONDUSEF alerta sobre nuevos fraudes por suplantación de bancos e instituciones financieras en México. JAAK analiza por qué persiste, cómo operan los suplantadores con IA y deepfakes, y cómo la identidad digital verificable previene el fraude.",
+  keywords: ["CONDUSEF alerta 2026", "suplantación instituciones financieras", "fraude bancario México", "CONDUSEF JAAK", "suplantación de identidad", "fraude financiero México", "identidad digital verificable", "verificación de identidad CONDUSEF", "deepfakes fraude", "prevención fraude bancario", "protección datos personales", "JAAK verificación identidad"],
   openGraph: {
-    title: "Alerta CONDUSEF: ¿Por qué persiste la suplantación de instituciones financieras?",
-    description: "Analizamos por qué la suplantación de instituciones financieras sigue funcionando y qué vacíos estructurales la permiten.",
+    title: "Alerta CONDUSEF 2026: ¿Por qué persiste la suplantación de instituciones financieras?",
+    description: "CONDUSEF alerta sobre nuevos fraudes por suplantación bancaria. JAAK analiza los vacíos estructurales y cómo la identidad digital verificable puede prevenir el fraude en México.",
     type: "article",
     publishedTime: "2026-02-10",
     authors: ["JAAK"],
+    url: "https://jaak.ai/blog/alerta-condusef-suplantacion-identidad",
+    siteName: "JAAK",
+    locale: "es_MX",
   },
+  alternates: {
+    canonical: "https://jaak.ai/blog/alerta-condusef-suplantacion-identidad",
+  },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "Alerta CONDUSEF 2026: ¿Por qué persiste la suplantación de instituciones financieras en México?",
+  description: "CONDUSEF alerta sobre nuevos fraudes por suplantación de bancos e instituciones financieras en México. JAAK analiza por qué persiste y cómo la identidad digital verificable previene el fraude.",
+  image: "https://jaak.ai/images/blog/alerta-condusef-suplantacion.jpg",
+  datePublished: "2026-02-10",
+  dateModified: "2026-02-10",
+  author: {
+    "@type": "Organization",
+    name: "JAAK",
+    url: "https://jaak.ai",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "JAAK",
+    url: "https://jaak.ai",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://jaak.ai/images/jaak-logo.svg",
+    },
+  },
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": "https://jaak.ai/blog/alerta-condusef-suplantacion-identidad",
+  },
+  keywords: "CONDUSEF, suplantación instituciones financieras, fraude bancario México, JAAK, identidad digital verificable, deepfakes fraude",
+  inLanguage: "es-MX",
 };
 
 export default function AlertaCondusefSuplantacion() {
@@ -38,6 +74,10 @@ export default function AlertaCondusefSuplantacion() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Header />
       <main>
         {/* Hero Section */}
@@ -63,12 +103,12 @@ export default function AlertaCondusefSuplantacion() {
               <span className="text-white/40 text-sm">10 min de lectura</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-black text-white mb-6">
-              Alerta CONDUSEF: ¿Por qué persiste la suplantación de instituciones financieras?
+              Alerta CONDUSEF 2026: ¿Por qué persiste la suplantación de instituciones financieras en México?
             </h1>
             <p className="text-xl text-white/60">
               CONDUSEF publicó una alerta sobre la actualización del modus operandi de los
-              suplantadores. La pregunta inevitable es otra: ¿por qué, si las recomendaciones
-              se repiten año con año, la suplantación sigue funcionando?
+              suplantadores de bancos en México. La pregunta inevitable es otra: ¿por qué, si las
+              recomendaciones se repiten año con año, la suplantación sigue funcionando?
             </p>
           </div>
         </section>
@@ -117,7 +157,7 @@ export default function AlertaCondusefSuplantacion() {
               </p>
 
               <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-6">
-                ¿Por qué un logotipo o un nombre &quot;parecido&quot; sigue siendo suficiente para engañar?
+                Suplantación de bancos: ¿por qué un logotipo &quot;parecido&quot; sigue siendo suficiente para engañar?
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
                 Porque durante años hemos tratado la identidad institucional como algo visual.
@@ -138,7 +178,7 @@ export default function AlertaCondusefSuplantacion() {
               </div>
 
               <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-6">
-                ¿Por qué seguimos compartiendo datos personales por WhatsApp o correo?
+                Fraude por WhatsApp y correo: ¿por qué seguimos compartiendo datos personales?
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
                 Porque el ecosistema lo normalizó. Mensajes con lenguaje institucional, enviados por
@@ -154,7 +194,7 @@ export default function AlertaCondusefSuplantacion() {
               </p>
 
               <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-6">
-                ¿Por qué el fraude del &quot;anticipo&quot; sigue siendo tan efectivo?
+                Fraude financiero del &quot;anticipo&quot;: ¿por qué sigue siendo tan efectivo en México?
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
                 Porque explota un vacío estructural: no existe una validación de identidad obligatoria
@@ -205,7 +245,7 @@ export default function AlertaCondusefSuplantacion() {
               </div>
 
               <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-6">
-                ¿Qué cambia cuando entra la inteligencia artificial?
+                Deepfakes e inteligencia artificial: el nuevo riesgo en la suplantación financiera
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
                 Cambia el punto de referencia. Audios falsos, videos generados artificialmente y
@@ -227,7 +267,7 @@ export default function AlertaCondusefSuplantacion() {
               </div>
 
               <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-6">
-                ¿Y cuál es la postura de JAAK ante este escenario?
+                JAAK: identidad digital verificable contra la suplantación de instituciones financieras
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
                 En JAAK partimos de una convicción clara: la tecnología solo genera confianza cuando
