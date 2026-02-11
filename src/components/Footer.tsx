@@ -11,6 +11,7 @@ export default function Footer() {
         { name: "Firma electrónica", href: "/plataforma/firma-electronica" },
         { name: "Gestión de evidencia", href: "/plataforma/gestion-evidencia" },
         { name: "API & SDKs", href: "/documentacion" },
+        { name: "Precios", href: "/precios" },
       ],
     },
     useCases: {

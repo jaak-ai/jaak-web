@@ -45,6 +45,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    // Pricing
+    {
+      url: `${baseUrl}/precios`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
     // Solutions by industry
     {
       url: `${baseUrl}/soluciones/instituciones-financieras`,

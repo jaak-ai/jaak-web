@@ -128,6 +128,14 @@ export default function Header() {
                 </button>
               </div>
 
+              {/* Precios Link */}
+              <Link
+                href="/precios"
+                className="px-4 py-2 text-[15px] font-medium text-gray-700 hover:text-[#0066ff] transition-colors"
+              >
+                Precios
+              </Link>
+
               {/* Compliance Dropdown */}
               <div
                 className="relative"
@@ -257,6 +265,13 @@ export default function Header() {
                     Contacto
                   </Link>
                 </div>
+              </div>
+
+              {/* Precios */}
+              <div>
+                <Link href="/precios" className="block text-[#0066ff] font-semibold" onClick={() => setMobileMenuOpen(false)}>
+                  Precios
+                </Link>
               </div>
 
               <div className="pt-4 border-t border-gray-200">
