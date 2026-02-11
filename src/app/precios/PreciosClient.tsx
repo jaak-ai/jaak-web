@@ -1,7 +1,33 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
+
+// --- Scroll Reveal Hook ---
+function useScrollReveal<T extends HTMLElement>(threshold = 0.15) {
+  const ref = useRef<T>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(el);
+        }
+      },
+      { threshold }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [threshold]);
+
+  return { ref, isVisible };
+}
 
 type ProductTab = "biometria" | "firma" | "firma-bio";
 
@@ -96,61 +122,217 @@ const faqItems = [
   },
 ];
 
+// --- Simulator types and pricing engine ---
+type SimProduct = "biometria" | "firma" | "firma-bio";
+
+interface SimulatorResult {
+  modalidad: string;
+  plan: string;
+  costoMensual: string;
+  costoAnual: string;
+  setup: string;
+  precioUnitario: string;
+  nota: string;
+}
+
+const SIM_PRODUCT_LABELS: Record<SimProduct, string> = {
+  biometria: "Biometría (KYC)",
+  firma: "Firma Electrónica",
+  "firma-bio": "Firma Avanzada + Biometría",
+};
+
+function calculateEstimate(
+  monthlyVolume: number,
+  product: SimProduct,
+  soporte247: boolean
+): SimulatorResult | null {
+  if (monthlyVolume <= 0) return null;
+
+  const annualVolume = monthlyVolume * 12;
+
+  // Base unit prices per product (MXN per verification)
+  const unitPrices: Record<SimProduct, { auto: number; enterprise: number; alliance: number }> = {
+    biometria:   { auto: 27, enterprise: 3.5, alliance: 1.8 },
+    firma:       { auto: 22, enterprise: 2.8, alliance: 1.4 },
+    "firma-bio": { auto: 45, enterprise: 5.0, alliance: 2.5 },
+  };
+
+  const prices = unitPrices[product];
+
+  // --- AUTOSERVICIO (≤ 500 verif/año = ~42/mes) ---
+  if (annualVolume <= 500) {
+    let plan = "";
+    let costoAnual = 0;
+    let unitario = 0;
+
+    // Map to actual plan pricing
+    const autoPlans = pricingData[product];
+
+    if (annualVolume <= 5) {
+      plan = autoPlans[0].name; // Cobre
+      costoAnual = parseFloat(autoPlans[0].price.replace(/[$,]/g, ""));
+      unitario = costoAnual / 5;
+    } else if (annualVolume <= 50) {
+      plan = autoPlans[1].name; // Bronce
+      costoAnual = parseFloat(autoPlans[1].price.replace(/[$,]/g, ""));
+      unitario = costoAnual / 50;
+    } else if (annualVolume <= 100) {
+      plan = autoPlans[2].name; // Plata
+      costoAnual = parseFloat(autoPlans[2].price.replace(/[$,]/g, ""));
+      unitario = costoAnual / 100;
+    } else {
+      plan = autoPlans[3].name; // Oro
+      costoAnual = parseFloat(autoPlans[3].price.replace(/[$,]/g, ""));
+      unitario = costoAnual / 500;
+    }
+
+    const costoMensual = Math.round(costoAnual / 12);
+
+    return {
+      modalidad: "Autoservicio",
+      plan: `${plan} – ${SIM_PRODUCT_LABELS[product]}`,
+      costoMensual: `$${costoMensual.toLocaleString("es-MX")}`,
+      costoAnual: `$${costoAnual.toLocaleString("es-MX")}`,
+      setup: "Sin costo",
+      precioUnitario: `~$${Math.round(unitario).toLocaleString("es-MX")}`,
+      nota: "Pago anual anticipado. Sin contrato obligatorio.",
+    };
+  }
+
+  // --- ENTERPRISE (501 – 500,000 verif/año) ---
+  if (annualVolume <= 500_000) {
+    let plan = "";
+    let setupCost = 0;
+    let sla = "";
+    let unitario = prices.enterprise;
+
+    if (annualVolume <= 8_000) {
+      plan = "Inicial";
+      setupCost = 10_000;
+      sla = "99.5%";
+      unitario = prices.enterprise * 1.15;
+    } else if (annualVolume <= 40_000) {
+      plan = "Crecimiento";
+      setupCost = 15_000;
+      sla = "99.9%";
+      unitario = prices.enterprise;
+    } else if (annualVolume <= 80_000) {
+      plan = "Profesional";
+      setupCost = 25_000;
+      sla = "99.9%";
+      unitario = prices.enterprise * 0.9;
+    } else {
+      plan = "Empresarial";
+      setupCost = 40_000;
+      sla = "99.99%";
+      unitario = prices.enterprise * 0.78;
+    }
+
+    if (soporte247) unitario *= 1.15;
+
+    const costoMensual = Math.round(monthlyVolume * unitario);
+    const costoAnual = costoMensual * 12;
+
+    return {
+      modalidad: "Enterprise",
+      plan: `${plan} – SLA ${sla}`,
+      costoMensual: `$${costoMensual.toLocaleString("es-MX")}`,
+      costoAnual: `$${costoAnual.toLocaleString("es-MX")}`,
+      setup: `$${setupCost.toLocaleString("es-MX")} MXN (único)`,
+      precioUnitario: `~$${unitario.toFixed(2)}`,
+      nota: soporte247
+        ? "Facturación mensual. Incluye soporte 24×7."
+        : "Facturación mensual. Soporte 12×7 incluido. Add-on 24×7 disponible.",
+    };
+  }
+
+  // --- ALIANZA (500k+) ---
+  let nivel = "";
+  let setupCost = 0;
+  let unitario = prices.alliance;
+
+  if (annualVolume <= 999_999) {
+    nivel = "Base";
+    setupCost = 50_000;
+  } else if (annualVolume <= 2_400_000) {
+    nivel = "Nacional";
+    setupCost = 100_000;
+    unitario *= 0.9;
+  } else if (annualVolume <= 4_900_000) {
+    nivel = "Corporativo";
+    setupCost = 200_000;
+    unitario *= 0.78;
+  } else {
+    nivel = "Estratégico";
+    setupCost = 0;
+    unitario *= 0.65;
+  }
+
+  const costoMensual = Math.round(monthlyVolume * unitario);
+  const costoAnual = costoMensual * 12;
+
+  return {
+    modalidad: "Programa de Alianzas",
+    plan: `Nivel ${nivel}`,
+    costoMensual: `$${costoMensual.toLocaleString("es-MX")}`,
+    costoAnual: `$${costoAnual.toLocaleString("es-MX")}`,
+    setup: setupCost > 0 ? `$${setupCost.toLocaleString("es-MX")} MXN (único)` : "Cotización personalizada",
+    precioUnitario: `~$${unitario.toFixed(2)}`,
+    nota: "Soporte 24×7 incluido. Compromiso anual mínimo. Capacitación incluida.",
+  };
+}
+
 export default function PreciosClient() {
   const [activeTab, setActiveTab] = useState<ProductTab>("biometria");
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  // Simulator state
   const [simVolume, setSimVolume] = useState("");
-  const [simBiometria, setSimBiometria] = useState(false);
-  const [simFirma, setSimFirma] = useState(false);
+  const [simProduct, setSimProduct] = useState<SimProduct>("biometria");
   const [simSoporte, setSimSoporte] = useState(false);
-  const [simResult, setSimResult] = useState<{ modalidad: string; costo: string } | null>(null);
+  const [simResult, setSimResult] = useState<SimulatorResult | null>(null);
+  const [simError, setSimError] = useState("");
+
+  // Scroll reveal refs
+  const heroReveal = useScrollReveal<HTMLElement>(0.1);
+  const tabsReveal = useScrollReveal<HTMLElement>(0.1);
+  const enterpriseReveal = useScrollReveal<HTMLElement>(0.1);
+  const allianceReveal = useScrollReveal<HTMLElement>(0.1);
+  const comparisonReveal = useScrollReveal<HTMLElement>(0.1);
+  const diffReveal = useScrollReveal<HTMLElement>(0.1);
+  const simulatorReveal = useScrollReveal<HTMLElement>(0.1);
+  const faqReveal = useScrollReveal<HTMLElement>(0.1);
+  const ctaReveal = useScrollReveal<HTMLElement>(0.1);
 
   const currentPlans = pricingData[activeTab];
 
-  const handleSimulate = () => {
+  const handleSimulate = useCallback(() => {
     const vol = parseInt(simVolume) || 0;
-    let modalidad = "";
-    let costoBase = 0;
-
-    if (vol <= 100) {
-      modalidad = "Autoservicio Plata";
-      costoBase = 225;
-    } else if (vol <= 500) {
-      modalidad = "Autoservicio Oro";
-      costoBase = 1042;
-    } else if (vol <= 8000) {
-      modalidad = "Enterprise Inicial";
-      costoBase = vol * 3.5;
-    } else if (vol <= 40000) {
-      modalidad = "Enterprise Crecimiento";
-      costoBase = vol * 2.8;
-    } else if (vol <= 80000) {
-      modalidad = "Enterprise Profesional";
-      costoBase = vol * 2.2;
-    } else {
-      modalidad = "Enterprise Empresarial / Alianza";
-      costoBase = vol * 1.8;
+    if (vol <= 0) {
+      setSimError("Ingresa un número mayor a 0.");
+      setSimResult(null);
+      return;
     }
+    setSimError("");
+    const result = calculateEstimate(vol, simProduct, simSoporte);
+    setSimResult(result);
+  }, [simVolume, simProduct, simSoporte]);
 
-    if (simBiometria) costoBase *= 1.0;
-    if (simFirma) costoBase *= 1.35;
-    if (simSoporte) costoBase *= 1.15;
-
-    setSimResult({
-      modalidad,
-      costo: `$${Math.round(costoBase).toLocaleString("es-MX")} MXN`,
-    });
-  };
+  // Reveal CSS helper
+  const revealClass = (visible: boolean, delay = 0) =>
+    `transition-all duration-700 ease-out ${delay ? `delay-[${delay}ms]` : ""} ${
+      visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+    }`;
 
   return (
     <>
       {/* HERO SECTION */}
-      <section className="pt-36 pb-20 md:pt-44 md:pb-28 relative overflow-hidden" style={{ background: "linear-gradient(135deg, #202945 0%, #141929 60%, #202945 100%)" }}>
+      <section ref={heroReveal.ref} className="pt-36 pb-20 md:pt-44 md:pb-28 relative overflow-hidden" style={{ background: "linear-gradient(135deg, #202945 0%, #141929 60%, #202945 100%)" }}>
         <div className="absolute inset-0 opacity-[0.03]" style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M20 20h20v20H20z'/%3E%3C/g%3E%3C/svg%3E")`,
         }} />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
+          <div className={`max-w-4xl mx-auto text-center ${revealClass(heroReveal.isVisible)}`}>
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight mb-6">
               Precios diseñados según tu nivel de operación y cumplimiento
             </h1>
@@ -195,8 +377,8 @@ export default function PreciosClient() {
       </section>
 
       {/* PRODUCT SELECTOR TABS */}
-      <section className="py-16 md:py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section ref={tabsReveal.ref} className="py-16 md:py-24 bg-white">
+        <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${revealClass(tabsReveal.isVisible)}`}>
           <div className="flex justify-center mb-12">
             <div className="inline-flex bg-[#f4f6f8] rounded-lg p-1.5">
               {(Object.keys(tabLabels) as ProductTab[]).map((tab) => (
@@ -304,8 +486,8 @@ export default function PreciosClient() {
       </section>
 
       {/* ENTERPRISE SECTION */}
-      <section className="py-16 md:py-24 bg-[#f4f6f8]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section ref={enterpriseReveal.ref} className="py-16 md:py-24 bg-[#f4f6f8]">
+        <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${revealClass(enterpriseReveal.isVisible)}`}>
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl font-bold text-[#202945] mb-3">
               Enterprise – Infraestructura regulada y escalable
@@ -385,8 +567,8 @@ export default function PreciosClient() {
       </section>
 
       {/* PROGRAMA DE ALIANZAS */}
-      <section className="py-16 md:py-24" style={{ background: "linear-gradient(135deg, #202945 0%, #141929 60%, #202945 100%)" }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section ref={allianceReveal.ref} className="py-16 md:py-24" style={{ background: "linear-gradient(135deg, #202945 0%, #141929 60%, #202945 100%)" }}>
+        <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${revealClass(allianceReveal.isVisible)}`}>
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
               Programa de Alianzas – Escalabilidad masiva
@@ -439,8 +621,8 @@ export default function PreciosClient() {
       </section>
 
       {/* COMPARISON TABLE */}
-      <section className="py-16 md:py-24 bg-white">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section ref={comparisonReveal.ref} className="py-16 md:py-24 bg-white">
+        <div className={`max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 ${revealClass(comparisonReveal.isVisible)}`}>
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl font-bold text-[#202945] mb-3">
               ¿Qué modalidad es adecuada para ti?
@@ -491,8 +673,8 @@ export default function PreciosClient() {
       </section>
 
       {/* DIFFERENTIATOR BLOCK */}
-      <section className="py-16 md:py-24 bg-[#f4f6f8]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section ref={diffReveal.ref} className="py-16 md:py-24 bg-[#f4f6f8]">
+        <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${revealClass(diffReveal.isVisible)}`}>
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl font-bold text-[#202945] mb-3">
               Más que precios: infraestructura de confianza
@@ -524,14 +706,14 @@ export default function PreciosClient() {
       </section>
 
       {/* COST SIMULATOR */}
-      <section className="py-16 md:py-24 bg-white">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section ref={simulatorReveal.ref} className="py-16 md:py-24 bg-white">
+        <div className={`max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 ${revealClass(simulatorReveal.isVisible)}`}>
           <div className="text-center mb-10">
             <h2 className="text-2xl md:text-3xl font-bold text-[#202945] mb-3">
               Simulador de costos
             </h2>
             <p className="text-gray-500 text-base">
-              Obtén una estimación de costos según tus necesidades.
+              Configura tu escenario y obtén una estimación detallada al instante.
             </p>
           </div>
 
@@ -545,44 +727,52 @@ export default function PreciosClient() {
                 <input
                   id="sim-volume"
                   type="number"
-                  min="0"
+                  min="1"
                   value={simVolume}
-                  onChange={(e) => setSimVolume(e.target.value)}
+                  onChange={(e) => { setSimVolume(e.target.value); setSimError(""); }}
+                  onKeyDown={(e) => { if (e.key === "Enter") handleSimulate(); }}
                   placeholder="Ej. 1500"
                   className="w-full px-4 py-3 bg-[#f4f6f8] border border-gray-200 rounded-lg text-[#202945] focus:ring-2 focus:ring-[#1ecad3] focus:border-transparent outline-none transition-all"
                 />
+                {simError && <p className="mt-2 text-sm text-red-500">{simError}</p>}
               </div>
 
-              {/* Toggle options */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <label className="flex items-center gap-3 p-4 bg-[#f4f6f8] rounded-lg cursor-pointer border border-transparent hover:border-gray-200 transition-all">
-                  <input
-                    type="checkbox"
-                    checked={simBiometria}
-                    onChange={(e) => setSimBiometria(e.target.checked)}
-                    className="w-5 h-5 accent-[#1ecad3] rounded"
-                  />
-                  <span className="text-sm font-medium text-[#202945]">Biometría</span>
+              {/* Product selector */}
+              <div>
+                <label className="block text-sm font-semibold text-[#202945] mb-3">
+                  ¿Qué producto necesitas?
                 </label>
-                <label className="flex items-center gap-3 p-4 bg-[#f4f6f8] rounded-lg cursor-pointer border border-transparent hover:border-gray-200 transition-all">
-                  <input
-                    type="checkbox"
-                    checked={simFirma}
-                    onChange={(e) => setSimFirma(e.target.checked)}
-                    className="w-5 h-5 accent-[#1ecad3] rounded"
-                  />
-                  <span className="text-sm font-medium text-[#202945]">Firma avanzada</span>
-                </label>
-                <label className="flex items-center gap-3 p-4 bg-[#f4f6f8] rounded-lg cursor-pointer border border-transparent hover:border-gray-200 transition-all">
-                  <input
-                    type="checkbox"
-                    checked={simSoporte}
-                    onChange={(e) => setSimSoporte(e.target.checked)}
-                    className="w-5 h-5 accent-[#1ecad3] rounded"
-                  />
-                  <span className="text-sm font-medium text-[#202945]">Soporte 24×7</span>
-                </label>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  {(Object.keys(SIM_PRODUCT_LABELS) as SimProduct[]).map((prod) => (
+                    <button
+                      key={prod}
+                      type="button"
+                      onClick={() => setSimProduct(prod)}
+                      className={`p-4 rounded-lg text-sm font-medium transition-all border text-center ${
+                        simProduct === prod
+                          ? "bg-[#202945] text-white border-[#202945]"
+                          : "bg-[#f4f6f8] text-[#202945] border-transparent hover:border-gray-200"
+                      }`}
+                    >
+                      {SIM_PRODUCT_LABELS[prod]}
+                    </button>
+                  ))}
+                </div>
               </div>
+
+              {/* Soporte 24x7 toggle */}
+              <label className="flex items-center gap-3 p-4 bg-[#f4f6f8] rounded-lg cursor-pointer border border-transparent hover:border-gray-200 transition-all">
+                <input
+                  type="checkbox"
+                  checked={simSoporte}
+                  onChange={(e) => setSimSoporte(e.target.checked)}
+                  className="w-5 h-5 accent-[#1ecad3] rounded"
+                />
+                <div>
+                  <span className="text-sm font-medium text-[#202945]">Soporte 24×7</span>
+                  <span className="text-xs text-gray-400 ml-2">(aplica solo en Enterprise)</span>
+                </div>
+              </label>
 
               {/* Calculate button */}
               <button
@@ -594,20 +784,71 @@ export default function PreciosClient() {
 
               {/* Result */}
               {simResult && (
-                <div className="mt-6 p-6 bg-[#f4f6f8] rounded-xl border border-gray-100">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <p className="text-xs text-gray-400 uppercase tracking-wide font-semibold mb-1">Modalidad recomendada</p>
-                      <p className="text-lg font-bold text-[#202945]">{simResult.modalidad}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-gray-400 uppercase tracking-wide font-semibold mb-1">Costo estimado mensual</p>
-                      <p className="text-lg font-bold text-[#1ecad3]">{simResult.costo}</p>
+                <div className="mt-6 rounded-xl border border-gray-100 overflow-hidden">
+                  {/* Result header */}
+                  <div className="bg-[#202945] px-6 py-4">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                      <div>
+                        <p className="text-xs text-white/50 uppercase tracking-wide font-semibold">Modalidad recomendada</p>
+                        <p className="text-lg font-bold text-white">{simResult.modalidad}</p>
+                      </div>
+                      <span className="inline-block px-4 py-1.5 bg-[#1ecad3]/20 text-[#1ecad3] text-sm font-bold rounded-full">
+                        {simResult.plan}
+                      </span>
                     </div>
                   </div>
-                  <p className="text-xs text-gray-400 mt-4">
-                    * Estimación orientativa. El costo final depende de la configuración específica de tu proyecto.
-                  </p>
+
+                  {/* Result body */}
+                  <div className="bg-[#f4f6f8] p-6">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
+                      <div>
+                        <p className="text-xs text-gray-400 uppercase tracking-wide font-semibold mb-1">Costo mensual</p>
+                        <p className="text-xl font-black text-[#1ecad3]">{simResult.costoMensual}</p>
+                        <p className="text-xs text-gray-400">MXN</p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-400 uppercase tracking-wide font-semibold mb-1">Costo anual</p>
+                        <p className="text-xl font-bold text-[#202945]">{simResult.costoAnual}</p>
+                        <p className="text-xs text-gray-400">MXN</p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-400 uppercase tracking-wide font-semibold mb-1">Precio unitario</p>
+                        <p className="text-xl font-bold text-[#202945]">{simResult.precioUnitario}</p>
+                        <p className="text-xs text-gray-400">MXN / verif.</p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-gray-400 uppercase tracking-wide font-semibold mb-1">Setup</p>
+                        <p className="text-xl font-bold text-[#202945]">{simResult.setup === "Sin costo" ? "$0" : simResult.setup.split(" ")[0]}</p>
+                        <p className="text-xs text-gray-400">{simResult.setup === "Sin costo" ? "Sin costo" : "Único"}</p>
+                      </div>
+                    </div>
+
+                    <p className="text-sm text-gray-500 mb-4">{simResult.nota}</p>
+
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      {simResult.modalidad === "Autoservicio" ? (
+                        <Link
+                          href="https://platform.dev.jaak.ai/#/signup"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 text-center py-3 bg-[#1ecad3] text-white font-semibold rounded-lg hover:bg-[#19b3bb] transition-all text-sm"
+                        >
+                          Crear cuenta ahora
+                        </Link>
+                      ) : (
+                        <Link
+                          href="/contacto"
+                          className="flex-1 text-center py-3 bg-[#202945] text-white font-semibold rounded-lg hover:bg-[#141929] transition-all text-sm"
+                        >
+                          {simResult.modalidad === "Programa de Alianzas" ? "Aplicar como partner" : "Solicitar propuesta"}
+                        </Link>
+                      )}
+                    </div>
+
+                    <p className="text-xs text-gray-400 mt-4">
+                      * Estimación orientativa. El costo final depende de la configuración específica de tu proyecto y negociación comercial.
+                    </p>
+                  </div>
                 </div>
               )}
             </div>
@@ -616,8 +857,8 @@ export default function PreciosClient() {
       </section>
 
       {/* FAQ SECTION */}
-      <section className="py-16 md:py-24 bg-[#f4f6f8]">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section ref={faqReveal.ref} className="py-16 md:py-24 bg-[#f4f6f8]">
+        <div className={`max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 ${revealClass(faqReveal.isVisible)}`}>
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl font-bold text-[#202945] mb-3">
               Preguntas frecuentes
@@ -653,9 +894,9 @@ export default function PreciosClient() {
       </section>
 
       {/* FINAL CTA */}
-      <section className="py-20 md:py-28" style={{ background: "linear-gradient(135deg, #202945 0%, #141929 60%, #202945 100%)" }}>
+      <section ref={ctaReveal.ref} className="py-20 md:py-28" style={{ background: "linear-gradient(135deg, #202945 0%, #141929 60%, #202945 100%)" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl mx-auto text-center">
+          <div className={`max-w-3xl mx-auto text-center ${revealClass(ctaReveal.isVisible)}`}>
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-white mb-6">
               Diseña tu infraestructura de identidad digital con responsabilidad
             </h2>
