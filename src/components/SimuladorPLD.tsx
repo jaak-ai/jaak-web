@@ -404,12 +404,12 @@ export default function SimuladorPLD() {
     const vm = formatNumber(resultado.verificacionesMensuales);
     const va = formatNumber(resultado.verificacionesAnuales);
     if (resultado.modalidadJAAK === "Alianza Estrategica") {
-      return `Su volumen estimado de ${va} verificaciones anuales y perfil de integracion lo posiciona para el programa de Alianza Estrategica de JAAK. Este modelo esta disenado para organizaciones que integran verificacion de identidad dentro de su propia plataforma o la ofrecen como servicio a terceros.`;
+      return `Su volumen estimado de ${va} verificaciones anuales y perfil de integracion lo posiciona para el programa de Alianza Estrategica de JAAK. Este modelo está diseñado para organizaciones que integran verificacion de identidad dentro de su propia plataforma o la ofrecen como servicio a terceros.`;
     }
     if (resultado.modalidadJAAK === "Enterprise") {
-      return `Con un volumen estimado de ${vm} verificaciones mensuales (${va} al ano), su organizacion requiere la modalidad Enterprise de JAAK. Esto incluye integracion por API, soporte tecnico dedicado, SLAs personalizados y condiciones comerciales ajustadas a su volumen.`;
+      return `Con un volumen estimado de ${vm} verificaciones mensuales (${va} al año), su organizacion requiere la modalidad Enterprise de JAAK. Esto incluye integracion por API, soporte tecnico dedicado, SLAs personalizados y condiciones comerciales ajustadas a su volumen.`;
     }
-    return `Con un volumen estimado de ${vm} verificaciones mensuales (${va} al ano), su organizacion se ubica en la modalidad de Autoservicio de JAAK. Puede iniciar de forma autonoma desde la plataforma, sin necesidad de integracion tecnica ni contrato Enterprise.`;
+    return `Con un volumen estimado de ${vm} verificaciones mensuales (${va} al año), su organizacion se ubica en la modalidad de Autoservicio de JAAK. Puede iniciar de forma autonoma desde la plataforma, sin necesidad de integracion tecnica ni contrato Enterprise.`;
   };
 
   const getSubModalidadTexto = () => {
@@ -748,7 +748,7 @@ export default function SimuladorPLD() {
               </div>
               <div className="text-center p-4 bg-gray-50 rounded-lg">
                 <div className="text-2xl font-black text-gray-900">{formatNumber(resultado.verificacionesAnuales)}</div>
-                <div className="text-sm text-gray-600">verificaciones / ano</div>
+                <div className="text-sm text-gray-600">verificaciones / año</div>
               </div>
               <div className="text-center p-4 bg-gray-50 rounded-lg">
                 <div className="text-2xl font-black text-gray-900">{formatNumber(resultado.verificacionesMensuales * 2)}</div>

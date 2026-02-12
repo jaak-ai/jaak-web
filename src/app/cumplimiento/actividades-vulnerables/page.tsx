@@ -54,10 +54,10 @@ const faqItems = [
   },
   {
     question: "JAAK sustituye a mi oficial de cumplimiento?",
-    answer: "No. JAAK es una herramienta tecnologica que automatiza la verificacion de identidad y la integracion del expediente KYC. El oficial de cumplimiento sigue siendo la figura responsable de disenar las politicas internas, evaluar el riesgo de cada cliente y presentar los avisos a la UIF. JAAK proporciona la evidencia y la infraestructura que respaldan esas decisiones.",
+    answer: "No. JAAK es una herramienta tecnologica que automatiza la verificacion de identidad y la integracion del expediente KYC. El oficial de cumplimiento sigue siendo la figura responsable de diseñar las politicas internas, evaluar el riesgo de cada cliente y presentar los avisos a la UIF. JAAK proporciona la evidencia y la infraestructura que respaldan esas decisiones.",
   },
   {
-    question: "Como maneja JAAK la conservacion de expedientes por 10 anos?",
+    question: "Como maneja JAAK la conservacion de expedientes por 10 años?",
     answer: "Toda evidencia generada en JAAK se almacena con sellado de tiempo (timestamp criptografico), hash de integridad y cadena de custodia verificable. La infraestructura cumple con ISO 27001 y los datos se conservan en centros de datos con redundancia geografica. El sujeto obligado puede acceder a cualquier expediente historico durante todo el periodo de retencion.",
   },
   {
@@ -151,7 +151,7 @@ export default function ActividadesVulnerablesPage() {
                 ¿Que debe contener un expediente KYC segun la LFPIORPI?
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                La LFPIORPI y sus Reglas de Caracter General establecen que todo sujeto obligado debe integrar un expediente de identificacion del cliente cuando su operacion alcance los umbrales del Art. 17. Este expediente es la evidencia de cumplimiento ante la UIF y debe conservarse durante 10 anos.
+                La LFPIORPI y sus Reglas de Caracter General establecen que todo sujeto obligado debe integrar un expediente de identificacion del cliente cuando su operacion alcance los umbrales del Art. 17. Este expediente es la evidencia de cumplimiento ante la UIF y debe conservarse durante 10 años.
               </p>
             </div>
 
@@ -198,9 +198,9 @@ export default function ActividadesVulnerablesPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
                   </svg>
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">Conservacion por 10 anos</h3>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">Conservacion por 10 años</h3>
                 <p className="text-gray-600 text-sm">
-                  Todo expediente debe conservarse durante un plazo minimo de 10 anos contados a partir de la fecha de la ultima operacion. JAAK almacena la evidencia con sellado de tiempo y cadena de custodia.
+                  Todo expediente debe conservarse durante un plazo minimo de 10 años contados a partir de la fecha de la ultima operacion. JAAK almacena la evidencia con sellado de tiempo y cadena de custodia.
                 </p>
               </div>
 
@@ -296,7 +296,7 @@ export default function ActividadesVulnerablesPage() {
 
               <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
                 <div className="inline-flex items-center px-3 py-1 bg-[#2AD796]/10 rounded-full mb-4">
-                  <span className="text-[#2AD796] text-xs font-semibold">500,000+ verif/ano</span>
+                  <span className="text-[#2AD796] text-xs font-semibold">500,000+ verif/año</span>
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-4">Alianza Estrategica</h3>
                 <ul className="space-y-3 mb-6">
@@ -367,7 +367,7 @@ export default function ActividadesVulnerablesPage() {
                   La informacion contenida en esta pagina y los resultados generados por el simulador tienen caracter exclusivamente orientativo e informativo. No constituyen asesoria legal, fiscal ni de cumplimiento regulatorio. Los umbrales presentados corresponden al Articulo 17 de la LFPIORPI vigente y al valor de la UMA 2026 publicado por el INEGI, pero las obligaciones especificas pueden variar segun las Reglas de Caracter General aplicables a cada sector y la interpretacion de la autoridad competente.
                 </p>
                 <p className="text-gray-600 text-sm">
-                  JAAK proporciona infraestructura tecnologica para verificacion de identidad y generacion de evidencia. La responsabilidad de disenar politicas de cumplimiento, evaluar riesgos y presentar avisos a la UIF corresponde exclusivamente al sujeto obligado y su oficial de cumplimiento. Recomendamos consultar con un abogado especializado en PLD/AML para su caso particular.
+                  JAAK proporciona infraestructura tecnologica para verificacion de identidad y generacion de evidencia. La responsabilidad de diseñar politicas de cumplimiento, evaluar riesgos y presentar avisos a la UIF corresponde exclusivamente al sujeto obligado y su oficial de cumplimiento. Recomendamos consultar con un abogado especializado en PLD/AML para su caso particular.
                 </p>
               </div>
             </div>
