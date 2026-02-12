@@ -3,12 +3,14 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import SimuladorPLD from "@/components/SimuladorPLD";
+import TablaUmbrales from "@/components/TablaUmbrales";
 
 export const metadata: Metadata = {
-  title: "Actividades Vulnerables y Umbrales 2026 LFPIORPI | JAAK",
+  title: "Simulador de Cumplimiento LFPIORPI | Actividades Vulnerables 2026 | JAAK",
   description:
-    "Tabla completa de actividades vulnerables, umbrales de identificacion y aviso 2026 conforme a la LFPIORPI. Simulador PLD gratuito. Valor UMA 2026: $117.31 MXN.",
+    "Calcule si su operacion activa obligaciones de identificacion y aviso segun la LFPIORPI. Simulador PLD gratuito con umbrales 2026, expediente KYC y clasificador comercial. UMA 2026: $117.31 MXN.",
   keywords: [
+    "simulador PLD",
     "actividades vulnerables",
     "umbrales 2026",
     "LFPIORPI",
@@ -17,77 +19,54 @@ export const metadata: Metadata = {
     "prevencion lavado de dinero",
     "UMA 2026",
     "UIF",
-    "simulador PLD",
     "KYC Mexico",
     "antilavado",
     "cumplimiento regulatorio",
-    "actividades vulnerables umbrales",
+    "calculadora PLD",
     "CNBV",
     "sujetos obligados",
+    "expediente KYC",
   ],
   openGraph: {
-    title: "Actividades Vulnerables y Umbrales 2026 LFPIORPI | JAAK",
+    title: "Simulador de Cumplimiento LFPIORPI | Actividades Vulnerables 2026 | JAAK",
     description:
-      "Consulta los umbrales vigentes de actividades vulnerables conforme a la LFPIORPI. Simulador PLD gratuito para calcular obligaciones de identificacion y aviso.",
+      "Calcule si su operacion activa obligaciones de la LFPIORPI. Simulador PLD gratuito con umbrales vigentes, expediente KYC y clasificador de modalidad JAAK.",
     type: "website",
   },
 };
 
-const umbralData = [
-  { fraccion: "I", actividad: "Juegos con apuesta, concursos y sorteos", idUMA: "325", idMXN: "$38,125.75", avUMA: "645", avMXN: "$75,664.95", siempre: false },
-  { fraccion: "II", actividad: "Tarjetas de credito o servicios", idUMA: "805", idMXN: "$94,434.55", avUMA: "1,285", avMXN: "$150,743.35", siempre: false },
-  { fraccion: "II", actividad: "Tarjetas prepagadas", idUMA: "645", idMXN: "$75,664.95", avUMA: "645", avMXN: "$75,664.95", siempre: false },
-  { fraccion: "II", actividad: "Vales y monederos electronicos", idUMA: "645", idMXN: "$75,664.95", avUMA: "645", avMXN: "$75,664.95", siempre: false },
-  { fraccion: "III", actividad: "Cheques de viajero", idUMA: "---", idMXN: "Siempre", avUMA: "645", avMXN: "$75,664.95", siempre: true },
-  { fraccion: "IV", actividad: "Prestamos o creditos", idUMA: "---", idMXN: "Siempre", avUMA: "1,605", avMXN: "$188,282.55", siempre: true },
-  { fraccion: "V", actividad: "Comercializacion de bienes inmuebles", idUMA: "---", idMXN: "Siempre", avUMA: "8,025", avMXN: "$941,412.75", siempre: true },
-  { fraccion: "V Bis", actividad: "Desarrollo inmobiliario", idUMA: "---", idMXN: "Siempre", avUMA: "8,025", avMXN: "$941,412.75", siempre: true },
-  { fraccion: "VI", actividad: "Piedras y metales preciosos", idUMA: "805", idMXN: "$94,434.55", avUMA: "1,605", avMXN: "$188,282.55", siempre: false },
-  { fraccion: "VII", actividad: "Obras de arte", idUMA: "2,410", idMXN: "$282,717.10", avUMA: "4,815", avMXN: "$564,847.65", siempre: false },
-  { fraccion: "VIII", actividad: "Vehiculos (terrestres, marinos, aereos)", idUMA: "3,210", idMXN: "$376,565.10", avUMA: "6,420", avMXN: "$753,130.20", siempre: false },
-  { fraccion: "IX", actividad: "Blindaje (vehiculos y bienes inmuebles)", idUMA: "2,410", idMXN: "$282,717.10", avUMA: "4,815", avMXN: "$564,847.65", siempre: false },
-  { fraccion: "X", actividad: "Traslado y custodia de valores", idUMA: "---", idMXN: "Siempre", avUMA: "3,210", avMXN: "$376,565.10", siempre: true },
-  { fraccion: "XI", actividad: "Prestacion de servicios profesionales independientes", idUMA: "---", idMXN: "Siempre", avUMA: "---", avMXN: "Cuando se realice operacion financiera en nombre del cliente", siempre: true },
-  { fraccion: "XII", actividad: "Fedatarios publicos - Inmuebles", idUMA: "---", idMXN: "Siempre", avUMA: "8,000", avMXN: "$938,480.00", siempre: true },
-  { fraccion: "XII", actividad: "Fedatarios publicos - Fideicomisos", idUMA: "---", idMXN: "Siempre", avUMA: "4,000", avMXN: "$469,240.00", siempre: true },
-  { fraccion: "XIII", actividad: "Donativos", idUMA: "1,605", idMXN: "$188,282.55", avUMA: "3,210", avMXN: "$376,565.10", siempre: false },
-  { fraccion: "XV", actividad: "Arrendamiento (uso y goce de inmuebles)", idUMA: "1,605", idMXN: "$188,282.55", avUMA: "3,210", avMXN: "$376,565.10", siempre: false },
-  { fraccion: "XVI", actividad: "Activos virtuales - operacion del cliente", idUMA: "---", idMXN: "Siempre", avUMA: "210", avMXN: "$24,635.10", siempre: true },
-  { fraccion: "XVI", actividad: "Activos virtuales - contraprestacion por servicios", idUMA: "---", idMXN: "Siempre", avUMA: "4", avMXN: "$469.24", siempre: true },
-];
-
 const faqItems = [
   {
-    question: "Que son las actividades vulnerables segun la LFPIORPI?",
-    answer: "Son operaciones comerciales que, por su naturaleza, pueden ser utilizadas para el lavado de dinero o financiamiento al terrorismo. Estan definidas en el Articulo 17 de la LFPIORPI e incluyen actividades como compraventa de inmuebles, vehiculos, metales preciosos, activos virtuales, entre otras. Quienes las realizan tienen obligaciones de identificacion de clientes y presentacion de avisos ante la UIF.",
+    question: "Que es la LFPIORPI y a quien aplica?",
+    answer: "La Ley Federal para la Prevencion e Identificacion de Operaciones con Recursos de Procedencia Ilicita (LFPIORPI) es la ley antilavado de Mexico. Aplica a todas las personas fisicas y morales que realicen actividades vulnerables enumeradas en el Articulo 17, incluyendo sectores como inmobiliario, joyeria, vehiculos, servicios profesionales, activos virtuales y comercio exterior, entre otros.",
   },
   {
-    question: "Cual es el valor de la UMA en 2026?",
-    answer: "El valor de la Unidad de Medida y Actualizacion (UMA) vigente en 2026 es de $117.31 MXN diarios. Este valor es fundamental para calcular los umbrales de identificacion y aviso de las actividades vulnerables conforme a la LFPIORPI.",
+    question: "Que es la UMA y por que se usa para calcular umbrales?",
+    answer: "La Unidad de Medida y Actualizacion (UMA) es la referencia economica que sustituyo al salario minimo para determinar obligaciones legales en Mexico. El INEGI publica su valor anualmente. En 2026, la UMA diaria es de $117.31 MXN. Los umbrales de la LFPIORPI se expresan en UMA para ajustarse automaticamente a la inflacion.",
   },
   {
-    question: "Que diferencia hay entre umbral de identificacion y umbral de aviso?",
-    answer: "El umbral de identificacion obliga a recabar y verificar los datos del cliente cuando la operacion iguala o supera ese monto. El umbral de aviso obliga, ademas, a presentar un aviso formal ante la Unidad de Inteligencia Financiera (UIF) dentro de los plazos que marca la ley. Algunas actividades requieren identificacion siempre, independientemente del monto.",
+    question: "Que sucede si no cumplo con la identificacion del cliente?",
+    answer: "El incumplimiento de las obligaciones de la LFPIORPI puede derivar en multas que van desde 200 hasta 65,000 dias de UMA (de $23,462 a $7,625,150 MXN aproximadamente en 2026). En casos graves, la UIF puede iniciar procedimientos penales. Ademas, la organizacion queda expuesta a riesgos reputacionales y a la inhabilitacion para operar.",
   },
   {
-    question: "Que pasa si no presento avisos a la UIF?",
-    answer: "El incumplimiento de las obligaciones de la LFPIORPI puede resultar en multas que van desde 200 hasta 65,000 dias de salario minimo, e incluso responsabilidad penal. La UIF y la SAT realizan auditorias periodicas para verificar el cumplimiento de sujetos obligados.",
+    question: "Cual es la diferencia entre identificacion y aviso a la UIF?",
+    answer: "La identificacion del cliente es la obligacion de integrar un expediente con datos y documentos que permitan conocer la identidad del cliente y el origen de sus recursos. El aviso a la UIF es una notificacion formal que el sujeto obligado debe presentar cuando la operacion supera un segundo umbral mas alto. Una operacion puede requerir solo identificacion, o identificacion mas aviso, dependiendo del monto.",
   },
   {
-    question: "Que es el expediente KYC para actividades vulnerables?",
-    answer: "Es el conjunto de documentos e informacion que debes conservar por cada cliente identificado: identificacion oficial vigente, datos del beneficiario controlador, comprobante de domicilio, y toda la evidencia de verificacion. La ley exige conservar estos expedientes durante 10 anos contados a partir de la fecha de realizacion de la actividad vulnerable.",
+    question: "JAAK sustituye a mi oficial de cumplimiento?",
+    answer: "No. JAAK es una herramienta tecnologica que automatiza la verificacion de identidad y la integracion del expediente KYC. El oficial de cumplimiento sigue siendo la figura responsable de disenar las politicas internas, evaluar el riesgo de cada cliente y presentar los avisos a la UIF. JAAK proporciona la evidencia y la infraestructura que respaldan esas decisiones.",
   },
   {
-    question: "Como funciona la acumulacion de operaciones en 6 meses?",
-    answer: "La LFPIORPI establece que las operaciones realizadas por un mismo cliente en un periodo de 6 meses se acumulan para efectos de determinar si se alcanzan los umbrales. Esto significa que aunque cada operacion individual no alcance el umbral, la suma de todas en ese periodo puede activar la obligacion de identificacion o aviso.",
+    question: "Como maneja JAAK la conservacion de expedientes por 10 anos?",
+    answer: "Toda evidencia generada en JAAK se almacena con sellado de tiempo (timestamp criptografico), hash de integridad y cadena de custodia verificable. La infraestructura cumple con ISO 27001 y los datos se conservan en centros de datos con redundancia geografica. El sujeto obligado puede acceder a cualquier expediente historico durante todo el periodo de retencion.",
   },
   {
-    question: "Los activos virtuales estan regulados por la LFPIORPI?",
-    answer: "Si. Desde la reforma al Articulo 17, fraccion XVI, quienes ofrecen servicios relacionados con activos virtuales deben identificar siempre a sus clientes. El umbral de aviso es de 210 UMA ($24,635.10 MXN) por operacion del cliente, y de 4 UMA ($469.24 MXN) cuando se trata de contraprestacion por servicios.",
+    question: "El simulador almacena mis datos?",
+    answer: "No. El simulador funciona completamente en su navegador. Los montos, actividades y resultados no se transmiten ni almacenan en ningun servidor. Es una herramienta orientativa para que usted evalue preliminarmente sus obligaciones regulatorias.",
   },
   {
-    question: "Como ayuda JAAK a cumplir con la LFPIORPI?",
-    answer: "JAAK automatiza la verificacion de identidad (KYC) con biometria facial, prueba de vida certificada por iBeta, validacion de INE en tiempo real, y generacion de expedientes digitales con sellado de tiempo. Todo queda almacenado de forma segura y listo para presentar ante la UIF en caso de requerimiento o auditoria.",
+    question: "Que actividades vulnerables requieren identificacion en todos los casos, sin importar el monto?",
+    answer: "Las fracciones III (cheques de viajero), IV (prestamos/creditos), V y V Bis (inmuebles), X (traslado y custodia de valores), XI (servicios profesionales independientes) y XVI (activos virtuales) requieren identificacion del cliente en todos los casos, independientemente del monto de la operacion. Esto se indica como \"Siempre\" en los umbrales del Art. 17.",
   },
 ];
 
@@ -96,8 +75,8 @@ export default function ActividadesVulnerablesPage() {
     <>
       <Header />
       <main>
-        {/* Hero Section */}
-        <section className="pt-32 pb-20 bg-[#0a0a0a]">
+        {/* SECTION 1: Compact Hero */}
+        <section className="pt-32 pb-16 bg-[#0a0a0a]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl">
               <Link
@@ -109,155 +88,37 @@ export default function ActividadesVulnerablesPage() {
                 </svg>
                 Cumplimiento
               </Link>
-              <div className="flex flex-wrap gap-3 mb-6">
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-500/10 border border-red-500/20 rounded-full">
-                  <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
-                  <span className="text-red-400 text-sm font-medium">Reforma DOF 16/07/2025</span>
-                </div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#0066ff]/10 border border-[#0066ff]/20 rounded-full">
-                  <span className="text-[#0066ff] text-sm font-medium">UMA 2026: $117.31 MXN</span>
-                </div>
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#0066ff]/10 border border-[#0066ff]/20 rounded-full mb-6">
+                <span className="text-[#0066ff] text-sm font-medium">UMA 2026: $117.31 MXN · Umbrales vigentes Art. 17 LFPIORPI</span>
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-[3.5rem] font-black text-white mb-6 leading-tight">
-                Actividades Vulnerables y Umbrales 2026 en la LFPIORPI
+                ¿Su operacion activa obligaciones de la LFPIORPI?
               </h1>
               <p className="text-xl text-white/60 mb-8 max-w-3xl">
-                Tabla completa de umbrales de identificacion y aviso, simulador de obligaciones PLD y clasificador comercial. Actualizado conforme a la reforma DOF 16/07/2025 y valor UMA 2026.
+                Calcule en 30 segundos si su actividad requiere identificacion del cliente, aviso a la UIF o ambos. Ingrese los datos de su operacion y reciba un diagnostico regulatorio inmediato con el expediente KYC que necesita.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link
                   href="#simulador"
                   className="px-6 py-3 bg-[#0066ff] text-white font-semibold rounded-lg hover:bg-[#0052cc] transition-all"
                 >
-                  Usar simulador PLD
+                  Calcular ahora
                 </Link>
                 <Link
-                  href="#umbrales"
+                  href="#umbrales-completos"
                   className="px-6 py-3 bg-white/10 text-white font-semibold rounded-lg hover:bg-white/20 transition-all"
                 >
-                  Ver tabla de umbrales
+                  Ver umbrales completos del Art. 17
                 </Link>
               </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Quick Stats */}
-        <section className="py-10 bg-white border-b border-gray-100">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              <div className="text-center">
-                <div className="text-3xl font-black text-gray-900 mb-1">$117.31</div>
-                <div className="text-sm text-gray-600">Valor UMA diario 2026</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-black text-gray-900 mb-1">16+</div>
-                <div className="text-sm text-gray-600">Actividades vulnerables</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-black text-gray-900 mb-1">10 anos</div>
-                <div className="text-sm text-gray-600">Conservacion de expedientes</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-black text-gray-900 mb-1">UIF</div>
-                <div className="text-sm text-gray-600">Autoridad receptora de avisos</div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Intro */}
-        <section className="py-16 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl">
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
-                Que son las actividades vulnerables en Mexico
-              </h2>
-              <p className="text-lg text-gray-600 mb-4">
-                La <strong>Ley Federal para la Prevencion e Identificacion de Operaciones con Recursos de Procedencia Ilicita (LFPIORPI)</strong> define como actividades vulnerables aquellas operaciones comerciales que, por su naturaleza o monto, son susceptibles de ser utilizadas para el lavado de dinero o financiamiento al terrorismo.
-              </p>
-              <p className="text-gray-600 mb-4">
-                Quienes realizan estas actividades estan obligados a identificar a sus clientes, conservar documentacion y, cuando se superan los umbrales establecidos, presentar avisos ante la <strong>Unidad de Inteligencia Financiera (UIF)</strong>.
-              </p>
-              <p className="text-gray-600">
-                Los umbrales se expresan en <strong>Unidades de Medida y Actualizacion (UMA)</strong>. Para 2026, el valor diario de la UMA es de <strong>$117.31 MXN</strong>, conforme a lo publicado en el Diario Oficial de la Federacion.
+              <p className="text-xs text-white/30 mt-4">
+                Basado en los umbrales oficiales del Articulo 17 de la LFPIORPI y el valor de la UMA 2026 publicado por el INEGI.
               </p>
             </div>
           </div>
         </section>
 
-        {/* Threshold Table */}
-        <section id="umbrales" className="py-20 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#0066ff]/10 rounded-full mb-4">
-                <span className="text-[#0066ff] text-sm font-medium">Articulo 17 LFPIORPI</span>
-              </div>
-              <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
-                Tabla completa de umbrales 2026
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Umbrales de identificacion y aviso para cada actividad vulnerable. Valores en UMA y equivalente en moneda nacional (MXN).
-              </p>
-            </div>
-
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="bg-[#0066ff] text-white">
-                      <th className="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">Fracc.</th>
-                      <th className="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">Actividad vulnerable</th>
-                      <th className="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wider">Identificacion (UMA)</th>
-                      <th className="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wider">Identificacion (MXN)</th>
-                      <th className="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wider">Aviso (UMA)</th>
-                      <th className="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wider">Aviso (MXN)</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-100">
-                    {umbralData.map((item, index) => (
-                      <tr key={index} className={`${index % 2 === 0 ? "bg-white" : "bg-gray-50"} ${item.siempre ? "font-medium" : ""}`}>
-                        <td className="px-3 py-3 text-sm font-bold text-gray-900 whitespace-nowrap">{item.fraccion}</td>
-                        <td className="px-3 py-3 text-sm text-gray-700">{item.actividad}</td>
-                        <td className="px-3 py-3 text-sm text-right whitespace-nowrap">
-                          {item.idUMA === "---" ? (
-                            <span className="text-[#0066ff] font-semibold">---</span>
-                          ) : (
-                            <span className="text-gray-900">{item.idUMA}</span>
-                          )}
-                        </td>
-                        <td className="px-3 py-3 text-sm text-right whitespace-nowrap">
-                          {item.idMXN === "Siempre" ? (
-                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-[#0066ff]/10 text-[#0066ff]">Siempre</span>
-                          ) : (
-                            <span className="text-gray-900 font-medium">{item.idMXN}</span>
-                          )}
-                        </td>
-                        <td className="px-3 py-3 text-sm text-right whitespace-nowrap">
-                          {item.avUMA === "---" ? (
-                            <span className="text-gray-400">---</span>
-                          ) : (
-                            <span className="text-gray-900">{item.avUMA}</span>
-                          )}
-                        </td>
-                        <td className="px-3 py-3 text-sm text-right">
-                          <span className={`${item.avMXN.length > 20 ? "text-xs" : "text-sm"} text-gray-900 font-medium`}>{item.avMXN}</span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <div className="px-4 py-3 bg-gray-50 border-t border-gray-200">
-                <p className="text-sm text-gray-600 text-center">
-                  <strong>Valor UMA 2026:</strong> $117.31 MXN diarios | Fuente: Portal de Prevencion de Lavado de Dinero, reforma DOF 16/07/2025
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Simulator */}
+        {/* SECTION 2: Simulator */}
         <section id="simulador" className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
@@ -266,26 +127,20 @@ export default function ActividadesVulnerablesPage() {
                 <span className="text-[#00d4aa] text-sm font-medium">Herramienta gratuita</span>
               </div>
               <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
-                Simulador de obligaciones PLD
+                Simulador de obligaciones PLD / AML
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Calcula si tu operacion activa umbrales de identificacion o aviso. Ingresa los datos de tu actividad y obtendras el resultado legal, el umbral exacto aplicado y la modalidad JAAK recomendada.
+                Seleccione su actividad vulnerable, ingrese el monto de operacion y el volumen mensual. El simulador evaluara sus umbrales regulatorios y estimara el expediente KYC que su organizacion necesita.
               </p>
             </div>
 
             <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 md:p-8">
               <SimuladorPLD />
             </div>
-
-            <div className="mt-6 p-4 bg-gray-50 rounded-xl border border-gray-200">
-              <p className="text-sm text-gray-600 text-center">
-                <strong>Formula:</strong> monto_en_UMA = monto_MXN / 117.31 | Se compara contra umbral de identificacion y de aviso | Se evalua acumulacion en 6 meses si aplica.
-              </p>
-            </div>
           </div>
         </section>
 
-        {/* KYC Section */}
+        {/* SECTION 4: KYC Education */}
         <section className="py-20 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
@@ -293,10 +148,10 @@ export default function ActividadesVulnerablesPage() {
                 <span className="text-[#0066ff] text-sm font-medium">Expediente KYC</span>
               </div>
               <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
-                Requisitos del expediente de identificacion
+                ¿Que debe contener un expediente KYC segun la LFPIORPI?
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                La LFPIORPI establece los elementos minimos que debe contener el expediente de cada cliente identificado.
+                La LFPIORPI y sus Reglas de Caracter General establecen que todo sujeto obligado debe integrar un expediente de identificacion del cliente cuando su operacion alcance los umbrales del Art. 17. Este expediente es la evidencia de cumplimiento ante la UIF y debe conservarse durante 10 anos.
               </p>
             </div>
 
@@ -307,9 +162,21 @@ export default function ActividadesVulnerablesPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
                   </svg>
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">Identificacion oficial</h3>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">Identificacion oficial vigente</h3>
                 <p className="text-gray-600 text-sm">
-                  INE/IFE vigente, pasaporte o documento migratorio. Debe validarse autenticidad, vigencia y coincidencia biometrica del portador.
+                  INE/IFE, pasaporte o cedula profesional. JAAK valida el documento contra bases oficiales del INE y verifica que no este vencido, alterado o reportado como extraviado.
+                </p>
+              </div>
+
+              <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+                <div className="w-12 h-12 bg-[#0066ff]/10 rounded-xl flex items-center justify-center mb-4">
+                  <svg className="w-6 h-6 text-[#0066ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">Verificacion biometrica facial</h3>
+                <p className="text-gray-600 text-sm">
+                  Prueba de vida y comparacion facial contra la fotografia del documento oficial. Cumple con los lineamientos de la CNBV para identificacion remota no presencial.
                 </p>
               </div>
 
@@ -319,9 +186,9 @@ export default function ActividadesVulnerablesPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                   </svg>
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">Beneficiario controlador</h3>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">Identificacion del beneficiario controlador</h3>
                 <p className="text-gray-600 text-sm">
-                  Para personas morales, se debe identificar a la persona fisica que ejerce el control efectivo. Incluye estructura accionaria y representantes legales.
+                  Persona fisica que directa o indirectamente obtiene beneficio, controla o influye en una persona moral. Obligatorio cuando el cliente es empresa, fideicomiso o figura juridica equivalente.
                 </p>
               </div>
 
@@ -331,9 +198,9 @@ export default function ActividadesVulnerablesPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
                   </svg>
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">Conservacion 10 anos</h3>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">Conservacion por 10 anos</h3>
                 <p className="text-gray-600 text-sm">
-                  Los expedientes deben conservarse por un minimo de 10 anos contados a partir de la fecha de la ultima operacion. Debe garantizarse integridad y disponibilidad.
+                  Todo expediente debe conservarse durante un plazo minimo de 10 anos contados a partir de la fecha de la ultima operacion. JAAK almacena la evidencia con sellado de tiempo y cadena de custodia.
                 </p>
               </div>
 
@@ -343,21 +210,9 @@ export default function ActividadesVulnerablesPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                   </svg>
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">Evidencia verificable</h3>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">Evidencia verificable y auditable</h3>
                 <p className="text-gray-600 text-sm">
-                  Cada verificacion debe generar evidencia auditable: imagenes del documento, resultado biometrico, metadatos (IP, GPS, timestamp) y hash de integridad.
-                </p>
-              </div>
-
-              <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
-                <div className="w-12 h-12 bg-[#0066ff]/10 rounded-xl flex items-center justify-center mb-4">
-                  <svg className="w-6 h-6 text-[#0066ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">Enfoque basado en riesgo</h3>
-                <p className="text-gray-600 text-sm">
-                  La intensidad de la debida diligencia debe ser proporcional al riesgo del cliente y la operacion. Clientes de alto riesgo requieren medidas reforzadas de verificacion.
+                  Cada verificacion genera evidencia con metadatos: geolocalizacion, timestamps, hash de integridad, resultado biometrico y trazabilidad completa para responder requerimientos de la UIF.
                 </p>
               </div>
 
@@ -367,85 +222,112 @@ export default function ActividadesVulnerablesPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">Reportes a la UIF</h3>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">Reportes y avisos a la UIF</h3>
                 <p className="text-gray-600 text-sm">
-                  Los avisos deben presentarse dentro de los 30 dias naturales siguientes a la operacion. JAAK genera reportes estructurados listos para carga en el portal de la UIF.
+                  Cuando la operacion supera el umbral de aviso, el sujeto obligado debe presentar el aviso correspondiente a la UIF. JAAK genera la evidencia de soporte que respalda dicho aviso.
                 </p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* JAAK Solution */}
-        <section className="py-20 bg-[#0a0a0a]">
+        {/* SECTION 5: Modalities */}
+        <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#00d4aa]/10 border border-[#00d4aa]/20 rounded-full mb-6">
-                  <span className="w-2 h-2 bg-[#00d4aa] rounded-full"></span>
-                  <span className="text-[#00d4aa] text-sm font-medium">Solucion JAAK</span>
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
+                Modalidades de servicio JAAK
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                JAAK se adapta al volumen y complejidad de su operacion. La modalidad recomendada depende de la cantidad de verificaciones que su organizacion procese.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+                <div className="inline-flex items-center px-3 py-1 bg-[#0066ff]/10 rounded-full mb-4">
+                  <span className="text-[#0066ff] text-xs font-semibold">Hasta 999 verif/mes</span>
                 </div>
-                <h2 className="text-3xl md:text-4xl font-black text-white mb-6">
-                  Automatiza tu cumplimiento PLD con JAAK
-                </h2>
-                <p className="text-xl text-white/60 mb-8">
-                  JAAK permite a los sujetos obligados cumplir con la identificacion de clientes, conservacion de evidencia y preparacion de avisos, sin depender de procesos manuales.
-                </p>
-                <ul className="space-y-4">
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Autoservicio</h3>
+                <ul className="space-y-3 mb-6">
                   {[
-                    "Verificacion biometrica con prueba de vida certificada (iBeta)",
-                    "Validacion de INE/IFE en tiempo real contra bases del INE",
-                    "Expedientes digitales con sellado de tiempo y hash de integridad",
-                    "Almacenamiento seguro cifrado por 10+ anos",
-                    "Reportes estructurados listos para carga en portal UIF",
-                    "API REST para integracion con tu sistema actual",
-                    "Dashboard de monitoreo de operaciones y umbrales",
-                  ].map((item, index) => (
-                    <li key={index} className="flex items-center gap-3">
-                      <svg className="w-5 h-5 text-[#00d4aa] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    "Alta autonoma desde plataforma",
+                    "Dashboard de verificaciones",
+                    "Verificacion de identidad (INE + biometria)",
+                    "Expediente digital por operacion",
+                    "Soporte por centro de ayuda",
+                    "Sin integracion tecnica requerida",
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
+                      <svg className="w-4 h-4 text-[#0066ff] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
-                      <span className="text-white/80">{item}</span>
+                      {item}
                     </li>
                   ))}
                 </ul>
+                <p className="text-xs text-gray-400">Ideal para sujetos obligados con volumen moderado de operaciones que superan umbrales.</p>
               </div>
-              <div className="bg-white/5 rounded-2xl p-8 border border-white/10">
-                <h3 className="text-xl font-bold text-white mb-6">Clasificador comercial JAAK</h3>
-                <div className="space-y-6">
-                  <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-white font-bold">Autoservicio</span>
-                      <span className="text-xs text-white/50 bg-white/10 px-2 py-1 rounded-full">&lt; 1,000 verif/mes</span>
-                    </div>
-                    <p className="text-white/50 text-sm">Ideal para empresas que inician con actividades vulnerables. Acceso a plataforma, API y soporte estandar.</p>
-                  </div>
-                  <div className="p-4 rounded-xl bg-[#00d4aa]/10 border border-[#00d4aa]/20">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-[#00d4aa] font-bold">Enterprise</span>
-                      <span className="text-xs text-[#00d4aa]/70 bg-[#00d4aa]/10 px-2 py-1 rounded-full">&ge; 1,000 verif/mes</span>
-                    </div>
-                    <p className="text-white/50 text-sm">Para operaciones de alto volumen. Incluye SLA dedicado, integracion personalizada y account manager.</p>
-                  </div>
-                  <div className="p-4 rounded-xl bg-[#0066ff]/10 border border-[#0066ff]/20">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-[#0066ff] font-bold">Alianza Estrategica</span>
-                      <span className="text-xs text-[#0066ff]/70 bg-[#0066ff]/10 px-2 py-1 rounded-full">&ge; 500,000 verif/ano</span>
-                    </div>
-                    <p className="text-white/50 text-sm">Modelo de alianza para grandes corporativos. Infraestructura dedicada, pricing por volumen y soporte 24/7.</p>
-                  </div>
+
+              <div className="bg-white rounded-xl p-6 border-2 border-[#2DB6C1] shadow-sm relative">
+                <div className="inline-flex items-center px-3 py-1 bg-[#2DB6C1]/10 rounded-full mb-4">
+                  <span className="text-[#2DB6C1] text-xs font-semibold">1,000+ verif/mes</span>
                 </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Enterprise</h3>
+                <ul className="space-y-3 mb-6">
+                  {[
+                    "Integracion por API REST",
+                    "SLAs de disponibilidad personalizados",
+                    "Soporte tecnico dedicado",
+                    "Configuracion de flujos a medida",
+                    "Reporteria avanzada y exportacion",
+                    "Onboarding asistido",
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
+                      <svg className="w-4 h-4 text-[#2DB6C1] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <p className="text-xs text-gray-400">Para organizaciones con volumen alto o necesidad de integracion en sistemas propios.</p>
+              </div>
+
+              <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+                <div className="inline-flex items-center px-3 py-1 bg-[#2AD796]/10 rounded-full mb-4">
+                  <span className="text-[#2AD796] text-xs font-semibold">500,000+ verif/ano</span>
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Alianza Estrategica</h3>
+                <ul className="space-y-3 mb-6">
+                  {[
+                    "Infraestructura white-label",
+                    "API de reventa y distribucion",
+                    "Soporte de ingenieria compartido",
+                    "Condiciones comerciales de partner",
+                    "Co-desarrollo de flujos regulatorios",
+                    "Acuerdo de nivel de servicio premium",
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
+                      <svg className="w-4 h-4 text-[#2AD796] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <p className="text-xs text-gray-400">Para plataformas que integran verificacion de identidad como parte de su producto y la ofrecen a sus clientes.</p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* FAQ Section */}
-        <section className="py-20 bg-white">
+        {/* SECTION 6: FAQ */}
+        <section className="py-20 bg-gray-50">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
-                Preguntas frecuentes sobre PLD y actividades vulnerables
+                Preguntas frecuentes sobre cumplimiento PLD/AML
               </h2>
               <p className="text-xl text-gray-600">
                 Resolvemos las dudas mas comunes sobre la LFPIORPI, umbrales y obligaciones de identificacion.
@@ -454,7 +336,7 @@ export default function ActividadesVulnerablesPage() {
 
             <div className="space-y-6">
               {faqItems.map((faq, index) => (
-                <div key={index} className="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                <div key={index} className="bg-white rounded-xl p-6 border border-gray-200">
                   <h3 className="text-lg font-bold text-gray-900 mb-3">{faq.question}</h3>
                   <p className="text-gray-600">{faq.answer}</p>
                 </div>
@@ -463,7 +345,14 @@ export default function ActividadesVulnerablesPage() {
           </div>
         </section>
 
-        {/* Disclaimer */}
+        {/* SECTION 7: Collapsible Threshold Table */}
+        <section id="umbrales-completos" className="py-16 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <TablaUmbrales />
+          </div>
+        </section>
+
+        {/* SECTION 8: Legal Disclaimer */}
         <section className="py-8 bg-gray-100">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-start gap-4">
@@ -474,22 +363,25 @@ export default function ActividadesVulnerablesPage() {
               </div>
               <div>
                 <h4 className="text-gray-900 font-semibold mb-2">Aclaracion importante</h4>
+                <p className="text-gray-600 text-sm mb-2">
+                  La informacion contenida en esta pagina y los resultados generados por el simulador tienen caracter exclusivamente orientativo e informativo. No constituyen asesoria legal, fiscal ni de cumplimiento regulatorio. Los umbrales presentados corresponden al Articulo 17 de la LFPIORPI vigente y al valor de la UMA 2026 publicado por el INEGI, pero las obligaciones especificas pueden variar segun las Reglas de Caracter General aplicables a cada sector y la interpretacion de la autoridad competente.
+                </p>
                 <p className="text-gray-600 text-sm">
-                  JAAK es una plataforma tecnologica de apoyo al cumplimiento. Esta pagina tiene fines informativos y no constituye asesoria legal. Los umbrales se actualizan conforme al valor de la UMA vigente. Consulta con tu area legal o de cumplimiento para determinar tus obligaciones especificas bajo la LFPIORPI.
+                  JAAK proporciona infraestructura tecnologica para verificacion de identidad y generacion de evidencia. La responsabilidad de disenar politicas de cumplimiento, evaluar riesgos y presentar avisos a la UIF corresponde exclusivamente al sujeto obligado y su oficial de cumplimiento. Recomendamos consultar con un abogado especializado en PLD/AML para su caso particular.
                 </p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* CTA - Contact Form */}
-        <section id="contacto" className="py-20 bg-gray-50">
+        {/* SECTION 9: CTA */}
+        <section className="py-20 bg-gray-50">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
-              Agenda una sesion estrategica de cumplimiento
+              Agende su sesion estrategica de cumplimiento
             </h2>
             <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-              Nuestro equipo de especialistas en PLD te ayuda a disenar tu estrategia de identificacion y cumplimiento conforme a la LFPIORPI.
+              En 15 minutos evaluamos como JAAK puede automatizar el expediente KYC para su actividad vulnerable. Sin compromiso, sin costo.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link
