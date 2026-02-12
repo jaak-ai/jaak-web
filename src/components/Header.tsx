@@ -239,6 +239,9 @@ export default function Header() {
                   <Link href="/cumplimiento/lfpiorpi" className="block text-gray-700 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
                     LFPIORPI
                   </Link>
+                  <Link href="/cumplimiento/actividades-vulnerables" className="block text-gray-700 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
+                    PLD / Umbrales 2026
+                  </Link>
                   <Link href="/cumplimiento/cnbv" className="block text-gray-700 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
                     CNBV
                   </Link>
@@ -600,6 +603,19 @@ export default function Header() {
                       <div>
                         <div className="text-[15px] font-semibold text-gray-900 group-hover:text-[#0066ff] transition-colors">LFPIORPI</div>
                         <div className="text-sm text-gray-500 mt-0.5">Actividades vulnerables Art. 17</div>
+                      </div>
+                    </div>
+                  </Link>
+                  <Link href="/cumplimiento/actividades-vulnerables" className="group block">
+                    <div className="flex items-start gap-4">
+                      <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-[#0066ff] transition-colors">
+                        <svg className="w-5 h-5 text-gray-900 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <div className="text-[15px] font-semibold text-gray-900 group-hover:text-[#0066ff] transition-colors">PLD / AML</div>
+                        <div className="text-sm text-gray-500 mt-0.5">Umbrales y simulador 2026</div>
                       </div>
                     </div>
                   </Link>
