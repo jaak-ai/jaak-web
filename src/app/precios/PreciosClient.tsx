@@ -49,26 +49,30 @@ const pricingData: Record<ProductTab, AutoservicioPlan[]> = {
   biometria: [
     { name: "Cobre", subtitle: "Trial", quantity: 5, unit: "verificaciones", price: "$99", priceNote: "/ año" },
     { name: "Bronce", subtitle: "Básico", quantity: 50, unit: "verificaciones", price: "$1,500", priceNote: "/ año" },
-    { name: "Plata", subtitle: "Recomendado", quantity: 100, unit: "verificaciones", price: "$2,700", priceNote: "/ año", recommended: true },
-    { name: "Oro", subtitle: "Empresarial", quantity: 500, unit: "verificaciones", price: "$12,500", priceNote: "/ año" },
+    { name: "Plata", subtitle: "Recomendado", quantity: 100, unit: "verificaciones", price: "$2,800", priceNote: "/ año", recommended: true },
+    { name: "Oro", subtitle: "Profesional", quantity: 250, unit: "verificaciones", price: "$6,625", priceNote: "/ año" },
+    { name: "Platino", subtitle: "Empresarial", quantity: 500, unit: "verificaciones", price: "$12,500", priceNote: "/ año" },
   ],
   "firma-simple": [
-    { name: "Cobre", subtitle: "Trial", quantity: 5, unit: "firmas", price: "$99", priceNote: "/ año" },
+    { name: "Cobre", subtitle: "Trial", quantity: 10, unit: "firmas", price: "$99", priceNote: "/ año" },
     { name: "Bronce", subtitle: "Básico", quantity: 50, unit: "firmas", price: "$750", priceNote: "/ año" },
-    { name: "Plata", subtitle: "Recomendado", quantity: 100, unit: "firmas", price: "$1,500", priceNote: "/ año", recommended: true },
-    { name: "Oro", subtitle: "Empresarial", quantity: 500, unit: "firmas", price: "$7,500", priceNote: "/ año" },
+    { name: "Plata", subtitle: "Recomendado", quantity: 100, unit: "firmas", price: "$1,400", priceNote: "/ año", recommended: true },
+    { name: "Oro", subtitle: "Profesional", quantity: 250, unit: "firmas", price: "$3,250", priceNote: "/ año" },
+    { name: "Platino", subtitle: "Empresarial", quantity: 500, unit: "firmas", price: "$6,000", priceNote: "/ año" },
   ],
   "firma-avanzada": [
     { name: "Cobre", subtitle: "Trial", quantity: 5, unit: "firmas", price: "$99", priceNote: "/ año" },
-    { name: "Bronce", subtitle: "Básico", quantity: 50, unit: "firmas", price: "$2,250", priceNote: "/ año" },
-    { name: "Plata", subtitle: "Recomendado", quantity: 100, unit: "firmas", price: "$4,500", priceNote: "/ año", recommended: true },
-    { name: "Oro", subtitle: "Empresarial", quantity: 500, unit: "firmas", price: "$22,500", priceNote: "/ año" },
+    { name: "Bronce", subtitle: "Básico", quantity: 50, unit: "firmas", price: "$1,500", priceNote: "/ año" },
+    { name: "Plata", subtitle: "Recomendado", quantity: 100, unit: "firmas", price: "$2,700", priceNote: "/ año", recommended: true },
+    { name: "Oro", subtitle: "Profesional", quantity: 250, unit: "firmas", price: "$6,625", priceNote: "/ año" },
+    { name: "Platino", subtitle: "Empresarial", quantity: 500, unit: "firmas", price: "$12,500", priceNote: "/ año" },
   ],
   "firma-bio": [
     { name: "Cobre", subtitle: "Trial", quantity: 5, unit: "firmas", price: "$99", priceNote: "/ año" },
-    { name: "Bronce", subtitle: "Básico", quantity: 50, unit: "firmas", price: "$3,750", priceNote: "/ año" },
-    { name: "Plata", subtitle: "Recomendado", quantity: 100, unit: "firmas", price: "$7,500", priceNote: "/ año", recommended: true },
-    { name: "Oro", subtitle: "Empresarial", quantity: 500, unit: "firmas", price: "$37,500", priceNote: "/ año" },
+    { name: "Bronce", subtitle: "Básico", quantity: 50, unit: "firmas", price: "$2,450", priceNote: "/ año" },
+    { name: "Plata", subtitle: "Recomendado", quantity: 100, unit: "firmas", price: "$4,500", priceNote: "/ año", recommended: true },
+    { name: "Oro", subtitle: "Profesional", quantity: 250, unit: "firmas", price: "$9,750", priceNote: "/ año" },
+    { name: "Platino", subtitle: "Empresarial", quantity: 500, unit: "firmas", price: "$17,500", priceNote: "/ año" },
   ],
 };
 
@@ -304,11 +308,11 @@ export default function PreciosClient() {
           </p>
 
           {/* Pricing Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 mb-10">
             {currentPlans.map((plan) => (
               <div
                 key={plan.name}
-                className={`relative bg-white rounded-2xl p-6 border-2 transition-all ${
+                className={`relative bg-white rounded-2xl p-5 border-2 transition-all ${
                   plan.recommended
                     ? "border-[#2DB6C1] shadow-lg shadow-[#2DB6C1]/10"
                     : "border-[#EEEEEE] hover:border-[#2DB6C1]/30"
@@ -316,19 +320,19 @@ export default function PreciosClient() {
               >
                 {plan.recommended && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <span className="inline-block px-4 py-1 bg-[#2DB6C1] text-white text-xs font-bold rounded-full uppercase tracking-wide">
+                    <span className="inline-block px-3 py-1 bg-[#2DB6C1] text-white text-[10px] font-bold rounded-full uppercase tracking-wide">
                       Recomendado
                     </span>
                   </div>
                 )}
                 <div className="text-center pt-2">
-                  <h3 className="text-lg font-bold text-[#212A45] uppercase tracking-wide mb-0.5">{plan.name}</h3>
-                  <p className="text-xs text-[#64748B] mb-6">{plan.subtitle}</p>
-                  <div className="mb-6">
-                    <span className="text-3xl font-black text-[#212A45]">{plan.price}</span>
-                    <span className="text-sm text-[#64748B] ml-1">{plan.priceNote}</span>
+                  <h3 className="text-base font-bold text-[#212A45] uppercase tracking-wide mb-0.5">{plan.name}</h3>
+                  <p className="text-xs text-[#64748B] mb-4">{plan.subtitle}</p>
+                  <div className="mb-4">
+                    <span className="text-2xl lg:text-[1.65rem] font-black text-[#212A45]">{plan.price}</span>
+                    <span className="text-xs text-[#64748B] ml-1">{plan.priceNote}</span>
                   </div>
-                  <div className="space-y-3 mb-8 text-left">
+                  <div className="space-y-2.5 mb-6 text-left">
                     <div className="flex items-center gap-2 text-sm text-[#4A5568]">
                       <CheckIcon />
                       <span>
@@ -352,7 +356,7 @@ export default function PreciosClient() {
                     href={AUTOSERVICIO_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`block w-full py-3 rounded-lg font-semibold text-sm transition-all text-center ${
+                    className={`block w-full py-2.5 rounded-lg font-semibold text-sm transition-all text-center ${
                       plan.recommended
                         ? "bg-[#2DB6C1] text-white hover:bg-[#25969f]"
                         : "bg-[#F3F4F8] text-[#212A45] hover:bg-[#E5E7EB]"
