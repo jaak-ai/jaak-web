@@ -4,9 +4,57 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Calculadora de Ahorro vs Competencia | Signa - Firma Electrónica",
-  description: "Calcula exactamente cuánto puedes ahorrar con Signa vs Mifiel y otros proveedores. Ahorro promedio: $26,000 MXN anuales.",
-  keywords: ["calculadora ahorro firma electrónica", "mifiel precio comparación", "signa costo beneficio", "ahorro firma digital"],
+  title: "🧮 Calculadora: ¿Cuánto Ahorras con Signa vs Mifiel? | Ahorro Real México",
+  description: "🏆 Calculadora gratuita: Descubre tu ahorro exacto cambiando de Mifiel a Signa. Promedio: $26,000 MXN anuales. 50% menos por firma electrónica.",
+  keywords: [
+    // Primary calculator keywords
+    "calculadora ahorro mifiel",
+    "cuanto cuesta mifiel vs signa", 
+    "precio firma electrónica méxico",
+    "calculadora firma digital",
+    "ahorro cambiar mifiel",
+    "comparar precios firma electrónica",
+    // Long tail calculator keywords  
+    "calculadora costo firma electrónica méxico",
+    "cuánto ahorro con signa vs mifiel",
+    "precio por firma mifiel alternativa",
+    "calculadora ROI firma digital",
+    "ahorro anual firma electrónica",
+    "comparar costos mifiel signa",
+    // Business keywords
+    "calculadora ahorro empresas",
+    "costo firma digital pymes",
+    "presupuesto firma electrónica",
+    "ROI firma electrónica méxico"
+  ],
+  alternates: {
+    canonical: "https://jaak.ai/signa/calculadora"
+  },
+  openGraph: {
+    title: "🧮 Calculadora Signa vs Mifiel - ¿Cuánto Ahorras?",
+    description: "🏆 Calcula tu ahorro exacto. Promedio: $26,000 MXN anuales ahorrando 50% por firma.",
+    type: "website", 
+    url: "https://jaak.ai/signa/calculadora",
+    images: [
+      {
+        url: "https://jaak.ai/signa-calculadora-og.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Calculadora Ahorro Signa vs Mifiel"
+      }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "🧮 Calculadora: Ahorro Signa vs Mifiel",
+    description: "Calcula cuánto ahorras. Promedio: $26,000 MXN/año",
+    images: ["https://jaak.ai/signa-calculadora-twitter.jpg"]
+  },
+  other: {
+    'geo.region': 'MX',
+    'geo.country': 'México',
+    'language': 'Spanish'
+  }
 };
 
 export default function SignaCalculadora() {
@@ -22,11 +70,12 @@ export default function SignaCalculadora() {
               <span className="text-[#00d4aa] text-sm font-medium">Calculadora Inteligente</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-black text-white mb-6">
-              💰 <span className="text-[#00d4aa]">Calculadora</span> de Ahorro
+              🧮 <span className="text-[#00d4aa]">Calculadora</span> Signa vs Mifiel - 
+              <span className="text-white">¿Cuánto Ahorras?</span>
             </h1>
             <p className="text-xl text-white/70 max-w-2xl mx-auto">
-              Descubre exactamente cuánto dinero puedes ahorrar cambiando a Signa. 
-              <strong className="text-white"> Ahorro promedio: $26,000+ MXN anuales.</strong>
+              <strong className="text-white">Calcula tu ahorro exacto</strong> cambiando de Mifiel a Signa. 
+              <strong className="text-[#00d4aa]">Promedio: $26,000+ MXN anuales</strong> con 50% menos por firma electrónica.
             </p>
           </div>
         </section>

@@ -4,9 +4,62 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Signa vs Competencia - Comparación Completa | ¿Por qué Cambiar?",
-  description: "Comparación detallada: Signa vs Mifiel vs DocuSign. Precios, características, soporte y tecnología lado a lado. Ahorra hasta 50%.",
-  keywords: ["signa vs mifiel", "comparación firma electrónica", "precios firma digital", "mifiel alternativa", "docusign vs signa"],
+  title: "⚖️ Signa vs Mifiel vs DocuSign | Comparación Completa 2026 | ¿Cuál Conviene?",
+  description: "🏆 Comparación detallada Signa vs Mifiel vs DocuSign. Precios, tecnología, soporte. Signa: $15 vs Mifiel $29.90 (50% ahorro). ¿Por qué cambiar?",
+  keywords: [
+    // Primary comparison keywords
+    "signa vs mifiel",
+    "mifiel vs docusign vs signa",
+    "comparación firma electrónica méxico",
+    "mejor firma electrónica méxico 2026",
+    "alternativa mifiel barata",
+    "mifiel competencia",
+    // Feature comparison keywords
+    "precio mifiel vs signa",
+    "características firma electrónica",
+    "comparar proveedores firma digital",
+    "cuál es mejor mifiel o signa",
+    "ventajas signa sobre mifiel",
+    "desventajas mifiel vs signa",
+    // Decision keywords
+    "por qué cambiar de mifiel",
+    "razones dejar mifiel",
+    "migrar de mifiel a signa",
+    "cambiar proveedor firma electrónica",
+    // Technology keywords  
+    "tecnología firma electrónica 2026",
+    "NOM-151 mifiel vs signa",
+    "soporte firma electrónica méxico",
+    "API firma electrónica moderna"
+  ],
+  alternates: {
+    canonical: "https://jaak.ai/signa/comparacion"
+  },
+  openGraph: {
+    title: "⚖️ Signa vs Mifiel vs DocuSign - Comparación Completa 2026", 
+    description: "🏆 Signa $15 vs Mifiel $29.90 (50% ahorro). Tecnología 2026 vs legacy. ¿Por qué 1000+ empresas cambiaron?",
+    type: "website",
+    url: "https://jaak.ai/signa/comparacion",
+    images: [
+      {
+        url: "https://jaak.ai/signa-comparison-og.jpg", 
+        width: 1200,
+        height: 630,
+        alt: "Comparación Signa vs Mifiel vs DocuSign"
+      }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "⚖️ Signa vs Mifiel vs DocuSign - ¿Cuál Conviene?",
+    description: "🏆 $15 vs $29.90 (50% ahorro). Por qué 1000+ empresas cambiaron",
+    images: ["https://jaak.ai/signa-comparison-twitter.jpg"]  
+  },
+  other: {
+    'geo.region': 'MX',
+    'geo.country': 'México',
+    'language': 'Spanish'
+  }
 };
 
 export default function SignaComparacion() {

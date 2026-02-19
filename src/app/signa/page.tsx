@@ -2,40 +2,131 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import { signaOrganizationSchema, signaServiceSchema, signaFAQSchema, signaBreadcrumbSchema } from "./schema";
 
 export const metadata: Metadata = {
-  title: "Signa - Firma Electrónica Profesional México | 50% Más Económica que Mifiel",
-  description: "Firma electrónica profesional para México. Tecnología 2026, precios justos desde $15 por documento vs $29.90 de Mifiel. NOM-151 certificado.",
-  keywords: ["signa", "firma electrónica méxico", "mifiel alternativa", "firma digital profesional", "NOM-151", "documentos legales", "signatura digital barata"],
-  openGraph: {
-    title: "Signa - Firma Electrónica Profesional México",
-    description: "50% más económica que Mifiel. Tecnología 2026, precios justos.",
-    type: "website",
-    url: "https://jaak.ai/signa"
+  title: "Signa - Firma Electrónica México | 50% Más Barata que Mifiel | NOM-151",
+  description: "🏆 Firma electrónica profesional México. $15 vs $29.90 Mifiel (50% ahorro). NOM-151 certificado, soporte 24/7, migración gratis. Tecnología 2026.",
+  keywords: [
+    // Primary keywords
+    "firma electrónica méxico",
+    "mifiel alternativa", 
+    "firma digital barata méxico",
+    "signa firma electrónica",
+    "NOM-151 firma",
+    // Long tail keywords
+    "firma electrónica más barata que mifiel",
+    "alternativa mifiel méxico",
+    "firma digital profesional méxico",
+    "documento electrónico méxico",
+    "signatura digital méxico",
+    "firma online méxico",
+    "e-signature méxico",
+    "firma legal méxico",
+    // Competitive keywords
+    "mifiel vs signa",
+    "precio mifiel alternativa",
+    "migrar de mifiel",
+    "cambiar mifiel por signa",
+    // Industry keywords
+    "firma electrónica empresas",
+    "firma digital pymes",
+    "contratos digitales méxico",
+    "documentos legales online"
+  ],
+  authors: [{ name: "Signa México", url: "https://jaak.ai/signa" }],
+  creator: "Signa",
+  publisher: "Signa México", 
+  alternates: {
+    canonical: "https://jaak.ai/signa",
+    languages: {
+      'es-MX': 'https://jaak.ai/signa',
+      'es': 'https://jaak.ai/signa'
+    }
   },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: false,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  openGraph: {
+    title: "Signa - Firma Electrónica México | 50% Más Barata que Mifiel",
+    description: "🏆 Firma electrónica profesional México. $15 vs $29.90 Mifiel (50% ahorro). NOM-151 certificado, migración gratis.",
+    type: "website",
+    url: "https://jaak.ai/signa",
+    siteName: "Signa - Firma Electrónica México",
+    locale: "es_MX",
+    images: [
+      {
+        url: "https://jaak.ai/signa-og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Signa - Firma Electrónica 50% Más Barata que Mifiel"
+      }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Signa - Firma Electrónica México | 50% Más Barata que Mifiel",
+    description: "🏆 $15 vs $29.90 Mifiel (50% ahorro). NOM-151 certificado, migración gratis.",
+    images: ["https://jaak.ai/signa-twitter-image.jpg"],
+    creator: "@SignaMexico"
+  },
+  category: "Technology",
+  classification: "Firma Electrónica, Tecnología, Software Empresarial",
+  other: {
+    'geo.region': 'MX',
+    'geo.country': 'México', 
+    'geo.placename': 'México',
+    'language': 'Spanish',
+    'target-audience': 'Empresas, PyMEs, Profesionales',
+    'distribution': 'global',
+    'revisit-after': '7 days'
+  }
 };
 
 export default function SignaHome() {
   return (
     <>
+      {/* Structured Data for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([
+            signaOrganizationSchema,
+            signaServiceSchema, 
+            signaFAQSchema,
+            signaBreadcrumbSchema
+          ])
+        }}
+      />
+      
       <Header />
       <main>
-        {/* Hero Section */}
-        <section className="pt-32 pb-20 bg-gradient-to-br from-[#0a0a0a] via-[#0a0a0a] to-[#1a1a1a]">
+        {/* Hero Section - Optimized for "firma electrónica méxico" */}
+        <section className="pt-32 pb-20 bg-gradient-to-br from-[#0a0a0a] via-[#0a0a0a] to-[#1a1a1a]" role="banner">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div>
+              <header>
                 <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#00d4aa]/10 border border-[#00d4aa]/20 rounded-full mb-6">
                   <span className="w-2 h-2 bg-[#00d4aa] rounded-full"></span>
                   <span className="text-[#00d4aa] text-sm font-medium">Tecnología 2026</span>
                 </div>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6">
-                  <span className="text-[#00d4aa]">Signa</span><br />
-                  Firma Electrónica <span className="text-[#0066ff]">Profesional</span>
+                  <span className="text-[#00d4aa]">Signa</span> - 
+                  <span className="text-[#0066ff]">Firma Electrónica México</span>
                 </h1>
-                <p className="text-xl text-white/70 mb-8">
-                  Tecnología 2026, precios justos. Certificado NOM-151, soporte 24/7. 
-                  <strong className="text-white"> Compare y ahorre hasta 50%</strong> vs la competencia.
+                <p className="text-xl text-white/70 mb-8" role="text">
+                  <strong className="text-white">Firma electrónica profesional para México</strong> con tecnología 2026. 
+                  Certificado <strong className="text-[#00d4aa]">NOM-151</strong>, soporte 24/7. 
+                  <strong className="text-white">50% más barata que Mifiel</strong> - Solo $15 por documento.
                 </p>
                 
                 {/* Price Comparison */}
@@ -129,15 +220,18 @@ export default function SignaHome() {
           </div>
         </section>
 
-        {/* Comparison Grid */}
-        <section className="py-20 bg-white">
+        {/* Comparison Grid - SEO Optimized for "mejor firma electrónica méxico" */}
+        <section className="py-20 bg-white" role="region" aria-labelledby="why-choose-signa">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
-                ¿Por Qué Elegir Signa?
+              <h2 id="why-choose-signa" className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
+                🏆 ¿Por Qué <span className="text-[#00d4aa]">Signa</span> es la 
+                <span className="text-[#0066ff]"> Mejor Firma Electrónica México</span>?
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Misma tecnología profesional, precios justos. Compare características y ahorre hasta 50%.
+                <strong>Más de 1,000 empresas ya migraron</strong> de Mifiel a Signa. 
+                Descubre por qué es la <strong>mejor alternativa a Mifiel</strong> en México: 
+                50% más barata, tecnología 2026, y validez legal NOM-151.
               </p>
             </div>
 
