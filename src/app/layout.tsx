@@ -3,6 +3,7 @@ import { Montserrat } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GoogleTagManagerHead, GoogleTagManagerBody } from "@/components/GoogleTagManager";
+import { TurnstileScript } from "@/components/CloudflareTurnstile";
 import "./globals.css";
 
 const jsonLd = {
@@ -205,6 +206,7 @@ export default function RootLayout({
         {children}
         <Analytics />
         <SpeedInsights />
+        <TurnstileScript />
       </body>
     </html>
   );
