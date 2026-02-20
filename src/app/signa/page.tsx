@@ -174,7 +174,7 @@ export default function SignaHome() {
                     <span>🛡️</span> Garantía 30 días - Si no ahorras, te devolvemos tu dinero
                   </div>
                 </div>
-              </div>
+              </header>
 
               <div className="relative">
                 {/* Interactive Savings Calculator */}
@@ -204,7 +204,7 @@ export default function SignaHome() {
                     
                     <div id="savings-result" className="hidden bg-[#00d4aa]/10 border border-[#00d4aa]/30 rounded-lg p-4">
                       <div className="text-[#00d4aa] font-bold text-lg" id="savings-amount">
-                        <!-- Resultado aparecerá aquí -->
+                        {/* Resultado aparecerá aquí */}
                       </div>
                     </div>
                   </div>
