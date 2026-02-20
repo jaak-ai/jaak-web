@@ -4,24 +4,44 @@ import Script from "next/script";
 import { useEffect, useRef, useState, useCallback } from "react";
 
 const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE || "";
+const UTM_STORAGE_KEY = "jaak_utm_params";
 
-export function TurnstileScript() {
-  return (
-    <>
-      <Script
-        src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
-        strategy="afterInteractive"
-      />
-      <UtmCapture />
-    </>
-  );
+// Capture UTM params immediately on module load (before React renders)
+function captureUtmParamsNow() {
+  if (typeof window === "undefined") return;
+
+  const params = new URLSearchParams(window.location.search);
+  const utm_source = params.get("utm_source");
+  const utm_medium = params.get("utm_medium");
+  const utm_campaign = params.get("utm_campaign");
+
+  if (utm_source || utm_medium || utm_campaign) {
+    const utmData = {
+      utm_source: utm_source || "",
+      utm_medium: utm_medium || "",
+      utm_campaign: utm_campaign || "",
+      captured_at: Date.now(),
+    };
+    sessionStorage.setItem(UTM_STORAGE_KEY, JSON.stringify(utmData));
+    console.log("UTM captured:", utmData);
+  }
 }
 
-function UtmCapture() {
+// Run immediately when module loads
+captureUtmParamsNow();
+
+export function TurnstileScript() {
+  // Also capture on component mount (for client-side navigations)
   useEffect(() => {
-    captureUtmParams();
+    captureUtmParamsNow();
   }, []);
-  return null;
+
+  return (
+    <Script
+      src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+      strategy="afterInteractive"
+    />
+  );
 }
 
 interface TurnstileWidgetProps {
@@ -153,29 +173,6 @@ export function TurnstileWidget({ onVerify, onError, onExpire }: TurnstileWidget
       )}
     </div>
   );
-}
-
-// Utility to capture and persist UTM parameters
-const UTM_STORAGE_KEY = "jaak_utm_params";
-
-export function captureUtmParams() {
-  if (typeof window === "undefined") return;
-
-  const params = new URLSearchParams(window.location.search);
-  const utm_source = params.get("utm_source");
-  const utm_medium = params.get("utm_medium");
-  const utm_campaign = params.get("utm_campaign");
-
-  // Only save if at least one UTM param exists in URL
-  if (utm_source || utm_medium || utm_campaign) {
-    const utmData = {
-      utm_source: utm_source || "",
-      utm_medium: utm_medium || "",
-      utm_campaign: utm_campaign || "",
-      captured_at: Date.now(),
-    };
-    sessionStorage.setItem(UTM_STORAGE_KEY, JSON.stringify(utmData));
-  }
 }
 
 export function getUtmParams() {
