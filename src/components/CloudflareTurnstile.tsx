@@ -1,14 +1,14 @@
 "use client";
 
 import Script from "next/script";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 
 const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || "";
 
 export function TurnstileScript() {
   return (
     <Script
-      src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+      src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
       strategy="afterInteractive"
     />
   );
@@ -23,106 +23,120 @@ interface TurnstileWidgetProps {
 export function TurnstileWidget({ onVerify, onError, onExpire }: TurnstileWidgetProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const widgetIdRef = useRef<string | null>(null);
-  const [isReady, setIsReady] = useState(false);
+  const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
+  const mountedRef = useRef(true);
 
-  // Store callbacks in refs to avoid re-renders
-  const onVerifyRef = useRef(onVerify);
-  const onErrorRef = useRef(onError);
-  const onExpireRef = useRef(onExpire);
+  const renderWidget = useCallback(() => {
+    if (!containerRef.current || !window.turnstile || widgetIdRef.current) return;
 
-  useEffect(() => {
-    onVerifyRef.current = onVerify;
-    onErrorRef.current = onError;
-    onExpireRef.current = onExpire;
+    if (!TURNSTILE_SITE_KEY) {
+      setStatus("error");
+      return;
+    }
+
+    try {
+      widgetIdRef.current = window.turnstile.render(containerRef.current, {
+        sitekey: TURNSTILE_SITE_KEY,
+        callback: (token: string) => {
+          if (mountedRef.current) {
+            onVerify(token);
+          }
+        },
+        "error-callback": () => {
+          if (mountedRef.current) {
+            setStatus("error");
+            onError?.();
+          }
+        },
+        "expired-callback": () => {
+          if (mountedRef.current) {
+            onExpire?.();
+          }
+        },
+        theme: "light",
+        size: "normal",
+      });
+
+      if (mountedRef.current) {
+        setStatus("ready");
+      }
+    } catch (e) {
+      console.error("Turnstile render error:", e);
+      if (mountedRef.current) {
+        setStatus("error");
+      }
+    }
   }, [onVerify, onError, onExpire]);
 
   useEffect(() => {
-    if (!TURNSTILE_SITE_KEY) {
-      console.error("Turnstile: Site key not configured");
-      return;
-    }
+    mountedRef.current = true;
 
-    const renderWidget = () => {
-      if (!containerRef.current || !window.turnstile) return;
-
-      // Clear existing widget if any
-      if (widgetIdRef.current) {
-        try {
-          window.turnstile.remove(widgetIdRef.current);
-        } catch (e) {
-          console.warn("Turnstile: Error removing widget", e);
-        }
+    const tryRender = () => {
+      if (window.turnstile && containerRef.current && !widgetIdRef.current) {
+        renderWidget();
+        return true;
       }
-
-      try {
-        widgetIdRef.current = window.turnstile.render(containerRef.current, {
-          sitekey: TURNSTILE_SITE_KEY,
-          callback: (token: string) => {
-            onVerifyRef.current(token);
-          },
-          "error-callback": () => {
-            onErrorRef.current?.();
-          },
-          "expired-callback": () => {
-            onExpireRef.current?.();
-          },
-          theme: "light",
-        });
-        setIsReady(true);
-      } catch (e) {
-        console.error("Turnstile: Error rendering widget", e);
-      }
+      return false;
     };
 
-    // If turnstile is already loaded, render immediately
-    if (window.turnstile) {
-      renderWidget();
-      return;
-    }
+    // Try immediately
+    if (tryRender()) return;
 
-    // Otherwise, wait for the script to load
-    const checkTurnstile = setInterval(() => {
-      if (window.turnstile) {
-        clearInterval(checkTurnstile);
-        renderWidget();
+    // Poll for turnstile to be available
+    const interval = setInterval(() => {
+      if (tryRender()) {
+        clearInterval(interval);
       }
-    }, 100);
+    }, 200);
 
-    // Timeout after 10 seconds
+    // Timeout after 15 seconds
     const timeout = setTimeout(() => {
-      clearInterval(checkTurnstile);
-      if (!window.turnstile) {
-        console.error("Turnstile: Script failed to load");
+      clearInterval(interval);
+      if (mountedRef.current && status === "loading") {
+        console.error("Turnstile: Timeout waiting for script");
+        setStatus("error");
       }
-    }, 10000);
+    }, 15000);
 
     return () => {
-      clearInterval(checkTurnstile);
+      mountedRef.current = false;
+      clearInterval(interval);
       clearTimeout(timeout);
+
       if (widgetIdRef.current && window.turnstile) {
         try {
           window.turnstile.remove(widgetIdRef.current);
-        } catch (e) {
+        } catch {
           // Ignore cleanup errors
         }
+        widgetIdRef.current = null;
       }
     };
-  }, []);
+  }, [renderWidget, status]);
 
   if (!TURNSTILE_SITE_KEY) {
     return (
-      <div className="text-red-500 text-sm">
-        Error: Verificación de seguridad no disponible
+      <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg text-yellow-700 text-sm">
+        Verificación no configurada
       </div>
     );
   }
 
   return (
-    <div>
-      <div ref={containerRef} className="cf-turnstile" />
-      {!isReady && (
-        <div className="text-gray-500 text-sm animate-pulse">
+    <div className="min-h-[65px]">
+      <div ref={containerRef} />
+      {status === "loading" && (
+        <div className="flex items-center gap-2 text-gray-500 text-sm">
+          <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+          </svg>
           Cargando verificación...
+        </div>
+      )}
+      {status === "error" && (
+        <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
+          Error al cargar verificación. <button onClick={() => window.location.reload()} className="underline">Recargar página</button>
         </div>
       )}
     </div>
@@ -160,4 +174,5 @@ interface TurnstileOptions {
   "error-callback"?: () => void;
   "expired-callback"?: () => void;
   theme?: "light" | "dark" | "auto";
+  size?: "normal" | "compact";
 }
