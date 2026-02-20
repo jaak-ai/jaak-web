@@ -38,23 +38,25 @@ export function TurnstileWidget({ onVerify, onError, onExpire }: TurnstileWidget
       widgetIdRef.current = window.turnstile.render(containerRef.current, {
         sitekey: TURNSTILE_SITE_KEY,
         callback: (token: string) => {
+          console.log("Turnstile: Token received");
           if (mountedRef.current) {
             onVerify(token);
           }
         },
         "error-callback": () => {
+          console.error("Turnstile error-callback triggered");
           if (mountedRef.current) {
             setStatus("error");
             onError?.();
           }
         },
         "expired-callback": () => {
+          console.log("Turnstile: Token expired");
           if (mountedRef.current) {
             onExpire?.();
           }
         },
         theme: "light",
-        size: "normal",
       });
 
       if (mountedRef.current) {
