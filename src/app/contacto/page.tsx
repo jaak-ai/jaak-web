@@ -1,9 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { TurnstileWidget, getUtmParams } from "@/components/CloudflareTurnstile";
+import { gtmEvent } from "@/components/GoogleTagManager";
+
+const API_ENDPOINT = "https://api-kairos.jaak.ai/api/v1/public/leads";
 
 export default function ContactoPage() {
   const [formData, setFormData] = useState({
@@ -13,7 +17,9 @@ export default function ContactoPage() {
     phone: "",
     message: "",
   });
+  const [turnstileToken, setTurnstileToken] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const benefits = [
     {
@@ -38,25 +44,65 @@ export default function ContactoPage() {
     },
   ];
 
+  const handleTurnstileVerify = useCallback((token: string) => {
+    setTurnstileToken(token);
+  }, []);
+
+  const handleTurnstileError = useCallback(() => {
+    setErrorMessage("Error de verificación. Por favor, recarga la página.");
+  }, []);
+
+  const handleTurnstileExpire = useCallback(() => {
+    setTurnstileToken("");
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!turnstileToken) {
+      setStatus("error");
+      setErrorMessage("Por favor, completa la verificación de seguridad.");
+      return;
+    }
+
     setStatus("loading");
+    setErrorMessage("");
+
+    const utmParams = getUtmParams();
 
     try {
-      const response = await fetch("/api/contact", {
+      const response = await fetch(API_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          contact_name: formData.name,
+          email: formData.email,
+          company_name: formData.company,
+          phone: formData.phone,
+          message: formData.message,
+          country: "México",
+          turnstile_token: turnstileToken,
+          ...utmParams,
+        }),
       });
 
       if (response.ok) {
         setStatus("success");
         setFormData({ name: "", email: "", company: "", phone: "", message: "" });
+        setTurnstileToken("");
+        gtmEvent("generate_lead", {
+          event_category: "Contact",
+          event_label: "Contacto Page",
+          value: 1,
+        });
       } else {
+        const errorData = await response.json().catch(() => ({}));
         setStatus("error");
+        setErrorMessage(errorData.error || "Hubo un error al enviar el mensaje. Por favor, intenta de nuevo.");
       }
     } catch {
       setStatus("error");
+      setErrorMessage("Error de conexión. Por favor, intenta de nuevo.");
     }
   };
 
@@ -236,11 +282,12 @@ export default function ContactoPage() {
                           htmlFor="phone"
                           className="block text-sm font-medium text-gray-900 mb-2"
                         >
-                          Teléfono
+                          Teléfono *
                         </label>
                         <input
                           type="tel"
                           id="phone"
+                          required
                           value={formData.phone}
                           onChange={(e) =>
                             setFormData({ ...formData, phone: e.target.value })
@@ -270,9 +317,18 @@ export default function ContactoPage() {
                       />
                     </div>
 
+                    {/* Turnstile Widget */}
+                    <div className="flex justify-center">
+                      <TurnstileWidget
+                        onVerify={handleTurnstileVerify}
+                        onError={handleTurnstileError}
+                        onExpire={handleTurnstileExpire}
+                      />
+                    </div>
+
                     <button
                       type="submit"
-                      disabled={status === "loading"}
+                      disabled={status === "loading" || !turnstileToken}
                       className="w-full px-6 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {status === "loading" ? "Enviando..." : "Enviar solicitud"}
@@ -289,7 +345,7 @@ export default function ContactoPage() {
                     {status === "error" && (
                       <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
                         <p className="text-red-700 text-center font-medium">
-                          Hubo un error al enviar el mensaje. Por favor, intenta de nuevo.
+                          {errorMessage}
                         </p>
                       </div>
                     )}

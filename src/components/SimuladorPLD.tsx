@@ -1,6 +1,10 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
+import { TurnstileWidget, getUtmParams } from "./CloudflareTurnstile";
+import { gtmEvent } from "./GoogleTagManager";
+
+const API_ENDPOINT = "https://api-kairos.jaak.ai/api/v1/public/leads";
 
 const UMA_2026 = 117.31;
 
@@ -174,7 +178,20 @@ export default function SimuladorPLD() {
   const [showFormulario, setShowFormulario] = useState(false);
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", company: "" });
   const [formStatus, setFormStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const resultadoRef = useRef<HTMLDivElement>(null);
+
+  const handleTurnstileVerify = useCallback((token: string) => {
+    setTurnstileToken(token);
+  }, []);
+
+  const handleTurnstileError = useCallback(() => {
+    setTurnstileToken(null);
+  }, []);
+
+  const handleTurnstileExpire = useCallback(() => {
+    setTurnstileToken(null);
+  }, []);
 
   const calcular = () => {
     const nuevosErrores: string[] = [];
@@ -324,25 +341,35 @@ export default function SimuladorPLD() {
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!turnstileToken) return;
+
     setFormStatus("loading");
+    const utmParams = getUtmParams();
+
     try {
-      const response = await fetch("/api/contact", {
+      const response = await fetch(API_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: formData.name,
+          contact_name: formData.name,
           email: formData.email,
+          company_name: formData.company || "",
           phone: formData.phone,
-          company: formData.company,
-          role: "Cumplimiento/Compliance",
           message: resultado
             ? `[Simulador PLD] Actividad: ${resultado.activaNombre} | Resultado: ${resultado.requiereAviso ? "Aviso + Identificacion" : resultado.requiereIdentificacion ? "Solo identificacion" : "No obligado"} | Volumen: ${resultado.verificacionesMensuales} verif/mes (${resultado.verificacionesAnuales}/año) | Modalidad: ${resultado.modalidadJAAK} | Monto: ${formatMXN(resultado.montoMXN)} (${resultado.montoUMA.toFixed(2)} UMA)`
             : "[Simulador PLD] Solicitud de sesion estrategica",
+          country: "MX",
+          turnstile_token: turnstileToken,
+          utm_source: utmParams.utm_source,
+          utm_medium: utmParams.utm_medium,
+          utm_campaign: utmParams.utm_campaign,
         }),
       });
       if (response.ok) {
         setFormStatus("success");
         setFormData({ name: "", email: "", phone: "", company: "" });
+        setTurnstileToken(null);
+        gtmEvent("generate_lead", { form_name: "simulador_pld" });
       } else {
         setFormStatus("error");
       }
@@ -898,9 +925,15 @@ export default function SimuladorPLD() {
                     </div>
                   )}
 
+                  <TurnstileWidget
+                    onVerify={handleTurnstileVerify}
+                    onError={handleTurnstileError}
+                    onExpire={handleTurnstileExpire}
+                  />
+
                   <button
                     type="submit"
-                    disabled={formStatus === "loading"}
+                    disabled={formStatus === "loading" || !turnstileToken}
                     className="w-full px-6 py-3.5 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {formStatus === "loading" ? "Enviando..." : "Agendar sesion estrategica"}
