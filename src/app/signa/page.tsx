@@ -120,7 +120,6 @@ export default function SignaHome() {
                   <span className="text-[#00d4aa] text-sm font-medium">Tecnología 2026</span>
                 </div>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6">
-                  <span className="text-[#00d4aa]">Signa</span> - 
                   <span className="text-[#0066ff]">Firma Electrónica México</span>
                 </h1>
                 <p className="text-xl text-white/70 mb-8" role="text">

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { gtmEvent } from "./GoogleTagManager";
 
 const HUBSPOT_PORTAL_ID = "19644701";
 const HUBSPOT_FORM_ID = "db2a19a3-8be3-4f92-a0f8-7b6525ebd7d8";
@@ -48,6 +49,11 @@ export default function NewsletterForm() {
         setStatus("success");
         setMessage("¡Gracias por suscribirte! Pronto recibirás nuestras actualizaciones.");
         setEmail("");
+        // Track newsletter signup
+        gtmEvent("sign_up", {
+          event_category: "Newsletter",
+          method: "email",
+        });
       } else {
         const errorData = await response.json();
         setStatus("error");

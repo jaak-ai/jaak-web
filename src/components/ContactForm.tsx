@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { gtmEvent } from "./GoogleTagManager";
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -35,6 +36,12 @@ export default function ContactForm() {
       if (response.ok) {
         setStatus("success");
         setFormData({ name: "", email: "", company: "", phone: "", role: "", message: "" });
+        // Track successful form submission
+        gtmEvent("generate_lead", {
+          event_category: "Contact",
+          event_label: formData.role,
+          value: 1,
+        });
       } else {
         setStatus("error");
       }
