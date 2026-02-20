@@ -3,7 +3,7 @@
 import Script from "next/script";
 import { useEffect, useRef, useCallback } from "react";
 
-const TURNSTILE_SITE_KEY = "0x4AAAAAACgA-dQYJD7qsmLU";
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || "";
 
 export function TurnstileScript() {
   return (
