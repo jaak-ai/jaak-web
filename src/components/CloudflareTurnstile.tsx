@@ -7,11 +7,21 @@ const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE || "";
 
 export function TurnstileScript() {
   return (
-    <Script
-      src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
-      strategy="afterInteractive"
-    />
+    <>
+      <Script
+        src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+        strategy="afterInteractive"
+      />
+      <UtmCapture />
+    </>
   );
+}
+
+function UtmCapture() {
+  useEffect(() => {
+    captureUtmParams();
+  }, []);
+  return null;
 }
 
 interface TurnstileWidgetProps {
@@ -145,18 +155,64 @@ export function TurnstileWidget({ onVerify, onError, onExpire }: TurnstileWidget
   );
 }
 
-// Utility to get UTM parameters from URL
+// Utility to capture and persist UTM parameters
+const UTM_STORAGE_KEY = "jaak_utm_params";
+
+export function captureUtmParams() {
+  if (typeof window === "undefined") return;
+
+  const params = new URLSearchParams(window.location.search);
+  const utm_source = params.get("utm_source");
+  const utm_medium = params.get("utm_medium");
+  const utm_campaign = params.get("utm_campaign");
+
+  // Only save if at least one UTM param exists in URL
+  if (utm_source || utm_medium || utm_campaign) {
+    const utmData = {
+      utm_source: utm_source || "",
+      utm_medium: utm_medium || "",
+      utm_campaign: utm_campaign || "",
+      captured_at: Date.now(),
+    };
+    sessionStorage.setItem(UTM_STORAGE_KEY, JSON.stringify(utmData));
+  }
+}
+
 export function getUtmParams() {
   if (typeof window === "undefined") {
     return { utm_source: "", utm_medium: "", utm_campaign: "" };
   }
 
+  // First check URL for fresh UTM params
   const params = new URLSearchParams(window.location.search);
-  return {
-    utm_source: params.get("utm_source") || "",
-    utm_medium: params.get("utm_medium") || "",
-    utm_campaign: params.get("utm_campaign") || "",
-  };
+  const urlSource = params.get("utm_source");
+  const urlMedium = params.get("utm_medium");
+  const urlCampaign = params.get("utm_campaign");
+
+  if (urlSource || urlMedium || urlCampaign) {
+    return {
+      utm_source: urlSource || "",
+      utm_medium: urlMedium || "",
+      utm_campaign: urlCampaign || "",
+    };
+  }
+
+  // Fallback to stored UTM params
+  try {
+    const stored = sessionStorage.getItem(UTM_STORAGE_KEY);
+    if (stored) {
+      const data = JSON.parse(stored);
+      return {
+        utm_source: data.utm_source || "",
+        utm_medium: data.utm_medium || "",
+        utm_campaign: data.utm_campaign || "",
+      };
+    }
+  } catch {
+    // Ignore parse errors
+  }
+
+  return { utm_source: "", utm_medium: "", utm_campaign: "" };
 }
 
 // Declare turnstile on window
