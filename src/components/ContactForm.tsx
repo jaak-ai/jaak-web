@@ -16,6 +16,7 @@ export default function ContactForm() {
     message: "",
   });
   const [turnstileToken, setTurnstileToken] = useState<string>("");
+  const [turnstileKey, setTurnstileKey] = useState(0);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -73,6 +74,7 @@ export default function ContactForm() {
         setStatus("success");
         setFormData({ name: "", email: "", company: "", phone: "", role: "", message: "" });
         setTurnstileToken("");
+        setTurnstileKey((k) => k + 1);
         gtmEvent("generate_lead", {
           event_category: "Contact",
           event_label: formData.role,
@@ -82,10 +84,14 @@ export default function ContactForm() {
         const errorData = await response.json().catch(() => ({}));
         setStatus("error");
         setErrorMessage(errorData.message || "Hubo un error al enviar el formulario. Por favor, intenta de nuevo.");
+        setTurnstileToken("");
+        setTurnstileKey((k) => k + 1);
       }
     } catch {
       setStatus("error");
       setErrorMessage("Error de conexión. Por favor, intenta de nuevo.");
+      setTurnstileToken("");
+      setTurnstileKey((k) => k + 1);
     }
   };
 
@@ -218,6 +224,7 @@ export default function ContactForm() {
               {/* Cloudflare Turnstile Widget */}
               <div className="flex justify-center">
                 <TurnstileWidget
+                  key={turnstileKey}
                   onVerify={handleTurnstileVerify}
                   onError={handleTurnstileError}
                   onExpire={handleTurnstileExpire}

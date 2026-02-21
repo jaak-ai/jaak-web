@@ -179,6 +179,7 @@ export default function SimuladorPLD() {
   const [formData, setFormData] = useState({ name: "", email: "", phone: "", company: "" });
   const [formStatus, setFormStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [turnstileKey, setTurnstileKey] = useState(0);
   const resultadoRef = useRef<HTMLDivElement>(null);
 
   const handleTurnstileVerify = useCallback((token: string) => {
@@ -369,12 +370,17 @@ export default function SimuladorPLD() {
         setFormStatus("success");
         setFormData({ name: "", email: "", phone: "", company: "" });
         setTurnstileToken(null);
+        setTurnstileKey((k) => k + 1);
         gtmEvent("generate_lead", { form_name: "simulador_pld" });
       } else {
         setFormStatus("error");
+        setTurnstileToken(null);
+        setTurnstileKey((k) => k + 1);
       }
     } catch {
       setFormStatus("error");
+      setTurnstileToken(null);
+      setTurnstileKey((k) => k + 1);
     }
   };
 
@@ -926,6 +932,7 @@ export default function SimuladorPLD() {
                   )}
 
                   <TurnstileWidget
+                    key={turnstileKey}
                     onVerify={handleTurnstileVerify}
                     onError={handleTurnstileError}
                     onExpire={handleTurnstileExpire}

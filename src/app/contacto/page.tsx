@@ -18,6 +18,7 @@ export default function ContactoPage() {
     message: "",
   });
   const [turnstileToken, setTurnstileToken] = useState("");
+  const [turnstileKey, setTurnstileKey] = useState(0);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -90,6 +91,7 @@ export default function ContactoPage() {
         setStatus("success");
         setFormData({ name: "", email: "", company: "", phone: "", message: "" });
         setTurnstileToken("");
+        setTurnstileKey((k) => k + 1);
         gtmEvent("generate_lead", {
           event_category: "Contact",
           event_label: "Contacto Page",
@@ -99,10 +101,14 @@ export default function ContactoPage() {
         const errorData = await response.json().catch(() => ({}));
         setStatus("error");
         setErrorMessage(errorData.error || "Hubo un error al enviar el mensaje. Por favor, intenta de nuevo.");
+        setTurnstileToken("");
+        setTurnstileKey((k) => k + 1);
       }
     } catch {
       setStatus("error");
       setErrorMessage("Error de conexión. Por favor, intenta de nuevo.");
+      setTurnstileToken("");
+      setTurnstileKey((k) => k + 1);
     }
   };
 
@@ -320,6 +326,7 @@ export default function ContactoPage() {
                     {/* Turnstile Widget */}
                     <div className="flex justify-center">
                       <TurnstileWidget
+                        key={turnstileKey}
                         onVerify={handleTurnstileVerify}
                         onError={handleTurnstileError}
                         onExpire={handleTurnstileExpire}
