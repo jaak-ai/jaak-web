@@ -54,40 +54,40 @@ const pricingData: Record<ProductTab, AutoservicioPlan[]> = {
     { name: "Platino", subtitle: "Empresarial", quantity: 500, unit: "verificaciones", price: "$12,500", priceNote: "/ año" },
   ],
   "firma-simple": [
-    { name: "Cobre", subtitle: "Trial", quantity: 10, unit: "firmas", price: "$99", priceNote: "/ año" },
+    { name: "Cobre", subtitle: "Trial", quantity: 10, unit: "firmas", price: "$49", priceNote: "/ año" },
+    { name: "Bronce", subtitle: "Básico", quantity: 50, unit: "firmas", price: "$400", priceNote: "/ año" },
+    { name: "Plata", subtitle: "Recomendado", quantity: 100, unit: "firmas", price: "$700", priceNote: "/ año", recommended: true },
+    { name: "Oro", subtitle: "Profesional", quantity: 250, unit: "firmas", price: "$1,500", priceNote: "/ año" },
+    { name: "Platino", subtitle: "Empresarial", quantity: 500, unit: "firmas", price: "$2,500", priceNote: "/ año" },
+  ],
+  "firma-avanzada": [
+    { name: "Cobre", subtitle: "Trial", quantity: 5, unit: "firmas", price: "$99", priceNote: "/ año" },
     { name: "Bronce", subtitle: "Básico", quantity: 50, unit: "firmas", price: "$750", priceNote: "/ año" },
     { name: "Plata", subtitle: "Recomendado", quantity: 100, unit: "firmas", price: "$1,400", priceNote: "/ año", recommended: true },
     { name: "Oro", subtitle: "Profesional", quantity: 250, unit: "firmas", price: "$3,250", priceNote: "/ año" },
     { name: "Platino", subtitle: "Empresarial", quantity: 500, unit: "firmas", price: "$6,000", priceNote: "/ año" },
   ],
-  "firma-avanzada": [
+  "firma-bio": [
     { name: "Cobre", subtitle: "Trial", quantity: 5, unit: "firmas", price: "$99", priceNote: "/ año" },
     { name: "Bronce", subtitle: "Básico", quantity: 50, unit: "firmas", price: "$1,500", priceNote: "/ año" },
     { name: "Plata", subtitle: "Recomendado", quantity: 100, unit: "firmas", price: "$2,700", priceNote: "/ año", recommended: true },
     { name: "Oro", subtitle: "Profesional", quantity: 250, unit: "firmas", price: "$6,625", priceNote: "/ año" },
     { name: "Platino", subtitle: "Empresarial", quantity: 500, unit: "firmas", price: "$12,500", priceNote: "/ año" },
   ],
-  "firma-bio": [
-    { name: "Cobre", subtitle: "Trial", quantity: 5, unit: "firmas", price: "$99", priceNote: "/ año" },
-    { name: "Bronce", subtitle: "Básico", quantity: 50, unit: "firmas", price: "$2,450", priceNote: "/ año" },
-    { name: "Plata", subtitle: "Recomendado", quantity: 100, unit: "firmas", price: "$4,500", priceNote: "/ año", recommended: true },
-    { name: "Oro", subtitle: "Profesional", quantity: 250, unit: "firmas", price: "$9,750", priceNote: "/ año" },
-    { name: "Platino", subtitle: "Empresarial", quantity: 500, unit: "firmas", price: "$17,500", priceNote: "/ año" },
-  ],
 };
 
 const tabLabels: Record<ProductTab, string> = {
-  biometria: "Biometría (KYC)",
+  biometria: "KYC (Biometría)",
   "firma-simple": "Firma Simple",
-  "firma-avanzada": "Firma Avanzada",
-  "firma-bio": "Firma + Biometría",
+  "firma-avanzada": "Firma NOM-151",
+  "firma-bio": "Firma NOM-151 + Bio",
 };
 
 const tabDescriptions: Record<ProductTab, string> = {
   biometria: "KYC Tradicional, Simplificado y Passwordless para validación de identidad.",
   "firma-simple": "Firma electrónica simple para documentos que no requieren certificación avanzada.",
   "firma-avanzada": "Firma electrónica avanzada con cumplimiento NOM-151 y PSC certificado.",
-  "firma-bio": "Firma avanzada con verificación biométrica integrada para máxima seguridad.",
+  "firma-bio": "Firma electrónica avanzada NOM-151 con verificación biométrica integrada.",
 };
 
 const enterprisePlans = [
@@ -370,14 +370,17 @@ export default function PreciosClient() {
           </div>
 
           {/* Autoservicio notes */}
-          <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm text-[#64748B]">
-            {["Pago 100% anticipado", "Sin contrato obligatorio", "Upgrade inmediato", "Documentación incluida"].map((note) => (
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm text-[#64748B] mb-6">
+            {["Pago 100% anticipado", "Sin contrato obligatorio", "Upgrade inmediato", "Soporte chat/email incluido"].map((note) => (
               <span key={note} className="flex items-center gap-2">
                 <CheckIcon />
                 {note}
               </span>
             ))}
           </div>
+          <p className="text-center text-xs text-[#64748B]">
+            Todos los precios en MXN. Sin Setup Fee. Sin comisión comercial.
+          </p>
         </div>
       </section>
 
