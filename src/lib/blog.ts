@@ -11,6 +11,17 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    title: "Mientras el resto habla de IA, nosotros la operamos",
+    excerpt:
+      "No es un demo. No es una promesa. Descubre cómo JAAK opera con agentes de inteligencia artificial en producción — y por qué esa diferencia lo cambia todo para el fintech mexicano.",
+    date: "26 de febrero, 2026",
+    dateISO: "2026-02-26",
+    category: "IA",
+    slug: "mientras-el-resto-habla-ia-nosotros-operamos",
+    readTime: "6 min",
+    image: "/images/blog/ia-operativa-diferenciador.jpg",
+  },
+  {
     title: "Alerta CONDUSEF: ¿Por qué persiste la suplantación de instituciones financieras?",
     excerpt: "CONDUSEF alertó sobre el nuevo modus operandi de suplantadores. Analizamos por qué la suplantación sigue funcionando, qué vacíos estructurales la permiten y cómo la identidad digital verificable puede cambiar el panorama.",
     date: "10 de febrero, 2026",
@@ -113,6 +124,7 @@ export const blogPosts: BlogPost[] = [
 ];
 
 export const categoryColors: Record<string, { bg: string; text: string }> = {
+  IA: { bg: "bg-emerald-500/10", text: "text-emerald-500" },
   Análisis: { bg: "bg-red-500/10", text: "text-red-500" },
   KYC: { bg: "bg-[#0066ff]/10", text: "text-[#0066ff]" },
   Regulación: { bg: "bg-purple-500/10", text: "text-purple-500" },
