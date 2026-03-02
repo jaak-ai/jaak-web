@@ -8,7 +8,18 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
         disallow: ["/api/", "/private/"],
       },
+      // AI crawlers — explicitly allowed for GEO indexing
+      { userAgent: "GPTBot", allow: "/" },
+      { userAgent: "ChatGPT-User", allow: "/" },
+      { userAgent: "OAI-SearchBot", allow: "/" },
+      { userAgent: "PerplexityBot", allow: "/" },
+      { userAgent: "anthropic-ai", allow: "/" },
+      { userAgent: "ClaudeBot", allow: "/" },
+      { userAgent: "Google-Extended", allow: "/" },
+      { userAgent: "Applebot-Extended", allow: "/" },
+      { userAgent: "cohere-ai", allow: "/" },
     ],
     sitemap: "https://jaak.ai/sitemap.xml",
+    host: "https://jaak.ai",
   };
 }
