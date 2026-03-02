@@ -17,6 +17,36 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "Mejores prácticas de compliance en México: Guía para instituciones financieras",
+  description: "Guía práctica de compliance financiero en México: LFPIORPI, AML, CNBV y UIF. Cómo implementar un programa de cumplimiento efectivo.",
+  image: "https://jaak.ai/images/blog/mejores-practicas-compliance.jpg",
+  datePublished: "2025-12-10",
+  dateModified: "2025-12-10",
+  author: {
+    "@type": "Organization",
+    name: "JAAK",
+    url: "https://jaak.ai",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "JAAK",
+    url: "https://jaak.ai",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://jaak.ai/images/logos/jaak-logo-azul.png",
+    },
+  },
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": "https://jaak.ai/blog/mejores-practicas-compliance-mexico",
+  },
+  keywords: "compliance México, LFPIORPI, AML México, UIF, CNBV, cumplimiento regulatorio, prevención lavado dinero",
+  inLanguage: "es-MX",
+};
+
 export default function MejoresPracticasCompliance() {
   const relatedPosts = [
     {
@@ -38,6 +68,10 @@ export default function MejoresPracticasCompliance() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Header />
       <main>
         {/* Hero Section */}

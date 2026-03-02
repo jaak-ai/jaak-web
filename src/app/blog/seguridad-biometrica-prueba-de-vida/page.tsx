@@ -17,6 +17,36 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "Seguridad biométrica: Cómo la prueba de vida previene el fraude",
+  description: "La prueba de vida (liveness detection) es la primera línea de defensa contra el fraude biométrico. Cómo funciona y por qué es crítica en KYC.",
+  image: "https://jaak.ai/images/blog/seguridad-biometrica.jpg",
+  datePublished: "2025-12-27",
+  dateModified: "2025-12-27",
+  author: {
+    "@type": "Organization",
+    name: "JAAK",
+    url: "https://jaak.ai",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "JAAK",
+    url: "https://jaak.ai",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://jaak.ai/images/logos/jaak-logo-azul.png",
+    },
+  },
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": "https://jaak.ai/blog/seguridad-biometrica-prueba-de-vida",
+  },
+  keywords: "prueba de vida, liveness detection, biometría seguridad, anti-spoofing, fraude biométrico, deepfake detección",
+  inLanguage: "es-MX",
+};
+
 export default function SeguridadBiometrica() {
   const relatedPosts = [
     {
@@ -38,6 +68,10 @@ export default function SeguridadBiometrica() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Header />
       <main>
         {/* Hero Section */}

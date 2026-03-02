@@ -17,6 +17,36 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "Tendencias KYC 2026: Lo que toda institución financiera debe saber",
+  description: "Las principales tendencias que transformarán la verificación de identidad en México durante 2026: IA generativa, biometría avanzada y regulación actualizada.",
+  image: "https://jaak.ai/images/blog/tendencias-kyc-2026.jpg",
+  datePublished: "2026-01-08",
+  dateModified: "2026-01-08",
+  author: {
+    "@type": "Organization",
+    name: "JAAK",
+    url: "https://jaak.ai",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "JAAK",
+    url: "https://jaak.ai",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://jaak.ai/images/logos/jaak-logo-azul.png",
+    },
+  },
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": "https://jaak.ai/blog/tendencias-kyc-2026",
+  },
+  keywords: "KYC 2026, tendencias KYC, verificación de identidad, inteligencia artificial KYC, biometría, regulación financiera México, CNBV",
+  inLanguage: "es-MX",
+};
+
 export default function TendenciasKYC2026() {
   const relatedPosts = [
     {
@@ -38,6 +68,10 @@ export default function TendenciasKYC2026() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Header />
       <main>
         {/* Hero Section */}

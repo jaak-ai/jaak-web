@@ -27,6 +27,36 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "Mientras el resto habla de IA, nosotros operamos: JAAK en producción",
+  description: "JAAK opera biometría e IA en producción con más de 70 millones de usuarios verificados. No es teoría: es infraestructura real funcionando hoy en México.",
+  image: "https://jaak.ai/images/blog/jaak-operamos.jpg",
+  datePublished: "2026-02-26",
+  dateModified: "2026-02-26",
+  author: {
+    "@type": "Organization",
+    name: "JAAK",
+    url: "https://jaak.ai",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "JAAK",
+    url: "https://jaak.ai",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://jaak.ai/images/logos/jaak-logo-azul.png",
+    },
+  },
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": "https://jaak.ai/blog/mientras-el-resto-habla-ia-nosotros-operamos",
+  },
+  keywords: "JAAK, IA en producción, biometría producción, KYC real, verificación identidad México, 70 millones usuarios",
+  inLanguage: "es-MX",
+};
+
 export default function MientrasElRestoHablaIA() {
   const relatedPosts = [
     {
@@ -48,6 +78,10 @@ export default function MientrasElRestoHablaIA() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Header />
       <main>
         {/* Hero Section */}

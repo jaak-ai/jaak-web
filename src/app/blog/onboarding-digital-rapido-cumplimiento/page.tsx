@@ -17,6 +17,36 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "Onboarding digital: De días a minutos sin sacrificar cumplimiento",
+  description: "Cómo reducir el tiempo de onboarding digital de días a minutos manteniendo cumplimiento CNBV, UIF y LFPIORPI. Casos reales con JAAK.",
+  image: "https://jaak.ai/images/blog/onboarding-digital.jpg",
+  datePublished: "2025-12-15",
+  dateModified: "2025-12-15",
+  author: {
+    "@type": "Organization",
+    name: "JAAK",
+    url: "https://jaak.ai",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "JAAK",
+    url: "https://jaak.ai",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://jaak.ai/images/logos/jaak-logo-azul.png",
+    },
+  },
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": "https://jaak.ai/blog/onboarding-digital-rapido-cumplimiento",
+  },
+  keywords: "onboarding digital, KYC rápido, verificación identidad rápida, cumplimiento onboarding, fintech México, CNBV onboarding",
+  inLanguage: "es-MX",
+};
+
 export default function OnboardingDigital() {
   const relatedPosts = [
     {
@@ -38,6 +68,10 @@ export default function OnboardingDigital() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Header />
       <main>
         {/* Hero Section */}

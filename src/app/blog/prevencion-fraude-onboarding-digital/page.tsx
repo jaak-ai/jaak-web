@@ -17,6 +17,36 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "Prevención de fraude en el onboarding digital: Mejores prácticas",
+  description: "Estrategias efectivas para prevenir fraude durante el onboarding digital: liveness detection, anti-spoofing, validación documental y señales de riesgo.",
+  image: "https://jaak.ai/images/blog/prevencion-fraude.jpg",
+  datePublished: "2025-12-20",
+  dateModified: "2025-12-20",
+  author: {
+    "@type": "Organization",
+    name: "JAAK",
+    url: "https://jaak.ai",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "JAAK",
+    url: "https://jaak.ai",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://jaak.ai/images/logos/jaak-logo-azul.png",
+    },
+  },
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": "https://jaak.ai/blog/prevencion-fraude-onboarding-digital",
+  },
+  keywords: "prevención fraude, onboarding digital, liveness detection, anti-spoofing, KYC fraude, identidad sintética",
+  inLanguage: "es-MX",
+};
+
 export default function PrevencionFraude() {
   const relatedPosts = [
     {
@@ -38,6 +68,10 @@ export default function PrevencionFraude() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Header />
       <main>
         {/* Hero Section */}
