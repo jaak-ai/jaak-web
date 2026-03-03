@@ -40,6 +40,7 @@ interface AutoservicioPlan {
   price: string;
   priceNote: string;
   recommended?: boolean;
+  ctaUrl?: string;
 }
 
 // --- Constants ---
@@ -47,7 +48,7 @@ const AUTOSERVICIO_URL = "https://platform.jaak.ai/#/onboarding/plans";
 
 const pricingData: Record<ProductTab, AutoservicioPlan[]> = {
   biometria: [
-    { name: "Cobre", subtitle: "Trial", quantity: 5, unit: "verificaciones", price: "$99", priceNote: "/ año" },
+    { name: "Cobre", subtitle: "Trial", quantity: 5, unit: "verificaciones", price: "$99", priceNote: "/ año", ctaUrl: "https://platform.jaak.ai/#/onboarding/user-info" },
     { name: "Bronce", subtitle: "Básico", quantity: 50, unit: "verificaciones", price: "$1,500", priceNote: "/ año" },
     { name: "Plata", subtitle: "Recomendado", quantity: 100, unit: "verificaciones", price: "$2,800", priceNote: "/ año", recommended: true },
     { name: "Oro", subtitle: "Profesional", quantity: 250, unit: "verificaciones", price: "$6,625", priceNote: "/ año" },
@@ -353,7 +354,7 @@ export default function PreciosClient() {
                     </div>
                   </div>
                   <Link
-                    href={AUTOSERVICIO_URL}
+                    href={plan.ctaUrl || AUTOSERVICIO_URL}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={`block w-full py-2.5 rounded-lg font-semibold text-sm transition-all text-center ${
