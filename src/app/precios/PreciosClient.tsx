@@ -280,6 +280,7 @@ function CheckIcon({ className = "w-4 h-4 text-[#1ecad3]" }: { className?: strin
 // --- Component ---
 export default function PreciosClient() {
   const [activeTab, setActiveTab] = useState<ProductTab>("biometria");
+  const [expandedCard, setExpandedCard] = useState<string | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   // Scroll reveal refs
@@ -408,50 +409,77 @@ export default function PreciosClient() {
                 )}
                 <div className="pt-2">
                   <div className="text-center">
-                    <h3 className="text-base font-bold text-[#212A45] uppercase tracking-wide mb-1">{plan.name}</h3>
-                    <p className="text-xs text-[#64748B] mb-4 leading-relaxed">{plan.subtitle}</p>
+                    <h3 className="text-base font-bold text-[#212A45] uppercase tracking-wide mb-0.5">{plan.name}</h3>
+                    <p className="text-xs text-[#64748B] mb-4">{plan.subtitle}</p>
                     <div className="mb-4">
                       <span className="text-2xl lg:text-[1.65rem] font-black text-[#212A45]">{plan.price}</span>
                       <span className="text-xs text-[#64748B] ml-1">{plan.priceNote}</span>
                     </div>
                   </div>
-                  {plan.description && (
-                    <div className="mb-4 bg-[#F3F4F8] rounded-lg p-3">
-                      <p className="text-[11px] font-semibold text-[#2DB6C1] mb-1">Este plan es para ti si...</p>
-                      <p className="text-xs text-[#4A5568] leading-relaxed">{plan.description}</p>
+
+                  {/* Expandable details */}
+                  {(plan.description || plan.checks) && (
+                    <>
+                      <button
+                        onClick={() => setExpandedCard(expandedCard === plan.name ? null : plan.name)}
+                        className="flex items-center justify-center gap-1.5 w-full text-xs font-medium text-[#2DB6C1] hover:text-[#25969f] transition-colors mb-4"
+                      >
+                        {expandedCard === plan.name ? "Ocultar detalles" : "Ver detalles"}
+                        <svg
+                          className={`w-3.5 h-3.5 transition-transform ${expandedCard === plan.name ? "rotate-180" : ""}`}
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+
+                      {expandedCard === plan.name && (
+                        <div className="animate-fade-in-up">
+                          {plan.description && (
+                            <div className="mb-4 bg-[#F3F4F8] rounded-lg p-3">
+                              <p className="text-[11px] font-semibold text-[#2DB6C1] mb-1">Este plan es para ti si...</p>
+                              <p className="text-xs text-[#4A5568] leading-relaxed">{plan.description}</p>
+                            </div>
+                          )}
+                          {plan.checks && (
+                            <div className="space-y-2 mb-4 text-left">
+                              {plan.checks.map((check) => (
+                                <div key={check} className="flex items-start gap-2 text-xs text-[#4A5568]">
+                                  <CheckIcon className="w-3.5 h-3.5 text-[#1ecad3] mt-0.5" />
+                                  <span>{check}</span>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </>
+                  )}
+
+                  {/* Fallback for plans without detailed data */}
+                  {!plan.description && !plan.checks && (
+                    <div className="space-y-2.5 mb-4 text-left">
+                      <div className="flex items-center gap-2 text-sm text-[#4A5568]">
+                        <CheckIcon />
+                        <span><strong>{plan.quantity}</strong> {plan.unit} / año</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-[#4A5568]">
+                        <CheckIcon />
+                        <span>Soporte vía chat</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-[#4A5568]">
+                        <CheckIcon />
+                        <span>Documentación técnica</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-[#4A5568]">
+                        <CheckIcon />
+                        <span>Vigencia 12 meses</span>
+                      </div>
                     </div>
                   )}
-                  <div className="space-y-2.5 mb-6 text-left">
-                    {plan.checks ? (
-                      plan.checks.map((check) => (
-                        <div key={check} className="flex items-start gap-2 text-sm text-[#4A5568]">
-                          <CheckIcon className="w-4 h-4 text-[#1ecad3] mt-0.5" />
-                          <span>{check}</span>
-                        </div>
-                      ))
-                    ) : (
-                      <>
-                        <div className="flex items-center gap-2 text-sm text-[#4A5568]">
-                          <CheckIcon />
-                          <span>
-                            <strong>{plan.quantity}</strong> {plan.unit} / año
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm text-[#4A5568]">
-                          <CheckIcon />
-                          <span>Soporte vía chat</span>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm text-[#4A5568]">
-                          <CheckIcon />
-                          <span>Documentación técnica</span>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm text-[#4A5568]">
-                          <CheckIcon />
-                          <span>Vigencia 12 meses</span>
-                        </div>
-                      </>
-                    )}
-                  </div>
+
                   <Link
                     href={plan.ctaUrl || AUTOSERVICIO_URL}
                     target="_blank"
