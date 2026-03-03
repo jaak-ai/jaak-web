@@ -41,6 +41,9 @@ interface AutoservicioPlan {
   priceNote: string;
   recommended?: boolean;
   ctaUrl?: string;
+  description?: string;
+  targetAudience?: string;
+  checks?: string[];
 }
 
 // --- Constants ---
@@ -48,11 +51,88 @@ const AUTOSERVICIO_URL = "https://platform.jaak.ai/#/onboarding/plans";
 
 const pricingData: Record<ProductTab, AutoservicioPlan[]> = {
   biometria: [
-    { name: "Cobre", subtitle: "Trial", quantity: 5, unit: "verificaciones", price: "$99", priceNote: "/ año", ctaUrl: "https://platform.jaak.ai/#/onboarding/user-info" },
-    { name: "Bronce", subtitle: "Básico", quantity: 50, unit: "verificaciones", price: "$1,500", priceNote: "/ año" },
-    { name: "Plata", subtitle: "Recomendado", quantity: 100, unit: "verificaciones", price: "$2,800", priceNote: "/ año", recommended: true },
-    { name: "Oro", subtitle: "Profesional", quantity: 250, unit: "verificaciones", price: "$6,625", priceNote: "/ año" },
-    { name: "Platino", subtitle: "Empresarial", quantity: 500, unit: "verificaciones", price: "$12,500", priceNote: "/ año" },
+    {
+      name: "Cobre",
+      subtitle: "Prueba el servicio con 5 verificaciones de identidad. Un solo pago, sin renovación automática.",
+      quantity: 5,
+      unit: "verificaciones de identidad",
+      price: "$99",
+      priceNote: "/ año",
+      ctaUrl: "https://platform.jaak.ai/#/onboarding/user-info",
+      description: "Quieres conocer cómo funciona JAAK antes de comprometerte con un volumen mayor.",
+      checks: [
+        "5 verificaciones de identidad",
+        "Soporte vía Chat",
+        "Documentación de uso incluida",
+        "Sin contrato ni Setup Fee",
+        "Sin necesidad de desarrollador — 100% desde la web",
+      ],
+    },
+    {
+      name: "Bronce",
+      subtitle: "Plan de entrada para empresas con necesidades básicas de verificación anual.",
+      quantity: 50,
+      unit: "verificaciones de identidad",
+      price: "$1,500",
+      priceNote: "/ año",
+      description: "Verificas identidades de forma ocasional, menos de 50 veces al año, y buscas una solución simple sin trámites.",
+      checks: [
+        "50 verificaciones de identidad",
+        "Soporte Chat o Email",
+        "Documentación de uso incluida",
+        "Sin contrato ni Setup Fee",
+        "Sin necesidad de desarrollador — 100% desde la web",
+      ],
+    },
+    {
+      name: "Plata",
+      subtitle: "Plan profesional para empresas con procesos de verificación regulares.",
+      quantity: 100,
+      unit: "verificaciones de identidad",
+      price: "$2,800",
+      priceNote: "/ año",
+      recommended: true,
+      description: "Tu empresa ya tiene un flujo de onboarding digital y necesitas verificar hasta 100 identidades al año con respaldo técnico.",
+      checks: [
+        "100 verificaciones de identidad",
+        "Soporte Chat o Email",
+        "Documentación de uso incluida",
+        "Sin contrato ni Setup Fee",
+        "Sin necesidad de desarrollador — 100% desde la web",
+      ],
+    },
+    {
+      name: "Oro",
+      subtitle: "Plan empresarial para operaciones de mayor volumen con soporte extendido.",
+      quantity: 250,
+      unit: "verificaciones de identidad",
+      price: "$6,625",
+      priceNote: "/ año",
+      description: "Tu operación requiere verificaciones frecuentes y necesitas soporte disponible todos los días de la semana.",
+      checks: [
+        "250 verificaciones de identidad",
+        "Soporte Chat o Email 12×7",
+        "Documentación de uso incluida",
+        "Sin contrato ni Setup Fee",
+        "Sin necesidad de desarrollador — 100% desde la web",
+      ],
+    },
+    {
+      name: "Platino",
+      subtitle: "El mayor plan de autoservicio para empresas con alto volumen de verificaciones.",
+      quantity: 500,
+      unit: "verificaciones de identidad",
+      price: "$12,500",
+      priceNote: "/ año",
+      description: "Verificas identidades de forma constante y buscas el mejor precio por verificación sin pasar a un contrato Enterprise.",
+      checks: [
+        "500 verificaciones de identidad",
+        "Soporte Chat o Email 12×7",
+        "Documentación de uso incluida",
+        "Sin contrato ni Setup Fee",
+        "Sin necesidad de desarrollador — 100% desde la web",
+      ],
+    },
   ],
   "firma-simple": [
     { name: "Cobre", subtitle: "Trial", quantity: 10, unit: "firmas", price: "$49", priceNote: "/ año" },
@@ -326,32 +406,51 @@ export default function PreciosClient() {
                     </span>
                   </div>
                 )}
-                <div className="text-center pt-2">
-                  <h3 className="text-base font-bold text-[#212A45] uppercase tracking-wide mb-0.5">{plan.name}</h3>
-                  <p className="text-xs text-[#64748B] mb-4">{plan.subtitle}</p>
-                  <div className="mb-4">
-                    <span className="text-2xl lg:text-[1.65rem] font-black text-[#212A45]">{plan.price}</span>
-                    <span className="text-xs text-[#64748B] ml-1">{plan.priceNote}</span>
+                <div className="pt-2">
+                  <div className="text-center">
+                    <h3 className="text-base font-bold text-[#212A45] uppercase tracking-wide mb-1">{plan.name}</h3>
+                    <p className="text-xs text-[#64748B] mb-4 leading-relaxed">{plan.subtitle}</p>
+                    <div className="mb-4">
+                      <span className="text-2xl lg:text-[1.65rem] font-black text-[#212A45]">{plan.price}</span>
+                      <span className="text-xs text-[#64748B] ml-1">{plan.priceNote}</span>
+                    </div>
                   </div>
+                  {plan.description && (
+                    <div className="mb-4 bg-[#F3F4F8] rounded-lg p-3">
+                      <p className="text-[11px] font-semibold text-[#2DB6C1] mb-1">Este plan es para ti si...</p>
+                      <p className="text-xs text-[#4A5568] leading-relaxed">{plan.description}</p>
+                    </div>
+                  )}
                   <div className="space-y-2.5 mb-6 text-left">
-                    <div className="flex items-center gap-2 text-sm text-[#4A5568]">
-                      <CheckIcon />
-                      <span>
-                        <strong>{plan.quantity}</strong> {plan.unit} / año
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-[#4A5568]">
-                      <CheckIcon />
-                      <span>Soporte vía chat</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-[#4A5568]">
-                      <CheckIcon />
-                      <span>Documentación técnica</span>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-[#4A5568]">
-                      <CheckIcon />
-                      <span>Vigencia 12 meses</span>
-                    </div>
+                    {plan.checks ? (
+                      plan.checks.map((check) => (
+                        <div key={check} className="flex items-start gap-2 text-sm text-[#4A5568]">
+                          <CheckIcon className="w-4 h-4 text-[#1ecad3] mt-0.5" />
+                          <span>{check}</span>
+                        </div>
+                      ))
+                    ) : (
+                      <>
+                        <div className="flex items-center gap-2 text-sm text-[#4A5568]">
+                          <CheckIcon />
+                          <span>
+                            <strong>{plan.quantity}</strong> {plan.unit} / año
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-[#4A5568]">
+                          <CheckIcon />
+                          <span>Soporte vía chat</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-[#4A5568]">
+                          <CheckIcon />
+                          <span>Documentación técnica</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-[#4A5568]">
+                          <CheckIcon />
+                          <span>Vigencia 12 meses</span>
+                        </div>
+                      </>
+                    )}
                   </div>
                   <Link
                     href={plan.ctaUrl || AUTOSERVICIO_URL}
