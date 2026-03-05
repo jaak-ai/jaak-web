@@ -1,17 +1,30 @@
 import Link from 'next/link'
 import type { MDXComponents } from 'mdx/types'
+import { Callout } from './Callout'
+import { CodeBlock } from './CodeBlock'
+import { Tabs, CodeTabs } from './Tabs'
+import { Endpoint, ParamsTable, ResponseSchema, HttpMethod } from './api'
 
 export const mdxComponents: MDXComponents = {
+  // Custom components for MDX
+  Callout,
+  CodeBlock,
+  Tabs,
+  CodeTabs,
+  Endpoint,
+  ParamsTable,
+  ResponseSchema,
+  HttpMethod,
   h1: ({ children }) => (
     <h1 className="mb-4 text-4xl font-black text-gray-900">{children}</h1>
   ),
-  h2: ({ children, id }) => (
-    <h2 id={id} className="mb-4 mt-12 text-2xl font-bold text-gray-900 scroll-mt-24">
+  h2: ({ children }) => (
+    <h2 className="mb-4 mt-12 text-2xl font-bold text-gray-900 scroll-mt-24">
       {children}
     </h2>
   ),
-  h3: ({ children, id }) => (
-    <h3 id={id} className="mb-3 mt-8 text-xl font-semibold text-gray-900 scroll-mt-24">
+  h3: ({ children }) => (
+    <h3 className="mb-3 mt-8 text-xl font-semibold text-gray-900 scroll-mt-24">
       {children}
     </h3>
   ),

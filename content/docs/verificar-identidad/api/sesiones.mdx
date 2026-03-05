@@ -5,8 +5,6 @@ category: api
 order: 0
 ---
 
-import { Endpoint, ParamsTable, ResponseSchema } from '@/components/docs/api'
-import { Callout } from '@/components/docs'
 
 # Sesiones
 
@@ -17,7 +15,7 @@ Las sesiones son el recurso principal de la API de verificación de identidad. U
 ```
 1. POST /sessions → Crear sesión (status: pending)
 2. Usuario completa verificación → (status: processing → completed/failed)
-3. GET /sessions/{id} → Obtener resultados
+3. GET /sessions/:id → Obtener resultados
 ```
 
 <Callout type="info" title="Tiempo de vida">
@@ -199,7 +197,7 @@ curl -X POST https://api.dev.jaak.ai/api/v1/sessions \
 
 <Endpoint
   method="GET"
-  path="/api/v1/sessions/{id}"
+  path="/api/v1/sessions/:id"
   description="Obtiene los detalles y resultados de una sesión"
 />
 
@@ -491,7 +489,7 @@ Usa el `nextCursor` en el parámetro `cursor` de la siguiente solicitud para obt
 
 <Endpoint
   method="POST"
-  path="/api/v1/sessions/{id}/cancel"
+  path="/api/v1/sessions/:id/cancel"
   description="Cancela una sesión pendiente"
 />
 

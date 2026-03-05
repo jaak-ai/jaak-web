@@ -5,7 +5,6 @@ category: recurso
 order: 0
 ---
 
-import { Callout, CodeTabs } from '@/components/docs'
 
 # Webhooks
 
@@ -91,7 +90,7 @@ X-JAAK-Timestamp: 1705314900
 
 1. Obtén el timestamp del header `X-JAAK-Timestamp`
 2. Verifica que el timestamp no tenga más de 5 minutos de antigüedad
-3. Construye la cadena a firmar: `{timestamp}.{body}`
+3. Construye la cadena a firmar: `TIMESTAMP.BODY`
 4. Calcula HMAC-SHA256 usando tu webhook secret
 5. Compara con la firma del header
 

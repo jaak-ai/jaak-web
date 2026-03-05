@@ -1,6 +1,4 @@
 import { defineDocumentType, makeSource } from 'contentlayer2/source-files'
-import rehypeSlug from 'rehype-slug'
-import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 
 export const Doc = defineDocumentType(() => ({
   name: 'Doc',
@@ -38,10 +36,4 @@ export const Doc = defineDocumentType(() => ({
 export default makeSource({
   contentDirPath: 'content',
   documentTypes: [Doc],
-  mdx: {
-    rehypePlugins: [
-      rehypeSlug,
-      [rehypeAutolinkHeadings, { behavior: 'wrap' }],
-    ],
-  },
 })

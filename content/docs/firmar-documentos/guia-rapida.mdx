@@ -5,8 +5,6 @@ category: guia
 order: 1
 ---
 
-import { Callout } from '@/components/docs'
-import { Endpoint, ParamsTable } from '@/components/docs/api'
 
 # Guía rápida
 
@@ -62,7 +60,7 @@ Sube un documento PDF y define dónde irán las firmas.
 
 ```bash
 curl -X POST https://signa.dev.jaak.ai/api/v1/templates \
-  -H "Authorization: Bearer {token}" \
+  -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: multipart/form-data" \
   -F "file=@contrato.pdf" \
   -F 'data={
@@ -114,7 +112,7 @@ Genera un enlace de firma para el firmante con los datos específicos.
 
 ```bash
 curl -X POST https://signa.dev.jaak.ai/api/v1/submissions \
-  -H "Authorization: Bearer {token}" \
+  -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "templateId": "tpl_abc123",
@@ -165,13 +163,13 @@ Una vez que el firmante complete el proceso, descarga el documento con la firma.
 
 <Endpoint
   method="GET"
-  path="/api/v1/submissions/{id}/download"
+  path="/api/v1/submissions/:id/download"
   description="Descarga el documento firmado en PDF"
 />
 
 ```bash
 curl -X GET https://signa.dev.jaak.ai/api/v1/submissions/sub_def456/download \
-  -H "Authorization: Bearer {token}" \
+  -H "Authorization: Bearer $TOKEN" \
   -o documento_firmado.pdf
 ```
 
@@ -188,13 +186,13 @@ Puedes consultar el estado del envío en cualquier momento.
 
 <Endpoint
   method="GET"
-  path="/api/v1/submissions/{id}"
+  path="/api/v1/submissions/:id"
   description="Obtiene los detalles de un envío"
 />
 
 ```bash
 curl -X GET https://signa.dev.jaak.ai/api/v1/submissions/sub_def456 \
-  -H "Authorization: Bearer {token}"
+  -H "Authorization: Bearer $TOKEN"
 ```
 
 **Estados posibles:**

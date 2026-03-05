@@ -5,8 +5,6 @@ category: api
 order: 0
 ---
 
-import { Endpoint, ParamsTable, ResponseSchema } from '@/components/docs/api'
-import { Callout } from '@/components/docs'
 
 # Autenticación
 
@@ -16,7 +14,7 @@ La API de JAAK Signa utiliza autenticación basada en tokens JWT (JSON Web Token
 
 ```
 1. POST /sign-in → Obtener token y refreshToken
-2. Usar token en header Authorization: Bearer {token}
+2. Usar token en header Authorization: Bearer TOKEN
 3. Cuando expire → POST /refresh-token con refreshToken
 4. Al cerrar sesión → POST /sign-out
 ```
@@ -183,7 +181,7 @@ Revoca el token de acceso actual y su refresh token asociado. Todos los tokens e
 
 | Header | Valor |
 |--------|-------|
-| Authorization | Bearer {token} |
+| Authorization | Bearer YOUR_TOKEN |
 
 ### Ejemplo de solicitud
 

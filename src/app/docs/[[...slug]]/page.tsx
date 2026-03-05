@@ -1,7 +1,6 @@
 import { allDocs } from 'contentlayer2/generated'
 import { notFound } from 'next/navigation'
-import { useMDXComponent } from 'next-contentlayer2/hooks'
-import { mdxComponents } from '@/components/docs/MDXComponents'
+import { MDXContent } from '@/components/docs/MDXContent'
 import { TableOfContents } from '@/components/docs/TableOfContents'
 import { findPrevNext } from '@/lib/docs/navigation'
 import Link from 'next/link'
@@ -37,11 +36,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: doc.title,
     description: doc.description,
   }
-}
-
-function MDXContent({ code }: { code: string }) {
-  const Component = useMDXComponent(code)
-  return <Component components={mdxComponents} />
 }
 
 export default async function DocPage({ params }: PageProps) {

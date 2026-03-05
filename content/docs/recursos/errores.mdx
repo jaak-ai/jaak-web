@@ -5,7 +5,6 @@ category: recurso
 order: 1
 ---
 
-import { Callout } from '@/components/docs'
 
 # Errores
 
@@ -216,7 +215,7 @@ Todas las respuestas incluyen un header `X-Request-Id`. Inclúyelo al contactar 
 |--------|-------------|----------|
 | `session_not_found` | Sesión no encontrada | Verifica el ID de sesión |
 | `session_expired` | La sesión ha expirado | Crea una nueva sesión |
-| `session_already_completed` | La sesión ya fue completada | Consulta el resultado con GET /sessions/{id} |
+| `session_already_completed` | La sesión ya fue completada | Consulta el resultado con GET /sessions/&#123;id&#125; |
 | `session_cancelled` | La sesión fue cancelada | Crea una nueva sesión si es necesario |
 | `invalid_verification_type` | Tipo de verificación no válido | Usa uno de: kyc_full, liveness_only, face_match, document_only, document_validation |
 | `document_type_not_supported` | Tipo de documento no soportado | Revisa los tipos de documento permitidos |
