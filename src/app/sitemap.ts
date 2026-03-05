@@ -1,5 +1,6 @@
 import { MetadataRoute } from "next";
 import { blogPosts } from "@/lib/blog";
+import { allDocs } from "contentlayer2/generated";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://jaak.ai";
@@ -9,6 +10,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${baseUrl}/blog/${post.slug}`,
     lastModified: new Date(post.dateISO),
     changeFrequency: "monthly",
+    priority: 0.7,
+  }));
+
+  // Documentation pages from contentlayer
+  const docEntries: MetadataRoute.Sitemap = allDocs.map((doc) => ({
+    url: `${baseUrl}${doc.url}`,
+    lastModified: now,
+    changeFrequency: "weekly",
     priority: 0.7,
   }));
 
@@ -121,49 +130,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
-    {
-      url: `${baseUrl}/documentacion`,
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 0.7,
-    },
-    // Documentation guides
-    {
-      url: `${baseUrl}/documentacion/guias/inicio-rapido`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/documentacion/guias/flujo-onboarding`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/documentacion/guias/firma-electronica`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/documentacion/guias/verificacion-empresarial`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/documentacion/guias/consultas-pld-aml`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.6,
-    },
-    {
-      url: `${baseUrl}/documentacion/guias/gestion-evidencia`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.6,
-    },
+    // Documentation pages (dynamic from contentlayer)
+    ...docEntries,
     {
       url: `${baseUrl}/blog`,
       lastModified: now,

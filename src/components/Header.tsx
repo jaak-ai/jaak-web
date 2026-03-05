@@ -258,7 +258,7 @@ export default function Header() {
               <div>
                 <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Recursos</h3>
                 <div className="space-y-3">
-                  <Link href="/documentacion" className="block text-gray-700 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
+                  <Link href="/docs" className="block text-gray-700 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
                     Documentación
                   </Link>
                   <Link href="/blog" className="block text-gray-700 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
@@ -726,7 +726,7 @@ export default function Header() {
               <div>
                 <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-5">Aprende</h3>
                 <div className="space-y-5">
-                  <Link href="/documentacion" className="group block">
+                  <Link href="/docs" className="group block">
                     <div className="flex items-start gap-4">
                       <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-[#0066ff] transition-colors">
                         <svg className="w-5 h-5 text-gray-900 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
