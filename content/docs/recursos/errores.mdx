@@ -1,0 +1,453 @@
+---
+title: Errores
+description: Códigos de error y cómo resolverlos.
+category: recurso
+order: 1
+---
+
+import { Callout } from '@/components/docs'
+
+# Errores
+
+Esta guía describe los códigos de error que pueden retornar las APIs de JAAK, junto con recomendaciones para resolverlos.
+
+## Formato de respuesta de error
+
+Todas las respuestas de error siguen el mismo formato JSON:
+
+```json
+{
+  "error": {
+    "code": "invalid_token",
+    "message": "El token ha expirado",
+    "status": 401,
+    "details": {
+      "expiredAt": "2024-01-15T10:30:00Z"
+    }
+  }
+}
+```
+
+| Campo | Descripción |
+|-------|-------------|
+| code | Código de error único para identificar el problema |
+| message | Descripción legible del error |
+| status | Código de estado HTTP |
+| details | Información adicional específica del error (opcional) |
+
+---
+
+## Códigos de estado HTTP
+
+### 400 Bad Request
+
+La solicitud contiene errores de sintaxis o parámetros inválidos.
+
+```json
+{
+  "error": {
+    "code": "invalid_request",
+    "message": "El campo 'email' es requerido",
+    "status": 400,
+    "details": {
+      "field": "email",
+      "reason": "required"
+    }
+  }
+}
+```
+
+**Solución:**
+- Verifica que todos los campos requeridos estén presentes
+- Comprueba que los tipos de datos sean correctos (string, number, etc.)
+- Revisa que los valores estén en formato válido (email, URL, fecha ISO 8601)
+
+### 401 Unauthorized
+
+Las credenciales son inválidas o no fueron proporcionadas.
+
+```json
+{
+  "error": {
+    "code": "invalid_credentials",
+    "message": "API Key o API Secret inválidos",
+    "status": 401
+  }
+}
+```
+
+**Solución:**
+- Verifica que estés enviando los headers de autenticación correctos
+- Comprueba que las credenciales sean las correctas para el ambiente (sandbox vs producción)
+- Revisa que los tokens no hayan expirado
+
+### 403 Forbidden
+
+No tienes permisos para acceder al recurso solicitado.
+
+```json
+{
+  "error": {
+    "code": "forbidden",
+    "message": "No tienes permisos para acceder a este recurso",
+    "status": 403
+  }
+}
+```
+
+**Solución:**
+- Verifica que tu plan incluya acceso a esta funcionalidad
+- Comprueba que el usuario tenga los permisos necesarios
+- Contacta a soporte si crees que deberías tener acceso
+
+### 404 Not Found
+
+El recurso solicitado no existe.
+
+```json
+{
+  "error": {
+    "code": "not_found",
+    "message": "Sesión no encontrada",
+    "status": 404,
+    "details": {
+      "resourceType": "session",
+      "resourceId": "ses_abc123xyz"
+    }
+  }
+}
+```
+
+**Solución:**
+- Verifica que el ID del recurso sea correcto
+- Comprueba que el recurso exista en el ambiente correcto
+- El recurso pudo haber sido eliminado o expirado
+
+### 422 Unprocessable Entity
+
+La solicitud es válida pero no puede ser procesada debido a reglas de negocio.
+
+```json
+{
+  "error": {
+    "code": "session_already_completed",
+    "message": "La sesión ya fue completada y no puede modificarse",
+    "status": 422,
+    "details": {
+      "sessionId": "ses_abc123xyz",
+      "status": "completed"
+    }
+  }
+}
+```
+
+**Solución:**
+- Revisa el estado actual del recurso antes de intentar modificarlo
+- Consulta la documentación para entender las transiciones de estado válidas
+
+### 429 Too Many Requests
+
+Has excedido el límite de solicitudes permitidas.
+
+```json
+{
+  "error": {
+    "code": "rate_limit_exceeded",
+    "message": "Has excedido el límite de solicitudes. Intenta de nuevo en 60 segundos",
+    "status": 429,
+    "details": {
+      "retryAfter": 60,
+      "limit": 100,
+      "window": "1m"
+    }
+  }
+}
+```
+
+**Solución:**
+- Implementa backoff exponencial en tu código
+- Respeta el header `Retry-After` en la respuesta
+- Considera cachear respuestas cuando sea posible
+- Contacta a soporte si necesitas un límite mayor
+
+### 500 Internal Server Error
+
+Error interno del servidor. No es tu culpa.
+
+```json
+{
+  "error": {
+    "code": "internal_error",
+    "message": "Ha ocurrido un error interno. Por favor intenta de nuevo",
+    "status": 500,
+    "details": {
+      "requestId": "req_xyz789"
+    }
+  }
+}
+```
+
+**Solución:**
+- Reintenta la solicitud después de unos segundos
+- Si el error persiste, contacta a soporte con el `requestId`
+
+<Callout type="tip" title="Request ID">
+Todas las respuestas incluyen un header `X-Request-Id`. Inclúyelo al contactar a soporte para que podamos identificar rápidamente tu solicitud.
+</Callout>
+
+---
+
+## Códigos de error específicos
+
+### Errores de autenticación
+
+| Código | Descripción | Solución |
+|--------|-------------|----------|
+| `invalid_api_key` | API Key no válida | Verifica que la API Key sea correcta |
+| `invalid_api_secret` | API Secret no válido | Verifica que el API Secret sea correcto |
+| `invalid_token` | Token JWT inválido | Obtén un nuevo token con sign-in |
+| `token_expired` | Token JWT expirado | Usa el refresh token para renovar |
+| `refresh_token_expired` | Refresh token expirado | Inicia sesión nuevamente |
+| `credentials_mismatch` | Credenciales no coinciden con el ambiente | Usa credenciales de sandbox o producción según corresponda |
+
+### Errores de verificación (KYC)
+
+| Código | Descripción | Solución |
+|--------|-------------|----------|
+| `session_not_found` | Sesión no encontrada | Verifica el ID de sesión |
+| `session_expired` | La sesión ha expirado | Crea una nueva sesión |
+| `session_already_completed` | La sesión ya fue completada | Consulta el resultado con GET /sessions/{id} |
+| `session_cancelled` | La sesión fue cancelada | Crea una nueva sesión si es necesario |
+| `invalid_verification_type` | Tipo de verificación no válido | Usa uno de: kyc_full, liveness_only, face_match, document_only, document_validation |
+| `document_type_not_supported` | Tipo de documento no soportado | Revisa los tipos de documento permitidos |
+| `ine_validation_unavailable` | Validación con INE no disponible | Servicio temporalmente no disponible, intenta más tarde |
+
+### Errores de firma (Signa)
+
+| Código | Descripción | Solución |
+|--------|-------------|----------|
+| `template_not_found` | Plantilla no encontrada | Verifica el ID de plantilla |
+| `template_invalid` | La plantilla tiene errores | Revisa la configuración de la plantilla en el dashboard |
+| `submission_not_found` | Envío no encontrado | Verifica el ID de envío |
+| `submission_cancelled` | El envío fue cancelado | El documento ya no puede firmarse |
+| `signer_not_found` | Firmante no encontrado | Verifica el ID o email del firmante |
+| `signature_already_completed` | El firmante ya firmó | No se puede firmar dos veces |
+| `invalid_signature_type` | Tipo de firma no válido | Usa uno de: simple, electronic_advanced, electronic_qualified |
+| `pdf_processing_error` | Error al procesar el PDF | Verifica que el PDF sea válido y no esté corrupto |
+
+### Errores de validación
+
+| Código | Descripción | Solución |
+|--------|-------------|----------|
+| `field_required` | Campo requerido faltante | Incluye todos los campos obligatorios |
+| `field_invalid` | Campo con formato inválido | Verifica el formato del campo |
+| `field_too_long` | Campo excede el límite | Reduce la longitud del valor |
+| `field_too_short` | Campo muy corto | Aumenta la longitud del valor |
+| `invalid_email` | Email con formato inválido | Usa un email válido |
+| `invalid_url` | URL con formato inválido | Incluye el protocolo (https://) |
+| `invalid_date` | Fecha con formato inválido | Usa formato ISO 8601 |
+| `invalid_json` | JSON mal formado | Valida el JSON antes de enviar |
+
+---
+
+## Rate Limiting
+
+Las APIs de JAAK implementan límites de solicitudes para garantizar la estabilidad del servicio.
+
+### Límites por defecto
+
+| Plan | Solicitudes por minuto | Solicitudes por hora |
+|------|------------------------|----------------------|
+| Sandbox | 60 | 1,000 |
+| Starter | 100 | 5,000 |
+| Business | 500 | 25,000 |
+| Enterprise | Personalizado | Personalizado |
+
+### Headers de rate limit
+
+Cada respuesta incluye headers con información del límite:
+
+```
+X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 95
+X-RateLimit-Reset: 1705315200
+```
+
+| Header | Descripción |
+|--------|-------------|
+| X-RateLimit-Limit | Límite de solicitudes por ventana |
+| X-RateLimit-Remaining | Solicitudes restantes en la ventana actual |
+| X-RateLimit-Reset | Timestamp Unix cuando se reinicia el límite |
+
+### Manejo de rate limits
+
+Implementa backoff exponencial cuando recibas un error 429:
+
+```javascript
+async function apiCallWithRetry(fn, maxRetries = 3) {
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      return await fn();
+    } catch (error) {
+      if (error.status === 429 && attempt < maxRetries - 1) {
+        const retryAfter = error.details?.retryAfter || Math.pow(2, attempt);
+        console.log(`Rate limited. Esperando ${retryAfter} segundos...`);
+        await sleep(retryAfter * 1000);
+      } else {
+        throw error;
+      }
+    }
+  }
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+```
+
+<Callout type="info" title="Optimiza tus solicitudes">
+Para reducir el número de solicitudes:
+- Usa webhooks en lugar de polling
+- Cachea respuestas cuando sea posible
+- Agrupa operaciones cuando la API lo permita
+</Callout>
+
+---
+
+## Errores de verificación de identidad
+
+Estos errores ocurren durante el proceso de verificación y se reportan en el resultado de la sesión.
+
+### Errores de documento
+
+| Código | Descripción | Recomendación |
+|--------|-------------|---------------|
+| `DOCUMENT_NOT_READABLE` | No se pudo leer el documento | Pide al usuario que tome una foto más clara |
+| `DOCUMENT_EXPIRED` | El documento está vencido | Pide al usuario que use un documento vigente |
+| `DOCUMENT_ALTERED` | Se detectaron alteraciones | Posible fraude, revisar manualmente |
+| `DOCUMENT_NOT_SUPPORTED` | Tipo de documento no soportado | Indica los tipos de documento aceptados |
+| `DOCUMENT_WRONG_COUNTRY` | Documento de país no soportado | Solo se aceptan documentos mexicanos |
+| `DOCUMENT_PHOTO_MISSING` | No se encontró foto en el documento | Verifica que sea el frente del documento |
+
+### Errores de liveness
+
+| Código | Descripción | Recomendación |
+|--------|-------------|---------------|
+| `LIVENESS_FAILED` | Falló la prueba de vida | Puede ser intento de fraude o mala iluminación |
+| `SPOOF_DETECTED` | Se detectó intento de suplantación | Posible fraude con foto o video |
+| `FACE_NOT_DETECTED` | No se detectó rostro | Pide al usuario que centre su rostro |
+| `MULTIPLE_FACES` | Se detectaron múltiples rostros | Solo una persona debe estar en la imagen |
+| `FACE_TOO_SMALL` | Rostro muy pequeño en la imagen | Pide al usuario que se acerque |
+| `POOR_LIGHTING` | Iluminación deficiente | Pide mejor iluminación |
+
+### Errores de face match
+
+| Código | Descripción | Recomendación |
+|--------|-------------|---------------|
+| `FACE_MISMATCH` | El rostro no coincide con el documento | Posible fraude o documento de otra persona |
+| `LOW_CONFIDENCE` | Baja confianza en la coincidencia | Considera revisión manual |
+| `SELFIE_QUALITY_LOW` | Calidad de selfie insuficiente | Pide una mejor foto |
+| `DOCUMENT_PHOTO_QUALITY_LOW` | Calidad de foto del documento baja | Pide mejor foto del documento |
+
+### Errores de validación INE
+
+| Código | Descripción | Recomendación |
+|--------|-------------|---------------|
+| `INE_NOT_FOUND` | INE no encontrada en el padrón | Verifica que los datos sean correctos |
+| `INE_CANCELLED` | INE cancelada o reportada | El documento no es válido |
+| `INE_EXPIRED` | INE vencida según el padrón | El documento no es válido |
+| `INE_SERVICE_UNAVAILABLE` | Servicio de INE no disponible | Intenta más tarde |
+
+---
+
+## Manejo de errores en tu código
+
+### Ejemplo completo
+
+```javascript
+class JAAKError extends Error {
+  constructor(response) {
+    super(response.error.message);
+    this.code = response.error.code;
+    this.status = response.error.status;
+    this.details = response.error.details;
+  }
+}
+
+async function callJAAKAPI(endpoint, options) {
+  const response = await fetch(`https://api.jaak.ai${endpoint}`, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      'X-API-Key': API_KEY,
+      'X-API-Secret': API_SECRET,
+      ...options.headers
+    }
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new JAAKError(data);
+  }
+
+  return data;
+}
+
+// Uso con manejo de errores
+async function createSession(verificationType) {
+  try {
+    const session = await callJAAKAPI('/api/v1/sessions', {
+      method: 'POST',
+      body: JSON.stringify({ verificationType })
+    });
+    return session;
+  } catch (error) {
+    if (error instanceof JAAKError) {
+      switch (error.code) {
+        case 'rate_limit_exceeded':
+          console.log('Esperando antes de reintentar...');
+          await sleep(error.details.retryAfter * 1000);
+          return createSession(verificationType);
+
+        case 'invalid_credentials':
+          console.error('Credenciales inválidas. Verifica tu API Key y Secret.');
+          throw error;
+
+        case 'forbidden':
+          console.error('No tienes acceso a este tipo de verificación.');
+          throw error;
+
+        default:
+          console.error(`Error de JAAK: ${error.message} (${error.code})`);
+          throw error;
+      }
+    }
+    throw error;
+  }
+}
+```
+
+---
+
+## Contactar a soporte
+
+Si encuentras un error que no puedes resolver:
+
+1. Incluye el `Request-Id` del header de respuesta
+2. Describe los pasos para reproducir el error
+3. Incluye el código de error y mensaje completo
+4. Indica el ambiente (sandbox o producción)
+
+**Email:** soporte@jaak.ai
+
+<Callout type="info" title="Horario de soporte">
+Nuestro equipo de soporte está disponible de lunes a viernes de 9:00 a 18:00 (hora Ciudad de México). Para emergencias fuera de horario, contacta a tu ejecutivo de cuenta.
+</Callout>
+
+---
+
+## Siguientes pasos
+
+- [Webhooks](/docs/recursos/webhooks) - Configura notificaciones en tiempo real
+- [Sandbox](/docs/recursos/sandbox) - Prueba tu integración sin afectar producción

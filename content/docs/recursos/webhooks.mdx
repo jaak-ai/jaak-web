@@ -1,0 +1,557 @@
+---
+title: Webhooks
+description: Recibe notificaciones en tiempo real sobre eventos de verificación y firma.
+category: recurso
+order: 0
+---
+
+import { Callout, CodeTabs } from '@/components/docs'
+
+# Webhooks
+
+Los webhooks permiten recibir notificaciones HTTP en tiempo real cuando ocurren eventos importantes en tus integraciones de JAAK. En lugar de consultar periódicamente la API, tu servidor recibe automáticamente los datos cuando hay cambios.
+
+## Cómo funcionan
+
+```
+1. Configuras una URL de webhook en tu dashboard o al crear recursos
+2. Ocurre un evento (ej: sesión completada, documento firmado)
+3. JAAK envía un POST a tu URL con los datos del evento
+4. Tu servidor procesa el evento y responde con 200 OK
+```
+
+<Callout type="info" title="Requisitos de tu endpoint">
+Tu endpoint debe ser accesible públicamente vía HTTPS y responder en menos de 30 segundos. URLs con HTTP o localhost no son aceptadas en producción.
+</Callout>
+
+---
+
+## Configuración
+
+### En el Dashboard
+
+1. Accede a **Configuración** → **Webhooks** en tu dashboard
+2. Haz clic en **Agregar webhook**
+3. Ingresa tu URL de webhook (debe ser HTTPS)
+4. Selecciona los eventos que deseas recibir
+5. Guarda la configuración
+
+### Vía API
+
+También puedes especificar un `webhookUrl` al crear recursos individuales:
+
+```json
+{
+  "verificationType": "kyc_full",
+  "webhookUrl": "https://tu-servidor.com/api/webhooks/jaak",
+  "redirectUrl": "https://tu-app.com/completado"
+}
+```
+
+---
+
+## Estructura del webhook
+
+Cada webhook incluye la siguiente estructura:
+
+```json
+{
+  "id": "evt_abc123xyz",
+  "event": "session.completed",
+  "timestamp": "2024-01-15T10:35:00Z",
+  "apiVersion": "2024-01",
+  "data": {
+    // Datos específicos del evento
+  }
+}
+```
+
+| Campo | Descripción |
+|-------|-------------|
+| id | Identificador único del evento |
+| event | Tipo de evento (ver lista abajo) |
+| timestamp | Fecha y hora del evento en formato ISO 8601 |
+| apiVersion | Versión de la API utilizada |
+| data | Objeto con los datos específicos del evento |
+
+---
+
+## Verificación de firma HMAC
+
+Para garantizar que los webhooks provienen de JAAK, cada solicitud incluye una firma en el header `X-JAAK-Signature`. Debes verificar esta firma antes de procesar el evento.
+
+### Header de firma
+
+```
+X-JAAK-Signature: sha256=a1b2c3d4e5f6...
+X-JAAK-Timestamp: 1705314900
+```
+
+### Proceso de verificación
+
+1. Obtén el timestamp del header `X-JAAK-Timestamp`
+2. Verifica que el timestamp no tenga más de 5 minutos de antigüedad
+3. Construye la cadena a firmar: `{timestamp}.{body}`
+4. Calcula HMAC-SHA256 usando tu webhook secret
+5. Compara con la firma del header
+
+<CodeTabs>
+{{
+  "Node.js": `const crypto = require('crypto');
+
+function verifyWebhookSignature(payload, signature, timestamp, secret) {
+  // Verificar que el timestamp no sea muy antiguo (5 minutos)
+  const currentTime = Math.floor(Date.now() / 1000);
+  if (currentTime - parseInt(timestamp) > 300) {
+    throw new Error('Timestamp demasiado antiguo');
+  }
+
+  // Construir la cadena a firmar
+  const signedPayload = \`\${timestamp}.\${payload}\`;
+
+  // Calcular HMAC
+  const expectedSignature = crypto
+    .createHmac('sha256', secret)
+    .update(signedPayload)
+    .digest('hex');
+
+  // Comparar firmas de forma segura
+  const receivedSig = signature.replace('sha256=', '');
+  return crypto.timingSafeEqual(
+    Buffer.from(expectedSignature),
+    Buffer.from(receivedSig)
+  );
+}
+
+// Uso en Express
+app.post('/webhooks/jaak', (req, res) => {
+  const signature = req.headers['x-jaak-signature'];
+  const timestamp = req.headers['x-jaak-timestamp'];
+  const payload = JSON.stringify(req.body);
+
+  if (!verifyWebhookSignature(payload, signature, timestamp, WEBHOOK_SECRET)) {
+    return res.status(401).send('Firma inválida');
+  }
+
+  // Procesar el evento
+  const event = req.body;
+  console.log('Evento recibido:', event.event);
+
+  res.status(200).send('OK');
+});`,
+  "Python": `import hmac
+import hashlib
+import time
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+WEBHOOK_SECRET = 'tu_webhook_secret'
+
+def verify_webhook_signature(payload, signature, timestamp, secret):
+    # Verificar que el timestamp no sea muy antiguo (5 minutos)
+    current_time = int(time.time())
+    if current_time - int(timestamp) > 300:
+        raise ValueError('Timestamp demasiado antiguo')
+
+    # Construir la cadena a firmar
+    signed_payload = f"{timestamp}.{payload}"
+
+    # Calcular HMAC
+    expected_signature = hmac.new(
+        secret.encode(),
+        signed_payload.encode(),
+        hashlib.sha256
+    ).hexdigest()
+
+    # Comparar firmas de forma segura
+    received_sig = signature.replace('sha256=', '')
+    return hmac.compare_digest(expected_signature, received_sig)
+
+@app.route('/webhooks/jaak', methods=['POST'])
+def handle_webhook():
+    signature = request.headers.get('X-JAAK-Signature')
+    timestamp = request.headers.get('X-JAAK-Timestamp')
+    payload = request.get_data(as_text=True)
+
+    if not verify_webhook_signature(payload, signature, timestamp, WEBHOOK_SECRET):
+        return jsonify({'error': 'Firma inválida'}), 401
+
+    # Procesar el evento
+    event = request.get_json()
+    print(f"Evento recibido: {event['event']}")
+
+    return 'OK', 200`,
+  "Go": `package main
+
+import (
+    "crypto/hmac"
+    "crypto/sha256"
+    "encoding/hex"
+    "fmt"
+    "io"
+    "net/http"
+    "strconv"
+    "strings"
+    "time"
+)
+
+const webhookSecret = "tu_webhook_secret"
+
+func verifyWebhookSignature(payload, signature, timestamp string) bool {
+    // Verificar que el timestamp no sea muy antiguo (5 minutos)
+    ts, err := strconv.ParseInt(timestamp, 10, 64)
+    if err != nil {
+        return false
+    }
+    if time.Now().Unix()-ts > 300 {
+        return false
+    }
+
+    // Construir la cadena a firmar
+    signedPayload := fmt.Sprintf("%s.%s", timestamp, payload)
+
+    // Calcular HMAC
+    mac := hmac.New(sha256.New, []byte(webhookSecret))
+    mac.Write([]byte(signedPayload))
+    expectedSignature := hex.EncodeToString(mac.Sum(nil))
+
+    // Comparar firmas
+    receivedSig := strings.TrimPrefix(signature, "sha256=")
+    return hmac.Equal([]byte(expectedSignature), []byte(receivedSig))
+}
+
+func webhookHandler(w http.ResponseWriter, r *http.Request) {
+    signature := r.Header.Get("X-JAAK-Signature")
+    timestamp := r.Header.Get("X-JAAK-Timestamp")
+
+    body, _ := io.ReadAll(r.Body)
+    payload := string(body)
+
+    if !verifyWebhookSignature(payload, signature, timestamp) {
+        http.Error(w, "Firma inválida", http.StatusUnauthorized)
+        return
+    }
+
+    // Procesar el evento
+    fmt.Println("Evento recibido")
+    w.WriteHeader(http.StatusOK)
+    w.Write([]byte("OK"))
+}`
+}}
+</CodeTabs>
+
+<Callout type="warning" title="Seguridad">
+Nunca omitas la verificación de firma en producción. Sin esta validación, un atacante podría enviar webhooks falsos a tu endpoint.
+</Callout>
+
+---
+
+## Política de reintentos
+
+Si tu endpoint no responde con un código 2xx, JAAK reintenta el envío con backoff exponencial:
+
+| Intento | Espera |
+|---------|--------|
+| 1 | Inmediato |
+| 2 | 1 minuto |
+| 3 | 5 minutos |
+| 4 | 30 minutos |
+| 5 | 2 horas |
+| 6 | 6 horas |
+| 7 | 12 horas |
+
+Después de 7 intentos fallidos, el webhook se marca como fallido y puedes verlo en el dashboard.
+
+<Callout type="tip" title="Logs de webhooks">
+En el dashboard puedes ver el historial de webhooks enviados, incluyendo los que fallaron, con la posibilidad de reenviarlos manualmente.
+</Callout>
+
+---
+
+## Eventos de Verificación de Identidad (KYC)
+
+### session.started
+
+Se envía cuando el usuario inicia el proceso de verificación.
+
+```json
+{
+  "event": "session.started",
+  "timestamp": "2024-01-15T10:31:00Z",
+  "data": {
+    "sessionId": "ses_abc123xyz789",
+    "externalId": "user_12345",
+    "verificationType": "kyc_full",
+    "status": "processing"
+  }
+}
+```
+
+### session.completed
+
+Se envía cuando la verificación se completa exitosamente.
+
+```json
+{
+  "event": "session.completed",
+  "timestamp": "2024-01-15T10:35:00Z",
+  "data": {
+    "sessionId": "ses_abc123xyz789",
+    "externalId": "user_12345",
+    "verificationType": "kyc_full",
+    "status": "completed",
+    "decision": "approved",
+    "confidence": 0.97,
+    "person": {
+      "fullName": "JUAN PEREZ GARCIA",
+      "dateOfBirth": "1990-05-15",
+      "curp": "PEGJ900515HDFRRS09"
+    }
+  }
+}
+```
+
+### session.failed
+
+Se envía cuando la verificación falla por error técnico o intento de fraude.
+
+```json
+{
+  "event": "session.failed",
+  "timestamp": "2024-01-15T10:33:00Z",
+  "data": {
+    "sessionId": "ses_abc123xyz789",
+    "externalId": "user_12345",
+    "status": "failed",
+    "failureReasons": [
+      {
+        "code": "LIVENESS_FAILED",
+        "message": "No se pudo verificar que hay una persona real"
+      }
+    ]
+  }
+}
+```
+
+### session.expired
+
+Se envía cuando la sesión expira sin completarse.
+
+```json
+{
+  "event": "session.expired",
+  "timestamp": "2024-01-15T11:30:00Z",
+  "data": {
+    "sessionId": "ses_abc123xyz789",
+    "externalId": "user_12345",
+    "status": "expired"
+  }
+}
+```
+
+---
+
+## Eventos de Firma Digital (Signa)
+
+### signature.requested
+
+Se envía cuando se solicita una firma a un firmante.
+
+```json
+{
+  "event": "signature.requested",
+  "timestamp": "2024-01-15T14:00:00Z",
+  "data": {
+    "submissionId": "sub_xyz789abc",
+    "signerId": "sig_abc123",
+    "signerEmail": "firmante@empresa.com",
+    "documentName": "Contrato de servicios"
+  }
+}
+```
+
+### signature.completed
+
+Se envía cuando un firmante completa su firma.
+
+```json
+{
+  "event": "signature.completed",
+  "timestamp": "2024-01-15T14:15:00Z",
+  "data": {
+    "submissionId": "sub_xyz789abc",
+    "signerId": "sig_abc123",
+    "signerEmail": "firmante@empresa.com",
+    "signatureType": "electronic_advanced",
+    "signedAt": "2024-01-15T14:15:00Z"
+  }
+}
+```
+
+### signature.rejected
+
+Se envía cuando un firmante rechaza firmar.
+
+```json
+{
+  "event": "signature.rejected",
+  "timestamp": "2024-01-15T14:10:00Z",
+  "data": {
+    "submissionId": "sub_xyz789abc",
+    "signerId": "sig_abc123",
+    "signerEmail": "firmante@empresa.com",
+    "rejectionReason": "No estoy de acuerdo con los términos"
+  }
+}
+```
+
+### submission.completed
+
+Se envía cuando todos los firmantes han completado sus firmas.
+
+```json
+{
+  "event": "submission.completed",
+  "timestamp": "2024-01-15T14:30:00Z",
+  "data": {
+    "submissionId": "sub_xyz789abc",
+    "templateId": "tpl_def456",
+    "documentName": "Contrato de servicios",
+    "status": "completed",
+    "completedAt": "2024-01-15T14:30:00Z",
+    "signers": [
+      {
+        "email": "firmante1@empresa.com",
+        "signedAt": "2024-01-15T14:15:00Z"
+      },
+      {
+        "email": "firmante2@empresa.com",
+        "signedAt": "2024-01-15T14:30:00Z"
+      }
+    ],
+    "downloadUrl": "https://signa.jaak.ai/api/v1/submissions/sub_xyz789abc/download"
+  }
+}
+```
+
+### submission.cancelled
+
+Se envía cuando se cancela un envío.
+
+```json
+{
+  "event": "submission.cancelled",
+  "timestamp": "2024-01-15T15:00:00Z",
+  "data": {
+    "submissionId": "sub_xyz789abc",
+    "cancelledBy": "usr_admin123",
+    "reason": "Documento incorrecto"
+  }
+}
+```
+
+---
+
+## Mejores prácticas
+
+### 1. Responde rápidamente
+
+Tu endpoint debe responder con 200 OK en menos de 30 segundos. Si necesitas hacer procesamiento pesado, hazlo de forma asíncrona:
+
+```javascript
+app.post('/webhooks/jaak', async (req, res) => {
+  // Responder inmediatamente
+  res.status(200).send('OK');
+
+  // Procesar en segundo plano
+  processEventAsync(req.body);
+});
+```
+
+### 2. Implementa idempotencia
+
+Los webhooks pueden enviarse más de una vez. Usa el `id` del evento para evitar procesar duplicados:
+
+```javascript
+async function processEvent(event) {
+  // Verificar si ya procesamos este evento
+  const exists = await db.events.findOne({ eventId: event.id });
+  if (exists) {
+    console.log('Evento ya procesado:', event.id);
+    return;
+  }
+
+  // Procesar el evento
+  await handleEvent(event);
+
+  // Marcar como procesado
+  await db.events.insertOne({ eventId: event.id, processedAt: new Date() });
+}
+```
+
+### 3. Maneja todos los tipos de evento
+
+Aunque solo necesites ciertos eventos, tu endpoint debe manejar cualquier tipo sin fallar:
+
+```javascript
+function handleEvent(event) {
+  switch (event.event) {
+    case 'session.completed':
+      return handleSessionCompleted(event.data);
+    case 'signature.completed':
+      return handleSignatureCompleted(event.data);
+    default:
+      console.log('Evento no manejado:', event.event);
+  }
+}
+```
+
+### 4. Registra todos los webhooks
+
+Guarda un log de todos los webhooks recibidos para debugging:
+
+```javascript
+app.post('/webhooks/jaak', async (req, res) => {
+  // Log del webhook
+  await db.webhookLogs.insertOne({
+    receivedAt: new Date(),
+    headers: req.headers,
+    body: req.body
+  });
+
+  // Procesar...
+  res.status(200).send('OK');
+});
+```
+
+---
+
+## Solución de problemas
+
+### Mi endpoint no recibe webhooks
+
+1. Verifica que la URL sea accesible públicamente
+2. Confirma que uses HTTPS (HTTP no es aceptado)
+3. Revisa que tu firewall permita conexiones desde JAAK
+4. Comprueba el historial de webhooks en el dashboard
+
+### Los webhooks llegan tarde
+
+Los webhooks se envían en tiempo real, pero pueden retrasarse si:
+- Tu endpoint está lento o no responde
+- Hay reintentos por errores previos
+- Hay alto volumen de eventos
+
+### Errores de verificación de firma
+
+1. Asegúrate de usar el webhook secret correcto
+2. Verifica que no estés modificando el body antes de verificar
+3. Comprueba que el timestamp no tenga más de 5 minutos
+
+---
+
+## Siguientes pasos
+
+- [Errores](/docs/recursos/errores) - Códigos de error y cómo resolverlos
+- [Sandbox](/docs/recursos/sandbox) - Prueba webhooks en ambiente de desarrollo
+- [API de Sesiones](/docs/verificar-identidad/api/sesiones) - Crea sesiones de verificación
