@@ -39,6 +39,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# contentlayer
+.contentlayer
+
 # AI assistant settings
 .claude/
 .cursorrules
