@@ -19,11 +19,18 @@ export const Doc = defineDocumentType(() => ({
   computedFields: {
     slug: {
       type: 'string',
-      resolve: (doc) => doc._raw.flattenedPath.replace('docs/', ''),
+      resolve: (doc) => {
+        const path = doc._raw.flattenedPath.replace(/^docs\/?/, '')
+        // Handle index.mdx at root as 'index' for matching
+        return path === '' ? 'index' : path
+      },
     },
     url: {
       type: 'string',
-      resolve: (doc) => `/docs/${doc._raw.flattenedPath.replace('docs/', '')}`,
+      resolve: (doc) => {
+        const path = doc._raw.flattenedPath.replace(/^docs\/?/, '')
+        return path === '' ? '/docs' : `/docs/${path}`
+      },
     },
   },
 }))
