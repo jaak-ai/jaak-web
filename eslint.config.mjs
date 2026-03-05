@@ -6,7 +6,7 @@ import tseslint from "typescript-eslint";
 
 export default [
   {
-    ignores: ["node_modules/", ".next/", "out/", "*.config.js", "*.config.mjs"],
+    ignores: ["node_modules/", ".next/", "out/", ".contentlayer/", "*.config.js", "*.config.mjs"],
   },
   ...tseslint.configs.recommended,
   {

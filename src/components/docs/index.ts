@@ -1,2 +1,5 @@
 export { Sidebar } from './Sidebar'
 export { TableOfContents } from './TableOfContents'
+export { Callout } from './Callout'
+export { CodeBlock } from './CodeBlock'
+export { Tabs, CodeTabs } from './Tabs'
