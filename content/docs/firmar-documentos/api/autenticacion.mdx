@@ -1,0 +1,284 @@
+---
+title: Autenticación
+description: Endpoints de autenticación para la API de JAAK Signa.
+category: api
+order: 0
+---
+
+import { Endpoint, ParamsTable, ResponseSchema } from '@/components/docs/api'
+import { Callout } from '@/components/docs'
+
+# Autenticación
+
+La API de JAAK Signa utiliza autenticación basada en tokens JWT (JSON Web Tokens). Esta guía describe los endpoints para obtener, renovar y revocar tokens de acceso.
+
+## Flujo de autenticación
+
+```
+1. POST /sign-in → Obtener token y refreshToken
+2. Usar token en header Authorization: Bearer {token}
+3. Cuando expire → POST /refresh-token con refreshToken
+4. Al cerrar sesión → POST /sign-out
+```
+
+<Callout type="info" title="Duración de tokens">
+- **Token de acceso**: 1 hora (3600 segundos)
+- **Refresh token**: 7 días
+</Callout>
+
+---
+
+## Iniciar sesión
+
+<Endpoint
+  method="POST"
+  path="/api/v1/sign-in"
+  description="Autentica un usuario y devuelve tokens de acceso"
+  auth="none"
+/>
+
+### Parámetros del body
+
+<ParamsTable
+  params={[
+    {
+      name: "email",
+      type: "string",
+      required: true,
+      description: "Email del usuario registrado en JAAK Signa"
+    },
+    {
+      name: "password",
+      type: "string",
+      required: true,
+      description: "Contraseña del usuario"
+    }
+  ]}
+/>
+
+### Ejemplo de solicitud
+
+```bash
+curl -X POST https://signa.dev.jaak.ai/api/v1/sign-in \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "usuario@empresa.com",
+    "password": "tu-contraseña-segura"
+  }'
+```
+
+### Respuesta exitosa (200 OK)
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c3JfYWJjMTIzIiwiZW1haWwiOiJ1c3VhcmlvQGVtcHJlc2EuY29tIiwiaWF0IjoxNzA1MzE0MjAwLCJleHAiOjE3MDUzMTc4MDB9.signature",
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ1c3JfYWJjMTIzIiwidHlwZSI6InJlZnJlc2giLCJpYXQiOjE3MDUzMTQyMDAsImV4cCI6MTcwNTkxOTAwMH0.signature",
+  "expiresIn": 3600,
+  "user": {
+    "id": "usr_abc123",
+    "email": "usuario@empresa.com",
+    "name": "Usuario Ejemplo",
+    "organizationId": "org_xyz789"
+  }
+}
+```
+
+### Errores
+
+| Código | Descripción |
+|--------|-------------|
+| 400 | Parámetros inválidos (email o password faltantes) |
+| 401 | Credenciales incorrectas |
+| 403 | Cuenta suspendida o deshabilitada |
+| 429 | Demasiados intentos. Espera antes de reintentar |
+
+### Ejemplo de error (401)
+
+```json
+{
+  "error": {
+    "code": "INVALID_CREDENTIALS",
+    "message": "Email o contraseña incorrectos",
+    "status": 401
+  }
+}
+```
+
+<Callout type="warning" title="Límite de intentos">
+Después de 5 intentos fallidos, la cuenta se bloquea temporalmente por 15 minutos. Implementa un mecanismo de backoff exponencial en tu integración.
+</Callout>
+
+---
+
+## Renovar token
+
+<Endpoint
+  method="POST"
+  path="/api/v1/refresh-token"
+  description="Renueva el token de acceso usando el refresh token"
+  auth="none"
+/>
+
+Usa este endpoint cuando el token de acceso expire para obtener uno nuevo sin pedir credenciales al usuario.
+
+### Parámetros del body
+
+<ParamsTable
+  params={[
+    {
+      name: "refreshToken",
+      type: "string",
+      required: true,
+      description: "Refresh token obtenido en el sign-in"
+    }
+  ]}
+/>
+
+### Ejemplo de solicitud
+
+```bash
+curl -X POST https://signa.dev.jaak.ai/api/v1/refresh-token \
+  -H "Content-Type: application/json" \
+  -d '{
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  }'
+```
+
+### Respuesta exitosa (200 OK)
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.nuevo-token...",
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.nuevo-refresh...",
+  "expiresIn": 3600
+}
+```
+
+<Callout type="tip" title="Rotación de tokens">
+Cada vez que usas el refresh token, recibes un nuevo par de tokens. El refresh token anterior queda invalidado. Esto mejora la seguridad al limitar la ventana de uso de tokens comprometidos.
+</Callout>
+
+### Errores
+
+| Código | Descripción |
+|--------|-------------|
+| 400 | Refresh token faltante o malformado |
+| 401 | Refresh token inválido o expirado |
+| 403 | Refresh token revocado (sesión cerrada) |
+
+---
+
+## Cerrar sesión
+
+<Endpoint
+  method="POST"
+  path="/api/v1/sign-out"
+  description="Revoca los tokens y cierra la sesión"
+  auth="bearer"
+/>
+
+Revoca el token de acceso actual y su refresh token asociado. Todos los tokens emitidos para esta sesión dejarán de funcionar.
+
+### Headers
+
+| Header | Valor |
+|--------|-------|
+| Authorization | Bearer {token} |
+
+### Ejemplo de solicitud
+
+```bash
+curl -X POST https://signa.dev.jaak.ai/api/v1/sign-out \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+```
+
+### Respuesta exitosa (200 OK)
+
+```json
+{
+  "message": "Sesión cerrada exitosamente"
+}
+```
+
+### Errores
+
+| Código | Descripción |
+|--------|-------------|
+| 401 | Token de acceso inválido o expirado |
+
+<Callout type="info" title="Sesiones múltiples">
+Si el usuario tiene sesiones activas en múltiples dispositivos, este endpoint solo cierra la sesión actual. Para cerrar todas las sesiones, usa `POST /api/v1/sign-out-all`.
+</Callout>
+
+---
+
+## Uso del token
+
+Una vez obtenido el token, inclúyelo en el header `Authorization` de todas las solicitudes:
+
+```bash
+curl -X GET https://signa.dev.jaak.ai/api/v1/templates \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+```
+
+### Estructura del token JWT
+
+El token contiene la siguiente información (decodificada):
+
+```json
+{
+  "sub": "usr_abc123",
+  "email": "usuario@empresa.com",
+  "organizationId": "org_xyz789",
+  "permissions": ["templates:read", "templates:write", "submissions:*"],
+  "iat": 1705314200,
+  "exp": 1705317800
+}
+```
+
+| Campo | Descripción |
+|-------|-------------|
+| sub | ID único del usuario |
+| email | Email del usuario |
+| organizationId | ID de la organización |
+| permissions | Lista de permisos del usuario |
+| iat | Timestamp de emisión (issued at) |
+| exp | Timestamp de expiración |
+
+---
+
+## Manejo de errores de autenticación
+
+Implementa esta lógica en tu integración:
+
+```javascript
+async function apiCall(endpoint, options) {
+  const response = await fetch(endpoint, {
+    ...options,
+    headers: {
+      ...options.headers,
+      'Authorization': `Bearer ${getToken()}`
+    }
+  });
+
+  if (response.status === 401) {
+    // Token expirado, intentar renovar
+    const newTokens = await refreshTokens();
+    if (newTokens) {
+      // Reintentar la solicitud original
+      return apiCall(endpoint, options);
+    } else {
+      // Refresh token también expiró, redirigir a login
+      redirectToLogin();
+    }
+  }
+
+  return response;
+}
+```
+
+## Siguientes pasos
+
+- [Guía rápida](/docs/firmar-documentos/guia-rapida) - Implementa tu primera firma
+- [Tipos de firma](/docs/firmar-documentos/conceptos/tipos-firma) - Conoce las opciones disponibles
+- [Errores](/docs/recursos/errores) - Catálogo completo de códigos de error

@@ -1,0 +1,215 @@
+---
+title: Guía rápida - Firma electrónica
+description: Configura tu primera firma electrónica con JAAK Signa en 5 minutos.
+category: guia
+order: 1
+---
+
+import { Callout } from '@/components/docs'
+import { Endpoint, ParamsTable } from '@/components/docs/api'
+
+# Guía rápida
+
+Esta guía te llevará paso a paso para crear tu primera firma electrónica con JAAK Signa. En menos de 5 minutos tendrás un documento firmado.
+
+<Callout type="info" title="Requisitos previos">
+Necesitas credenciales de acceso a la API de Signa. Si aún no las tienes, [contacta a ventas](https://jaak.ai/contacto) para obtenerlas.
+</Callout>
+
+## Paso 1: Autenticación
+
+Obtén un token de acceso usando tus credenciales.
+
+<Endpoint
+  method="POST"
+  path="/api/v1/sign-in"
+  description="Inicia sesión y obtén un token JWT"
+  auth="none"
+/>
+
+```bash
+curl -X POST https://signa.dev.jaak.ai/api/v1/sign-in \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "tu-email@empresa.com",
+    "password": "tu-contraseña"
+  }'
+```
+
+**Respuesta:**
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "expiresIn": 3600
+}
+```
+
+<Callout type="tip">
+Guarda el `refreshToken` de forma segura. Lo necesitarás para renovar tu sesión sin volver a ingresar credenciales.
+</Callout>
+
+## Paso 2: Crear una plantilla
+
+Sube un documento PDF y define dónde irán las firmas.
+
+<Endpoint
+  method="POST"
+  path="/api/v1/templates"
+  description="Crea una plantilla de documento para firmar"
+/>
+
+```bash
+curl -X POST https://signa.dev.jaak.ai/api/v1/templates \
+  -H "Authorization: Bearer {token}" \
+  -H "Content-Type: multipart/form-data" \
+  -F "file=@contrato.pdf" \
+  -F 'data={
+    "name": "Contrato de servicios",
+    "signatureFields": [
+      {
+        "page": 1,
+        "x": 100,
+        "y": 700,
+        "width": 200,
+        "height": 50,
+        "signerId": "firmante_1"
+      }
+    ]
+  }'
+```
+
+**Respuesta:**
+
+```json
+{
+  "id": "tpl_abc123",
+  "name": "Contrato de servicios",
+  "status": "active",
+  "signatureFields": [
+    {
+      "id": "sf_xyz789",
+      "page": 1,
+      "x": 100,
+      "y": 700,
+      "width": 200,
+      "height": 50,
+      "signerId": "firmante_1"
+    }
+  ],
+  "createdAt": "2024-01-15T10:30:00Z"
+}
+```
+
+## Paso 3: Crear un envío (submission)
+
+Genera un enlace de firma para el firmante con los datos específicos.
+
+<Endpoint
+  method="POST"
+  path="/api/v1/submissions"
+  description="Crea un envío de firma a partir de una plantilla"
+/>
+
+```bash
+curl -X POST https://signa.dev.jaak.ai/api/v1/submissions \
+  -H "Authorization: Bearer {token}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "templateId": "tpl_abc123",
+    "signatureType": "biometric",
+    "signers": [
+      {
+        "id": "firmante_1",
+        "name": "Juan Pérez García",
+        "email": "juan.perez@ejemplo.com",
+        "phone": "+525512345678"
+      }
+    ],
+    "metadata": {
+      "externalId": "contrato-2024-001"
+    }
+  }'
+```
+
+**Respuesta:**
+
+```json
+{
+  "id": "sub_def456",
+  "templateId": "tpl_abc123",
+  "status": "pending",
+  "signatureType": "biometric",
+  "signers": [
+    {
+      "id": "firmante_1",
+      "name": "Juan Pérez García",
+      "email": "juan.perez@ejemplo.com",
+      "status": "pending",
+      "signUrl": "https://signa.dev.jaak.ai/sign/sub_def456?signer=firmante_1"
+    }
+  ],
+  "expiresAt": "2024-01-22T10:30:00Z",
+  "createdAt": "2024-01-15T10:30:00Z"
+}
+```
+
+<Callout type="info" title="Enlace de firma">
+El `signUrl` es el enlace que debes enviar al firmante. Puede firmarse desde cualquier dispositivo con cámara.
+</Callout>
+
+## Paso 4: Descargar el documento firmado
+
+Una vez que el firmante complete el proceso, descarga el documento con la firma.
+
+<Endpoint
+  method="GET"
+  path="/api/v1/submissions/{id}/download"
+  description="Descarga el documento firmado en PDF"
+/>
+
+```bash
+curl -X GET https://signa.dev.jaak.ai/api/v1/submissions/sub_def456/download \
+  -H "Authorization: Bearer {token}" \
+  -o documento_firmado.pdf
+```
+
+El documento descargado incluye:
+
+- Firma visual en la posición definida
+- Certificado de firma con hash del documento
+- Metadatos de la verificación de identidad
+- Sello de tiempo (timestamp)
+
+## Verificar el estado del envío
+
+Puedes consultar el estado del envío en cualquier momento.
+
+<Endpoint
+  method="GET"
+  path="/api/v1/submissions/{id}"
+  description="Obtiene los detalles de un envío"
+/>
+
+```bash
+curl -X GET https://signa.dev.jaak.ai/api/v1/submissions/sub_def456 \
+  -H "Authorization: Bearer {token}"
+```
+
+**Estados posibles:**
+
+| Estado | Descripción |
+|--------|-------------|
+| `pending` | Esperando que el firmante complete la firma |
+| `in_progress` | El firmante está en proceso de verificación |
+| `completed` | Documento firmado exitosamente |
+| `expired` | El enlace de firma expiró |
+| `rejected` | El firmante rechazó la firma |
+| `failed` | Error en la verificación de identidad |
+
+## Siguientes pasos
+
+- [Tipos de firma](/docs/firmar-documentos/conceptos/tipos-firma) - Conoce las opciones de firma disponibles
+- [Autenticación](/docs/firmar-documentos/api/autenticacion) - Detalles completos de autenticación
+- [Webhooks](/docs/recursos/webhooks) - Recibe notificaciones automáticas

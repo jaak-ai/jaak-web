@@ -1,0 +1,62 @@
+---
+title: Firmar documentos
+description: API de firma electrónica con validez legal. Soporte para firma simple, avanzada, biométrica, FIEL y PSC.
+category: guia
+order: 0
+---
+
+import { Callout } from '@/components/docs'
+
+# Firmar documentos
+
+JAAK Signa es nuestra API de firma electrónica que permite firmar documentos con validez legal en México. Soporta múltiples tipos de firma según el nivel de seguridad y cumplimiento que requiera tu caso de uso.
+
+## Tipos de firma disponibles
+
+| Tipo | Verificación | Validez legal | Caso de uso |
+|------|--------------|---------------|-------------|
+| **Simple** | Ninguna | Baja | Términos y condiciones, avisos de privacidad |
+| **Avanzada (OTP)** | Email o SMS | Media | Contratos de bajo riesgo, acuerdos internos |
+| **Biométrica** | KYC facial con prueba de vida | Alta | Contratos financieros, arrendamientos |
+| **FIEL** | Certificado SAT | Muy alta | Facturas, documentos fiscales |
+| **PSC** | Prestador de servicios de certificación | Muy alta | Documentos legales críticos |
+
+<Callout type="tip" title="Recomendación">
+Para la mayoría de casos de uso comerciales, la firma **biométrica** ofrece el mejor balance entre seguridad, validez legal y experiencia de usuario.
+</Callout>
+
+## Flujo básico de firma
+
+El proceso de firma electrónica sigue estos pasos:
+
+```
+1. Crear plantilla → 2. Crear envío → 3. Firmar → 4. Descargar
+```
+
+1. **Crear plantilla**: Sube un documento PDF y define las zonas de firma
+2. **Crear envío (submission)**: Genera un enlace de firma con los datos del firmante
+3. **Firmar**: El firmante completa la verificación de identidad y firma
+4. **Descargar**: Obtén el documento firmado con el certificado de firma
+
+## URLs base
+
+| Ambiente | URL |
+|----------|-----|
+| Sandbox | `https://signa.dev.jaak.ai` |
+| Producción | `https://signa.jaak.ai` |
+
+<Callout type="warning" title="Ambiente de pruebas">
+Usa siempre el ambiente sandbox durante el desarrollo. Las firmas en sandbox no tienen validez legal y los documentos se eliminan automáticamente después de 30 días.
+</Callout>
+
+## Primeros pasos
+
+- [Guía rápida](/docs/firmar-documentos/guia-rapida) - Configura tu primera firma en 5 minutos
+- [Tipos de firma](/docs/firmar-documentos/conceptos/tipos-firma) - Entiende las diferencias entre cada tipo
+- [Autenticación](/docs/firmar-documentos/api/autenticacion) - Endpoints de autenticación
+
+## Recursos adicionales
+
+- [Webhooks](/docs/recursos/webhooks) - Recibe notificaciones cuando se complete una firma
+- [Errores](/docs/recursos/errores) - Códigos de error y cómo resolverlos
+- [Sandbox](/docs/recursos/sandbox) - Detalles del ambiente de pruebas
