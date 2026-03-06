@@ -414,6 +414,7 @@ export default function PreciosClient() {
                     <div className="mb-4">
                       <span className="text-2xl lg:text-[1.65rem] font-black text-[#212A45]">{plan.price}</span>
                       <span className="text-xs text-[#64748B] ml-1">{plan.priceNote}</span>
+                      <p className="text-[10px] text-[#94A3B8] mt-1">IVA no incluido</p>
                     </div>
                   </div>
 
