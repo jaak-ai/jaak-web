@@ -127,7 +127,7 @@ const pricingData: Record<ProductTab, AutoservicioPlan[]> = {
       unit: "verificaciones de identidad",
       price: "$12,500",
       priceNote: "/ año + IVA",
-      ctaUrl: "https://platform.jaak.ai/#/onboarding/plans/platino",
+      ctaUrl: "https://platform.jaak.ai/#/onboarding/plans/platino1",
       description: "Verificas identidades de forma constante y buscas el mejor precio por verificación sin pasar a un contrato Enterprise.",
       checks: [
         "500 verificaciones de identidad",
@@ -143,21 +143,21 @@ const pricingData: Record<ProductTab, AutoservicioPlan[]> = {
     { name: "Bronce", subtitle: "Básico", quantity: 50, unit: "firmas", price: "$400", priceNote: "/ año + IVA", ctaUrl: "https://platform.jaak.ai/#/onboarding/plans/bronce" },
     { name: "Plata", subtitle: "Recomendado", quantity: 100, unit: "firmas", price: "$700", priceNote: "/ año + IVA", recommended: true, ctaUrl: "https://platform.jaak.ai/#/onboarding/plans/plata" },
     { name: "Oro", subtitle: "Profesional", quantity: 250, unit: "firmas", price: "$1,500", priceNote: "/ año + IVA", ctaUrl: "https://platform.jaak.ai/#/onboarding/plans/oro" },
-    { name: "Platino", subtitle: "Empresarial", quantity: 500, unit: "firmas", price: "$2,500", priceNote: "/ año + IVA", ctaUrl: "https://platform.jaak.ai/#/onboarding/plans/platino" },
+    { name: "Platino", subtitle: "Empresarial", quantity: 500, unit: "firmas", price: "$2,500", priceNote: "/ año + IVA", ctaUrl: "https://platform.jaak.ai/#/onboarding/plans/platino1" },
   ],
   "firma-avanzada": [
     { name: "Cobre", subtitle: "Trial", quantity: 5, unit: "firmas", price: "$99", priceNote: "/ año + IVA", ctaUrl: "https://platform.jaak.ai/#/onboarding/plans/cobre" },
     { name: "Bronce", subtitle: "Básico", quantity: 50, unit: "firmas", price: "$750", priceNote: "/ año + IVA", ctaUrl: "https://platform.jaak.ai/#/onboarding/plans/bronce" },
     { name: "Plata", subtitle: "Recomendado", quantity: 100, unit: "firmas", price: "$1,400", priceNote: "/ año + IVA", recommended: true, ctaUrl: "https://platform.jaak.ai/#/onboarding/plans/plata" },
     { name: "Oro", subtitle: "Profesional", quantity: 250, unit: "firmas", price: "$3,250", priceNote: "/ año + IVA", ctaUrl: "https://platform.jaak.ai/#/onboarding/plans/oro" },
-    { name: "Platino", subtitle: "Empresarial", quantity: 500, unit: "firmas", price: "$6,000", priceNote: "/ año + IVA", ctaUrl: "https://platform.jaak.ai/#/onboarding/plans/platino" },
+    { name: "Platino", subtitle: "Empresarial", quantity: 500, unit: "firmas", price: "$6,000", priceNote: "/ año + IVA", ctaUrl: "https://platform.jaak.ai/#/onboarding/plans/platino1" },
   ],
   "firma-bio": [
     { name: "Cobre", subtitle: "Trial", quantity: 5, unit: "firmas", price: "$99", priceNote: "/ año + IVA", ctaUrl: "https://platform.jaak.ai/#/onboarding/plans/cobre" },
     { name: "Bronce", subtitle: "Básico", quantity: 50, unit: "firmas", price: "$1,500", priceNote: "/ año + IVA", ctaUrl: "https://platform.jaak.ai/#/onboarding/plans/bronce" },
     { name: "Plata", subtitle: "Recomendado", quantity: 100, unit: "firmas", price: "$2,700", priceNote: "/ año + IVA", recommended: true, ctaUrl: "https://platform.jaak.ai/#/onboarding/plans/plata" },
     { name: "Oro", subtitle: "Profesional", quantity: 250, unit: "firmas", price: "$6,625", priceNote: "/ año + IVA", ctaUrl: "https://platform.jaak.ai/#/onboarding/plans/oro" },
-    { name: "Platino", subtitle: "Empresarial", quantity: 500, unit: "firmas", price: "$12,500", priceNote: "/ año + IVA", ctaUrl: "https://platform.jaak.ai/#/onboarding/plans/platino" },
+    { name: "Platino", subtitle: "Empresarial", quantity: 500, unit: "firmas", price: "$12,500", priceNote: "/ año + IVA", ctaUrl: "https://platform.jaak.ai/#/onboarding/plans/platino1" },
   ],
 };
 
