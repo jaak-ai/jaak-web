@@ -192,7 +192,7 @@ export default function Header() {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden bg-white border-t border-gray-200 max-h-[calc(100vh-72px)] overflow-y-auto">
+          <div className="lg:hidden bg-white border-t border-gray-200 max-h-[calc(100vh-114px)] overflow-y-auto">
             <div className="px-4 py-6 space-y-6">
               {/* Platform Section */}
               <div>

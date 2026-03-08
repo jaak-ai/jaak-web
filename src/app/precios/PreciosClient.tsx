@@ -30,7 +30,7 @@ function useScrollReveal<T extends HTMLElement>(threshold = 0.15) {
 }
 
 // --- Types ---
-type ProductTab = "biometria" | "firma-simple" | "firma-avanzada" | "firma-bio";
+type ProductTab = "biometria" | "kyc-simplificado" | "firma-simple" | "firma-avanzada" | "firma-bio";
 
 interface AutoservicioPlan {
   name: string;
@@ -39,24 +39,32 @@ interface AutoservicioPlan {
   unit: string;
   price: string;
   priceNote: string;
+  unitPrice: string;
+  overage: string;
   recommended?: boolean;
   ctaUrl?: string;
   description?: string;
-  targetAudience?: string;
   checks?: string[];
+  support?: string;
 }
 
 // --- Constants ---
 const AUTOSERVICIO_URL = "https://platform.jaak.ai/#/onboarding/plans";
+const CONTACTO_URL = "/contacto";
 
 const pricingData: Record<ProductTab, AutoservicioPlan[]> = {
   biometria: [
     {
       name: "Cobre",
-      subtitle: "Prueba el servicio con 5 verificaciones de identidad. Un solo pago, sin renovación automática.",
+      subtitle: "Prueba el servicio con 5 verificaciones de identidad.",
       quantity: 5,
-      unit: "verificaciones de identidad",
+      unit: "verificaciones",
       price: "$99",
+      priceNote: "MXN / año",
+      unitPrice: "$19.80/verif",
+      overage: "Sin overages, se bloquea",
+      ctaUrl: "https://platform.jaak.ai/#/onboarding/user-info",
+      support: "Sin asignado",
       priceNote: "/ año + IVA",
       ctaUrl: "https://platform.jaak.ai/#/onboarding/plans/cobre",
       description: "Quieres conocer cómo funciona JAAK antes de comprometerte con un volumen mayor.",
@@ -65,15 +73,20 @@ const pricingData: Record<ProductTab, AutoservicioPlan[]> = {
         "Soporte vía Chat",
         "Documentación de uso incluida",
         "Sin contrato ni Setup Fee",
-        "Sin necesidad de desarrollador — 100% desde la web",
+        "100% desde la web — sin desarrollador",
       ],
     },
     {
       name: "Bronce",
-      subtitle: "Plan de entrada para empresas con necesidades básicas de verificación anual.",
+      subtitle: "Plan de entrada para verificación anual básica.",
       quantity: 50,
-      unit: "verificaciones de identidad",
+      unit: "verificaciones",
       price: "$1,500",
+      priceNote: "MXN / año",
+      unitPrice: "$30.00/verif",
+      overage: "$36.00/paq adicional",
+      support: "Junior",
+      description: "Verificas identidades de forma ocasional y buscas una solución simple sin trámites.",
       priceNote: "/ año + IVA",
       ctaUrl: "https://platform.jaak.ai/#/onboarding/plans/bronce",
       description: "Verificas identidades de forma ocasional, menos de 50 veces al año, y buscas una solución simple sin trámites.",
@@ -82,15 +95,21 @@ const pricingData: Record<ProductTab, AutoservicioPlan[]> = {
         "Soporte Chat o Email",
         "Documentación de uso incluida",
         "Sin contrato ni Setup Fee",
-        "Sin necesidad de desarrollador — 100% desde la web",
+        "100% desde la web — sin desarrollador",
       ],
     },
     {
       name: "Plata",
-      subtitle: "Plan profesional para empresas con procesos de verificación regulares.",
+      subtitle: "Plan profesional para verificación regular.",
       quantity: 100,
-      unit: "verificaciones de identidad",
+      unit: "verificaciones",
       price: "$2,800",
+      priceNote: "MXN / año",
+      unitPrice: "$28.00/verif",
+      overage: "$33.60/paq adicional",
+      recommended: true,
+      support: "Junior/Mid",
+      description: "Tu empresa tiene un flujo de onboarding digital y necesitas verificar hasta 100 identidades al año.",
       priceNote: "/ año + IVA",
       recommended: true,
       ctaUrl: "https://platform.jaak.ai/#/onboarding/plans/plata",
@@ -100,15 +119,20 @@ const pricingData: Record<ProductTab, AutoservicioPlan[]> = {
         "Soporte Chat o Email",
         "Documentación de uso incluida",
         "Sin contrato ni Setup Fee",
-        "Sin necesidad de desarrollador — 100% desde la web",
+        "100% desde la web — sin desarrollador",
       ],
     },
     {
       name: "Oro",
-      subtitle: "Plan empresarial para operaciones de mayor volumen con soporte extendido.",
+      subtitle: "Plan empresarial para mayor volumen.",
       quantity: 250,
-      unit: "verificaciones de identidad",
+      unit: "verificaciones",
       price: "$6,625",
+      priceNote: "MXN / año",
+      unitPrice: "$26.50/verif",
+      overage: "$31.80/paq adicional",
+      support: "Mid",
+      description: "Tu operación requiere verificaciones frecuentes y soporte disponible todos los días.",
       priceNote: "/ año + IVA",
       ctaUrl: "https://platform.jaak.ai/#/onboarding/plans/oro",
       description: "Tu operación requiere verificaciones frecuentes y necesitas soporte disponible todos los días de la semana.",
@@ -117,15 +141,20 @@ const pricingData: Record<ProductTab, AutoservicioPlan[]> = {
         "Soporte Chat o Email 12×7",
         "Documentación de uso incluida",
         "Sin contrato ni Setup Fee",
-        "Sin necesidad de desarrollador — 100% desde la web",
+        "100% desde la web — sin desarrollador",
       ],
     },
     {
       name: "Platino",
-      subtitle: "El mayor plan de autoservicio para empresas con alto volumen de verificaciones.",
+      subtitle: "Mayor plan de autoservicio para alto volumen.",
       quantity: 500,
-      unit: "verificaciones de identidad",
+      unit: "verificaciones",
       price: "$12,500",
+      priceNote: "MXN / año",
+      unitPrice: "$25.00/verif",
+      overage: "$30.00/paq adicional",
+      support: "Mid",
+      description: "Verificas identidades de forma constante y buscas el mejor precio por verificación.",
       priceNote: "/ año + IVA",
       ctaUrl: "https://platform.jaak.ai/#/onboarding/plans/platino1",
       description: "Verificas identidades de forma constante y buscas el mejor precio por verificación sin pasar a un contrato Enterprise.",
@@ -134,11 +163,241 @@ const pricingData: Record<ProductTab, AutoservicioPlan[]> = {
         "Soporte Chat o Email 12×7",
         "Documentación de uso incluida",
         "Sin contrato ni Setup Fee",
-        "Sin necesidad de desarrollador — 100% desde la web",
+        "100% desde la web — sin desarrollador",
       ],
     },
   ],
+  "kyc-simplificado": [
+    {
+      name: "Cobre",
+      subtitle: "Prueba el servicio con 5 verificaciones.",
+      quantity: 5,
+      unit: "verificaciones",
+      price: "$99",
+      priceNote: "MXN / año",
+      unitPrice: "$19.80/verif",
+      overage: "Sin overages, se bloquea",
+      support: "Sin asignado",
+    },
+    {
+      name: "Bronce",
+      subtitle: "Plan de entrada para verificación básica.",
+      quantity: 50,
+      unit: "verificaciones",
+      price: "$1,500",
+      priceNote: "MXN / año",
+      unitPrice: "$30.00/verif",
+      overage: "$36.00/paq adicional",
+      support: "Junior",
+    },
+    {
+      name: "Plata",
+      subtitle: "Plan profesional para verificación regular.",
+      quantity: 100,
+      unit: "verificaciones",
+      price: "$2,800",
+      priceNote: "MXN / año",
+      unitPrice: "$28.00/verif",
+      overage: "$33.60/paq adicional",
+      recommended: true,
+      support: "Junior/Mid",
+    },
+    {
+      name: "Oro",
+      subtitle: "Plan empresarial para mayor volumen.",
+      quantity: 250,
+      unit: "verificaciones",
+      price: "$6,625",
+      priceNote: "MXN / año",
+      unitPrice: "$26.50/verif",
+      overage: "$31.80/paq adicional",
+      support: "Mid",
+    },
+    {
+      name: "Platino",
+      subtitle: "Mayor plan de autoservicio.",
+      quantity: 500,
+      unit: "verificaciones",
+      price: "$12,500",
+      priceNote: "MXN / año",
+      unitPrice: "$25.00/verif",
+      overage: "$30.00/paq adicional",
+      support: "Mid",
+    },
+  ],
   "firma-simple": [
+    {
+      name: "Cobre",
+      subtitle: "Trial con 10 firmas.",
+      quantity: 10,
+      unit: "firmas",
+      price: "$49",
+      priceNote: "MXN / año",
+      unitPrice: "$4.90/firma",
+      overage: "Sin overages, se bloquea",
+      support: "Sin asignado",
+    },
+    {
+      name: "Bronce",
+      subtitle: "Plan básico de firma.",
+      quantity: 50,
+      unit: "firmas",
+      price: "$400",
+      priceNote: "MXN / año",
+      unitPrice: "$8.00/firma",
+      overage: "$9.60/paq adicional",
+      support: "Junior",
+    },
+    {
+      name: "Plata",
+      subtitle: "Plan profesional de firma.",
+      quantity: 100,
+      unit: "firmas",
+      price: "$700",
+      priceNote: "MXN / año",
+      unitPrice: "$7.00/firma",
+      overage: "$8.40/paq adicional",
+      recommended: true,
+      support: "Junior/Mid",
+    },
+    {
+      name: "Oro",
+      subtitle: "Plan empresarial de firma.",
+      quantity: 250,
+      unit: "firmas",
+      price: "$1,500",
+      priceNote: "MXN / año",
+      unitPrice: "$6.00/firma",
+      overage: "$7.20/paq adicional",
+      support: "Mid",
+    },
+    {
+      name: "Platino",
+      subtitle: "Mayor plan de firma.",
+      quantity: 500,
+      unit: "firmas",
+      price: "$2,500",
+      priceNote: "MXN / año",
+      unitPrice: "$5.00/firma",
+      overage: "$6.00/paq adicional",
+      support: "Mid",
+    },
+  ],
+  "firma-avanzada": [
+    {
+      name: "Cobre",
+      subtitle: "Trial con 5 firmas NOM-151.",
+      quantity: 5,
+      unit: "firmas",
+      price: "$99",
+      priceNote: "MXN / año",
+      unitPrice: "$19.80/firma",
+      overage: "Sin overages, se bloquea",
+      support: "Sin asignado",
+    },
+    {
+      name: "Bronce",
+      subtitle: "Plan básico NOM-151.",
+      quantity: 50,
+      unit: "firmas",
+      price: "$750",
+      priceNote: "MXN / año",
+      unitPrice: "$15.00/firma",
+      overage: "$18.00/paq adicional",
+      support: "Junior",
+    },
+    {
+      name: "Plata",
+      subtitle: "Plan profesional NOM-151.",
+      quantity: 100,
+      unit: "firmas",
+      price: "$1,400",
+      priceNote: "MXN / año",
+      unitPrice: "$14.00/firma",
+      overage: "$16.80/paq adicional",
+      recommended: true,
+      support: "Junior/Mid",
+    },
+    {
+      name: "Oro",
+      subtitle: "Plan empresarial NOM-151.",
+      quantity: 250,
+      unit: "firmas",
+      price: "$3,250",
+      priceNote: "MXN / año",
+      unitPrice: "$13.00/firma",
+      overage: "$15.60/paq adicional",
+      support: "Mid",
+    },
+    {
+      name: "Platino",
+      subtitle: "Mayor plan NOM-151.",
+      quantity: 500,
+      unit: "firmas",
+      price: "$6,000",
+      priceNote: "MXN / año",
+      unitPrice: "$12.00/firma",
+      overage: "$14.40/paq adicional",
+      support: "Mid",
+    },
+  ],
+  "firma-bio": [
+    {
+      name: "Cobre",
+      subtitle: "Trial con 5 firmas NOM-151 + Bio.",
+      quantity: 5,
+      unit: "firmas",
+      price: "$99",
+      priceNote: "MXN / año",
+      unitPrice: "$19.80/firma",
+      overage: "Sin overages, se bloquea",
+      support: "Sin asignado",
+    },
+    {
+      name: "Bronce",
+      subtitle: "Plan básico NOM-151 + Bio.",
+      quantity: 50,
+      unit: "firmas",
+      price: "$1,500",
+      priceNote: "MXN / año",
+      unitPrice: "$30.00/firma",
+      overage: "$36.00/paq adicional",
+      support: "Junior",
+    },
+    {
+      name: "Plata",
+      subtitle: "Plan profesional NOM-151 + Bio.",
+      quantity: 100,
+      unit: "firmas",
+      price: "$2,700",
+      priceNote: "MXN / año",
+      unitPrice: "$27.00/firma",
+      overage: "$33.60/paq adicional",
+      recommended: true,
+      support: "Junior/Mid",
+    },
+    {
+      name: "Oro",
+      subtitle: "Plan empresarial NOM-151 + Bio.",
+      quantity: 250,
+      unit: "firmas",
+      price: "$6,625",
+      priceNote: "MXN / año",
+      unitPrice: "$26.50/firma",
+      overage: "$31.80/paq adicional",
+      support: "Mid",
+    },
+    {
+      name: "Platino",
+      subtitle: "Mayor plan NOM-151 + Bio.",
+      quantity: 500,
+      unit: "firmas",
+      price: "$12,500",
+      priceNote: "MXN / año",
+      unitPrice: "$25.00/firma",
+      overage: "$30.00/paq adicional",
+      support: "Mid",
+    },
     { name: "Cobre", subtitle: "Trial", quantity: 10, unit: "firmas", price: "$49", priceNote: "/ año + IVA", ctaUrl: "https://platform.jaak.ai/#/onboarding/plans/cobre" },
     { name: "Bronce", subtitle: "Básico", quantity: 50, unit: "firmas", price: "$400", priceNote: "/ año + IVA", ctaUrl: "https://platform.jaak.ai/#/onboarding/plans/bronce" },
     { name: "Plata", subtitle: "Recomendado", quantity: 100, unit: "firmas", price: "$700", priceNote: "/ año + IVA", recommended: true, ctaUrl: "https://platform.jaak.ai/#/onboarding/plans/plata" },
@@ -162,114 +421,127 @@ const pricingData: Record<ProductTab, AutoservicioPlan[]> = {
 };
 
 const tabLabels: Record<ProductTab, string> = {
-  biometria: "KYC (Biometría)",
+  biometria: "KYC Tradicional",
+  "kyc-simplificado": "KYC Simplificado",
   "firma-simple": "Firma Simple",
   "firma-avanzada": "Firma NOM-151",
   "firma-bio": "Firma NOM-151 + Bio",
 };
 
 const tabDescriptions: Record<ProductTab, string> = {
-  biometria: "KYC Tradicional, Simplificado y Passwordless para validación de identidad.",
+  biometria: "KYC Tradicional (42 tokens) con validez legal para regulados (CNBV, UIF, LFPIORPI).",
+  "kyc-simplificado": "KYC Simplificado (30 tokens). Sin validez legal. No disponible en programa de Alianzas.",
   "firma-simple": "Firma electrónica simple para documentos que no requieren certificación avanzada.",
   "firma-avanzada": "Firma electrónica avanzada con cumplimiento NOM-151 y PSC certificado.",
   "firma-bio": "Firma electrónica avanzada NOM-151 con verificación biométrica integrada.",
 };
 
-const enterprisePlans = [
-  {
-    name: "Crecimiento",
-    description: "Ideal para empresas en expansión con volumen creciente y necesidades de cumplimiento.",
-    icon: "M13 7h8m0 0v8m0-8l-8 8-4-4-6 6",
-  },
-  {
-    name: "Profesional",
-    description: "Para operación sostenida con exigencias regulatorias y soporte especializado.",
-    icon: "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4",
-  },
-  {
-    name: "Empresarial",
-    description: "Máxima disponibilidad y SLA formal para operación de misión crítica.",
-    icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
-  },
+const enterpriseTiers = [
+  { range: "E1–E5", volume: "1,001–9,999 verif/mes", sla: "99.5%" },
+  { range: "E6–E10", volume: "10,000–44,999 verif/mes", sla: "99.9%" },
+  { range: "E11–E15", volume: "45,000–99,999 verif/mes", sla: "99.9%" },
+  { range: "E16", volume: "100,000–249,999 verif/mes", sla: "99.99%" },
+  { range: "E17", volume: "250,000–499,999 verif/mes", sla: "99.99%" },
 ];
 
-const enterpriseBenefits = [
-  { icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z", label: "SLA formal hasta 99.99%" },
-  { icon: "M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z", label: "Soporte 12×7 y 24×7 para incidentes críticos" },
-  { icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2", label: "Facturación mensual (80/20) con neto 30 días" },
-  { icon: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z", label: "Descuento por pronto pago hasta 15%" },
+const enterpriseConditions = [
+  "Setup Fee único no reembolsable (monto en cotización)",
+  "Facturación mensual esquema 80/20 · Neto 30 días",
+  "Descuento pronto pago 15% si se paga días 1–10 del mes",
+  "Cobro mínimo anual = tier inicial contratado",
+  "Soporte 12×7 en español incluido en todos los tiers",
+  "Tokens caducan a 12 meses",
 ];
 
-const allianceLevels = [
-  { name: "Base", description: "Primera integración como partner tecnológico." },
-  { name: "Nacional", description: "Distribución a escala nacional con soporte dedicado." },
-  { name: "Corporativo", description: "Operación multi-producto y multi-mercado." },
-  { name: "Estratégico", description: "Alianza de máximo nivel con condiciones exclusivas." },
+const enterpriseAddons = [
+  { name: "Priority 12×7", desc: "Cola prioritaria, P1 <30 min, P2 <4h" },
+  { name: "Soporte 24×7 P1 on-call", desc: "Guardia crítica" },
+  { name: "Canal dedicado", desc: "Slack/Teams exclusivo" },
+  { name: "TAM/CSM técnico", desc: "QBR mensual, health checks" },
 ];
 
-const allianceBenefits = [
-  { icon: "M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z", label: "Soporte 24×7 prioritario o dedicado" },
-  { icon: "M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253", label: "Capacitación técnica (Enablement) incluida" },
-  { icon: "M13 7h8m0 0v8m0-8l-8 8-4-4-6 6", label: "Compromiso anual mínimo de volumen garantizado" },
-  { icon: "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4", label: "Infraestructura para reventa y escalabilidad" },
+const allianceTiers = [
+  { tier: "A1", name: "Base", volume: "500,000 – 749,999 verif" },
+  { tier: "A2", name: "Nacional", volume: "750,000 – 999,999 verif" },
+  { tier: "A3", name: "Corporativo", volume: "1,000,000 – 1,249,999 verif" },
+  { tier: "A4", name: "Corporativo+", volume: "1,250,000 – 1,499,999 verif" },
+  { tier: "A5", name: "Estratégico", volume: "≥ 1,500,000 verif · Sin límite" },
+];
+
+const allianceRequirements = [
+  "Integración de JAAK dentro de un producto o plataforma propia",
+  "Modelo activo de reventa o redistribución a terceros",
+  "Volumen anual estimado ≥ 500,000 verificaciones",
+  "Compromiso anual mínimo firmado (obligatorio)",
+  "KYC Simplificado NO disponible en Alianzas",
+  "Sin compromiso firmado → reclasificación automática a Enterprise",
+];
+
+const firmantesRules = [
+  { modalidad: "Firma Simple", incluidos: "Hasta 4/documento", extra: "+$2.00 MXN/firmante" },
+  { modalidad: "Firma NOM-151 + PSC", incluidos: "Hasta 4/documento", extra: "+$5.00 MXN/firmante" },
+  { modalidad: "Firma NOM-151 + Biometría", incluidos: "Hasta 2/documento", extra: "+$12.00 MXN/firmante" },
 ];
 
 const comparisonRows = [
-  { feature: "Volumen", auto: "Hasta 500/año", enterprise: ">1,000/mes", alliance: ">500,000/año" },
-  { feature: "Contrato", auto: "No requerido", enterprise: "Sí", alliance: "Sí" },
-  { feature: "SLA", auto: "No garantizado", enterprise: "Hasta 99.99%", alliance: "Hasta 99.99%" },
-  { feature: "Soporte", auto: "Chat", enterprise: "12×7 / 24×7", alliance: "24×7 dedicado" },
-  { feature: "Facturación", auto: "Prepago anual", enterprise: "Mensual (80/20)", alliance: "Mensual (80/20)" },
-  { feature: "Ideal para", auto: "Startups y PoC", enterprise: "Empresas reguladas", alliance: "Plataformas y revendedores" },
+  { feature: "Precio público", auto: "Desde $49 MXN", enterprise: "Cotización", alliance: "Cotización" },
+  { feature: "Volumen mínimo", auto: "5 verif/año", enterprise: "≥ 1,001/mes", alliance: "≥ 500K/año" },
+  { feature: "Contrato", auto: "No", enterprise: "Sí", alliance: "Sí + mínimo anual" },
+  { feature: "Setup Fee", auto: "Sin setup fee", enterprise: "Único (cotización)", alliance: "Único (cotización)" },
+  { feature: "SLA garantizado", auto: "No", enterprise: "99.5%–99.99%", alliance: "99.5%–99.99%" },
+  { feature: "Soporte", auto: "Chat/Email", enterprise: "12×7 incluido", alliance: "24×7 prioritario" },
+  { feature: "Facturación", auto: "100% prepago", enterprise: "Mensual 80/20", alliance: "Mensual 80/20" },
+  { feature: "Descuento pronto pago", auto: "No aplica", enterprise: "15% días 1–10", alliance: "15% días 1–10" },
+  { feature: "Comisionable (comercial)", auto: "No", enterprise: "Sí", alliance: "Sí" },
+  { feature: "KYC Simplificado", auto: "Sí", enterprise: "Sí", alliance: "No" },
 ];
 
 const faqItems = [
   {
-    question: "¿Qué pasa si supero mi volumen contratado en Autoservicio?",
-    answer: "Puedes hacer un upgrade inmediato al siguiente plan desde tu panel de control. Tu historial y configuración se mantienen sin interrupción.",
+    question: "¿Cuánto cuesta el KYC biométrico en México?",
+    answer: "Autoservicio desde $99 MXN/año (5 verif, plan Cobre), sin setup fee. Precio unitario de $19.80 (Cobre) a $25.00 (Platino). Para más de 1,000 verif/mes: Enterprise con cotización personalizada.",
   },
   {
-    question: "¿Las verificaciones o firmas caducan?",
-    answer: "Las verificaciones y firmas de Autoservicio tienen vigencia de 12 meses desde la fecha de compra. En planes Enterprise y Alianzas, la vigencia se establece en el contrato.",
+    question: "¿Cuánto cuesta la Firma Electrónica NOM-151?",
+    answer: "Firma Simple desde $49 MXN/año (10 firmas). Firma NOM-151 desde $99 MXN/año (5 firmas, $19.80/firma) hasta $6,000 MXN (500 firmas, $12.00/firma). Firma NOM-151+Bio desde $99 MXN (5 firmas) hasta $12,500 MXN (500 firmas). Sin setup fee en Autoservicio.",
   },
   {
-    question: "¿Hay descuentos por volumen en Enterprise?",
-    answer: "Sí. En Enterprise y Alianzas, el precio por verificación disminuye conforme aumenta el volumen contratado. También ofrecemos descuento por pronto pago. Contacta a nuestro equipo para una cotización personalizada.",
+    question: "¿Qué pasa si supero mi volumen en Autoservicio?",
+    answer: "Bronce a Platino pueden comprar paquetes adicionales al 120% del precio unitario. Cobre se bloquea al superar el límite. Si superas 1,000 verif/mes consistentemente, la migración a Enterprise es obligatoria.",
   },
   {
-    question: "¿Cómo funciona el SLA en Enterprise?",
-    answer: "El SLA define el nivel de disponibilidad garantizada de la plataforma. Si no se cumple, se aplican créditos según lo establecido en el contrato de servicio. Disponemos de SLAs de hasta 99.99%.",
+    question: "¿Los paquetes caducan o son reembolsables?",
+    answer: "Vencen a 12 meses desde la compra. No son reembolsables. Setup Fees tampoco son reembolsables.",
   },
   {
-    question: "¿Puedo iniciar en Autoservicio y migrar a Enterprise?",
-    answer: "Por supuesto. Muchos de nuestros clientes Enterprise comenzaron en Autoservicio. La migración es asistida por nuestro equipo sin interrupción del servicio.",
+    question: "¿JAAK cumple con LFPIORPI, CNBV y UIF?",
+    answer: "Sí. LFPIORPI Art. 17, identificación remota CNBV, evidencia para UIF, NOM-151 con PSC certificado. Certificaciones: ISO 27001, ISO 9001, iBeta Liveness Nivel 2.",
   },
   {
-    question: "¿Qué nivel de soporte recibo?",
-    answer: "En Autoservicio recibes soporte vía chat y documentación técnica. En Enterprise, asignamos un nivel de seniority (Junior, Mid, Senior, Lead) según la complejidad de tu operación, con soporte 12×7 y disponibilidad 24×7 para incidentes críticos.",
+    question: "¿Diferencia entre KYC Tradicional y KYC Simplificado?",
+    answer: "Tradicional (42 tokens) tiene validez legal para regulados (CNBV, UIF, LFPIORPI). Simplificado (30 tokens) sin validez legal, no disponible en Alianzas.",
   },
   {
-    question: "¿JAAK cumple con regulaciones mexicanas?",
-    answer: "Sí. Nuestra infraestructura cumple con NOM-151, y nuestros procesos están diseñados para CNBV, LFPIORPI, UIF y demás marcos regulatorios mexicanos. Toda operación cuenta con trazabilidad completa.",
+    question: "¿Cómo funciona la facturación Enterprise 80/20?",
+    answer: "Mensual: 80% del estimado del mes actual + 20% real del mes anterior. Neto 30 días. Descuento 15% si se paga días 1–10. Cobro mínimo = tier inicial contratado aunque el consumo sea menor.",
   },
 ];
 
-const complianceNotes = [
-  {
-    icon: "M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z",
-    title: "Soporte",
-    description: "El soporte base es 12×7 (Lunes a Domingo, 8am–8pm CDMX). Disponibilidad 24×7 para incidentes críticos en planes Enterprise y Alianzas.",
-  },
-  {
-    icon: "M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z",
-    title: "Seniority Asignado",
-    description: "JAAK asigna el nivel de seniority (Junior, Mid, Senior, Lead) según la complejidad y criticidad de cada cliente.",
-  },
-  {
-    icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
-    title: "Seguridad y Cumplimiento",
-    description: "Infraestructura con trazabilidad completa, cumplimiento NOM-151 y gobierno tecnológico para sectores regulados.",
-  },
+const trustBadges = [
+  "ISO 27001",
+  "ISO 9001",
+  "iBeta Liveness Nivel 2",
+  "NOM-151 + PSC",
+  "CNBV / LFPIORPI / UIF",
+  "NIST FRVT",
+];
+
+const autoservicioRules = [
+  "Sin Setup Fee · Sin contrato · Pago 100% prepago (tarjeta)",
+  "Paquetes caducan a 12 meses desde la compra · No reembolsables",
+  "Overages: paquetes adicionales al 120% del precio unitario del plan",
+  "Cobre: sin overages, se bloquea al superar límite · 1 cuenta por empresa/RFC",
+  "Si superas 1,000 verif/mes consistentemente → migración a Enterprise obligatoria",
 ];
 
 // --- Check icon reusable ---
@@ -289,11 +561,12 @@ export default function PreciosClient() {
 
   // Scroll reveal refs
   const heroReveal = useScrollReveal<HTMLElement>(0.1);
+  const profileReveal = useScrollReveal<HTMLElement>(0.1);
   const tabsReveal = useScrollReveal<HTMLElement>(0.1);
+  const firmantesReveal = useScrollReveal<HTMLElement>(0.1);
   const enterpriseReveal = useScrollReveal<HTMLElement>(0.1);
   const allianceReveal = useScrollReveal<HTMLElement>(0.1);
   const comparisonReveal = useScrollReveal<HTMLElement>(0.1);
-  const complianceReveal = useScrollReveal<HTMLElement>(0.1);
   const faqReveal = useScrollReveal<HTMLElement>(0.1);
   const ctaReveal = useScrollReveal<HTMLElement>(0.1);
 
@@ -304,7 +577,7 @@ export default function PreciosClient() {
 
   return (
     <>
-      {/* ===== HERO ===== */}
+      {/* ===== SECTION 1 · HERO ===== */}
       <section
         ref={heroReveal.ref}
         className="pt-36 pb-20 md:pt-44 md:pb-28 relative overflow-hidden"
@@ -319,37 +592,54 @@ export default function PreciosClient() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className={`max-w-4xl mx-auto text-center ${revealClass(heroReveal.isVisible)}`}>
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight mb-6">
-              Precios diseñados según tu nivel de operación y cumplimiento
+              Identidad digital para cada escala de operación
             </h1>
-            <p className="text-lg md:text-xl text-white/70 mb-10 max-w-3xl mx-auto">
-              Desde autoservicio inmediato para startups hasta infraestructura robusta para corporativos con SLA formal y soporte especializado.
+            <p className="text-lg md:text-xl text-white/70 mb-8 max-w-3xl mx-auto">
+              Desde startups que integran hoy hasta instituciones financieras con regulación crítica.
             </p>
+
+            {/* Anchor prices */}
+            <div className="flex flex-wrap justify-center gap-4 mb-10">
+              {[
+                { label: "KYC", price: "desde $99 MXN/año" },
+                { label: "Firma Simple", price: "desde $49 MXN/año" },
+                { label: "Firma NOM-151", price: "desde $99 MXN/año" },
+              ].map((item) => (
+                <div key={item.label} className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl px-5 py-3 text-center">
+                  <p className="text-xs text-white/60 uppercase tracking-wide font-semibold">{item.label}</p>
+                  <p className="text-base font-bold text-white">{item.price}</p>
+                  <p className="text-[10px] text-white/40">IVA no incluido</p>
+                </div>
+              ))}
+            </div>
+
+            {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10">
-              <Link
-                href={AUTOSERVICIO_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+              <a
+                href="#autoservicio"
                 className="inline-flex items-center justify-center px-8 py-4 bg-[#2DB6C1] text-white font-bold text-base rounded-lg hover:bg-[#25969f] transition-all hover:-translate-y-0.5"
               >
-                Iniciar Autoservicio
+                Ver planes Autoservicio
                 <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
                 </svg>
-              </Link>
+              </a>
               <Link
-                href="/contacto"
+                href={CONTACTO_URL}
                 className="inline-flex items-center justify-center px-8 py-4 bg-transparent border-2 border-white/30 text-white font-semibold text-base rounded-lg hover:bg-white/10 transition-all"
               >
-                Hablar con un asesor
+                Hablar con un especialista
               </Link>
             </div>
-            <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-white/50">
-              {["SLA hasta 99.99%", "Cumplimiento regulatorio", "Soporte especializado"].map((item) => (
-                <span key={item} className="flex items-center gap-2">
+
+            {/* Trust badges */}
+            <div className="flex flex-wrap justify-center gap-x-5 gap-y-2 text-sm text-white/50">
+              {trustBadges.map((badge) => (
+                <span key={badge} className="flex items-center gap-1.5">
                   <svg className="w-4 h-4 text-[#2DB6C1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                   </svg>
-                  {item}
+                  {badge}
                 </span>
               ))}
             </div>
@@ -357,10 +647,54 @@ export default function PreciosClient() {
         </div>
       </section>
 
-      {/* ===== AUTOSERVICIO ===== */}
-      <section ref={tabsReveal.ref} className="py-16 md:py-24 bg-white">
+      {/* ===== SECTION 2 · PROFILE SELECTOR ===== */}
+      <section ref={profileReveal.ref} className="py-12 md:py-16 bg-[#F3F4F8]">
+        <div className={`max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 ${revealClass(profileReveal.isVisible)}`}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <a
+              href="#autoservicio"
+              className="group bg-white rounded-2xl p-6 border-2 border-[#EEEEEE] hover:border-[#2DB6C1] hover:shadow-lg transition-all text-left"
+            >
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-2xl">⚡</span>
+                <h3 className="text-lg font-bold text-[#212A45]">Autoservicio</h3>
+              </div>
+              <p className="text-sm text-[#4A5568] mb-3">Sin contrato, activa hoy</p>
+              <p className="text-xs text-[#64748B] mb-2">Hasta 500 verif/año</p>
+              <p className="text-sm font-bold text-[#2DB6C1]">Precios visibles</p>
+            </a>
+            <a
+              href="#enterprise"
+              className="group bg-white rounded-2xl p-6 border-2 border-[#EEEEEE] hover:border-[#212A45] hover:shadow-lg transition-all text-left"
+            >
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-2xl">🏛️</span>
+                <h3 className="text-lg font-bold text-[#212A45]">Enterprise</h3>
+              </div>
+              <p className="text-sm text-[#4A5568] mb-3">Operación regulada, SLA formal</p>
+              <p className="text-xs text-[#64748B] mb-2">≥ 1,000 verif/mes</p>
+              <p className="text-sm font-bold text-[#212A45]">Cotización</p>
+            </a>
+            <a
+              href="#alianzas"
+              className="group bg-white rounded-2xl p-6 border-2 border-[#EEEEEE] hover:border-[#212A45] hover:shadow-lg transition-all text-left"
+            >
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-2xl">🤝</span>
+                <h3 className="text-lg font-bold text-[#212A45]">Alianzas</h3>
+              </div>
+              <p className="text-sm text-[#4A5568] mb-3">Redistribuye JAAK en tu producto</p>
+              <p className="text-xs text-[#64748B] mb-2">≥ 500,000 verif/año</p>
+              <p className="text-sm font-bold text-[#212A45]">Cotización</p>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== SECTION 3 · AUTOSERVICIO ===== */}
+      <section id="autoservicio" ref={tabsReveal.ref} className="py-16 md:py-24 bg-white scroll-mt-32">
         <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${revealClass(tabsReveal.isVisible)}`}>
-          <div className="text-center mb-10">
+          <div className="text-center mb-8">
             <h2 className="text-2xl md:text-3xl font-bold text-[#212A45] mb-3">
               Autoservicio web – Activa en minutos
             </h2>
@@ -369,14 +703,27 @@ export default function PreciosClient() {
             </p>
           </div>
 
+          {/* Global rules */}
+          <div className="bg-[#F3F4F8] rounded-xl p-5 mb-10 max-w-4xl mx-auto">
+            <h3 className="text-sm font-bold text-[#212A45] mb-3">Condiciones generales de Autoservicio</h3>
+            <ul className="space-y-1.5">
+              {autoservicioRules.map((rule) => (
+                <li key={rule} className="flex items-start gap-2 text-xs text-[#4A5568]">
+                  <span className="text-[#2DB6C1] mt-0.5">•</span>
+                  {rule}
+                </li>
+              ))}
+            </ul>
+          </div>
+
           {/* Product Tabs */}
-          <div className="flex justify-center mb-10">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 bg-[#F3F4F8] rounded-xl p-1.5 w-full max-w-2xl">
+          <div className="flex justify-center mb-8">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-1.5 bg-[#F3F4F8] rounded-xl p-1.5 w-full max-w-3xl">
               {(Object.keys(tabLabels) as ProductTab[]).map((tab) => (
                 <button
                   key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  className={`px-4 py-3 rounded-lg text-sm font-semibold transition-all text-center ${
+                  onClick={() => { setActiveTab(tab); setExpandedCard(null); }}
+                  className={`px-3 py-3 rounded-lg text-xs sm:text-sm font-semibold transition-all text-center ${
                     activeTab === tab
                       ? "bg-[#2DB6C1] text-white shadow-sm"
                       : "text-[#4A5568] hover:text-[#212A45] hover:bg-white/60"
@@ -393,6 +740,13 @@ export default function PreciosClient() {
             {tabDescriptions[activeTab]}
           </p>
 
+          {/* KYC Simplificado warning */}
+          {activeTab === "kyc-simplificado" && (
+            <div className="max-w-2xl mx-auto mb-8 bg-amber-50 border border-amber-200 rounded-lg p-4 text-center">
+              <p className="text-sm text-amber-800 font-semibold">Sin validez legal · No disponible en programa de Alianzas</p>
+            </div>
+          )}
+
           {/* Pricing Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5 mb-10">
             {currentPlans.map((plan) => (
@@ -406,18 +760,26 @@ export default function PreciosClient() {
               >
                 {plan.recommended && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <span className="inline-block px-3 py-1 bg-[#2DB6C1] text-white text-[10px] font-bold rounded-full uppercase tracking-wide">
-                      Recomendado
+                    <span className="inline-block px-3 py-1 bg-[#2DB6C1] text-white text-[10px] font-bold rounded-full uppercase tracking-wide whitespace-nowrap">
+                      Más popular
                     </span>
                   </div>
                 )}
                 <div className="pt-2">
                   <div className="text-center">
                     <h3 className="text-base font-bold text-[#212A45] uppercase tracking-wide mb-0.5">{plan.name}</h3>
-                    <p className="text-xs text-[#64748B] mb-4">{plan.subtitle}</p>
-                    <div className="mb-4">
+                    <p className="text-xs text-[#64748B] mb-3">{plan.subtitle}</p>
+                    <div className="mb-2">
                       <span className="text-2xl lg:text-[1.65rem] font-black text-[#212A45]">{plan.price}</span>
                       <span className="text-xs text-[#64748B] ml-1">{plan.priceNote}</span>
+                      <p className="text-[10px] text-[#94A3B8] mt-1">IVA no incluido</p>
+                    </div>
+                    {/* Unit price & overage */}
+                    <div className="bg-[#F3F4F8] rounded-lg p-2 mb-4 space-y-1">
+                      <p className="text-[11px] text-[#4A5568]">
+                        <strong>{plan.quantity}</strong> {plan.unit} · {plan.unitPrice}
+                      </p>
+                      <p className="text-[10px] text-[#64748B]">{plan.overage}</p>
                     </div>
                   </div>
 
@@ -442,13 +804,13 @@ export default function PreciosClient() {
                       {expandedCard === plan.name && (
                         <div className="animate-fade-in-up">
                           {plan.description && (
-                            <div className="mb-4 bg-[#F3F4F8] rounded-lg p-3">
+                            <div className="mb-3 bg-[#F3F4F8] rounded-lg p-3">
                               <p className="text-[11px] font-semibold text-[#2DB6C1] mb-1">Este plan es para ti si...</p>
                               <p className="text-xs text-[#4A5568] leading-relaxed">{plan.description}</p>
                             </div>
                           )}
                           {plan.checks && (
-                            <div className="space-y-2 mb-4 text-left">
+                            <div className="space-y-2 mb-3 text-left">
                               {plan.checks.map((check) => (
                                 <div key={check} className="flex items-start gap-2 text-xs text-[#4A5568]">
                                   <CheckIcon className="w-3.5 h-3.5 text-[#1ecad3] mt-0.5" />
@@ -457,31 +819,12 @@ export default function PreciosClient() {
                               ))}
                             </div>
                           )}
+                          {plan.support && (
+                            <p className="text-[10px] text-[#64748B] mb-3">Soporte asignado: {plan.support}</p>
+                          )}
                         </div>
                       )}
                     </>
-                  )}
-
-                  {/* Fallback for plans without detailed data */}
-                  {!plan.description && !plan.checks && (
-                    <div className="space-y-2.5 mb-4 text-left">
-                      <div className="flex items-center gap-2 text-sm text-[#4A5568]">
-                        <CheckIcon />
-                        <span><strong>{plan.quantity}</strong> {plan.unit} / año</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm text-[#4A5568]">
-                        <CheckIcon />
-                        <span>Soporte vía chat</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm text-[#4A5568]">
-                        <CheckIcon />
-                        <span>Documentación técnica</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm text-[#4A5568]">
-                        <CheckIcon />
-                        <span>Vigencia 12 meses</span>
-                      </div>
-                    </div>
                   )}
 
                   <Link
@@ -501,68 +844,179 @@ export default function PreciosClient() {
             ))}
           </div>
 
-          {/* Autoservicio notes */}
-          <div className="flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm text-[#64748B] mb-6">
-            {["Pago 100% anticipado", "Sin contrato obligatorio", "Upgrade inmediato", "Soporte chat/email incluido"].map((note) => (
-              <span key={note} className="flex items-center gap-2">
-                <CheckIcon />
-                {note}
-              </span>
+          {/* SSR-rendered hidden content for SEO — all tabs as HTML */}
+          <div className="sr-only" aria-hidden="false">
+            {(Object.keys(pricingData) as ProductTab[]).map((tab) => (
+              <div key={tab}>
+                <h3>{tabLabels[tab]}</h3>
+                <p>{tabDescriptions[tab]}</p>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Plan</th><th>Precio anual</th><th>Volumen</th><th>Precio unitario</th><th>Overage</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {pricingData[tab].map((plan) => (
+                      <tr key={plan.name}>
+                        <td>{plan.name}</td>
+                        <td>{plan.price} {plan.priceNote}</td>
+                        <td>{plan.quantity} {plan.unit}</td>
+                        <td>{plan.unitPrice}</td>
+                        <td>{plan.overage}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             ))}
           </div>
+
           <p className="text-center text-xs text-[#64748B]">
-            Todos los precios en MXN. Sin Setup Fee. Sin comisión comercial.
+            Todos los precios en MXN + IVA. Sin Setup Fee. Sin comisión comercial.
           </p>
         </div>
       </section>
 
-      {/* ===== ENTERPRISE ===== */}
-      <section ref={enterpriseReveal.ref} className="py-16 md:py-24 bg-[#F3F4F8]">
-        <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${revealClass(enterpriseReveal.isVisible)}`}>
-          <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold text-[#212A45] mb-3">
-              Enterprise – Infraestructura regulada y escalable
+      {/* ===== SECTION 4 · FIRMANTES ===== */}
+      <section ref={firmantesReveal.ref} className="py-12 md:py-16 bg-[#F3F4F8]">
+        <div className={`max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 ${revealClass(firmantesReveal.isVisible)}`}>
+          <div className="text-center mb-8">
+            <h2 className="text-xl md:text-2xl font-bold text-[#212A45] mb-2">
+              Firmantes por documento
             </h2>
-            <p className="text-[#4A5568] text-base max-w-2xl mx-auto">
-              Diseñado para empresas con alto volumen (&gt;1,000 verificaciones/mes), exigencias regulatorias y operación crítica.
+            <p className="text-sm text-[#4A5568]">
+              Aplica a todas las modalidades de firma. El &quot;volumen&quot; de cualquier plan = documentos firmados, no número de firmantes.
             </p>
           </div>
 
-          {/* Enterprise plan cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            {enterprisePlans.map((plan) => (
-              <div key={plan.name} className="bg-white rounded-2xl p-8 border border-[#EEEEEE] hover:shadow-lg hover:-translate-y-1 transition-all">
-                <div className="w-12 h-12 bg-[#212A45]/5 rounded-xl flex items-center justify-center mb-5">
-                  <svg className="w-6 h-6 text-[#212A45]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={plan.icon} />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-bold text-[#212A45] mb-2">{plan.name}</h3>
-                <p className="text-sm text-[#4A5568] leading-relaxed">{plan.description}</p>
+          {/* Desktop */}
+          <div className="hidden md:block bg-white rounded-2xl border border-[#EEEEEE] overflow-hidden">
+            <div className="grid grid-cols-3 bg-[#212A45] text-white text-sm font-semibold">
+              <div className="px-6 py-3">Modalidad</div>
+              <div className="px-6 py-3 text-center">Firmantes incluidos</div>
+              <div className="px-6 py-3 text-center">Firmante adicional</div>
+            </div>
+            {firmantesRules.map((row, idx) => (
+              <div key={row.modalidad} className={`grid grid-cols-3 ${idx !== firmantesRules.length - 1 ? "border-b border-[#EEEEEE]" : ""}`}>
+                <div className="px-6 py-3 text-sm font-medium text-[#212A45]">{row.modalidad}</div>
+                <div className="px-6 py-3 text-center text-sm text-[#4A5568]">{row.incluidos}</div>
+                <div className="px-6 py-3 text-center text-sm text-[#4A5568]">{row.extra}</div>
               </div>
             ))}
           </div>
 
-          {/* Enterprise benefits */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
-            {enterpriseBenefits.map((benefit) => (
-              <div key={benefit.label} className="flex items-start gap-3 bg-white rounded-xl p-5 border border-[#EEEEEE]">
-                <div className="w-10 h-10 bg-[#2DB6C1]/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <svg className="w-5 h-5 text-[#2DB6C1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={benefit.icon} />
-                  </svg>
+          {/* Mobile */}
+          <div className="md:hidden space-y-3">
+            {firmantesRules.map((row) => (
+              <div key={row.modalidad} className="bg-white rounded-xl border border-[#EEEEEE] p-4">
+                <p className="font-semibold text-sm text-[#212A45] mb-2">{row.modalidad}</p>
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div>
+                    <p className="text-[#64748B]">Incluidos</p>
+                    <p className="font-medium text-[#212A45]">{row.incluidos}</p>
+                  </div>
+                  <div>
+                    <p className="text-[#64748B]">Adicional</p>
+                    <p className="font-medium text-[#212A45]">{row.extra}</p>
+                  </div>
                 </div>
-                <p className="text-sm font-medium text-[#212A45] leading-snug">{benefit.label}</p>
               </div>
             ))}
+          </div>
+          <p className="text-center text-[10px] text-[#94A3B8] mt-4">Precios + IVA no incluido</p>
+        </div>
+      </section>
+
+      {/* ===== SECTION 5 · ENTERPRISE ===== */}
+      <section id="enterprise" ref={enterpriseReveal.ref} className="py-16 md:py-24 bg-white scroll-mt-32">
+        <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${revealClass(enterpriseReveal.isVisible)}`}>
+          <div className="text-center mb-12">
+            <h2 className="text-2xl md:text-3xl font-bold text-[#212A45] mb-3">
+              Para operación crítica y regulada
+            </h2>
+            <p className="text-[#4A5568] text-base max-w-2xl mx-auto">
+              Precios por volumen desde E1 hasta E17. Cotización en menos de 24 horas hábiles.
+            </p>
+          </div>
+
+          {/* Tier table */}
+          <div className="max-w-3xl mx-auto mb-10">
+            <div className="hidden md:block bg-white rounded-2xl border border-[#EEEEEE] overflow-hidden">
+              <div className="grid grid-cols-3 bg-[#212A45] text-white text-sm font-semibold">
+                <div className="px-6 py-3">Tier</div>
+                <div className="px-6 py-3 text-center">Volumen</div>
+                <div className="px-6 py-3 text-center">SLA</div>
+              </div>
+              {enterpriseTiers.map((t, idx) => (
+                <div key={t.range} className={`grid grid-cols-3 ${idx !== enterpriseTiers.length - 1 ? "border-b border-[#EEEEEE]" : ""}`}>
+                  <div className="px-6 py-3 text-sm font-bold text-[#212A45]">{t.range}</div>
+                  <div className="px-6 py-3 text-center text-sm text-[#4A5568]">{t.volume}</div>
+                  <div className="px-6 py-3 text-center text-sm font-semibold text-[#2DB6C1]">{t.sla}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Mobile */}
+            <div className="md:hidden space-y-3">
+              {enterpriseTiers.map((t) => (
+                <div key={t.range} className="bg-white rounded-xl border border-[#EEEEEE] p-4 flex justify-between items-center">
+                  <div>
+                    <p className="font-bold text-sm text-[#212A45]">{t.range}</p>
+                    <p className="text-xs text-[#4A5568]">{t.volume}</p>
+                  </div>
+                  <span className="text-sm font-semibold text-[#2DB6C1]">SLA {t.sla}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Products available */}
+          <div className="max-w-3xl mx-auto mb-10">
+            <h3 className="text-sm font-bold text-[#212A45] mb-3 text-center">Productos disponibles en Enterprise</h3>
+            <div className="flex flex-wrap justify-center gap-2">
+              {["KYC Tradicional", "KYC Simplificado", "Firma Simple", "Firma NOM-151", "Firma NOM-151 + Biometría"].map((p) => (
+                <span key={p} className="px-3 py-1.5 bg-[#F3F4F8] rounded-full text-xs font-medium text-[#4A5568]">{p}</span>
+              ))}
+            </div>
+          </div>
+
+          {/* Conditions */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-10">
+            <div className="bg-[#F3F4F8] rounded-xl p-6">
+              <h3 className="text-sm font-bold text-[#212A45] mb-3">Condiciones</h3>
+              <ul className="space-y-2">
+                {enterpriseConditions.map((c) => (
+                  <li key={c} className="flex items-start gap-2 text-xs text-[#4A5568]">
+                    <CheckIcon className="w-3.5 h-3.5 text-[#1ecad3] mt-0.5" />
+                    <span>{c}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="bg-[#F3F4F8] rounded-xl p-6">
+              <h3 className="text-sm font-bold text-[#212A45] mb-3">Add-ons de soporte</h3>
+              <ul className="space-y-3">
+                {enterpriseAddons.map((a) => (
+                  <li key={a.name} className="text-xs text-[#4A5568]">
+                    <span className="font-semibold text-[#212A45]">{a.name}</span>
+                    <span className="ml-1">— {a.desc}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-4 pt-3 border-t border-[#E5E7EB]">
+                <p className="text-[10px] text-[#64748B]">SLA 99.9% requiere Priority 12×7</p>
+                <p className="text-[10px] text-[#64748B]">SLA 99.99% requiere 24×7 + canal dedicado</p>
+              </div>
+            </div>
           </div>
 
           <div className="text-center">
             <Link
-              href="/contacto"
+              href={CONTACTO_URL}
               className="inline-flex items-center justify-center px-8 py-4 bg-[#212A45] text-white font-bold text-base rounded-lg hover:bg-[#0E1133] transition-all hover:-translate-y-0.5"
             >
-              Hablar con un asesor
+              Solicitar cotización
               <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
@@ -571,52 +1025,70 @@ export default function PreciosClient() {
         </div>
       </section>
 
-      {/* ===== PROGRAMA DE ALIANZAS ===== */}
+      {/* ===== SECTION 6 · ALIANZAS ===== */}
       <section
+        id="alianzas"
         ref={allianceReveal.ref}
-        className="py-16 md:py-24"
+        className="py-16 md:py-24 scroll-mt-32"
         style={{ background: "linear-gradient(135deg, #212A45 0%, #0E1133 50%, #212A45 100%)" }}
       >
         <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${revealClass(allianceReveal.isVisible)}`}>
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
-              Programa de Alianzas – Escalabilidad masiva
+              Integra JAAK en tu producto. Tú escalas, nosotros potenciamos.
             </h2>
-            <p className="text-white/60 text-base max-w-2xl mx-auto">
-              Para plataformas que integran JAAK en su propio producto y redistribuyen servicios de identidad digital.
-            </p>
           </div>
 
-          {/* Alliance level cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            {allianceLevels.map((level) => (
-              <div key={level.name} className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 text-center hover:bg-white/10 transition-all">
-                <h3 className="text-lg font-bold text-white uppercase tracking-wide mb-3">{level.name}</h3>
-                <p className="text-sm text-white/50 leading-relaxed">{level.description}</p>
+          {/* Alliance tier table */}
+          <div className="max-w-3xl mx-auto mb-10">
+            <div className="hidden md:block rounded-2xl overflow-hidden border border-white/10">
+              <div className="grid grid-cols-3 bg-white/10 text-white text-sm font-semibold">
+                <div className="px-6 py-3">Tier</div>
+                <div className="px-6 py-3 text-center">Nombre</div>
+                <div className="px-6 py-3 text-center">Volumen anual</div>
               </div>
-            ))}
-          </div>
-
-          {/* Alliance benefits */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
-            {allianceBenefits.map((benefit) => (
-              <div key={benefit.label} className="flex items-start gap-3 bg-white/5 rounded-xl p-4 border border-white/10">
-                <div className="w-9 h-9 bg-[#2DB6C1]/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <svg className="w-5 h-5 text-[#2DB6C1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={benefit.icon} />
-                  </svg>
+              {allianceTiers.map((t, idx) => (
+                <div key={t.tier} className={`grid grid-cols-3 ${idx !== allianceTiers.length - 1 ? "border-b border-white/10" : ""}`}>
+                  <div className="px-6 py-3 text-sm font-bold text-white">{t.tier}</div>
+                  <div className="px-6 py-3 text-center text-sm text-white/80">{t.name}</div>
+                  <div className="px-6 py-3 text-center text-sm text-white/60">{t.volume}</div>
                 </div>
-                <p className="text-sm font-medium text-white/80 leading-snug">{benefit.label}</p>
-              </div>
-            ))}
+              ))}
+            </div>
+
+            {/* Mobile */}
+            <div className="md:hidden space-y-3">
+              {allianceTiers.map((t) => (
+                <div key={t.tier} className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4">
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="text-sm font-bold text-white">{t.tier}</span>
+                    <span className="text-sm font-semibold text-white/80">{t.name}</span>
+                  </div>
+                  <p className="text-xs text-white/50">{t.volume}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Requirements */}
+          <div className="max-w-2xl mx-auto mb-10 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
+            <h3 className="text-sm font-bold text-white mb-3">Requisitos del programa</h3>
+            <ul className="space-y-2">
+              {allianceRequirements.map((r) => (
+                <li key={r} className="flex items-start gap-2 text-xs text-white/70">
+                  <span className="text-[#2DB6C1] mt-0.5">•</span>
+                  {r}
+                </li>
+              ))}
+            </ul>
           </div>
 
           <div className="text-center">
             <Link
-              href="/contacto"
+              href={CONTACTO_URL}
               className="inline-flex items-center justify-center px-8 py-4 bg-white/10 border-2 border-white/20 text-white font-bold text-base rounded-lg hover:bg-white/20 transition-all"
             >
-              Aplicar como partner
+              Aplicar como Partner
               <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
@@ -625,7 +1097,7 @@ export default function PreciosClient() {
         </div>
       </section>
 
-      {/* ===== COMPARISON TABLE ===== */}
+      {/* ===== SECTION 7 · COMPARATIVA ===== */}
       <section ref={comparisonReveal.ref} className="py-16 md:py-24 bg-white">
         <div className={`max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 ${revealClass(comparisonReveal.isVisible)}`}>
           <div className="text-center mb-12">
@@ -640,7 +1112,7 @@ export default function PreciosClient() {
               <div className="px-6 py-4">Característica</div>
               <div className="px-6 py-4 text-center">Autoservicio</div>
               <div className="px-6 py-4 text-center">Enterprise</div>
-              <div className="px-6 py-4 text-center">Alianza</div>
+              <div className="px-6 py-4 text-center">Alianzas</div>
             </div>
             {comparisonRows.map((row, idx) => (
               <div
@@ -670,7 +1142,7 @@ export default function PreciosClient() {
                     <p className="font-medium text-[#212A45]">{row.enterprise}</p>
                   </div>
                   <div className="text-center">
-                    <p className="text-[#64748B] mb-1">Alianza</p>
+                    <p className="text-[#64748B] mb-1">Alianzas</p>
                     <p className="font-medium text-[#212A45]">{row.alliance}</p>
                   </div>
                 </div>
@@ -680,36 +1152,8 @@ export default function PreciosClient() {
         </div>
       </section>
 
-      {/* ===== COMPLIANCE & SUPPORT NOTES ===== */}
-      <section ref={complianceReveal.ref} className="py-16 md:py-24 bg-[#F3F4F8]">
-        <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${revealClass(complianceReveal.isVisible)}`}>
-          <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold text-[#212A45] mb-3">
-              Más que precios: infraestructura de confianza
-            </h2>
-            <p className="text-[#4A5568] text-base max-w-3xl mx-auto">
-              En JAAK no solo adquieres verificaciones o firmas electrónicas. Obtienes una arquitectura diseñada para sectores regulados, con trazabilidad, cumplimiento y gobierno tecnológico.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {complianceNotes.map((note) => (
-              <div key={note.title} className="bg-white rounded-2xl p-8 border border-[#EEEEEE] hover:shadow-lg transition-all">
-                <div className="w-12 h-12 bg-[#2DB6C1]/10 rounded-xl flex items-center justify-center mb-5">
-                  <svg className="w-6 h-6 text-[#2DB6C1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={note.icon} />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-bold text-[#212A45] mb-2">{note.title}</h3>
-                <p className="text-sm text-[#4A5568] leading-relaxed">{note.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ===== FAQ ===== */}
-      <section ref={faqReveal.ref} className="py-16 md:py-24 bg-white">
+      {/* ===== SECTION 8 · FAQ ===== */}
+      <section ref={faqReveal.ref} className="py-16 md:py-24 bg-[#F3F4F8]">
         <div className={`max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 ${revealClass(faqReveal.isVisible)}`}>
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl font-bold text-[#212A45] mb-3">
@@ -719,7 +1163,7 @@ export default function PreciosClient() {
 
           <div className="space-y-3">
             {faqItems.map((item, idx) => (
-              <div key={idx} className="bg-[#F3F4F8] rounded-xl border border-[#EEEEEE] overflow-hidden">
+              <div key={idx} className="bg-white rounded-xl border border-[#EEEEEE] overflow-hidden">
                 <button
                   onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
                   className="w-full flex items-center justify-between px-6 py-5 text-left"
@@ -769,7 +1213,7 @@ export default function PreciosClient() {
                 </svg>
               </Link>
               <Link
-                href="/contacto"
+                href={CONTACTO_URL}
                 className="inline-flex items-center justify-center px-8 py-4 bg-transparent border-2 border-white/30 text-white font-semibold text-base rounded-lg hover:bg-white/10 transition-all"
               >
                 Hablar con un especialista
