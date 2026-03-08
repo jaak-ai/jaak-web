@@ -17,6 +17,36 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "Protección de datos personales en KYC: Cumplimiento LFPDPPP y GDPR",
+  description: "Cómo cumplir con la Ley Federal de Protección de Datos Personales (LFPDPPP) y GDPR en procesos de KYC y verificación de identidad en México.",
+  image: "https://jaak.ai/images/blog/proteccion-datos.jpg",
+  datePublished: "2026-01-28",
+  dateModified: "2026-01-28",
+  author: {
+    "@type": "Organization",
+    name: "JAAK",
+    url: "https://jaak.ai",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "JAAK",
+    url: "https://jaak.ai",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://jaak.ai/images/logos/jaak-logo-azul.png",
+    },
+  },
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": "https://jaak.ai/blog/proteccion-datos-personales",
+  },
+  keywords: "protección datos personales, LFPDPPP, GDPR México, privacidad KYC, datos biométricos, consentimiento verificación",
+  inLanguage: "es-MX",
+};
+
 export default function ProteccionDatosPersonales() {
   const relatedPosts = [
     {
@@ -38,6 +68,10 @@ export default function ProteccionDatosPersonales() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Header />
       <main>
         {/* Hero Section */}

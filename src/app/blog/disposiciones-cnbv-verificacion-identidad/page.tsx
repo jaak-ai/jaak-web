@@ -17,6 +17,36 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "Guía completa de las disposiciones CNBV para verificación de identidad",
+  description: "Análisis completo de las disposiciones de la CNBV sobre verificación de identidad digital en México: requisitos, obligaciones y cómo cumplirlas.",
+  image: "https://jaak.ai/images/blog/disposiciones-cnbv.jpg",
+  datePublished: "2026-01-03",
+  dateModified: "2026-01-03",
+  author: {
+    "@type": "Organization",
+    name: "JAAK",
+    url: "https://jaak.ai",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "JAAK",
+    url: "https://jaak.ai",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://jaak.ai/images/logos/jaak-logo-azul.png",
+    },
+  },
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": "https://jaak.ai/blog/disposiciones-cnbv-verificacion-identidad",
+  },
+  keywords: "CNBV, disposiciones CNBV, verificación de identidad, KYC México, cumplimiento regulatorio, instituciones financieras",
+  inLanguage: "es-MX",
+};
+
 export default function DisposicionesCNBV() {
   const relatedPosts = [
     {
@@ -38,6 +68,10 @@ export default function DisposicionesCNBV() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Header />
       <main>
         {/* Hero Section */}

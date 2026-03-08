@@ -1,6 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import { gtmEvent } from "./GoogleTagManager";
+import { TurnstileWidget, getUtmParams } from "./CloudflareTurnstile";
+
+const API_ENDPOINT = "https://api-kairos.jaak.ai/api/v1/public/leads";
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -11,7 +15,10 @@ export default function ContactForm() {
     role: "",
     message: "",
   });
+  const [turnstileToken, setTurnstileToken] = useState<string>("");
+  const [turnstileKey, setTurnstileKey] = useState(0);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const benefits = [
     "Soluciones potenciadas con Inteligencia Artificial",
@@ -21,25 +28,70 @@ export default function ContactForm() {
     "Disminuye el tiempo de tu mesa de control",
   ];
 
+  const handleTurnstileVerify = useCallback((token: string) => {
+    setTurnstileToken(token);
+  }, []);
+
+  const handleTurnstileError = useCallback(() => {
+    setErrorMessage("Error de verificación. Por favor, recarga la página.");
+  }, []);
+
+  const handleTurnstileExpire = useCallback(() => {
+    setTurnstileToken("");
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!turnstileToken) {
+      setStatus("error");
+      setErrorMessage("Por favor, completa la verificación de seguridad.");
+      return;
+    }
+
     setStatus("loading");
+    setErrorMessage("");
+
+    const utmParams = getUtmParams();
 
     try {
-      const response = await fetch("/api/contact", {
+      const response = await fetch(API_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          contact_name: formData.name,
+          email: formData.email,
+          company_name: formData.company,
+          phone: formData.phone,
+          message: formData.role ? `Rol: ${formData.role}. ${formData.message}` : formData.message,
+          country: "México",
+          turnstile_token: turnstileToken,
+          ...utmParams,
+        }),
       });
 
       if (response.ok) {
         setStatus("success");
         setFormData({ name: "", email: "", company: "", phone: "", role: "", message: "" });
+        setTurnstileToken("");
+        setTurnstileKey((k) => k + 1);
+        gtmEvent("generate_lead", {
+          event_category: "Contact",
+          event_label: formData.role,
+          value: 1,
+        });
       } else {
+        const errorData = await response.json().catch(() => ({}));
         setStatus("error");
+        setErrorMessage(errorData.message || "Hubo un error al enviar el formulario. Por favor, intenta de nuevo.");
+        setTurnstileToken("");
+        setTurnstileKey((k) => k + 1);
       }
     } catch {
       setStatus("error");
+      setErrorMessage("Error de conexión. Por favor, intenta de nuevo.");
+      setTurnstileToken("");
+      setTurnstileKey((k) => k + 1);
     }
   };
 
@@ -168,9 +220,20 @@ export default function ContactForm() {
                   placeholder="¿Cómo podemos ayudarte?"
                 />
               </div>
+
+              {/* Cloudflare Turnstile Widget */}
+              <div className="flex justify-center">
+                <TurnstileWidget
+                  key={turnstileKey}
+                  onVerify={handleTurnstileVerify}
+                  onError={handleTurnstileError}
+                  onExpire={handleTurnstileExpire}
+                />
+              </div>
+
               <button
                 type="submit"
-                disabled={status === "loading"}
+                disabled={status === "loading" || !turnstileToken}
                 className="w-full px-6 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {status === "loading" ? "Enviando..." : "Enviar mensaje"}
@@ -179,7 +242,7 @@ export default function ContactForm() {
                 <p className="text-green-600 text-center">¡Mensaje enviado con éxito! Nos pondremos en contacto contigo pronto.</p>
               )}
               {status === "error" && (
-                <p className="text-red-600 text-center">Hubo un error al enviar el mensaje. Por favor, intenta de nuevo.</p>
+                <p className="text-red-600 text-center">{errorMessage}</p>
               )}
             </form>
           </div>

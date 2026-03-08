@@ -1,0 +1,626 @@
+---
+title: Sesiones
+description: API para crear y gestionar sesiones de verificación de identidad.
+category: api
+order: 0
+---
+
+
+# Sesiones
+
+Las sesiones son el recurso principal de la API de verificación de identidad. Una sesión representa un proceso de verificación para un usuario específico.
+
+## Flujo de una sesión
+
+```
+1. POST /sessions → Crear sesión (status: pending)
+2. Usuario completa verificación → (status: processing → completed/failed)
+3. GET /sessions/:id → Obtener resultados
+```
+
+<Callout type="info" title="Tiempo de vida">
+Las sesiones expiran después de 24 horas si no se completan. Puedes configurar un tiempo de expiración personalizado al crear la sesión.
+</Callout>
+
+---
+
+## Crear sesión
+
+<Endpoint
+  method="POST"
+  path="/api/v1/sessions"
+  description="Crea una nueva sesión de verificación de identidad"
+/>
+
+### Headers
+
+| Header | Valor | Requerido |
+|--------|-------|-----------|
+| Content-Type | application/json | Sí |
+| X-API-Key | Tu API Key | Sí |
+| X-API-Secret | Tu API Secret | Sí |
+
+### Parámetros del body
+
+<ParamsTable
+  params={[
+    {
+      name: "verificationType",
+      type: "string",
+      required: true,
+      description: "Tipo de verificación: kyc_full, liveness_only, face_match, document_only, document_validation"
+    },
+    {
+      name: "redirectUrl",
+      type: "string",
+      required: false,
+      description: "URL a donde redirigir al usuario al completar la verificación"
+    },
+    {
+      name: "webhookUrl",
+      type: "string",
+      required: false,
+      description: "URL para recibir notificaciones de eventos de la sesión"
+    },
+    {
+      name: "externalId",
+      type: "string",
+      required: false,
+      description: "Identificador externo para vincular la sesión con tu sistema (max 255 caracteres)"
+    },
+    {
+      name: "expiresIn",
+      type: "number",
+      required: false,
+      description: "Tiempo de expiración en segundos. Default: 86400 (24 horas). Máximo: 604800 (7 días)"
+    },
+    {
+      name: "locale",
+      type: "string",
+      required: false,
+      description: "Idioma de la interfaz: es (español), en (inglés). Default: es"
+    },
+    {
+      name: "options",
+      type: "object",
+      required: false,
+      description: "Opciones específicas según el tipo de verificación"
+    },
+    {
+      name: "metadata",
+      type: "object",
+      required: false,
+      description: "Objeto JSON con datos adicionales (máximo 10 campos, 1KB total)"
+    }
+  ]}
+/>
+
+### Opciones por tipo de verificación
+
+**Para `kyc_full`:**
+
+```json
+{
+  "options": {
+    "documentTypes": ["ine", "passport"],
+    "livenessLevel": "high",
+    "validateWithINE": false,
+    "validateWithRENAPO": false,
+    "skipDocumentBack": false
+  }
+}
+```
+
+**Para `liveness_only`:**
+
+```json
+{
+  "options": {
+    "livenessLevel": "high",
+    "capturePhoto": true
+  }
+}
+```
+
+**Para `document_only`:**
+
+```json
+{
+  "options": {
+    "documentTypes": ["ine", "passport", "driver_license"],
+    "extractAllFields": true,
+    "detectAlterations": true
+  }
+}
+```
+
+### Ejemplo de solicitud
+
+```bash
+curl -X POST https://api.dev.jaak.ai/api/v1/sessions \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: ak_test_1234567890" \
+  -H "X-API-Secret: sk_test_abcdefghij" \
+  -d '{
+    "verificationType": "kyc_full",
+    "redirectUrl": "https://tu-app.com/verificacion-completada",
+    "webhookUrl": "https://tu-app.com/api/webhooks/jaak",
+    "externalId": "user_12345",
+    "expiresIn": 3600,
+    "options": {
+      "documentTypes": ["ine"],
+      "livenessLevel": "high",
+      "validateWithINE": true
+    },
+    "metadata": {
+      "userId": "12345",
+      "source": "mobile_app"
+    }
+  }'
+```
+
+### Respuesta exitosa (201 Created)
+
+```json
+{
+  "id": "ses_abc123xyz789",
+  "status": "pending",
+  "verificationType": "kyc_full",
+  "verificationUrl": "https://verify.dev.jaak.ai/ses_abc123xyz789",
+  "externalId": "user_12345",
+  "options": {
+    "documentTypes": ["ine"],
+    "livenessLevel": "high",
+    "validateWithINE": true
+  },
+  "metadata": {
+    "userId": "12345",
+    "source": "mobile_app"
+  },
+  "expiresAt": "2024-01-15T11:30:00Z",
+  "createdAt": "2024-01-15T10:30:00Z"
+}
+```
+
+### Errores
+
+| Código | Descripción |
+|--------|-------------|
+| 400 | Parámetros inválidos |
+| 401 | Credenciales inválidas |
+| 403 | Sin permisos para este tipo de verificación |
+| 429 | Límite de solicitudes excedido |
+
+---
+
+## Obtener sesión
+
+<Endpoint
+  method="GET"
+  path="/api/v1/sessions/:id"
+  description="Obtiene los detalles y resultados de una sesión"
+/>
+
+### Parámetros de ruta
+
+<ParamsTable
+  params={[
+    {
+      name: "id",
+      type: "string",
+      required: true,
+      description: "ID de la sesión (formato: ses_xxxxxxxxx)"
+    }
+  ]}
+/>
+
+### Ejemplo de solicitud
+
+```bash
+curl -X GET https://api.dev.jaak.ai/api/v1/sessions/ses_abc123xyz789 \
+  -H "X-API-Key: ak_test_1234567890" \
+  -H "X-API-Secret: sk_test_abcdefghij"
+```
+
+### Respuesta exitosa (200 OK) - Sesión completada
+
+```json
+{
+  "id": "ses_abc123xyz789",
+  "status": "completed",
+  "verificationType": "kyc_full",
+  "externalId": "user_12345",
+  "result": {
+    "decision": "approved",
+    "confidence": 0.97,
+    "checks": {
+      "documentAuthenticity": {
+        "status": "passed",
+        "score": 0.98,
+        "details": {
+          "alterationDetected": false,
+          "formatValid": true,
+          "securityFeaturesPresent": true
+        }
+      },
+      "faceMatch": {
+        "status": "passed",
+        "score": 0.95,
+        "details": {
+          "selfieQuality": 0.92,
+          "documentPhotoQuality": 0.88
+        }
+      },
+      "liveness": {
+        "status": "passed",
+        "score": 0.99,
+        "details": {
+          "spoofAttemptDetected": false,
+          "challengesCompleted": 3
+        }
+      },
+      "dataConsistency": {
+        "status": "passed",
+        "details": {
+          "nameMatch": true,
+          "dateOfBirthMatch": true,
+          "curpValid": true
+        }
+      },
+      "ineValidation": {
+        "status": "passed",
+        "details": {
+          "registrationStatus": "active",
+          "documentStatus": "valid",
+          "lastUpdated": "2024-01-10T00:00:00Z"
+        }
+      }
+    }
+  },
+  "person": {
+    "fullName": "JUAN PEREZ GARCIA",
+    "firstName": "JUAN",
+    "lastName": "PEREZ",
+    "secondLastName": "GARCIA",
+    "dateOfBirth": "1990-05-15",
+    "gender": "M",
+    "nationality": "MEX",
+    "curp": "PEGJ900515HDFRRS09",
+    "address": {
+      "street": "AV REFORMA 123 INT 4",
+      "colony": "JUAREZ",
+      "city": "CUAUHTEMOC",
+      "state": "CIUDAD DE MEXICO",
+      "postalCode": "06600",
+      "country": "MEX"
+    }
+  },
+  "document": {
+    "type": "ine",
+    "number": "1234567890123",
+    "voterKey": "PRGGJN90051509H800",
+    "section": "1234",
+    "issueDate": "2020-01-15",
+    "expiryDate": "2030-01-15",
+    "issuingAuthority": "INE"
+  },
+  "media": {
+    "documentFront": "https://storage.jaak.ai/ses_abc123xyz789/doc_front.jpg",
+    "documentBack": "https://storage.jaak.ai/ses_abc123xyz789/doc_back.jpg",
+    "selfie": "https://storage.jaak.ai/ses_abc123xyz789/selfie.jpg"
+  },
+  "metadata": {
+    "userId": "12345",
+    "source": "mobile_app"
+  },
+  "completedAt": "2024-01-15T10:35:00Z",
+  "expiresAt": "2024-01-15T11:30:00Z",
+  "createdAt": "2024-01-15T10:30:00Z"
+}
+```
+
+<Callout type="tip" title="URLs de medios">
+Las URLs de los medios (documentFront, documentBack, selfie) son temporales y expiran después de 1 hora. Descarga las imágenes si necesitas almacenarlas.
+</Callout>
+
+### Respuesta - Sesión fallida
+
+```json
+{
+  "id": "ses_def456uvw",
+  "status": "failed",
+  "verificationType": "kyc_full",
+  "result": {
+    "decision": "rejected",
+    "failureReasons": [
+      {
+        "code": "LIVENESS_FAILED",
+        "message": "No se pudo verificar que hay una persona real",
+        "details": {
+          "spoofAttemptDetected": true,
+          "spoofType": "printed_photo"
+        }
+      }
+    ]
+  },
+  "failedAt": "2024-01-15T10:33:00Z",
+  "createdAt": "2024-01-15T10:30:00Z"
+}
+```
+
+### Estados de sesión
+
+| Estado | Descripción |
+|--------|-------------|
+| `pending` | Sesión creada, esperando que el usuario inicie |
+| `processing` | Usuario en proceso de verificación |
+| `completed` | Verificación completada (ver `result.decision` para el resultado) |
+| `failed` | Verificación fallida por error técnico o intento de fraude |
+| `expired` | La sesión expiró sin completarse |
+| `cancelled` | La sesión fue cancelada por el usuario o vía API |
+
+### Decisiones posibles
+
+| Decisión | Descripción |
+|----------|-------------|
+| `approved` | Identidad verificada exitosamente |
+| `rejected` | Identidad no pudo ser verificada |
+| `review` | Requiere revisión manual |
+
+### Errores
+
+| Código | Descripción |
+|--------|-------------|
+| 401 | Credenciales inválidas |
+| 404 | Sesión no encontrada |
+
+---
+
+## Listar sesiones
+
+<Endpoint
+  method="GET"
+  path="/api/v1/sessions"
+  description="Lista las sesiones de verificación con filtros opcionales"
+/>
+
+### Parámetros de query
+
+<ParamsTable
+  params={[
+    {
+      name: "status",
+      type: "string",
+      required: false,
+      description: "Filtrar por estado: pending, processing, completed, failed, expired, cancelled"
+    },
+    {
+      name: "verificationType",
+      type: "string",
+      required: false,
+      description: "Filtrar por tipo de verificación"
+    },
+    {
+      name: "externalId",
+      type: "string",
+      required: false,
+      description: "Filtrar por ID externo"
+    },
+    {
+      name: "decision",
+      type: "string",
+      required: false,
+      description: "Filtrar por decisión: approved, rejected, review"
+    },
+    {
+      name: "createdAfter",
+      type: "string",
+      required: false,
+      description: "Filtrar sesiones creadas después de esta fecha (ISO 8601)"
+    },
+    {
+      name: "createdBefore",
+      type: "string",
+      required: false,
+      description: "Filtrar sesiones creadas antes de esta fecha (ISO 8601)"
+    },
+    {
+      name: "limit",
+      type: "number",
+      required: false,
+      description: "Número de resultados por página. Default: 20. Máximo: 100"
+    },
+    {
+      name: "cursor",
+      type: "string",
+      required: false,
+      description: "Cursor para paginación"
+    }
+  ]}
+/>
+
+### Ejemplo de solicitud
+
+```bash
+curl -X GET "https://api.dev.jaak.ai/api/v1/sessions?status=completed&decision=approved&limit=10" \
+  -H "X-API-Key: ak_test_1234567890" \
+  -H "X-API-Secret: sk_test_abcdefghij"
+```
+
+### Respuesta exitosa (200 OK)
+
+```json
+{
+  "data": [
+    {
+      "id": "ses_abc123xyz789",
+      "status": "completed",
+      "verificationType": "kyc_full",
+      "externalId": "user_12345",
+      "decision": "approved",
+      "completedAt": "2024-01-15T10:35:00Z",
+      "createdAt": "2024-01-15T10:30:00Z"
+    },
+    {
+      "id": "ses_def456uvw",
+      "status": "completed",
+      "verificationType": "kyc_full",
+      "externalId": "user_67890",
+      "decision": "approved",
+      "completedAt": "2024-01-15T09:45:00Z",
+      "createdAt": "2024-01-15T09:40:00Z"
+    }
+  ],
+  "pagination": {
+    "hasMore": true,
+    "nextCursor": "eyJpZCI6InNlc19kZWY0NTZ1dncifQ==",
+    "total": 156
+  }
+}
+```
+
+<Callout type="info" title="Paginación">
+Usa el `nextCursor` en el parámetro `cursor` de la siguiente solicitud para obtener la siguiente página de resultados.
+</Callout>
+
+---
+
+## Cancelar sesión
+
+<Endpoint
+  method="POST"
+  path="/api/v1/sessions/:id/cancel"
+  description="Cancela una sesión pendiente"
+/>
+
+Solo se pueden cancelar sesiones con estado `pending` o `processing`.
+
+### Ejemplo de solicitud
+
+```bash
+curl -X POST https://api.dev.jaak.ai/api/v1/sessions/ses_abc123xyz789/cancel \
+  -H "X-API-Key: ak_test_1234567890" \
+  -H "X-API-Secret: sk_test_abcdefghij"
+```
+
+### Respuesta exitosa (200 OK)
+
+```json
+{
+  "id": "ses_abc123xyz789",
+  "status": "cancelled",
+  "cancelledAt": "2024-01-15T10:40:00Z"
+}
+```
+
+### Errores
+
+| Código | Descripción |
+|--------|-------------|
+| 400 | La sesión no puede ser cancelada (ya completada/fallida/expirada) |
+| 404 | Sesión no encontrada |
+
+---
+
+## Webhooks de sesión
+
+Cuando configuras un `webhookUrl`, JAAK envía notificaciones para los siguientes eventos:
+
+### session.started
+
+Se envía cuando el usuario inicia la verificación.
+
+```json
+{
+  "event": "session.started",
+  "timestamp": "2024-01-15T10:31:00Z",
+  "data": {
+    "sessionId": "ses_abc123xyz789",
+    "externalId": "user_12345",
+    "status": "processing"
+  }
+}
+```
+
+### session.completed
+
+Se envía cuando la verificación se completa exitosamente.
+
+```json
+{
+  "event": "session.completed",
+  "timestamp": "2024-01-15T10:35:00Z",
+  "data": {
+    "sessionId": "ses_abc123xyz789",
+    "externalId": "user_12345",
+    "status": "completed",
+    "decision": "approved",
+    "confidence": 0.97
+  }
+}
+```
+
+### session.failed
+
+Se envía cuando la verificación falla.
+
+```json
+{
+  "event": "session.failed",
+  "timestamp": "2024-01-15T10:33:00Z",
+  "data": {
+    "sessionId": "ses_abc123xyz789",
+    "externalId": "user_12345",
+    "status": "failed",
+    "failureReasons": [
+      {
+        "code": "DOCUMENT_EXPIRED",
+        "message": "El documento está vencido"
+      }
+    ]
+  }
+}
+```
+
+### session.expired
+
+Se envía cuando la sesión expira sin completarse.
+
+```json
+{
+  "event": "session.expired",
+  "timestamp": "2024-01-15T11:30:00Z",
+  "data": {
+    "sessionId": "ses_abc123xyz789",
+    "externalId": "user_12345",
+    "status": "expired"
+  }
+}
+```
+
+<Callout type="warning" title="Verificación de webhooks">
+Valida la firma del webhook usando el header `X-JAAK-Signature` para asegurar que proviene de JAAK. Consulta la [guía de webhooks](/docs/recursos/webhooks) para implementar la verificación.
+</Callout>
+
+---
+
+## Códigos de error comunes
+
+| Código | Descripción |
+|--------|-------------|
+| `DOCUMENT_NOT_READABLE` | No se pudo leer el documento |
+| `DOCUMENT_EXPIRED` | El documento está vencido |
+| `DOCUMENT_ALTERED` | Se detectaron alteraciones en el documento |
+| `DOCUMENT_NOT_SUPPORTED` | Tipo de documento no soportado |
+| `LIVENESS_FAILED` | Falló la prueba de vida |
+| `FACE_NOT_DETECTED` | No se detectó rostro en la imagen |
+| `FACE_MISMATCH` | El rostro no coincide con el documento |
+| `INE_NOT_FOUND` | INE no encontrada en el padrón |
+| `INE_CANCELLED` | INE cancelada o reportada |
+| `SESSION_EXPIRED` | La sesión expiró |
+
+## Siguientes pasos
+
+- [Tipos de verificación](/docs/verificar-identidad/conceptos/tipos-verificacion) - Conoce las opciones disponibles
+- [Webhooks](/docs/recursos/webhooks) - Configura notificaciones automáticas
+- [Errores](/docs/recursos/errores) - Catálogo completo de códigos de error

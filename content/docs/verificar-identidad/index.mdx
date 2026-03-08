@@ -1,0 +1,76 @@
+---
+title: Verificar identidad
+description: API de verificación de identidad (KYC) con biometría facial, OCR de documentos y prueba de vida.
+category: guia
+order: 0
+---
+
+
+# Verificar identidad
+
+JAAK KYC es nuestra API de verificación de identidad que permite validar la identidad de personas en tiempo real. Combina tecnología de reconocimiento facial, OCR de documentos oficiales y prueba de vida para ofrecer un proceso de verificación seguro y sin fricciones.
+
+## Capacidades
+
+| Capacidad | Descripción |
+|-----------|-------------|
+| **Prueba de vida (Liveness)** | Detección anti-spoofing con análisis facial en tiempo real |
+| **OCR de documentos** | Extracción automática de datos de INE, pasaporte y otros documentos |
+| **Comparación facial (Face Match)** | Verificación 1:1 entre selfie y fotografía del documento |
+| **Validación oficial** | Consulta en bases de datos oficiales (INE, RENAPO, SAT) |
+| **Detección de fraude** | Análisis de documentos alterados o falsificados |
+
+<Callout type="tip" title="Cumplimiento regulatorio">
+JAAK KYC cumple con los requisitos de la LFPIORPI, normativas de la CNBV y estándares internacionales de AML/KYC. Ideal para entidades financieras, fintechs y empresas reguladas.
+</Callout>
+
+## Flujo básico de verificación
+
+El proceso de verificación de identidad sigue estos pasos:
+
+```
+1. Crear sesión → 2. Usuario completa verificación → 3. Obtener resultados
+```
+
+1. **Crear sesión**: Genera una sesión de verificación con los parámetros requeridos
+2. **Usuario completa verificación**: El usuario captura su documento y realiza la prueba de vida
+3. **Obtener resultados**: Consulta los resultados de la verificación vía API o webhook
+
+## Opciones de integración
+
+JAAK KYC ofrece múltiples formas de integración según tus necesidades:
+
+| Opción | Descripción | Caso de uso |
+|--------|-------------|-------------|
+| **SDK Web** | Widget JavaScript para integrar en tu sitio web | Aplicaciones web, onboarding en navegador |
+| **SDK iOS** | Framework nativo para aplicaciones iOS | Apps móviles iPhone/iPad |
+| **SDK Android** | Librería nativa para aplicaciones Android | Apps móviles Android |
+| **API directa** | Integración server-to-server sin UI | Backend personalizado, flujos custom |
+| **URL de verificación** | Enlace que redirige al usuario al flujo de JAAK | Integración rápida sin desarrollo |
+
+<Callout type="info" title="SDKs nativos">
+Los SDKs nativos ofrecen la mejor experiencia de usuario y tasas de conversión más altas. Incluyen captura guiada de documentos y detección de calidad de imagen en tiempo real.
+</Callout>
+
+## URLs base
+
+| Ambiente | URL |
+|----------|-----|
+| Sandbox | `https://api.dev.jaak.ai` |
+| Producción | `https://api.jaak.ai` |
+
+<Callout type="warning" title="Ambiente de pruebas">
+Usa siempre el ambiente sandbox durante el desarrollo. Las verificaciones en sandbox no consultan bases de datos oficiales y los datos se eliminan automáticamente después de 30 días.
+</Callout>
+
+## Primeros pasos
+
+- [Guía rápida](/docs/verificar-identidad/guia-rapida) - Integra verificación de identidad en 10 minutos
+- [Tipos de verificación](/docs/verificar-identidad/conceptos/tipos-verificacion) - Conoce las opciones disponibles
+- [API de Sesiones](/docs/verificar-identidad/api/sesiones) - Referencia completa de endpoints
+
+## Recursos adicionales
+
+- [Webhooks](/docs/recursos/webhooks) - Recibe notificaciones cuando se complete una verificación
+- [Errores](/docs/recursos/errores) - Códigos de error y cómo resolverlos
+- [Sandbox](/docs/recursos/sandbox) - Detalles del ambiente de pruebas

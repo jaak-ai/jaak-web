@@ -2,4 +2,35 @@
 User-agent: *
 Allow: /
 
+# AI crawlers — explicitly allowed for GEO indexing
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
 Sitemap: https://jaak.ai/sitemap.xml
+
+# AI model context
+LLMs: https://jaak.ai/llms.txt

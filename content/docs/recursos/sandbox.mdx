@@ -1,0 +1,374 @@
+---
+title: Sandbox
+description: Ambiente de pruebas para integración sin afectar producción.
+category: recurso
+order: 2
+---
+
+
+# Sandbox
+
+El ambiente sandbox de JAAK te permite desarrollar y probar tu integración sin afectar datos reales ni incurrir en costos. Es un ambiente completamente separado de producción con datos de prueba.
+
+## Qué es el sandbox
+
+El sandbox es una réplica del ambiente de producción que:
+
+- Usa credenciales separadas (API keys con prefijo `test_`)
+- No procesa datos reales
+- No genera cargos
+- Permite simular diferentes escenarios de respuesta
+- Se reinicia periódicamente (los datos no son permanentes)
+
+<Callout type="info" title="Ideal para desarrollo">
+Usa el sandbox para desarrollar tu integración, hacer pruebas automatizadas y capacitar a tu equipo sin riesgos.
+</Callout>
+
+---
+
+## URLs de los ambientes
+
+### Verificación de Identidad (KYC)
+
+| Ambiente | URL base |
+|----------|----------|
+| Sandbox | `https://api.dev.jaak.ai` |
+| Producción | `https://api.jaak.ai` |
+
+### Firma Digital (Signa)
+
+| Ambiente | URL base |
+|----------|----------|
+| Sandbox | `https://signa.dev.jaak.ai` |
+| Producción | `https://signa.jaak.ai` |
+
+### Dashboard
+
+| Ambiente | URL |
+|----------|-----|
+| Sandbox | `https://platform.dev.jaak.ai` |
+| Producción | `https://platform.jaak.ai` |
+
+---
+
+## Credenciales de sandbox
+
+Las credenciales de sandbox se distinguen por el prefijo `test_`:
+
+```bash
+# Sandbox
+X-API-Key: ak_test_1234567890abcdef
+X-API-Secret: sk_test_abcdefghij123456
+
+# Producción
+X-API-Key: ak_live_1234567890abcdef
+X-API-Secret: sk_live_abcdefghij123456
+```
+
+<Callout type="warning" title="No mezcles credenciales">
+Las credenciales de sandbox solo funcionan con URLs de sandbox, y viceversa. Si usas credenciales de producción con URLs de sandbox, recibirás un error 401.
+</Callout>
+
+Puedes obtener tus credenciales de sandbox en:
+- **Dashboard sandbox:** `https://platform.dev.jaak.ai/settings/api`
+
+---
+
+## Datos de prueba
+
+### INE de prueba
+
+Usa estos números de INE para simular diferentes escenarios:
+
+| Número de INE | Escenario | Resultado |
+|---------------|-----------|-----------|
+| `ABCD123456789012` | INE válida y vigente | `approved` |
+| `ABCD123456789013` | INE vencida | `rejected` con `INE_EXPIRED` |
+| `ABCD123456789014` | INE cancelada | `rejected` con `INE_CANCELLED` |
+| `ABCD123456789015` | INE no encontrada | `rejected` con `INE_NOT_FOUND` |
+| `ABCD123456789016` | Servicio no disponible | Error 503 |
+
+### CURP de prueba
+
+| CURP | Escenario |
+|------|-----------|
+| `PEGJ900515HDFRRS09` | CURP válida |
+| `XXXX000000XXXXXX00` | CURP no encontrada |
+| `INVL123456XXXXXX99` | CURP con formato inválido |
+
+### RFC de prueba
+
+| RFC | Escenario |
+|-----|-----------|
+| `PEGJ900515XXX` | RFC persona física válido |
+| `EMP123456XXX` | RFC persona moral válido |
+| `XXXX000000XXX` | RFC no encontrado |
+
+### Emails de prueba
+
+Usa estos patrones de email para simular comportamientos específicos:
+
+| Patrón de email | Comportamiento |
+|-----------------|----------------|
+| `*@test.jaak.ai` | Funciona normalmente |
+| `success@test.jaak.ai` | Siempre aprueba la verificación |
+| `fail@test.jaak.ai` | Siempre falla la verificación |
+| `pending@test.jaak.ai` | Se queda en estado pending |
+| `slow@test.jaak.ai` | Responde con 5 segundos de delay |
+| `timeout@test.jaak.ai` | Simula timeout (30s) |
+
+### Tarjetas de prueba (para suscripciones)
+
+Si tu integración incluye pagos:
+
+| Número | Escenario |
+|--------|-----------|
+| `4242 4242 4242 4242` | Pago exitoso |
+| `4000 0000 0000 0002` | Tarjeta rechazada |
+| `4000 0000 0000 9995` | Fondos insuficientes |
+| `4000 0000 0000 3220` | Requiere 3D Secure |
+
+Usa cualquier fecha de expiración futura y cualquier CVV de 3 dígitos.
+
+---
+
+## Simular verificaciones
+
+### Verificación exitosa
+
+1. Crea una sesión normalmente:
+
+```bash
+curl -X POST https://api.dev.jaak.ai/api/v1/sessions \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: ak_test_1234567890" \
+  -H "X-API-Secret: sk_test_abcdefghij" \
+  -d '{
+    "verificationType": "kyc_full",
+    "externalId": "test_user_123"
+  }'
+```
+
+2. Abre la `verificationUrl` en tu navegador
+3. Usa los datos de prueba para completar la verificación
+4. El resultado será `approved`
+
+### Verificación fallida
+
+Para probar el flujo de verificación fallida, usa el email `fail@test.jaak.ai` o los números de INE de prueba que generan rechazo.
+
+### Webhooks de prueba
+
+El sandbox envía webhooks reales a tu endpoint configurado. Puedes usar herramientas como:
+
+- [webhook.site](https://webhook.site) - Inspecciona webhooks en tiempo real
+- [ngrok](https://ngrok.com) - Expone tu localhost a internet
+- [RequestBin](https://requestbin.com) - Almacena y visualiza webhooks
+
+---
+
+## Diferencias con producción
+
+| Característica | Sandbox | Producción |
+|----------------|---------|------------|
+| Datos | De prueba | Reales |
+| Costos | Sin costo | Según tu plan |
+| Validación INE | Simulada | Real contra el padrón |
+| Validación RENAPO | Simulada | Real contra RENAPO |
+| Liveness detection | Simplificado | Completo |
+| Retención de datos | 7 días | Según tu configuración |
+| SLA | Best effort | Garantizado |
+| Soporte | Comunidad/Email | Prioritario |
+
+<Callout type="warning" title="Liveness en sandbox">
+El detector de liveness en sandbox es menos estricto que en producción. Esto facilita las pruebas pero no refleja el comportamiento real. Haz pruebas finales en producción con datos reales antes del lanzamiento.
+</Callout>
+
+---
+
+## Migrar a producción
+
+Cuando estés listo para ir a producción:
+
+### 1. Obtén credenciales de producción
+
+Accede al dashboard de producción (`platform.jaak.ai`) y genera tus API keys de producción en **Configuración → API**.
+
+### 2. Actualiza las URLs
+
+Cambia todas las URLs de `*.dev.jaak.ai` a `*.jaak.ai`:
+
+```javascript
+// Sandbox
+const BASE_URL = 'https://api.dev.jaak.ai';
+
+// Producción
+const BASE_URL = 'https://api.jaak.ai';
+```
+
+### 3. Actualiza las credenciales
+
+Reemplaza tus credenciales de prueba por las de producción:
+
+```javascript
+// Sandbox
+const API_KEY = 'ak_test_...';
+const API_SECRET = 'sk_test_...';
+
+// Producción
+const API_KEY = 'ak_live_...';
+const API_SECRET = 'sk_live_...';
+```
+
+<Callout type="tip" title="Usa variables de entorno">
+Guarda las credenciales en variables de entorno para facilitar el cambio entre ambientes:
+
+```bash
+# .env.development
+JAAK_API_URL=https://api.dev.jaak.ai
+JAAK_API_KEY=ak_test_...
+JAAK_API_SECRET=sk_test_...
+
+# .env.production
+JAAK_API_URL=https://api.jaak.ai
+JAAK_API_KEY=ak_live_...
+JAAK_API_SECRET=sk_live_...
+```
+</Callout>
+
+### 4. Configura webhooks de producción
+
+Actualiza tu URL de webhook en el dashboard de producción. Asegúrate de que:
+
+- La URL use HTTPS
+- El servidor esté disponible públicamente
+- Implementes verificación de firma
+
+### 5. Prueba el flujo completo
+
+Antes de lanzar, haz una prueba end-to-end en producción con datos reales:
+
+1. Crea una sesión de verificación
+2. Complétala con tu propio documento
+3. Verifica que recibas el webhook
+4. Confirma que los datos sean correctos
+
+---
+
+## Buenas prácticas
+
+### Usa ambientes separados
+
+Mantén ambientes de desarrollo, staging y producción separados:
+
+```javascript
+const config = {
+  development: {
+    apiUrl: 'https://api.dev.jaak.ai',
+    apiKey: process.env.JAAK_API_KEY_DEV,
+    apiSecret: process.env.JAAK_API_SECRET_DEV
+  },
+  staging: {
+    apiUrl: 'https://api.dev.jaak.ai', // También usa sandbox
+    apiKey: process.env.JAAK_API_KEY_STAGING,
+    apiSecret: process.env.JAAK_API_SECRET_STAGING
+  },
+  production: {
+    apiUrl: 'https://api.jaak.ai',
+    apiKey: process.env.JAAK_API_KEY_PROD,
+    apiSecret: process.env.JAAK_API_SECRET_PROD
+  }
+};
+
+const env = process.env.NODE_ENV || 'development';
+const { apiUrl, apiKey, apiSecret } = config[env];
+```
+
+### Automatiza tus pruebas
+
+Usa el sandbox para pruebas automatizadas en tu CI/CD:
+
+```javascript
+// tests/integration/jaak.test.js
+describe('JAAK Integration', () => {
+  const apiKey = process.env.JAAK_TEST_API_KEY;
+  const apiSecret = process.env.JAAK_TEST_API_SECRET;
+  const baseUrl = 'https://api.dev.jaak.ai';
+
+  it('should create a session', async () => {
+    const response = await fetch(`${baseUrl}/api/v1/sessions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-API-Key': apiKey,
+        'X-API-Secret': apiSecret
+      },
+      body: JSON.stringify({
+        verificationType: 'kyc_full',
+        externalId: `test_${Date.now()}`
+      })
+    });
+
+    expect(response.status).toBe(201);
+
+    const session = await response.json();
+    expect(session.id).toMatch(/^ses_/);
+    expect(session.status).toBe('pending');
+    expect(session.verificationUrl).toBeDefined();
+  });
+
+  it('should handle invalid credentials', async () => {
+    const response = await fetch(`${baseUrl}/api/v1/sessions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-API-Key': 'invalid',
+        'X-API-Secret': 'invalid'
+      },
+      body: JSON.stringify({
+        verificationType: 'kyc_full'
+      })
+    });
+
+    expect(response.status).toBe(401);
+  });
+});
+```
+
+### Limpia datos periódicamente
+
+El sandbox se reinicia automáticamente cada 7 días, pero puedes limpiar tus datos de prueba manualmente desde el dashboard o vía API.
+
+---
+
+## Solución de problemas
+
+### "Credenciales inválidas" en sandbox
+
+1. Verifica que estés usando credenciales con prefijo `test_`
+2. Confirma que las credenciales sean del dashboard de sandbox (`platform.dev.jaak.ai`)
+3. Las credenciales de producción no funcionan en sandbox
+
+### Los webhooks no llegan
+
+1. Verifica que tu endpoint sea accesible públicamente
+2. Revisa el historial de webhooks en el dashboard
+3. Usa herramientas como webhook.site para debugging
+
+### La verificación siempre aprueba/rechaza
+
+1. Revisa los datos de prueba que estás usando
+2. Usa los patrones de email correctos para simular diferentes escenarios
+3. El sandbox es más permisivo que producción
+
+### Datos desaparecen
+
+El sandbox se reinicia cada 7 días. Esto es intencional para mantener el ambiente limpio. No dependas de datos persistentes en sandbox.
+
+---
+
+## Siguientes pasos
+
+- [Webhooks](/docs/recursos/webhooks) - Configura notificaciones en tiempo real
+- [Errores](/docs/recursos/errores) - Maneja errores correctamente
+- [API de Sesiones](/docs/verificar-identidad/api/sesiones) - Comienza a verificar identidades

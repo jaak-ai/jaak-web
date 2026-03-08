@@ -17,6 +17,36 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "IA como infraestructura de confianza: El futuro de la identidad digital",
+  description: "La inteligencia artificial no solo automatiza procesos: se convierte en la infraestructura que garantiza la confianza digital en México y el mundo.",
+  image: "https://jaak.ai/images/blog/ia-infraestructura-confianza.jpg",
+  datePublished: "2026-02-07",
+  dateModified: "2026-02-07",
+  author: {
+    "@type": "Organization",
+    name: "JAAK",
+    url: "https://jaak.ai",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "JAAK",
+    url: "https://jaak.ai",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://jaak.ai/images/logos/jaak-logo-azul.png",
+    },
+  },
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": "https://jaak.ai/blog/ia-infraestructura-confianza",
+  },
+  keywords: "inteligencia artificial, identidad digital, infraestructura confianza, KYC IA, biometría IA, verificación automatizada",
+  inLanguage: "es-MX",
+};
+
 export default function IAInfraestructuraConfianza() {
   const relatedPosts = [
     {
@@ -38,6 +68,10 @@ export default function IAInfraestructuraConfianza() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Header />
       <main>
         {/* Hero Section */}

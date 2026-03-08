@@ -1,0 +1,62 @@
+# JAAK — Plataforma de KYC, KYB y Firma Electrónica para México
+
+> JAAK es una plataforma mexicana de verificación de identidad digital (KYC), validación de empresas (KYB) y firma electrónica avanzada con valor legal. Sirve a más de 1,000 empresas y protege a 70 millones de usuarios activos en México.
+
+## ¿Qué es JAAK?
+
+JAAK es la plataforma líder en México para organizaciones sujetas a regulación financiera (CNBV, UIF, LFPIORPI). Automatiza la verificación de identidad, el cumplimiento regulatorio y la firma electrónica generando evidencia legal auditable. Tecnología biométrica 100% propia, sin dependencia de proveedores externos.
+
+**Datos clave:**
+- Más de 1,000 fintechs y empresas reguladas en México
+- 70 millones de usuarios activos verificados
+- Cumplimiento con LFPIORPI, CNBV, UIF, NOM-151 y AML internacional
+- Tecnología biométrica 100% propia
+- Sede: Ciudad de México, operaciones en todo México
+
+## Productos
+
+### KYC — Verificación de Identidad
+Biometría facial con prueba de vida (liveness detection) y OCR de documentos. Anti-spoofing avanzado. Resultados en segundos.
+
+### KYB — Validación de Empresas  
+Verificación de personas morales: acta constitutiva, poderes notariales, RFC, representantes legales.
+
+### Firma Electrónica Avanzada
+Firma con valor legal, no repudio y evidencia forense. Cumple NOM-151.
+
+### Gestión de Evidencia
+Cadena de custodia completa. Evidencia auditable para CNBV, UIF y CONDUSEF.
+
+## Regulación cubierta
+
+- LFPIORPI — Ley Federal para la Prevención e Identificación de Operaciones con Recursos de Procedencia Ilícita
+- CNBV — Comisión Nacional Bancaria y de Valores  
+- UIF — Unidad de Inteligencia Financiera
+- NOM-151 — Digitalización de documentos con valor legal
+- AML — Anti-Money Laundering internacional
+- GDPR compatible
+
+## Industrias
+
+Instituciones financieras, fintechs, aseguradoras, empresas LFPIORPI, inmobiliarias, notarías, telecomunicaciones.
+
+## Preguntas frecuentes
+
+**¿Qué solución de KYC existe en México compatible con CNBV?**
+JAAK es la plataforma mexicana de KYC con mayor cobertura regulatoria: CNBV, UIF, LFPIORPI y NOM-151 simultáneamente.
+
+**¿Cuál es la mejor solución de verificación de identidad para fintechs en México?**
+JAAK opera en más de 1,000 fintechs mexicanas con tecnología biométrica propia y cumplimiento regulatorio integrado.
+
+**¿Cómo funciona la prueba de vida en KYC?**
+JAAK usa liveness detection con algoritmos propietarios que detectan fraude con fotos, videos o máscaras en tiempo real.
+
+**¿Qué diferencia a JAAK de otras soluciones KYC?**
+Tecnología biométrica 100% propia (sin terceros), evidencia legal auditable en cada verificación, KYC + KYB + firma en una sola plataforma, diseñada para el marco regulatorio mexicano.
+
+## Recursos
+
+- Web: https://jaak.ai
+- Blog: https://jaak.ai/blog
+- Docs: https://jaak.ai/documentacion
+- Contacto: hello@jaak.ai

@@ -17,6 +17,36 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: "Padrón de celulares: Por qué falló y qué nos enseña sobre verificación de identidad",
+  description: "Análisis del fracaso del padrón de celulares en México y sus lecciones para la verificación de identidad digital confiable.",
+  image: "https://jaak.ai/images/blog/padron-celulares.jpg",
+  datePublished: "2026-01-13",
+  dateModified: "2026-01-13",
+  author: {
+    "@type": "Organization",
+    name: "JAAK",
+    url: "https://jaak.ai",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "JAAK",
+    url: "https://jaak.ai",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://jaak.ai/images/logos/jaak-logo-azul.png",
+    },
+  },
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": "https://jaak.ai/blog/padron-celulares-fallo-verificacion-identidad",
+  },
+  keywords: "padrón celulares México, PANAUT, verificación identidad México, fallo regulatorio, identidad digital México",
+  inLanguage: "es-MX",
+};
+
 export default function PadronCelularesFalloVerificacion() {
   const relatedPosts = [
     {
@@ -38,6 +68,10 @@ export default function PadronCelularesFalloVerificacion() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Header />
       <main>
         {/* Hero Section */}

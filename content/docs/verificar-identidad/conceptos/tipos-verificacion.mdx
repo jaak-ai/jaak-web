@@ -1,0 +1,306 @@
+---
+title: Tipos de verificación
+description: Diferentes tipos de verificación de identidad disponibles en JAAK.
+category: concepto
+order: 0
+---
+
+
+# Tipos de verificación
+
+JAAK KYC ofrece diferentes tipos de verificación de identidad según el nivel de seguridad y cumplimiento que requiera tu caso de uso. Esta guía te ayudará a elegir el tipo adecuado.
+
+## KYC Completo
+
+El KYC completo es nuestra verificación más robusta. Combina captura de documento, prueba de vida y comparación facial.
+
+**Características:**
+- Captura de documento oficial (INE, pasaporte)
+- OCR automático para extracción de datos
+- Prueba de vida facial (liveness detection)
+- Comparación facial 1:1 (selfie vs documento)
+- Validación contra bases de datos oficiales (opcional)
+
+**Casos de uso:**
+- Apertura de cuentas bancarias
+- Solicitudes de crédito
+- Onboarding de clientes regulados
+- Contratos de alto valor
+
+**Configuración:**
+
+```json
+{
+  "verificationType": "kyc_full",
+  "options": {
+    "documentTypes": ["ine", "passport"],
+    "validateWithSources": true,
+    "livenessLevel": "high"
+  }
+}
+```
+
+**Flujo de usuario:**
+
+1. El usuario captura el frente de su INE
+2. El usuario captura el reverso de su INE
+3. El usuario realiza la prueba de vida (selfie con movimientos)
+4. El sistema verifica la coincidencia facial
+5. El sistema valida los datos contra fuentes oficiales
+6. Se devuelve el resultado de la verificación
+
+<Callout type="tip" title="Recomendación">
+El KYC completo es nuestra opción recomendada para la mayoría de casos de uso. Ofrece el mejor balance entre seguridad, cumplimiento y experiencia de usuario.
+</Callout>
+
+---
+
+## Solo Liveness
+
+La verificación de liveness detecta si hay una persona real frente a la cámara, previniendo ataques de spoofing.
+
+**Características:**
+- Detección de vida en tiempo real
+- Anti-spoofing (detecta fotos, videos, máscaras)
+- No requiere documento
+- Proceso rápido (menos de 30 segundos)
+
+**Casos de uso:**
+- Segunda autenticación (2FA biométrico)
+- Verificación de presencia
+- Firmas electrónicas (combinado con otros factores)
+- Re-autenticación periódica
+
+**Configuración:**
+
+```json
+{
+  "verificationType": "liveness_only",
+  "options": {
+    "livenessLevel": "high",
+    "capturePhoto": true
+  }
+}
+```
+
+**Niveles de liveness:**
+
+| Nivel | Descripción | Tiempo | Seguridad |
+|-------|-------------|--------|-----------|
+| `low` | Detección pasiva con una sola foto | 5 seg | Media |
+| `medium` | Detección con movimiento guiado (parpadeo) | 15 seg | Alta |
+| `high` | Detección con múltiples movimientos aleatorios | 30 seg | Muy alta |
+
+<Callout type="info" title="Anti-spoofing">
+Nuestro sistema detecta intentos de fraude como fotos impresas, pantallas de dispositivos, máscaras 3D y deepfakes en tiempo real.
+</Callout>
+
+---
+
+## Face Match (Comparación facial)
+
+Compara dos rostros para determinar si pertenecen a la misma persona (verificación 1:1).
+
+**Características:**
+- Comparación de dos imágenes faciales
+- Score de similitud (0-100%)
+- No requiere prueba de vida
+- Ideal para verificaciones server-to-server
+
+**Casos de uso:**
+- Comparar selfie con foto de base de datos
+- Verificar identidad contra foto de empleado
+- Validar que la persona del documento es quien dice ser
+- Búsqueda en listas de vigilancia
+
+**Configuración:**
+
+```json
+{
+  "verificationType": "face_match",
+  "options": {
+    "threshold": 85
+  }
+}
+```
+
+**Ejemplo de solicitud:**
+
+```bash
+curl -X POST https://api.dev.jaak.ai/api/v1/face-match \
+  -H "X-API-Key: tu_api_key" \
+  -H "X-API-Secret: tu_api_secret" \
+  -F "image1=@selfie.jpg" \
+  -F "image2=@documento.jpg"
+```
+
+**Respuesta:**
+
+```json
+{
+  "match": true,
+  "confidence": 94.5,
+  "threshold": 85,
+  "details": {
+    "faceDetected1": true,
+    "faceDetected2": true,
+    "qualityScore1": 0.92,
+    "qualityScore2": 0.88
+  }
+}
+```
+
+<Callout type="warning" title="Umbral de confianza">
+El umbral predeterminado es 85%. Ajústalo según tu tolerancia al riesgo: valores más altos reducen falsos positivos pero aumentan falsos negativos.
+</Callout>
+
+---
+
+## Solo Documento (Document Only)
+
+Captura y extrae información de documentos de identidad sin verificación biométrica.
+
+**Características:**
+- OCR de alta precisión
+- Extracción automática de todos los campos
+- Detección de alteraciones
+- Validación de formato y estructura
+
+**Casos de uso:**
+- Captura de datos para formularios
+- Pre-llenado de información
+- Digitalización de documentos
+- Verificación básica de identidad
+
+**Configuración:**
+
+```json
+{
+  "verificationType": "document_only",
+  "options": {
+    "documentTypes": ["ine", "passport", "driver_license"],
+    "extractAllFields": true
+  }
+}
+```
+
+**Campos extraídos de INE:**
+
+| Campo | Descripción |
+|-------|-------------|
+| `fullName` | Nombre completo |
+| `curp` | CURP de 18 caracteres |
+| `voterKey` | Clave de elector |
+| `address` | Domicilio completo |
+| `dateOfBirth` | Fecha de nacimiento |
+| `gender` | Sexo (M/F) |
+| `issueDate` | Fecha de emisión |
+| `expiryDate` | Fecha de vigencia |
+| `section` | Sección electoral |
+| `state` | Estado |
+
+---
+
+## Validación de INE
+
+Verificación del documento INE contra el padrón del INE (Instituto Nacional Electoral).
+
+**Características:**
+- Consulta en tiempo real al INE
+- Valida que el documento no esté cancelado
+- Confirma que los datos coinciden
+- Detecta documentos clonados o robados
+
+**Casos de uso:**
+- Verificación de alto riesgo
+- Cumplimiento regulatorio estricto
+- Prevención de fraude
+- Validación de votantes
+
+**Configuración:**
+
+```json
+{
+  "verificationType": "document_validation",
+  "options": {
+    "documentType": "ine",
+    "validateWithINE": true
+  }
+}
+```
+
+**Respuesta de validación:**
+
+```json
+{
+  "validation": {
+    "ineStatus": "valid",
+    "registrationStatus": "active",
+    "dataMatch": true,
+    "lastUpdate": "2024-01-10T00:00:00Z"
+  }
+}
+```
+
+<Callout type="info" title="Disponibilidad">
+La validación con INE está disponible solo para producción y tiene un costo adicional por consulta. El servicio del INE puede tener mantenimientos programados.
+</Callout>
+
+---
+
+## Tabla comparativa
+
+| Característica | KYC Completo | Liveness | Face Match | Doc Only | Validación INE |
+|----------------|--------------|----------|------------|----------|----------------|
+| **Documento requerido** | Sí | No | No | Sí | Sí |
+| **Prueba de vida** | Sí | Sí | No | No | Opcional |
+| **Comparación facial** | Sí | No | Sí | No | Opcional |
+| **Validación oficial** | Opcional | No | No | No | Sí |
+| **Tiempo promedio** | 2-3 min | 30 seg | 5 seg | 1 min | 1-2 min |
+| **Nivel de seguridad** | Muy alto | Alto | Medio | Bajo | Muy alto |
+| **Costo** | $$$$ | $$ | $ | $$ | $$$$$ |
+
+## Cómo elegir el tipo de verificación
+
+Considera estos factores:
+
+### 1. Nivel de riesgo
+
+- **Bajo riesgo** (newsletters, pruebas gratuitas) → Document Only
+- **Riesgo medio** (suscripciones, servicios digitales) → Liveness Only
+- **Alto riesgo** (financiero, legal, regulado) → KYC Completo
+- **Máximo riesgo** (créditos grandes, compliance estricto) → KYC Completo + Validación INE
+
+### 2. Requisitos regulatorios
+
+- **Sin requisitos específicos** → Cualquier tipo
+- **KYC/AML básico** → KYC Completo
+- **LFPIORPI / CNBV** → KYC Completo + Validación INE
+- **PLD (Prevención de Lavado)** → KYC Completo + Validación INE
+
+### 3. Experiencia de usuario
+
+- **Máxima velocidad** → Liveness Only o Document Only
+- **Balance UX/seguridad** → KYC Completo
+- **Seguridad máxima** → KYC Completo + Validación INE
+
+### 4. Integración técnica
+
+- **Server-to-server** → Face Match, Document Only
+- **Con UI de usuario** → KYC Completo, Liveness Only
+
+## Combinaciones recomendadas
+
+| Industria | Tipo recomendado | Configuración |
+|-----------|-----------------|---------------|
+| Fintech / Bancos | KYC Completo + INE | `kyc_full` + `validateWithINE: true` |
+| E-commerce | Document Only + Liveness | `kyc_full` con liveness `medium` |
+| Seguros | KYC Completo | `kyc_full` con `livenessLevel: high` |
+| SOFOM / SOFIPO | KYC Completo + INE | `kyc_full` + `validateWithINE: true` |
+| Inmobiliarias | KYC Completo | `kyc_full` |
+| RR.HH. | Document Only | `document_only` |
+
+## Siguientes pasos
+
+- [Guía rápida](/docs/verificar-identidad/guia-rapida) - Implementa tu primera verificación
+- [API de Sesiones](/docs/verificar-identidad/api/sesiones) - Referencia completa de endpoints

@@ -1,0 +1,229 @@
+---
+title: Tipos de firma
+description: Guía completa de los tipos de firma electrónica disponibles en JAAK Signa.
+category: concepto
+order: 0
+---
+
+
+# Tipos de firma
+
+JAAK Signa soporta cinco tipos de firma electrónica, cada uno con diferentes niveles de verificación de identidad y validez legal. Esta guía te ayudará a elegir el tipo adecuado para tu caso de uso.
+
+## Firma Simple
+
+La firma simple es la opción más básica. No requiere verificación de identidad del firmante.
+
+**Características:**
+- Sin verificación de identidad
+- El firmante solo acepta los términos con un clic
+- Validez legal básica bajo el Código de Comercio
+- Proceso de firma instantáneo
+
+**Casos de uso:**
+- Términos y condiciones de servicio
+- Avisos de privacidad
+- Acuerdos de confidencialidad internos
+- Documentos de bajo riesgo legal
+
+**Configuración:**
+
+```json
+{
+  "signatureType": "simple"
+}
+```
+
+<Callout type="warning" title="Limitaciones">
+La firma simple tiene validez legal limitada. En caso de disputa, puede ser difícil demostrar la identidad del firmante. No se recomienda para contratos con obligaciones financieras.
+</Callout>
+
+## Firma Avanzada (OTP)
+
+La firma avanzada incluye verificación mediante código de un solo uso (OTP) enviado por email o SMS.
+
+**Características:**
+- Verificación por código OTP (email o SMS)
+- Vincula la firma a un canal de comunicación verificado
+- Validez legal media bajo la Ley de Firma Electrónica Avanzada
+- Proceso de firma en menos de 2 minutos
+
+**Casos de uso:**
+- Contratos de trabajo
+- Acuerdos de proveedor
+- Autorizaciones internas
+- Documentos con riesgo moderado
+
+**Configuración:**
+
+```json
+{
+  "signatureType": "otp",
+  "otpChannel": "email"  // o "sms"
+}
+```
+
+**Flujo de firma:**
+
+1. El firmante accede al enlace de firma
+2. Ingresa su email o teléfono
+3. Recibe un código de 6 dígitos
+4. Ingresa el código para confirmar su identidad
+5. Firma el documento
+
+## Firma Biométrica
+
+La firma biométrica combina verificación de identidad KYC con prueba de vida facial.
+
+**Características:**
+- Verificación facial con detección de vida (anti-spoofing)
+- Comparación con documento de identidad (INE/IFE)
+- Validez legal alta con evidencia biométrica
+- Cumple con normativas AML/KYC
+
+**Casos de uso:**
+- Contratos de crédito y financiamiento
+- Contratos de arrendamiento
+- Apertura de cuentas
+- Cualquier documento donde la identidad sea crítica
+
+**Configuración:**
+
+```json
+{
+  "signatureType": "biometric",
+  "biometricOptions": {
+    "documentRequired": true,
+    "documentTypes": ["ine", "passport"],
+    "livenessLevel": "high"
+  }
+}
+```
+
+**Flujo de firma:**
+
+1. El firmante accede al enlace de firma desde un dispositivo con cámara
+2. Captura fotografías de su INE (frente y reverso)
+3. Realiza la prueba de vida facial (selfie con movimientos)
+4. El sistema verifica la coincidencia facial
+5. El firmante revisa y firma el documento
+6. Se genera el certificado con evidencia biométrica
+
+<Callout type="tip" title="Recomendación">
+La firma biométrica es nuestra opción recomendada para la mayoría de casos de uso comerciales. Ofrece alta seguridad con una experiencia de usuario fluida.
+</Callout>
+
+## Firma con FIEL
+
+La firma con FIEL (Firma Electrónica Avanzada del SAT) utiliza el certificado digital emitido por el SAT.
+
+**Características:**
+- Certificado emitido por autoridad gubernamental (SAT)
+- Validez legal muy alta, equivalente a firma autógrafa
+- Requiere que el firmante tenga FIEL activa
+- Ideal para documentos fiscales y oficiales
+
+**Casos de uso:**
+- Facturas electrónicas (CFDI)
+- Declaraciones fiscales
+- Contratos con dependencias gubernamentales
+- Documentos notariales
+
+**Configuración:**
+
+```json
+{
+  "signatureType": "fiel"
+}
+```
+
+**Flujo de firma:**
+
+1. El firmante accede al enlace de firma
+2. Carga su archivo .cer (certificado)
+3. Carga su archivo .key (llave privada)
+4. Ingresa la contraseña de su FIEL
+5. El sistema valida el certificado con el SAT
+6. Se firma el documento con el certificado FIEL
+
+<Callout type="info" title="Requisitos del firmante">
+El firmante debe tener una FIEL vigente emitida por el SAT. El proceso de obtención de FIEL es presencial en oficinas del SAT.
+</Callout>
+
+## Firma con PSC
+
+La firma con PSC (Prestador de Servicios de Certificación) utiliza certificados emitidos por entidades autorizadas por la Secretaría de Economía.
+
+**Características:**
+- Certificado emitido por PSC autorizado
+- Máxima validez legal bajo la Ley de Firma Electrónica Avanzada
+- Incluye sello de tiempo certificado
+- Cumple con NOM-151 para conservación de mensajes de datos
+
+**Casos de uso:**
+- Escrituras públicas
+- Contratos de alto valor
+- Documentos judiciales
+- Transacciones inmobiliarias
+
+**Configuración:**
+
+```json
+{
+  "signatureType": "psc",
+  "pscProvider": "jaak"  // JAAK como PSC autorizado
+}
+```
+
+**Flujo de firma:**
+
+1. El firmante accede al enlace de firma
+2. Realiza verificación de identidad (similar a biométrica)
+3. JAAK emite un certificado temporal como PSC
+4. Se firma el documento con el certificado PSC
+5. Se aplica sello de tiempo certificado
+6. Se genera constancia de conservación NOM-151
+
+<Callout type="warning" title="Costo adicional">
+La firma con PSC tiene un costo adicional por el certificado y sello de tiempo. Consulta con tu ejecutivo de cuenta los precios vigentes.
+</Callout>
+
+## Tabla comparativa
+
+| Característica | Simple | Avanzada | Biométrica | FIEL | PSC |
+|----------------|--------|----------|------------|------|-----|
+| **Verificación** | Ninguna | OTP | KYC facial | Certificado SAT | Certificado PSC |
+| **Validez legal** | Baja | Media | Alta | Muy alta | Muy alta |
+| **Tiempo de firma** | 10 seg | 1-2 min | 2-3 min | 1-2 min | 3-5 min |
+| **Requisitos firmante** | Email | Email/teléfono | Cámara + INE | FIEL activa | Cámara + INE |
+| **Costo por firma** | $ | $$ | $$$ | $$$ | $$$$ |
+| **NOM-151** | No | No | Opcional | Opcional | Incluido |
+
+## Cómo elegir el tipo de firma
+
+Considera estos factores al elegir:
+
+1. **Riesgo legal del documento**
+   - Bajo riesgo → Firma simple
+   - Riesgo moderado → Firma avanzada
+   - Alto riesgo → Firma biométrica, FIEL o PSC
+
+2. **Capacidad del firmante**
+   - Sin acceso a cámara → Firma simple o avanzada
+   - Con cámara pero sin FIEL → Firma biométrica
+   - Con FIEL → Firma FIEL (documentos fiscales)
+
+3. **Requisitos regulatorios**
+   - Sin requisitos específicos → Cualquier tipo
+   - Cumplimiento AML/KYC → Firma biométrica
+   - NOM-151 requerido → Firma PSC
+
+4. **Experiencia de usuario**
+   - Máxima simplicidad → Firma simple
+   - Balance seguridad/UX → Firma biométrica
+   - Máxima seguridad → Firma PSC
+
+## Siguientes pasos
+
+- [Guía rápida](/docs/firmar-documentos/guia-rapida) - Implementa tu primera firma
+- [Autenticación](/docs/firmar-documentos/api/autenticacion) - Endpoints de autenticación
