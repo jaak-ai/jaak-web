@@ -128,6 +128,14 @@ export default function Header() {
                 </button>
               </div>
 
+              {/* Autoservicio Link */}
+              <Link
+                href="/autoservicio"
+                className="px-4 py-2 text-[15px] font-medium text-gray-700 hover:text-[#0066ff] transition-colors"
+              >
+                Autoservicio
+              </Link>
+
               {/* Precios Link */}
               <Link
                 href="/precios"
@@ -268,6 +276,13 @@ export default function Header() {
                     Contacto
                   </Link>
                 </div>
+              </div>
+
+              {/* Autoservicio */}
+              <div>
+                <Link href="/autoservicio" className="block text-gray-700 hover:text-[#0066ff] font-semibold" onClick={() => setMobileMenuOpen(false)}>
+                  Autoservicio
+                </Link>
               </div>
 
               {/* Precios */}
