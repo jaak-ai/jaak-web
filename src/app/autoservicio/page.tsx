@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import React from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
@@ -847,9 +848,8 @@ export default function AutoservicioPage() {
                     ali: "Partners",
                   },
                 ].map((row, i) => (
-                  <>
+                  <React.Fragment key={row.feature}>
                     <div
-                      key={`${row.feature}-label`}
                       className={`p-4 border-b border-[#EEEEEE] text-sm font-medium text-gray-600 ${
                         i % 2 === 0 ? "bg-white" : "bg-[#FAFAFA]"
                       }`}
@@ -857,11 +857,8 @@ export default function AutoservicioPage() {
                       {row.feature}
                     </div>
                     <div
-                      key={`${row.feature}-self`}
                       className={`p-4 border-b border-[#EEEEEE] text-center text-sm font-semibold border-l-2 border-l-[#2DB6C1]/20 ${
-                        i % 2 === 0
-                          ? "bg-[#2DB6C1]/5"
-                          : "bg-[#2DB6C1]/[0.03]"
+                        i % 2 === 0 ? "bg-[#2DB6C1]/5" : "bg-[#2DB6C1]/[0.03]"
                       } ${
                         row.self === "No" || row.self === "No obligatoria"
                           ? "text-[#2AD796]"
@@ -870,8 +867,7 @@ export default function AutoservicioPage() {
                           : "text-[#212A45]"
                       }`}
                     >
-                      {row.self === "No" ||
-                      row.self === "No obligatoria" ? (
+                      {row.self === "No" || row.self === "No obligatoria" ? (
                         <span className="flex items-center justify-center gap-1">
                           <svg
                             className="w-4 h-4"
@@ -893,7 +889,6 @@ export default function AutoservicioPage() {
                       )}
                     </div>
                     <div
-                      key={`${row.feature}-ent`}
                       className={`p-4 border-b border-[#EEEEEE] text-center text-sm text-gray-500 ${
                         i % 2 === 0 ? "bg-white" : "bg-[#FAFAFA]"
                       }`}
@@ -901,14 +896,13 @@ export default function AutoservicioPage() {
                       {row.ent}
                     </div>
                     <div
-                      key={`${row.feature}-ali`}
                       className={`p-4 border-b border-[#EEEEEE] text-center text-sm text-gray-500 ${
                         i % 2 === 0 ? "bg-white" : "bg-[#FAFAFA]"
                       }`}
                     >
                       {row.ali}
                     </div>
-                  </>
+                  </React.Fragment>
                 ))}
               </div>
             </div>
