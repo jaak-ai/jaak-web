@@ -18,25 +18,30 @@ export default function ComplianceEvidence() {
   ];
 
   return (
-    <section className="py-24 bg-[#060610] relative overflow-hidden">
-      {/* ambient */}
-      <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-[#00d4aa]/6 rounded-full blur-[100px] pointer-events-none" />
-
+    <section className="py-24 relative overflow-hidden" style={{ background: "#141a3a" }}>
+      <div
+        className="absolute bottom-0 right-1/4 w-[350px] h-[350px] rounded-full blur-[100px] pointer-events-none"
+        style={{ background: "rgba(45,182,193,0.07)" }}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">
           {/* Header */}
           <div className="grid md:grid-cols-2 gap-12 items-start mb-14">
             <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold text-[#0066ff] border border-[#0066ff]/20 bg-[#0066ff]/8 mb-6">
+              <div
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
+                style={{ color: "#2DB6C1", border: "1px solid rgba(45,182,193,0.22)", background: "rgba(45,182,193,0.08)" }}
+              >
                 Certificaciones y cumplimiento
               </div>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white mb-4 leading-tight">
                 Diseñado para entornos regulados.
               </h2>
-              <p className="text-xl text-white/55 mb-4">
-                No solo cumplimos. Puedes <span className="text-white/80 font-semibold">demostrar que cumples.</span>
+              <p className="text-xl mb-4" style={{ color: "rgba(255,255,255,0.52)" }}>
+                No solo cumplimos. Puedes{" "}
+                <span className="font-semibold" style={{ color: "rgba(255,255,255,0.82)" }}>demostrar que cumples.</span>
               </p>
-              <p className="text-base text-[#0066ff] font-medium leading-relaxed">
+              <p className="text-base leading-relaxed" style={{ color: "#2DB6C1" }}>
                 Cada validación genera evidencia legal defendible ante auditorías internas y externas, no solo registros técnicos.
               </p>
             </div>
@@ -46,27 +51,29 @@ export default function ComplianceEvidence() {
               {principles.map((p, i) => (
                 <li
                   key={i}
-                  className="flex items-center gap-4 px-5 py-4 rounded-2xl border border-white/8 transition-all duration-200 hover:border-[#0066ff]/25"
+                  className="flex items-center gap-4 px-5 py-4 rounded-2xl transition-all duration-200"
                   style={{
-                    background: "linear-gradient(90deg, rgba(255,255,255,0.03), rgba(0,102,255,0.02))",
+                    background: "linear-gradient(90deg, rgba(255,255,255,0.04), rgba(45,182,193,0.03))",
+                    border: "1px solid rgba(255,255,255,0.08)",
                   }}
                 >
                   <span className="text-lg">{p.icon}</span>
-                  <span className="text-white/70 text-sm">{p.label}</span>
+                  <span className="text-sm" style={{ color: "rgba(255,255,255,0.65)" }}>{p.label}</span>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Certifications */}
+          {/* Certifications grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
             {certifications.map((cert, index) => (
               <div
                 key={index}
-                className="group flex flex-col items-center text-center p-5 rounded-2xl border border-white/8 transition-all duration-300 hover:border-[#00d4aa]/25 hover:-translate-y-1"
+                className="group flex flex-col items-center text-center p-5 rounded-2xl transition-all duration-300 hover:-translate-y-1"
                 style={{
-                  background: "linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)",
+                  background: "linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%)",
                   backdropFilter: "blur(12px)",
+                  border: "1px solid rgba(255,255,255,0.08)",
                 }}
               >
                 <div className="w-14 h-14 mb-3 relative">
@@ -74,11 +81,11 @@ export default function ComplianceEvidence() {
                     src={cert.image}
                     alt={cert.name}
                     fill
-                    className="object-contain filter brightness-90 group-hover:brightness-110 transition-all duration-300"
+                    className="object-contain brightness-90 group-hover:brightness-110 transition-all duration-300"
                   />
                 </div>
-                <div className="font-semibold text-white/80 text-xs">{cert.name}</div>
-                <div className="text-white/35 text-xs mt-0.5">{cert.description}</div>
+                <div className="font-semibold text-xs" style={{ color: "rgba(255,255,255,0.78)" }}>{cert.name}</div>
+                <div className="text-xs mt-0.5" style={{ color: "rgba(255,255,255,0.32)" }}>{cert.description}</div>
               </div>
             ))}
           </div>

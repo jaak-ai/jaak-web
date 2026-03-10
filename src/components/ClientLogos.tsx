@@ -17,35 +17,28 @@ export default function ClientLogos() {
   ];
 
   return (
-    <section className="py-16 bg-[#060610] relative overflow-hidden">
-      {/* subtle divider glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-
+    <section className="py-14" style={{ background: "#141a3a" }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-10">
-          <p className="text-white/35 text-xs font-semibold uppercase tracking-[0.2em] mb-2">
-            Empresas que confían en nosotros
-          </p>
-          <p className="text-white/55 text-sm">
-            +50 empresas reguladas en México y Latinoamérica
-          </p>
-        </div>
-
+        <p className="text-center text-xs font-semibold uppercase tracking-[0.20em] mb-8"
+          style={{ color: "rgba(255,255,255,0.30)" }}>
+          Empresas que confían en JAAK
+        </p>
         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
           {clients.map((client) => (
             <div
               key={client.name}
-              className="group flex items-center justify-center p-4 rounded-2xl border border-white/6 transition-all duration-300 hover:border-white/15 cursor-default"
+              className="group flex items-center justify-center p-4 rounded-2xl transition-all duration-300"
               style={{
-                background: "rgba(255,255,255,0.025)",
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(255,255,255,0.07)",
               }}
             >
               <Image
                 src={client.logo}
                 alt={client.name}
-                width={120}
-                height={60}
-                className="object-contain grayscale opacity-50 group-hover:opacity-80 group-hover:grayscale-0 transition-all duration-400"
+                width={110}
+                height={55}
+                className="object-contain grayscale opacity-40 group-hover:opacity-75 group-hover:grayscale-0 transition-all duration-300"
               />
             </div>
           ))}
