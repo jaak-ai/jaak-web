@@ -73,7 +73,7 @@ const PROCESS_STEPS = [
   {
     step: "04",
     title: "Verificación biométrica de firmantes",
-    description: "Validamos la identidad del representante legal con biometría facial certificada iBeta Nivel 2.",
+    description: "Validamos la identidad del representante legal con biometría facial certificada iBeta Level 1.",
     tech: "Biometría IA",
   },
   {
@@ -165,7 +165,7 @@ const TECHNOLOGIES = [
   },
   {
     name: "Biometría Facial",
-    description: "Verificación del representante legal con prueba de vida pasiva certificada iBeta Nivel 2 y comparación con INE.",
+    description: "Verificación del representante legal con prueba de vida pasiva certificada iBeta Level 1 y comparación con INE.",
     icon: (
       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -300,7 +300,7 @@ export default function KYBClient() {
               </span>
               <span className="flex items-center gap-2">
                 <svg className="w-4 h-4 text-[#00d4aa]" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
-                iBeta Nivel 2
+                iBeta Level 1
               </span>
               <span className="flex items-center gap-2">
                 <svg className="w-4 h-4 text-[#00d4aa]" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
@@ -596,6 +596,261 @@ export default function KYBClient() {
                 <h3 className="text-lg font-bold text-gray-900 mb-2">{reg.title}</h3>
                 <p className="text-sm text-gray-500">{reg.sub}</p>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ DOCUMENTOS REQUERIDOS ═══ */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
+              Documentos requeridos para el KYB
+            </h2>
+            <p className="text-xl text-gray-500 max-w-2xl mx-auto">
+              JAAK extrae y valida automáticamente los datos clave de cada documento mediante OCR e inteligencia artificial.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              {
+                doc: "Acta Constitutiva",
+                desc: "Escritura notarial de constitución de la sociedad. OCR extrae razón social, objeto social, capital y socios fundadores.",
+                tag: "Obligatorio",
+                tagColor: "bg-red-100 text-red-600",
+                icon: "📄",
+              },
+              {
+                doc: "Poder Notarial del Rep. Legal",
+                desc: "Acredita las facultades del representante legal para obligar a la empresa. Se valida vigencia y alcance de las facultades.",
+                tag: "Obligatorio",
+                tagColor: "bg-red-100 text-red-600",
+                icon: "⚖️",
+              },
+              {
+                doc: "Constancia de Situación Fiscal",
+                desc: "Documento del SAT que acredita el RFC activo y el régimen fiscal. Se cruza automáticamente contra Lista 69B.",
+                tag: "Obligatorio",
+                tagColor: "bg-red-100 text-red-600",
+                icon: "🏛️",
+              },
+              {
+                doc: "INE del Representante Legal",
+                desc: "Identificación oficial vigente del representante. Se usa para la verificación biométrica facial (iBeta Level 1).",
+                tag: "Obligatorio",
+                tagColor: "bg-red-100 text-red-600",
+                icon: "🪪",
+              },
+              {
+                doc: "Comprobante de Domicilio Fiscal",
+                desc: "Acredita el domicilio fiscal declarado ante el SAT. No mayor a 3 meses de antigüedad.",
+                tag: "Obligatorio",
+                tagColor: "bg-red-100 text-red-600",
+                icon: "🏢",
+              },
+              {
+                doc: "Estructura Accionaria",
+                desc: "Relación de socios o accionistas con porcentaje de participación. Necesario para identificar beneficiarios finales (UBO).",
+                tag: "Requerido si aplica",
+                tagColor: "bg-amber-100 text-amber-700",
+                icon: "🗂️",
+              },
+              {
+                doc: "Modificaciones Acta Constitutiva",
+                desc: "Escrituras de modificación posteriores: cambios de denominación, capital o objeto social. Se valida coherencia con el acta original.",
+                tag: "Si existen",
+                tagColor: "bg-blue-100 text-blue-600",
+                icon: "📝",
+              },
+              {
+                doc: "Estados Financieros",
+                desc: "Balance y estado de resultados de los últimos 2 ejercicios fiscales. Requerido para operaciones de crédito o alto valor.",
+                tag: "Según sector",
+                tagColor: "bg-blue-100 text-blue-600",
+                icon: "📊",
+              },
+              {
+                doc: "Contrato de Arrendamiento / Título de Propiedad",
+                desc: "Acredita el domicilio físico de operaciones. Requerido para actividades vulnerables LFPIORPI con inmuebles.",
+                tag: "Según sector",
+                tagColor: "bg-blue-100 text-blue-600",
+                icon: "🏗️",
+              },
+            ].map((item) => (
+              <div
+                key={item.doc}
+                className="bg-white rounded-2xl p-6 border border-gray-100 hover:shadow-md transition-all"
+              >
+                <div className="flex items-start justify-between mb-4">
+                  <span className="text-3xl">{item.icon}</span>
+                  <span className={`text-xs font-semibold px-2 py-1 rounded-full ${item.tagColor}`}>
+                    {item.tag}
+                  </span>
+                </div>
+                <h3 className="text-base font-bold text-gray-900 mb-2">{item.doc}</h3>
+                <p className="text-sm text-gray-500 leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+          <p className="text-center text-sm text-gray-400 mt-8">
+            La lista exacta de documentos puede variar según el sector regulado y el nivel de riesgo de la operación.{" "}
+            <a href="/contacto" className="text-[#0066ff] hover:underline font-medium">
+              Consulte a nuestro equipo →
+            </a>
+          </p>
+        </div>
+      </section>
+
+      {/* ═══ BENEFICIARIOS FINALES (UBO) ═══ */}
+      <section
+        className="py-20"
+        style={{ background: "linear-gradient(135deg, #0E1133 0%, #212A45 100%)" }}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#00d4aa]/10 border border-[#00d4aa]/30 rounded-full mb-6">
+                <span className="w-2 h-2 bg-[#00d4aa] rounded-full"></span>
+                <span className="text-[#00d4aa] text-sm font-semibold">LFPIORPI Art. 17 · GAFI R.10</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-black text-white mb-6">
+                Identificación de{" "}
+                <span className="bg-gradient-to-r from-[#0066ff] to-[#00d4aa] bg-clip-text text-transparent">
+                  Beneficiarios Finales (UBO)
+                </span>
+              </h2>
+              <p className="text-lg text-white/60 mb-6 leading-relaxed">
+                La ley exige identificar a las personas físicas que, directa o indirectamente, poseen o controlan
+                más del 25% de la estructura accionaria — los llamados Beneficiarios Reales o UBO
+                (Ultimate Beneficial Owner).
+              </p>
+              <p className="text-white/50 mb-8 text-sm leading-relaxed">
+                JAAK mapea automáticamente la cadena de control accionaria, identifica a los UBO y los
+                cruza contra listas restrictivas (OFAC, INTERPOL, SAT 69B), generando evidencia auditable
+                conforme a LFPIORPI Art. 17 y las recomendaciones GAFI.
+              </p>
+              <div className="space-y-3">
+                {[
+                  "Mapeo de estructura accionaria multinivel",
+                  "Identificación de personas físicas con ≥ 25% de control",
+                  "Screening de UBOs contra OFAC, INTERPOL y SAT 69B",
+                  "Evidencia auditable para UIF y CNBV",
+                  "Actualización periódica automática del expediente",
+                ].map((f) => (
+                  <div key={f} className="flex items-center gap-3 text-sm text-white/80">
+                    <svg
+                      className="w-4 h-4 text-[#00d4aa] flex-shrink-0"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                    </svg>
+                    {f}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="space-y-4">
+              {[
+                {
+                  pct: "≥ 25%",
+                  label: "Umbral de control",
+                  desc: "LFPIORPI y GAFI definen como UBO a cualquier persona física que posea o controle directa o indirectamente este porcentaje.",
+                  color: "border-[#0066ff]/40 bg-[#0066ff]/5",
+                  pctColor: "text-[#0066ff]",
+                },
+                {
+                  pct: "100%",
+                  label: "Trazabilidad",
+                  desc: "Cada decisión de identificación queda registrada en el expediente digital con timestamp, hash y firma electrónica.",
+                  color: "border-[#00d4aa]/40 bg-[#00d4aa]/5",
+                  pctColor: "text-[#00d4aa]",
+                },
+                {
+                  pct: "3",
+                  label: "Listas en tiempo real",
+                  desc: "OFAC, INTERPOL y SAT 69B se consultan para cada UBO identificado. Alertas inmediatas ante un match positivo.",
+                  color: "border-white/20 bg-white/5",
+                  pctColor: "text-white",
+                },
+              ].map((card) => (
+                <div
+                  key={card.label}
+                  className={`rounded-2xl p-6 border ${card.color} flex items-start gap-5`}
+                >
+                  <div className={`text-4xl font-black ${card.pctColor} flex-shrink-0 leading-none pt-1`}>
+                    {card.pct}
+                  </div>
+                  <div>
+                    <div className="text-white font-bold mb-1">{card.label}</div>
+                    <div className="text-white/50 text-sm leading-relaxed">{card.desc}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ FAQ ═══ */}
+      <section className="py-20 bg-white">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
+              Preguntas frecuentes
+            </h2>
+            <p className="text-xl text-gray-500">
+              Todo lo que necesita saber sobre verificación empresarial KYB.
+            </p>
+          </div>
+          <div className="space-y-4">
+            {[
+              {
+                q: "¿Qué es KYB y por qué lo necesito?",
+                a: "KYB (Know Your Business) es el proceso de verificación de personas morales. Es obligatorio para entidades reguladas por LFPIORPI, CNBV y UIF en México. JAAK automatiza todo el proceso: actas constitutivas, SAT, beneficiarios finales y listas restrictivas.",
+              },
+              {
+                q: "¿Qué listas restrictivas consulta JAAK KYB?",
+                a: "JAAK consulta 3 listas en tiempo real: OFAC (SDN List) para sanciones internacionales, INTERPOL (Red Notices) para personas buscadas por delitos graves, y SAT Lista 69B para empresas con operaciones fiscales simuladas en México.",
+              },
+              {
+                q: "¿Cuánto tarda la verificación empresarial?",
+                a: "El proceso completo toma menos de 15 minutos, comparado con los 3 a 10 días hábiles del due diligence manual tradicional.",
+              },
+              {
+                q: "¿JAAK KYB cumple con LFPIORPI y CNBV?",
+                a: "Sí. JAAK KYB cumple con LFPIORPI Art. 17 (identificación de beneficiarios finales), CUB CNBV (due diligence de personas morales), UIF (evidencia auditable) y recomendaciones GAFI/FATF.",
+              },
+              {
+                q: "¿Qué tecnologías usa JAAK para la verificación empresarial?",
+                a: "JAAK combina OCR inteligente para extracción de documentos, biometría facial certificada iBeta Level 1, screening simultáneo en OFAC/INTERPOL/SAT 69B, expediente digital con hash de integridad, API unificada REST y monitoreo continuo post-onboarding.",
+              },
+              {
+                q: "¿Puedo integrar KYB mediante API?",
+                a: "Sí. JAAK ofrece una API REST unificada que centraliza todo el flujo KYB en una sola integración: carga de documentos, validaciones, screening de listas, biometría y generación del expediente. Con webhooks en tiempo real y documentación completa.",
+              },
+            ].map((item) => (
+              <details
+                key={item.q}
+                className="group bg-gray-50 rounded-2xl border border-gray-100 overflow-hidden"
+              >
+                <summary className="flex items-center justify-between cursor-pointer p-6 font-semibold text-gray-900 hover:text-[#0066ff] transition-colors list-none">
+                  <span>{item.q}</span>
+                  <svg
+                    className="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform flex-shrink-0 ml-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
+                <div className="px-6 pb-6 text-gray-600 text-sm leading-relaxed border-t border-gray-100 pt-4">
+                  {item.a}
+                </div>
+              </details>
             ))}
           </div>
         </div>
