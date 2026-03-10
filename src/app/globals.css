@@ -176,7 +176,7 @@ body {
   animation: fade-in-up 0.6s ease-out forwards;
 }
 
-/* ── Glassmorphism utilities ── */
+/* ── Glassmorphism — dark variant ── */
 .glass {
   background: linear-gradient(145deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.02) 100%);
   backdrop-filter: blur(24px);
@@ -184,12 +184,29 @@ body {
   border: 1px solid rgba(255,255,255,0.10);
 }
 
-.glass-light {
-  background: linear-gradient(145deg, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.70) 100%);
+/* ── Glassmorphism — light/white variant (luxury executive) ── */
+.glass-white {
+  background: rgba(255,255,255,0.72);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255,255,255,0.90);
+  box-shadow: 0 8px 40px rgba(33,42,69,0.07), 0 1px 4px rgba(33,42,69,0.04);
+}
+
+.glass-white-card {
+  background: rgba(255,255,255,0.68);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,0.60);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+  border: 1px solid rgba(255,255,255,0.85);
+  box-shadow: 0 4px 24px rgba(33,42,69,0.06), 0 1px 3px rgba(33,42,69,0.03);
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.glass-white-card:hover {
+  border-color: rgba(45,182,193,0.35);
+  box-shadow: 0 12px 48px rgba(45,182,193,0.12), 0 2px 8px rgba(33,42,69,0.06);
+  transform: translateY(-2px);
 }
 
 .glass-card {
@@ -215,18 +232,13 @@ body {
   background-clip: text;
 }
 
-/* dark-section base — JAAK navy, not pure black */
-.section-dark {
-  background: #0E1133;
-  position: relative;
-  overflow: hidden;
-}
+/* Light section backgrounds */
+.section-white   { background: #ffffff; }
+.section-offwhite { background: #F4FBFC; }  /* barely-teal tint — alternating */
 
-.section-dark-mid {
-  background: #141a3a;
-  position: relative;
-  overflow: hidden;
-}
+/* Dark section base — JAAK navy */
+.section-dark     { background: #0E1133; position: relative; overflow: hidden; }
+.section-dark-mid { background: #141a3a; position: relative; overflow: hidden; }
 
 @keyframes float {
   0%, 100% { transform: translateY(0px); }

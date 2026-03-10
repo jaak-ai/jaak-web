@@ -26,28 +26,31 @@ const useCases = [
 
 export default function RegulatedUseCases() {
   return (
-    <section className="py-24 relative overflow-hidden" style={{ background: "#0E1133" }}>
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-px pointer-events-none"
-        style={{ background: "linear-gradient(to right, transparent, rgba(255,255,255,0.08), transparent)" }} />
-
+    <section className="py-24 relative overflow-hidden" style={{ background: "#ffffff" }}>
+      <div
+        className="absolute top-0 right-0 w-[500px] h-[500px] pointer-events-none"
+        style={{ background: "radial-gradient(circle at top right, rgba(42,215,150,0.06), transparent 60%)" }}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-14">
           <div
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
-            style={{ color: "rgba(255,255,255,0.45)", border: "1px solid rgba(255,255,255,0.10)", background: "rgba(255,255,255,0.04)" }}
+            style={{ color: "#64748B", border: "1px solid rgba(14,17,51,0.10)", background: "rgba(14,17,51,0.03)" }}
           >
             Casos de uso
           </div>
-          <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
+          <h2 className="text-3xl md:text-4xl font-black mb-4" style={{ color: "#0E1133" }}>
             Soluciones para{" "}
             <span style={{
               background: "linear-gradient(90deg, #2DB6C1, #2AD796)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
-            }}>entornos regulados</span>
+            }}>
+              entornos regulados
+            </span>
           </h2>
-          <p className="max-w-xl mx-auto" style={{ color: "rgba(255,255,255,0.40)" }}>
+          <p className="max-w-xl mx-auto" style={{ color: "#64748B" }}>
             Diseñados para cada tipo de organización con requerimientos regulatorios específicos.
           </p>
         </div>
@@ -58,21 +61,22 @@ export default function RegulatedUseCases() {
               key={i}
               className="group relative rounded-3xl p-7 flex flex-col transition-all duration-300 hover:-translate-y-1"
               style={{
-                background: "linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%)",
+                background: "rgba(255,255,255,0.82)",
                 backdropFilter: "blur(16px)",
-                border: "1px solid rgba(255,255,255,0.08)",
+                border: "1px solid rgba(45,182,193,0.13)",
+                boxShadow: "0 4px 24px rgba(33,42,69,0.06), 0 1px 4px rgba(45,182,193,0.05)",
               }}
             >
               <div
                 className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl mb-5"
-                style={{ background: `rgba(45,182,193,0.14)` }}
+                style={{ background: "rgba(45,182,193,0.10)" }}
               >
                 {u.icon}
               </div>
-              <h3 className="text-lg font-bold text-white mb-5">{u.title}</h3>
+              <h3 className="text-lg font-bold mb-5" style={{ color: "#0E1133" }}>{u.title}</h3>
               <ul className="space-y-3 flex-1">
                 {u.points.map((point, idx) => (
-                  <li key={idx} className="flex items-start gap-3 text-sm" style={{ color: "rgba(255,255,255,0.52)" }}>
+                  <li key={idx} className="flex items-start gap-3 text-sm" style={{ color: "#4A5568" }}>
                     <svg className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: u.accent }} fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
@@ -82,7 +86,7 @@ export default function RegulatedUseCases() {
               </ul>
               <Link
                 href={u.href}
-                className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold transition-all duration-200"
+                className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold"
                 style={{ color: u.accent }}
               >
                 Conocer solución
