@@ -1,55 +1,74 @@
 export default function RegulatoryProblem() {
-  return (
-    <section className="py-24 bg-[#0a0a0a]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto">
-          {/* Title */}
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white mb-8 leading-tight">
-            El problema no es verificar identidades.
-            <br />
-            <span className="text-white/60">Es demostrar que cumpliste correctamente.</span>
-          </h2>
+  const consequences = [
+    { label: "Observaciones en auditorías", icon: "📋" },
+    { label: "Multas y sanciones", icon: "💸" },
+    { label: "Riesgo legal y reputacional", icon: "⚠️" },
+    { label: "Retrabajo operativo constante", icon: "🔄" },
+  ];
 
-          {/* Body */}
-          <div className="space-y-6 mb-10">
-            <p className="text-lg text-white/60 leading-relaxed">
-              Las organizaciones reguladas fallan cuando no pueden demostrar
-              cómo validaron una identidad, cómo conservaron la evidencia
-              o cómo garantizaron trazabilidad ante una auditoría.
-            </p>
-            <p className="text-lg text-white/60 leading-relaxed">
-              La mayoría de los problemas regulatorios no nacen del fraude,
-              sino de procesos no defendibles.
-            </p>
+  return (
+    <section className="py-24 bg-[#060610] relative overflow-hidden">
+      {/* ambient */}
+      <div className="absolute top-1/2 right-0 w-[400px] h-[400px] bg-[#ff4444]/5 rounded-full blur-[100px] pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+          {/* Left */}
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold text-[#ff6b6b] border border-[#ff6b6b]/20 bg-[#ff6b6b]/8 mb-6">
+              El problema real
+            </div>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white mb-6 leading-tight">
+              El problema no es{" "}
+              <span className="text-white">verificar identidades.</span>
+              <br />
+              <span className="text-white/45">Es demostrar que cumpliste correctamente.</span>
+            </h2>
+
+            <div className="space-y-5">
+              <p className="text-lg text-white/55 leading-relaxed">
+                Las organizaciones reguladas fallan cuando no pueden demostrar
+                cómo validaron una identidad, cómo conservaron la evidencia
+                o cómo garantizaron trazabilidad ante una auditoría.
+              </p>
+              <p className="text-lg text-white/55 leading-relaxed">
+                La mayoría de los problemas regulatorios no nacen del fraude,
+                sino de <span className="text-white/80 font-medium">procesos no defendibles.</span>
+              </p>
+            </div>
           </div>
 
-          {/* Consequences */}
-          <div className="bg-[#ff6b6b]/10 border border-[#ff6b6b]/20 rounded-xl p-6">
+          {/* Right – glass consequence card */}
+          <div
+            className="rounded-3xl p-7 border border-[#ff4444]/15"
+            style={{
+              background: "linear-gradient(145deg, rgba(255,68,68,0.06) 0%, rgba(255,107,107,0.02) 100%)",
+              backdropFilter: "blur(20px)",
+            }}
+          >
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-xl bg-[#ff4444]/15 flex items-center justify-center">
+                <svg className="w-5 h-5 text-[#ff6b6b]" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div>
+                <div className="text-white font-bold text-sm">Sin evidencia defendible, te expones a:</div>
+                <div className="text-white/40 text-xs">Consecuencias regulatorias evitables</div>
+              </div>
+            </div>
+
             <ul className="space-y-3">
-              <li className="flex items-center gap-3 text-[#ff6b6b]">
-                <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                </svg>
-                Observaciones en auditorías
-              </li>
-              <li className="flex items-center gap-3 text-[#ff6b6b]">
-                <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                </svg>
-                Multas y sanciones
-              </li>
-              <li className="flex items-center gap-3 text-[#ff6b6b]">
-                <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                </svg>
-                Riesgo legal y reputacional
-              </li>
-              <li className="flex items-center gap-3 text-[#ff6b6b]">
-                <svg className="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                </svg>
-                Retrabajo operativo constante
-              </li>
+              {consequences.map((c, i) => (
+                <li
+                  key={i}
+                  className="flex items-center gap-4 p-4 rounded-2xl border border-[#ff4444]/10 transition-all duration-200 hover:border-[#ff4444]/25"
+                  style={{ background: "rgba(255,68,68,0.04)" }}
+                >
+                  <span className="text-xl">{c.icon}</span>
+                  <span className="text-[#ff8080] font-medium text-sm">{c.label}</span>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
