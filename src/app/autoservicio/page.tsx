@@ -398,7 +398,7 @@ export default function AutoservicioPage() {
                   category: "Biometría",
                   icon: "🔍",
                   color: "bg-[#2AD796]",
-                  items: ["Liveness (prueba de vida)", "OTO (comparación facial)"],
+                  items: ["Liveness iBeta Level 1 (prueba de vida)", "OTO (comparación facial)"],
                 },
                 {
                   category: "Documentos",
@@ -418,8 +418,8 @@ export default function AutoservicioPage() {
                   color: "bg-[#6366f1]",
                   items: [
                     "Firma Simple",
-                    "Firma Avanzada",
-                    "Firma Avanzada + Biometría / KYC",
+                    "Firma Avanzada (NOM-151)",
+                    "Firma Avanzada + Biometría (NOM-151)",
                   ],
                 },
                 {
@@ -637,6 +637,188 @@ export default function AutoservicioPage() {
           </div>
         </section>
 
+        {/* ─── SECCIÓN: Tokens y Niveles de Seguridad (KYC) ──────────────── */}
+        <section className="py-24 bg-[#212A45]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#2DB6C1]/10 border border-[#2DB6C1]/30 rounded-full mb-6">
+                <span className="w-2 h-2 bg-[#2DB6C1] rounded-full"></span>
+                <span className="text-[#2DB6C1] text-sm font-semibold">
+                  KYC · Modelo de tokens · Sin NOM-151
+                </span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
+                Tokens: la unidad que mide{" "}
+                <span className="text-[#2DB6C1]">cada nivel de seguridad</span>
+              </h2>
+              <p className="text-lg text-white/60 max-w-2xl mx-auto">
+                Cada verificación KYC consume un número fijo de tokens según
+                el nivel de seguridad requerido. Usted elige el nivel que su
+                operación y perfil de riesgo exigen.
+              </p>
+            </div>
+
+            {/* Two KYC types */}
+            <div className="grid md:grid-cols-2 gap-8 mb-14">
+              {/* KYC Tradicional */}
+              <div className="bg-white/10 border border-white/20 rounded-2xl p-8">
+                <div className="flex items-center gap-4 mb-5">
+                  <div className="w-14 h-14 bg-[#2DB6C1] rounded-xl flex flex-col items-center justify-center flex-shrink-0">
+                    <span className="text-white font-black text-xl leading-none">42</span>
+                    <span className="text-white/70 text-[10px] uppercase tracking-wider">tokens</span>
+                  </div>
+                  <div>
+                    <div className="text-white font-bold text-lg">KYC Tradicional</div>
+                    <div className="text-white/50 text-sm">Verificación biométrica completa</div>
+                  </div>
+                </div>
+                <ul className="space-y-2 mb-5">
+                  {[
+                    "Liveness iBeta Level 1 (prueba de vida antisuplantación)",
+                    "OTO — comparación facial biométrica",
+                    "OCR de documento oficial con validación de vigencia",
+                    "Validación con fuentes oficiales",
+                    "Consulta de listas negras (módulo opcional)",
+                  ].map((f) => (
+                    <li key={f} className="flex items-center gap-2 text-sm text-white/80">
+                      <svg
+                        className="w-4 h-4 text-[#2AD796] flex-shrink-0"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2.5}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <div className="p-3 bg-white/5 border border-white/10 rounded-xl text-xs text-white/50">
+                  Válido para operaciones reguladas: CNBV, UIF, LFPIORPI.{" "}
+                  <strong className="text-white/70">No requiere NOM-151.</strong>
+                </div>
+              </div>
+
+              {/* KYC Simplificado */}
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
+                <div className="flex items-center gap-4 mb-5">
+                  <div className="w-14 h-14 bg-[#2DB6C1]/20 rounded-xl flex flex-col items-center justify-center flex-shrink-0">
+                    <span className="text-[#2DB6C1] font-black text-xl leading-none">30</span>
+                    <span className="text-[#2DB6C1]/70 text-[10px] uppercase tracking-wider">tokens</span>
+                  </div>
+                  <div>
+                    <div className="text-white font-bold text-lg">KYC Simplificado</div>
+                    <div className="text-white/50 text-sm">Validación documental básica</div>
+                  </div>
+                </div>
+                <ul className="space-y-2 mb-5">
+                  {[
+                    "OCR de documento oficial",
+                    "Validación de vigencia del documento",
+                    "Validación básica con fuentes oficiales",
+                    "Sin verificación biométrica (liveness)",
+                  ].map((f) => (
+                    <li key={f} className="flex items-center gap-2 text-sm text-white/60">
+                      <svg
+                        className="w-4 h-4 text-[#2DB6C1] flex-shrink-0"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2.5}
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <div className="p-3 bg-white/5 border border-white/10 rounded-xl text-xs text-white/50">
+                  Para procesos de bajo riesgo.{" "}
+                  <strong className="text-white/70">
+                    No disponible en programa de Alianzas. No requiere NOM-151.
+                  </strong>
+                </div>
+              </div>
+            </div>
+
+            {/* Risk / security levels */}
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
+              <h3 className="text-white font-bold text-xl mb-8 text-center">
+                ¿Qué nivel de seguridad necesita su operación?
+              </h3>
+              <div className="grid md:grid-cols-3 gap-6 mb-8">
+                {[
+                  {
+                    level: "Riesgo Bajo",
+                    dot: "bg-[#2AD796]",
+                    color: "text-[#2AD796]",
+                    border: "border-[#2AD796]/30",
+                    bg: "bg-[#2AD796]/5",
+                    desc: "Validación documental sin biometría",
+                    token: "KYC Simplificado · 30 tokens",
+                    examples: "RH, proveedores internos, validación básica",
+                  },
+                  {
+                    level: "Riesgo Medio",
+                    dot: "bg-[#f59e0b]",
+                    color: "text-[#f59e0b]",
+                    border: "border-[#f59e0b]/30",
+                    bg: "bg-[#f59e0b]/5",
+                    desc: "Identidad verificada + prueba de vida",
+                    token: "KYC Tradicional · 42 tokens",
+                    examples: "Apertura de cuenta, onboarding de clientes",
+                  },
+                  {
+                    level: "Riesgo Alto / Regulado",
+                    dot: "bg-[#ef4444]",
+                    color: "text-[#ef4444]",
+                    border: "border-[#ef4444]/30",
+                    bg: "bg-[#ef4444]/5",
+                    desc: "Biometría + AML + fuentes oficiales",
+                    token: "KYC Tradicional + AML · 42+ tokens",
+                    examples: "Actividades vulnerables LFPIORPI, CNBV, UIF",
+                  },
+                ].map((r) => (
+                  <div
+                    key={r.level}
+                    className={`rounded-xl p-5 ${r.bg} border ${r.border}`}
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className={`w-2 h-2 rounded-full flex-shrink-0 ${r.dot}`}></span>
+                      <span className={`text-sm font-bold ${r.color}`}>{r.level}</span>
+                    </div>
+                    <div className="text-white font-semibold text-sm mb-2">{r.desc}</div>
+                    <div
+                      className={`text-xs font-mono ${r.color} mb-3 bg-black/20 rounded px-2 py-1 inline-block`}
+                    >
+                      {r.token}
+                    </div>
+                    <div className="text-white/40 text-xs">{r.examples}</div>
+                  </div>
+                ))}
+              </div>
+              <div className="text-center text-xs text-white/40 border-t border-white/10 pt-6">
+                El KYC en JAAK Autoservicio valida identidad pero{" "}
+                <strong className="text-white/60">no sustituye ni requiere NOM-151</strong>.
+                La NOM-151 aplica únicamente con{" "}
+                <strong className="text-white/60">
+                  Firma Electrónica Avanzada + Biometría
+                </strong>
+                .
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* ─── SECCIÓN 7: Bloque regulatorio + calculadora ───────────────── */}
         <section className="py-24 bg-[#F3F4F8]">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -749,6 +931,269 @@ export default function AutoservicioPage() {
                     </div>
                   </div>
                 ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ─── SECCIÓN: Precios del Autoservicio ──────────────────────────── */}
+        <section className="py-24 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-black text-[#212A45] mb-4">
+                Precios del autoservicio.{" "}
+                <span className="text-[#2DB6C1]">Sin contrato mínimo.</span>
+              </h2>
+              <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+                Compre paquetes de verificaciones o firmas y úselos a su
+                ritmo. El nivel del plan determina el SLA de soporte incluido.
+              </p>
+            </div>
+
+            <div className="grid lg:grid-cols-2 gap-10 mb-12">
+              {/* KYC Plans */}
+              <div>
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-10 h-10 bg-[#2DB6C1] rounded-lg flex items-center justify-center text-lg">
+                    👤
+                  </div>
+                  <div>
+                    <div className="font-bold text-[#212A45] text-lg">
+                      KYC · Verificación de Identidad
+                    </div>
+                    <div className="text-gray-400 text-sm">
+                      Liveness iBeta Level 1 · Sin NOM-151
+                    </div>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  {[
+                    {
+                      name: "Cobre",
+                      qty: "5 verif",
+                      price: "$99",
+                      period: "/año + IVA",
+                      sla: "Sin soporte asignado",
+                      highlight: false,
+                    },
+                    {
+                      name: "Bronce",
+                      qty: "50 verif",
+                      price: "$750",
+                      period: "/año + IVA",
+                      sla: "Email básico · Resp. 72 h",
+                      highlight: false,
+                    },
+                    {
+                      name: "Plata",
+                      qty: "100 verif",
+                      price: "$2,800",
+                      period: "/año + IVA",
+                      sla: "Chat o Email 12×7 · Resp. 24 h",
+                      highlight: true,
+                    },
+                    {
+                      name: "Oro",
+                      qty: "250 verif",
+                      price: "$6,625",
+                      period: "/año + IVA",
+                      sla: "Soporte dedicado · Resp. 4 h",
+                      highlight: false,
+                    },
+                    {
+                      name: "Platino",
+                      qty: "500 verif",
+                      price: "$12,500",
+                      period: "/año + IVA",
+                      sla: "Soporte prioritario · Resp. 1 h",
+                      highlight: false,
+                    },
+                  ].map((plan) => (
+                    <div
+                      key={plan.name}
+                      className={`flex items-center justify-between p-4 rounded-xl border transition-all ${
+                        plan.highlight
+                          ? "border-[#2DB6C1]/40 bg-[#2DB6C1]/5"
+                          : "border-[#EEEEEE] bg-[#FAFAFA]"
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold flex-shrink-0 ${
+                            plan.highlight
+                              ? "bg-[#2DB6C1] text-white"
+                              : "bg-[#EEEEEE] text-gray-500"
+                          }`}
+                        >
+                          {plan.name[0]}
+                        </div>
+                        <div>
+                          <div className="font-semibold text-[#212A45] text-sm">
+                            {plan.name} · {plan.qty}
+                          </div>
+                          <div className="text-xs text-gray-400">{plan.sla}</div>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-bold text-[#212A45]">{plan.price}</div>
+                        <div className="text-xs text-gray-400">{plan.period}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Firma + Bio Plans */}
+              <div>
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-10 h-10 bg-[#6366f1] rounded-lg flex items-center justify-center text-lg">
+                    ✍️
+                  </div>
+                  <div>
+                    <div className="font-bold text-[#212A45] text-lg">
+                      Firma Electrónica + Biometría
+                    </div>
+                    <div className="text-gray-400 text-sm">
+                      Firma Avanzada NOM-151 con verificación biométrica
+                    </div>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  {[
+                    {
+                      name: "Cobre",
+                      qty: "5 firmas",
+                      price: "$130",
+                      period: "/año + IVA",
+                      sla: "Sin soporte asignado",
+                      highlight: false,
+                    },
+                    {
+                      name: "Bronce",
+                      qty: "50 firmas",
+                      price: "$1,500",
+                      period: "/año + IVA",
+                      sla: "Email básico · Resp. 72 h",
+                      highlight: false,
+                    },
+                    {
+                      name: "Plata",
+                      qty: "100 firmas",
+                      price: "$2,700",
+                      period: "/año + IVA",
+                      sla: "Chat o Email 12×7 · Resp. 24 h",
+                      highlight: true,
+                    },
+                    {
+                      name: "Oro",
+                      qty: "250 firmas",
+                      price: "$6,625",
+                      period: "/año + IVA",
+                      sla: "Soporte dedicado · Resp. 4 h",
+                      highlight: false,
+                    },
+                    {
+                      name: "Platino",
+                      qty: "500 firmas",
+                      price: "$12,500",
+                      period: "/año + IVA",
+                      sla: "Soporte prioritario · Resp. 1 h",
+                      highlight: false,
+                    },
+                  ].map((plan) => (
+                    <div
+                      key={plan.name}
+                      className={`flex items-center justify-between p-4 rounded-xl border transition-all ${
+                        plan.highlight
+                          ? "border-[#6366f1]/40 bg-[#6366f1]/5"
+                          : "border-[#EEEEEE] bg-[#FAFAFA]"
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold flex-shrink-0 ${
+                            plan.highlight
+                              ? "bg-[#6366f1] text-white"
+                              : "bg-[#EEEEEE] text-gray-500"
+                          }`}
+                        >
+                          {plan.name[0]}
+                        </div>
+                        <div>
+                          <div className="font-semibold text-[#212A45] text-sm">
+                            {plan.name} · {plan.qty}
+                          </div>
+                          <div className="text-xs text-gray-400">{plan.sla}</div>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-bold text-[#212A45]">{plan.price}</div>
+                        <div className="text-xs text-gray-400">{plan.period}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Conditions / Notes */}
+            <div className="bg-[#FAFAFA] border border-[#EEEEEE] rounded-2xl p-8">
+              <h3 className="font-bold text-[#212A45] mb-6 text-lg">
+                Condiciones del autoservicio
+              </h3>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[
+                  {
+                    icon: "👥",
+                    title: "Límite de firmantes",
+                    desc: "Firma Simple y NOM-151: hasta 4 firmantes por sesión. Firma + Biometría: hasta 2 firmantes por sesión.",
+                  },
+                  {
+                    icon: "⚖️",
+                    title: "NOM-151 y validez legal",
+                    desc: "El KYC no aplica NOM-151. La NOM-151 aplica únicamente con Firma Electrónica Avanzada + Biometría.",
+                  },
+                  {
+                    icon: "📊",
+                    title: "SLA por nivel de plan",
+                    desc: "El SLA de soporte varía según el plan. Para SLA contractual de disponibilidad, contrate la modalidad Enterprise.",
+                  },
+                  {
+                    icon: "💳",
+                    title: "Sin contrato mínimo",
+                    desc: "Pago 100% prepago (tarjeta). Sin setup fee ni contrato. Paquetes caducan a 12 meses desde la compra.",
+                  },
+                  {
+                    icon: "🔐",
+                    title: "Liveness iBeta Level 1",
+                    desc: "El módulo de prueba de vida cuenta con certificación iBeta Liveness Level 1 (antisuplantación).",
+                  },
+                  {
+                    icon: "🔄",
+                    title: "Overages",
+                    desc: "Planes Bronce–Platino pueden adquirir paquetes adicionales al 120% del precio unitario. Plan Cobre se bloquea al alcanzar el límite.",
+                  },
+                ].map((note) => (
+                  <div key={note.title} className="flex items-start gap-3">
+                    <span className="text-xl flex-shrink-0">{note.icon}</span>
+                    <div>
+                      <div className="font-semibold text-[#212A45] text-sm mb-0.5">
+                        {note.title}
+                      </div>
+                      <div className="text-gray-500 text-xs leading-relaxed">
+                        {note.desc}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-6 pt-5 border-t border-[#EEEEEE] text-center">
+                <Link
+                  href="/precios"
+                  className="text-[#2DB6C1] font-semibold hover:underline text-sm"
+                >
+                  Ver tabla completa de precios y planes →
+                </Link>
               </div>
             </div>
           </div>
@@ -957,7 +1402,7 @@ export default function AutoservicioPage() {
                 "Sin setup fee",
                 "Activación inmediata",
                 "ISO 27001",
-                "NOM-151",
+                "NOM-151 (Firma Biométrica)",
                 "Soporte en español",
               ].map((badge) => (
                 <div key={badge} className="flex items-center gap-1.5">
