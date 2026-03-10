@@ -17,35 +17,39 @@ export default function ClientLogos() {
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-gray-50">
+    <section className="py-16 bg-[#060610] relative overflow-hidden">
+      {/* subtle divider glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <p className="text-[#0099A8] text-sm font-semibold uppercase tracking-widest mb-3">
+        <div className="text-center mb-10">
+          <p className="text-white/35 text-xs font-semibold uppercase tracking-[0.2em] mb-2">
             Empresas que confían en nosotros
           </p>
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
-            Pensado para empresas como la tuya
-          </h2>
+          <p className="text-white/55 text-sm">
+            +50 empresas reguladas en México y Latinoamérica
+          </p>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
           {clients.map((client) => (
             <div
               key={client.name}
-              className="group flex items-center justify-center p-4 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:border-[#0099A8]/20 transition-all duration-300"
+              className="group flex items-center justify-center p-4 rounded-2xl border border-white/6 transition-all duration-300 hover:border-white/15 cursor-default"
+              style={{
+                background: "rgba(255,255,255,0.025)",
+              }}
             >
               <Image
                 src={client.logo}
                 alt={client.name}
-                width={150}
-                height={80}
-                className="object-contain grayscale group-hover:grayscale-0 transition-all duration-300"
+                width={120}
+                height={60}
+                className="object-contain grayscale opacity-50 group-hover:opacity-80 group-hover:grayscale-0 transition-all duration-400"
               />
             </div>
           ))}
         </div>
-        <p className="text-center text-gray-500 text-sm mt-8">
-          Y más de 50 empresas reguladas en México y Latinoamérica
-        </p>
       </div>
     </section>
   );

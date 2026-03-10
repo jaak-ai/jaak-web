@@ -10,62 +10,78 @@ export default function ComplianceEvidence() {
     { name: "Hecho en México", description: "Tecnología 100% mexicana", image: "/images/certifications/hecho-en-mexico.png" },
   ];
 
+  const principles = [
+    { label: "Evidencia auditable end-to-end", icon: "🔍" },
+    { label: "Trazabilidad completa de identidad y consentimiento", icon: "🔗" },
+    { label: "Control de accesos y segregación de funciones", icon: "🔐" },
+    { label: "Retención de información conforme a normativa", icon: "📁" },
+  ];
+
   return (
-    <section className="py-24 bg-gray-50">
+    <section className="py-24 bg-[#060610] relative overflow-hidden">
+      {/* ambient */}
+      <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-[#00d4aa]/6 rounded-full blur-[100px] pointer-events-none" />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto">
-          {/* Title */}
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 mb-4">
-            Diseñado para entornos regulados.
-          </h2>
-
-          {/* Subtitle */}
-          <p className="text-xl text-gray-600 mb-4">
-            No solo cumplimos. Puedes demostrar que cumples.
-          </p>
-
-          {/* Legal defense line */}
-          <p className="text-lg text-[#0066ff] font-medium mb-10">
-            Cada validación genera evidencia legal defendible ante auditorías internas y externas, no solo registros técnicos.
-          </p>
-
-          {/* Principles List */}
-          <ul className="space-y-4 mb-12">
-            <li className="flex items-start gap-4 text-lg text-gray-700">
-              <span className="w-2 h-2 bg-[#0066ff] rounded-full mt-3"></span>
-              Evidencia auditable end-to-end
-            </li>
-            <li className="flex items-start gap-4 text-lg text-gray-700">
-              <span className="w-2 h-2 bg-[#0066ff] rounded-full mt-3"></span>
-              Trazabilidad completa de identidad y consentimiento
-            </li>
-            <li className="flex items-start gap-4 text-lg text-gray-700">
-              <span className="w-2 h-2 bg-[#0066ff] rounded-full mt-3"></span>
-              Control de accesos y segregación de funciones
-            </li>
-            <li className="flex items-start gap-4 text-lg text-gray-700">
-              <span className="w-2 h-2 bg-[#0066ff] rounded-full mt-3"></span>
-              Retención de información conforme a normativa
-            </li>
-          </ul>
-        </div>
-
-        {/* Certifications with logos */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-          {certifications.map((cert, index) => (
-            <div key={index} className="flex flex-col items-center text-center p-4 bg-white rounded-xl border border-gray-200 hover:shadow-md transition-shadow">
-              <div className="w-16 h-16 mb-3 relative">
-                <Image
-                  src={cert.image}
-                  alt={cert.name}
-                  fill
-                  className="object-contain"
-                />
+        <div className="max-w-5xl mx-auto">
+          {/* Header */}
+          <div className="grid md:grid-cols-2 gap-12 items-start mb-14">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold text-[#0066ff] border border-[#0066ff]/20 bg-[#0066ff]/8 mb-6">
+                Certificaciones y cumplimiento
               </div>
-              <div className="font-semibold text-gray-900 text-sm">{cert.name}</div>
-              <div className="text-gray-500 text-xs mt-1">{cert.description}</div>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white mb-4 leading-tight">
+                Diseñado para entornos regulados.
+              </h2>
+              <p className="text-xl text-white/55 mb-4">
+                No solo cumplimos. Puedes <span className="text-white/80 font-semibold">demostrar que cumples.</span>
+              </p>
+              <p className="text-base text-[#0066ff] font-medium leading-relaxed">
+                Cada validación genera evidencia legal defendible ante auditorías internas y externas, no solo registros técnicos.
+              </p>
             </div>
-          ))}
+
+            {/* Principles */}
+            <ul className="space-y-3">
+              {principles.map((p, i) => (
+                <li
+                  key={i}
+                  className="flex items-center gap-4 px-5 py-4 rounded-2xl border border-white/8 transition-all duration-200 hover:border-[#0066ff]/25"
+                  style={{
+                    background: "linear-gradient(90deg, rgba(255,255,255,0.03), rgba(0,102,255,0.02))",
+                  }}
+                >
+                  <span className="text-lg">{p.icon}</span>
+                  <span className="text-white/70 text-sm">{p.label}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Certifications */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+            {certifications.map((cert, index) => (
+              <div
+                key={index}
+                className="group flex flex-col items-center text-center p-5 rounded-2xl border border-white/8 transition-all duration-300 hover:border-[#00d4aa]/25 hover:-translate-y-1"
+                style={{
+                  background: "linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)",
+                  backdropFilter: "blur(12px)",
+                }}
+              >
+                <div className="w-14 h-14 mb-3 relative">
+                  <Image
+                    src={cert.image}
+                    alt={cert.name}
+                    fill
+                    className="object-contain filter brightness-90 group-hover:brightness-110 transition-all duration-300"
+                  />
+                </div>
+                <div className="font-semibold text-white/80 text-xs">{cert.name}</div>
+                <div className="text-white/35 text-xs mt-0.5">{cert.description}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
