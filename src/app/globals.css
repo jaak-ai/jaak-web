@@ -202,22 +202,28 @@ body {
 }
 
 .glass-card:hover {
-  border-color: rgba(0,102,255,0.35);
-  background: linear-gradient(145deg, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.04) 100%);
-  box-shadow: 0 16px 48px rgba(0,102,255,0.12), 0 0 0 1px rgba(0,102,255,0.15);
+  border-color: rgba(45,182,193,0.30);
+  background: linear-gradient(145deg, rgba(255,255,255,0.08) 0%, rgba(45,182,193,0.04) 100%);
+  box-shadow: 0 16px 48px rgba(45,182,193,0.10), 0 0 0 1px rgba(45,182,193,0.12);
   transform: translateY(-2px);
 }
 
 .gradient-text {
-  background: linear-gradient(90deg, #0066ff, #00d4aa);
+  background: linear-gradient(90deg, #2DB6C1, #2AD796);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* dark-section base */
+/* dark-section base — JAAK navy, not pure black */
 .section-dark {
-  background: #060610;
+  background: #0E1133;
+  position: relative;
+  overflow: hidden;
+}
+
+.section-dark-mid {
+  background: #141a3a;
   position: relative;
   overflow: hidden;
 }
