@@ -14,7 +14,7 @@ import {
 
 const llmProviders = [
   { name: "Claude", logo: "🟣", company: "Anthropic" },
-  { name: "GPT-4", logo: "🟢", company: "OpenAI" },
+  { name: "GPT", logo: "🟢", company: "OpenAI" },
   { name: "Gemini", logo: "🔵", company: "Google" },
   { name: "Bedrock", logo: "🟠", company: "AWS" },
   { name: "Azure OpenAI", logo: "🔷", company: "Microsoft" },
@@ -184,7 +184,7 @@ export default function ChronosPage() {
                 </h1>
 
                 <p className="text-xl text-white/70 mb-8">
-                  Automatiza workflows complejos con agentes de IA. Multi-proveedor LLM (Claude, GPT-4, Gemini),
+                  Automatiza workflows complejos con agentes de IA. Multi-proveedor LLM (Claude, GPT, Gemini),
                   human-in-the-loop, y cumplimiento regulatorio mexicano.
                   <strong className="text-white"> La alternativa segura a OpenClaw y NemoClaw.</strong>
                 </p>

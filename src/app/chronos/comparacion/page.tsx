@@ -125,7 +125,7 @@ const detailedComparison = [
       },
       {
         name: "RBAC",
-        chronos: "3 niveles (Superadmin, Admin, Member)",
+        chronos: "4 niveles (Owner, Admin, Editor, Viewer)",
         openclaw: "Sin control de acceso",
         nemoclaw: "Políticas básicas",
         winner: "chronos",
@@ -237,7 +237,7 @@ const detailedComparison = [
         winner: "tie-all",
       },
       {
-        name: "OpenAI GPT-4",
+        name: "OpenAI GPT",
         chronos: "Soportado",
         openclaw: "Soportado",
         nemoclaw: "Soportado",

@@ -8,7 +8,7 @@ export const chronosOrganizationSchema = {
   name: "Chronos by JAAK",
   url: "https://jaak.ai/chronos",
   logo: "https://jaak.ai/images/logos/chronos-logo.png",
-  description: "Plataforma de orquestación de agentes de IA para empresas. Automatiza workflows complejos con múltiples proveedores LLM (Claude, GPT-4, Gemini), human-in-the-loop y gobernanza enterprise.",
+  description: "Plataforma de orquestación de agentes de IA para empresas. Automatiza workflows complejos con múltiples proveedores LLM (Claude, GPT, Gemini), human-in-the-loop y gobernanza enterprise.",
   parentOrganization: {
     "@type": "Organization",
     name: "JAAK",
@@ -43,7 +43,7 @@ export const chronosSoftwareSchema = {
   },
   featureList: [
     "Orquestación de agentes de IA autónomos",
-    "Multi-proveedor LLM (Claude, GPT-4, Gemini, Bedrock, Azure OpenAI)",
+    "Multi-proveedor LLM (Claude, GPT, Gemini, Bedrock, Azure OpenAI)",
     "Human-in-the-loop con aprobaciones multi-nivel",
     "Multi-tenancy con aislamiento completo de datos",
     "RBAC (Role-Based Access Control)",
@@ -125,7 +125,7 @@ export const chronosFAQSchema = {
       name: "¿Qué proveedores de LLM soporta Chronos?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Chronos soporta múltiples proveedores LLM sin vendor lock-in: Anthropic Claude (Opus, Sonnet, Haiku), OpenAI GPT-4, Google Gemini, AWS Bedrock, Azure OpenAI y OCI GenAI. Los agentes pueden cambiar dinámicamente entre proveedores según el caso de uso, costo o disponibilidad."
+        text: "Chronos soporta múltiples proveedores LLM sin vendor lock-in: Anthropic Claude (Opus, Sonnet, Haiku), OpenAI GPT, Google Gemini, AWS Bedrock, Azure OpenAI y OCI GenAI. Los agentes pueden cambiar dinámicamente entre proveedores según el caso de uso, costo o disponibilidad."
       }
     },
     {
@@ -157,7 +157,7 @@ export const chronosFAQSchema = {
       name: "¿Chronos es más seguro que OpenClaw para empresas?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Sí, significativamente. OpenClaw ha tenido restricciones de seguridad (China prohibió su uso en gobierno, Meta lo bloqueó en dispositivos corporativos) y es susceptible a prompt injection. Chronos ofrece: multi-tenancy con aislamiento de datos por empresa, RBAC en tres niveles, audit logs inmutables, credenciales en vault seguro (OCI Vault), sandbox para ejecución de agentes, y políticas configurables para controlar comportamiento de agentes."
+        text: "Sí, significativamente. OpenClaw ha tenido restricciones de seguridad (China prohibió su uso en gobierno, Meta lo bloqueó en dispositivos corporativos) y es susceptible a prompt injection. Chronos ofrece: multi-tenancy con aislamiento de datos por empresa, RBAC en cuatro niveles, audit logs inmutables, credenciales en vault seguro (OCI Vault), sandbox para ejecución de agentes, y políticas configurables para controlar comportamiento de agentes."
       }
     },
     {
@@ -205,7 +205,7 @@ export const chronosHowToSchema = {
     {
       "@type": "HowToStep",
       name: "Configurar el agente",
-      text: "Selecciona el proveedor LLM (Claude, GPT-4, Gemini), asigna herramientas MCP al agente, y define la persona/rol del agente (Customer Support, Risk Analysis, Onboarding).",
+      text: "Selecciona el proveedor LLM (Claude, GPT, Gemini), asigna herramientas MCP al agente, y define la persona/rol del agente (Customer Support, Risk Analysis, Onboarding).",
       url: "https://jaak.ai/chronos"
     },
     {
