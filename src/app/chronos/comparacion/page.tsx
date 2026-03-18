@@ -292,10 +292,10 @@ const detailedComparison = [
       },
       {
         name: "Onboarding Time",
-        chronos: "Días (con soporte)",
+        chronos: "Horas (plug and play)",
         openclaw: "Horas (self-service)",
         nemoclaw: "Días",
-        winner: "openclaw",
+        winner: "tie-chronos-openclaw",
       },
     ],
   },
