@@ -29,6 +29,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 1,
     },
+    // Chronos - AI Agent Platform
+    {
+      url: `${baseUrl}/chronos`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.95,
+    },
+    {
+      url: `${baseUrl}/chronos/comparacion`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
     // Platform pages
     {
       url: `${baseUrl}/plataforma/verificacion-identidad`,

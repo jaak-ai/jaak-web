@@ -25,11 +25,13 @@ Ingeniero senior de Next.js trabajando en un sitio web de marketing que consume 
 
 ```bash
 npm ci              # Instalar dependencias (limpio)
-npm run dev         # Servidor de desarrollo (localhost:3000)
+npm run dev         # Servidor de desarrollo (Contentlayer + Next.js en localhost:3000)
 npm run lint        # Verificar código con ESLint
-npm run build       # Build de producción
+npm run build       # Build de producción (contentlayer2 build && next build)
 npm start           # Servidor de producción
 ```
+
+**Nota**: El dev server ejecuta Contentlayer2 en paralelo con Next.js para procesar archivos MDX de documentación.
 
 ---
 
@@ -41,9 +43,12 @@ npm start           # Servidor de producción
 | React | 19.2.3 | Server/Client Components |
 | TypeScript | 5 | strict mode |
 | Tailwind CSS | 4 | Estilos |
+| Contentlayer2 | 0.5.8 | Documentación MDX → páginas estáticas |
 | Vercel Analytics | - | Analytics + Speed Insights |
 | Resend | - | Servicio de email |
 | HubSpot | - | CRM y formularios |
+| Cloudflare Turnstile | - | Protección de formularios (captcha) |
+| Kairos Chat | - | Widget de chat para leads |
 
 ---
 
@@ -60,6 +65,8 @@ src/app/
 │
 ├── api/contact/route.ts        # POST → HubSpot Forms API
 │
+├── docs/[[...slug]]/page.tsx   # Documentación dinámica (Contentlayer2 MDX)
+│
 ├── signa/                      # Producto: Firma Electrónica
 │   ├── page.tsx                # Landing principal Signa
 │   ├── calculadora/            # Calculadora de ahorro
@@ -71,19 +78,49 @@ src/app/
 ├── soluciones/                 # Páginas por caso de uso (6 páginas)
 ├── plataforma/                 # Páginas de features (4 páginas)
 ├── cumplimiento/               # Páginas regulatorias (6 páginas)
-├── documentacion/              # Documentación de API y guías
+├── documentacion/              # Documentación de API y guías (legacy)
+│
+├── bancos/                     # Landing de conversión: Bancos
+├── financieras/                # Landing de conversión: Financieras
+├── inmobiliarias/              # Landing de conversión: Inmobiliarias
+├── autoservicio/               # Landing de conversión: Autoservicio
+│
 └── [páginas estáticas]         # privacidad, terminos, cookies, seguridad, contacto, nosotros
+```
+
+### Sistema de Documentación (Contentlayer2)
+
+```
+content/docs/                   # Archivos MDX fuente
+├── index.mdx                   # Página principal de docs
+├── verificar-identidad/        # Sección KYC
+│   ├── index.mdx
+│   ├── guia-rapida.mdx
+│   ├── conceptos/
+│   └── api/
+├── firmar-documentos/          # Sección Signa
+└── recursos/                   # Webhooks, errores, sandbox
+```
+
+Contentlayer genera tipos en `.contentlayer/generated/` que se importan directamente:
+```tsx
+import { allDocs } from "contentlayer/generated";
 ```
 
 ### Componentes (`src/components/`)
 
-~37 componentes React. Los principales:
+~40 componentes React. Los principales:
 - `Header.tsx` - Navegación con dropdowns (client component)
 - `Footer.tsx` - Footer del sitio
-- `ContactForm.tsx` - Formulario con HubSpot
+- `ContactForm.tsx` - Formulario con HubSpot + Turnstile
 - `NewsletterForm.tsx` - Signup de newsletter
 - `Hero.tsx` / `HeroRegulated.tsx` - Secciones hero
 - `SimuladorPLD.tsx` / `TablaUmbrales.tsx` - Componentes interactivos de cumplimiento
+
+**Integraciones de terceros** (cargadas en root layout):
+- `GoogleTagManager.tsx` - GTM head + body scripts
+- `CloudflareTurnstile.tsx` - Protección anti-bot para forms
+- `KairosSalesChat.tsx` - Widget de chat flotante
 
 ### Datos (`src/lib/`)
 
@@ -159,10 +196,23 @@ interface ContactRequest {
 Ver `.env.example`:
 
 ```bash
+# Email (Resend)
 RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxx
 CONTACT_EMAIL=sales@jaak.ai
-CRM_WEBHOOK_URL=          # opcional
-CRM_WEBHOOK_SECRET=       # opcional
+
+# CRM (opcional)
+CRM_WEBHOOK_URL=
+CRM_WEBHOOK_SECRET=
+
+# Analytics (Google Tag Manager)
+NEXT_PUBLIC_GTM_ID=GTM-XXXXXXX
+
+# Protección de formularios (Cloudflare Turnstile)
+NEXT_PUBLIC_TURNSTILE=0x4AAAA...
+
+# Chat widget (Kairos)
+NEXT_PUBLIC_KAIROS_WIDGET_URL=https://chat.kairos.jaak.ai/widget.js
+NEXT_PUBLIC_KAIROS_TENANT_ID=jaak
 ```
 
 ---
