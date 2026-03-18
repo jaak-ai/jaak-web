@@ -23,47 +23,29 @@ const llmProviders = [
 
 const integrationCategories = [
   {
-    name: "Code & Version Control",
+    name: "Servicios Financieros",
     integrations: [
-      { name: "GitHub", icon: "🐙" },
-      { name: "GitLab", icon: "🦊" },
+      { name: "Buró de Crédito", icon: "📊" },
+      { name: "SAT / RFC", icon: "🏛️" },
+      { name: "RENAPO / CURP", icon: "🪪" },
+      { name: "SPEI", icon: "💸" },
+      { name: "Listas PLD/AML", icon: "🔍" },
     ]
   },
   {
-    name: "Project Management",
-    integrations: [
-      { name: "Linear", icon: "📋" },
-      { name: "Jira", icon: "📊" },
-    ]
-  },
-  {
-    name: "Communication",
+    name: "Comunicación",
     integrations: [
       { name: "Slack", icon: "💬" },
       { name: "Teams", icon: "👥" },
-      { name: "Email", icon: "📧" },
+      { name: "Email / SMS", icon: "📧" },
     ]
   },
   {
-    name: "Financial Services",
-    integrations: [
-      { name: "Buró de Crédito", icon: "📊" },
-      { name: "SAT México", icon: "🏛️" },
-      { name: "SPEI", icon: "💸" },
-    ]
-  },
-  {
-    name: "Monitoring & Observability",
-    integrations: [
-      { name: "Datadog", icon: "📈" },
-      { name: "Sentry", icon: "🔍" },
-    ]
-  },
-  {
-    name: "Custom",
+    name: "Conectores",
     integrations: [
       { name: "Webhooks", icon: "🔗" },
       { name: "REST API", icon: "🌐" },
+      { name: "gRPC", icon: "⚡" },
     ]
   },
 ];
@@ -96,10 +78,10 @@ const useCases = [
 ];
 
 const stats = [
-  { value: "6", label: "Proveedores LLM" },
-  { value: "18+", label: "Integraciones" },
-  { value: "99.99%", label: "SLA Disponibilidad" },
-  { value: "<100ms", label: "Latencia API" },
+  { value: "1 min", label: "Onboarding KYC" },
+  { value: "60%", label: "Menos revisión manual" },
+  { value: "100%", label: "Trazabilidad auditable" },
+  { value: "<1 día", label: "Primer workflow en prod" },
 ];
 
 const pluginSources = [
@@ -255,21 +237,24 @@ export default function ChronosPage() {
               <div>
                 <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#655DC6]/10 border border-[#655DC6]/30 rounded-full mb-6">
                   <span className="w-2 h-2 bg-[#655DC6] rounded-full animate-pulse"></span>
-                  <span className="text-[#655DC6] text-sm font-medium">AI Agent Orchestration Platform</span>
+                  <span className="text-[#655DC6] text-sm font-medium">Agentes IA para Instituciones Financieras</span>
                 </div>
 
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
+                  KYC en 1 minuto.
+                  <br />
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1ECAD3] to-[#655DC6]">
-                    Chronos
+                    Crédito en minutos.
                   </span>
                   <br />
-                  Orquestación de Agentes IA para Enterprise
+                  Cero sustos con CNBV.
                 </h1>
 
                 <p className="text-xl text-white/70 mb-8">
-                  Automatiza workflows complejos con agentes de IA. Multi-proveedor LLM (Claude, GPT, Gemini),
-                  human-in-the-loop, y cumplimiento regulatorio mexicano.
-                  <strong className="text-white"> La alternativa segura a OpenClaw y NemoClaw.</strong>
+                  Automatiza onboarding, scoring y cobranza con agentes IA que cumplen
+                  <strong className="text-white"> CNBV, UIF y LFPIORPI </strong>
+                  desde el primer día. Human-in-the-loop para decisiones críticas.
+                  <span className="block mt-2 text-white/50 text-base">La alternativa enterprise a OpenClaw y NemoClaw.</span>
                 </p>
 
                 <div className="flex flex-wrap gap-4 mb-10">
@@ -277,13 +262,13 @@ export default function ChronosPage() {
                     href="#contacto"
                     className="px-6 py-3 bg-gradient-to-r from-[#1ECAD3] to-[#655DC6] text-white font-bold rounded-lg hover:opacity-90 transition-all"
                   >
-                    Solicitar Demo
+                    Ver demo: KYC en 1 minuto →
                   </a>
                   <Link
                     href="/chronos/comparacion"
                     className="px-6 py-3 bg-white/10 border border-white/20 text-white font-semibold rounded-lg hover:bg-white/20 transition-all"
                   >
-                    Ver Comparación vs OpenClaw
+                    ¿Por qué no OpenClaw?
                   </Link>
                 </div>
 
@@ -384,6 +369,81 @@ export default function ChronosPage() {
               >
                 Ver Comparación Detallada →
               </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Social Proof */}
+        <section className="py-16 bg-gradient-to-r from-[#655DC6]/5 to-[#1ECAD3]/5">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* Testimonio */}
+              <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
+                <div className="flex items-center gap-1 mb-4">
+                  {[...Array(5)].map((_, i) => (
+                    <svg key={i} className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                      <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/>
+                    </svg>
+                  ))}
+                </div>
+                <blockquote className="text-gray-700 text-lg mb-6 italic">
+                  &ldquo;Redujimos el tiempo de onboarding KYC de 5 días a menos de 20 minutos.
+                  El equipo de compliance quedó tranquilo porque toda la trazabilidad queda documentada
+                  automáticamente para auditorías de CNBV.&rdquo;
+                </blockquote>
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-[#655DC6] to-[#1ECAD3] rounded-full flex items-center justify-center text-white font-bold">
+                    IF
+                  </div>
+                  <div>
+                    <div className="font-semibold text-gray-900">Director de Operaciones</div>
+                    <div className="text-gray-500 text-sm">Institución Financiera en CDMX</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Métricas de caso real */}
+              <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
+                <h3 className="text-lg font-bold text-gray-900 mb-6">Resultados reales con Chronos</h3>
+                <div className="space-y-6">
+                  <div>
+                    <div className="flex justify-between mb-2">
+                      <span className="text-gray-600">Tiempo de KYC</span>
+                      <span className="font-bold text-[#655DC6]">5 días → 1 minuto</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div className="bg-gradient-to-r from-[#655DC6] to-[#1ECAD3] h-2 rounded-full" style={{width: '98%'}}></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex justify-between mb-2">
+                      <span className="text-gray-600">Revisión manual</span>
+                      <span className="font-bold text-[#655DC6]">-60%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div className="bg-gradient-to-r from-[#655DC6] to-[#1ECAD3] h-2 rounded-full" style={{width: '60%'}}></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex justify-between mb-2">
+                      <span className="text-gray-600">Tiempo a producción</span>
+                      <span className="font-bold text-[#655DC6]">&lt;1 día</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div className="bg-gradient-to-r from-[#655DC6] to-[#1ECAD3] h-2 rounded-full" style={{width: '95%'}}></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex justify-between mb-2">
+                      <span className="text-gray-600">Cobertura de auditoría</span>
+                      <span className="font-bold text-[#655DC6]">100%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div className="bg-gradient-to-r from-[#655DC6] to-[#1ECAD3] h-2 rounded-full" style={{width: '100%'}}></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>

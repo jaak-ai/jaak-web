@@ -70,17 +70,26 @@ export const mdxComponents: MDXComponents = {
     </blockquote>
   ),
   table: ({ children }) => (
-    <div className="mb-4 overflow-x-auto">
+    <div className="mb-6 overflow-x-auto rounded-lg border border-gray-200">
       <table className="w-full border-collapse text-sm">{children}</table>
     </div>
   ),
+  thead: ({ children }) => (
+    <thead className="bg-gray-50">{children}</thead>
+  ),
+  tbody: ({ children }) => (
+    <tbody className="divide-y divide-gray-200">{children}</tbody>
+  ),
+  tr: ({ children }) => (
+    <tr className="hover:bg-gray-50 transition-colors">{children}</tr>
+  ),
   th: ({ children }) => (
-    <th className="border-b border-gray-200 bg-gray-50 px-4 py-2 text-left font-semibold text-gray-900">
+    <th className="px-4 py-3 text-left font-semibold text-gray-900 whitespace-nowrap">
       {children}
     </th>
   ),
   td: ({ children }) => (
-    <td className="border-b border-gray-200 px-4 py-2 text-gray-600">{children}</td>
+    <td className="px-4 py-3 text-gray-600">{children}</td>
   ),
   hr: () => <hr className="my-8 border-gray-200" />,
 }
