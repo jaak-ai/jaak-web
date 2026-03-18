@@ -21,15 +21,51 @@ const llmProviders = [
   { name: "OCI GenAI", logo: "🔴", company: "Oracle" },
 ];
 
-const integrations = [
-  { name: "JAAK OCR", category: "Documentos", icon: "📄" },
-  { name: "JAAK Signa", category: "Firma", icon: "✍️" },
-  { name: "JAAK Recog", category: "Biometría", icon: "👤" },
-  { name: "Slack", category: "Comunicación", icon: "💬" },
-  { name: "GitHub", category: "DevOps", icon: "🐙" },
-  { name: "Buró de Crédito", category: "Financiero", icon: "📊" },
-  { name: "SAT México", category: "Fiscal", icon: "🏛️" },
-  { name: "Linear", category: "Gestión", icon: "📋" },
+const integrationCategories = [
+  {
+    name: "Code & Version Control",
+    integrations: [
+      { name: "GitHub", icon: "🐙" },
+      { name: "GitLab", icon: "🦊" },
+    ]
+  },
+  {
+    name: "Project Management",
+    integrations: [
+      { name: "Linear", icon: "📋" },
+      { name: "Jira", icon: "📊" },
+    ]
+  },
+  {
+    name: "Communication",
+    integrations: [
+      { name: "Slack", icon: "💬" },
+      { name: "Teams", icon: "👥" },
+      { name: "Email", icon: "📧" },
+    ]
+  },
+  {
+    name: "Financial Services",
+    integrations: [
+      { name: "Buró de Crédito", icon: "📊" },
+      { name: "SAT México", icon: "🏛️" },
+      { name: "SPEI", icon: "💸" },
+    ]
+  },
+  {
+    name: "Monitoring & Observability",
+    integrations: [
+      { name: "Datadog", icon: "📈" },
+      { name: "Sentry", icon: "🔍" },
+    ]
+  },
+  {
+    name: "Custom",
+    integrations: [
+      { name: "Webhooks", icon: "🔗" },
+      { name: "REST API", icon: "🌐" },
+    ]
+  },
 ];
 
 const useCases = [
@@ -64,6 +100,53 @@ const stats = [
   { value: "18+", label: "Integraciones" },
   { value: "99.99%", label: "SLA Disponibilidad" },
   { value: "<100ms", label: "Latencia API" },
+];
+
+const pluginSources = [
+  { name: "MCP Servers", icon: "🔌", description: "Model Context Protocol" },
+  { name: "Claude Code", icon: "🟣", description: "Skills de Anthropic" },
+  { name: "OpenAI Assistants", icon: "🟢", description: "Asistentes GPT" },
+  { name: "CrewAI", icon: "👥", description: "Agentes colaborativos" },
+  { name: "LangChain", icon: "🦜", description: "Chains y tools" },
+];
+
+const agentTemplates = [
+  {
+    name: "Loan Application Analyzer",
+    icon: "📊",
+    description: "Analiza solicitudes evaluando perfiles financieros, historial crediticio e ingresos",
+    integrations: ["Slack", "Webhook"]
+  },
+  {
+    name: "Credit Risk Assessor",
+    icon: "⚖️",
+    description: "Genera scores de riesgo, recomendaciones de aprobación y términos de préstamo",
+    integrations: ["Slack", "Webhook"]
+  },
+  {
+    name: "Document Collection Agent",
+    icon: "📄",
+    description: "Guía a solicitantes en documentación, valida con OCR y rastrea completitud",
+    integrations: ["Webhook"]
+  },
+  {
+    name: "Loan Processing Pipeline",
+    icon: "🔄",
+    description: "Workflow end-to-end: Analyzer → Risk Assessor → Decisión. Evaluación automatizada",
+    integrations: ["Slack", "Webhook"]
+  },
+  {
+    name: "Preventive Collections Agent",
+    icon: "📱",
+    description: "Recordatorios pre-vencimiento, genera links de pago. Cumple CONDUSEF",
+    integrations: ["Webhook"]
+  },
+  {
+    name: "KYC Onboarding Agent",
+    icon: "✅",
+    description: "Verificación de identidad con OCR + biometría + validación documental",
+    integrations: ["JAAK OCR", "JAAK Recog"]
+  },
 ];
 
 const comparisonPoints = [
@@ -353,25 +436,117 @@ export default function ChronosPage() {
               </div>
             </div>
 
-            {/* More integrations */}
+            {/* Integration Categories */}
             <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
               <h3 className="text-white/60 text-xs font-medium uppercase tracking-wider mb-6 text-center">
-                +18 Integraciones Pre-construidas
+                14+ Integraciones por Categoría
               </h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {integrations.map((integration, i) => (
-                  <div
-                    key={i}
-                    className="flex items-center gap-3 p-3 bg-white/5 rounded-lg border border-white/10"
-                  >
-                    <span className="text-xl">{integration.icon}</span>
-                    <div>
-                      <div className="text-white font-medium text-sm">{integration.name}</div>
-                      <div className="text-white/40 text-xs">{integration.category}</div>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {integrationCategories.map((category, i) => (
+                  <div key={i} className="space-y-3">
+                    <h4 className="text-white/80 text-sm font-medium">{category.name}</h4>
+                    <div className="space-y-2">
+                      {category.integrations.map((integration, j) => (
+                        <div
+                          key={j}
+                          className="flex items-center gap-3 p-2 bg-white/5 rounded-lg border border-white/10"
+                        >
+                          <span className="text-lg">{integration.icon}</span>
+                          <span className="text-white font-medium text-sm">{integration.name}</span>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 ))}
               </div>
+            </div>
+
+            {/* Plugins y Extensiones */}
+            <div className="mt-12 bg-gradient-to-br from-[#655DC6]/10 to-[#1ECAD3]/10 border border-white/20 rounded-2xl p-8">
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-bold text-white mb-2">
+                  Extiende tus Agentes con Plugins
+                </h3>
+                <p className="text-white/60">
+                  Importa agentes desde Claude Code, OpenAI Assistants, CrewAI, LangChain o conecta MCP Servers.
+                </p>
+              </div>
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                {pluginSources.map((plugin, i) => (
+                  <div
+                    key={i}
+                    className="flex flex-col items-center gap-2 p-4 bg-white/5 rounded-xl border border-white/10 hover:border-[#1ECAD3]/40 transition-all"
+                  >
+                    <span className="text-3xl">{plugin.icon}</span>
+                    <div className="text-white font-medium text-sm text-center">{plugin.name}</div>
+                    <div className="text-white/40 text-xs text-center">{plugin.description}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Rules Engine */}
+            <div className="mt-8 bg-white/5 border border-white/10 rounded-2xl p-8">
+              <div className="flex flex-col md:flex-row items-center gap-6">
+                <div className="w-16 h-16 bg-[#655DC6]/20 rounded-xl flex items-center justify-center text-3xl flex-shrink-0">
+                  ⚙️
+                </div>
+                <div className="flex-1 text-center md:text-left">
+                  <h3 className="text-xl font-bold text-white mb-2">Rules Engine con CEL</h3>
+                  <p className="text-white/60">
+                    Motor de reglas con Common Expression Language (CEL) para políticas de seguridad,
+                    validaciones de negocio y control de flujo. Define reglas declarativas que los agentes
+                    deben cumplir antes de ejecutar acciones críticas.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Templates de Agentes */}
+        <section className="py-20 bg-[#0B1121]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-14">
+              <span className="inline-block px-4 py-2 bg-[#1ECAD3]/10 border border-[#1ECAD3]/20 rounded-full text-[#1ECAD3] text-sm font-medium mb-6">
+                Finance & Lending Templates
+              </span>
+              <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
+                Agentes <span className="text-[#1ECAD3]">Pre-configurados</span>
+              </h2>
+              <p className="text-xl text-white/60 max-w-3xl mx-auto">
+                Templates listos para producción. Configura en horas, no en semanas.
+                Workflows probados para instituciones financieras.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {agentTemplates.map((template, i) => (
+                <div
+                  key={i}
+                  className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-[#1ECAD3]/40 transition-all group"
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-[#1ECAD3]/20 rounded-xl flex items-center justify-center text-2xl flex-shrink-0 group-hover:bg-[#1ECAD3]/30 transition-colors">
+                      {template.icon}
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-bold text-white mb-2">{template.name}</h3>
+                      <p className="text-white/60 text-sm mb-3">{template.description}</p>
+                      <div className="flex flex-wrap gap-2">
+                        {template.integrations.map((integration, j) => (
+                          <span
+                            key={j}
+                            className="px-2 py-1 bg-white/10 rounded text-white/70 text-xs"
+                          >
+                            {integration}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>
