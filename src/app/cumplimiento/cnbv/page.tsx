@@ -3,6 +3,62 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 
+// Schema con citas a fuentes autoritativas para AI crawlers
+const cnbvSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Cumplimiento CNBV - Identificación Remota No Presencial",
+  "description": "Verificación de identidad conforme a lineamientos CNBV para instituciones financieras en México.",
+  "publisher": {
+    "@type": "Organization",
+    "name": "JAAK",
+    "url": "https://jaak.ai"
+  },
+  "about": {
+    "@type": "GovernmentOrganization",
+    "name": "Comisión Nacional Bancaria y de Valores",
+    "alternateName": "CNBV",
+    "url": "https://www.gob.mx/cnbv",
+    "description": "Órgano desconcentrado de la Secretaría de Hacienda y Crédito Público que regula y supervisa el sistema financiero mexicano."
+  },
+  "citation": [
+    {
+      "@type": "LegislationObject",
+      "name": "Disposiciones de carácter general aplicables a las instituciones de crédito",
+      "legislationIdentifier": "CUB",
+      "legislationJurisdiction": "México",
+      "legislationLegalForce": "InForce"
+    },
+    {
+      "@type": "LegislationObject",
+      "name": "Disposiciones de carácter general en materia de prevención de lavado de dinero",
+      "legislationIdentifier": "PLD-CNBV",
+      "legislationJurisdiction": "México"
+    }
+  ],
+  "mainEntity": {
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "¿Qué requisitos establece la CNBV para identificación remota no presencial?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "La CNBV requiere: captura de documento oficial vigente (INE, pasaporte), verificación biométrica facial, prueba de vida activa o pasiva conforme a ISO 30107-3, validación contra bases oficiales del INE, y generación de expediente electrónico con trazabilidad completa para auditorías."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Qué instituciones están reguladas por la CNBV para KYC?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "La CNBV regula bancos (instituciones de banca múltiple y desarrollo), fintechs (ITF bajo Ley Fintech), Sofomes, casas de bolsa, fondos de inversión y aseguradoras. Todas deben cumplir con las Disposiciones de carácter general en materia de prevención de lavado de dinero (PLD)."
+        }
+      }
+    ]
+  }
+};
+
 export const metadata: Metadata = {
   title: "Cumplimiento CNBV - Identificación Remota No Presencial | JAAK",
   description:
@@ -108,6 +164,10 @@ export default function CNBVPage() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(cnbvSchema) }}
+      />
       <Header />
       <main>
         {/* Hero Section */}
@@ -158,7 +218,16 @@ export default function CNBVPage() {
                 ¿Qué es la CNBV?
               </h2>
               <p className="text-lg text-gray-600 mb-6">
-                La <strong>Comisión Nacional Bancaria y de Valores</strong> es el regulador principal del sistema financiero mexicano. Establece los requisitos de identificación y conocimiento del cliente para todas las entidades supervisadas.
+                La{" "}
+                <a
+                  href="https://www.gob.mx/cnbv"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#0066ff] hover:underline font-semibold"
+                >
+                  Comisión Nacional Bancaria y de Valores (CNBV)
+                </a>{" "}
+                es el regulador principal del sistema financiero mexicano. Establece los requisitos de identificación y conocimiento del cliente para todas las entidades supervisadas.
               </p>
               <p className="text-gray-600">
                 Los lineamientos de identificación remota no presencial permiten a las instituciones financieras realizar el alta de clientes de manera digital, siempre que cumplan con controles específicos de verificación biométrica y documental.

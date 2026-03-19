@@ -3,6 +3,62 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 
+// Schema con citas a fuentes autoritativas para AI crawlers
+const uifSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Cumplimiento UIF - Unidad de Inteligencia Financiera",
+  "description": "Evidencia auditable para requerimientos de la UIF en materia de prevención de lavado de dinero (PLD/AML).",
+  "publisher": {
+    "@type": "Organization",
+    "name": "JAAK",
+    "url": "https://jaak.ai"
+  },
+  "about": {
+    "@type": "GovernmentOrganization",
+    "name": "Unidad de Inteligencia Financiera",
+    "alternateName": "UIF",
+    "url": "https://www.gob.mx/uif",
+    "parentOrganization": {
+      "@type": "GovernmentOrganization",
+      "name": "Secretaría de Hacienda y Crédito Público",
+      "alternateName": "SHCP"
+    },
+    "description": "Órgano de la SHCP encargado de prevenir, detectar y combatir el lavado de dinero y financiamiento al terrorismo en México."
+  },
+  "citation": [
+    {
+      "@type": "LegislationObject",
+      "name": "Ley Federal para la Prevención e Identificación de Operaciones con Recursos de Procedencia Ilícita",
+      "alternateName": "LFPIORPI",
+      "legislationJurisdiction": "México",
+      "legislationLegalForce": "InForce",
+      "datePublished": "2012-10-17"
+    }
+  ],
+  "mainEntity": {
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "¿Qué información requiere la UIF para cumplimiento PLD?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "La UIF requiere expedientes con: datos de identificación completos (nombre, CURP, RFC, nacionalidad, domicilio), documentos validados (INE con verificación, comprobante de domicilio, constancia fiscal), evidencia biométrica (fotografía, video de prueba de vida, score facial), y metadatos del proceso (fecha, hora, IP, geolocalización, hash de integridad)."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Qué reportes de operaciones exige la UIF bajo LFPIORPI?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "La UIF exige reportes de operaciones relevantes (mensuales, cuando superan umbrales), operaciones inusuales (inmediatos, patrones anormales), operaciones internas preocupantes (24 horas, alertas de compliance), y reportes de actividades vulnerables según el giro de la empresa."
+        }
+      }
+    ]
+  }
+};
+
 export const metadata: Metadata = {
   title: "Cumplimiento UIF - Unidad de Inteligencia Financiera | JAAK",
   description:
@@ -92,6 +148,10 @@ export default function UIFPage() {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(uifSchema) }}
+      />
       <Header />
       <main>
         {/* Hero Section */}
@@ -142,7 +202,16 @@ export default function UIFPage() {
                 ¿Qué es la UIF?
               </h2>
               <p className="text-lg text-gray-600 mb-6">
-                La <strong>Unidad de Inteligencia Financiera</strong> es el órgano de inteligencia del Estado mexicano encargado de prevenir y combatir los delitos de operaciones con recursos de procedencia ilícita, financiamiento al terrorismo y otros delitos relacionados.
+                La{" "}
+                <a
+                  href="https://www.gob.mx/uif"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#0066ff] hover:underline font-semibold"
+                >
+                  Unidad de Inteligencia Financiera (UIF)
+                </a>{" "}
+                es el órgano de inteligencia del Estado mexicano encargado de prevenir y combatir los delitos de operaciones con recursos de procedencia ilícita, financiamiento al terrorismo y otros delitos relacionados.
               </p>
               <p className="text-gray-600 mb-6">
                 Las entidades obligadas deben proporcionar a la UIF información sobre sus clientes, operaciones y cualquier actividad sospechosa, manteniendo expedientes completos y auditables.
