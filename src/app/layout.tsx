@@ -15,9 +15,16 @@ const jsonLd = {
       "@type": "Organization",
       "@id": "https://jaak.ai/#organization",
       name: "JAAK",
+      legalName: "JAAK Technologies S.A.P.I. de C.V.",
       url: "https://jaak.ai",
       logo: "https://jaak.ai/images/logos/jaak-logo-azul.png",
       description: "Plataforma de verificación de identidad (KYC), validación de empresas (KYB) y firma electrónica avanzada con valor legal. Cumplimiento LFPIORPI, AML y estándares internacionales.",
+      foundingDate: "2019",
+      areaServed: {
+        "@type": "Country",
+        name: "México",
+        identifier: "MX"
+      },
       address: {
         "@type": "PostalAddress",
         streetAddress: "Av. Insurgentes Sur 1602, Piso 4",
@@ -28,6 +35,14 @@ const jsonLd = {
       },
       telephone: "+525535091788",
       email: "hello@jaak.ai",
+      contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "sales",
+        url: "https://jaak.ai/contacto",
+        email: "sales@jaak.ai",
+        telephone: "+525535091788",
+        availableLanguage: ["Spanish", "English"]
+      },
       sameAs: [
         "https://www.linkedin.com/company/jaakmx/",
         "https://github.com/jaak-ai",
@@ -46,9 +61,16 @@ const jsonLd = {
       "@id": "https://jaak.ai/#product",
       name: "JAAK Platform",
       applicationCategory: "BusinessApplication",
-      operatingSystem: "Web",
+      applicationSubCategory: "Identity Verification",
+      operatingSystem: "Web, API",
       description: "Plataforma integral de KYC (verificación de identidad), KYB (validación de empresas) y firma electrónica avanzada con evidencia auditable y valor legal.",
       provider: { "@id": "https://jaak.ai/#organization" },
+      offers: {
+        "@type": "Offer",
+        url: "https://jaak.ai/precios",
+        priceCurrency: "MXN",
+        availability: "https://schema.org/InStock"
+      },
       featureList: [
         "Verificación biométrica con prueba de vida",
         "OCR de documentos oficiales",
