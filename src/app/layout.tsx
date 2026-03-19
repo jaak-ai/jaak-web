@@ -15,7 +15,7 @@ const jsonLd = {
       "@type": "Organization",
       "@id": "https://jaak.ai/#organization",
       name: "JAAK",
-      legalName: "JAAK Technologies S.A.P.I. de C.V.",
+      legalName: "JAAK Technologies S.A.P.I. de C.V. JAAK IT S.A.P.I. de C.V.",
       url: "https://jaak.ai",
       logo: "https://jaak.ai/images/logos/jaak-logo-azul.png",
       description: "Plataforma de verificación de identidad (KYC), validación de empresas (KYB) y firma electrónica avanzada con valor legal. Cumplimiento LFPIORPI, AML y estándares internacionales.",
