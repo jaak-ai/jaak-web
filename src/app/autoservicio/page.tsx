@@ -119,7 +119,7 @@ export default function AutoservicioPage() {
               {/* CTAs */}
               <div className="flex flex-wrap justify-center gap-4">
                 <Link
-                  href="https://platform.jaak.ai"
+                  href="/autoservicio/prueba"
                   className="px-8 py-4 bg-[#2DB6C1] text-white font-bold rounded-xl hover:bg-[#25969f] transition-all shadow-lg shadow-[#2DB6C1]/20 text-lg"
                 >
                   Probar autoservicio
@@ -945,15 +945,15 @@ export default function AutoservicioPage() {
                 <span className="text-[#2DB6C1]">Sin contrato mínimo.</span>
               </h2>
               <p className="text-lg text-gray-500 max-w-2xl mx-auto">
-                Compre paquetes de verificaciones o firmas y úselos a su
-                ritmo. El nivel del plan determina el SLA de soporte incluido.
+                Compre paquetes de verificaciones o firmas y úselos a su ritmo.
               </p>
             </div>
 
-            <div className="grid lg:grid-cols-2 gap-10 mb-12">
-              {/* KYC Plans */}
-              <div>
-                <div className="flex items-center gap-3 mb-6">
+            {/* Fila 1: KYC, Firma Simple, Firma NOM-151 */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
+              {/* Card 1: KYC */}
+              <div className="border border-[#EEEEEE] rounded-2xl p-6 bg-[#FAFAFA]">
+                <div className="flex items-center gap-3 mb-5">
                   <div className="w-10 h-10 bg-[#2DB6C1] rounded-lg flex items-center justify-center text-lg">
                     👤
                   </div>
@@ -1377,7 +1377,7 @@ export default function AutoservicioPage() {
 
             <div className="flex flex-wrap justify-center gap-4 mb-12">
               <Link
-                href="https://platform.jaak.ai"
+                href="/autoservicio/prueba"
                 className="px-10 py-4 bg-[#2DB6C1] text-white font-bold rounded-xl hover:bg-[#25969f] transition-all shadow-lg shadow-[#2DB6C1]/20 text-lg"
               >
                 Probar autoservicio
