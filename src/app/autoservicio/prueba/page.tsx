@@ -40,7 +40,7 @@ export default function AutoservicioPrueba() {
       color: "#2DB6C1",
       qty: "5 verificaciones",
       price: "$99",
-      link: "https://platform.jaak.ai/#/register/user-info?d=kyc-cobre",
+      link: "https://platform.jaak.ai/#/onboarding/plans/cobre",
     },
     {
       icon: "✍️",
@@ -48,7 +48,7 @@ export default function AutoservicioPrueba() {
       color: "#3b82f6",
       qty: "10 sesiones",
       price: "$49",
-      link: "https://platform.jaak.ai/#/register/user-info?d=firma-simple-cobre",
+      link: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9zaW1wbGUlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJzaWduYV9zaW1wbGUlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBTaW1wbGUlMjIlMkMlMjJwciUyMiUzQTU2Ljg0JTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMkZpcm1hJTIwU2ltcGxlJTIwQ29icmUlMjAxMCUyMiUyQyUyMnElMjIlM0ExMCU3RCU1RCU3RA%3D%3D",
     },
     {
       icon: "📜",
@@ -56,7 +56,7 @@ export default function AutoservicioPrueba() {
       color: "#0ea5e9",
       qty: "5 sesiones",
       price: "$99",
-      link: "https://platform.jaak.ai/#/register/user-info?d=firma-nom-cobre",
+      link: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9hZHZhbmNlZCUyMiU1RCUyQyUyMnByb2R1Y3RzJTIyJTNBJTVCJTdCJTIyayUyMiUzQSUyMnNpZ25hX2FkdmFuY2VkJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwQXZhbnphZGElMjAoTk9NLTE1MSklMjIlMkMlMjJwciUyMiUzQTExNC44NCUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJGaXJtYSUyME5PTTE1MSUyMENvYnJlJTIwNSUyMiUyQyUyMnElMjIlM0E1JTJDJTIyaWQlMjIlM0ElMjI2OWNkNTYyMjNhODg3MzU1MzNmMmJhNTUlMjIlN0QlNUQlN0Q=",
     },
     {
       icon: "✍️",
@@ -64,7 +64,7 @@ export default function AutoservicioPrueba() {
       color: "#8b5cf6",
       qty: "5 sesiones",
       price: "$130",
-      link: "https://platform.jaak.ai/#/register/user-info?d=firma-nom-bio-cobre",
+      link: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9hZHZhbmNlZF9iaW9tZXRyaWMlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJzaWduYV9hZHZhbmNlZF9iaW9tZXRyaWMlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBBdmFuemFkYSUyMCUyQiUyMEJpb21ldHJpYSUyMiUyQyUyMnByJTIyJTNBMTUwLjglMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyRmlybWElMjBOT00xNTElMjAlMkIlMjBCSU8lMjBDb2JyZSUyMDUlMjIlMkMlMjJxJTIyJTNBNSUyQyUyMmlkJTIyJTNBJTIyNjljZDVjYTYzYTg4NzM1NTMzZjJiYTc5JTIyJTdEJTVEJTdE",
     },
     {
       icon: "🔐",
@@ -72,7 +72,7 @@ export default function AutoservicioPrueba() {
       color: "#f59e0b",
       qty: "5 sesiones",
       price: "$149",
-      link: "https://platform.jaak.ai/#/register/user-info?d=firma-nom-kyc-cobre",
+      link: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9iaW9tZXRyaWMlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJzaWduYV9iaW9tZXRyaWMlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBjb24lMjBCaW9tZXRyaWElMjIlMkMlMjJwciUyMiUzQTE3Mi44NCUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJGaXJtYSUyME5PTTE1MSUyMCUyQiUyMEtZQyUyMENvYnJlJTIwNSUyMiUyQyUyMnElMjIlM0E1JTJDJTIyaWQlMjIlM0ElMjI2OWNkNWY5ODNhODg3MzU1MzNmMmJhYjElMjIlN0QlNUQlN0Q=",
     },
   ];
 

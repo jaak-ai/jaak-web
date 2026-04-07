@@ -1076,11 +1076,11 @@ export default function AutoservicioPage() {
               {/* Card 4: Firma Digital con Validez NOM-151 con Tecnología Biométrica */}
               {(() => {
                 const plans = [
-                  { name: "Cobre", qty: "10 sesiones", price: "$1,300", link: "https://platform.jaak.ai/register?d=eyJwbGFuIjoiY29icmUiLCJwcm9kdWN0IjoiZmlybWEtbm9tLWJpbyJ9" },
-                  { name: "Bronce", qty: "100 sesiones", price: "$1,500", link: "https://platform.jaak.ai/register?d=eyJwbGFuIjoiYnJvbnplIiwicHJvZHVjdCI6ImZpcm1hLW5vbS1iaW8ifQ==" },
-                  { name: "Plata", qty: "200 sesiones", price: "$2,700", link: "https://platform.jaak.ai/register?d=eyJwbGFuIjoicGxhdGEiLCJwcm9kdWN0IjoiZmlybWEtbm9tLWJpbyJ9" },
-                  { name: "Oro", qty: "500 sesiones", price: "$6,625", link: "https://platform.jaak.ai/register?d=eyJwbGFuIjoib3JvIiwicHJvZHVjdCI6ImZpcm1hLW5vbS1iaW8ifQ==" },
-                  { name: "Platino", qty: "1,000 sesiones", price: "$12,500", link: "https://platform.jaak.ai/register?d=eyJwbGFuIjoicGxhdGlubyIsInByb2R1Y3QiOiJmaXJtYS1ub20tYmlvIn0=" },
+                  { name: "Cobre", qty: "5 sesiones", price: "$130", link: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9hZHZhbmNlZF9iaW9tZXRyaWMlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJzaWduYV9hZHZhbmNlZF9iaW9tZXRyaWMlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBBdmFuemFkYSUyMCUyQiUyMEJpb21ldHJpYSUyMiUyQyUyMnByJTIyJTNBMTUwLjglMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyRmlybWElMjBOT00xNTElMjAlMkIlMjBCSU8lMjBDb2JyZSUyMDUlMjIlMkMlMjJxJTIyJTNBNSUyQyUyMmlkJTIyJTNBJTIyNjljZDVjYTYzYTg4NzM1NTMzZjJiYTc5JTIyJTdEJTVEJTdE" },
+                  { name: "Bronce", qty: "50 sesiones", price: "$1,500", link: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9hZHZhbmNlZF9iaW9tZXRyaWMlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJzaWduYV9hZHZhbmNlZF9iaW9tZXRyaWMlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBBdmFuemFkYSUyMCUyQiUyMEJpb21ldHJpYSUyMiUyQyUyMnByJTIyJTNBMTc0MCUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJGaXJtYSUyME5PTTE1MSUyMCUyQiUyMEJJTyUyMEJyb25jZSUyMDUwJTIyJTJDJTIycSUyMiUzQTUwJTJDJTIyaWQlMjIlM0ElMjI2OWNkNWNmZDNhODg3MzU1MzNmMmJhN2UlMjIlN0QlNUQlN0Q=" },
+                  { name: "Plata", qty: "100 sesiones", price: "$2,700", link: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9hZHZhbmNlZF9iaW9tZXRyaWMlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJzaWduYV9hZHZhbmNlZF9iaW9tZXRyaWMlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBBdmFuemFkYSUyMCUyQiUyMEJpb21ldHJpYSUyMiUyQyUyMnByJTIyJTNBMzEzMiUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJGaXJtYSUyME5PTTE1MSUyMCUyQiUyMEJJTyUyMFBsYXRhJTIwMTAwJTIyJTJDJTIycSUyMiUzQTEwMCUyQyUyMmlkJTIyJTNBJTIyNjljZDVkNDMzYTg4NzM1NTMzZjJiYTgzJTIyJTdEJTVEJTdE" },
+                  { name: "Oro", qty: "250 sesiones", price: "$6,625", link: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9hZHZhbmNlZF9iaW9tZXRyaWMlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJzaWduYV9hZHZhbmNlZF9iaW9tZXRyaWMlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBBdmFuemFkYSUyMCUyQiUyMEJpb21ldHJpYSUyMiUyQyUyMnByJTIyJTNBNzY4NSUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJGaXJtYSUyME5PTTE1MSUyMCUyQiUyMEJJTyUyME9ybyUyMDI1MCUyMiUyQyUyMnElMjIlM0EyNTAlMkMlMjJpZCUyMiUzQSUyMjY5Y2Q1ZGE4M2E4ODczNTUzM2YyYmE5OSUyMiU3RCU1RCU3RA==" },
+                  { name: "Platino", qty: "500 sesiones", price: "$12,500", link: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9hZHZhbmNlZF9iaW9tZXRyaWMlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJzaWduYV9hZHZhbmNlZF9iaW9tZXRyaWMlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBBdmFuemFkYSUyMCUyQiUyMEJpb21ldHJpYSUyMiUyQyUyMnByJTIyJTNBMTQ1MDAlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyRmlybWElMjBOT00xNTElMjAlMkIlMjBCSU8lMjBQbGF0aW5vJTIwNTAwJTIyJTJDJTIycSUyMiUzQTUwMCUyQyUyMmlkJTIyJTNBJTIyNjljZDVkZmYzYTg4NzM1NTMzZjJiYWE3JTIyJTdEJTVEJTdE" },
                 ];
                 return (
                   <div className="bg-white rounded-2xl border border-[#EEEEEE] shadow-sm overflow-hidden">
@@ -1122,11 +1122,11 @@ export default function AutoservicioPage() {
               {/* Card 5: Firma Digital con Validez NOM-151 + KYC */}
               {(() => {
                 const plans = [
-                  { name: "Cobre", qty: "10 sesiones", price: "$1,490", link: "https://platform.jaak.ai/register?d=eyJwbGFuIjoiY29icmUiLCJwcm9kdWN0IjoiZmlybWEtbm9tLWt5YyJ9" },
-                  { name: "Bronce", qty: "100 sesiones", price: "$2,250", link: "https://platform.jaak.ai/register?d=eyJwbGFuIjoiYnJvbnplIiwicHJvZHVjdCI6ImZpcm1hLW5vbS1reWMifQ==" },
-                  { name: "Plata", qty: "200 sesiones", price: "$4,200", link: "https://platform.jaak.ai/register?d=eyJwbGFuIjoicGxhdGEiLCJwcm9kdWN0IjoiZmlybWEtbm9tLWt5YyJ9" },
-                  { name: "Oro", qty: "500 sesiones", price: "$9,875", link: "https://platform.jaak.ai/register?d=eyJwbGFuIjoib3JvIiwicHJvZHVjdCI6ImZpcm1hLW5vbS1reWMifQ==" },
-                  { name: "Platino", qty: "1,000 sesiones", price: "$18,500", link: "https://platform.jaak.ai/register?d=eyJwbGFuIjoicGxhdGlubyIsInByb2R1Y3QiOiJmaXJtYS1ub20ta3ljIn0=" },
+                  { name: "Cobre", qty: "5 sesiones", price: "$149", link: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9iaW9tZXRyaWMlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJzaWduYV9iaW9tZXRyaWMlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBjb24lMjBCaW9tZXRyaWElMjIlMkMlMjJwciUyMiUzQTE3Mi44NCUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJGaXJtYSUyME5PTTE1MSUyMCUyQiUyMEtZQyUyMENvYnJlJTIwNSUyMiUyQyUyMnElMjIlM0E1JTJDJTIyaWQlMjIlM0ElMjI2OWNkNWY5ODNhODg3MzU1MzNmMmJhYjElMjIlN0QlNUQlN0Q=" },
+                  { name: "Bronce", qty: "50 sesiones", price: "$2,250", link: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9iaW9tZXRyaWMlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJzaWduYV9iaW9tZXRyaWMlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBjb24lMjBCaW9tZXRyaWElMjIlMkMlMjJwciUyMiUzQTI2MTAlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyRmlybWElMjBOT00xNTElMjAlMkIlMjBLWUMlMjBCcm9uY2UlMjA1MCUyMiUyQyUyMnElMjIlM0E1MCUyQyUyMmlkJTIyJTNBJTIyNjljZDVmZDgzYTg4NzM1NTMzZjJiYWI2JTIyJTdEJTVEJTdE" },
+                  { name: "Plata", qty: "100 sesiones", price: "$4,200", link: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9iaW9tZXRyaWMlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJzaWduYV9iaW9tZXRyaWMlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBjb24lMjBCaW9tZXRyaWElMjIlMkMlMjJwciUyMiUzQTQ4NzIlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyRmlybWElMjBOT00xNTElMjAlMkIlMjBLWUMlMjBQbGF0YSUyMDEwMCUyMiUyQyUyMnElMjIlM0ExMDAlMkMlMjJpZCUyMiUzQSUyMjY5Y2Q2MDM0M2E4ODczNTUzM2YyYmFiYiUyMiU3RCU1RCU3RA==" },
+                  { name: "Oro", qty: "250 sesiones", price: "$9,875", link: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9iaW9tZXRyaWMlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJzaWduYV9iaW9tZXRyaWMlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBjb24lMjBCaW9tZXRyaWElMjIlMkMlMjJwciUyMiUzQTExNDU1JTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMkZpcm1hJTIwTk9NMTUxJTIwJTJCJTIwS1lDJTIwT3JvJTIwMjUwJTIyJTJDJTIycSUyMiUzQTI1MCUyQyUyMmlkJTIyJTNBJTIyNjljZDYwYTYzYTg4NzM1NTMzZjJiYWMwJTIyJTdEJTVEJTdE" },
+                  { name: "Platino", qty: "500 sesiones", price: "$18,500", link: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9iaW9tZXRyaWMlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJzaWduYV9iaW9tZXRyaWMlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBjb24lMjBCaW9tZXRyaWElMjIlMkMlMjJwciUyMiUzQTIxNDYwJTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMkZpcm1hJTIwTk9NMTUxJTIwJTJCJTIwS1lDJTIwUGxhdGlubyUyMDUwMCUyMiUyQyUyMnElMjIlM0E1MDAlMkMlMjJpZCUyMiUzQSUyMjY5Y2Q2MGZmM2E4ODczNTUzM2YyYmFjNSUyMiU3RCU1RCU3RA==" },
                 ];
                 const features = [
                   "Prueba de Vida Pasiva",
@@ -1313,7 +1313,7 @@ export default function AutoservicioPage() {
                   );
                 })()}
 
-                {/* OCR Fotográfico y Documental para ID */}
+                {/* OCR para Identificación Oficial */}
                 {(() => {
                   const plans = [
                     { name: "Cobre", qty: "210 tokens", price: "$99" },
@@ -1327,9 +1327,9 @@ export default function AutoservicioPage() {
                       <div className="p-5 pb-4" style={{ borderTop: "4px solid #ec4899" }}>
                         <div className="flex items-center gap-2 mb-2">
                           <span className="text-xl">🪪</span>
-                          <h4 className="font-bold text-[#212A45] text-base">OCR Fotográfico y Documental para ID</h4>
+                          <h4 className="font-bold text-[#212A45] text-base">OCR para Identificación Oficial</h4>
                         </div>
-                        <p className="text-gray-500 text-xs mb-1">Extracción de datos de identificaciones oficiales con IA. Se vende por tokens.</p>
+                        <p className="text-gray-500 text-xs mb-1">Extracción de fotografía y datos de identificaciones oficiales. Se vende por tokens.</p>
                         <p className="text-[10px] text-gray-400 mb-4">6 tokens por documento procesado</p>
                         <div className="space-y-2">
                           {plans.map((plan) => (
