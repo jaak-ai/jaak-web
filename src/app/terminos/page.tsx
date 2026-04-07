@@ -3,9 +3,9 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 
 export const metadata = {
-  title: "Terminos y Condiciones | JAAK",
+  title: "Términos y Condiciones | JAAK",
   description:
-    "Terminos y condiciones de uso de los servicios de verificacion de identidad de JAAK. Conoce tus derechos y responsabilidades.",
+    "Términos y condiciones de uso de los servicios de verificación de identidad de JAAK. Conoce tus derechos y responsabilidades.",
 };
 
 export default function TerminosPage() {
@@ -17,10 +17,10 @@ export default function TerminosPage() {
         <section className="pt-32 pb-16 bg-[#0a0a0a]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <h1 className="text-4xl md:text-5xl font-black text-white mb-6">
-              Terminos y Condiciones
+              Términos y Condiciones
             </h1>
             <p className="text-xl text-white/60">
-              Ultima actualizacion: Enero 2025
+              Última actualización: Abril 2026
             </p>
           </div>
         </section>
@@ -29,45 +29,45 @@ export default function TerminosPage() {
         <section className="py-16 bg-white">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="prose prose-lg max-w-none">
-              {/* Introduccion */}
+              {/* Introducción */}
               <div className="mb-12">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                  1. Aceptacion de los terminos
+                  1. Aceptación de los términos
                 </h2>
                 <p className="text-gray-600 mb-4">
-                  Los presentes Terminos y Condiciones (en adelante, los &quot;Terminos&quot;) regulan el uso de los servicios de verificacion de identidad, firma electronica y servicios relacionados (en adelante, los &quot;Servicios&quot;) proporcionados por JAAK IT SAPI de CV (en adelante, &quot;JAAK&quot;).
+                  Los presentes Términos y Condiciones (en adelante, los &quot;Términos&quot;) regulan el uso de los servicios de verificación de identidad, firma electrónica y servicios relacionados (en adelante, los &quot;Servicios&quot;) proporcionados por JAAK IT SAPI de CV (en adelante, &quot;JAAK&quot;).
                 </p>
                 <p className="text-gray-600 mb-4">
-                  Al acceder o utilizar nuestros Servicios, usted acepta quedar vinculado por estos Terminos. Si no esta de acuerdo con alguna parte de estos Terminos, no podra acceder a los Servicios.
+                  Al acceder o utilizar nuestros Servicios, usted acepta quedar vinculado por estos Términos. Si no está de acuerdo con alguna parte de estos Términos, no podrá acceder a los Servicios.
                 </p>
                 <p className="text-gray-600">
-                  Estos Terminos aplican tanto a usuarios finales que realizan procesos de verificacion como a empresas clientes que contratan nuestros servicios mediante acuerdos comerciales especificos.
+                  Estos Términos aplican tanto a usuarios finales que realizan procesos de verificación como a empresas clientes que contratan nuestros servicios mediante acuerdos comerciales específicos.
                 </p>
               </div>
 
-              {/* Descripcion de servicios */}
+              {/* Descripción de servicios */}
               <div className="mb-12">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                  2. Descripcion de los servicios
+                  2. Descripción de los servicios
                 </h2>
                 <p className="text-gray-600 mb-4">
-                  JAAK proporciona los siguientes servicios de verificacion de identidad y cumplimiento regulatorio:
+                  JAAK proporciona los siguientes servicios de verificación de identidad y cumplimiento regulatorio:
                 </p>
                 <ul className="list-disc pl-6 text-gray-600 space-y-2 mb-4">
                   <li>
-                    <strong>Verificacion de identidad (KYC):</strong> Validacion de identidad mediante comparacion biometrica facial, prueba de vida y validacion de documentos oficiales.
+                    <strong>Verificación de identidad (KYC):</strong> Validación de identidad mediante comparación biométrica facial, prueba de vida y validación de documentos oficiales.
                   </li>
                   <li>
-                    <strong>Verificacion empresarial (KYB):</strong> Validacion de personas morales mediante consulta de registros publicos y verificacion de representantes legales.
+                    <strong>Verificación empresarial (KYB):</strong> Validación de personas morales mediante consulta de registros públicos y verificación de representantes legales.
                   </li>
                   <li>
-                    <strong>Firma electronica:</strong> Servicios de firma electronica simple y avanzada con validez legal conforme a la legislacion mexicana.
+                    <strong>Firma electrónica:</strong> Servicios de firma electrónica simple y avanzada con validez legal conforme a la legislación mexicana.
                   </li>
                   <li>
-                    <strong>Gestion de evidencia:</strong> Generacion, almacenamiento y consulta de expedientes digitales con valor probatorio.
+                    <strong>Gestión de evidencia:</strong> Generación, almacenamiento y consulta de expedientes digitales con valor probatorio.
                   </li>
                   <li>
-                    <strong>APIs y SDKs:</strong> Interfaces de programacion para integracion con sistemas de terceros.
+                    <strong>APIs y SDKs:</strong> Interfaces de programación para integración con sistemas de terceros.
                   </li>
                 </ul>
               </div>
@@ -82,22 +82,22 @@ export default function TerminosPage() {
                   Para usuarios finales
                 </h3>
                 <ul className="list-disc pl-6 text-gray-600 space-y-2 mb-4">
-                  <li>Ser mayor de 18 anios o contar con la capacidad legal para celebrar contratos</li>
-                  <li>Proporcionar informacion veraz, actual y completa durante el proceso de verificacion</li>
-                  <li>Utilizar documentos de identificacion autenticos y vigentes</li>
+                  <li>Ser mayor de 18 años o contar con la capacidad legal para celebrar contratos</li>
+                  <li>Proporcionar información veraz, actual y completa durante el proceso de verificación</li>
+                  <li>Utilizar documentos de identificación auténticos y vigentes</li>
                   <li>No intentar suplantar la identidad de otra persona</li>
-                  <li>Contar con un dispositivo compatible con camara para la captura biometrica</li>
+                  <li>Contar con un dispositivo compatible con cámara para la captura biométrica</li>
                 </ul>
 
                 <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-3">
                   Para empresas clientes
                 </h3>
                 <ul className="list-disc pl-6 text-gray-600 space-y-2 mb-4">
-                  <li>Estar legalmente constituida conforme a las leyes mexicanas o del pais de origen</li>
+                  <li>Estar legalmente constituida conforme a las leyes mexicanas o del país de origen</li>
                   <li>Contar con un contrato de servicios vigente con JAAK</li>
-                  <li>Cumplir con la normatividad aplicable en materia de proteccion de datos personales</li>
+                  <li>Cumplir con la normatividad aplicable en materia de protección de datos personales</li>
                   <li>Obtener los consentimientos necesarios de los usuarios finales</li>
-                  <li>Utilizar los Servicios unicamente para los fines acordados contractualmente</li>
+                  <li>Utilizar los Servicios únicamente para los fines acordados contractualmente</li>
                 </ul>
               </div>
 
@@ -110,18 +110,18 @@ export default function TerminosPage() {
                   Al utilizar nuestros Servicios, usted se compromete a:
                 </p>
                 <ul className="list-disc pl-6 text-gray-600 space-y-2 mb-4">
-                  <li>Utilizar los Servicios de manera legal y etica</li>
+                  <li>Utilizar los Servicios de manera legal y ética</li>
                   <li>No intentar evadir, desactivar o interferir con las medidas de seguridad</li>
-                  <li>No realizar ingenieria inversa, descompilar o desensamblar los Servicios</li>
+                  <li>No realizar ingeniería inversa, descompilar o desensamblar los Servicios</li>
                   <li>No utilizar los Servicios para actividades fraudulentas o ilegales</li>
-                  <li>No transmitir virus, malware u otro codigo malicioso</li>
+                  <li>No transmitir virus, malware u otro código malicioso</li>
                   <li>No sobrecargar o interferir con la infraestructura de los Servicios</li>
-                  <li>No acceder a datos o cuentas de terceros sin autorizacion</li>
+                  <li>No acceder a datos o cuentas de terceros sin autorización</li>
                 </ul>
 
                 <div className="bg-red-50 border border-red-200 rounded-xl p-6 mt-6">
                   <p className="text-gray-700">
-                    <strong className="text-red-600">Advertencia:</strong> El uso fraudulento de los Servicios, incluyendo la suplantacion de identidad, constituye un delito conforme al Codigo Penal Federal de Mexico y puede ser sancionado con penas de prision y multas.
+                    <strong className="text-red-600">Advertencia:</strong> El uso fraudulento de los Servicios, incluyendo la suplantación de identidad, constituye un delito conforme al Código Penal Federal de México y puede ser sancionado con penas de prisión y multas.
                   </p>
                 </div>
               </div>
@@ -132,13 +132,13 @@ export default function TerminosPage() {
                   5. Propiedad intelectual
                 </h2>
                 <p className="text-gray-600 mb-4">
-                  Todos los derechos de propiedad intelectual sobre los Servicios, incluyendo pero no limitado a software, algoritmos, interfaces, disenos, marcas comerciales, logotipos y contenido, son propiedad exclusiva de JAAK o sus licenciantes.
+                  Todos los derechos de propiedad intelectual sobre los Servicios, incluyendo pero no limitado a software, algoritmos, interfaces, diseños, marcas comerciales, logotipos y contenido, son propiedad exclusiva de JAAK o sus licenciantes.
                 </p>
                 <p className="text-gray-600 mb-4">
-                  La utilizacion de los Servicios no otorga al usuario ninguna licencia o derecho sobre la propiedad intelectual de JAAK, excepto el derecho limitado de uso conforme a estos Terminos.
+                  La utilización de los Servicios no otorga al usuario ninguna licencia o derecho sobre la propiedad intelectual de JAAK, excepto el derecho limitado de uso conforme a estos Términos.
                 </p>
                 <p className="text-gray-600">
-                  Los datos biometricos y personales proporcionados por los usuarios permanecen siendo propiedad del titular de dichos datos y son tratados conforme a nuestro{" "}
+                  Los datos biométricos y personales proporcionados por los usuarios permanecen siendo propiedad del titular de dichos datos y son tratados conforme a nuestro{" "}
                   <Link href="/privacidad" className="text-[#0066ff] hover:underline">
                     Aviso de Privacidad
                   </Link>.
@@ -151,59 +151,59 @@ export default function TerminosPage() {
                   6. Disponibilidad y niveles de servicio
                 </h2>
                 <p className="text-gray-600 mb-4">
-                  JAAK se esfuerza por mantener los Servicios disponibles de manera continua. Sin embargo, no garantizamos que los Servicios estaran disponibles en todo momento sin interrupciones.
+                  JAAK se esfuerza por mantener los Servicios disponibles de manera continua. Sin embargo, no garantizamos que los Servicios estarán disponibles en todo momento sin interrupciones.
                 </p>
                 <p className="text-gray-600 mb-4">
                   Los Servicios pueden no estar disponibles debido a:
                 </p>
                 <ul className="list-disc pl-6 text-gray-600 space-y-2 mb-4">
-                  <li>Mantenimiento programado (notificado con anticipacion)</li>
+                  <li>Mantenimiento programado (notificado con anticipación)</li>
                   <li>Actualizaciones de seguridad urgentes</li>
                   <li>Fallas en la infraestructura de terceros</li>
                   <li>Casos de fuerza mayor</li>
                 </ul>
                 <p className="text-gray-600">
-                  Los clientes empresariales pueden contar con acuerdos de nivel de servicio (SLA) especificos segun su contrato comercial.
+                  Los clientes empresariales pueden contar con acuerdos de nivel de servicio (SLA) específicos según su contrato comercial.
                 </p>
               </div>
 
-              {/* Limitacion de responsabilidad */}
+              {/* Limitación de responsabilidad */}
               <div className="mb-12">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                  7. Limitacion de responsabilidad
+                  7. Limitación de responsabilidad
                 </h2>
                 <p className="text-gray-600 mb-4">
-                  En la maxima medida permitida por la ley aplicable:
+                  En la máxima medida permitida por la ley aplicable:
                 </p>
                 <ul className="list-disc pl-6 text-gray-600 space-y-2 mb-4">
                   <li>
-                    JAAK no sera responsable por danos indirectos, incidentales, especiales, consecuentes o punitivos.
+                    JAAK no será responsable por daños indirectos, incidentales, especiales, consecuentes o punitivos.
                   </li>
                   <li>
-                    La responsabilidad total de JAAK no excedera el monto pagado por el cliente en los 12 meses anteriores al evento que dio origen a la reclamacion.
+                    La responsabilidad total de JAAK no excederá el monto pagado por el cliente en los 12 meses anteriores al evento que dio origen a la reclamación.
                   </li>
                   <li>
-                    JAAK no garantiza que los resultados de verificacion seran 100% precisos en todos los casos.
+                    JAAK no garantiza que los resultados de verificación serán 100% precisos en todos los casos.
                   </li>
                   <li>
-                    JAAK no es responsable de las decisiones tomadas por los clientes basadas en los resultados de verificacion.
+                    JAAK no es responsable de las decisiones tomadas por los clientes basadas en los resultados de verificación.
                   </li>
                 </ul>
 
                 <div className="bg-[#0066ff]/5 border border-[#0066ff]/20 rounded-xl p-6 mt-6">
                   <p className="text-gray-700">
-                    <strong className="text-[#0066ff]">Nota:</strong> Nuestros servicios de verificacion estan certificados por iBeta para prueba de vida y cumplen con estandares NIST para verificacion de identidad, lo que proporciona altos niveles de precision y confiabilidad.
+                    <strong className="text-[#0066ff]">Nota:</strong> Nuestros servicios de verificación están certificados por iBeta para prueba de vida y cumplen con estándares NIST para verificación de identidad, lo que proporciona altos niveles de precisión y confiabilidad.
                   </p>
                 </div>
               </div>
 
-              {/* Indemnizacion */}
+              {/* Indemnización */}
               <div className="mb-12">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                  8. Indemnizacion
+                  8. Indemnización
                 </h2>
                 <p className="text-gray-600">
-                  Usted acepta indemnizar, defender y mantener indemne a JAAK, sus directores, empleados y agentes, de cualquier reclamacion, dano, obligacion, perdida, responsabilidad, costo o deuda que surja de: (a) su uso de los Servicios; (b) su violacion de estos Terminos; (c) su violacion de derechos de terceros; o (d) su provision de informacion falsa o fraudulenta.
+                  Usted acepta indemnizar, defender y mantener indemne a JAAK, sus directores, empleados y agentes, de cualquier reclamación, daño, obligación, pérdida, responsabilidad, costo o deuda que surja de: (a) su uso de los Servicios; (b) su violación de estos Términos; (c) su violación de derechos de terceros; o (d) su provisión de información falsa o fraudulenta.
                 </p>
               </div>
 
@@ -213,61 +213,61 @@ export default function TerminosPage() {
                   9. Confidencialidad
                 </h2>
                 <p className="text-gray-600 mb-4">
-                  Tanto JAAK como los usuarios se comprometen a mantener la confidencialidad de la informacion intercambiada en el marco de los Servicios, salvo:
+                  Tanto JAAK como los usuarios se comprometen a mantener la confidencialidad de la información intercambiada en el marco de los Servicios, salvo:
                 </p>
                 <ul className="list-disc pl-6 text-gray-600 space-y-2">
-                  <li>Cuando exista consentimiento expreso para su divulgacion</li>
+                  <li>Cuando exista consentimiento expreso para su divulgación</li>
                   <li>Cuando sea requerido por ley o autoridad competente</li>
-                  <li>Cuando la informacion sea de dominio publico</li>
+                  <li>Cuando la información sea de dominio público</li>
                   <li>Cuando sea necesario para proteger derechos de JAAK en procedimientos legales</li>
                 </ul>
               </div>
 
-              {/* Suspension y terminacion */}
+              {/* Suspensión y terminación */}
               <div className="mb-12">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                  10. Suspension y terminacion
+                  10. Suspensión y terminación
                 </h2>
                 <p className="text-gray-600 mb-4">
                   JAAK puede suspender o terminar su acceso a los Servicios en cualquier momento si:
                 </p>
                 <ul className="list-disc pl-6 text-gray-600 space-y-2 mb-4">
-                  <li>Viola estos Terminos o cualquier politica aplicable</li>
+                  <li>Viola estos Términos o cualquier política aplicable</li>
                   <li>Utiliza los Servicios de manera fraudulenta o ilegal</li>
                   <li>Representa un riesgo de seguridad para los Servicios o terceros</li>
                   <li>No paga las tarifas acordadas (para clientes empresariales)</li>
                   <li>Lo requiere una orden judicial o autoridad competente</li>
                 </ul>
                 <p className="text-gray-600">
-                  La terminacion no afectara las obligaciones de confidencialidad y proteccion de datos, las cuales permanecen vigentes.
+                  La terminación no afectará las obligaciones de confidencialidad y protección de datos, las cuales permanecen vigentes.
                 </p>
               </div>
 
               {/* Modificaciones */}
               <div className="mb-12">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                  11. Modificaciones a los terminos
+                  11. Modificaciones a los términos
                 </h2>
                 <p className="text-gray-600 mb-4">
-                  JAAK se reserva el derecho de modificar estos Terminos en cualquier momento. Las modificaciones entraran en vigor:
+                  JAAK se reserva el derecho de modificar estos Términos en cualquier momento. Las modificaciones entrarán en vigor:
                 </p>
                 <ul className="list-disc pl-6 text-gray-600 space-y-2">
                   <li>Inmediatamente para nuevos usuarios</li>
-                  <li>30 dias despues de la notificacion para usuarios existentes</li>
-                  <li>Segun lo acordado en contratos comerciales especificos para clientes empresariales</li>
+                  <li>30 días después de la notificación para usuarios existentes</li>
+                  <li>Según lo acordado en contratos comerciales específicos para clientes empresariales</li>
                 </ul>
               </div>
 
               {/* Ley aplicable */}
               <div className="mb-12">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                  12. Legislacion aplicable y jurisdiccion
+                  12. Legislación aplicable y jurisdicción
                 </h2>
                 <p className="text-gray-600 mb-4">
-                  Estos Terminos se regiran e interpretaran de acuerdo con las leyes de los Estados Unidos Mexicanos.
+                  Estos Términos se regirán e interpretarán de acuerdo con las leyes de los Estados Unidos Mexicanos.
                 </p>
                 <p className="text-gray-600">
-                  Para cualquier controversia derivada de estos Terminos, las partes se someten a la jurisdiccion de los tribunales competentes de la Ciudad de Mexico, renunciando a cualquier otro fuero que pudiera corresponderles por razon de su domicilio presente o futuro.
+                  Para cualquier controversia derivada de estos Términos, las partes se someten a la jurisdicción de los tribunales competentes de la Ciudad de México, renunciando a cualquier otro fuero que pudiera corresponderles por razón de su domicilio presente o futuro.
                 </p>
               </div>
 
@@ -278,18 +278,40 @@ export default function TerminosPage() {
                 </h2>
                 <ul className="list-disc pl-6 text-gray-600 space-y-2">
                   <li>
-                    <strong>Divisibilidad:</strong> Si alguna disposicion de estos Terminos es declarada nula o inaplicable, las demas disposiciones permaneceran en pleno vigor.
+                    <strong>Divisibilidad:</strong> Si alguna disposición de estos Términos es declarada nula o inaplicable, las demás disposiciones permanecerán en pleno vigor.
                   </li>
                   <li>
                     <strong>Renuncia:</strong> La falta de ejercicio de un derecho no constituye renuncia al mismo.
                   </li>
                   <li>
-                    <strong>Cesion:</strong> Usted no puede ceder sus derechos u obligaciones bajo estos Terminos sin nuestro consentimiento previo por escrito.
+                    <strong>Cesión:</strong> Usted no puede ceder sus derechos u obligaciones bajo estos Términos sin nuestro consentimiento previo por escrito.
                   </li>
                   <li>
-                    <strong>Acuerdo completo:</strong> Estos Terminos, junto con el Aviso de Privacidad y cualquier acuerdo comercial aplicable, constituyen el acuerdo completo entre las partes.
+                    <strong>Acuerdo completo:</strong> Estos Términos, junto con el Aviso de Privacidad y cualquier acuerdo comercial aplicable, constituyen el acuerdo completo entre las partes.
                   </li>
                 </ul>
+              </div>
+
+              {/* Retención y eliminación */}
+              <div className="mb-12">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  14. Retención, Eliminación y Protección de la Información
+                </h2>
+                <p className="text-gray-600 mb-4">
+                  Toda la información, datos personales, documentación y demás activos de información proporcionados por el cliente o generados con motivo de la prestación del servicio serán tratados conforme a principios de confidencialidad, integridad y disponibilidad, y serán conservados únicamente durante un periodo máximo de tres (3) meses posteriores a la conclusión del servicio.
+                </p>
+                <p className="text-gray-600 mb-4">
+                  Durante dicho periodo, la información será resguardada bajo controles de seguridad administrativos y técnicos adecuados, en apego a las mejores prácticas en materia de seguridad de la información y protección de datos personales, incluyendo controles de acceso, cifrado cuando aplique, y monitoreo de accesos.
+                </p>
+                <p className="text-gray-600 mb-4">
+                  Concluido el plazo de retención, el responsable procederá a la eliminación segura, anonimización irreversible o destrucción de la información, utilizando métodos que impidan su recuperación posterior, de conformidad con políticas internas de gestión de la información y estándares aplicables.
+                </p>
+                <p className="text-gray-600 mb-4">
+                  En caso de que exista una obligación legal, regulatoria o contractual que requiera la conservación de cierta información por un periodo mayor, ésta será debidamente resguardada bajo medidas de seguridad reforzadas y limitada exclusivamente para dichos fines.
+                </p>
+                <p className="text-gray-600">
+                  El cliente podrá, dentro del periodo de retención establecido, solicitar la devolución o eliminación anticipada de su información, sujeto a validación de identidad y siempre que no contravenga disposiciones legales aplicables.
+                </p>
               </div>
 
               {/* Contacto */}
@@ -298,7 +320,7 @@ export default function TerminosPage() {
                   Contacto
                 </h2>
                 <p className="text-white/70 mb-4">
-                  Si tiene preguntas sobre estos Terminos y Condiciones, contactenos:
+                  Si tiene preguntas sobre estos Términos y Condiciones, contáctenos:
                 </p>
                 <div className="space-y-2">
                   <p className="text-white">
@@ -308,7 +330,7 @@ export default function TerminosPage() {
                     </a>
                   </p>
                   <p className="text-white">
-                    <strong className="text-[#0066ff]">Direccion:</strong> Ciudad de Mexico, Mexico
+                    <strong className="text-[#0066ff]">Dirección:</strong> Ciudad de México, México
                   </p>
                 </div>
               </div>
