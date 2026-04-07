@@ -1,11 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-
-const MEET_LINK = "TU_LINK_DE_MEET";
-const WA_LINK =
-  "https://wa.me/525215535091788?text=Hola%20%F0%9F%91%8B%20Ya%20realic%C3%A9%20mi%20compra%20y%20quisiera%20recibir%20el%20link%20de%20la%20sesi%C3%B3n%20de%20onboarding.";
 
 interface FormState {
   nombre: string;
@@ -31,6 +26,7 @@ export default function OnboardingForm() {
   const [form, setForm] = useState<FormState>(INITIAL);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -46,16 +42,35 @@ export default function OnboardingForm() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    // TODO: conectar a backend / webhook
-    await new Promise((r) => setTimeout(r, 900));
-    setSubmitted(true);
-    setLoading(false);
+    setError(null);
+
+    try {
+      const res = await fetch("/api/onboarding", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "Error al enviar el formulario");
+      }
+
+      setSubmitted(true);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Ocurrió un error. Intenta de nuevo."
+      );
+    } finally {
+      setLoading(false);
+    }
   }
 
   const inputBase =
     "w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-white placeholder-white/35 text-sm focus:outline-none focus:border-[#2DB6C1] focus:ring-1 focus:ring-[#2DB6C1] transition-all";
 
-  const labelBase = "block text-white/70 text-xs font-semibold uppercase tracking-wide mb-1.5";
+  const labelBase =
+    "block text-white/70 text-xs font-semibold uppercase tracking-wide mb-1.5";
 
   return (
     <section className="py-20 px-4 bg-[#0D1B3E]">
@@ -183,13 +198,13 @@ export default function OnboardingForm() {
                   <option value="" disabled className="bg-[#0D1B3E] text-white/50">
                     Selecciona tu paquete
                   </option>
-                  <option value="prueba" className="bg-[#0D1B3E] text-white">
+                  <option value="Paquete de prueba" className="bg-[#0D1B3E] text-white">
                     Paquete de prueba
                   </option>
-                  <option value="intermedio" className="bg-[#0D1B3E] text-white">
+                  <option value="Paquete intermedio" className="bg-[#0D1B3E] text-white">
                     Paquete intermedio
                   </option>
-                  <option value="mayor" className="bg-[#0D1B3E] text-white">
+                  <option value="Paquete mayor" className="bg-[#0D1B3E] text-white">
                     Paquete mayor
                   </option>
                 </select>
@@ -215,6 +230,13 @@ export default function OnboardingForm() {
                 </label>
               </div>
 
+              {/* Error */}
+              {error && (
+                <p className="text-red-400 text-sm bg-red-400/10 border border-red-400/20 rounded-xl px-4 py-3">
+                  {error}
+                </p>
+              )}
+
               {/* Submit */}
               <button
                 type="submit"
@@ -227,7 +249,7 @@ export default function OnboardingForm() {
                     Enviando...
                   </>
                 ) : (
-                  "Acceder a mi onboarding →"
+                  "Registrarme para el onboarding →"
                 )}
               </button>
 
@@ -259,84 +281,30 @@ export default function OnboardingForm() {
             </div>
 
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
-              Tu onboarding está listo
+              ¡Registro completado!
             </h2>
-            <p className="text-white/60 text-sm leading-relaxed mb-8 max-w-md mx-auto">
-              Gracias por registrarte. Ya puedes conectarte a cualquiera de
-              nuestras sesiones de onboarding en vivo.
+            <p className="text-white/60 text-sm leading-relaxed max-w-md mx-auto mb-6">
+              Gracias por registrarte, {form.nombre.split(" ")[0]}. Nuestro
+              equipo revisará tu información y se pondrá en contacto contigo en
+              breve para coordinar tu sesión de onboarding.
             </p>
 
-            {/* Horarios */}
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-6 mb-8 text-left max-w-sm mx-auto">
-              <p className="text-white/50 text-xs font-semibold uppercase tracking-wide mb-4">
-                Próximas sesiones grupales
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-5 text-left max-w-sm mx-auto">
+              <p className="text-white/50 text-xs font-semibold uppercase tracking-wide mb-3">
+                ¿Qué sigue?
               </p>
-              <div className="space-y-3">
+              <ul className="space-y-2.5">
                 {[
-                  { day: "Martes", time: "10:00 – 11:00 a.m." },
-                  { day: "Jueves", time: "4:00 – 5:00 p.m." },
-                ].map((s) => (
-                  <div key={s.day} className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-[#2DB6C1]/20 flex items-center justify-center flex-shrink-0">
-                      <svg
-                        className="w-4 h-4 text-[#2DB6C1]"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                        />
-                      </svg>
-                    </div>
-                    <div>
-                      <p className="text-white font-semibold text-sm">
-                        {s.day}
-                      </p>
-                      <p className="text-white/50 text-xs">{s.time}</p>
-                    </div>
-                  </div>
+                  "Recibirás un correo de confirmación",
+                  "Un asesor revisará tu registro",
+                  "Te invitaremos a la sesión de onboarding grupal",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-2.5 text-sm text-white/70">
+                    <span className="text-[#2DB6C1] mt-0.5 flex-shrink-0">✓</span>
+                    {item}
+                  </li>
                 ))}
-              </div>
-            </div>
-
-            {/* CTA — Desktop: botón Meet / Mobile: mensaje + WhatsApp */}
-            <div>
-              {/* Desktop */}
-              <Link
-                href={MEET_LINK}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hidden sm:inline-flex items-center gap-2 bg-[#2DB6C1] hover:bg-[#25969f] text-white font-bold px-8 py-3.5 rounded-xl transition-all text-sm"
-              >
-                <svg
-                  className="w-4 h-4"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <path d="M15 10l4.553-2.276A1 1 0 0121 8.723v6.554a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" />
-                </svg>
-                Entrar a la sesión de onboarding
-              </Link>
-
-              {/* Mobile */}
-              <div className="sm:hidden space-y-3">
-                <p className="text-white/60 text-sm">
-                  Para recibir el link de acceso a la sesión, escríbenos por
-                  WhatsApp y te lo enviamos de inmediato.
-                </p>
-                <Link
-                  href={WA_LINK}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#1fba58] text-white font-bold px-6 py-3 rounded-xl transition-all text-sm"
-                >
-                  💬 Solicitar link por WhatsApp
-                </Link>
-              </div>
+              </ul>
             </div>
           </div>
         )}
