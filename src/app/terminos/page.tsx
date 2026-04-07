@@ -20,7 +20,7 @@ export default function TerminosPage() {
               Terminos y Condiciones
             </h1>
             <p className="text-xl text-white/60">
-              Ultima actualizacion: Enero 2025
+              Ultima actualizacion: Abril 2026
             </p>
           </div>
         </section>
@@ -290,6 +290,28 @@ export default function TerminosPage() {
                     <strong>Acuerdo completo:</strong> Estos Terminos, junto con el Aviso de Privacidad y cualquier acuerdo comercial aplicable, constituyen el acuerdo completo entre las partes.
                   </li>
                 </ul>
+              </div>
+
+              {/* Retencion y eliminacion */}
+              <div className="mb-12">
+                <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                  14. Retencion, Eliminacion y Proteccion de la Informacion
+                </h2>
+                <p className="text-gray-600 mb-4">
+                  Toda la informacion, datos personales, documentacion y demas activos de informacion proporcionados por el cliente o generados con motivo de la prestacion del servicio seran tratados conforme a principios de confidencialidad, integridad y disponibilidad, y seran conservados unicamente durante un periodo maximo de tres (3) meses posteriores a la conclusion del servicio.
+                </p>
+                <p className="text-gray-600 mb-4">
+                  Durante dicho periodo, la informacion sera resguardada bajo controles de seguridad administrativos y tecnicos adecuados, en apego a las mejores practicas en materia de seguridad de la informacion y proteccion de datos personales, incluyendo controles de acceso, cifrado cuando aplique, y monitoreo de accesos.
+                </p>
+                <p className="text-gray-600 mb-4">
+                  Concluido el plazo de retencion, el responsable procedera a la eliminacion segura, anonimizacion irreversible o destruccion de la informacion, utilizando metodos que impidan su recuperacion posterior, de conformidad con politicas internas de gestion de la informacion y estandares aplicables.
+                </p>
+                <p className="text-gray-600 mb-4">
+                  En caso de que exista una obligacion legal, regulatoria o contractual que requiera la conservacion de cierta informacion por un periodo mayor, esta sera debidamente resguardada bajo medidas de seguridad reforzadas y limitada exclusivamente para dichos fines.
+                </p>
+                <p className="text-gray-600">
+                  El cliente podra, dentro del periodo de retencion establecido, solicitar la devolucion o eliminacion anticipada de su informacion, sujeto a validacion de identidad y siempre que no contravenga disposiciones legales aplicables.
+                </p>
               </div>
 
               {/* Contacto */}
