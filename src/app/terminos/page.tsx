@@ -292,25 +292,25 @@ export default function TerminosPage() {
                 </ul>
               </div>
 
-              {/* Retencion y eliminacion */}
+              {/* Retención y eliminación */}
               <div className="mb-12">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                  14. Retencion, Eliminacion y Proteccion de la Informacion
+                  14. Retención, Eliminación y Protección de la Información
                 </h2>
                 <p className="text-gray-600 mb-4">
-                  Toda la informacion, datos personales, documentacion y demas activos de informacion proporcionados por el cliente o generados con motivo de la prestacion del servicio seran tratados conforme a principios de confidencialidad, integridad y disponibilidad, y seran conservados unicamente durante un periodo maximo de tres (3) meses posteriores a la conclusion del servicio.
+                  Toda la información, datos personales, documentación y demás activos de información proporcionados por el cliente o generados con motivo de la prestación del servicio serán tratados conforme a principios de confidencialidad, integridad y disponibilidad, y serán conservados únicamente durante un periodo máximo de tres (3) meses posteriores a la conclusión del servicio.
                 </p>
                 <p className="text-gray-600 mb-4">
-                  Durante dicho periodo, la informacion sera resguardada bajo controles de seguridad administrativos y tecnicos adecuados, en apego a las mejores practicas en materia de seguridad de la informacion y proteccion de datos personales, incluyendo controles de acceso, cifrado cuando aplique, y monitoreo de accesos.
+                  Durante dicho periodo, la información será resguardada bajo controles de seguridad administrativos y técnicos adecuados, en apego a las mejores prácticas en materia de seguridad de la información y protección de datos personales, incluyendo controles de acceso, cifrado cuando aplique, y monitoreo de accesos.
                 </p>
                 <p className="text-gray-600 mb-4">
-                  Concluido el plazo de retencion, el responsable procedera a la eliminacion segura, anonimizacion irreversible o destruccion de la informacion, utilizando metodos que impidan su recuperacion posterior, de conformidad con politicas internas de gestion de la informacion y estandares aplicables.
+                  Concluido el plazo de retención, el responsable procederá a la eliminación segura, anonimización irreversible o destrucción de la información, utilizando métodos que impidan su recuperación posterior, de conformidad con políticas internas de gestión de la información y estándares aplicables.
                 </p>
                 <p className="text-gray-600 mb-4">
-                  En caso de que exista una obligacion legal, regulatoria o contractual que requiera la conservacion de cierta informacion por un periodo mayor, esta sera debidamente resguardada bajo medidas de seguridad reforzadas y limitada exclusivamente para dichos fines.
+                  En caso de que exista una obligación legal, regulatoria o contractual que requiera la conservación de cierta información por un periodo mayor, ésta será debidamente resguardada bajo medidas de seguridad reforzadas y limitada exclusivamente para dichos fines.
                 </p>
                 <p className="text-gray-600">
-                  El cliente podra, dentro del periodo de retencion establecido, solicitar la devolucion o eliminacion anticipada de su informacion, sujeto a validacion de identidad y siempre que no contravenga disposiciones legales aplicables.
+                  El cliente podrá, dentro del periodo de retención establecido, solicitar la devolución o eliminación anticipada de su información, sujeto a validación de identidad y siempre que no contravenga disposiciones legales aplicables.
                 </p>
               </div>
 
