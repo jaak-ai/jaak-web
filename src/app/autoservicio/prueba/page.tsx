@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Prueba JAAK Autoservicio | Empieza con el plan Cobre",
+  title: "Paquetes de Prueba JAAK Autoservicio | Empieza hoy",
   description:
-    "Compra tu paquete de prueba y empieza a integrar los productos JAAK en minutos. Sin contrato, sin setup fee.",
+    "Elige tu paquete de prueba único y empieza a usar JAAK en producción de inmediato. Sin contrato, sin setup fee, activación automática.",
 };
 
 export default function AutoservicioPrueba() {
@@ -12,34 +12,23 @@ export default function AutoservicioPrueba() {
     "Sin contrato mínimo",
     "Activación inmediata",
     "Soporte incluido",
-    "Documentación completa",
-    "Sandbox gratuito",
+    "Paquetes únicos de prueba",
   ];
 
   const accompanyingItems = [
     {
-      icon: "📚",
-      title: "Documentación técnica",
-      desc: "Guías paso a paso, referencia de API y ejemplos de código listos para copiar.",
-    },
-    {
-      icon: "🧪",
-      title: "Entorno sandbox",
-      desc: "Ambiente de pruebas gratuito e ilimitado para desarrollar y validar sin consumir créditos.",
-    },
-    {
       icon: "💬",
       title: "Soporte por email",
-      desc: "Tiempo de respuesta garantizado según su plan. Resolvemos dudas técnicas y de integración.",
+      desc: "Tiempo de respuesta garantizado según su plan. Resolvemos dudas del servicio y su uso.",
     },
     {
       icon: "🎓",
       title: "Onboarding guiado",
-      desc: "Llamada de bienvenida de 30 minutos para que su equipo arranque sin fricciones.",
+      desc: "Sesiones grupales de 1 hora para garantizar que comience su proyecto sin fricción y en minutos.",
     },
     {
       icon: "🔁",
-      title: "Créditos no vencen",
+      title: "Créditos vigentes 12 meses",
       desc: "Sus créditos tienen vigencia de 12 meses desde la compra. Úselos a su ritmo.",
     },
   ];
@@ -49,69 +38,69 @@ export default function AutoservicioPrueba() {
       icon: "🪪",
       name: "KYC — Verificación de identidad",
       color: "#2DB6C1",
-      qty: "10 verificaciones",
-      price: "$990",
-      link: "https://platform.jaak.ai/register?d=eyJwbGFuIjoiY29icmUiLCJwcm9kdWN0Ijoia3ljIn0=",
+      qty: "5 verificaciones",
+      price: "$99",
+      link: "https://platform.jaak.ai/#/register/user-info?d=kyc-cobre",
     },
     {
       icon: "✍️",
       name: "Firma Simple",
       color: "#3b82f6",
       qty: "10 sesiones",
-      price: "$399",
-      link: "https://platform.jaak.ai/register?d=eyJwbGFuIjoiY29icmUiLCJwcm9kdWN0IjoiZmlybWEtc2ltcGxlIn0=",
+      price: "$49",
+      link: "https://platform.jaak.ai/#/register/user-info?d=firma-simple-cobre",
     },
     {
       icon: "📜",
-      name: "Firma NOM-151",
+      name: "Firma Digital con Validez NOM-151",
       color: "#0ea5e9",
-      qty: "10 sesiones",
-      price: "$699",
-      link: "https://platform.jaak.ai/register?d=eyJwbGFuIjoiY29icmUiLCJwcm9kdWN0IjoiZmlybWEtbm9tIn0=",
+      qty: "5 sesiones",
+      price: "$99",
+      link: "https://platform.jaak.ai/#/register/user-info?d=firma-nom-cobre",
     },
     {
       icon: "✍️",
-      name: "Firma NOM-151 + Biometría",
+      name: "Firma Digital con Validez NOM-151 con Tecnología Biométrica",
       color: "#8b5cf6",
-      qty: "10 sesiones",
-      price: "$1,300",
-      link: "https://platform.jaak.ai/register?d=eyJwbGFuIjoiY29icmUiLCJwcm9kdWN0IjoiZmlybWEtbm9tLWJpbyJ9",
+      qty: "5 sesiones",
+      price: "$130",
+      link: "https://platform.jaak.ai/#/register/user-info?d=firma-nom-bio-cobre",
     },
     {
       icon: "🔐",
-      name: "Firma NOM-151 + KYC Completo",
+      name: "Firma Digital con Validez NOM-151 + KYC",
       color: "#f59e0b",
-      qty: "10 sesiones",
-      price: "$1,490",
-      link: "https://platform.jaak.ai/register?d=eyJwbGFuIjoiY29icmUiLCJwcm9kdWN0IjoiZmlybWEtbm9tLWt5YyJ9",
+      qty: "5 sesiones",
+      price: "$149",
+      link: "https://platform.jaak.ai/#/register/user-info?d=firma-nom-kyc-cobre",
     },
   ];
 
   const steps = [
     {
       num: "1",
-      title: "Recibes acceso inmediato",
-      desc: "En minutos recibirá sus credenciales de API y acceso al portal de autoservicio.",
+      title: "Compra tu paquete",
+      desc: "Elige el producto que necesitas y completa tu compra en minutos desde el portal de autoservicio.",
     },
     {
       num: "2",
-      title: "Exploras el sandbox",
-      desc: "Pruebe flujos reales en el entorno de pruebas sin consumir créditos de producción.",
+      title: "Acceso directo a producción",
+      desc: "Al comprar se crea su empresa automáticamente y recibe acceso inmediato al servicio en producción, sin configuraciones adicionales.",
     },
     {
       num: "3",
-      title: "Integras con tu sistema",
-      desc: "Use nuestra documentación y SDKs para conectar JAAK a su plataforma en pocos días.",
+      title: "Úsalo inmediatamente",
+      desc: "Sus créditos están disponibles desde el primer momento. Empiece a usar el servicio sin esperas.",
     },
     {
       num: "4",
-      title: "Consumes tus créditos",
-      desc: "Cuando esté listo, sus créditos están disponibles para producción desde el primer momento.",
+      title: "Recibe acompañamiento",
+      desc: "Nuestro equipo está disponible para orientarle en sesiones grupales de onboarding y soporte por email.",
     },
     {
       num: "5",
       title: "Escala cuando quieras",
-      desc: "Adquiera más créditos o suba de plan en cualquier momento desde el portal, sin contratos.",
+      desc: "Adquiera más créditos o suba de plan en cualquier momento desde el portal, sin contratos ni permanencia.",
     },
   ];
 
@@ -122,15 +111,15 @@ export default function AutoservicioPrueba() {
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-sm mb-6">
             <span className="w-2 h-2 bg-[#2DB6C1] rounded-full inline-block"></span>
-            Plan Cobre — Paquetes de prueba
+            Paquetes únicos de prueba
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-5 leading-tight">
-            Empieza a integrar JAAK<br />
+            Empieza a usar JAAK<br />
             <span className="text-[#2DB6C1]">hoy mismo</span>
           </h1>
           <p className="text-lg text-white/75 mb-8 max-w-2xl mx-auto">
-            Elige el producto que necesitas, compra tu paquete Cobre y activa tu
-            acceso en minutos. Sin contrato, sin burocracia.
+            Elige el producto que necesitas, compra tu paquete de prueba y úsalo
+            en producción de inmediato. Sin contrato, sin burocracia.
           </p>
           <div className="flex flex-wrap justify-center gap-2">
             {valueBadges.map((badge) => (
@@ -147,16 +136,16 @@ export default function AutoservicioPrueba() {
 
       {/* Acompañamiento incluido */}
       <section className="py-16 px-4 bg-[#FAFAFA]">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           <div className="text-center mb-10">
             <h2 className="text-2xl font-bold text-[#212A45] mb-2">
-              Acompañamiento incluido en todos los planes
+              Acompañamiento incluido en todos los paquetes
             </h2>
             <p className="text-gray-500">
-              Desde el primer día cuenta con todo lo necesario para integrar con éxito.
+              Desde el primer día cuenta con el apoyo necesario para comenzar con éxito.
             </p>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid sm:grid-cols-3 gap-5">
             {accompanyingItems.map((item) => (
               <div
                 key={item.title}
@@ -180,10 +169,10 @@ export default function AutoservicioPrueba() {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-10">
             <h2 className="text-2xl font-bold text-[#212A45] mb-2">
-              Elige tu paquete de prueba
+              Elige tu paquete único de prueba
             </h2>
             <p className="text-gray-500">
-              Todos incluyen 10 créditos del producto seleccionado. Precios en MXN + IVA.
+              Paquetes especiales de entrada. Precios en MXN + IVA.
             </p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -198,7 +187,9 @@ export default function AutoservicioPrueba() {
                 >
                   <div className="flex items-center gap-2 mb-3">
                     <span className="text-2xl">{plan.icon}</span>
-                    <h3 className="font-bold text-[#212A45] text-base leading-tight">
+                    <h3
+                      className="font-bold text-[#212A45] text-sm leading-tight"
+                    >
                       {plan.name}
                     </h3>
                   </div>
@@ -236,7 +227,7 @@ export default function AutoservicioPrueba() {
               ¿Qué pasa después de comprar?
             </h2>
             <p className="text-gray-500">
-              El proceso de activación es completamente automático.
+              El proceso es completamente automático. Sin esperas.
             </p>
           </div>
           <div className="space-y-4">
@@ -276,15 +267,25 @@ export default function AutoservicioPrueba() {
             </div>
             <h2 className="text-2xl font-bold mb-3">¿Tienes dudas?</h2>
             <p className="text-white/75 mb-6">
-              Nuestro equipo puede orientarle para elegir el producto y plan
+              Nuestro equipo puede orientarle para elegir el producto y paquete
               más adecuado para su caso de uso.
             </p>
-            <Link
-              href="/contacto"
-              className="inline-flex items-center gap-2 bg-[#2DB6C1] hover:bg-[#25969f] text-white font-semibold px-6 py-3 rounded-xl transition-all"
-            >
-              Contáctanos
-            </Link>
+            <div className="flex flex-wrap justify-center gap-3">
+              <Link
+                href="mailto:ventas@jaak.ai"
+                className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold px-5 py-3 rounded-xl transition-all text-sm"
+              >
+                ✉️ ventas@jaak.ai
+              </Link>
+              <Link
+                href="https://wa.me/525215535091788?text=Hola%20%F0%9F%91%8B%20Me%20interesa%20el%20autoservicio%20de%20JAAK.%20%C2%BFMe%20pueden%20compartir%20los%20precios%20y%20c%C3%B3mo%20empezar%3F"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#1fba58] text-white font-semibold px-5 py-3 rounded-xl transition-all text-sm"
+              >
+                💬 Escríbenos por WhatsApp
+              </Link>
+            </div>
           </div>
         </div>
       </section>

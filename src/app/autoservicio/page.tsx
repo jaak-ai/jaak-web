@@ -949,7 +949,7 @@ export default function AutoservicioPage() {
               </p>
             </div>
 
-            {/* Fila 1: KYC, Firma Simple, Firma NOM-151 */}
+            {/* Fila 1: KYC, Firma Simple, Firma Digital con Validez NOM-151 */}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
               {/* Card 1: KYC */}
               <div className="border border-[#EEEEEE] rounded-2xl p-6 bg-[#FAFAFA]">
@@ -1031,15 +1031,15 @@ export default function AutoservicioPage() {
                 </div>
               </div>
 
-              {/* Card 3: Firma NOM-151 */}
+              {/* Card 3: Firma Digital con Validez NOM-151 */}
               <div className="border border-[#EEEEEE] rounded-2xl p-6 bg-[#FAFAFA]">
                 <div className="flex items-center gap-3 mb-5">
                   <div className="w-10 h-10 bg-[#0ea5e9] rounded-lg flex items-center justify-center text-lg">
                     📜
                   </div>
                   <div>
-                    <div className="font-bold text-[#212A45] text-lg">Firma NOM-151</div>
-                    <div className="text-gray-400 text-sm">Firma Avanzada con validez legal NOM-151</div>
+                    <div className="font-bold text-[#212A45] text-lg">Firma Digital con Validez NOM-151</div>
+                    <div className="text-gray-400 text-sm">Firma electrónica avanzada con validez legal NOM-151</div>
                   </div>
                 </div>
                 <div className="space-y-2">
@@ -1073,7 +1073,7 @@ export default function AutoservicioPage() {
 
             {/* Fila 2: NOM-151+BIO, NOM-151+KYC */}
             <div className="grid md:grid-cols-2 gap-8 mb-8">
-              {/* Card 4: Firma NOM-151 + Biometría */}
+              {/* Card 4: Firma Digital con Validez NOM-151 con Tecnología Biométrica */}
               {(() => {
                 const plans = [
                   { name: "Cobre", qty: "10 sesiones", price: "$1,300", link: "https://platform.jaak.ai/register?d=eyJwbGFuIjoiY29icmUiLCJwcm9kdWN0IjoiZmlybWEtbm9tLWJpbyJ9" },
@@ -1088,12 +1088,12 @@ export default function AutoservicioPage() {
                       <div className="flex items-center gap-3 mb-2">
                         <span className="text-2xl">✍️</span>
                         <h3 className="font-bold text-[#212A45] text-lg leading-tight">
-                          Firma NOM-151<br />
-                          <span className="text-[#8b5cf6]">+ Biometría</span>
+                          Firma Digital con Validez NOM-151<br />
+                          <span className="text-[#8b5cf6]">con Tecnología Biométrica</span>
                         </h3>
                       </div>
                       <p className="text-gray-500 text-sm mb-4">
-                        Firma electrónica avanzada con NOM-151 y validación biométrica del firmante.
+                        Firma electrónica avanzada con validez NOM-151 y validación biométrica del firmante.
                       </p>
                       <div className="space-y-2">
                         {plans.map((plan) => (
@@ -1119,7 +1119,7 @@ export default function AutoservicioPage() {
                 );
               })()}
 
-              {/* Card 5: Firma NOM-151 + KYC Completo */}
+              {/* Card 5: Firma Digital con Validez NOM-151 + KYC */}
               {(() => {
                 const plans = [
                   { name: "Cobre", qty: "10 sesiones", price: "$1,490", link: "https://platform.jaak.ai/register?d=eyJwbGFuIjoiY29icmUiLCJwcm9kdWN0IjoiZmlybWEtbm9tLWt5YyJ9" },
@@ -1129,9 +1129,9 @@ export default function AutoservicioPage() {
                   { name: "Platino", qty: "1,000 sesiones", price: "$18,500", link: "https://platform.jaak.ai/register?d=eyJwbGFuIjoicGxhdGlubyIsInByb2R1Y3QiOiJmaXJtYS1ub20ta3ljIn0=" },
                 ];
                 const features = [
-                  "Prueba de vida",
+                  "Prueba de Vida Pasiva",
                   "Validación facial 1:1",
-                  "OCR ID",
+                  "OCR Fotográfico y Documental para ID",
                   "Geolocalización",
                   "Listas nominales INE/RENAPO",
                   "Listas negras OFAC/Interpol/SAT",
@@ -1142,12 +1142,12 @@ export default function AutoservicioPage() {
                       <div className="flex items-center gap-3 mb-2">
                         <span className="text-2xl">🔐</span>
                         <h3 className="font-bold text-[#212A45] text-lg leading-tight">
-                          Firma NOM-151<br />
-                          <span className="text-[#f59e0b]">+ KYC Completo</span>
+                          Firma Digital con Validez NOM-151<br />
+                          <span className="text-[#f59e0b]">+ KYC</span>
                         </h3>
                       </div>
                       <p className="text-gray-500 text-sm mb-3">
-                        La solución más completa: firma avanzada NOM-151 con KYC biométrico y verificación de identidad.
+                        La solución más completa: firma digital con validez NOM-151 con KYC biométrico y verificación de identidad.
                       </p>
                       <div className="flex flex-wrap gap-1.5 mb-4">
                         {features.map((f) => (
@@ -1271,7 +1271,7 @@ export default function AutoservicioPage() {
                   );
                 })()}
 
-                {/* OCR Inteligente */}
+                {/* OCR Fotográfico y Documental */}
                 {(() => {
                   const plans = [
                     { name: "Cobre", qty: "210 tokens", price: "$99" },
@@ -1285,7 +1285,7 @@ export default function AutoservicioPage() {
                       <div className="p-5 pb-4" style={{ borderTop: "4px solid #f97316" }}>
                         <div className="flex items-center gap-2 mb-2">
                           <span className="text-xl">📄</span>
-                          <h4 className="font-bold text-[#212A45] text-base">OCR Inteligente</h4>
+                          <h4 className="font-bold text-[#212A45] text-base">OCR Fotográfico y Documental</h4>
                         </div>
                         <p className="text-gray-500 text-xs mb-1">Extracción de datos de documentos con IA. Se vende por tokens.</p>
                         <p className="text-[10px] text-gray-400 mb-4">1 doc genérico ≈ 1 token · 1 tabla ≈ 3 tokens · 1 doc complejo ≈ 5 tokens</p>
@@ -1313,7 +1313,7 @@ export default function AutoservicioPage() {
                   );
                 })()}
 
-                {/* OCR ID */}
+                {/* OCR Fotográfico y Documental para ID */}
                 {(() => {
                   const plans = [
                     { name: "Cobre", qty: "210 tokens", price: "$99" },
@@ -1327,7 +1327,7 @@ export default function AutoservicioPage() {
                       <div className="p-5 pb-4" style={{ borderTop: "4px solid #ec4899" }}>
                         <div className="flex items-center gap-2 mb-2">
                           <span className="text-xl">🪪</span>
-                          <h4 className="font-bold text-[#212A45] text-base">OCR ID</h4>
+                          <h4 className="font-bold text-[#212A45] text-base">OCR Fotográfico y Documental para ID</h4>
                         </div>
                         <p className="text-gray-500 text-xs mb-1">Extracción de datos de identificaciones oficiales con IA. Se vende por tokens.</p>
                         <p className="text-[10px] text-gray-400 mb-4">6 tokens por documento procesado</p>
