@@ -966,175 +966,110 @@ export default function AutoservicioPage() {
                     </div>
                   </div>
                 </div>
-                <div className="space-y-3">
+                <div className="space-y-2">
                   {[
-                    {
-                      name: "Cobre",
-                      qty: "5 verif",
-                      price: "$99",
-                      period: "/año + IVA",
-                      sla: "Sin soporte asignado",
-                      highlight: false,
-                    },
-                    {
-                      name: "Bronce",
-                      qty: "50 verif",
-                      price: "$750",
-                      period: "/año + IVA",
-                      sla: "Email básico · Resp. 72 h",
-                      highlight: false,
-                    },
-                    {
-                      name: "Plata",
-                      qty: "100 verif",
-                      price: "$2,800",
-                      period: "/año + IVA",
-                      sla: "Chat o Email 12×7 · Resp. 24 h",
-                      highlight: true,
-                    },
-                    {
-                      name: "Oro",
-                      qty: "250 verif",
-                      price: "$6,625",
-                      period: "/año + IVA",
-                      sla: "Soporte dedicado · Resp. 4 h",
-                      highlight: false,
-                    },
-                    {
-                      name: "Platino",
-                      qty: "500 verif",
-                      price: "$12,500",
-                      period: "/año + IVA",
-                      sla: "Soporte prioritario · Resp. 1 h",
-                      highlight: false,
-                    },
+                    { name: "Cobre", qty: "5 verif", price: "$99", link: "https://platform.jaak.ai/#/onboarding/plans/cobre" },
+                    { name: "Bronce", qty: "50 verif", price: "$1,500", link: "https://platform.jaak.ai/#/onboarding/plans/bronce" },
+                    { name: "Plata", qty: "100 verif", price: "$2,800", link: "https://platform.jaak.ai/#/onboarding/plans/plata" },
+                    { name: "Oro", qty: "250 verif", price: "$6,625", link: "https://platform.jaak.ai/#/onboarding/plans/oro" },
+                    { name: "Platino", qty: "500 verif", price: "$12,500", link: "https://platform.jaak.ai/#/onboarding/plans/platino1" },
                   ].map((plan) => (
-                    <div
-                      key={plan.name}
-                      className={`flex items-center justify-between p-4 rounded-xl border transition-all ${
-                        plan.highlight
-                          ? "border-[#2DB6C1]/40 bg-[#2DB6C1]/5"
-                          : "border-[#EEEEEE] bg-[#FAFAFA]"
-                      }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <div
-                          className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold flex-shrink-0 ${
-                            plan.highlight
-                              ? "bg-[#2DB6C1] text-white"
-                              : "bg-[#EEEEEE] text-gray-500"
-                          }`}
-                        >
-                          {plan.name[0]}
-                        </div>
-                        <div>
-                          <div className="font-semibold text-[#212A45] text-sm">
-                            {plan.name} · {plan.qty}
-                          </div>
-                          <div className="text-xs text-gray-400">{plan.sla}</div>
-                        </div>
+                    <div key={plan.name} className="flex items-center justify-between p-3 rounded-xl border border-[#EEEEEE] bg-white gap-2">
+                      <div>
+                        <span className="font-semibold text-[#212A45] text-sm">{plan.name}</span>
+                        <span className="text-gray-400 text-xs ml-1.5">{plan.qty}</span>
                       </div>
-                      <div className="text-right">
-                        <div className="font-bold text-[#212A45]">{plan.price}</div>
-                        <div className="text-xs text-gray-400">{plan.period}</div>
+                      <div className="flex items-center gap-2">
+                        <div className="text-right">
+                          <div className="font-bold text-[#212A45] text-sm">{plan.price}</div>
+                          <div className="text-[10px] text-gray-400">+ IVA</div>
+                        </div>
+                        <Link href={plan.link} target="_blank" rel="noopener noreferrer" className="text-xs px-2.5 py-1.5 bg-[#2DB6C1] text-white rounded-lg font-semibold hover:bg-[#25969f] transition-all whitespace-nowrap">
+                          Comprar
+                        </Link>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Firma + Bio Plans */}
-              <div>
-                <div className="flex items-center gap-3 mb-6">
+              {/* Card 2: Firma Simple */}
+              <div className="border border-[#EEEEEE] rounded-2xl p-6 bg-[#FAFAFA]">
+                <div className="flex items-center gap-3 mb-5">
                   <div className="w-10 h-10 bg-[#6366f1] rounded-lg flex items-center justify-center text-lg">
                     ✍️
                   </div>
                   <div>
-                    <div className="font-bold text-[#212A45] text-lg">
-                      Firma Electrónica + Biometría
-                    </div>
-                    <div className="text-gray-400 text-sm">
-                      Firma Avanzada NOM-151 con verificación biométrica
-                    </div>
+                    <div className="font-bold text-[#212A45] text-lg">Firma Simple</div>
+                    <div className="text-gray-400 text-sm">Firma electrónica básica sin NOM-151</div>
                   </div>
                 </div>
-                <div className="space-y-3">
+                <div className="space-y-2">
                   {[
-                    {
-                      name: "Cobre",
-                      qty: "5 firmas",
-                      price: "$130",
-                      period: "/año + IVA",
-                      sla: "Sin soporte asignado",
-                      highlight: false,
-                    },
-                    {
-                      name: "Bronce",
-                      qty: "50 firmas",
-                      price: "$1,500",
-                      period: "/año + IVA",
-                      sla: "Email básico · Resp. 72 h",
-                      highlight: false,
-                    },
-                    {
-                      name: "Plata",
-                      qty: "100 firmas",
-                      price: "$2,700",
-                      period: "/año + IVA",
-                      sla: "Chat o Email 12×7 · Resp. 24 h",
-                      highlight: true,
-                    },
-                    {
-                      name: "Oro",
-                      qty: "250 firmas",
-                      price: "$6,625",
-                      period: "/año + IVA",
-                      sla: "Soporte dedicado · Resp. 4 h",
-                      highlight: false,
-                    },
-                    {
-                      name: "Platino",
-                      qty: "500 firmas",
-                      price: "$12,500",
-                      period: "/año + IVA",
-                      sla: "Soporte prioritario · Resp. 1 h",
-                      highlight: false,
-                    },
+                    { name: "Cobre", qty: "10 firmas", price: "$49", link: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9zaW1wbGUlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJzaWduYV9zaW1wbGUlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBTaW1wbGUlMjIlMkMlMjJwciUyMiUzQTU2Ljg0JTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMkZpcm1hJTIwU2ltcGxlJTIwQ29icmUlMjAxMCUyMiUyQyUyMnElMjIlM0ExMCU3RCU1RCU3RA%3D%3D" },
+                    { name: "Bronce", qty: "50 firmas", price: "$400", link: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9zaW1wbGUlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJzaWduYV9zaW1wbGUlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBTaW1wbGUlMjIlMkMlMjJwciUyMiUzQTQ2NCUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJGaXJtYSUyMFNpbXBsZSUyMEJyb25jZSUyMDUwJTIyJTJDJTIycSUyMiUzQTUwJTJDJTIyaWQlMjIlM0ElMjI2OWNkNGZhYTNhODg3MzU1MzNmMmJhMTYlMjIlN0QlNUQlN0Q=" },
+                    { name: "Plata", qty: "100 firmas", price: "$700", link: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9zaW1wbGUlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJzaWduYV9zaW1wbGUlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBTaW1wbGUlMjIlMkMlMjJwciUyMiUzQTgxMiUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJGaXJtYSUyMFNpbXBsZSUyMFBsYXRhJTIwMTAwJTIyJTJDJTIycSUyMiUzQTEwMCUyQyUyMmlkJTIyJTNBJTIyNjljZDU0NDgzYTg4NzM1NTMzZjJiYTQ1JTIyJTdEJTVEJTdE" },
+                    { name: "Oro", qty: "250 firmas", price: "$1,500", link: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9zaW1wbGUlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJzaWduYV9zaW1wbGUlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBTaW1wbGUlMjIlMkMlMjJwciUyMiUzQTE3NDAlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyRmlybWElMjBTaW1wbGUlMjBPcm8lMjAyNTAlMjIlMkMlMjJxJTIyJTNBMjUwJTJDJTIyaWQlMjIlM0ElMjI2OWNkNTUwOTNhODg3MzU1MzNmMmJhNGElMjIlN0QlNUQlN0Q=" },
+                    { name: "Platino", qty: "500 firmas", price: "$2,500", link: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9zaW1wbGUlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJzaWduYV9zaW1wbGUlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBTaW1wbGUlMjIlMkMlMjJwciUyMiUzQTI5MDAlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyRmlybWElMjBTaW1wbGUlMjBQbGF0aW5vJTIwNTAwJTIyJTJDJTIycSUyMiUzQTUwMCUyQyUyMmlkJTIyJTNBJTIyNjljZDU1OGEzYTg4NzM1NTMzZjJiYTRmJTIyJTdEJTVEJTdE" },
                   ].map((plan) => (
-                    <div
-                      key={plan.name}
-                      className={`flex items-center justify-between p-4 rounded-xl border transition-all ${
-                        plan.highlight
-                          ? "border-[#6366f1]/40 bg-[#6366f1]/5"
-                          : "border-[#EEEEEE] bg-[#FAFAFA]"
-                      }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <div
-                          className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold flex-shrink-0 ${
-                            plan.highlight
-                              ? "bg-[#6366f1] text-white"
-                              : "bg-[#EEEEEE] text-gray-500"
-                          }`}
-                        >
-                          {plan.name[0]}
-                        </div>
-                        <div>
-                          <div className="font-semibold text-[#212A45] text-sm">
-                            {plan.name} · {plan.qty}
-                          </div>
-                          <div className="text-xs text-gray-400">{plan.sla}</div>
-                        </div>
+                    <div key={plan.name} className="flex items-center justify-between p-3 rounded-xl border border-[#EEEEEE] bg-white gap-2">
+                      <div>
+                        <span className="font-semibold text-[#212A45] text-sm">{plan.name}</span>
+                        <span className="text-gray-400 text-xs ml-1.5">{plan.qty}</span>
                       </div>
-                      <div className="text-right">
-                        <div className="font-bold text-[#212A45]">{plan.price}</div>
-                        <div className="text-xs text-gray-400">{plan.period}</div>
+                      <div className="flex items-center gap-2">
+                        <div className="text-right">
+                          <div className="font-bold text-[#212A45] text-sm">{plan.price}</div>
+                          <div className="text-[10px] text-gray-400">+ IVA</div>
+                        </div>
+                        <Link href={plan.link} target="_blank" rel="noopener noreferrer" className="text-xs px-2.5 py-1.5 bg-[#6366f1] text-white rounded-lg font-semibold hover:bg-[#4f52c7] transition-all whitespace-nowrap">
+                          Comprar
+                        </Link>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Card 3: Firma NOM-151 */}
+              <div className="border border-[#EEEEEE] rounded-2xl p-6 bg-[#FAFAFA]">
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="w-10 h-10 bg-[#0ea5e9] rounded-lg flex items-center justify-center text-lg">
+                    📜
+                  </div>
+                  <div>
+                    <div className="font-bold text-[#212A45] text-lg">Firma NOM-151</div>
+                    <div className="text-gray-400 text-sm">Firma Avanzada con validez legal NOM-151</div>
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  {[
+                    { name: "Cobre", qty: "5 firmas", price: "$99", link: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9hZHZhbmNlZCUyMiU1RCUyQyUyMnByb2R1Y3RzJTIyJTNBJTVCJTdCJTIyayUyMiUzQSUyMnNpZ25hX2FkdmFuY2VkJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwQXZhbnphZGElMjAoTk9NLTE1MSklMjIlMkMlMjJwciUyMiUzQTExNC44NCUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJGaXJtYSUyME5PTTE1MSUyMENvYnJlJTIwNSUyMiUyQyUyMnElMjIlM0E1JTJDJTIyaWQlMjIlM0ElMjI2OWNkNTYyMjNhODg3MzU1MzNmMmJhNTUlMjIlN0QlNUQlN0Q=" },
+                    { name: "Bronce", qty: "50 firmas", price: "$750", link: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9hZHZhbmNlZCUyMiU1RCUyQyUyMnByb2R1Y3RzJTIyJTNBJTVCJTdCJTIyayUyMiUzQSUyMnNpZ25hX2FkdmFuY2VkJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwQXZhbnphZGElMjAoTk9NLTE1MSklMjIlMkMlMjJwciUyMiUzQTg3MCUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJGaXJtYSUyME5PTTE1MSUyMEJyb25jZSUyMDUwJTIyJTJDJTIycSUyMiUzQTUwJTJDJTIyaWQlMjIlM0ElMjI2OWNkNTY4MTNhODg3MzU1MzNmMmJhNWIlMjIlN0QlNUQlN0Q=" },
+                    { name: "Plata", qty: "100 firmas", price: "$1,400", link: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9hZHZhbmNlZCUyMiU1RCUyQyUyMnByb2R1Y3RzJTIyJTNBJTVCJTdCJTIyayUyMiUzQSUyMnNpZ25hX2FkdmFuY2VkJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwQXZhbnphZGElMjAoTk9NLTE1MSklMjIlMkMlMjJwciUyMiUzQTE2MjQlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyRmlybWElMjBOT00xNTElMjBQbGF0YSUyMDEwMCUyMiUyQyUyMnElMjIlM0ExMDAlMkMlMjJpZCUyMiUzQSUyMjY5Y2Q1NmViM2E4ODczNTUzM2YyYmE2NCUyMiU3RCU1RCU3RA==" },
+                    { name: "Oro", qty: "250 firmas", price: "$3,250", link: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9hZHZhbmNlZCUyMiU1RCUyQyUyMnByb2R1Y3RzJTIyJTNBJTVCJTdCJTIyayUyMiUzQSUyMnNpZ25hX2FkdmFuY2VkJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwQXZhbnphZGElMjAoTk9NLTE1MSklMjIlMkMlMjJwciUyMiUzQTM3NzAlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyRmlybWElMjBOT00xNTElMjBPcm8lMjAyNTAlMjIlMkMlMjJxJTIyJTNBMjUwJTJDJTIyaWQlMjIlM0ElMjI2OWNkNWI4ODNhODg3MzU1MzNmMmJhNmYlMjIlN0QlNUQlN0Q=" },
+                    { name: "Platino", qty: "500 firmas", price: "$6,000", link: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9hZHZhbmNlZCUyMiU1RCUyQyUyMnByb2R1Y3RzJTIyJTNBJTVCJTdCJTIyayUyMiUzQSUyMnNpZ25hX2FkdmFuY2VkJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwQXZhbnphZGElMjAoTk9NLTE1MSklMjIlMkMlMjJwciUyMiUzQTY5NjAlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyRmlybWElMjBOT00xNTElMjBQbGF0aW5vJTIwNTAwJTIyJTJDJTIycSUyMiUzQTUwMCUyQyUyMmlkJTIyJTNBJTIyNjljZDViZDIzYTg4NzM1NTMzZjJiYTc0JTIyJTdEJTVEJTdE" },
+                  ].map((plan) => (
+                    <div key={plan.name} className="flex items-center justify-between p-3 rounded-xl border border-[#EEEEEE] bg-white gap-2">
+                      <div>
+                        <span className="font-semibold text-[#212A45] text-sm">{plan.name}</span>
+                        <span className="text-gray-400 text-xs ml-1.5">{plan.qty}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="text-right">
+                          <div className="font-bold text-[#212A45] text-sm">{plan.price}</div>
+                          <div className="text-[10px] text-gray-400">+ IVA</div>
+                        </div>
+                        <Link href={plan.link} target="_blank" rel="noopener noreferrer" className="text-xs px-2.5 py-1.5 bg-[#0ea5e9] text-white rounded-lg font-semibold hover:bg-[#0284c7] transition-all whitespace-nowrap">
+                          Comprar
+                        </Link>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
             </div>
+
 
             {/* Conditions / Notes */}
             <div className="bg-[#FAFAFA] border border-[#EEEEEE] rounded-2xl p-8">
