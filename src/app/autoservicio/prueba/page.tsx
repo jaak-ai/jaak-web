@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import OnboardingForm from "@/components/OnboardingForm";
 
 export const metadata: Metadata = {
   title: "Paquetes de Prueba JAAK Autoservicio | Empieza hoy",
@@ -248,6 +249,8 @@ export default function AutoservicioPrueba() {
           </div>
         </div>
       </section>
+
+      <OnboardingForm />
 
       {/* CTA Footer */}
       <section className="py-16 px-4">
