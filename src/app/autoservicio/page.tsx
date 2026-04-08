@@ -1,6 +1,7 @@
 import Link from "next/link";
 import AutoservicioPricingGrid from "@/components/AutoservicioPricingGrid";
 import AutoservicioFlujoTabs from "@/components/AutoservicioFlujoTabs";
+import AutoservicioPostCompra from "@/components/AutoservicioPostCompra";
 
 // ─── Section 1: Hero ─────────────────────────────────────────────────────────
 function HeroSection() {
@@ -439,6 +440,7 @@ export default function AutoservicioPage() {
       <HeroSection />
       <ComoFuncionaSection />
       <PricingSection />
+      <AutoservicioPostCompra />
       <SinFriccionSection />
       <FinalCTASection />
     </main>
