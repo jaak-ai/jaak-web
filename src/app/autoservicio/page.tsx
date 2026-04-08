@@ -938,14 +938,14 @@ export default function AutoservicioPage() {
         </section>
 
         {/* ─── SECCIÓN: Precios del Autoservicio ──────────────────────────── */}
-        <section className="py-24 bg-white">
+        <section className="py-24" style={{ background: "linear-gradient(135deg, #212A45 0%, #0E1133 50%, #212A45 100%)" }}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-black text-[#212A45] mb-4">
+              <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
                 Precios del autoservicio.{" "}
                 <span className="text-[#2DB6C1]">Sin contrato mínimo.</span>
               </h2>
-              <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+              <p className="text-lg text-white/50 max-w-2xl mx-auto">
                 Compre paquetes de verificaciones o firmas y úselos a su ritmo.
               </p>
             </div>
@@ -957,8 +957,8 @@ export default function AutoservicioPage() {
 
 
             {/* Conditions / Notes */}
-            <div className="bg-[#FAFAFA] border border-[#EEEEEE] rounded-2xl p-8">
-              <h3 className="font-bold text-[#212A45] mb-6 text-lg">
+            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 mt-8">
+              <h3 className="font-bold text-white mb-6 text-lg">
                 Condiciones del autoservicio
               </h3>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -997,17 +997,17 @@ export default function AutoservicioPage() {
                   <div key={note.title} className="flex items-start gap-3">
                     <span className="text-xl flex-shrink-0">{note.icon}</span>
                     <div>
-                      <div className="font-semibold text-[#212A45] text-sm mb-0.5">
+                      <div className="font-semibold text-white text-sm mb-0.5">
                         {note.title}
                       </div>
-                      <div className="text-gray-500 text-xs leading-relaxed">
+                      <div className="text-white/50 text-xs leading-relaxed">
                         {note.desc}
                       </div>
                     </div>
                   </div>
                 ))}
               </div>
-              <div className="mt-6 pt-5 border-t border-[#EEEEEE] text-center">
+              <div className="mt-6 pt-5 border-t border-white/10 text-center">
                 <Link
                   href="/precios"
                   className="text-[#2DB6C1] font-semibold hover:underline text-sm"
