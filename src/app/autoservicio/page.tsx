@@ -196,7 +196,8 @@ function ComoFuncionaSection() {
 function PricingSection() {
   return (
     <section
-      className="py-20"
+      id="precios"
+      className="py-20 scroll-mt-24"
       style={{
         background: "linear-gradient(135deg, #212A45 0%, #0E1133 50%, #212A45 100%)",
       }}
@@ -398,18 +399,16 @@ function FinalCTASection() {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-          <Link
-            href="https://autoservicio.jaak.ai"
-            target="_blank"
-            rel="noopener noreferrer"
+          <a
+            href="#precios"
             className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold text-white transition-all duration-200 hover:scale-105"
             style={{
               background: "linear-gradient(135deg, #1ecad3, #655dc6)",
               boxShadow: "0 8px 32px rgba(30,202,211,0.25)",
             }}
           >
-            Ir a autoservicio.jaak.ai →
-          </Link>
+            Empezar ahora →
+          </a>
           <Link
             href="/precios"
             className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-semibold transition-all duration-200 hover:bg-white/10"

@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import Link from "next/link";
 
 interface Step {
   num: string;
@@ -289,15 +288,13 @@ function StepCard({ step, delay }: { step: Step; delay: number }) {
         {/* Success CTA */}
         {step.variant === "success" && (
           <div className="mt-4 pt-4" style={{ borderTop: "1px solid rgba(101,93,198,0.15)" }}>
-            <Link
-              href="https://autoservicio.jaak.ai"
-              target="_blank"
-              rel="noopener noreferrer"
+            <a
+              href="#precios"
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm text-white transition-all duration-200 hover:opacity-90"
               style={{ background: "linear-gradient(135deg, #1ecad3, #655dc6)" }}
             >
-              Ir a autoservicio.jaak.ai →
-            </Link>
+              Empezar ahora →
+            </a>
           </div>
         )}
       </div>
