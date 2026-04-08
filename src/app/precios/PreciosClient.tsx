@@ -293,23 +293,28 @@ export default function PreciosClient() {
       </section>
 
       {/* ===== SECTION 3 · AUTOSERVICIO ===== */}
-      <section id="autoservicio" ref={tabsReveal.ref} className="py-16 md:py-24 bg-white scroll-mt-32">
+      <section
+        id="autoservicio"
+        ref={tabsReveal.ref}
+        className="py-16 md:py-24 scroll-mt-32"
+        style={{ background: "linear-gradient(135deg, #212A45 0%, #0E1133 50%, #212A45 100%)" }}
+      >
         <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${revealClass(tabsReveal.isVisible)}`}>
           <div className="text-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold text-[#212A45] mb-3">
+            <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
               Autoservicio web – Activa en minutos
             </h2>
-            <p className="text-[#4A5568] text-base max-w-2xl mx-auto">
+            <p className="text-white/50 text-base max-w-2xl mx-auto">
               Ideal para startups, pruebas de concepto y operación de bajo volumen.
             </p>
           </div>
 
           {/* Global rules */}
-          <div className="bg-[#F3F4F8] rounded-xl p-5 mb-10 max-w-4xl mx-auto">
-            <h3 className="text-sm font-bold text-[#212A45] mb-3">Condiciones generales de Autoservicio</h3>
+          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-5 mb-10 max-w-4xl mx-auto">
+            <h3 className="text-sm font-bold text-white mb-3">Condiciones generales de Autoservicio</h3>
             <ul className="space-y-1.5">
               {autoservicioRules.map((rule) => (
-                <li key={rule} className="flex items-start gap-2 text-xs text-[#4A5568]">
+                <li key={rule} className="flex items-start gap-2 text-xs text-white/50">
                   <span className="text-[#2DB6C1] mt-0.5">•</span>
                   {rule}
                 </li>
@@ -319,8 +324,7 @@ export default function PreciosClient() {
 
           <AutoservicioPricingGrid />
 
-
-          <p className="text-center text-xs text-[#64748B]">
+          <p className="text-center text-xs text-white/30 mt-8">
             Todos los precios en MXN + IVA. Sin Setup Fee. Sin comisión comercial.
           </p>
         </div>
