@@ -247,3 +247,25 @@ body {
   background-size: 200% auto;
   animation: shimmer 3s linear infinite;
 }
+
+/* ── Autoservicio landing ── */
+@keyframes orbDrift1 {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(55px, 65px) scale(1.04); }
+}
+@keyframes orbDrift2 {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(-45px, 55px) scale(1.06); }
+}
+@keyframes orbDrift3 {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(40px, -50px) scale(1.03); }
+}
+.orb-drift-1 { animation: orbDrift1 12s ease-in-out infinite alternate; }
+.orb-drift-2 { animation: orbDrift2 10s ease-in-out infinite alternate; }
+.orb-drift-3 { animation: orbDrift3 13s ease-in-out infinite alternate; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp 0.35s ease both; }
