@@ -79,7 +79,7 @@ function HeroSection() {
           className="text-center font-extrabold leading-[1.1] mb-6"
           style={{ fontSize: "clamp(2.5rem, 6vw, 5rem)", color: "#fff" }}
         >
-          Firma y verifica identidades{" "}
+          Activa cualquier servicio JAAK{" "}
           <span
             style={{
               backgroundImage: "linear-gradient(90deg, #1ecad3, #655dc6)",
@@ -102,18 +102,16 @@ function HeroSection() {
 
         {/* CTA buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-          <Link
-            href="https://autoservicio.jaak.ai"
-            target="_blank"
-            rel="noopener noreferrer"
+          <a
+            href="#precios"
             className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold text-white transition-all duration-200 hover:scale-105 hover:shadow-2xl"
             style={{
               background: "linear-gradient(135deg, #1ecad3, #655dc6)",
               boxShadow: "0 8px 32px rgba(30,202,211,0.3)",
             }}
           >
-            Compra ahora →
-          </Link>
+            Empezar ahora →
+          </a>
           <a
             href="#como-funciona"
             className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-semibold transition-all duration-200 hover:bg-white/10"
