@@ -18,75 +18,163 @@ interface Product {
   color: string;
   desc: string;
   popular: string;
+  forWhom: string;
+  benefits: string[];
+  idealFor: string[];
   plans: Plan[];
 }
 
 const PRODUCTS: Product[] = [
-  { id:"kyc", shortName:"KYC", name:"KYC · Verificación de Identidad", icon:"👤",
-    color:"#2DB6C1", desc:"Liveness iBeta Level 1 · Sin NOM-151", popular:"Plata",
-    plans:[
+  {
+    id: "kyc",
+    shortName: "KYC",
+    name: "KYC · Verificación de Identidad",
+    icon: "👤",
+    color: "#2DB6C1",
+    desc: "Liveness iBeta Level 1 · Sin NOM-151",
+    popular: "Plata",
+    forWhom: "Empresas que necesitan verificar la identidad real de sus clientes o usuarios de forma digital, sin fricción y con alta seguridad antifraude.",
+    benefits: [
+      "Prueba de vida iBeta Level 1 (antisuplantación)",
+      "OCR de identificación oficial (INE, pasaporte)",
+      "Consulta en listas nominales INE / RENAPO",
+      "Alertas OFAC · Interpol · listas negras SAT",
+      "Geolocalización y metadatos del dispositivo",
+      "Expediente digital descargable",
+    ],
+    idealFor: ["Fintechs", "Apps de crédito", "Plataformas digitales", "E-commerce regulado"],
+    plans: [
       {name:"Cobre",   qty:"5 verificaciones",   price:"$99",     link:"https://platform.jaak.ai/#/onboarding/plans/cobre"},
       {name:"Bronce",  qty:"50 verificaciones",  price:"$1,500",  link:"https://platform.jaak.ai/#/onboarding/plans/bronce"},
       {name:"Plata",   qty:"100 verificaciones", price:"$2,800",  link:"https://platform.jaak.ai/#/onboarding/plans/plata"},
       {name:"Oro",     qty:"250 verificaciones", price:"$6,625",  link:"https://platform.jaak.ai/#/onboarding/plans/oro"},
       {name:"Platino", qty:"500 verificaciones", price:"$12,500", link:"https://platform.jaak.ai/#/onboarding/plans/platino1"},
-    ]},
-  { id:"firma-simple", shortName:"Firma Simple", name:"Firma Simple", icon:"✍️",
-    color:"#818cf8", desc:"Firma electrónica básica sin NOM-151", popular:"Plata",
-    plans:[
+    ],
+  },
+  {
+    id: "firma-simple",
+    shortName: "Firma Simple",
+    name: "Firma Simple",
+    icon: "✍️",
+    color: "#818cf8",
+    desc: "Firma electrónica básica sin NOM-151",
+    popular: "Plata",
+    forWhom: "Empresas que requieren firma electrónica válida legalmente para documentos internos, contratos comerciales o flujos de aprobación sin obligación regulatoria de NOM-151.",
+    benefits: [
+      "Firma electrónica con validez legal en México",
+      "Hasta 4 firmantes por documento",
+      "Flujo de firma 100% digital, sin instalar nada",
+      "Integración vía API REST o plataforma web",
+      "Notificaciones automáticas a firmantes",
+      "Evidencia y trazabilidad de cada firma",
+    ],
+    idealFor: ["Startups", "RR.HH.", "Contratos internos", "Acuerdos comerciales"],
+    plans: [
       {name:"Cobre",   qty:"10 firmas",  price:"$49",    link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9zaW1wbGUlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJzaWduYV9zaW1wbGUlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBTaW1wbGUlMjIlMkMlMjJwciUyMiUzQTU2Ljg0JTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMkZpcm1hJTIwU2ltcGxlJTIwQ29icmUlMjAxMCUyMiUyQyUyMnElMjIlM0ExMCU3RCU1RCU3RA%3D%3D"},
       {name:"Bronce",  qty:"50 firmas",  price:"$400",   link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9zaW1wbGUlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJzaWduYV9zaW1wbGUlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBTaW1wbGUlMjIlMkMlMjJwciUyMiUzQTQ2NCUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJGaXJtYSUyMFNpbXBsZSUyMEJyb25jZSUyMDUwJTIyJTJDJTIycSUyMiUzQTUwJTJDJTIyaWQlMjIlM0ElMjI2OWNkNGZhYTNhODg3MzU1MzNmMmJhMTYlMjIlN0QlNUQlN0Q="},
       {name:"Plata",   qty:"100 firmas", price:"$700",   link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9zaW1wbGUlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJzaWduYV9zaW1wbGUlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBTaW1wbGUlMjIlMkMlMjJwciUyMiUzQTgxMiUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJGaXJtYSUyMFNpbXBsZSUyMFBsYXRhJTIwMTAwJTIyJTJDJTIycSUyMiUzQTEwMCUyQyUyMmlkJTIyJTNBJTIyNjljZDU0NDgzYTg4NzM1NTMzZjJiYTQ1JTIyJTdEJTVEJTdE"},
       {name:"Oro",     qty:"250 firmas", price:"$1,500", link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9zaW1wbGUlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJzaWduYV9zaW1wbGUlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBTaW1wbGUlMjIlMkMlMjJwciUyMiUzQTE3NDAlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyRmlybWElMjBTaW1wbGUlMjBPcm8lMjAyNTAlMjIlMkMlMjJxJTIyJTNBMjUwJTJDJTIyaWQlMjIlM0ElMjI2OWNkNTUwOTNhODg3MzU1MzNmMmJhNGElMjIlN0QlNUQlN0Q="},
       {name:"Platino", qty:"500 firmas", price:"$2,500", link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9zaW1wbGUlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJzaWduYV9zaW1wbGUlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBTaW1wbGUlMjIlMkMlMjJwciUyMiUzQTI5MDAlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyRmlybWElMjBTaW1wbGUlMjBQbGF0aW5vJTIwNTAwJTIyJTJDJTIycSUyMiUzQTUwMCUyQyUyMmlkJTIyJTNBJTIyNjljZDU1OGEzYTg4NzM1NTMzZjJiYTRmJTIyJTdEJTVEJTdE"},
-    ]},
-  { id:"firma-nom151", shortName:"Firma NOM-151", name:"Firma Digital con Validez NOM-151", icon:"📜",
-    color:"#38bdf8", desc:"Firma electrónica avanzada con validez legal NOM-151", popular:"Plata",
-    plans:[
+    ],
+  },
+  {
+    id: "firma-nom151",
+    shortName: "Firma NOM-151",
+    name: "Firma Digital con Validez NOM-151",
+    icon: "📜",
+    color: "#38bdf8",
+    desc: "Firma electrónica avanzada con validez legal NOM-151",
+    popular: "Plata",
+    forWhom: "Empresas e instituciones que requieren firma electrónica avanzada con plena validez legal y conservación conforme a la NOM-151, para documentos con efectos jurídicos.",
+    benefits: [
+      "Constancia de conservación NOM-151 (PSCC acreditado)",
+      "Firma electrónica avanzada con validez en juicio",
+      "Hasta 4 firmantes por documento",
+      "Expediente digital con evidencia forense",
+      "Sellado de tiempo y hash criptográfico",
+      "Cumplimiento con Código de Comercio y LFEA",
+    ],
+    idealFor: ["Instituciones financieras", "Contratos de crédito", "Servicios regulados", "Seguros"],
+    plans: [
       {name:"Cobre",   qty:"5 firmas",   price:"$99",    link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9hZHZhbmNlZCUyMiU1RCUyQyUyMnByb2R1Y3RzJTIyJTNBJTVCJTdCJTIyayUyMiUzQSUyMnNpZ25hX2FkdmFuY2VkJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwQXZhbnphZGElMjAoTk9NLTE1MSklMjIlMkMlMjJwciUyMiUzQTExNC44NCUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJGaXJtYSUyME5PTTE1MSUyMENvYnJlJTIwNSUyMiUyQyUyMnElMjIlM0E1JTJDJTIyaWQlMjIlM0ElMjI2OWNkNTYyMjNhODg3MzU1MzNmMmJhNTUlMjIlN0QlNUQlN0Q="},
       {name:"Bronce",  qty:"50 firmas",  price:"$750",   link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9hZHZhbmNlZCUyMiU1RCUyQyUyMnByb2R1Y3RzJTIyJTNBJTVCJTdCJTIyayUyMiUzQSUyMnNpZ25hX2FkdmFuY2VkJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwQXZhbnphZGElMjAoTk9NLTE1MSklMjIlMkMlMjJwciUyMiUzQTg3MCUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJGaXJtYSUyME5PTTE1MSUyMEJyb25jZSUyMDUwJTIyJTJDJTIycSUyMiUzQTUwJTJDJTIyaWQlMjIlM0ElMjI2OWNkNTY4MTNhODg3MzU1MzNmMmJhNWIlMjIlN0QlNUQlN0Q="},
       {name:"Plata",   qty:"100 firmas", price:"$1,400", link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9hZHZhbmNlZCUyMiU1RCUyQyUyMnByb2R1Y3RzJTIyJTNBJTVCJTdCJTIyayUyMiUzQSUyMnNpZ25hX2FkdmFuY2VkJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwQXZhbnphZGElMjAoTk9NLTE1MSklMjIlMkMlMjJwciUyMiUzQTE2MjQlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyRmlybWElMjBOT00xNTElMjBQbGF0YSUyMDEwMCUyMiUyQyUyMnElMjIlM0ExMDAlMkMlMjJpZCUyMiUzQSUyMjY5Y2Q1NmViM2E4ODczNTUzM2YyYmE2NCUyMiU3RCU1RCU3RA=="},
       {name:"Oro",     qty:"250 firmas", price:"$3,250", link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9hZHZhbmNlZCUyMiU1RCUyQyUyMnByb2R1Y3RzJTIyJTNBJTVCJTdCJTIyayUyMiUzQSUyMnNpZ25hX2FkdmFuY2VkJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwQXZhbnphZGElMjAoTk9NLTE1MSklMjIlMkMlMjJwciUyMiUzQTM3NzAlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyRmlybWElMjBOT00xNTElMjBPcm8lMjAyNTAlMjIlMkMlMjJxJTIyJTNBMjUwJTJDJTIyaWQlMjIlM0ElMjI2OWNkNWI4ODNhODg3MzU1MzNmMmJhNmYlMjIlN0QlNUQlN0Q="},
       {name:"Platino", qty:"500 firmas", price:"$6,000", link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9hZHZhbmNlZCUyMiU1RCUyQyUyMnByb2R1Y3RzJTIyJTNBJTVCJTdCJTIyayUyMiUzQSUyMnNpZ25hX2FkdmFuY2VkJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwQXZhbnphZGElMjAoTk9NLTE1MSklMjIlMkMlMjJwciUyMiUzQTY5NjAlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyRmlybWElMjBOT00xNTElMjBQbGF0aW5vJTIwNTAwJTIyJTJDJTIycSUyMiUzQTUwMCUyQyUyMmlkJTIyJTNBJTIyNjljZDViZDIzYTg4NzM1NTMzZjJiYTc0JTIyJTdEJTVEJTdE"},
-    ]},
-  { id:"nom151-bio", shortName:"NOM-151 + BIO", name:"Firma NOM-151 con Tecnología Biométrica", icon:"🧬",
-    color:"#a78bfa", desc:"Firma NOM-151 con validación biométrica del firmante", popular:"Plata",
-    plans:[
+    ],
+  },
+  {
+    id: "nom151-bio",
+    shortName: "NOM-151 + BIO",
+    name: "Firma NOM-151 con Biometría Facial",
+    icon: "🔐",
+    color: "#a78bfa",
+    desc: "Firma NOM-151 con validación facial biométrica del firmante",
+    popular: "Plata",
+    forWhom: "Empresas que necesitan acreditar tanto la identidad del firmante como la autenticidad del documento, con máxima trazabilidad y cumplimiento regulatorio.",
+    benefits: [
+      "Prueba de vida facial del firmante en tiempo real",
+      "Firma NOM-151 con validez legal plena",
+      "Hasta 2 firmantes por sesión biométrica",
+      "Validación 1:1 contra identificación oficial",
+      "Expediente con video y fotogramas de la sesión",
+      "Constancia NOM-151 por cada documento firmado",
+    ],
+    idealFor: ["Banca y crédito", "Aseguradoras", "Cumplimiento AML", "Contratos de alto valor"],
+    plans: [
       {name:"Cobre",   qty:"5 sesiones",   price:"$130",    link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9hZHZhbmNlZF9iaW9tZXRyaWMlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJzaWduYV9hZHZhbmNlZF9iaW9tZXRyaWMlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBBdmFuemFkYSUyMCUyQiUyMEJpb21ldHJpYSUyMiUyQyUyMnByJTIyJTNBMTUwLjglMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyRmlybWElMjBOT00xNTElMjAlMkIlMjBCSU8lMjBDb2JyZSUyMDUlMjIlMkMlMjJxJTIyJTNBNSUyQyUyMmlkJTIyJTNBJTIyNjljZDVjYTYzYTg4NzM1NTMzZjJiYTc5JTIyJTdEJTVEJTdE"},
       {name:"Bronce",  qty:"50 sesiones",  price:"$1,500",  link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9hZHZhbmNlZF9iaW9tZXRyaWMlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJzaWduYV9hZHZhbmNlZF9iaW9tZXRyaWMlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBBdmFuemFkYSUyMCUyQiUyMEJpb21ldHJpYSUyMiUyQyUyMnByJTIyJTNBMTc0MCUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJGaXJtYSUyME5PTTE1MSUyMCUyQiUyMEJJTyUyMEJyb25jZSUyMDUwJTIyJTJDJTIycSUyMiUzQTUwJTJDJTIyaWQlMjIlM0ElMjI2OWNkNWNmZDNhODg3MzU1MzNmMmJhN2UlMjIlN0QlNUQlN0Q="},
       {name:"Plata",   qty:"100 sesiones", price:"$2,700",  link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9hZHZhbmNlZF9iaW9tZXRyaWMlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJzaWduYV9hZHZhbmNlZF9iaW9tZXRyaWMlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBBdmFuemFkYSUyMCUyQiUyMEJpb21ldHJpYSUyMiUyQyUyMnByJTIyJTNBMzEzMiUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJGaXJtYSUyME5PTTE1MSUyMCUyQiUyMEJJTyUyMFBsYXRhJTIwMTAwJTIyJTJDJTIycSUyMiUzQTEwMCUyQyUyMmlkJTIyJTNBJTIyNjljZDVkNDMzYTg4NzM1NTMzZjJiYTgzJTIyJTdEJTVEJTdE"},
       {name:"Oro",     qty:"250 sesiones", price:"$6,625",  link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9hZHZhbmNlZF9iaW9tZXRyaWMlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJzaWduYV9hZHZhbmNlZF9iaW9tZXRyaWMlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBBdmFuemFkYSUyMCUyQiUyMEJpb21ldHJpYSUyMiUyQyUyMnByJTIyJTNBNzY4NSUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJGaXJtYSUyME5PTTE1MSUyMCUyQiUyMEJJTyUyME9ybyUyMDI1MCUyMiUyQyUyMnElMjIlM0EyNTAlMkMlMjJpZCUyMiUzQSUyMjY5Y2Q1ZGE4M2E4ODczNTUzM2YyYmE5OSUyMiU3RCU1RCU3RA=="},
       {name:"Platino", qty:"500 sesiones", price:"$12,500", link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9hZHZhbmNlZF9iaW9tZXRyaWMlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJzaWduYV9hZHZhbmNlZF9iaW9tZXRyaWMlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBBdmFuemFkYSUyMCUyQiUyMEJpb21ldHJpYSUyMiUyQyUyMnByJTIyJTNBMTQ1MDAlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyRmlybWElMjBOT00xNTElMjAlMkIlMjBCSU8lMjBQbGF0aW5vJTIwNTAwJTIyJTJDJTIycSUyMiUzQTUwMCUyQyUyMmlkJTIyJTNBJTIyNjljZDVkZmYzYTg4NzM1NTMzZjJiYWE3JTIyJTdEJTVEJTdE"},
-    ]},
-  { id:"nom151-kyc", shortName:"NOM-151 + KYC", name:"Firma NOM-151 + KYC Biométrico", icon:"🔐",
-    color:"#fbbf24", desc:"Firma NOM-151 con verificación biométrica de identidad completa", popular:"Plata",
-    plans:[
+    ],
+  },
+  {
+    id: "nom151-kyc",
+    shortName: "NOM-151 + KYC",
+    name: "Firma NOM-151 + KYC Biométrico",
+    icon: "🛡️",
+    color: "#fbbf24",
+    desc: "La solución más completa: firma NOM-151 + KYC + biometría",
+    popular: "Plata",
+    forWhom: "Instituciones que necesitan la máxima cobertura: onboarding digital regulado con verificación de identidad completa y firma con validez legal plena.",
+    benefits: [
+      "Todo lo de Firma NOM-151 + Biometría",
+      "KYC completo del firmante en la misma sesión",
+      "OCR de identificación oficial integrado",
+      "Consulta RENAPO, INE, OFAC, Interpol, SAT",
+      "Expediente único: firma + identidad + biometría",
+      "Ideal para cumplimiento AML / PLD / CNBV",
+    ],
+    idealFor: ["Onboarding regulado", "AML / PLD", "CNBV", "Crédito formal"],
+    plans: [
       {name:"Cobre",   qty:"5 sesiones",   price:"$149",    link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9iaW9tZXRyaWMlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJzaWduYV9iaW9tZXRyaWMlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBjb24lMjBCaW9tZXRyaWElMjIlMkMlMjJwciUyMiUzQTE3Mi44NCUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJGaXJtYSUyME5PTTE1MSUyMCUyQiUyMEtZQyUyMENvYnJlJTIwNSUyMiUyQyUyMnElMjIlM0E1JTJDJTIyaWQlMjIlM0ElMjI2OWNkNWY5ODNhODg3MzU1MzNmMmJhYjElMjIlN0QlNUQlN0Q="},
       {name:"Bronce",  qty:"50 sesiones",  price:"$2,250",  link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9iaW9tZXRyaWMlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJzaWduYV9iaW9tZXRyaWMlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBjb24lMjBCaW9tZXRyaWElMjIlMkMlMjJwciUyMiUzQTI2MTAlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyRmlybWElMjBOT00xNTElMjAlMkIlMjBLWUMlMjBCcm9uY2UlMjA1MCUyMiUyQyUyMnElMjIlM0E1MCUyQyUyMmlkJTIyJTNBJTIyNjljZDVmZDgzYTg4NzM1NTMzZjJiYWI2JTIyJTdEJTVEJTdE"},
       {name:"Plata",   qty:"100 sesiones", price:"$4,200",  link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9iaW9tZXRyaWMlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJzaWduYV9iaW9tZXRyaWMlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBjb24lMjBCaW9tZXRyaWElMjIlMkMlMjJwciUyMiUzQTQ4NzIlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyRmlybWElMjBOT00xNTElMjAlMkIlMjBLWUMlMjBQbGF0YSUyMDEwMCUyMiUyQyUyMnElMjIlM0ExMDAlMkMlMjJpZCUyMiUzQSUyMjY5Y2Q2MDM0M2E4ODczNTUzM2YyYmFiYiUyMiU3RCU1RCU3RA=="},
       {name:"Oro",     qty:"250 sesiones", price:"$9,875",  link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9iaW9tZXRyaWMlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJzaWduYV9iaW9tZXRyaWMlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBjb24lMjBCaW9tZXRyaWElMjIlMkMlMjJwciUyMiUzQTExNDU1JTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMkZpcm1hJTIwTk9NMTUxJTIwJTJCJTIwS1lDJTIwT3JvJTIwMjUwJTIyJTJDJTIycSUyMiUzQTI1MCUyQyUyMmlkJTIyJTNBJTIyNjljZDYwYTYzYTg4NzM1NTMzZjJiYWMwJTIyJTdEJTVEJTdE"},
       {name:"Platino", qty:"500 sesiones", price:"$18,500", link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9iaW9tZXRyaWMlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJzaWduYV9iaW9tZXRyaWMlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBjb24lMjBCaW9tZXRyaWElMjIlMkMlMjJwciUyMiUzQTIxNDYwJTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMkZpcm1hJTIwTk9NMTUxJTIwJTJCJTIwS1lDJTIwUGxhdGlubyUyMDUwMCUyMiUyQyUyMnElMjIlM0E1MDAlMkMlMjJpZCUyMiUzQSUyMjY5Y2Q2MGZmM2E4ODczNTUzM2YyYmFjNSUyMiU3RCU1RCU3RA=="},
-    ]},
+    ],
+  },
 ];
 
 const OTROS = [
-  { id:"ine",      name:"Consulta INE",                    icon:"📛", color:"#34d399",
-    desc:"Validación INE/IFE ante el padrón electoral del INE.",
+  { id:"ine",      name:"Consulta INE",                     icon:"📛", color:"#34d399",
+    desc:"Validación de credencial INE/IFE ante el padrón electoral.",
     plans:[{name:"Cobre",qty:"10 consultas",price:"$14"},{name:"Bronce",qty:"50 consultas",price:"$105"},
            {name:"Plata",qty:"100 consultas",price:"$200"},{name:"Oro",qty:"250 consultas",price:"$475"},
            {name:"Platino",qty:"500 consultas",price:"$900"}]},
-  { id:"curp",     name:"Consulta CURP",                   icon:"📋", color:"#22d3ee",
+  { id:"curp",     name:"Consulta CURP",                    icon:"📋", color:"#22d3ee",
     desc:"Validación de CURP ante RENAPO con datos biográficos.",
     plans:[{name:"Cobre",qty:"10 consultas",price:"$14"},{name:"Bronce",qty:"50 consultas",price:"$105"},
            {name:"Plata",qty:"100 consultas",price:"$200"},{name:"Oro",qty:"250 consultas",price:"$475"},
            {name:"Platino",qty:"500 consultas",price:"$900"}]},
-  { id:"ocr-foto", name:"OCR Fotográfico y Documental",   icon:"📄", color:"#fb923c",
-    desc:"Extracción de datos con IA. Vendido por tokens.",
+  { id:"ocr-foto", name:"OCR Fotográfico y Documental",    icon:"📄", color:"#fb923c",
+    desc:"Extracción de datos de documentos con IA. Por tokens.",
     plans:[{name:"Cobre",qty:"210 tokens",price:"$99"},{name:"Bronce",qty:"2,100 tokens",price:"$1,500"},
            {name:"Plata",qty:"4,200 tokens",price:"$2,800"},{name:"Oro",qty:"10,500 tokens",price:"$6,625"},
            {name:"Platino",qty:"21,000 tokens",price:"$12,500"}]},
-  { id:"ocr-id",   name:"OCR para Identificación Oficial", icon:"📝", color:"#f472b6",
-    desc:"Extracción de fotografía y datos de IDs oficiales.",
+  { id:"ocr-id",   name:"OCR para Identificación Oficial",  icon:"📝", color:"#f472b6",
+    desc:"Datos y fotografía de identificaciones oficiales.",
     plans:[{name:"Cobre",qty:"210 tokens",price:"$99"},{name:"Bronce",qty:"2,100 tokens",price:"$1,500"},
            {name:"Plata",qty:"4,200 tokens",price:"$2,800"},{name:"Oro",qty:"10,500 tokens",price:"$6,625"},
            {name:"Platino",qty:"21,000 tokens",price:"$12,500"}]},
@@ -99,8 +187,18 @@ const TIER_BADGE: Record<string, string> = {
   "Oro":     "bg-yellow-400/20 text-yellow-300 border border-yellow-400/30",
   "Platino": "bg-violet-400/20 text-violet-200 border border-violet-400/30",
 };
+
+const STEPS = [
+  { n:"01", icon:"👤", title:"Regístrate", desc:"Crea tu cuenta en platform.jaak.ai y confirma tu correo en segundos." },
+  { n:"02", icon:"⚡",     title:"Activa tu paquete", desc:"Tu crédito queda disponible de forma inmediata tras el pago." },
+  { n:"03", icon:"⚙️", title:"Configura tu flujo", desc:"Usa la plataforma web sin código o conecta vía API REST con tu sistema." },
+  { n:"04", icon:"✅",     title:"Primera transacción", desc:"Verifica identidades o firma documentos. Resultados en tiempo real." },
+  { n:"05", icon:"📊", title:"Monitorea en tu dashboard", desc:"Revisa expedientes, alertas y métricas desde tu panel de control." },
+];
+
 export default function AutoservicioPricingGrid() {
   const [activeIdx, setActiveIdx] = useState(0);
+  const [expandedOtro, setExpandedOtro] = useState<string | null>(null);
   const product = PRODUCTS[activeIdx];
 
   return (
@@ -108,15 +206,14 @@ export default function AutoservicioPricingGrid() {
       className="rounded-3xl overflow-hidden"
       style={{ background: "linear-gradient(135deg, #0D1833 0%, #0E1133 50%, #15213d 100%)" }}
     >
-      {/* Subtle grid overlay */}
       <div
         className="relative p-6 md:p-10"
         style={{
-          backgroundImage:
-            "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0)",
+          backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0)",
           backgroundSize: "32px 32px",
         }}
       >
+
         {/* ─── Selector de producto ─── */}
         <div className="flex gap-2 overflow-x-auto pb-1 mb-8" style={{ scrollbarWidth: "none" }}>
           {PRODUCTS.map((p, i) => {
@@ -131,15 +228,11 @@ export default function AutoservicioPricingGrid() {
                     ? "text-white shadow-lg"
                     : "bg-white/5 text-white/50 border border-white/10 hover:bg-white/10 hover:text-white/80",
                 ].join(" ")}
-                style={
-                  isActive
-                    ? {
-                        background: `linear-gradient(135deg, ${p.color}cc 0%, ${p.color}99 100%)`,
-                        boxShadow: `0 4px 20px ${p.color}40`,
-                        border: `1px solid ${p.color}60`,
-                      }
-                    : {}
-                }
+                style={isActive ? {
+                  background: `linear-gradient(135deg, ${p.color}cc 0%, ${p.color}99 100%)`,
+                  boxShadow: `0 4px 20px ${p.color}40`,
+                  border: `1px solid ${p.color}60`,
+                } : {}}
               >
                 <span className="text-base leading-none">{p.icon}</span>
                 {p.shortName}
@@ -148,24 +241,50 @@ export default function AutoservicioPricingGrid() {
           })}
         </div>
 
-        {/* ─── Encabezado del producto activo ─── */}
-        <div className="flex items-start gap-4 mb-8">
-          <div
-            className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
-            style={{ background: `${product.color}20`, border: `1px solid ${product.color}40` }}
-          >
-            {product.icon}
-          </div>
+        {/* ─── Encabezado del producto + info ─── */}
+        <div className="grid md:grid-cols-2 gap-6 mb-8">
+          {/* Izquierda: nombre, para quién es */}
           <div>
-            <h3 className="text-lg md:text-xl font-bold text-white">{product.name}</h3>
-            <p className="text-white/50 text-sm mt-0.5">{product.desc}</p>
+            <div className="flex items-center gap-3 mb-3">
+              <div
+                className="w-11 h-11 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
+                style={{ background: `${product.color}20`, border: `1px solid ${product.color}40` }}
+              >
+                {product.icon}
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-white leading-tight">{product.name}</h3>
+                <p className="text-white/40 text-xs mt-0.5">{product.desc}</p>
+              </div>
+            </div>
+            <p className="text-white/60 text-sm leading-relaxed mb-3">{product.forWhom}</p>
+            <div className="flex flex-wrap gap-1.5">
+              {product.idealFor.map((tag) => (
+                <span
+                  key={tag}
+                  className="text-[10px] font-semibold px-2.5 py-1 rounded-full"
+                  style={{ background: `${product.color}18`, color: product.color, border: `1px solid ${product.color}30` }}
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
           </div>
+
+          {/* Derecha: beneficios */}
           <div
-            className="ml-auto flex-shrink-0 hidden md:flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg"
-            style={{ background: `${product.color}18`, color: product.color, border: `1px solid ${product.color}30` }}
+            className="rounded-2xl p-4"
+            style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}
           >
-            <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: product.color }} />
-            Compra sin contrato
+            <p className="text-white/40 text-[10px] font-bold uppercase tracking-widest mb-3">Incluye</p>
+            <ul className="space-y-2">
+              {product.benefits.map((b) => (
+                <li key={b} className="flex items-start gap-2 text-xs text-white/65">
+                  <span className="mt-0.5 flex-shrink-0" style={{ color: product.color }}>&#10003;</span>
+                  {b}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 
@@ -182,73 +301,56 @@ export default function AutoservicioPricingGrid() {
                     ? "scale-[1.04]"
                     : "bg-white/[0.04] border border-white/10 hover:bg-white/[0.07] hover:border-white/20",
                 ].join(" ")}
-                style={
-                  isPopular
-                    ? {
-                        background: `linear-gradient(145deg, ${product.color}18 0%, rgba(255,255,255,0.06) 100%)`,
-                        border: `1px solid ${product.color}50`,
-                        boxShadow: `0 0 30px ${product.color}20, 0 8px 32px rgba(0,0,0,0.4)`,
-                      }
-                    : {}
-                }
+                style={isPopular ? {
+                  background: `linear-gradient(145deg, ${product.color}18 0%, rgba(255,255,255,0.06) 100%)`,
+                  border: `1px solid ${product.color}50`,
+                  boxShadow: `0 0 30px ${product.color}20, 0 8px 32px rgba(0,0,0,0.4)`,
+                } : {}}
               >
-                {/* Popular badge */}
                 {isPopular && (
                   <div
-                    className="absolute -top-3.5 left-1/2 -translate-x-1/2 text-[10px] font-bold tracking-wider uppercase px-3 py-1 rounded-full whitespace-nowrap"
+                    className="absolute -top-3.5 left-1/2 -translate-x-1/2 text-[10px] font-bold tracking-wider uppercase px-3 py-1 rounded-full whitespace-nowrap text-white"
                     style={{
                       background: `linear-gradient(90deg, ${product.color}, #00d4aa)`,
                       boxShadow: `0 2px 12px ${product.color}60`,
                     }}
                   >
-                    ⭐ Más popular
+                    Recomendado
                   </div>
                 )}
 
-                {/* Tier badge */}
                 <div className="mb-4">
                   <span className={`inline-flex items-center text-[10px] font-bold tracking-wide uppercase px-2 py-0.5 rounded-md ${TIER_BADGE[plan.name]}`}>
                     {plan.name}
                   </span>
                 </div>
 
-                {/* Price */}
                 <div className="mb-0.5">
                   <span className="text-2xl md:text-3xl font-black text-white tracking-tight">{plan.price}</span>
                 </div>
                 <p className="text-[10px] text-white/30 font-medium mb-3">+ IVA</p>
-
-                {/* Qty */}
                 <p className="text-sm text-white/50 mb-5 flex-1">{plan.qty}</p>
 
-                {/* CTA */}
                 {plan.link ? (
                   <Link
                     href={plan.link}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block w-full text-center text-sm font-bold py-2.5 rounded-xl transition-all duration-150 hover:opacity-90 active:scale-95"
-                    style={
-                      isPopular
-                        ? {
-                            background: `linear-gradient(90deg, ${product.color}, #00d4aa)`,
-                            color: "#fff",
-                            boxShadow: `0 4px 16px ${product.color}50`,
-                          }
-                        : {
-                            background: "rgba(255,255,255,0.07)",
-                            color: "rgba(255,255,255,0.7)",
-                            border: "1px solid rgba(255,255,255,0.12)",
-                          }
-                    }
+                    style={isPopular ? {
+                      background: `linear-gradient(90deg, ${product.color}, #00d4aa)`,
+                      color: "#fff",
+                      boxShadow: `0 4px 16px ${product.color}50`,
+                    } : {
+                      background: "rgba(255,255,255,0.07)",
+                      color: "rgba(255,255,255,0.7)",
+                      border: "1px solid rgba(255,255,255,0.12)",
+                    }}
                   >
-                    Comprar →
+                    Comprar &#8594;
                   </Link>
                 ) : (
-                  <button
-                    disabled
-                    className="w-full text-center text-sm py-2.5 rounded-xl bg-white/5 text-white/20 cursor-not-allowed font-semibold"
-                  >
+                  <button disabled className="w-full text-center text-sm py-2.5 rounded-xl bg-white/5 text-white/20 cursor-not-allowed font-semibold">
                     Próximamente
                   </button>
                 )}
@@ -257,10 +359,39 @@ export default function AutoservicioPricingGrid() {
           })}
         </div>
 
+        {/* ─── ¿Qué sigue después de comprar? ─── */}
+        <div
+          className="rounded-2xl p-6 mb-8"
+          style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}
+        >
+          <p className="text-white/40 text-[10px] font-bold uppercase tracking-widest mb-5">
+            ¿Qué sigue después de comprar?
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+            {STEPS.map((step, i) => (
+              <div key={step.n} className="flex flex-col items-start gap-2">
+                <div className="flex items-center gap-2 w-full">
+                  <div
+                    className="w-7 h-7 rounded-lg flex items-center justify-center text-sm flex-shrink-0"
+                    style={{ background: `${product.color}20`, border: `1px solid ${product.color}30` }}
+                  >
+                    {step.icon}
+                  </div>
+                  {i < STEPS.length - 1 && (
+                    <div className="hidden md:block flex-1 h-px" style={{ background: `${product.color}25` }} />
+                  )}
+                </div>
+                <p className="text-white/80 text-xs font-semibold">{step.title}</p>
+                <p className="text-white/35 text-[10px] leading-relaxed">{step.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* ─── Divisor ─── */}
         <div className="border-t border-white/[0.07] mb-8" />
 
-        {/* ─── Otros productos ─── */}
+        {/* ─── Otros productos (expandibles) ─── */}
         <div className="flex items-center gap-3 mb-5">
           <span className="text-white/70 text-sm font-bold tracking-wide uppercase">Otros productos</span>
           <span className="text-[10px] font-semibold text-amber-400/80 bg-amber-400/10 border border-amber-400/20 px-2.5 py-1 rounded-full">
@@ -268,31 +399,51 @@ export default function AutoservicioPricingGrid() {
           </span>
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-          {OTROS.map((prod) => (
-            <div
-              key={prod.id}
-              className="rounded-xl p-4 bg-white/[0.03] border border-white/[0.07] hover:bg-white/[0.05] transition-all duration-200"
-            >
-              <div
-                className="w-8 h-8 rounded-lg flex items-center justify-center text-lg mb-3"
-                style={{ background: `${prod.color}15`, border: `1px solid ${prod.color}25` }}
+          {OTROS.map((prod) => {
+            const isExpanded = expandedOtro === prod.id;
+            return (
+              <button
+                key={prod.id}
+                onClick={() => setExpandedOtro(isExpanded ? null : prod.id)}
+                className="text-left rounded-xl p-4 transition-all duration-200 group"
+                style={isExpanded ? {
+                  background: `${prod.color}12`,
+                  border: `1px solid ${prod.color}30`,
+                } : {
+                  background: "rgba(255,255,255,0.03)",
+                  border: "1px solid rgba(255,255,255,0.07)",
+                }}
               >
-                {prod.icon}
-              </div>
-              <p className="text-white/80 text-sm font-semibold mb-1">{prod.name}</p>
-              <p className="text-white/30 text-xs leading-relaxed mb-3">{prod.desc}</p>
-              <div className="space-y-1">
-                {prod.plans.map((pl) => (
-                  <div key={pl.name} className="flex justify-between text-[10px]">
-                    <span className="text-white/30">{pl.name}</span>
-                    <span className="text-white/50">{pl.qty}</span>
-                    <span className="text-white/60 font-semibold">{pl.price}</span>
+                <div className="flex items-center justify-between mb-2">
+                  <div
+                    className="w-8 h-8 rounded-lg flex items-center justify-center text-base"
+                    style={{ background: `${prod.color}15`, border: `1px solid ${prod.color}25` }}
+                  >
+                    {prod.icon}
                   </div>
-                ))}
-              </div>
-            </div>
-          ))}
+                  <span className="text-white/20 text-xs group-hover:text-white/40 transition-colors">
+                    {isExpanded ? "▲" : "▼"}
+                  </span>
+                </div>
+                <p className="text-white/70 text-xs font-semibold mb-1">{prod.name}</p>
+                <p className="text-white/30 text-[10px] leading-relaxed">{prod.desc}</p>
+
+                {isExpanded && (
+                  <div className="mt-3 pt-3 border-t border-white/[0.08] space-y-1.5">
+                    {prod.plans.map((pl) => (
+                      <div key={pl.name} className="flex justify-between text-[10px]">
+                        <span className="text-white/40 font-semibold w-12">{pl.name}</span>
+                        <span className="text-white/30 flex-1 text-center">{pl.qty}</span>
+                        <span className="text-white/60 font-bold">{pl.price}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </button>
+            );
+          })}
         </div>
+
       </div>
     </div>
   );
