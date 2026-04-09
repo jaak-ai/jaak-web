@@ -216,7 +216,7 @@ export default function AutoservicioPricingGrid() {
                 key={p.id}
                 onClick={() => setActiveIdx(i)}
                 className={[
-                  "flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold whitespace-nowrap transition-all duration-200 flex-shrink-0",
+                  "flex items-center gap-2 px-4 py-2.5 rounded-xl text-base font-semibold whitespace-nowrap transition-all duration-200 flex-shrink-0",
                   isActive
                     ? "text-white shadow-lg"
                     : "bg-white/5 text-white/50 border border-white/10 hover:bg-white/10 hover:text-white/80",
@@ -247,15 +247,15 @@ export default function AutoservicioPricingGrid() {
               </div>
               <div>
                 <h3 className="text-lg font-bold text-white leading-tight">{product.name}</h3>
-                <p className="text-white/40 text-xs mt-0.5">{product.desc}</p>
+                <p className="text-white/60 text-sm mt-0.5">{product.desc}</p>
               </div>
             </div>
-            <p className="text-white/60 text-sm leading-relaxed mb-3">{product.forWhom}</p>
+            <p className="text-white/70 text-base leading-relaxed mb-3">{product.forWhom}</p>
             <div className="flex flex-wrap gap-1.5">
               {product.idealFor.map((tag) => (
                 <span
                   key={tag}
-                  className="text-[10px] font-semibold px-2.5 py-1 rounded-full"
+                  className="text-xs font-semibold px-2.5 py-1 rounded-full"
                   style={{ background: `${product.color}18`, color: product.color, border: `1px solid ${product.color}30` }}
                 >
                   {tag}
@@ -269,10 +269,10 @@ export default function AutoservicioPricingGrid() {
             className="rounded-2xl p-4"
             style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}
           >
-            <p className="text-white/40 text-[10px] font-bold uppercase tracking-widest mb-3">Incluye</p>
+            <p className="text-white/60 text-xs font-bold uppercase tracking-widest mb-3">Incluye</p>
             <ul className="space-y-2">
               {product.benefits.map((b) => (
-                <li key={b} className="flex items-start gap-2 text-xs text-white/65">
+                <li key={b} className="flex items-start gap-2 text-sm text-white/80">
                   <span className="mt-0.5 flex-shrink-0" style={{ color: product.color }}>&#10003;</span>
                   {b}
                 </li>
@@ -302,7 +302,7 @@ export default function AutoservicioPricingGrid() {
               >
                 {isPopular && (
                   <div
-                    className="absolute -top-3.5 left-1/2 -translate-x-1/2 text-[10px] font-bold tracking-wider uppercase px-3 py-1 rounded-full whitespace-nowrap text-white"
+                    className="absolute -top-3.5 left-1/2 -translate-x-1/2 text-xs font-bold tracking-wider uppercase px-3 py-1 rounded-full whitespace-nowrap text-white"
                     style={{
                       background: `linear-gradient(90deg, ${product.color}, #00d4aa)`,
                       boxShadow: `0 2px 12px ${product.color}60`,
@@ -313,7 +313,7 @@ export default function AutoservicioPricingGrid() {
                 )}
 
                 <div className="mb-4">
-                  <span className={`inline-flex items-center text-[10px] font-bold tracking-wide uppercase px-2 py-0.5 rounded-md ${TIER_BADGE[plan.name]}`}>
+                  <span className={`inline-flex items-center text-xs font-bold tracking-wide uppercase px-2 py-0.5 rounded-md ${TIER_BADGE[plan.name]}`}>
                     {plan.name}
                   </span>
                 </div>
@@ -321,15 +321,15 @@ export default function AutoservicioPricingGrid() {
                 <div className="mb-0.5">
                   <span className="text-2xl md:text-3xl font-black text-white tracking-tight">{plan.price}</span>
                 </div>
-                <p className="text-[10px] text-white/30 font-medium mb-3">+ IVA</p>
-                <p className="text-sm text-white/50 mb-5 flex-1">{plan.qty}</p>
+                <p className="text-xs text-white/50 font-medium mb-3">+ IVA</p>
+                <p className="text-base text-white/70 mb-5 flex-1">{plan.qty}</p>
 
                 {plan.link ? (
                   <Link
                     href={plan.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block w-full text-center text-sm font-bold py-2.5 rounded-xl transition-all duration-150 hover:opacity-90 active:scale-95"
+                    className="block w-full text-center text-base font-bold py-2.5 rounded-xl transition-all duration-150 hover:opacity-90 active:scale-95"
                     style={isPopular ? {
                       background: `linear-gradient(90deg, ${product.color}, #00d4aa)`,
                       color: "#fff",
@@ -343,7 +343,7 @@ export default function AutoservicioPricingGrid() {
                     Comprar &#8594;
                   </Link>
                 ) : (
-                  <button disabled className="w-full text-center text-sm py-2.5 rounded-xl bg-white/5 text-white/20 cursor-not-allowed font-semibold">
+                  <button disabled className="w-full text-center text-base py-2.5 rounded-xl bg-white/5 text-white/20 cursor-not-allowed font-semibold">
                     Próximamente
                   </button>
                 )}
@@ -357,8 +357,8 @@ export default function AutoservicioPricingGrid() {
 
         {/* ─── Otros productos (expandibles) ─── */}
         <div className="flex items-center gap-3 mb-5">
-          <span className="text-white/70 text-sm font-bold tracking-wide uppercase">Otros productos</span>
-          <span className="text-[10px] font-semibold text-amber-400/80 bg-amber-400/10 border border-amber-400/20 px-2.5 py-1 rounded-full">
+          <span className="text-white/80 text-base font-bold tracking-wide uppercase">Otros productos</span>
+          <span className="text-xs font-semibold text-amber-400/80 bg-amber-400/10 border border-amber-400/20 px-2.5 py-1 rounded-full">
             Próximamente
           </span>
         </div>
@@ -385,17 +385,17 @@ export default function AutoservicioPricingGrid() {
                   >
                     {prod.icon}
                   </div>
-                  <span className="text-white/20 text-xs group-hover:text-white/40 transition-colors">
+                  <span className="text-white/30 text-sm group-hover:text-white/40 transition-colors">
                     {isExpanded ? "▲" : "▼"}
                   </span>
                 </div>
-                <p className="text-white/70 text-xs font-semibold mb-1">{prod.name}</p>
-                <p className="text-white/30 text-[10px] leading-relaxed">{prod.desc}</p>
+                <p className="text-white/80 text-sm font-semibold mb-1">{prod.name}</p>
+                <p className="text-white/50 text-xs leading-relaxed">{prod.desc}</p>
 
                 {isExpanded && (
                   <div className="mt-3 pt-3 border-t border-white/[0.08] space-y-1.5">
                     {prod.plans.map((pl) => (
-                      <div key={pl.name} className="flex justify-between text-[10px]">
+                      <div key={pl.name} className="flex justify-between text-xs">
                         <span className="text-white/40 font-semibold w-12">{pl.name}</span>
                         <span className="text-white/30 flex-1 text-center">{pl.qty}</span>
                         <span className="text-white/60 font-bold">{pl.price}</span>
