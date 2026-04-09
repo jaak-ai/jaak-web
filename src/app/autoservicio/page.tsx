@@ -95,7 +95,7 @@ function HeroSection() {
 
         <p
           className="text-center max-w-2xl mx-auto mb-10 text-lg leading-relaxed"
-          style={{ color: "rgba(255,255,255,0.55)" }}
+          style={{ color: "rgba(255,255,255,0.8)" }}
         >
           Compra en línea, activa al instante y empieza a operar sin integración de API.
           Pago único, sin contratos ni suscripciones. Escala cuando quieras.
@@ -136,7 +136,7 @@ function HeroSection() {
             <div
               key={i}
               className="flex items-center gap-2 text-sm"
-              style={{ color: "rgba(255,255,255,0.45)" }}
+              style={{ color: "rgba(255,255,255,0.7)" }}
             >
               <span>{b.icon}</span>
               <span>{b.text}</span>
@@ -212,7 +212,7 @@ function PricingSection() {
           <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4">
             Pago único, sin contratos
           </h2>
-          <p className="text-white/50 max-w-xl mx-auto text-lg">
+          <p className="text-white/70 max-w-xl mx-auto text-lg">
             Elige el volumen que necesitas. Activa al instante y escala cuando quieras.
           </p>
         </div>
@@ -227,12 +227,12 @@ function PricingSection() {
             border: "1px solid rgba(255,255,255,0.08)",
           }}
         >
-          <p className="text-white/60 text-sm">
+          <p className="text-white/80 text-base">
             * Los precios no incluyen IVA. Los volúmenes adquiridos tienen vigencia de 12 meses desde la activación.
             Disponible para personas morales con domicilio fiscal en México.{" "}
             <Link
               href="/precios#autoservicio"
-              className="underline text-white/40 hover:text-white/70 transition-colors"
+              className="underline text-white/60 hover:text-white/90 transition-colors"
             >
               Ver todos los precios y condiciones
             </Link>
@@ -391,7 +391,7 @@ function FinalCTASection() {
         </h2>
         <p
           className="text-lg mb-10 max-w-xl mx-auto leading-relaxed"
-          style={{ color: "rgba(255,255,255,0.5)" }}
+          style={{ color: "rgba(255,255,255,0.8)" }}
         >
           Compra en línea, activa al instante. Sin contratos, sin demos, sin equipo de ventas.
           Tu primer flujo activo en menos de 30 minutos.
@@ -422,7 +422,7 @@ function FinalCTASection() {
 
         <div
           className="flex flex-wrap justify-center gap-6 text-sm"
-          style={{ color: "rgba(255,255,255,0.35)" }}
+          style={{ color: "rgba(255,255,255,0.65)" }}
         >
           {["⚡ Activación en minutos", "🔒 NOM-151 incluido", "💳 Sin suscripciones", "🏢 Plataforma No-code"].map((t, i) => (
             <span key={i}>{t}</span>

@@ -77,7 +77,7 @@ function ProximosPasos() {
                 {step.num}
               </div>
               <h3 className="font-bold text-gray-900 mb-2">{step.title}</h3>
-              <p className="text-gray-500 text-sm leading-relaxed">{step.desc}</p>
+              <p className="text-gray-500 text-base leading-relaxed">{step.desc}</p>
               {step.badge && (
                 <span
                   className="inline-flex items-center gap-1.5 mt-3 text-xs font-semibold px-2.5 py-1 rounded-full"
@@ -181,11 +181,11 @@ function CapacitacionForm() {
             de capacitación?
           </span>
         </h2>
-        <p className="text-gray-500 mb-6 text-sm leading-relaxed">
+        <p className="text-gray-500 mb-6 text-base leading-relaxed">
           Si deseas acompañamiento para comenzar, déjanos tus datos y elige el horario disponible que mejor te funcione.
           Nuestro equipo te guiará en tus primeros pasos.
         </p>
-        <ul className="space-y-3 text-sm text-gray-600">
+        <ul className="space-y-3 text-base text-gray-600">
           {[
             "Sesión personalizada de 60 minutos",
             "Guía paso a paso de la plataforma",
@@ -199,7 +199,7 @@ function CapacitacionForm() {
           ))}
         </ul>
         <div
-          className="mt-6 rounded-xl p-4 text-sm"
+          className="mt-6 rounded-xl p-4 text-base"
           style={{ background: "rgba(30,202,211,0.06)", border: "1px solid rgba(30,202,211,0.15)", color: "#374151" }}
         >
           💬 Nuestro equipo confirmará tu sesión por correo dentro de las próximas <strong>24 horas hábiles</strong>.
@@ -214,56 +214,56 @@ function CapacitacionForm() {
       >
         <div className="grid grid-cols-2 gap-4">
           <div className="col-span-2 md:col-span-1 flex flex-col gap-1">
-            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Nombre completo *</label>
+            <label className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Nombre completo *</label>
             <input
               required
               value={form.nombre}
               onChange={(e) => setForm({ ...form, nombre: e.target.value })}
               placeholder="Tu nombre completo"
-              className="rounded-lg px-3 py-2.5 text-sm text-gray-900 outline-none focus:ring-2 transition-all"
+              className="rounded-lg px-3 py-2.5 text-base text-gray-900 outline-none focus:ring-2 transition-all"
               style={{ border: "1.5px solid #e5e7eb", background: "#f9fafb" }}
             />
           </div>
           <div className="col-span-2 md:col-span-1 flex flex-col gap-1">
-            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Empresa</label>
+            <label className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Empresa</label>
             <input
               value={form.empresa}
               onChange={(e) => setForm({ ...form, empresa: e.target.value })}
               placeholder="Tu empresa"
-              className="rounded-lg px-3 py-2.5 text-sm text-gray-900 outline-none transition-all"
+              className="rounded-lg px-3 py-2.5 text-base text-gray-900 outline-none transition-all"
               style={{ border: "1.5px solid #e5e7eb", background: "#f9fafb" }}
             />
           </div>
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Correo *</label>
+            <label className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Correo *</label>
             <input
               required
               type="email"
               value={form.correo}
               onChange={(e) => setForm({ ...form, correo: e.target.value })}
               placeholder="correo@empresa.com"
-              className="rounded-lg px-3 py-2.5 text-sm text-gray-900 outline-none transition-all"
+              className="rounded-lg px-3 py-2.5 text-base text-gray-900 outline-none transition-all"
               style={{ border: "1.5px solid #e5e7eb", background: "#f9fafb" }}
             />
           </div>
           <div className="flex flex-col gap-1">
-            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">WhatsApp *</label>
+            <label className="text-sm font-semibold text-gray-500 uppercase tracking-wide">WhatsApp *</label>
             <input
               required
               value={form.whatsapp}
               onChange={(e) => setForm({ ...form, whatsapp: e.target.value })}
               placeholder="+52 55 0000 0000"
-              className="rounded-lg px-3 py-2.5 text-sm text-gray-900 outline-none transition-all"
+              className="rounded-lg px-3 py-2.5 text-base text-gray-900 outline-none transition-all"
               style={{ border: "1.5px solid #e5e7eb", background: "#f9fafb" }}
             />
           </div>
           <div className="col-span-2 flex flex-col gap-1">
-            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Número de compra <span className="font-normal normal-case text-gray-400">(opcional)</span></label>
+            <label className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Número de compra <span className="font-normal normal-case text-gray-400">(opcional)</span></label>
             <input
               value={form.numeroPedido}
               onChange={(e) => setForm({ ...form, numeroPedido: e.target.value })}
               placeholder="Ej. ORD-12345"
-              className="rounded-lg px-3 py-2.5 text-sm text-gray-900 outline-none transition-all"
+              className="rounded-lg px-3 py-2.5 text-base text-gray-900 outline-none transition-all"
               style={{ border: "1.5px solid #e5e7eb", background: "#f9fafb" }}
             />
           </div>
@@ -271,7 +271,7 @@ function CapacitacionForm() {
 
         {/* Temas */}
         <div className="flex flex-col gap-2">
-          <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">¿Qué le gustaría revisar?</label>
+          <label className="text-sm font-semibold text-gray-500 uppercase tracking-wide">¿Qué le gustaría revisar?</label>
           <div className="flex flex-wrap gap-2">
             {TEMAS.map((tema) => {
               const active = form.temas.includes(tema);
@@ -280,7 +280,7 @@ function CapacitacionForm() {
                   key={tema}
                   type="button"
                   onClick={() => toggleTema(tema)}
-                  className="text-xs px-3 py-1.5 rounded-full font-medium transition-all duration-150 cursor-pointer"
+                  className="text-sm px-3 py-1.5 rounded-full font-medium transition-all duration-150 cursor-pointer"
                   style={{
                     background: active ? "linear-gradient(135deg, #1ecad3, #655dc6)" : "#f3f4f6",
                     color: active ? "#fff" : "#374151",
@@ -296,7 +296,7 @@ function CapacitacionForm() {
 
         {/* Horario */}
         <div className="flex flex-col gap-2">
-          <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Elige tu horario disponible</label>
+          <label className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Elige tu horario disponible</label>
           <div className="grid grid-cols-2 gap-3">
             {HORARIOS.map((h) => {
               const active = form.horario === h.id;
@@ -311,9 +311,9 @@ function CapacitacionForm() {
                     background: active ? "rgba(30,202,211,0.06)" : "#f9fafb",
                   }}
                 >
-                  <div className="text-xs font-bold text-gray-700 mb-0.5">📅 {h.label}</div>
-                  <div className="text-xs font-semibold" style={{ color: "#1ecad3" }}>{h.sub}</div>
-                  <div className="text-xs text-gray-400 mt-1">{h.note}</div>
+                  <div className="text-sm font-bold text-gray-700 mb-0.5">📅 {h.label}</div>
+                  <div className="text-sm font-semibold" style={{ color: "#1ecad3" }}>{h.sub}</div>
+                  <div className="text-sm text-gray-400 mt-1">{h.note}</div>
                 </button>
               );
             })}
@@ -322,23 +322,23 @@ function CapacitacionForm() {
 
         {/* Comentarios */}
         <div className="flex flex-col gap-1">
-          <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Comentarios adicionales <span className="font-normal normal-case text-gray-400">(opcional)</span></label>
+          <label className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Comentarios adicionales <span className="font-normal normal-case text-gray-400">(opcional)</span></label>
           <textarea
             rows={2}
             value={form.comentarios}
             onChange={(e) => setForm({ ...form, comentarios: e.target.value })}
             placeholder="¿Hay algo específico que quieras revisar?"
-            className="rounded-lg px-3 py-2.5 text-sm text-gray-900 outline-none resize-none transition-all"
+            className="rounded-lg px-3 py-2.5 text-base text-gray-900 outline-none resize-none transition-all"
             style={{ border: "1.5px solid #e5e7eb", background: "#f9fafb" }}
           />
         </div>
 
-        {error && <p className="text-red-500 text-xs">{error}</p>}
+        {error && <p className="text-red-500 text-sm">{error}</p>}
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-3 rounded-xl font-bold text-white text-sm transition-all duration-200 hover:opacity-90 disabled:opacity-60"
+          className="w-full py-3 rounded-xl font-bold text-white text-base transition-all duration-200 hover:opacity-90 disabled:opacity-60"
           style={{ background: "linear-gradient(135deg, #1ecad3, #655dc6)" }}
         >
           {loading ? "Enviando..." : "📅 Solicitar capacitación"}

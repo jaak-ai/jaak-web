@@ -148,7 +148,7 @@ export default function AutoservicioFlujoTabs() {
             color: active === "firma" ? "#fff" : "#374151",
             boxShadow: active === "firma" ? "0 4px 20px rgba(30,202,211,0.3)" : "none",
           }}
-          className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-200 cursor-pointer"
+          className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-base transition-all duration-200 cursor-pointer"
         >
           ✍️ Firma Digital
         </button>
@@ -162,7 +162,7 @@ export default function AutoservicioFlujoTabs() {
             color: active === "kyc" ? "#fff" : "#374151",
             boxShadow: active === "kyc" ? "0 4px 20px rgba(30,202,211,0.3)" : "none",
           }}
-          className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-200 cursor-pointer"
+          className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-base transition-all duration-200 cursor-pointer"
         >
           👤 Verificación KYC
         </button>
@@ -245,7 +245,7 @@ function StepCard({ step, delay }: { step: Step; delay: number }) {
         {/* Badge for special variants */}
         {v && (
           <span
-            className="inline-block text-xs font-semibold px-2.5 py-1 rounded-full mb-2"
+            className="inline-block text-sm font-semibold px-2.5 py-1 rounded-full mb-2"
             style={{
               background: v.badgeBg,
               color: step.variant === "warning" ? "#92400e" : step.variant === "verification" ? "#065f46" : step.variant === "advantage" ? "#0e7490" : "#4c1d95",
@@ -255,13 +255,13 @@ function StepCard({ step, delay }: { step: Step; delay: number }) {
           </span>
         )}
 
-        <h4 className="font-bold text-gray-900 mb-1 text-base">{step.title}</h4>
-        <p className="text-gray-500 text-sm leading-relaxed mb-3">{step.desc}</p>
+        <h4 className="font-bold text-gray-900 mb-1 text-lg">{step.title}</h4>
+        <p className="text-gray-500 text-base leading-relaxed mb-3">{step.desc}</p>
 
         {/* Advantage box */}
         {step.variant === "advantage" && step.advantageText && (
           <div
-            className="rounded-xl p-3 mb-3 text-sm"
+            className="rounded-xl p-3 mb-3 text-base"
             style={{
               background: "rgba(30,202,211,0.06)",
               border: "1px solid rgba(30,202,211,0.2)",
@@ -277,7 +277,7 @@ function StepCard({ step, delay }: { step: Step; delay: number }) {
           {step.pills.map((pill, pi) => (
             <span
               key={pi}
-              className="text-xs px-2.5 py-1 rounded-full font-medium"
+              className="text-sm px-2.5 py-1 rounded-full font-medium"
               style={{ background: "#f3f4f6", color: "#374151" }}
             >
               {pill}
@@ -290,7 +290,7 @@ function StepCard({ step, delay }: { step: Step; delay: number }) {
           <div className="mt-4 pt-4" style={{ borderTop: "1px solid rgba(101,93,198,0.15)" }}>
             <a
               href="#precios"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm text-white transition-all duration-200 hover:opacity-90"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-base text-white transition-all duration-200 hover:opacity-90"
               style={{ background: "linear-gradient(135deg, #1ecad3, #655dc6)" }}
             >
               Empezar ahora →
