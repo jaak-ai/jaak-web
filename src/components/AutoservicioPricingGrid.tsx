@@ -196,13 +196,19 @@ export default function AutoservicioPricingGrid() {
 
   return (
     <div
-      className="rounded-3xl overflow-hidden"
+      className="rounded-3xl overflow-hidden relative"
       style={{ background: "linear-gradient(135deg, #0D1833 0%, #0E1133 50%, #15213d 100%)" }}
     >
+      {/* Orbs de fondo */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-3xl">
+        <div className="orb-drift-1 absolute rounded-full opacity-25" style={{ width: 420, height: 420, top: "-15%", right: "-8%", background: "radial-gradient(circle, #1ecad3 0%, transparent 70%)", filter: "blur(55px)" }} />
+        <div className="orb-drift-2 absolute rounded-full opacity-20" style={{ width: 380, height: 380, bottom: "-20%", left: "-10%", background: "radial-gradient(circle, #655dc6 0%, transparent 70%)", filter: "blur(55px)" }} />
+        <div className="orb-drift-3 absolute rounded-full opacity-12" style={{ width: 280, height: 280, top: "40%", left: "38%", background: "radial-gradient(circle, #2a60d4 0%, transparent 70%)", filter: "blur(45px)" }} />
+      </div>
       <div
         className="relative p-6 md:p-10"
         style={{
-          backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0)",
+          backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.035) 1px, transparent 0)",
           backgroundSize: "32px 32px",
         }}
       >
@@ -237,7 +243,10 @@ export default function AutoservicioPricingGrid() {
         {/* ─── Encabezado del producto + info ─── */}
         <div className="grid md:grid-cols-2 gap-6 mb-8">
           {/* Izquierda: nombre, para quién es */}
-          <div>
+          <div
+            className="rounded-2xl p-5 backdrop-blur-sm"
+            style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)" }}
+          >
             <div className="flex items-center gap-3 mb-3">
               <div
                 className="w-11 h-11 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
@@ -266,8 +275,8 @@ export default function AutoservicioPricingGrid() {
 
           {/* Derecha: beneficios */}
           <div
-            className="rounded-2xl p-4"
-            style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}
+            className="rounded-2xl p-5 backdrop-blur-sm"
+            style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.14)" }}
           >
             <p className="text-white/60 text-xs font-bold uppercase tracking-widest mb-3">Incluye</p>
             <ul className="space-y-2">
@@ -289,26 +298,29 @@ export default function AutoservicioPricingGrid() {
               <div
                 key={plan.name}
                 className={[
-                  "relative flex flex-col rounded-2xl p-5 transition-all duration-200",
+                  "relative flex flex-col rounded-2xl p-5 transition-all duration-200 backdrop-blur-sm",
                   isPopular
-                    ? "scale-[1.04]"
-                    : "bg-white/[0.04] border border-white/10 hover:bg-white/[0.07] hover:border-white/20",
+                    ? "scale-[1.06]"
+                    : "hover:scale-[1.02] hover:border-white/25",
                 ].join(" ")}
                 style={isPopular ? {
-                  background: `linear-gradient(145deg, ${product.color}18 0%, rgba(255,255,255,0.06) 100%)`,
-                  border: `1px solid ${product.color}50`,
-                  boxShadow: `0 0 30px ${product.color}20, 0 8px 32px rgba(0,0,0,0.4)`,
-                } : {}}
+                  background: `linear-gradient(145deg, ${product.color}22 0%, rgba(255,255,255,0.07) 100%)`,
+                  border: `1.5px solid ${product.color}70`,
+                  boxShadow: `0 0 50px ${product.color}35, 0 0 20px ${product.color}20, 0 12px 40px rgba(0,0,0,0.5)`,
+                } : {
+                  background: "rgba(255,255,255,0.06)",
+                  border: "1px solid rgba(255,255,255,0.12)",
+                }}
               >
                 {isPopular && (
                   <div
-                    className="absolute -top-3.5 left-1/2 -translate-x-1/2 text-xs font-bold tracking-wider uppercase px-3 py-1 rounded-full whitespace-nowrap text-white"
+                    className="absolute -top-4 left-1/2 -translate-x-1/2 text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full whitespace-nowrap text-white"
                     style={{
                       background: `linear-gradient(90deg, ${product.color}, #00d4aa)`,
-                      boxShadow: `0 2px 12px ${product.color}60`,
+                      boxShadow: `0 4px 20px ${product.color}70, 0 0 0 1px ${product.color}40`,
                     }}
                   >
-                    Recomendado
+                    ⭐ Recomendado
                   </div>
                 )}
 
@@ -333,11 +345,11 @@ export default function AutoservicioPricingGrid() {
                     style={isPopular ? {
                       background: `linear-gradient(90deg, ${product.color}, #00d4aa)`,
                       color: "#fff",
-                      boxShadow: `0 4px 16px ${product.color}50`,
+                      boxShadow: `0 6px 24px ${product.color}60, 0 2px 8px ${product.color}40`,
                     } : {
-                      background: "rgba(255,255,255,0.07)",
-                      color: "rgba(255,255,255,0.7)",
-                      border: "1px solid rgba(255,255,255,0.12)",
+                      background: "rgba(255,255,255,0.09)",
+                      color: "rgba(255,255,255,0.85)",
+                      border: "1px solid rgba(255,255,255,0.18)",
                     }}
                   >
                     Comprar &#8594;
@@ -353,7 +365,7 @@ export default function AutoservicioPricingGrid() {
         </div>
 
         {/* ─── Divisor ─── */}
-        <div className="border-t border-white/[0.07] mb-8" />
+        <div className="mb-8 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent)" }} />
 
         {/* ─── Otros productos (expandibles) ─── */}
         <div className="flex items-center gap-3 mb-5">
@@ -371,11 +383,12 @@ export default function AutoservicioPricingGrid() {
                 onClick={() => setExpandedOtro(isExpanded ? null : prod.id)}
                 className="text-left rounded-xl p-4 transition-all duration-200 group"
                 style={isExpanded ? {
-                  background: `${prod.color}12`,
-                  border: `1px solid ${prod.color}30`,
+                  background: `${prod.color}14`,
+                  border: `1px solid ${prod.color}40`,
+                  boxShadow: `0 4px 16px ${prod.color}15`,
                 } : {
-                  background: "rgba(255,255,255,0.03)",
-                  border: "1px solid rgba(255,255,255,0.07)",
+                  background: "rgba(255,255,255,0.05)",
+                  border: "1px solid rgba(255,255,255,0.1)",
                 }}
               >
                 <div className="flex items-center justify-between mb-2">
