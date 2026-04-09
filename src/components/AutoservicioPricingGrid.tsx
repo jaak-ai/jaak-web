@@ -188,13 +188,6 @@ const TIER_BADGE: Record<string, string> = {
   "Platino": "bg-violet-400/20 text-violet-200 border border-violet-400/30",
 };
 
-const STEPS = [
-  { n:"01", icon:"👤", title:"Regístrate", desc:"Crea tu cuenta en platform.jaak.ai y confirma tu correo en segundos." },
-  { n:"02", icon:"⚡",     title:"Activa tu paquete", desc:"Tu crédito queda disponible de forma inmediata tras el pago." },
-  { n:"03", icon:"⚙️", title:"Configura tu flujo", desc:"Usa la plataforma web sin código o conecta vía API REST con tu sistema." },
-  { n:"04", icon:"✅",     title:"Primera transacción", desc:"Verifica identidades o firma documentos. Resultados en tiempo real." },
-  { n:"05", icon:"📊", title:"Monitorea en tu dashboard", desc:"Revisa expedientes, alertas y métricas desde tu panel de control." },
-];
 
 export default function AutoservicioPricingGrid() {
   const [activeIdx, setActiveIdx] = useState(0);
@@ -357,35 +350,6 @@ export default function AutoservicioPricingGrid() {
               </div>
             );
           })}
-        </div>
-
-        {/* ─── ¿Qué sigue después de comprar? ─── */}
-        <div
-          className="rounded-2xl p-6 mb-8"
-          style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}
-        >
-          <p className="text-white/40 text-[10px] font-bold uppercase tracking-widest mb-5">
-            ¿Qué sigue después de comprar?
-          </p>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-            {STEPS.map((step, i) => (
-              <div key={step.n} className="flex flex-col items-start gap-2">
-                <div className="flex items-center gap-2 w-full">
-                  <div
-                    className="w-7 h-7 rounded-lg flex items-center justify-center text-sm flex-shrink-0"
-                    style={{ background: `${product.color}20`, border: `1px solid ${product.color}30` }}
-                  >
-                    {step.icon}
-                  </div>
-                  {i < STEPS.length - 1 && (
-                    <div className="hidden md:block flex-1 h-px" style={{ background: `${product.color}25` }} />
-                  )}
-                </div>
-                <p className="text-white/80 text-xs font-semibold">{step.title}</p>
-                <p className="text-white/35 text-[10px] leading-relaxed">{step.desc}</p>
-              </div>
-            ))}
-          </div>
         </div>
 
         {/* ─── Divisor ─── */}
