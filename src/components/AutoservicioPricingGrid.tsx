@@ -241,14 +241,13 @@ const PRODUCTS: Product[] = [
     color: "#f472b6",
     desc: "Extracción de datos y fotografía · IDs oficiales",
     popular: "Plata",
-    forWhom: "Empresas que necesitan extraer datos estructurados y fotografía de identificaciones oficiales como INE, pasaporte, licencia de manejo y más de 15 tipos de IDs mexicanos.",
+    forWhom: "Empresas que necesitan extraer datos estructurados y fotografía de identificaciones oficiales como INE y pasaporte.",
     benefits: [
-      "Extracción de datos de INE, pasaporte, licencia",
+      "Extracción de datos de INE y pasaporte",
       "Fotografía del documento y del portador",
       "Detección de documentos falsificados o alterados",
-      "Más de 15 tipos de IDs mexicanos soportados",
-      "Disponible vía API o plataforma web",
-      "Evidencia descargable con metadatos",
+      "Disponible vía plataforma web",
+      "Evidencia descargable",
     ],
     idealFor: ["KYC simplificado", "Registro de clientes", "Marketplaces", "Validación básica de identidad"],
     plans: [
