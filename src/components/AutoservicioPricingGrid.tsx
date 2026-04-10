@@ -194,7 +194,7 @@ const PRODUCTS: Product[] = [
       "Consulta directa a RENAPO",
       "Validación de CURP y datos biográficos",
       "Detección de CURP inválidas o duplicadas",
-      "Disponible vía API o plataforma web",
+      "Disponible vía plataforma web",
       "Respuesta en tiempo real",
       "Evidencia de consulta descargable",
     ],
