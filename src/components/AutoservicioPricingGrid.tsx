@@ -155,46 +155,112 @@ const PRODUCTS: Product[] = [
       {name:"Platino", qty:"500 sesiones", price:"$18,500", link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJzaWduYV9iaW9tZXRyaWMlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJzaWduYV9iaW9tZXRyaWMlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBjb24lMjBCaW9tZXRyaWElMjIlMkMlMjJwciUyMiUzQTIxNDYwJTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMkZpcm1hJTIwTk9NMTUxJTIwJTJCJTIwS1lDJTIwUGxhdGlubyUyMDUwMCUyMiUyQyUyMnElMjIlM0E1MDAlMkMlMjJpZCUyMiUzQSUyMjY5Y2Q2MGZmM2E4ODczNTUzM2YyYmFjNSUyMiU3RCU1RCU3RA=="},
     ],
   },
-];
-
-const OTROS = [
-  { id:"ine", name:"Consulta INE", icon:"📛", color:"#34d399",
-    desc:"Validación de credencial INE/IFE ante el padrón electoral.",
-    plans:[
+  {
+    id: "ine",
+    shortName: "INE",
+    name: "Consulta INE",
+    icon: "📛",
+    color: "#34d399",
+    desc: "Validación ante padrón electoral · INE/IFE",
+    popular: "Plata",
+    forWhom: "Empresas que necesitan validar la autenticidad de una credencial INE/IFE contra el padrón electoral oficial en tiempo real.",
+    benefits: [
+      "Validación en tiempo real contra padrón INE",
+      "Verificación de vigencia del documento",
+      "Confirmación de datos biográficos del titular",
+      "Disponible vía API o plataforma web",
+      "Respuesta en milisegundos",
+      "Evidencia de consulta descargable",
+    ],
+    idealFor: ["Fintechs", "Plataformas de crédito", "Onboarding digital", "Servicios financieros"],
+    plans: [
       {name:"Cobre",   qty:"10 consultas",  price:"$14",  link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJibGFja2xpc3QlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJibGFja2xpc3QlMjIlMkMlMjJuJTIyJTNBJTIyQmxhY2slMjBMaXN0JTIyJTJDJTIycHIlMjIlM0ExNi4yNCUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJDb25zdWx0YSUyMElORSU1Q3RDb2JyZSUyMiUyQyUyMnElMjIlM0ExMCU3RCU1RCU3RA%3D%3D"},
       {name:"Bronce",  qty:"50 consultas",  price:"$105", link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJibGFja2xpc3QlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJibGFja2xpc3QlMjIlMkMlMjJuJTIyJTNBJTIyQmxhY2slMjBMaXN0JTIyJTJDJTIycHIlMjIlM0ExMjEuOCUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJDb25zdWx0YSUyMElORSU1Q3RCcm9uY2UlMjIlMkMlMjJxJTIyJTNBMCUyQyUyMmlkJTIyJTNBJTIyNjlkODUxZDNlNTc1ODllNzE5NDJkMWZhJTIyJTdEJTVEJTdE"},
       {name:"Plata",   qty:"100 consultas", price:"$200", link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJibGFja2xpc3QlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJibGFja2xpc3QlMjIlMkMlMjJuJTIyJTNBJTIyQmxhY2slMjBMaXN0JTIyJTJDJTIycHIlMjIlM0EyMzIlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyQ29uc3VsdGElMjBJTkUlNUN0T3JvJTIyJTJDJTIycSUyMiUzQTI1MCUyQyUyMmlkJTIyJTNBJTIyNjlkODUzM2NlNTc1ODllNzE5NDJkMjBhJTIyJTdEJTVEJTdE"},
       {name:"Oro",     qty:"250 consultas", price:"$475", link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJibGFja2xpc3QlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJibGFja2xpc3QlMjIlMkMlMjJuJTIyJTNBJTIyQmxhY2slMjBMaXN0JTIyJTJDJTIycHIlMjIlM0E1NTElMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyQ29uc3VsdGElMjBJTkUlNUN0T3JvJTIyJTJDJTIycSUyMiUzQTI1MCUyQyUyMmlkJTIyJTNBJTIyNjlkODU1OTVlNTc1ODllNzE5NDJkMjJjJTIyJTdEJTVEJTdE"},
       {name:"Platino", qty:"500 consultas", price:"$900", link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJibGFja2xpc3QlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJibGFja2xpc3QlMjIlMkMlMjJuJTIyJTNBJTIyQmxhY2slMjBMaXN0JTIyJTJDJTIycHIlMjIlM0ExMDQ0JTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMkNvbnN1bHRhJTIwSU5FJTVDdFBsYXRpbm8lMjA1MDAlMjIlMkMlMjJxJTIyJTNBNTAwJTJDJTIyaWQlMjIlM0ElMjI2OWQ4NTY1OWU1NzU4OWU3MTk0MmQyMzMlMjIlN0QlNUQlN0Q="},
-    ]},
-  { id:"curp", name:"Consulta CURP", icon:"📋", color:"#22d3ee",
-    desc:"Validación de CURP ante RENAPO con datos biográficos.",
-    plans:[
+    ],
+  },
+  {
+    id: "curp",
+    shortName: "CURP",
+    name: "Consulta CURP",
+    icon: "📋",
+    color: "#22d3ee",
+    desc: "Validación ante RENAPO · Datos biográficos",
+    popular: "Plata",
+    forWhom: "Empresas que necesitan validar la CURP de una persona ante el Registro Nacional de Población, obteniendo datos biográficos completos.",
+    benefits: [
+      "Consulta directa a RENAPO",
+      "Validación de CURP y datos biográficos",
+      "Detección de CURP inválidas o duplicadas",
+      "Disponible vía API o plataforma web",
+      "Respuesta en tiempo real",
+      "Evidencia de consulta descargable",
+    ],
+    idealFor: ["Recursos Humanos", "Servicios de salud", "Instituciones educativas", "Empresas reguladas"],
+    plans: [
       {name:"Cobre",   qty:"10 consultas",  price:"$14",  link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJibGFja2xpc3QlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJibGFja2xpc3QlMjIlMkMlMjJuJTIyJTNBJTIyQmxhY2slMjBMaXN0JTIyJTJDJTIycHIlMjIlM0ExNi4yNCUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJDb25zdWx0YSUyMENVUlAlNUN0Q29icmUlNUN0MTAlMjIlMkMlMjJxJTIyJTNBMTAlMkMlMjJpZCUyMiUzQSUyMjY5ZDg2MmQ4ZTU3NTg5ZTcxOTQyZDI3MyUyMiU3RCU1RCU3RA=="},
       {name:"Bronce",  qty:"50 consultas",  price:"$105", link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJibGFja2xpc3QlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJibGFja2xpc3QlMjIlMkMlMjJuJTIyJTNBJTIyQmxhY2slMjBMaXN0JTIyJTJDJTIycHIlMjIlM0ExMjEuOCUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJDb25zdWx0YSUyMENVUlAlNUN0QnJvbmNlJTVDdDUwJTIyJTJDJTIycSUyMiUzQTUwJTJDJTIyaWQlMjIlM0ElMjI2OWQ4NjMzYmU1NzU4OWU3MTk0MmQyNzglMjIlN0QlNUQlN0Q="},
       {name:"Plata",   qty:"100 consultas", price:"$200", link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJibGFja2xpc3QlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJibGFja2xpc3QlMjIlMkMlMjJuJTIyJTNBJTIyQmxhY2slMjBMaXN0JTIyJTJDJTIycHIlMjIlM0EyMzIlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyQ29uc3VsdGElMjBDVVJQJTVDdFBsYXRhJTVDdDEwMCUyMiUyQyUyMnElMjIlM0ExMDAlMkMlMjJpZCUyMiUzQSUyMjY5ZDg2MzU4ZTU3NTg5ZTcxOTQyZDI3ZCUyMiU3RCU1RCU3RA=="},
       {name:"Oro",     qty:"250 consultas", price:"$475", link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJibGFja2xpc3QlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJibGFja2xpc3QlMjIlMkMlMjJuJTIyJTNBJTIyQmxhY2slMjBMaXN0JTIyJTJDJTIycHIlMjIlM0E1NTElMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyQ29uc3VsdGElMjBDVVJQJTVDdE9ybyU1Q3QyNTAlMjIlMkMlMjJxJTIyJTNBMjUwJTJDJTIyaWQlMjIlM0ElMjI2OWQ4NjM4MGU1NzU4OWU3MTk0MmQyODIlMjIlN0QlNUQlN0Q="},
       {name:"Platino", qty:"500 consultas", price:"$900", link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJibGFja2xpc3QlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmslMjIlM0ElMjJibGFja2xpc3QlMjIlMkMlMjJuJTIyJTNBJTIyQmxhY2slMjBMaXN0JTIyJTJDJTIycHIlMjIlM0ExMDQ0JTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMkNvbnN1bHRhJTIwQ1VSUCU1Q3RQbGF0aW5vJTVDdDUwMCUyMiUyQyUyMnElMjIlM0E1MDAlMkMlMjJpZCUyMiUzQSUyMjY5ZDg2M2ExZTU3NTg5ZTcxOTQyZDI4NyUyMiU3RCU1RCU3RA=="},
-    ]},
-  { id:"ocr-inteligente", name:"OCR Inteligente", icon:"🧠", color:"#fb923c",
-    desc:"Extracción de datos de +500 tipos de documentos con IA. Por tokens.",
-    plans:[
+    ],
+  },
+  {
+    id: "ocr-inteligente",
+    shortName: "OCR Inteligente",
+    name: "OCR Inteligente",
+    icon: "🧠",
+    color: "#fb923c",
+    desc: "Extracción de datos de +500 tipos de documentos · IA",
+    popular: "Plata",
+    forWhom: "Empresas que necesitan extraer información estructurada de actas constitutivas, CSF, estados de cuenta, comprobantes de domicilio y más de 500 tipos de documentos entrenados con IA.",
+    benefits: [
+      "Actas constitutivas · 2 tokens por hoja",
+      "Constancia de Situación Fiscal (CSF) · 10 tokens",
+      "Estados de cuenta · 5 tokens",
+      "Comprobantes de domicilio · 5 tokens",
+      "+500 tipos de documentos entrenados con IA",
+      "Modelo que se actualiza y mejora continuamente",
+    ],
+    idealFor: ["Bancos", "Aseguradoras", "Onboarding empresarial", "Compliance documental"],
+    plans: [
       {name:"Cobre",   qty:"210 tokens",    price:"$99",    link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJkb2N1bWVudCUyMiU1RCUyQyUyMnByb2R1Y3RzJTIyJTNBJTVCJTdCJTIyayUyMiUzQSUyMmRvY3VtZW50JTIyJTJDJTIybiUyMiUzQSUyMkRvY3VtZW50JTIyJTJDJTIycHIlMjIlM0ExMTQuODQlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyT0NSJTIwSW50ZWxpZ2VudGUlNUN0Q29icmUlNUN0MjEwJTIwdG9rZW5zJTIyJTJDJTIycSUyMiUzQTIxMCUyQyUyMmlkJTIyJTNBJTIyNjlkODY2NjllNTc1ODllNzE5NDJkMjk1JTIyJTdEJTVEJTdE"},
       {name:"Bronce",  qty:"2,100 tokens",  price:"$1,500", link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJkb2N1bWVudCUyMiU1RCUyQyUyMnByb2R1Y3RzJTIyJTNBJTVCJTdCJTIyayUyMiUzQSUyMmRvY3VtZW50JTIyJTJDJTIybiUyMiUzQSUyMkRvY3VtZW50JTIyJTJDJTIycHIlMjIlM0ExNzQwJTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMk9DUiUyMEludGVsaWdlbnRlJTVDdEJyb25jZSU1Q3QyJTJDMTAwJTIwdG9rZW5zJTIyJTJDJTIycSUyMiUzQTIxMDAlMkMlMjJpZCUyMiUzQSUyMjY5ZDg2NmFkZTU3NTg5ZTcxOTQyZDI5YiUyMiU3RCU1RCU3RA=="},
       {name:"Plata",   qty:"4,200 tokens",  price:"$2,800", link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJkb2N1bWVudCUyMiU1RCUyQyUyMnByb2R1Y3RzJTIyJTNBJTVCJTdCJTIyayUyMiUzQSUyMmRvY3VtZW50JTIyJTJDJTIybiUyMiUzQSUyMkRvY3VtZW50JTIyJTJDJTIycHIlMjIlM0EzMjQ4JTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMk9DUiUyMEludGVsaWdlbnRlJTVDdFBsYXRhJTVDdDQlMkMyMDAlMjB0b2tlbnMlMjIlMkMlMjJxJTIyJTNBNDIwMCUyQyUyMmlkJTIyJTNBJTIyNjlkODY3MGZlNTc1ODllNzE5NDJkMmEyJTIyJTdEJTVEJTdE"},
       {name:"Oro",     qty:"10,500 tokens", price:"$6,625", link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJkb2N1bWVudCUyMiU1RCUyQyUyMnByb2R1Y3RzJTIyJTNBJTVCJTdCJTIyayUyMiUzQSUyMmRvY3VtZW50JTIyJTJDJTIybiUyMiUzQSUyMkRvY3VtZW50JTIyJTJDJTIycHIlMjIlM0E3Njg1JTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMk9DUiUyMEludGVsaWdlbnRlJTVDdE9ybyU1Q3QxMCUyQzUwMCUyMHRva2VucyUyMiUyQyUyMnElMjIlM0ExMDUwMCUyQyUyMmlkJTIyJTNBJTIyNjlkODY3MmRlNTc1ODllNzE5NDJkMmE3JTIyJTdEJTVEJTdE"},
       {name:"Platino", qty:"21,000 tokens", price:"$12,500",link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJkb2N1bWVudCUyMiU1RCUyQyUyMnByb2R1Y3RzJTIyJTNBJTVCJTdCJTIyayUyMiUzQSUyMmRvY3VtZW50JTIyJTJDJTIybiUyMiUzQSUyMkRvY3VtZW50JTIyJTJDJTIycHIlMjIlM0ExNDUwMCUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJPQ1IlMjBJbnRlbGlnZW50ZSU1Q3RQbGF0aW5vJTVDdDIxJTJDMDAwJTIwdG9rZW5zJTIyJTJDJTIycSUyMiUzQTIxMDAwJTJDJTIyaWQlMjIlM0ElMjI2OWQ4Njg0NmU1NzU4OWU3MTk0MmQyYjIlMjIlN0QlNUQlN0Q="},
-    ]},
-  { id:"ocr-id", name:"OCR para Identificación Oficial", icon:"📝", color:"#f472b6",
-    desc:"Datos y fotografía de identificaciones oficiales.",
-    plans:[
+    ],
+  },
+  {
+    id: "ocr-id",
+    shortName: "OCR ID",
+    name: "OCR para Identificación Oficial",
+    icon: "📝",
+    color: "#f472b6",
+    desc: "Extracción de datos y fotografía · IDs oficiales",
+    popular: "Plata",
+    forWhom: "Empresas que necesitan extraer datos estructurados y fotografía de identificaciones oficiales como INE, pasaporte, licencia de manejo y más de 15 tipos de IDs mexicanos.",
+    benefits: [
+      "Extracción de datos de INE, pasaporte, licencia",
+      "Fotografía del documento y del portador",
+      "Detección de documentos falsificados o alterados",
+      "Más de 15 tipos de IDs mexicanos soportados",
+      "Disponible vía API o plataforma web",
+      "Evidencia descargable con metadatos",
+    ],
+    idealFor: ["KYC simplificado", "Registro de clientes", "Marketplaces", "Validación básica de identidad"],
+    plans: [
       {name:"Cobre",   qty:"210 tokens",    price:"$99",    link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJkb2N1bWVudCUyMiU1RCUyQyUyMnByb2R1Y3RzJTIyJTNBJTVCJTdCJTIyayUyMiUzQSUyMmRvY3VtZW50JTIyJTJDJTIybiUyMiUzQSUyMkRvY3VtZW50JTIyJTJDJTIycHIlMjIlM0ExMTQuODQlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyT0NSJTIwcGFyYSUyMElkZW50aWZpY2FjaSVDMyVCM24lMjBPZmljaWFsJTVDdENvYnJlJTVDdDIxMCUyMHRva2VucyUyMiUyQyUyMnElMjIlM0EyMTAlMkMlMjJpZCUyMiUzQSUyMjY5ZDg2OTdkZTU3NTg5ZTcxOTQyZDJiYiUyMiU3RCU1RCU3RA=="},
       {name:"Bronce",  qty:"2,100 tokens",  price:"$1,500", link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJkb2N1bWVudCUyMiU1RCUyQyUyMnByb2R1Y3RzJTIyJTNBJTVCJTdCJTIyayUyMiUzQSUyMmRvY3VtZW50JTIyJTJDJTIybiUyMiUzQSUyMkRvY3VtZW50JTIyJTJDJTIycHIlMjIlM0ExNzQwJTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMk9DUiUyMHBhcmElMjBJZGVudGlmaWNhY2klQzMlQjNuJTIwT2ZpY2lhbCU1Q3RCcm9uY2UlNUN0MiUyQzEwMCUyMHRva2VucyUyMiUyQyUyMnElMjIlM0EyMTAwJTJDJTIyaWQlMjIlM0ElMjI2OWQ4Njk5OGU1NzU4OWU3MTk0MmQyYzElMjIlN0QlNUQlN0Q="},
       {name:"Plata",   qty:"4,200 tokens",  price:"$2,800", link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJkb2N1bWVudCUyMiU1RCUyQyUyMnByb2R1Y3RzJTIyJTNBJTVCJTdCJTIyayUyMiUzQSUyMmRvY3VtZW50JTIyJTJDJTIybiUyMiUzQSUyMkRvY3VtZW50JTIyJTJDJTIycHIlMjIlM0EzMjQ4JTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMk9DUiUyMHBhcmElMjBJZGVudGlmaWNhY2klQzMlQjNuJTIwT2ZpY2lhbCU1Q3RQbGF0YSU1Q3Q0JTJDMjAwJTIwdG9rZW5zJTIyJTJDJTIycSUyMiUzQTQyMDAlMkMlMjJpZCUyMiUzQSUyMjY5ZDg2OWU3ZTU3NTg5ZTcxOTQyZDJjNyUyMiU3RCU1RCU3RA=="},
       {name:"Oro",     qty:"10,500 tokens", price:"$6,625", link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJkb2N1bWVudCUyMiU1RCUyQyUyMnByb2R1Y3RzJTIyJTNBJTVCJTdCJTIyayUyMiUzQSUyMmRvY3VtZW50JTIyJTJDJTIybiUyMiUzQSUyMkRvY3VtZW50JTIyJTJDJTIycHIlMjIlM0E3Njg1JTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMk9DUiUyMHBhcmElMjBJZGVudGlmaWNhY2klQzMlQjNuJTIwT2ZpY2lhbCU1Q3RPcm8lNUN0MTAlMkM1MDAlMjB0b2tlbnMlMjIlMkMlMjJxJTIyJTNBMTA1MDAlMkMlMjJpZCUyMiUzQSUyMjY5ZDg2YTI4ZTU3NTg5ZTcxOTQyZDJjYyUyMiU3RCU1RCU3RA=="},
       {name:"Platino", qty:"21,000 tokens", price:"$12,500",link:"https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjJkb2N1bWVudCUyMiU1RCUyQyUyMnByb2R1Y3RzJTIyJTNBJTVCJTdCJTIyayUyMiUzQSUyMmRvY3VtZW50JTIyJTJDJTIybiUyMiUzQSUyMkRvY3VtZW50JTIyJTJDJTIycHIlMjIlM0ExNDUwMCUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJPQ1IlMjBwYXJhJTIwSWRlbnRpZmljYWNpJUMzJUIzbiUyME9maWNpYWwlNUN0UGxhdGlubyU1Q3QyMSUyQzAwMCUyMHRva2VucyUyMiUyQyUyMnElMjIlM0EyMTAwMCUyQyUyMmlkJTIyJTNBJTIyNjlkODZhNTNlNTc1ODllNzE5NDJkMmQyJTIyJTdEJTVEJTdE"},
-    ]},
+    ],
+  },
 ];
+
 
 const TIER_BADGE: Record<string, string> = {
   "Cobre":   "bg-orange-400/20 text-orange-300 border border-orange-400/30",
@@ -207,7 +273,6 @@ const TIER_BADGE: Record<string, string> = {
 
 export default function AutoservicioPricingGrid() {
   const [activeIdx, setActiveIdx] = useState(0);
-  const [expandedOtro, setExpandedOtro] = useState<string | null>(null);
   const product = PRODUCTS[activeIdx];
 
   return (
@@ -380,62 +445,6 @@ export default function AutoservicioPricingGrid() {
           })}
         </div>
 
-        {/* ─── Divisor ─── */}
-        <div className="mb-8 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent)" }} />
-
-        {/* ─── Otros productos (expandibles) ─── */}
-        <div className="flex items-center gap-3 mb-5">
-          <span className="text-white/80 text-base font-bold tracking-wide uppercase">Otros productos</span>
-          <span className="text-xs font-semibold text-amber-400/80 bg-amber-400/10 border border-amber-400/20 px-2.5 py-1 rounded-full">
-            Próximamente
-          </span>
-        </div>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-          {OTROS.map((prod) => {
-            const isExpanded = expandedOtro === prod.id;
-            return (
-              <button
-                key={prod.id}
-                onClick={() => setExpandedOtro(isExpanded ? null : prod.id)}
-                className="text-left rounded-xl p-4 transition-all duration-200 group"
-                style={isExpanded ? {
-                  background: `${prod.color}14`,
-                  border: `1px solid ${prod.color}40`,
-                  boxShadow: `0 4px 16px ${prod.color}15`,
-                } : {
-                  background: "rgba(255,255,255,0.05)",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                }}
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <div
-                    className="w-8 h-8 rounded-lg flex items-center justify-center text-base"
-                    style={{ background: `${prod.color}15`, border: `1px solid ${prod.color}25` }}
-                  >
-                    {prod.icon}
-                  </div>
-                  <span className="text-white/30 text-sm group-hover:text-white/40 transition-colors">
-                    {isExpanded ? "▲" : "▼"}
-                  </span>
-                </div>
-                <p className="text-white/80 text-sm font-semibold mb-1">{prod.name}</p>
-                <p className="text-white/50 text-xs leading-relaxed">{prod.desc}</p>
-
-                {isExpanded && (
-                  <div className="mt-3 pt-3 border-t border-white/[0.08] space-y-1.5">
-                    {prod.plans.map((pl) => (
-                      <div key={pl.name} className="flex justify-between text-xs">
-                        <span className="text-white/40 font-semibold w-12">{pl.name}</span>
-                        <span className="text-white/30 flex-1 text-center">{pl.qty}</span>
-                        <span className="text-white/60 font-bold">{pl.price}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </button>
-            );
-          })}
-        </div>
 
       </div>
     </div>
