@@ -217,11 +217,9 @@ const PRODUCTS: Product[] = [
     popular: "Plata",
     forWhom: "Empresas que necesitan extraer información estructurada de actas constitutivas, CSF, estados de cuenta, comprobantes de domicilio y más de 500 tipos de documentos entrenados con IA.",
     benefits: [
-      "Actas constitutivas · 2 tokens por hoja",
-      "Constancia de Situación Fiscal (CSF) · 10 tokens",
-      "Estados de cuenta · 5 tokens",
-      "Comprobantes de domicilio · 5 tokens",
+      "Actas constitutivas, CSF, estados de cuenta, comprobantes de domicilio y más",
       "+500 tipos de documentos entrenados con IA",
+      "El consumo de tokens varía según el tipo y extensión del documento",
       "Modelo que se actualiza y mejora continuamente",
     ],
     idealFor: ["Bancos", "Aseguradoras", "Onboarding empresarial", "Compliance documental"],
