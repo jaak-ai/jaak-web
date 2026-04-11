@@ -23,7 +23,7 @@ export default function VerificacionIdentidad() {
       <main>
         {/* ── 1. HERO ── */}
         <section
-          className="pt-32 pb-20 relative overflow-hidden"
+          className="pt-28 pb-14 md:pt-32 md:pb-20 relative overflow-hidden"
           style={{ background: "linear-gradient(160deg, #0E1133 0%, #141a3a 60%, #0E1133 100%)" }}
         >
           {/* Ambient glows */}
@@ -33,11 +33,11 @@ export default function VerificacionIdentidad() {
             style={{ background: "rgba(42,215,150,0.07)" }} />
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div className="grid lg:grid-cols-2 gap-14 items-center">
+            <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
               {/* Left — copy */}
               <div>
                 {/* Product label */}
-                <div className="flex items-center gap-3 mb-7">
+                <div className="flex flex-wrap items-center gap-2 mb-6">
                   <div
                     className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold"
                     style={{ color: "#2DB6C1", border: "1px solid rgba(45,182,193,0.30)", background: "rgba(45,182,193,0.10)" }}
@@ -53,7 +53,7 @@ export default function VerificacionIdentidad() {
                   </div>
                 </div>
 
-                <h1 className="text-4xl md:text-5xl lg:text-[3.25rem] font-black text-white leading-tight mb-5">
+                <h1 className="text-3xl sm:text-4xl lg:text-[3.25rem] font-black text-white leading-tight mb-5">
                   Verifica la identidad de tus clientes.{" "}
                   <span style={{
                     background: "linear-gradient(90deg, #2DB6C1, #2AD796)",
@@ -117,14 +117,14 @@ export default function VerificacionIdentidad() {
 
 
         {/* ── 3. PROBLEMA REGULATORIO ── */}
-        <section className="py-24 relative overflow-hidden" style={{ background: "#0E1133" }}>
+        <section className="py-16 md:py-24 relative overflow-hidden" style={{ background: "#0E1133" }}>
           <div
             className="absolute top-1/2 right-0 w-[400px] h-[400px] rounded-full blur-[120px] pointer-events-none"
             style={{ background: "rgba(220,38,38,0.06)" }}
           />
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             {/* Header */}
-            <div className="max-w-2xl mb-14">
+            <div className="max-w-2xl mb-10 md:mb-14">
               <div
                 className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
                 style={{ color: "#fca5a5", border: "1px solid rgba(252,165,165,0.20)", background: "rgba(252,165,165,0.08)" }}
@@ -200,10 +200,10 @@ export default function VerificacionIdentidad() {
         </section>
 
         {/* ── 4. SOLUCIÓN / CAPACIDADES ── */}
-        <section id="solución" className="py-24 relative overflow-hidden" style={{ background: "#F8FAFC" }}>
+        <section id="solución" className="py-16 md:py-24 relative overflow-hidden" style={{ background: "#F8FAFC" }}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Header */}
-            <div className="max-w-2xl mb-14">
+            <div className="max-w-2xl mb-10 md:mb-14">
               <div
                 className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
                 style={{ color: "#2DB6C1", border: "1px solid rgba(45,182,193,0.22)", background: "rgba(45,182,193,0.08)" }}
@@ -280,14 +280,14 @@ export default function VerificacionIdentidad() {
         </section>
 
         {/* ── 5. CÓMO FUNCIONA ── */}
-        <section className="py-24 relative overflow-hidden" style={{ background: "#141a3a" }}>
+        <section className="py-16 md:py-24 relative overflow-hidden" style={{ background: "#141a3a" }}>
           <div
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[140px] pointer-events-none"
             style={{ background: "rgba(45,182,193,0.07)" }}
           />
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             {/* Header */}
-            <div className="text-center max-w-2xl mx-auto mb-16">
+            <div className="text-center max-w-2xl mx-auto mb-10 md:mb-16">
               <div
                 className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
                 style={{ color: "#2AD796", border: "1px solid rgba(42,215,150,0.22)", background: "rgba(42,215,150,0.08)" }}
@@ -304,7 +304,7 @@ export default function VerificacionIdentidad() {
             </div>
 
             {/* Steps */}
-            <div className="relative grid md:grid-cols-4 gap-6">
+            <div className="relative grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-6">
               {/* Connector line — desktop only */}
               <div
                 className="hidden md:block absolute top-10 left-[12.5%] right-[12.5%] h-px pointer-events-none"
@@ -320,14 +320,14 @@ export default function VerificacionIdentidad() {
                 <div key={i} className="flex flex-col items-center text-center relative">
                   {/* Step circle */}
                   <div
-                    className="w-20 h-20 rounded-full flex items-center justify-center mb-5 relative z-10"
+                    className="w-14 h-14 md:w-20 md:h-20 rounded-full flex items-center justify-center mb-4 md:mb-5 relative z-10"
                     style={{
                       background: "linear-gradient(145deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02))",
                       border: "1px solid rgba(45,182,193,0.22)",
                     }}
                   >
                     <span
-                      className="text-2xl font-black"
+                      className="text-xl md:text-2xl font-black"
                       style={{
                         background: "linear-gradient(90deg, #2DB6C1, #2AD796)",
                         WebkitBackgroundClip: "text",
@@ -353,21 +353,21 @@ export default function VerificacionIdentidad() {
 
             {/* Result row */}
             <div
-              className="mt-14 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-6"
+              className="mt-10 md:mt-14 rounded-2xl p-5 md:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
               style={{ background: "rgba(42,215,150,0.07)", border: "1px solid rgba(42,215,150,0.16)" }}
             >
-              <div className="flex items-center gap-4">
-                <span className="text-3xl">✅</span>
+              <div className="flex items-start sm:items-center gap-4">
+                <span className="text-2xl md:text-3xl flex-shrink-0">✅</span>
                 <div>
-                  <div className="font-bold text-white">Identidad verificada y expediente cerrado</div>
-                  <div className="text-sm mt-0.5" style={{ color: "rgba(255,255,255,0.45)" }}>
-                    Resultado con score de confianza · Evidencia lista para auditoría · API webhook enviado
+                  <div className="font-bold text-white text-sm md:text-base">Identidad verificada y expediente cerrado</div>
+                  <div className="text-xs md:text-sm mt-0.5" style={{ color: "rgba(255,255,255,0.45)" }}>
+                    Score de confianza · Evidencia lista para auditoría · Webhook enviado
                   </div>
                 </div>
               </div>
               <Link
                 href="/contacto"
-                className="inline-flex items-center gap-2 px-5 py-2.5 font-bold text-sm rounded-xl whitespace-nowrap transition-all"
+                className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-5 py-2.5 font-bold text-sm rounded-xl transition-all"
                 style={{ background: "linear-gradient(135deg, #2DB6C1, #25969f)", color: "#fff", boxShadow: "0 4px 16px rgba(45,182,193,0.25)" }}
               >
                 Ver demo en vivo
@@ -380,10 +380,10 @@ export default function VerificacionIdentidad() {
         </section>
 
         {/* ── 6. CERTIFICACIONES ── */}
-        <section className="py-24" style={{ background: "#fff" }}>
+        <section className="py-16 md:py-24" style={{ background: "#fff" }}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Header */}
-            <div className="text-center max-w-2xl mx-auto mb-14">
+            <div className="text-center max-w-2xl mx-auto mb-10 md:mb-14">
               <div
                 className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
                 style={{ color: "#2DB6C1", border: "1px solid rgba(45,182,193,0.22)", background: "rgba(45,182,193,0.08)" }}
@@ -460,9 +460,9 @@ export default function VerificacionIdentidad() {
         </section>
 
         {/* ── 7. SECTORES ── */}
-        <section className="py-24" style={{ background: "#F8FAFC" }}>
+        <section className="py-16 md:py-24" style={{ background: "#F8FAFC" }}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-2xl mb-14">
+            <div className="max-w-2xl mb-10 md:mb-14">
               <div
                 className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
                 style={{ color: "#2DB6C1", border: "1px solid rgba(45,182,193,0.22)", background: "rgba(45,182,193,0.08)" }}
@@ -544,7 +544,7 @@ export default function VerificacionIdentidad() {
         </section>
 
         {/* ── 7b. LISTAS AML/PLD ── */}
-        <section className="py-24 relative overflow-hidden" style={{ background: "#0E1133" }}>
+        <section className="py-16 md:py-24 relative overflow-hidden" style={{ background: "#0E1133" }}>
           <div
             className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full blur-[140px] pointer-events-none"
             style={{ background: "rgba(245,158,11,0.05)" }}
@@ -574,7 +574,7 @@ export default function VerificacionIdentidad() {
             </div>
 
             {/* Group labels */}
-            <div className="mb-10 flex flex-wrap gap-6 items-center">
+            <div className="mb-6 md:mb-10 flex flex-wrap gap-4 md:gap-6 items-center">
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full" style={{ background: "rgba(239,68,68,0.7)" }} />
                 <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "rgba(255,255,255,0.35)" }}>
@@ -804,17 +804,17 @@ export default function VerificacionIdentidad() {
         </section>
 
         {/* ── 8. INTEGRACIÓN TÉCNICA ── */}
-        <section className="py-24 relative overflow-hidden" style={{ background: "#0E1133" }}>
+        <section className="py-16 md:py-24 relative overflow-hidden" style={{ background: "#0E1133" }}>
           <div
             className="absolute bottom-0 left-0 w-[350px] h-[350px] rounded-full blur-[100px] pointer-events-none"
             style={{ background: "rgba(42,215,150,0.06)" }}
           />
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div className="grid lg:grid-cols-2 gap-14 items-center">
+            <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-start">
               {/* Left — timeline */}
               <div>
                 <div
-                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-7"
+                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6 md:mb-7"
                   style={{ color: "#2AD796", border: "1px solid rgba(42,215,150,0.22)", background: "rgba(42,215,150,0.08)" }}
                 >
                   Integración técnica
@@ -929,7 +929,7 @@ export default function VerificacionIdentidad() {
 
         {/* ── 9. CTA FINAL ── */}
         <section
-          className="py-24 relative overflow-hidden"
+          className="py-16 md:py-24 relative overflow-hidden"
           style={{ background: "linear-gradient(160deg, #141a3a 0%, #0E1133 60%, #141a3a 100%)" }}
         >
           <div
@@ -942,7 +942,7 @@ export default function VerificacionIdentidad() {
           />
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div
-              className="max-w-3xl mx-auto rounded-3xl p-10 md:p-14 text-center"
+              className="max-w-3xl mx-auto rounded-2xl md:rounded-3xl p-7 sm:p-10 md:p-14 text-center"
               style={{
                 background: "linear-gradient(145deg, rgba(255,255,255,0.07) 0%, rgba(45,182,193,0.04) 50%, rgba(255,255,255,0.02) 100%)",
                 backdropFilter: "blur(24px)",
@@ -962,18 +962,18 @@ export default function VerificacionIdentidad() {
                 </span>
               </div>
 
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight mb-6">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight mb-5 md:mb-6">
                 Tu próxima auditoría puede encontrar evidencia — o encontrar vacíos.
               </h2>
 
-              <p className="text-xl mb-10 max-w-xl mx-auto" style={{ color: "rgba(255,255,255,0.52)" }}>
+              <p className="text-base md:text-xl mb-8 md:mb-10 max-w-xl mx-auto" style={{ color: "rgba(255,255,255,0.52)" }}>
                 En 15 minutos te decimos si JAAK cubre lo que tu regulación exige. Sin compromiso.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
                 <Link
                   href="/contacto"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 text-white font-bold text-lg rounded-xl transition-all duration-200 group"
+                  className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 text-white font-bold text-base sm:text-lg rounded-xl transition-all duration-200 group"
                   style={{
                     background: "linear-gradient(135deg, #2DB6C1, #25969f)",
                     boxShadow: "0 8px 32px rgba(45,182,193,0.30)",
@@ -986,7 +986,7 @@ export default function VerificacionIdentidad() {
                 </Link>
                 <Link
                   href="/precios"
-                  className="inline-flex items-center justify-center px-8 py-4 font-semibold text-lg rounded-xl transition-all duration-200"
+                  className="inline-flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-4 font-semibold text-base sm:text-lg rounded-xl transition-all duration-200"
                   style={{
                     color: "rgba(255,255,255,0.78)",
                     background: "rgba(255,255,255,0.06)",
@@ -999,10 +999,10 @@ export default function VerificacionIdentidad() {
 
               {/* Trust signals */}
               <div
-                className="mt-10 pt-8 flex flex-wrap justify-center gap-6 text-xs"
+                className="mt-8 md:mt-10 pt-6 md:pt-8 flex flex-wrap justify-center gap-3 md:gap-6 text-xs"
                 style={{ borderTop: "1px solid rgba(255,255,255,0.07)", color: "rgba(255,255,255,0.28)" }}
               >
-                {["Sin compromiso de contratación", "ISO 27001 · iBeta Level 1", "70M+ identidades verificadas", "Tecnología 100% propia"].map((t) => (
+                {["Sin compromiso", "ISO 27001 · iBeta Level 1", "70M+ verificaciones", "Tecnología propia"].map((t) => (
                   <span key={t} className="flex items-center gap-1.5">
                     <svg className="w-4 h-4" style={{ color: "#2AD796" }} fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />

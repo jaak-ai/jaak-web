@@ -34,7 +34,7 @@ export default function KycBiometricAnimation() {
 
       <div className="flex justify-center lg:justify-end">
         <div
-          className="w-full max-w-[340px] rounded-3xl p-6 relative overflow-hidden"
+          className="w-full max-w-[340px] rounded-2xl sm:rounded-3xl p-4 sm:p-6 relative overflow-hidden"
           style={{
             background: "linear-gradient(145deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)",
             border: "1px solid rgba(45,182,193,0.20)",
