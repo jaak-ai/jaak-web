@@ -18,8 +18,8 @@ export default function FirmaThemeShell() {
   const t = {
     bgA: isDark ? "#070E1A" : "#FFFFFF",
     bgB: isDark ? "#0A1628" : "#F8FAFC",
-    heading: isDark ? "#FFFFFF" : "#0F172A",
-    body: isDark ? "#94A3B8" : "#475569",
+    heading: isDark ? "#FFFFFF" : "#0A0F1A",
+    body: isDark ? "#94A3B8" : "#1E293B",
     tr: "background-color 0.4s ease, color 0.4s ease",
   };
 
