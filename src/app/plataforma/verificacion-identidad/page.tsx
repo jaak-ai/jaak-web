@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import KycBiometricAnimation from "@/components/KycBiometricAnimation";
 
 export const metadata: Metadata = {
   title: "Verificación de Identidad (KYC) | JAAK",
@@ -109,70 +110,7 @@ export default function VerificacionIdentidad() {
                 </div>
               </div>
 
-              {/* Right — verification flow panel */}
-              <div className="flex justify-center lg:justify-end">
-                <div
-                  className="w-full max-w-sm rounded-3xl p-6"
-                  style={{
-                    background: "linear-gradient(145deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)",
-                    border: "1px solid rgba(45,182,193,0.18)",
-                    backdropFilter: "blur(20px)",
-                  }}
-                >
-                  {/* Panel header */}
-                  <div className="flex items-center gap-3 mb-6 pb-4" style={{ borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
-                    <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: "rgba(45,182,193,0.15)" }}>
-                      <svg className="w-5 h-5" style={{ color: "#2DB6C1" }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <div className="text-sm font-bold text-white">Verificación KYC</div>
-                      <div className="text-xs" style={{ color: "rgba(255,255,255,0.40)" }}>proceso activo</div>
-                    </div>
-                    <div className="ml-auto flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full"
-                      style={{ background: "rgba(42,215,150,0.12)", color: "#2AD796", border: "1px solid rgba(42,215,150,0.20)" }}>
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#2AD796] animate-pulse" />
-                      En vivo
-                    </div>
-                  </div>
-
-                  {/* Steps */}
-                  {[
-                    { label: "Documento capturado", sub: "INE · vigente · sin alteraciones", done: true },
-                    { label: "Biometría facial", sub: "Coincidencia 98.4% con NIST FRVT", done: true },
-                    { label: "Prueba de vida", sub: "iBeta Level 1 · anti-spoofing activo", done: true },
-                    { label: "Evidencia generada", sub: "Constancia auditable lista", done: true },
-                  ].map((s, i) => (
-                    <div key={i} className="flex items-start gap-3 mb-4 last:mb-0">
-                      <div
-                        className="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
-                        style={{ background: "linear-gradient(135deg, #2DB6C1, #2AD796)" }}
-                      >
-                        <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                        </svg>
-                      </div>
-                      <div>
-                        <div className="text-sm font-semibold text-white">{s.label}</div>
-                        <div className="text-xs mt-0.5" style={{ color: "rgba(255,255,255,0.40)" }}>{s.sub}</div>
-                      </div>
-                    </div>
-                  ))}
-
-                  {/* Result badge */}
-                  <div
-                    className="mt-5 rounded-xl p-3 flex items-center gap-3"
-                    style={{ background: "rgba(42,215,150,0.08)", border: "1px solid rgba(42,215,150,0.18)" }}
-                  >
-                    <span className="text-xl">✅</span>
-                    <div>
-                      <div className="text-sm font-bold" style={{ color: "#2AD796" }}>Identidad verificada</div>
-                      <div className="text-xs" style={{ color: "rgba(255,255,255,0.40)" }}>Tiempo total: 24 seg. · Expediente #JK-2026-00471</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <KycBiometricAnimation />
             </div>
           </div>
         </section>
