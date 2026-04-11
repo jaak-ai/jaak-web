@@ -60,25 +60,6 @@ export default function VerificacionIdentidad() {
                   y regulación antilavado desde el primer usuario verificado.
                 </p>
 
-                <div className="flex flex-wrap gap-3">
-                  <Link
-                    href="/contacto"
-                    className="inline-flex items-center gap-2 px-6 py-3 text-white font-bold rounded-xl transition-all duration-200"
-                    style={{ background: "linear-gradient(135deg, #2DB6C1, #25969f)", boxShadow: "0 6px 24px rgba(45,182,193,0.28)" }}
-                  >
-                    Solicitar demo
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                    </svg>
-                  </Link>
-                  <Link
-                    href="/docs"
-                    className="inline-flex items-center gap-2 px-6 py-3 font-semibold rounded-xl transition-all duration-200"
-                    style={{ color: "rgba(255,255,255,0.80)", background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)" }}
-                  >
-                    Ver documentación
-                  </Link>
-                </div>
               </div>
 
               {/* Right — verification flow panel */}
