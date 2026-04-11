@@ -877,7 +877,7 @@ export default function VerificacionIdentidad() {
                     <span className="w-3 h-3 rounded-full" style={{ background: "rgba(245,158,11,0.6)" }} />
                     <span className="w-3 h-3 rounded-full" style={{ background: "rgba(42,215,150,0.6)" }} />
                     <span className="ml-3 text-xs font-mono" style={{ color: "rgba(255,255,255,0.35)" }}>
-                      POST /v2/kyc/verify → 200 OK
+                      POST /identity/verify → 200 OK
                     </span>
                   </div>
                   {/* Code body */}
@@ -885,28 +885,26 @@ export default function VerificacionIdentidad() {
                     className="text-xs leading-relaxed overflow-x-auto p-6 font-mono"
                     style={{ background: "#070d1a", color: "rgba(255,255,255,0.75)" }}
                   >{`{
-  "verification_id": "jk-2026-00471",
-  "status": "approved",
-  "identity": {
-    "name": "María García López",
-    "document": "INE · vigente",
-    "liveness": {
-      "result": "pass",
-      "score": 0.99,
-      "standard": "iBeta Level 1"
-    },
-    "face_match": {
-      "score": 0.984,
-      "evaluated_by": "NIST FRVT"
-    },
-    "official_sources": [
-      { "source": "RENAPO", "match": true },
-      { "source": "INE",    "match": true },
-      { "source": "AML",    "match": false }
-    ]
+  "id": "ver_a3f9b2c1e847d6",
+  "status": "verified",
+  "created_at": "2025-11-14T09:18:42Z",
+  "person": {
+    "full_name": "Ana Martínez Ruiz",
+    "document_type": "INE",
+    "document_status": "valid"
   },
-  "evidence_url": "https://vault.jaak.ai/...",
-  "timestamp": "2026-04-11T14:32:08Z"
+  "checks": {
+    "liveness":    { "result": "pass", "score": 0.99  },
+    "face_match":  { "result": "pass", "score": 0.984 },
+    "official_sources": {
+      "renapo":     "match",
+      "ine_nominal":"match",
+      "sat_69b":    "clear",
+      "ofac":       "clear",
+      "interpol":   "clear"
+    }
+  },
+  "evidence_package": "https://storage.example.com/evidence/..."
 }`}</pre>
                 </div>
               </div>
