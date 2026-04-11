@@ -191,8 +191,7 @@ export default function FirmaUseCases() {
         id={`panel-${activeIndustry}`}
         role="tabpanel"
         aria-labelledby={`tab-${activeIndustry}`}
-        className="grid grid-cols-1 md:grid-cols-3 gap-5"
-        style={{ animation: "fadeInUp 0.3s ease-out" }}
+        className="grid grid-cols-1 md:grid-cols-3 gap-5 animate-fade-in-up"
       >
         {current.useCases.map((useCase) => (
           <div
@@ -233,19 +232,6 @@ export default function FirmaUseCases() {
           </div>
         ))}
       </div>
-
-      <style jsx>{`
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(12px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
     </div>
   );
 }
