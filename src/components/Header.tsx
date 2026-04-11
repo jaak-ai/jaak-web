@@ -215,6 +215,20 @@ export default function Header() {
                   <Link href="/plataforma/firma-electronica" className="block text-gray-700 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
                     Firma electrónica
                   </Link>
+                  <div className="ml-4 space-y-2 border-l-2 border-gray-100 pl-3">
+                    <Link href="/firma-electronica-simple" className="block text-sm text-gray-500 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
+                      Firma Simple
+                    </Link>
+                    <Link href="/firma-electronica-nom-151" className="block text-sm text-gray-500 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
+                      Firma Digital NOM-151
+                    </Link>
+                    <Link href="/firma-electronica-biometrica" className="block text-sm text-gray-500 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
+                      Firma NOM-151 + Biometría
+                    </Link>
+                    <Link href="/firma-electronica-kyc" className="block text-sm text-gray-500 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
+                      Firma NOM-151 + KYC
+                    </Link>
+                  </div>
                   <Link href="/plataforma/gestion-evidencia" className="block text-gray-700 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
                     Gestión de evidencia
                   </Link>
@@ -385,6 +399,20 @@ export default function Header() {
                       </div>
                     </div>
                   </Link>
+                  <div className="ml-14 space-y-1.5">
+                    <Link href="/firma-electronica-simple" className="block text-sm text-gray-500 hover:text-[#0066ff] transition-colors">
+                      Firma Simple
+                    </Link>
+                    <Link href="/firma-electronica-nom-151" className="block text-sm text-gray-500 hover:text-[#0066ff] transition-colors">
+                      Firma Digital NOM-151
+                    </Link>
+                    <Link href="/firma-electronica-biometrica" className="block text-sm text-gray-500 hover:text-[#0066ff] transition-colors">
+                      Firma NOM-151 + Biometría
+                    </Link>
+                    <Link href="/firma-electronica-kyc" className="block text-sm text-gray-500 hover:text-[#0066ff] transition-colors">
+                      Firma NOM-151 + KYC
+                    </Link>
+                  </div>
                   <Link href="/plataforma/gestion-evidencia" className="group block">
                     <div className="flex items-start gap-4">
                       <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-[#0066ff] transition-colors">
