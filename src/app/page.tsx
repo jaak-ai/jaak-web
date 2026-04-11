@@ -7,6 +7,7 @@ import JaakSolution from "@/components/JaakSolution";
 import ComplianceEvidence from "@/components/ComplianceEvidence";
 import RegulatedUseCases from "@/components/RegulatedUseCases";
 import BusinessOutcomes from "@/components/BusinessOutcomes";
+import RecentBlogPosts from "@/components/RecentBlogPosts";
 import ImplementationSteps from "@/components/ImplementationSteps";
 import FinalCTA from "@/components/FinalCTA";
 import ContactForm from "@/components/ContactForm";
@@ -77,6 +78,7 @@ export default function Home() {
         <ComplianceEvidence />
         <RegulatedUseCases />
         <BusinessOutcomes />
+        <RecentBlogPosts />
         <ImplementationSteps />
         <FinalCTA />
         <ContactForm />
