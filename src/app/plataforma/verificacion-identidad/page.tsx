@@ -881,10 +881,16 @@ export default function VerificacionIdentidad() {
                     </span>
                   </div>
                   {/* Code body */}
-                  <pre
-                    className="text-xs leading-relaxed overflow-x-auto p-6 font-mono"
-                    style={{ background: "#070d1a", color: "rgba(255,255,255,0.75)" }}
-                  >{`{
+                  <div className="relative" style={{ background: "#070d1a" }}>
+                    <pre
+                      className="text-xs leading-relaxed overflow-x-auto p-6 font-mono"
+                      style={{
+                        color: "rgba(255,255,255,0.75)",
+                        filter: "blur(3px)",
+                        userSelect: "none",
+                        pointerEvents: "none",
+                      }}
+                    >{`{
   "id": "ver_a3f9b2c1e847d6",
   "status": "verified",
   "created_at": "2025-11-14T09:18:42Z",
@@ -906,6 +912,15 @@ export default function VerificacionIdentidad() {
   },
   "evidence_package": "https://storage.example.com/evidence/..."
 }`}</pre>
+                    {/* Overlay: invite to docs */}
+                    <div
+                      className="absolute inset-0 flex flex-col items-center justify-center gap-3 pointer-events-none"
+                    >
+                      <span className="text-xs font-semibold px-3 py-1.5 rounded-full" style={{ background: "rgba(45,182,193,0.15)", color: "#2DB6C1", border: "1px solid rgba(45,182,193,0.25)" }}>
+                        Documentación disponible para clientes
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
