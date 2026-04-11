@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FirmaComparisonTable from "@/components/FirmaComparisonTable";
@@ -233,107 +234,27 @@ export default function FirmaElectronica() {
                 </div>
               </div>
 
-              {/* Right: UI Mock */}
-              <div className="relative flex justify-center lg:justify-end" aria-hidden="true">
-                <div
-                  className="relative w-full max-w-sm rounded-2xl p-6"
-                  style={{
-                    background: "rgba(255,255,255,0.05)",
-                    border: "1px solid rgba(255,255,255,0.12)",
-                    backdropFilter: "blur(20px)",
-                    boxShadow: "0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(30,202,211,0.1)",
-                  }}
-                >
-                  <div className="flex items-center gap-3 mb-5">
-                    <div
-                      className="w-10 h-12 rounded-lg flex items-center justify-center text-xl"
-                      style={{ background: "rgba(30,202,211,0.1)", border: "1px solid rgba(30,202,211,0.2)" }}
-                    >
-                      📄
-                    </div>
-                    <div>
-                      <div className="text-sm font-semibold text-white">Contrato_CreditoAutomotriz.pdf</div>
-                      <div className="text-xs text-gray-500">2 firmantes pendientes</div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2 mb-5">
-                    {[100, 85, 92, 78, 60].map((w, i) => (
-                      <div
-                        key={i}
-                        className="h-2 rounded-full"
-                        style={{
-                          width: `${w}%`,
-                          background: i < 3 ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.06)",
-                        }}
-                      />
-                    ))}
-                  </div>
-
-                  <div
-                    className="rounded-xl p-4 mb-4"
+              {/* Right: Flow illustration */}
+              <div className="relative flex justify-center lg:justify-end">
+                <div className="relative w-full max-w-lg">
+                  <Image
+                    src="/images/firma-electronica-flujo.jpg"
+                    alt="Flujo de firma electrónica: validación de INE, firma biométrica y expediente auditable"
+                    width={720}
+                    height={480}
+                    className="w-full h-auto rounded-2xl"
                     style={{
-                      border: "1px dashed rgba(30,202,211,0.4)",
-                      background: "rgba(30,202,211,0.04)",
+                      boxShadow: "0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(30,202,211,0.12)",
                     }}
-                  >
-                    <div className="text-xs text-gray-500 mb-2">Firma del representante legal</div>
-                    <svg viewBox="0 0 200 40" className="w-40 h-8 opacity-70">
-                      <path
-                        d="M5,30 Q25,8 55,25 Q85,42 115,18 Q145,0 175,20 Q188,27 195,22"
-                        stroke="#1ECAD3"
-                        strokeWidth="2"
-                        fill="none"
-                        strokeLinecap="round"
-                      />
-                    </svg>
-                  </div>
-
-                  <div className="flex gap-2 flex-wrap">
-                    {[
-                      { label: "NOM-151", color: "#10B981", bg: "rgba(16,185,129,0.1)", border: "rgba(16,185,129,0.25)" },
-                      { label: "Biometría", color: "#1ECAD3", bg: "rgba(30,202,211,0.1)", border: "rgba(30,202,211,0.25)" },
-                      { label: "KYC", color: "#A78BFA", bg: "rgba(139,92,246,0.1)", border: "rgba(139,92,246,0.25)" },
-                    ].map((badge) => (
-                      <span
-                        key={badge.label}
-                        className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full font-semibold"
-                        style={{ background: badge.bg, border: `1px solid ${badge.border}`, color: badge.color }}
-                      >
-                        <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: badge.color }} />
-                        {badge.label}
-                      </span>
-                    ))}
-                  </div>
+                    priority
+                  />
+                  {/* Subtle glow below */}
+                  <div
+                    className="absolute -bottom-8 inset-x-16 h-16 blur-2xl opacity-25 rounded-full pointer-events-none"
+                    aria-hidden="true"
+                    style={{ background: "#1ECAD3" }}
+                  />
                 </div>
-
-                {/* Floating verification card */}
-                <div
-                  className="absolute -right-4 top-8 rounded-xl p-4 w-44"
-                  style={{
-                    background: "rgba(10,22,40,0.9)",
-                    border: "1px solid rgba(16,185,129,0.3)",
-                    backdropFilter: "blur(16px)",
-                    boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
-                    animation: "float 4s ease-in-out infinite",
-                  }}
-                >
-                  <div className="flex items-center gap-2 mb-1">
-                    <div className="w-7 h-7 rounded-full flex items-center justify-center text-sm" style={{ background: "rgba(16,185,129,0.2)" }}>
-                      ✓
-                    </div>
-                    <div>
-                      <div className="text-xs font-bold text-white">Verificado</div>
-                      <div className="text-xs text-gray-500">Identidad confirmada</div>
-                    </div>
-                  </div>
-                  <div className="text-xs text-gray-600">INE · CURP · Biometría</div>
-                </div>
-
-                <div
-                  className="absolute -bottom-8 inset-x-8 h-16 blur-2xl opacity-20 rounded-full pointer-events-none"
-                  style={{ background: "#1ECAD3" }}
-                />
               </div>
             </div>
 

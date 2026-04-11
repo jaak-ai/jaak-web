@@ -103,12 +103,12 @@ const diffItems: DiffItem[] = [
     color: "#10B981",
   },
   {
-    id: "api",
-    icon: "⚡",
-    title: "API-first: integración en días, no meses",
-    summary: "API REST documentada con SDK para JavaScript/TypeScript, Python y más. Webhooks en tiempo real y panel de administración incluido.",
+    id: "disponibilidad",
+    icon: "🚀",
+    title: "Disponible en autoservicio y vía integración",
+    summary: "Empieza a firmar hoy desde el panel de autoservicio sin integración técnica. Cuando necesites automatizar, nuestra API REST se conecta a tu stack en días.",
     detail:
-      "La API de JAAK está diseñada para integrarse en tu stack existente sin cambios de arquitectura. Ofrecemos SDKs nativos, ambientes sandbox para pruebas, documentación interactiva con ejemplos y soporte técnico dedicado. El tiempo promedio de integración es de 3 a 5 días hábiles.",
+      "Dos canales, el mismo motor legal. En autoservicio puedes subir documentos, configurar flujos y gestionar firmantes desde el día uno sin escribir código. Cuando tu operación escale, la API REST con SDKs nativos para JavaScript/TypeScript y Python te permite automatizar el 100% del proceso, incluyendo webhooks en tiempo real, sandbox para pruebas y documentación interactiva. Ambos canales generan el mismo nivel de evidencia legal y el mismo expediente auditable.",
     tooltips: [],
     color: "#EC4899",
   },
