@@ -186,6 +186,9 @@ const montserrat = Montserrat({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://jaak.ai"),
+  verification: {
+    google: "NfAK5ezzduNLAjO45_UXc1F1iVRHCCEMFniyoF9W7X0",
+  },
   title: {
     default: "JAAK - Reduce fraude y cumple regulación sin perder clientes",
     template: "%s | JAAK",
