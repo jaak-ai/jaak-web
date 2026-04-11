@@ -108,7 +108,7 @@ const diffItems: DiffItem[] = [
     title: "Disponible en autoservicio y vía integración",
     summary: "Empieza a firmar hoy desde el panel de autoservicio sin integración técnica. Cuando necesites automatizar, nuestra API REST se conecta a tu stack en días.",
     detail:
-      "Dos canales, el mismo motor legal. En autoservicio puedes subir documentos, configurar flujos y gestionar firmantes desde el día uno sin escribir código. Cuando tu operación escale, la API REST con SDKs nativos para JavaScript/TypeScript y Python te permite automatizar el 100% del proceso, incluyendo webhooks en tiempo real, sandbox para pruebas y documentación interactiva. Ambos canales generan el mismo nivel de evidencia legal y el mismo expediente auditable.",
+      "Dos canales, el mismo motor legal. En autoservicio puedes subir documentos, configurar flujos y gestionar firmantes desde el día uno sin escribir código. Cuando tu operación escale, la integración a tu plataforma permite automatizar el 100% del proceso con webhooks en tiempo real y ambientes de prueba. Ambos canales generan el mismo nivel de evidencia legal y el mismo expediente auditable.",
     tooltips: [],
     color: "#EC4899",
   },

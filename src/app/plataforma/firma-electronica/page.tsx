@@ -165,7 +165,7 @@ export default function FirmaElectronica() {
                   }}
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-[#1ECAD3] animate-pulse" aria-hidden="true" />
-                  NOM-151 · Biometría · KYC · API
+                  NOM-151 · Biometría · KYC · White-label
                 </div>
 
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-[1.1] mb-6">
@@ -254,6 +254,30 @@ export default function FirmaElectronica() {
                     aria-hidden="true"
                     style={{ background: "#1ECAD3" }}
                   />
+                  {/* Branding callout */}
+                  <div
+                    className="mt-4 flex items-center gap-3 px-4 py-3 rounded-xl"
+                    style={{
+                      background: "rgba(255,255,255,0.04)",
+                      border: "1px solid rgba(255,255,255,0.1)",
+                    }}
+                  >
+                    <div
+                      className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 text-base"
+                      style={{ background: "rgba(30,202,211,0.12)", border: "1px solid rgba(30,202,211,0.2)" }}
+                      aria-hidden="true"
+                    >
+                      🎨
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-white leading-tight">
+                        Personalizable con tu logo y marca
+                      </p>
+                      <p className="text-xs text-gray-500 mt-0.5">
+                        Tus clientes ven tu identidad, no la nuestra.
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -267,7 +291,7 @@ export default function FirmaElectronica() {
                 { value: "99.9%", label: "Uptime garantizado" },
                 { value: "<3 min", label: "Tiempo promedio de firma" },
                 { value: "NOM-151", label: "Certificación incluida" },
-                { value: "API REST", label: "Integración en días" },
+                { value: "White-label", label: "Tu logo, tu marca" },
               ].map((stat) => (
                 <div key={stat.label} className="text-center">
                   <div className="text-2xl font-black mb-1" style={{ color: "#1ECAD3" }}>{stat.value}</div>
@@ -275,32 +299,6 @@ export default function FirmaElectronica() {
                 </div>
               ))}
             </div>
-          </div>
-        </section>
-
-        {/* ── COMPARISON TABLE ─────────────────────────────────── */}
-        <section
-          id="comparacion"
-          className="py-20"
-          style={{ background: "#070E1A" }}
-          aria-labelledby="comparacion-heading"
-        >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-10">
-              <div
-                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5"
-                style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#1ECAD3" }}
-              >
-                Comparativa
-              </div>
-              <h2 id="comparacion-heading" className="text-3xl sm:text-4xl font-black text-white mb-4">
-                ¿Cuál es la firma que necesitas?
-              </h2>
-              <p className="text-gray-400 max-w-2xl mx-auto text-base">
-                Haz clic en cualquier fila para ver los detalles, beneficios y el caso de uso exacto de cada tipo.
-              </p>
-            </div>
-            <FirmaComparisonTable />
           </div>
         </section>
 
@@ -353,6 +351,32 @@ export default function FirmaElectronica() {
               </p>
             </div>
             <FirmaHowItWorks />
+          </div>
+        </section>
+
+        {/* ── COMPARISON TABLE ─────────────────────────────────── */}
+        <section
+          id="comparacion"
+          className="py-20"
+          style={{ background: "#0A1628" }}
+          aria-labelledby="comparacion-heading"
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-10">
+              <div
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5"
+                style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#1ECAD3" }}
+              >
+                Comparativa
+              </div>
+              <h2 id="comparacion-heading" className="text-3xl sm:text-4xl font-black text-white mb-4">
+                ¿Cuál es la firma que necesitas?
+              </h2>
+              <p className="text-gray-400 max-w-2xl mx-auto text-base">
+                Haz clic en cualquier fila para ver los detalles, beneficios y el caso de uso exacto de cada tipo.
+              </p>
+            </div>
+            <FirmaComparisonTable />
           </div>
         </section>
 
@@ -559,15 +583,15 @@ export default function FirmaElectronica() {
                 >
                   <div>
                     <div className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#8B5CF6" }}>
-                      Enterprise / Integración
+                      Enterprise
                     </div>
-                    <h3 className="text-xl font-black text-white mb-2">Integración completa</h3>
+                    <h3 className="text-xl font-black text-white mb-2">Solución a la medida</h3>
                     <p className="text-sm text-gray-400 leading-relaxed">
-                      API REST + SDK + onboarding técnico + soporte dedicado. Para volumen alto y cumplimiento regulatorio total.
+                      Integración a tu plataforma, onboarding técnico y soporte dedicado. Para volumen alto y cumplimiento regulatorio total.
                     </p>
                   </div>
                   <ul className="space-y-2">
-                    {["API documentada + webhooks", "Soporte técnico dedicado", "SLA garantizado"].map((item) => (
+                    {["Integración a tu plataforma en días", "Soporte técnico dedicado", "SLA garantizado"].map((item) => (
                       <li key={item} className="flex items-center gap-2 text-sm text-gray-300">
                         <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" style={{ color: "#8B5CF6" }} aria-hidden="true">
                           <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
