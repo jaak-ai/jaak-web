@@ -25,7 +25,7 @@ export default function FirmaThemeShell() {
 
   return (
     <>
-      <main>
+      <main data-firma-light={!isDark ? "" : undefined}>
         {/* ── HERO (always dark for brand consistency) ────────────── */}
         <section
           id="hero"

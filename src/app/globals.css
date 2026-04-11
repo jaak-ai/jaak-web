@@ -269,3 +269,12 @@ body {
   to   { opacity: 1; transform: translateY(0); }
 }
 .fade-up { animation: fadeUp 0.35s ease both; }
+
+
+/* ── Firma landing: light theme text overrides ── */
+[data-firma-light] .text-white { color: #0A0F1A !important; }
+[data-firma-light] .text-gray-200 { color: #1E293B !important; }
+[data-firma-light] .text-gray-300 { color: #334155 !important; }
+[data-firma-light] .text-gray-400 { color: #475569 !important; }
+[data-firma-light] .text-gray-500 { color: #64748B !important; }
+[data-firma-light] .text-gray-600 { color: #64748B !important; }
