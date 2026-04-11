@@ -521,21 +521,286 @@ export default function VerificacionIdentidad() {
           </div>
         </section>
 
-        {/* CTA */}
-        <section className="py-20 bg-[#0a0a0a]">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl md:text-4xl font-black text-white mb-6">
-              ¿Listo para verificar identidades con confianza?
-            </h2>
-            <p className="text-xl text-white/60 mb-8">
-              Agenda una demo y descubre cómo JAAK puede proteger tu onboarding.
-            </p>
-            <Link
-              href="/contacto"
-              className="inline-flex px-8 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
+        {/* ── 7. SECTORES ── */}
+        <section className="py-24" style={{ background: "#F8FAFC" }}>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-2xl mb-14">
+              <div
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
+                style={{ color: "#2DB6C1", border: "1px solid rgba(45,182,193,0.22)", background: "rgba(45,182,193,0.08)" }}
+              >
+                Sectores obligados
+              </div>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black leading-tight mb-5" style={{ color: "#0E1133" }}>
+                ¿Tu sector tiene obligación de verificar identidad?{" "}
+                <span style={{ color: "#2DB6C1" }}>Probablemente sí.</span>
+              </h2>
+              <p className="text-lg leading-relaxed" style={{ color: "#64748B" }}>
+                LFPIORPI, CNBV y la UIF definen exactamente qué sectores deben implementar KYC
+                — y con qué nivel de rigor.
+              </p>
+            </div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {[
+                {
+                  icon: "🏦",
+                  sector: "Bancos y Sofomes",
+                  regs: ["CNBV obligatorio", "Expediente digital por cliente"],
+                  detail: "Verificación reforzada en operaciones que superan umbral de identificación.",
+                },
+                {
+                  icon: "📱",
+                  sector: "Fintechs e IFPE",
+                  regs: ["Onboarding 100% remoto", "Cumplimiento CNBV"],
+                  detail: "KYC desde el primer registro para crédito, pagos y servicios digitales.",
+                },
+                {
+                  icon: "⚠️",
+                  sector: "Actividades Vulnerables",
+                  regs: ["LFPIORPI Art. 17", "Reporte UIF obligatorio"],
+                  detail: "Identificación plena del cliente y reporte cuando supera umbrales PLD.",
+                },
+                {
+                  icon: "🏠",
+                  sector: "Inmobiliarias y Notarías",
+                  regs: ["Operaciones >$164K MXN", "Expediente con evidencia"],
+                  detail: "Identificación del comprador, vendedor y representantes en cada transacción.",
+                },
+                {
+                  icon: "🛡️",
+                  sector: "Seguros y Fianzas",
+                  regs: ["Identificación de beneficiario", "AML obligatorio"],
+                  detail: "Prevención de lavado en pólizas de vida y verificación de asegurados.",
+                },
+                {
+                  icon: "🎰",
+                  sector: "Casas de Empeño y Casinos",
+                  regs: ["Alta actividad vulnerable", "Listas de sancionados"],
+                  detail: "Identificación en cada operación y consulta a listas negras internacionales.",
+                },
+              ].map((s, i) => (
+                <div
+                  key={i}
+                  className="bg-white rounded-2xl p-6 hover:shadow-md transition-shadow"
+                  style={{ border: "1px solid #EEEEEE" }}
+                >
+                  <div className="text-3xl mb-4">{s.icon}</div>
+                  <h3 className="font-bold text-base mb-3" style={{ color: "#0E1133" }}>{s.sector}</h3>
+                  <div className="flex flex-wrap gap-2 mb-3">
+                    {s.regs.map((r) => (
+                      <span
+                        key={r}
+                        className="text-xs font-semibold px-2 py-0.5 rounded-full"
+                        style={{ background: "rgba(45,182,193,0.08)", color: "#2DB6C1" }}
+                      >
+                        {r}
+                      </span>
+                    ))}
+                  </div>
+                  <p className="text-sm leading-relaxed" style={{ color: "#64748B" }}>{s.detail}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── 8. INTEGRACIÓN TÉCNICA ── */}
+        <section className="py-24 relative overflow-hidden" style={{ background: "#0E1133" }}>
+          <div
+            className="absolute bottom-0 left-0 w-[350px] h-[350px] rounded-full blur-[100px] pointer-events-none"
+            style={{ background: "rgba(42,215,150,0.06)" }}
+          />
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div className="grid lg:grid-cols-2 gap-14 items-center">
+              {/* Left — timeline */}
+              <div>
+                <div
+                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-7"
+                  style={{ color: "#2AD796", border: "1px solid rgba(42,215,150,0.22)", background: "rgba(42,215,150,0.08)" }}
+                >
+                  Integración técnica
+                </div>
+                <h2 className="text-3xl md:text-4xl font-black text-white leading-tight mb-5">
+                  Integración lista en{" "}
+                  <span style={{ color: "#2AD796" }}>menos de una semana.</span>
+                </h2>
+                <p className="text-lg mb-10" style={{ color: "rgba(255,255,255,0.50)" }}>
+                  SDK para iOS, Android y Web. API REST documentada. Sandbox disponible desde el primer día.
+                </p>
+
+                {/* Timeline */}
+                <div className="space-y-6">
+                  {[
+                    { days: "Día 1–2", title: "Acceso a sandbox", body: "Credenciales de prueba + entorno aislado listo para explorar." },
+                    { days: "Día 3–4", title: "Integración SDK / API REST", body: "Documentación guiada paso a paso. Soporte técnico incluido." },
+                    { days: "Día 5", title: "Pruebas con identidades reales", body: "Sandbox acepta documentos e identidades reales para validar flujos." },
+                    { days: "Semana 2", title: "Activación en producción", body: "Firma contrato, activa credenciales de prod. Empieza a generar evidencia." },
+                  ].map((t, i) => (
+                    <div key={i} className="flex gap-5 items-start">
+                      <div
+                        className="text-xs font-bold px-2.5 py-1.5 rounded-lg whitespace-nowrap flex-shrink-0"
+                        style={{ background: "rgba(42,215,150,0.10)", color: "#2AD796", border: "1px solid rgba(42,215,150,0.18)" }}
+                      >
+                        {t.days}
+                      </div>
+                      <div>
+                        <div className="text-sm font-bold text-white mb-0.5">{t.title}</div>
+                        <div className="text-sm" style={{ color: "rgba(255,255,255,0.45)" }}>{t.body}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <Link
+                  href="/docs"
+                  className="inline-flex items-center gap-2 mt-10 text-sm font-semibold transition-colors"
+                  style={{ color: "#2AD796" }}
+                >
+                  Ver documentación completa
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                </Link>
+              </div>
+
+              {/* Right — JSON response mockup */}
+              <div>
+                <div
+                  className="rounded-2xl overflow-hidden"
+                  style={{ border: "1px solid rgba(45,182,193,0.20)" }}
+                >
+                  {/* Terminal top bar */}
+                  <div
+                    className="flex items-center gap-2 px-5 py-3"
+                    style={{ background: "rgba(45,182,193,0.08)", borderBottom: "1px solid rgba(45,182,193,0.14)" }}
+                  >
+                    <span className="w-3 h-3 rounded-full" style={{ background: "rgba(239,68,68,0.6)" }} />
+                    <span className="w-3 h-3 rounded-full" style={{ background: "rgba(245,158,11,0.6)" }} />
+                    <span className="w-3 h-3 rounded-full" style={{ background: "rgba(42,215,150,0.6)" }} />
+                    <span className="ml-3 text-xs font-mono" style={{ color: "rgba(255,255,255,0.35)" }}>
+                      POST /v2/kyc/verify → 200 OK
+                    </span>
+                  </div>
+                  {/* Code body */}
+                  <pre
+                    className="text-xs leading-relaxed overflow-x-auto p-6 font-mono"
+                    style={{ background: "#070d1a", color: "rgba(255,255,255,0.75)" }}
+                  >{`{
+  "verification_id": "jk-2026-00471",
+  "status": "approved",
+  "identity": {
+    "name": "María García López",
+    "document": "INE · vigente",
+    "liveness": {
+      "result": "pass",
+      "score": 0.99,
+      "standard": "iBeta Level 2"
+    },
+    "face_match": {
+      "score": 0.984,
+      "evaluated_by": "NIST FRVT"
+    },
+    "official_sources": [
+      { "source": "RENAPO", "match": true },
+      { "source": "INE",    "match": true },
+      { "source": "AML",    "match": false }
+    ]
+  },
+  "evidence_url": "https://vault.jaak.ai/...",
+  "timestamp": "2026-04-11T14:32:08Z"
+}`}</pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── 9. CTA FINAL ── */}
+        <section
+          className="py-24 relative overflow-hidden"
+          style={{ background: "linear-gradient(160deg, #141a3a 0%, #0E1133 60%, #141a3a 100%)" }}
+        >
+          <div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full blur-[120px] pointer-events-none"
+            style={{ background: "rgba(45,182,193,0.12)" }}
+          />
+          <div
+            className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px pointer-events-none"
+            style={{ background: "linear-gradient(to right, transparent, rgba(255,255,255,0.08), transparent)" }}
+          />
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div
+              className="max-w-3xl mx-auto rounded-3xl p-10 md:p-14 text-center"
+              style={{
+                background: "linear-gradient(145deg, rgba(255,255,255,0.07) 0%, rgba(45,182,193,0.04) 50%, rgba(255,255,255,0.02) 100%)",
+                backdropFilter: "blur(24px)",
+                WebkitBackdropFilter: "blur(24px)",
+                border: "1px solid rgba(45,182,193,0.15)",
+                boxShadow: "0 32px 64px rgba(0,0,0,0.20)",
+              }}
             >
-              Solicitar demo gratuita
-            </Link>
+              {/* Badge */}
+              <div
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8"
+                style={{ background: "rgba(45,182,193,0.10)", border: "1px solid rgba(45,182,193,0.22)" }}
+              >
+                <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: "#2DB6C1" }} />
+                <span className="text-sm font-medium" style={{ color: "#2DB6C1" }}>
+                  Revisión sin costo · 15 minutos
+                </span>
+              </div>
+
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight mb-6">
+                Tu próxima auditoría puede encontrar evidencia — o encontrar vacíos.
+              </h2>
+
+              <p className="text-xl mb-10 max-w-xl mx-auto" style={{ color: "rgba(255,255,255,0.52)" }}>
+                En 15 minutos te decimos si JAAK cubre lo que tu regulación exige. Sin compromiso.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link
+                  href="/contacto"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 text-white font-bold text-lg rounded-xl transition-all duration-200 group"
+                  style={{
+                    background: "linear-gradient(135deg, #2DB6C1, #25969f)",
+                    boxShadow: "0 8px 32px rgba(45,182,193,0.30)",
+                  }}
+                >
+                  Solicitar revisión regulatoria
+                  <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                </Link>
+                <Link
+                  href="/precios"
+                  className="inline-flex items-center justify-center px-8 py-4 font-semibold text-lg rounded-xl transition-all duration-200"
+                  style={{
+                    color: "rgba(255,255,255,0.78)",
+                    background: "rgba(255,255,255,0.06)",
+                    border: "1px solid rgba(255,255,255,0.12)",
+                  }}
+                >
+                  Ver precios
+                </Link>
+              </div>
+
+              {/* Trust signals */}
+              <div
+                className="mt-10 pt-8 flex flex-wrap justify-center gap-6 text-xs"
+                style={{ borderTop: "1px solid rgba(255,255,255,0.07)", color: "rgba(255,255,255,0.28)" }}
+              >
+                {["Sin compromiso de contratación", "ISO 27001 · iBeta Level 2", "70M+ identidades verificadas", "Tecnología 100% propia"].map((t) => (
+                  <span key={t} className="flex items-center gap-1.5">
+                    <svg className="w-4 h-4" style={{ color: "#2AD796" }} fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
       </main>
