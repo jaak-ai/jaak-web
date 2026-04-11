@@ -176,25 +176,34 @@ function TooltipWord({
   );
 }
 
-function renderWithTooltips(text: string, tooltips: TooltipTerm[]) {
+function renderWithTooltips(text: string, tooltips: TooltipTerm[]): React.ReactNode {
   if (!tooltips.length) return <span>{text}</span>;
 
   let result: React.ReactNode[] = [text];
 
-  tooltips.forEach(({ term, explanation }) => {
-    result = result.flatMap((segment) => {
-      if (typeof segment !== "string") return [segment];
+  for (const { term, explanation } of tooltips) {
+    const next: React.ReactNode[] = [];
+    for (const segment of result) {
+      if (typeof segment !== "string") {
+        next.push(segment);
+        continue;
+      }
       const parts = segment.split(term);
-      return parts.flatMap((part, i) =>
-        i < parts.length - 1
-          ? [
-              part,
-              <TooltipWord key={`${term}-${i}`} term={term} explanation={explanation} />,
-            ]
-          : [part]
-      );
-    });
-  });
+      parts.forEach((part, i) => {
+        if (part) next.push(part);
+        if (i < parts.length - 1) {
+          next.push(
+            <TooltipWord
+              key={`${term}-${i}`}
+              term={term}
+              explanation={explanation}
+            />
+          );
+        }
+      });
+    }
+    result = next;
+  }
 
   return <>{result}</>;
 }
