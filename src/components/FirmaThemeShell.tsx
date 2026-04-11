@@ -31,7 +31,7 @@ export default function FirmaThemeShell() {
         {/* ── HERO (always dark for brand consistency) ────────────── */}
         <section
           id="hero"
-          className="relative pt-32 pb-20 overflow-hidden"
+          className="dark-zone relative pt-32 pb-20 overflow-hidden"
           style={{ background: "linear-gradient(135deg, #071020 0%, #0A1628 45%, #0D1F3C 100%)" }}
           aria-label="Firma electrónica en México"
         >
@@ -403,7 +403,7 @@ export default function FirmaThemeShell() {
         >
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div
-              className="rounded-3xl p-8 md:p-12 overflow-hidden relative"
+              className="dark-zone rounded-3xl p-8 md:p-12 overflow-hidden relative"
               style={{ background: "linear-gradient(135deg, #0D1F3C, #071020)", border: "1px solid rgba(30,202,211,0.15)", boxShadow: "0 0 80px rgba(30,202,211,0.07)" }}
             >
               <div className="absolute top-0 right-0 w-64 h-64 rounded-full opacity-10 blur-3xl pointer-events-none" aria-hidden="true" style={{ background: "#1ECAD3" }} />

@@ -278,3 +278,11 @@ body {
 [data-firma-light] .text-gray-400 { color: #475569 !important; }
 [data-firma-light] .text-gray-500 { color: #64748B !important; }
 [data-firma-light] .text-gray-600 { color: #64748B !important; }
+
+/* ── Restore original colors inside always-dark zones (hero, CTA card) ── */
+[data-firma-light] .dark-zone .text-white    { color: #FFFFFF !important; }
+[data-firma-light] .dark-zone .text-gray-200 { color: #E2E8F0 !important; }
+[data-firma-light] .dark-zone .text-gray-300 { color: #CBD5E1 !important; }
+[data-firma-light] .dark-zone .text-gray-400 { color: #94A3B8 !important; }
+[data-firma-light] .dark-zone .text-gray-500 { color: #64748B !important; }
+[data-firma-light] .dark-zone .text-gray-600 { color: #475569 !important; }
