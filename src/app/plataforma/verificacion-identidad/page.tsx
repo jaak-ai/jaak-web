@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import KycBiometricAnimation from "@/components/KycBiometricAnimation";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "Verificación de Identidad (KYC) | JAAK",
@@ -19,6 +20,7 @@ export default function VerificacionIdentidad() {
 
   return (
     <>
+      <ScrollReveal />
       <Header />
       <main>
         {/* ── 1. HERO ── */}
@@ -35,7 +37,7 @@ export default function VerificacionIdentidad() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
               {/* Left — copy */}
-              <div>
+              <div data-sr="left">
                 {/* Product label */}
                 <div className="flex flex-wrap items-center gap-2 mb-6">
                   <div
@@ -124,7 +126,7 @@ export default function VerificacionIdentidad() {
           />
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             {/* Header */}
-            <div className="max-w-2xl mb-10 md:mb-14">
+            <div data-sr className="max-w-2xl mb-10 md:mb-14">
               <div
                 className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
                 style={{ color: "#fca5a5", border: "1px solid rgba(252,165,165,0.20)", background: "rgba(252,165,165,0.08)" }}
@@ -144,7 +146,7 @@ export default function VerificacionIdentidad() {
             </div>
 
             {/* Pain cards */}
-            <div className="grid md:grid-cols-3 gap-5 mb-10">
+            <div data-sr-grid className="grid md:grid-cols-3 gap-5 mb-10">
               {[
                 {
                   icon: "💸",
@@ -184,7 +186,7 @@ export default function VerificacionIdentidad() {
             </div>
 
             {/* Anchor CTA */}
-            <div className="text-center">
+            <div data-sr className="text-center">
               <a
                 href="#solución"
                 className="inline-flex items-center gap-2 text-sm font-semibold transition-colors"
@@ -203,7 +205,7 @@ export default function VerificacionIdentidad() {
         <section id="solución" className="py-16 md:py-24 relative overflow-hidden" style={{ background: "#F8FAFC" }}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Header */}
-            <div className="max-w-2xl mb-10 md:mb-14">
+            <div data-sr className="max-w-2xl mb-10 md:mb-14">
               <div
                 className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
                 style={{ color: "#2DB6C1", border: "1px solid rgba(45,182,193,0.22)", background: "rgba(45,182,193,0.08)" }}
@@ -220,7 +222,7 @@ export default function VerificacionIdentidad() {
             </div>
 
             {/* 4 capability cards */}
-            <div className="grid md:grid-cols-2 gap-6">
+            <div data-sr-grid className="grid md:grid-cols-2 gap-6">
               {[
                 {
                   icon: "👁️",
@@ -287,7 +289,7 @@ export default function VerificacionIdentidad() {
           />
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             {/* Header */}
-            <div className="text-center max-w-2xl mx-auto mb-10 md:mb-16">
+            <div data-sr className="text-center max-w-2xl mx-auto mb-10 md:mb-16">
               <div
                 className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
                 style={{ color: "#2AD796", border: "1px solid rgba(42,215,150,0.22)", background: "rgba(42,215,150,0.08)" }}
@@ -304,7 +306,7 @@ export default function VerificacionIdentidad() {
             </div>
 
             {/* Steps */}
-            <div className="relative grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-6">
+            <div data-sr-grid className="relative grid grid-cols-2 md:grid-cols-4 gap-5 md:gap-6">
               {/* Connector line — desktop only */}
               <div
                 className="hidden md:block absolute top-10 left-[12.5%] right-[12.5%] h-px pointer-events-none"
@@ -353,6 +355,7 @@ export default function VerificacionIdentidad() {
 
             {/* Result row */}
             <div
+              data-sr
               className="mt-10 md:mt-14 rounded-2xl p-5 md:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
               style={{ background: "rgba(42,215,150,0.07)", border: "1px solid rgba(42,215,150,0.16)" }}
             >
@@ -383,7 +386,7 @@ export default function VerificacionIdentidad() {
         <section className="py-16 md:py-24" style={{ background: "#fff" }}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Header */}
-            <div className="text-center max-w-2xl mx-auto mb-10 md:mb-14">
+            <div data-sr className="text-center max-w-2xl mx-auto mb-10 md:mb-14">
               <div
                 className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
                 style={{ color: "#2DB6C1", border: "1px solid rgba(45,182,193,0.22)", background: "rgba(45,182,193,0.08)" }}
@@ -399,7 +402,7 @@ export default function VerificacionIdentidad() {
             </div>
 
             {/* Cert cards */}
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div data-sr-grid className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
                 {
                   label: "iBeta Level 1",
@@ -462,7 +465,7 @@ export default function VerificacionIdentidad() {
         {/* ── 7. SECTORES ── */}
         <section className="py-16 md:py-24" style={{ background: "#F8FAFC" }}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-2xl mb-10 md:mb-14">
+            <div data-sr className="max-w-2xl mb-10 md:mb-14">
               <div
                 className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
                 style={{ color: "#2DB6C1", border: "1px solid rgba(45,182,193,0.22)", background: "rgba(45,182,193,0.08)" }}
@@ -479,7 +482,7 @@ export default function VerificacionIdentidad() {
               </p>
             </div>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div data-sr-grid className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {[
                 {
                   icon: "🏦",
@@ -555,7 +558,7 @@ export default function VerificacionIdentidad() {
           />
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             {/* Header */}
-            <div className="max-w-2xl mb-5">
+            <div data-sr className="max-w-2xl mb-5">
               <div
                 className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
                 style={{ color: "#fcd34d", border: "1px solid rgba(252,211,77,0.22)", background: "rgba(252,211,77,0.08)" }}
@@ -574,7 +577,7 @@ export default function VerificacionIdentidad() {
             </div>
 
             {/* Group labels */}
-            <div className="mb-6 md:mb-10 flex flex-wrap gap-4 md:gap-6 items-center">
+            <div data-sr className="mb-6 md:mb-10 flex flex-wrap gap-4 md:gap-6 items-center">
               <div className="flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full" style={{ background: "rgba(239,68,68,0.7)" }} />
                 <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "rgba(255,255,255,0.35)" }}>
@@ -590,7 +593,7 @@ export default function VerificacionIdentidad() {
             </div>
 
             {/* Cards grid */}
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-6">
+            <div data-sr-grid className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-6">
 
               {/* OFAC */}
               <div
@@ -790,6 +793,7 @@ export default function VerificacionIdentidad() {
 
             {/* Bottom note */}
             <div
+              data-sr
               className="rounded-2xl px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center gap-4"
               style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}
             >
@@ -812,7 +816,7 @@ export default function VerificacionIdentidad() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-start">
               {/* Left — timeline */}
-              <div>
+              <div data-sr="left">
                 <div
                   className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6 md:mb-7"
                   style={{ color: "#2AD796", border: "1px solid rgba(42,215,150,0.22)", background: "rgba(42,215,150,0.08)" }}
@@ -828,7 +832,7 @@ export default function VerificacionIdentidad() {
                 </p>
 
                 {/* Timeline */}
-                <div className="space-y-6">
+                <div data-sr-grid className="space-y-6">
                   {[
                     { days: "Día 1–2", title: "Acceso a sandbox", body: "Credenciales de prueba + entorno aislado listo para explorar." },
                     { days: "Día 3–4", title: "Integración SDK / API REST", body: "Documentación guiada paso a paso. Soporte técnico incluido." },
@@ -863,7 +867,7 @@ export default function VerificacionIdentidad() {
               </div>
 
               {/* Right — JSON response mockup */}
-              <div>
+              <div data-sr="right">
                 <div
                   className="rounded-2xl overflow-hidden"
                   style={{ border: "1px solid rgba(45,182,193,0.20)" }}
@@ -942,6 +946,7 @@ export default function VerificacionIdentidad() {
           />
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div
+              data-sr="scale"
               className="max-w-3xl mx-auto rounded-2xl md:rounded-3xl p-7 sm:p-10 md:p-14 text-center"
               style={{
                 background: "linear-gradient(145deg, rgba(255,255,255,0.07) 0%, rgba(45,182,193,0.04) 50%, rgba(255,255,255,0.02) 100%)",

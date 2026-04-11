@@ -32,7 +32,7 @@ export default function KycBiometricAnimation() {
         }
       `}</style>
 
-      <div className="flex justify-center lg:justify-end">
+      <div className="flex justify-center lg:justify-end" data-sr="right">
         <div
           className="w-full max-w-[340px] rounded-2xl sm:rounded-3xl p-4 sm:p-6 relative overflow-hidden"
           style={{
