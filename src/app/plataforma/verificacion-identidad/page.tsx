@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
-import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Verificación de Identidad (KYC) | JAAK",
@@ -16,52 +15,6 @@ export const metadata: Metadata = {
 };
 
 export default function VerificacionIdentidad() {
-  const features = [
-    {
-      title: "Prueba de vida pasiva",
-      description: "Detectamos automáticamente si el usuario es una persona real sin fricciones adicionales.",
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-        </svg>
-      ),
-    },
-    {
-      title: "Verificación de documentos",
-      description: "Validamos INE, pasaporte y otros documentos oficiales con OCR avanzado y detección de alteraciones.",
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-        </svg>
-      ),
-    },
-    {
-      title: "Comparación facial",
-      description: "Comparamos el rostro del usuario con la foto del documento usando algoritmos certificados por NIST.",
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-        </svg>
-      ),
-    },
-    {
-      title: "Validación con fuentes oficiales",
-      description: "Consultamos bases de datos oficiales como INE, SAT y RENAPO para confirmar la identidad.",
-      icon: (
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-        </svg>
-      ),
-    },
-  ];
-
-  const steps = [
-    { step: "01", title: "Captura de documento", description: "El usuario toma foto de su identificación oficial" },
-    { step: "02", title: "Selfie con prueba de vida", description: "Captura facial con detección de vida pasiva" },
-    { step: "03", title: "Verificación automática", description: "IA valida documento, rostro y consulta fuentes oficiales" },
-    { step: "04", title: "Resultado en segundos", description: "Respuesta inmediata con score de confianza y evidencia" },
-  ];
 
   return (
     <>
@@ -308,91 +261,262 @@ export default function VerificacionIdentidad() {
           </div>
         </section>
 
-        {/* Features */}
-        <section className="py-20 bg-white">
+        {/* ── 4. SOLUCIÓN / CAPACIDADES ── */}
+        <section id="solución" className="py-24 relative overflow-hidden" style={{ background: "#F8FAFC" }}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
-                Verificación completa en un solo flujo
+            {/* Header */}
+            <div className="max-w-2xl mb-14">
+              <div
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
+                style={{ color: "#2DB6C1", border: "1px solid rgba(45,182,193,0.22)", background: "rgba(45,182,193,0.08)" }}
+              >
+                La solución JAAK
+              </div>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black leading-tight mb-5" style={{ color: "#0E1133" }}>
+                Cada capa de verificación existe{" "}
+                <span style={{ color: "#2DB6C1" }}>por una razón legal.</span>
               </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Combina múltiples capas de verificación para garantizar que cada usuario es quien dice ser.
+              <p className="text-lg leading-relaxed" style={{ color: "#64748B" }}>
+                No es tecnología por tecnología — cada módulo genera evidencia que resiste auditorías de CNBV, UIF y CONDUSEF.
               </p>
             </div>
-            <div className="grid md:grid-cols-2 gap-8">
-              {features.map((feature, index) => (
-                <div key={index} className="bg-gray-50 rounded-xl p-8 hover:shadow-lg transition-shadow">
-                  <div className="w-12 h-12 bg-[#0066ff] rounded-xl flex items-center justify-center text-white mb-6">
-                    {feature.icon}
+
+            {/* 4 capability cards */}
+            <div className="grid md:grid-cols-2 gap-6">
+              {[
+                {
+                  icon: "👁️",
+                  badge: "iBeta Level 2",
+                  title: "Prueba de vida pasiva",
+                  body: "Detecta en tiempo real si el usuario es una persona real. Sin retos activos, sin fricción. iBeta Level 2 es el estándar más exigente del mercado para liveness detection.",
+                  tag: "Anti-spoofing · Pasivo",
+                },
+                {
+                  icon: "🪪",
+                  badge: ">99% precisión OCR",
+                  title: "Verificación de documento",
+                  body: "OCR avanzado sobre INE, pasaporte y comprobantes. Detecta alteraciones, valida vigencia y extrae datos con precisión superior al 99% en condiciones de campo real.",
+                  tag: "INE · Pasaporte · Comprobante",
+                },
+                {
+                  icon: "🤳",
+                  badge: "NIST FRVT evaluado",
+                  title: "Comparación facial biométrica",
+                  body: "Algoritmos evaluados por el Instituto Nacional de Estándares (NIST). Coteja el rostro en vivo contra la foto del documento con tasa de error facial < 0.1%.",
+                  tag: "Biometría 1:1 · <0.1% error",
+                },
+                {
+                  icon: "🏛️",
+                  badge: "Tiempo real",
+                  title: "Validación con fuentes oficiales",
+                  body: "Consulta en tiempo real INE/RENAPO, SAT (RFC) y listas de sancionados AML/PLD. La evidencia de cada consulta queda registrada en el expediente del usuario.",
+                  tag: "RENAPO · SAT · Listas AML",
+                },
+              ].map((c, i) => (
+                <div
+                  key={i}
+                  className="bg-white rounded-2xl p-7 transition-shadow hover:shadow-md"
+                  style={{ border: "1px solid #EEEEEE" }}
+                >
+                  <div className="flex items-start justify-between gap-4 mb-5">
+                    <div
+                      className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
+                      style={{ background: "rgba(45,182,193,0.10)" }}
+                    >
+                      {c.icon}
+                    </div>
+                    <span
+                      className="text-xs font-bold px-2.5 py-1 rounded-full whitespace-nowrap"
+                      style={{ background: "rgba(45,182,193,0.10)", color: "#2DB6C1", border: "1px solid rgba(45,182,193,0.18)" }}
+                    >
+                      {c.badge}
+                    </span>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
-                  <p className="text-gray-600">{feature.description}</p>
+                  <h3 className="text-lg font-bold mb-2" style={{ color: "#0E1133" }}>{c.title}</h3>
+                  <p className="text-sm leading-relaxed mb-4" style={{ color: "#64748B" }}>{c.body}</p>
+                  <div className="text-xs font-semibold" style={{ color: "#94A3B8" }}>{c.tag}</div>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Process */}
-        <section className="py-20 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
-                Cómo funciona
+        {/* ── 5. CÓMO FUNCIONA ── */}
+        <section className="py-24 relative overflow-hidden" style={{ background: "#141a3a" }}>
+          <div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[140px] pointer-events-none"
+            style={{ background: "rgba(45,182,193,0.07)" }}
+          />
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            {/* Header */}
+            <div className="text-center max-w-2xl mx-auto mb-16">
+              <div
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
+                style={{ color: "#2AD796", border: "1px solid rgba(42,215,150,0.22)", background: "rgba(42,215,150,0.08)" }}
+              >
+                Flujo de verificación
+              </div>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight mb-5">
+                De usuario desconocido a identidad verificada en{" "}
+                <span style={{ color: "#2DB6C1" }}>30 segundos.</span>
               </h2>
-              <p className="text-xl text-gray-600">
-                Un proceso simple para el usuario, robusto para tu compliance.
+              <p className="text-lg" style={{ color: "rgba(255,255,255,0.50)" }}>
+                Un proceso simple para el usuario. Evidencia completa para tu área de compliance.
               </p>
             </div>
-            <div className="grid md:grid-cols-4 gap-8">
-              {steps.map((item, index) => (
-                <div key={index} className="text-center">
-                  <div className="text-5xl font-black text-[#0066ff]/20 mb-4">{item.step}</div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">{item.title}</h3>
-                  <p className="text-gray-600 text-sm">{item.description}</p>
+
+            {/* Steps */}
+            <div className="relative grid md:grid-cols-4 gap-6">
+              {/* Connector line — desktop only */}
+              <div
+                className="hidden md:block absolute top-10 left-[12.5%] right-[12.5%] h-px pointer-events-none"
+                style={{ background: "linear-gradient(to right, rgba(45,182,193,0.25), rgba(42,215,150,0.25))" }}
+              />
+
+              {[
+                { num: "01", time: "0–5 seg.", title: "Captura de documento", body: "El usuario fotografía su INE o pasaporte. OCR extrae datos y valida vigencia al instante." },
+                { num: "02", time: "5–12 seg.", title: "Selfie con prueba de vida", body: "Captura facial pasiva. Anti-spoofing detecta fotos, videos o máscaras sin pasos extra." },
+                { num: "03", time: "12–22 seg.", title: "Verificación cruzada", body: "IA valida documento + rostro + fuentes oficiales en paralelo. Sin intervención humana." },
+                { num: "04", time: "22–30 seg.", title: "Evidencia generada", body: "Expediente con foto, score de confianza, timestamp y referencias a fuentes consultadas." },
+              ].map((s, i) => (
+                <div key={i} className="flex flex-col items-center text-center relative">
+                  {/* Step circle */}
+                  <div
+                    className="w-20 h-20 rounded-full flex items-center justify-center mb-5 relative z-10"
+                    style={{
+                      background: "linear-gradient(145deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02))",
+                      border: "1px solid rgba(45,182,193,0.22)",
+                    }}
+                  >
+                    <span
+                      className="text-2xl font-black"
+                      style={{
+                        background: "linear-gradient(90deg, #2DB6C1, #2AD796)",
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                        backgroundClip: "text",
+                      }}
+                    >
+                      {s.num}
+                    </span>
+                  </div>
+                  {/* Time badge */}
+                  <span
+                    className="text-xs font-bold px-2.5 py-1 rounded-full mb-3"
+                    style={{ background: "rgba(45,182,193,0.12)", color: "#2DB6C1", border: "1px solid rgba(45,182,193,0.18)" }}
+                  >
+                    {s.time}
+                  </span>
+                  <h3 className="text-base font-bold text-white mb-2">{s.title}</h3>
+                  <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.45)" }}>{s.body}</p>
                 </div>
               ))}
+            </div>
+
+            {/* Result row */}
+            <div
+              className="mt-14 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-6"
+              style={{ background: "rgba(42,215,150,0.07)", border: "1px solid rgba(42,215,150,0.16)" }}
+            >
+              <div className="flex items-center gap-4">
+                <span className="text-3xl">✅</span>
+                <div>
+                  <div className="font-bold text-white">Identidad verificada y expediente cerrado</div>
+                  <div className="text-sm mt-0.5" style={{ color: "rgba(255,255,255,0.45)" }}>
+                    Resultado con score de confianza · Evidencia lista para auditoría · API webhook enviado
+                  </div>
+                </div>
+              </div>
+              <Link
+                href="/contacto"
+                className="inline-flex items-center gap-2 px-5 py-2.5 font-bold text-sm rounded-xl whitespace-nowrap transition-all"
+                style={{ background: "linear-gradient(135deg, #2DB6C1, #25969f)", color: "#fff", boxShadow: "0 4px 16px rgba(45,182,193,0.25)" }}
+              >
+                Ver demo en vivo
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </Link>
             </div>
           </div>
         </section>
 
-        {/* Certifications */}
-        <section className="py-20 bg-white">
+        {/* ── 6. CERTIFICACIONES ── */}
+        <section className="py-24" style={{ background: "#fff" }}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
-                Certificaciones que respaldan
+            {/* Header */}
+            <div className="text-center max-w-2xl mx-auto mb-14">
+              <div
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
+                style={{ color: "#2DB6C1", border: "1px solid rgba(45,182,193,0.22)", background: "rgba(45,182,193,0.08)" }}
+              >
+                Certificaciones internacionales
+              </div>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black leading-tight mb-5" style={{ color: "#0E1133" }}>
+                No solo tecnología — estándares que reconocen tus reguladores.
               </h2>
+              <p className="text-lg" style={{ color: "#64748B" }}>
+                Cada certificación responde una pregunta que la CNBV, la UIF o un auditor externo te va a hacer.
+              </p>
             </div>
-            <div className="flex flex-wrap justify-center gap-8">
-              <div className="flex items-center gap-4 px-6 py-4 bg-gray-50 rounded-xl">
-                <Image src="/images/certifications/ibeta.png" alt="iBeta" width={60} height={60} />
-                <div>
-                  <div className="font-bold text-gray-900">iBeta</div>
-                  <div className="text-sm text-gray-600">Prueba de vida certificada</div>
+
+            {/* Cert cards */}
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                {
+                  label: "iBeta Level 2",
+                  question: "¿Tu prueba de vida resiste ataques de presentación?",
+                  answer: "El único estándar internacional que certifica liveness detection. Obligatorio para acreditar biometría ante CNBV.",
+                  reg: "Relevante para CNBV",
+                  color: "#2DB6C1",
+                },
+                {
+                  label: "NIST FRVT",
+                  question: "¿Con qué precisión reconoces un rostro?",
+                  answer: "Evaluación independiente del gobierno de EE.UU. Tasa de error facial < 0.1% en escenarios reales.",
+                  reg: "Precisión de biometría",
+                  color: "#2AD796",
+                },
+                {
+                  label: "ISO 27001",
+                  question: "¿Cómo proteges los datos biométricos de mis clientes?",
+                  answer: "Gestión de seguridad de información certificada. Cierra el riesgo de responsabilidad bajo LFPDPPP.",
+                  reg: "Relevante para LFPDPPP",
+                  color: "#2DB6C1",
+                },
+                {
+                  label: "ISO 9001",
+                  question: "¿Los procesos son consistentes o dependen de una persona?",
+                  answer: "Calidad operativa certificada. Cada verificación sigue el mismo protocolo — sin variaciones humanas.",
+                  reg: "Auditorías UIF / CNBV",
+                  color: "#2AD796",
+                },
+              ].map((c, i) => (
+                <div
+                  key={i}
+                  className="rounded-2xl p-6 flex flex-col"
+                  style={{ border: "1px solid #EEEEEE", borderLeft: `3px solid ${c.color}` }}
+                >
+                  <div
+                    className="text-xs font-bold px-2.5 py-1 rounded-full self-start mb-4"
+                    style={{ background: `rgba(45,182,193,0.08)`, color: c.color, border: `1px solid ${c.color}33` }}
+                  >
+                    {c.label}
+                  </div>
+                  <p className="text-sm font-semibold mb-3 leading-snug" style={{ color: "#64748B" }}>
+                    &ldquo;{c.question}&rdquo;
+                  </p>
+                  <p className="text-sm leading-relaxed flex-1 mb-4" style={{ color: "#0E1133" }}>
+                    {c.answer}
+                  </p>
+                  <div
+                    className="text-xs font-semibold mt-auto pt-3"
+                    style={{ color: c.color, borderTop: "1px solid #F1F5F9" }}
+                  >
+                    {c.reg}
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-center gap-4 px-6 py-4 bg-gray-50 rounded-xl">
-                <Image src="/images/certifications/nist.png" alt="NIST" width={60} height={60} />
-                <div>
-                  <div className="font-bold text-gray-900">NIST FRVT</div>
-                  <div className="text-sm text-gray-600">Reconocimiento facial evaluado</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-4 px-6 py-4 bg-gray-50 rounded-xl">
-                <Image src="/images/certifications/iso-27001.png" alt="ISO 27001" width={60} height={60} />
-                <div>
-                  <div className="font-bold text-gray-900">ISO 27001</div>
-                  <div className="text-sm text-gray-600">Seguridad de información</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-4 px-6 py-4 bg-gray-50 rounded-xl">
-                <Image src="/images/certifications/iso-9001.png" alt="ISO 9001" width={60} height={60} />
-                <div>
-                  <div className="font-bold text-gray-900">ISO 9001</div>
-                  <div className="text-sm text-gray-600">Gestión de calidad</div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </section>
