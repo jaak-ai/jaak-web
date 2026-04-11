@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useFirmaTheme, fc } from "@/components/FirmaThemeContext";
 
 type Step = {
   number: number;
@@ -90,6 +91,8 @@ const steps: Step[] = [
 ];
 
 export default function FirmaHowItWorks() {
+  const isDark = useFirmaTheme();
+  const cl = fc(isDark);
   const [activeStep, setActiveStep] = useState(0);
 
   const current = steps[activeStep];
@@ -101,7 +104,7 @@ export default function FirmaHowItWorks() {
         {/* Progress line */}
         <div
           className="absolute top-6 left-0 right-0 h-px"
-          style={{ background: "rgba(255,255,255,0.08)" }}
+          style={{ background: cl.border }}
           aria-hidden="true"
         />
         <div
@@ -131,9 +134,9 @@ export default function FirmaHowItWorks() {
                     ? current.color
                     : isPast
                     ? step.color + "33"
-                    : "rgba(255,255,255,0.06)",
+                    : cl.inputBg,
                   border: `2px solid ${
-                    isActive ? current.color : isPast ? step.color + "66" : "rgba(255,255,255,0.12)"
+                    isActive ? current.color : isPast ? step.color + "66" : cl.inputBorder
                   }`,
                   color: isActive ? "#fff" : isPast ? step.color : "#64748B",
                   boxShadow: isActive ? `0 0 20px ${current.color}44` : "none",
@@ -171,9 +174,9 @@ export default function FirmaHowItWorks() {
             onClick={() => setActiveStep(index)}
             className="flex-shrink-0 px-4 py-2 rounded-full text-xs font-semibold transition-all"
             style={{
-              background: index === activeStep ? step.color : "rgba(255,255,255,0.06)",
+              background: index === activeStep ? step.color : cl.inputBg,
               color: index === activeStep ? "#fff" : "#64748B",
-              border: `1px solid ${index === activeStep ? step.color : "rgba(255,255,255,0.1)"}`,
+              border: `1px solid ${index === activeStep ? step.color : cl.border}`,
             }}
           >
             {step.number}. {step.title}
@@ -186,7 +189,7 @@ export default function FirmaHowItWorks() {
         key={activeStep}
         className="rounded-2xl p-8 transition-all duration-300"
         style={{
-          background: "rgba(255,255,255,0.03)",
+          background: cl.cardBg,
           border: `1px solid ${current.color}33`,
           boxShadow: `0 0 40px ${current.color}11`,
         }}
@@ -231,11 +234,11 @@ export default function FirmaHowItWorks() {
                   background:
                     index === activeStep
                       ? step.color + "15"
-                      : "rgba(255,255,255,0.02)",
+                      : cl.cardBgTiny,
                   border: `1px solid ${
                     index === activeStep
                       ? step.color + "33"
-                      : "rgba(255,255,255,0.05)"
+                      : cl.borderFaint
                   }`,
                 }}
                 onClick={() => setActiveStep(index)}
@@ -253,7 +256,7 @@ export default function FirmaHowItWorks() {
                         ? step.color
                         : index < activeStep
                         ? step.color + "33"
-                        : "rgba(255,255,255,0.06)",
+                        : cl.inputBg,
                     color: index === activeStep ? "#fff" : index < activeStep ? step.color : "#64748B",
                   }}
                 >
@@ -290,9 +293,9 @@ export default function FirmaHowItWorks() {
           disabled={activeStep === 0}
           className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all disabled:opacity-30 disabled:cursor-not-allowed"
           style={{
-            background: "rgba(255,255,255,0.06)",
-            color: "#94A3B8",
-            border: "1px solid rgba(255,255,255,0.08)",
+            background: cl.inputBg,
+            color: cl.textMuted,
+            border: `1px solid ${cl.border}`,
           }}
           aria-label="Paso anterior"
         >
@@ -310,7 +313,7 @@ export default function FirmaHowItWorks() {
               className="w-2 h-2 rounded-full transition-all duration-300"
               style={{
                 background:
-                  index === activeStep ? current.color : "rgba(255,255,255,0.15)",
+                  index === activeStep ? current.color : cl.divider,
                 transform: index === activeStep ? "scale(1.3)" : "scale(1)",
               }}
               aria-label={`Ir al paso ${index + 1}`}

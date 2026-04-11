@@ -11,6 +11,7 @@ import FirmaRiskChecklist from "@/components/FirmaRiskChecklist";
 import FirmaUseCases from "@/components/FirmaUseCases";
 import FirmaFAQ from "@/components/FirmaFAQ";
 import FirmaSEMHandler from "@/components/FirmaSEMHandler";
+import FirmaThemeContext from "@/components/FirmaThemeContext";
 
 export default function FirmaThemeShell() {
   const [isDark, setIsDark] = useState(true);
@@ -25,6 +26,7 @@ export default function FirmaThemeShell() {
 
   return (
     <>
+      <FirmaThemeContext.Provider value={isDark}>
       <main data-firma-light={!isDark ? "" : undefined}>
         {/* ── HERO (always dark for brand consistency) ────────────── */}
         <section
@@ -400,6 +402,7 @@ export default function FirmaThemeShell() {
           </div>
         </section>
       </main>
+      </FirmaThemeContext.Provider>
 
       <FirmaSEMHandler />
 

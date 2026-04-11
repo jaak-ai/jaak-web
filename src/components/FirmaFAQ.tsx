@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useFirmaTheme, fc } from "@/components/FirmaThemeContext";
 
 type FAQItem = {
   id: string;
@@ -48,6 +49,8 @@ const faqItems: FAQItem[] = [
 ];
 
 export default function FirmaFAQ() {
+  const isDark = useFirmaTheme();
+  const cl = fc(isDark);
   const [openItems, setOpenItems] = useState<Set<string>>(new Set());
 
   const toggle = (id: string) => {
@@ -65,7 +68,7 @@ export default function FirmaFAQ() {
   return (
     <div
       className="rounded-2xl overflow-hidden"
-      style={{ border: "1px solid rgba(255,255,255,0.08)" }}
+      style={{ border: `1px solid ${cl.border}` }}
     >
       {faqItems.map((item, index) => {
         const isOpen = openItems.has(item.id);
@@ -74,7 +77,7 @@ export default function FirmaFAQ() {
           <div
             key={item.id}
             style={{
-              borderBottom: isLast ? "none" : "1px solid rgba(255,255,255,0.06)",
+              borderBottom: isLast ? "none" : `1px solid ${cl.borderMid}`,
             }}
           >
             <button
@@ -86,7 +89,7 @@ export default function FirmaFAQ() {
               style={{
                 background: isOpen
                   ? "rgba(30,202,211,0.04)"
-                  : "rgba(255,255,255,0.01)",
+                  : cl.cardBgMin,
               }}
             >
               <span
@@ -94,7 +97,7 @@ export default function FirmaFAQ() {
                 style={{
                   background: isOpen
                     ? "#1ECAD3"
-                    : "rgba(255,255,255,0.08)",
+                    : cl.border,
                   color: isOpen ? "#fff" : "#64748B",
                   transform: isOpen ? "rotate(45deg)" : "rotate(0deg)",
                 }}
@@ -104,7 +107,7 @@ export default function FirmaFAQ() {
               </span>
               <span
                 className="flex-1 font-semibold text-base leading-snug transition-colors duration-200"
-                style={{ color: isOpen ? "#fff" : "#CBD5E1" }}
+                style={{ color: isOpen ? (isDark ? "#fff" : "#0A0F1A") : cl.textFaint }}
               >
                 {item.question}
               </span>

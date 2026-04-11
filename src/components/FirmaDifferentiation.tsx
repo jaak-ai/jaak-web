@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
+import { useFirmaTheme, fc } from "@/components/FirmaThemeContext";
 
 type TooltipTerm = {
   term: string;
@@ -209,6 +210,8 @@ function renderWithTooltips(text: string, tooltips: TooltipTerm[]): React.ReactN
 }
 
 export default function FirmaDifferentiation() {
+  const isDark = useFirmaTheme();
+  const cl = fc(isDark);
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
 
   const toggle = (id: string) => {
@@ -232,12 +235,8 @@ export default function FirmaDifferentiation() {
             key={item.id}
             className="rounded-2xl transition-all duration-300"
             style={{
-              background: isExpanded
-                ? "rgba(255,255,255,0.05)"
-                : "rgba(255,255,255,0.02)",
-              border: `1px solid ${
-                isExpanded ? item.color + "33" : "rgba(255,255,255,0.07)"
-              }`,
+              background: isExpanded ? cl.cardBgAlt : cl.cardBgTiny,
+              border: `1px solid ${isExpanded ? item.color + "44" : cl.border}`,
             }}
             role="listitem"
           >
@@ -284,7 +283,7 @@ export default function FirmaDifferentiation() {
               <div
                 id={`diff-content-${item.id}`}
                 className="px-6 pb-5"
-                style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
+                style={{ borderTop: `1px solid ${cl.borderFaint}` }}
               >
                 <p className="text-sm text-gray-400 leading-relaxed mt-4">
                   {renderWithTooltips(item.detail, item.tooltips)}

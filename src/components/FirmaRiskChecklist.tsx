@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useFirmaTheme, fc } from "@/components/FirmaThemeContext";
 
 type RiskItem = {
   id: string;
@@ -43,6 +44,8 @@ const riskItems: RiskItem[] = [
 ];
 
 export default function FirmaRiskChecklist() {
+  const isDark = useFirmaTheme();
+  const cl = fc(isDark);
   const [checked, setChecked] = useState<Set<string>>(new Set());
 
   const toggle = (id: string) => {
@@ -89,13 +92,13 @@ export default function FirmaRiskChecklist() {
                     ? item.severity === "high"
                       ? "rgba(239,68,68,0.08)"
                       : "rgba(245,158,11,0.08)"
-                    : "rgba(255,255,255,0.03)",
+                    : cl.cardBg,
                   border: `1px solid ${
                     isChecked
                       ? item.severity === "high"
                         ? "rgba(239,68,68,0.3)"
                         : "rgba(245,158,11,0.3)"
-                      : "rgba(255,255,255,0.07)"
+                      : cl.border
                   }`,
                 }}
                 onClick={() => toggle(item.id)}
@@ -108,13 +111,13 @@ export default function FirmaRiskChecklist() {
                         ? item.severity === "high"
                           ? "#EF4444"
                           : "#F59E0B"
-                        : "rgba(255,255,255,0.06)",
+                        : cl.inputBg,
                       border: `2px solid ${
                         isChecked
                           ? item.severity === "high"
                             ? "#EF4444"
                             : "#F59E0B"
-                          : "rgba(255,255,255,0.2)"
+                          : cl.inputBorder
                       }`,
                     }}
                     role="checkbox"
@@ -145,7 +148,7 @@ export default function FirmaRiskChecklist() {
                         ? item.severity === "high"
                           ? "#FCA5A5"
                           : "#FCD34D"
-                        : "#94A3B8",
+                        : cl.textMuted,
                     }}
                   >
                     {item.text}
@@ -246,9 +249,9 @@ export default function FirmaRiskChecklist() {
                   href="/contacto"
                   className="inline-flex items-center justify-center px-5 py-2.5 rounded-xl text-sm font-semibold transition-all"
                   style={{
-                    background: "rgba(255,255,255,0.06)",
-                    color: "#94A3B8",
-                    border: "1px solid rgba(255,255,255,0.1)",
+                    background: cl.inputBg,
+                    color: cl.textMuted,
+                    border: `1px solid ${cl.border}`,
                   }}
                 >
                   Hablar con un experto

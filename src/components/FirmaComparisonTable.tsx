@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { useFirmaTheme, fc } from "@/components/FirmaThemeContext";
 
 type SignatureType = {
   id: string;
@@ -103,6 +104,8 @@ const signatureTypes: SignatureType[] = [
 ];
 
 export default function FirmaComparisonTable() {
+  const isDark = useFirmaTheme();
+  const cl = fc(isDark);
   const [hoveredRow, setHoveredRow] = useState<string | null>(null);
   const [expandedRow, setExpandedRow] = useState<string | null>(null);
 
@@ -113,7 +116,7 @@ export default function FirmaComparisonTable() {
   return (
     <div
       className="w-full overflow-x-auto rounded-2xl"
-      style={{ border: "1px solid rgba(255,255,255,0.08)" }}
+      style={{ border: `1px solid ${cl.border}` }}
     >
       <table
         className="w-full min-w-[800px]"
@@ -124,7 +127,7 @@ export default function FirmaComparisonTable() {
           <tr
             style={{
               background: "rgba(30,202,211,0.06)",
-              borderBottom: "1px solid rgba(255,255,255,0.08)",
+              borderBottom: `1px solid ${cl.border}`,
             }}
           >
             {[
@@ -161,14 +164,14 @@ export default function FirmaComparisonTable() {
                     expandedRow === type.id
                       ? "rgba(30,202,211,0.06)"
                       : hoveredRow === type.id
-                      ? "rgba(255,255,255,0.04)"
+                      ? cl.cardBgActive
                       : index % 2 === 0
-                      ? "rgba(255,255,255,0.01)"
+                      ? cl.cardBgMin
                       : "transparent",
                   borderBottom:
                     expandedRow === type.id
                       ? "none"
-                      : "1px solid rgba(255,255,255,0.05)",
+                      : `1px solid ${cl.borderFaint}`,
                 }}
               >
                 <td className="py-4 px-5">
@@ -257,8 +260,8 @@ export default function FirmaComparisonTable() {
                   <td
                     colSpan={6}
                     style={{
-                      background: "rgba(30,202,211,0.03)",
-                      borderBottom: "1px solid rgba(255,255,255,0.05)",
+                      background: "rgba(30,202,211,0.05)",
+                      borderBottom: `1px solid ${cl.borderFaint}`,
                       padding: 0,
                     }}
                   >

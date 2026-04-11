@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useFirmaTheme, fc } from "@/components/FirmaThemeContext";
 
 type UseCase = {
   title: string;
@@ -145,6 +146,8 @@ const industries: Industry[] = [
 ];
 
 export default function FirmaUseCases() {
+  const isDark = useFirmaTheme();
+  const cl = fc(isDark);
   const [activeIndustry, setActiveIndustry] = useState("financiero");
 
   const current = industries.find((i) => i.id === activeIndustry)!;
@@ -155,8 +158,8 @@ export default function FirmaUseCases() {
       <div
         className="flex flex-wrap gap-2 mb-8 p-1.5 rounded-2xl"
         style={{
-          background: "rgba(255,255,255,0.03)",
-          border: "1px solid rgba(255,255,255,0.07)",
+          background: cl.cardBg,
+          border: `1px solid ${cl.border}`,
         }}
         role="tablist"
         aria-label="Filtrar por industria"
@@ -198,14 +201,14 @@ export default function FirmaUseCases() {
             key={useCase.title}
             className="rounded-2xl p-6 flex flex-col gap-4 transition-all duration-200 hover:-translate-y-1"
             style={{
-              background: "rgba(255,255,255,0.03)",
-              border: "1px solid rgba(255,255,255,0.08)",
+              background: cl.cardBg,
+              border: `1px solid ${cl.border}`,
             }}
           >
             <div className="flex items-start justify-between">
               <span
                 className="text-2xl w-10 h-10 flex items-center justify-center rounded-xl"
-                style={{ background: "rgba(255,255,255,0.05)" }}
+                style={{ background: cl.inputBg }}
                 aria-hidden="true"
               >
                 {useCase.icon}
