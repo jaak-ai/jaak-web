@@ -130,34 +130,6 @@ export default function VerificacionIdentidad() {
           </div>
         </section>
 
-        {/* ── 2. STATS BAR ── */}
-        <section className="py-10 bg-white" style={{ borderTop: "1px solid #EEEEEE", borderBottom: "1px solid #EEEEEE" }}>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-0 md:divide-x md:divide-gray-100">
-              {[
-                { value: "70M+", label: "identidades verificadas" },
-                { value: "1,000+", label: "empresas activas" },
-                { value: "iBeta L1", label: "prueba de vida certificada" },
-                { value: "< 30 seg.", label: "por verificación" },
-              ].map((m, i) => (
-                <div key={i} className="text-center md:px-8">
-                  <div
-                    className="text-2xl md:text-3xl font-black mb-1"
-                    style={{
-                      background: "linear-gradient(90deg, #2DB6C1, #2AD796)",
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                      backgroundClip: "text",
-                    }}
-                  >
-                    {m.value}
-                  </div>
-                  <div className="text-sm font-medium" style={{ color: "#64748B" }}>{m.label}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
 
         {/* ── 3. PROBLEMA REGULATORIO ── */}
         <section className="py-24 relative overflow-hidden" style={{ background: "#0E1133" }}>
