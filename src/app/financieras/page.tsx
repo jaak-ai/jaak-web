@@ -64,7 +64,7 @@ const products = [
   },
   {
     name: "Liveness Detection",
-    description: "Prueba de vida certificada iBeta Level 2. Detecta ataques de presentación con IA.",
+    description: "Prueba de vida certificada iBeta Level 1. Detecta ataques de presentación con IA.",
     color: "#655DC6",
   },
   {
@@ -292,7 +292,7 @@ export default function FinancierasPage() {
                 { value: "Horas", label: "Tiempo de integración" },
                 { value: "99.9%", label: "Uptime garantizado" },
                 { value: "AML/KYC", label: "Evidencia regulatoria" },
-                { value: "iBeta L2", label: "Certificación Liveness" },
+                { value: "iBeta L1", label: "Certificación Liveness" },
               ].map((stat, i) => (
                 <div key={i} className="text-center p-6 bg-white rounded-xl shadow-sm">
                   <div className="text-3xl font-black text-[#655DC6] mb-1">{stat.value}</div>
@@ -320,7 +320,7 @@ export default function FinancierasPage() {
                 <div className="space-y-5">
                   {[
                     "KYC que cumple CNBV, UIF y LFPIORPI desde el día uno",
-                    "Liveness certificado iBeta Level 2 — el estándar más alto",
+                    "Liveness certificado iBeta Level 1 — el estándar más alto",
                     "Integración en horas con API REST y SDK móvil",
                     "Evidencia auditable lista para inspecciones",
                     "Soporte de expertos en compliance financiero",

@@ -40,7 +40,7 @@ export default function VerificacionIdentidad() {
                   style={{ color: "#2DB6C1", border: "1px solid rgba(45,182,193,0.25)", background: "rgba(45,182,193,0.09)" }}
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-[#2DB6C1] animate-pulse" />
-                  Certificado iBeta Level 2 · Tecnología 100% propia
+                  Certificado iBeta Level 1 · Tecnología 100% propia
                 </div>
 
                 <h1 className="text-4xl md:text-5xl lg:text-[3.25rem] font-black text-white leading-tight mb-6">
@@ -94,7 +94,7 @@ export default function VerificacionIdentidad() {
                   {[
                     { label: "Documento capturado", sub: "INE · vigente · sin alteraciones", done: true },
                     { label: "Biometría facial", sub: "Coincidencia 98.4% con NIST FRVT", done: true },
-                    { label: "Prueba de vida", sub: "iBeta Level 2 · anti-spoofing activo", done: true },
+                    { label: "Prueba de vida", sub: "iBeta Level 1 · anti-spoofing activo", done: true },
                     { label: "Evidencia generada", sub: "Constancia auditable lista", done: true },
                   ].map((s, i) => (
                     <div key={i} className="flex items-start gap-3 mb-4 last:mb-0">
@@ -137,7 +137,7 @@ export default function VerificacionIdentidad() {
               {[
                 { value: "70M+", label: "identidades verificadas" },
                 { value: "1,000+", label: "empresas activas" },
-                { value: "iBeta L2", label: "prueba de vida certificada" },
+                { value: "iBeta L1", label: "prueba de vida certificada" },
                 { value: "< 30 seg.", label: "por verificación" },
               ].map((m, i) => (
                 <div key={i} className="text-center md:px-8">
@@ -267,9 +267,9 @@ export default function VerificacionIdentidad() {
               {[
                 {
                   icon: "👁️",
-                  badge: "iBeta Level 2",
+                  badge: "iBeta Level 1",
                   title: "Prueba de vida pasiva",
-                  body: "Detecta en tiempo real si el usuario es una persona real. Sin retos activos, sin fricción. iBeta Level 2 es el estándar más exigente del mercado para liveness detection.",
+                  body: "Detecta en tiempo real si el usuario es una persona real. Sin retos activos, sin fricción. iBeta Level 1 es el estándar más exigente del mercado para liveness detection.",
                   tag: "Anti-spoofing · Pasivo",
                 },
                 {
@@ -445,7 +445,7 @@ export default function VerificacionIdentidad() {
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
                 {
-                  label: "iBeta Level 2",
+                  label: "iBeta Level 1",
                   question: "¿Tu prueba de vida resiste ataques de presentación?",
                   answer: "El único estándar internacional que certifica liveness detection. Obligatorio para acreditar biometría ante CNBV.",
                   reg: "Relevante para CNBV",
@@ -676,7 +676,7 @@ export default function VerificacionIdentidad() {
     "liveness": {
       "result": "pass",
       "score": 0.99,
-      "standard": "iBeta Level 2"
+      "standard": "iBeta Level 1"
     },
     "face_match": {
       "score": 0.984,
@@ -772,7 +772,7 @@ export default function VerificacionIdentidad() {
                 className="mt-10 pt-8 flex flex-wrap justify-center gap-6 text-xs"
                 style={{ borderTop: "1px solid rgba(255,255,255,0.07)", color: "rgba(255,255,255,0.28)" }}
               >
-                {["Sin compromiso de contratación", "ISO 27001 · iBeta Level 2", "70M+ identidades verificadas", "Tecnología 100% propia"].map((t) => (
+                {["Sin compromiso de contratación", "ISO 27001 · iBeta Level 1", "70M+ identidades verificadas", "Tecnología 100% propia"].map((t) => (
                   <span key={t} className="flex items-center gap-1.5">
                     <svg className="w-4 h-4" style={{ color: "#2AD796" }} fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />

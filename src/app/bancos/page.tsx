@@ -59,7 +59,7 @@ const steps = [
 const products = [
   {
     name: "Liveness Detection",
-    description: "Prueba de vida certificada iBeta Level 2. Detecta deepfakes y ataques de presentación en tiempo real.",
+    description: "Prueba de vida certificada iBeta Level 1. Detecta deepfakes y ataques de presentación en tiempo real.",
     color: "#1ECAD3",
     tag: "Certificado iBeta",
   },
@@ -86,7 +86,7 @@ const products = [
 const stats = [
   { value: "100%", label: "Infraestructura propia" },
   { value: "<100ms", label: "Latencia biométrica" },
-  { value: "iBeta L2", label: "Certificación Liveness" },
+  { value: "iBeta L1", label: "Certificación Liveness" },
   { value: "99.99%", label: "Disponibilidad SLA" },
 ];
 
