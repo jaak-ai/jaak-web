@@ -74,13 +74,13 @@ export default function KycBiometricAnimation() {
           </div>
 
           {/* ── Image area with scan line overlay ── */}
-          <div className="relative rounded-2xl overflow-hidden mb-5" style={{ aspectRatio: "1/1" }}>
+          <div className="relative rounded-2xl overflow-hidden mb-5">
             <Image
               src="/images/kyc-face-scan.jpg"
               alt="Biometric face scan KYC"
-              fill
-              className="object-cover"
-              sizes="340px"
+              width={500}
+              height={500}
+              className="w-full h-auto block"
             />
 
             {/* Scan line over the image */}
