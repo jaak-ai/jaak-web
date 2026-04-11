@@ -35,31 +35,78 @@ export default function VerificacionIdentidad() {
             <div className="grid lg:grid-cols-2 gap-14 items-center">
               {/* Left — copy */}
               <div>
-                <div
-                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-7"
-                  style={{ color: "#2DB6C1", border: "1px solid rgba(45,182,193,0.25)", background: "rgba(45,182,193,0.09)" }}
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#2DB6C1] animate-pulse" />
-                  Certificado iBeta Level 1 · Tecnología 100% propia
+                {/* Product label */}
+                <div className="flex items-center gap-3 mb-7">
+                  <div
+                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold"
+                    style={{ color: "#2DB6C1", border: "1px solid rgba(45,182,193,0.30)", background: "rgba(45,182,193,0.10)" }}
+                  >
+                    KYC · Know Your Customer
+                  </div>
+                  <div
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold"
+                    style={{ color: "rgba(255,255,255,0.50)", border: "1px solid rgba(255,255,255,0.10)", background: "rgba(255,255,255,0.04)" }}
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#2DB6C1] animate-pulse" />
+                    iBeta Level 1 · Tecnología propia
+                  </div>
                 </div>
 
-                <h1 className="text-4xl md:text-5xl lg:text-[3.25rem] font-black text-white leading-tight mb-6">
-                  Verifica identidades en segundos.{" "}
+                <h1 className="text-4xl md:text-5xl lg:text-[3.25rem] font-black text-white leading-tight mb-5">
+                  Verifica la identidad de tus clientes.{" "}
                   <span style={{
                     background: "linear-gradient(90deg, #2DB6C1, #2AD796)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
                     backgroundClip: "text",
                   }}>
-                    Con evidencia legal que resiste cualquier auditoría.
+                    Con evidencia legal lista para cualquier auditoría.
                   </span>
                 </h1>
 
-                <p className="text-lg leading-relaxed mb-8" style={{ color: "rgba(255,255,255,0.56)" }}>
-                  KYC biométrico con prueba de vida certificada iBeta. Cumple LFPIORPI, CNBV
-                  y regulación antilavado desde el primer usuario verificado.
+                <p className="text-lg leading-relaxed mb-7" style={{ color: "rgba(255,255,255,0.56)" }}>
+                  KYC biométrico que automatiza el alta de clientes cumpliendo LFPIORPI, CNBV
+                  y regulación antilavado — con evidencia auditable desde la primera verificación.
                 </p>
 
+                {/* Para qué sirve */}
+                <div className="space-y-2.5 mb-8">
+                  {[
+                    "Alta de clientes 100% digital y remota",
+                    "Cumplimiento regulatorio con evidencia auditable",
+                    "Prevención de fraude e identidades falsas en onboarding",
+                  ].map((item) => (
+                    <div key={item} className="flex items-center gap-3">
+                      <span
+                        className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0"
+                        style={{ background: "linear-gradient(135deg, #2DB6C1, #2AD796)" }}
+                      >
+                        <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </span>
+                      <span className="text-sm font-medium" style={{ color: "rgba(255,255,255,0.72)" }}>{item}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Sectores */}
+                <div>
+                  <p className="text-xs font-semibold mb-3 uppercase tracking-wider" style={{ color: "rgba(255,255,255,0.30)" }}>
+                    Sectores obligados
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {["Bancos y Sofomes", "Fintechs e IFPE", "Actividades Vulnerables", "Inmobiliarias", "Seguros", "Casinos"].map((s) => (
+                      <span
+                        key={s}
+                        className="text-xs font-medium px-2.5 py-1 rounded-full"
+                        style={{ background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.55)", border: "1px solid rgba(255,255,255,0.09)" }}
+                      >
+                        {s}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </div>
 
               {/* Right — verification flow panel */}
