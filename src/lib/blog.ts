@@ -22,9 +22,9 @@ export const blogPosts: BlogPost[] = [
     image: "/images/blog/que-es-kyc-mexico.jpg",
   },
   {
-    title: "Firma electrónica simple vs avanzada: diferencias legales en México",
+    title: "Firma Simple vs Firma Digital con Validez NOM-151: ¿Cuál necesita tu empresa?",
     excerpt:
-      "No todas las firmas electrónicas tienen el mismo peso legal. Conoce las diferencias entre firma simple, avanzada y biométrica con NOM-151 según el Código de Comercio y la LFEA.",
+      "No todas las firmas electrónicas tienen el mismo peso legal. Descubre la diferencia entre firma simple y firma digital con validez NOM-151, y por qué elegir mal puede dejarte sin respaldo ante un juez.",
     date: "11 de abril, 2026",
     dateISO: "2026-04-11",
     category: "Firma Electrónica",

@@ -5,22 +5,22 @@ import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Firma electrónica simple vs avanzada: diferencias legales en México | JAAK",
+  title: "Firma Simple vs Firma Digital con Validez NOM-151: ¿Cuál necesita tu empresa? | JAAK",
   description:
-    "Conoce las diferencias legales entre firma electrónica simple y avanzada en México según el Código de Comercio y la LFEA. Descubre cuál necesita tu empresa para cumplir regulación.",
+    "Descubre la diferencia entre firma electrónica simple y firma digital con validez NOM-151 en México. No son lo mismo, y elegir mal puede costarle muy caro a tu empresa.",
   keywords: [
     "firma electrónica simple",
-    "firma electrónica avanzada",
-    "LFEA",
-    "Código de Comercio",
+    "firma digital NOM-151",
     "firma electrónica México",
-    "diferencias firma digital",
     "NOM-151",
+    "diferencias firma digital",
+    "firma electrónica contratos",
+    "firma con validez legal México",
   ],
   openGraph: {
-    title: "Firma electrónica simple vs avanzada: diferencias legales en México",
+    title: "Firma Simple vs Firma Digital con Validez NOM-151: ¿Cuál necesita tu empresa?",
     description:
-      "Conoce las diferencias legales entre firma electrónica simple y avanzada en México según el Código de Comercio y la LFEA.",
+      "No todas las firmas electrónicas tienen el mismo peso legal. Conoce la diferencia y elige la que protege de verdad a tu empresa.",
     type: "article",
     publishedTime: "2026-04-11",
     authors: ["JAAK"],
@@ -31,9 +31,9 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Article",
   headline:
-    "Firma electrónica simple vs avanzada: diferencias legales en México",
+    "Firma Simple vs Firma Digital con Validez NOM-151: ¿Cuál necesita tu empresa?",
   description:
-    "Conoce las diferencias legales entre firma electrónica simple y avanzada en México según el Código de Comercio y la LFEA. Descubre cuál necesita tu empresa para cumplir regulación.",
+    "Descubre la diferencia entre firma electrónica simple y firma digital con validez NOM-151 en México. No son lo mismo, y elegir mal puede costarle muy caro a tu empresa.",
   image: "https://jaak.ai/images/blog/firma-simple-vs-avanzada.jpg",
   datePublished: "2026-04-11",
   dateModified: "2026-04-11",
@@ -56,7 +56,7 @@ const jsonLd = {
     "@id": "https://jaak.ai/blog/firma-electronica-simple-vs-avanzada",
   },
   keywords:
-    "firma electrónica simple, firma electrónica avanzada, LFEA, Código de Comercio, firma electrónica México, diferencias firma digital, NOM-151",
+    "firma electrónica simple, firma digital NOM-151, firma electrónica México, NOM-151, diferencias firma digital",
   inLanguage: "es-MX",
 };
 
@@ -121,12 +121,12 @@ export default function FirmaElectronicaSimpleVsAvanzada() {
               <span className="text-white/40 text-sm">9 min de lectura</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-black text-white mb-6">
-              Firma electrónica simple vs avanzada: diferencias legales en México
+              Firma Simple vs Firma Digital con Validez NOM-151: ¿Cuál necesita tu empresa?
             </h1>
             <p className="text-xl text-white/60">
-              No toda firma electrónica tiene el mismo peso legal. En México, la diferencia entre
-              una firma simple y una avanzada puede determinar si un contrato se sostiene ante un
-              juez. Conoce el marco legal, los requisitos y cuál necesita su empresa.
+              No todas las firmas electrónicas tienen el mismo peso legal en México.
+              Usar la que no corresponde puede dejarte sin respaldo si un contrato se disputa.
+              Aquí te explicamos la diferencia de forma clara.
             </p>
           </div>
         </section>
@@ -137,7 +137,7 @@ export default function FirmaElectronicaSimpleVsAvanzada() {
             <div className="rounded-2xl overflow-hidden shadow-xl">
               <Image
                 src="/images/blog/firma-simple-vs-avanzada.jpg"
-                alt="Firma electrónica simple vs avanzada: diferencias legales en México"
+                alt="Firma electrónica simple vs firma digital con validez NOM-151 en México"
                 width={1200}
                 height={675}
                 className="w-full h-auto"
@@ -153,388 +153,282 @@ export default function FirmaElectronicaSimpleVsAvanzada() {
             <div className="prose prose-lg max-w-none">
 
               <p className="text-xl text-gray-600 leading-relaxed mb-8">
-                Muchas empresas en México firman contratos de manera electrónica creyendo que están
-                completamente protegidas. Sin embargo, no todas las firmas electrónicas tienen el
-                mismo peso legal. En el derecho mexicano, la diferencia entre una firma electrónica
-                simple y una avanzada puede ser decisiva cuando un contrato se disputa ante un
-                tribunal. Entender esa diferencia no es solo una cuestión técnica: es un asunto de
-                gestión de riesgo legal.
+                Muchas empresas en México usan firma electrónica pensando que están protegidas.
+                Y técnicamente tienen razón: firmaron digitalmente. El problema es que no todas las
+                firmas electrónicas tienen el mismo valor cuando hay una disputa. La diferencia entre
+                una firma simple y una firma con validez NOM-151 puede decidir si un contrato se
+                sostiene o se cae frente a un juez.
               </p>
 
-              <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-6">
-                El marco legal en México
-              </h2>
-              <p className="text-gray-600 leading-relaxed mb-4">
-                En México existen dos cuerpos normativos principales que regulan la firma
-                electrónica. Por un lado, el <strong>Código de Comercio</strong> (artículos 89 a
-                114) reconoce los mensajes de datos como medios válidos para expresar el
-                consentimiento en actos jurídicos comerciales. Establece el principio de
-                equivalencia funcional: un mensaje de datos tiene la misma validez que un documento
-                en papel cuando cumple ciertos requisitos de integridad y atribución.
-              </p>
-              <p className="text-gray-600 leading-relaxed mb-4">
-                Por otro lado, la <strong>Ley Federal de Firma Electrónica Avanzada (LFEA)</strong>,
-                publicada en 2012, establece los requisitos específicos que debe cumplir una firma
-                para ser considerada "avanzada" y, con ello, gozar de plena validez probatoria ante
-                autoridades y tribunales. La LFEA aplica principalmente a las relaciones entre
-                particulares y el gobierno, pero sus estándares técnicos son la referencia de facto
-                para el sector privado.
-              </p>
-              <div className="bg-[#0066ff]/5 border-l-4 border-[#0066ff] p-6 my-8">
-                <p className="text-gray-700 font-medium mb-2">Nota legal importante:</p>
-                <p className="text-gray-600">
-                  No toda firma digital es una firma electrónica avanzada. La ley establece
-                  requisitos específicos que deben cumplirse para que tenga plena validez
-                  probatoria. Usar una firma simple en un contrato de alto riesgo puede
-                  resultar en pérdidas significativas si la contraparte la impugna en juicio.
+              <div className="bg-amber-50 border-l-4 border-amber-400 p-6 my-8">
+                <p className="text-gray-800 font-semibold mb-1">Aclaración importante:</p>
+                <p className="text-gray-700">
+                  La <strong>Firma Digital con Validez NOM-151</strong> que describimos en este
+                  artículo <strong>no es la e.firma del SAT</strong>. La e.firma (antes llamada FIEL)
+                  es un certificado que emite el SAT exclusivamente para trámites fiscales y
+                  declaraciones ante el gobierno. La firma NOM-151 es para contratos privados entre
+                  empresas y personas: arrendamientos, créditos, seguros, onboarding digital, entre otros.
                 </p>
               </div>
 
               <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-6">
-                Firma electrónica simple
+                ¿Qué es una firma electrónica simple?
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
-                La firma electrónica simple es cualquier símbolo o procedimiento electrónico
-                utilizado para expresar el consentimiento de una persona. Esto incluye desde hacer
-                clic en un botón "Acepto los términos", insertar una imagen escaneada de la firma
-                manuscrita, escribir el nombre al final de un correo, ingresar un código OTP o
-                dibujar una firma con el dedo en la pantalla de un dispositivo móvil.
-              </p>
-              <p className="text-gray-600 leading-relaxed mb-4">
-                Su principal ventaja es la facilidad de implementación: no requiere infraestructura
-                tecnológica especializada ni certificados digitales. Sin embargo, su valor probatorio
-                es mínimo. Los problemas más comunes que surgen con la firma simple son:
+                La firma simple es cualquier acción electrónica que una persona realiza para expresar
+                que está de acuerdo con algo. Puede ser:
               </p>
               <ul className="list-disc pl-6 mb-6 space-y-2 text-gray-600">
-                <li>
-                  <strong>Imposibilidad de identificar al firmante:</strong> No existe mecanismo
-                  técnico que vincule la firma con la identidad real de la persona.
-                </li>
-                <li>
-                  <strong>Ausencia de integridad documental:</strong> No se puede demostrar que el
-                  documento no fue alterado después de ser firmado.
-                </li>
-                <li>
-                  <strong>Facilidad de repudio:</strong> La contraparte puede negar haber firmado
-                  sin que la empresa tenga elementos para contradecirlo.
-                </li>
-                <li>
-                  <strong>Sin sello de tiempo certificado:</strong> No hay evidencia de cuándo
-                  exactamente se realizó la firma.
-                </li>
+                <li>Un clic en un botón "Acepto"</li>
+                <li>Una imagen de la firma dibujada en pantalla o escaneada</li>
+                <li>Un código enviado por SMS (OTP) que el usuario ingresa</li>
+                <li>Escribir el nombre al final de un correo electrónico</li>
               </ul>
               <p className="text-gray-600 leading-relaxed mb-4">
-                La firma simple puede ser suficiente para aprobaciones internas de bajo riesgo,
-                NDAs entre partes con una relación comercial establecida y documentos cuya
-                disputa tendría consecuencias menores. En contextos regulados o contratos con
-                obligaciones financieras, su uso representa un riesgo inaceptable.
+                Es fácil de implementar y no requiere tecnología especializada. Pero tiene un problema
+                grave: si alguien disputa el contrato, la empresa no puede demostrar fácilmente quién
+                firmó, cuándo lo hizo ni que el documento no fue modificado después.
               </p>
 
               <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-6">
-                Firma electrónica avanzada
+                ¿Qué es una Firma Digital con Validez NOM-151?
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
-                La firma electrónica avanzada está definida con precisión en la LFEA. Para ser
-                considerada avanzada, la firma debe cumplir cuatro requisitos técnicos y jurídicos
-                de manera simultánea:
+                La <strong>Firma Digital con Validez NOM-151</strong> va mucho más allá de un clic o
+                una imagen. Cuando alguien firma un documento con este nivel, ocurren varias cosas al
+                mismo tiempo:
               </p>
               <ol className="list-decimal pl-6 mb-6 space-y-3 text-gray-600">
                 <li>
-                  <strong>Estar vinculada de manera única al firmante:</strong> La firma debe
-                  corresponder exclusivamente a esa persona y no puede ser generada por ningún otro.
+                  <strong>Se genera una huella digital del documento</strong> — cualquier cambio
+                  posterior al archivo, por mínimo que sea, es automáticamente detectable.
                 </li>
                 <li>
-                  <strong>Ser capaz de identificar al firmante:</strong> Debe existir un mecanismo
-                  verificable que permita determinar quién firmó.
+                  <strong>Un organismo certificado registra la fecha y hora exacta de la firma</strong> —
+                  esto se llama sello de tiempo NOM-151 y tiene plena validez legal en México.
                 </li>
                 <li>
-                  <strong>Crearse con datos bajo el control exclusivo del firmante:</strong> La clave
-                  privada o el mecanismo de firma solo debe estar en poder del firmante, de modo que
-                  nadie más pueda reproducirla.
+                  <strong>Se vincula la identidad del firmante al documento</strong> — no solo se
+                  acepta; se verifica quién es la persona que firma.
                 </li>
                 <li>
-                  <strong>Estar vinculada a los datos firmados de tal forma que detecte cualquier
-                  modificación posterior:</strong> Si el documento es alterado después de la firma,
-                  esta se invalida automáticamente.
+                  <strong>Se genera un expediente completo y auditable</strong> — con toda la
+                  evidencia del proceso, disponible si algún día se necesita presentar en un juicio.
                 </li>
               </ol>
-              <p className="text-gray-600 leading-relaxed mb-4">
-                Tecnológicamente, la firma avanzada se implementa mediante criptografía de clave
-                pública (PKI), donde cada firmante posee un certificado digital emitido por una
-                autoridad certificadora reconocida. Esto garantiza los cuatro requisitos de la LFEA
-                y produce una huella digital del documento que cambia si una sola letra es
-                modificada.
-              </p>
-              <p className="text-gray-600 leading-relaxed mb-4">
-                Sus casos de uso incluyen contratos comerciales formales, instrumentos financieros,
-                acuerdos con obligaciones de largo plazo y cualquier documento que pueda ser
-                disputado ante un tribunal.
-              </p>
+              <div className="bg-[#0066ff]/5 border-l-4 border-[#0066ff] p-6 my-8">
+                <p className="text-gray-700 font-semibold mb-2">En términos simples:</p>
+                <p className="text-gray-600">
+                  Con la firma NOM-151, si alguien intenta decir "yo nunca firmé eso" o
+                  "ese documento fue alterado", la empresa tiene evidencia sólida para demostrarlo
+                  en sentido contrario. Con una firma simple, esa evidencia simplemente no existe.
+                </p>
+              </div>
 
               <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-6">
-                La firma biométrica con NOM-151
+                El nivel máximo: Firma Biométrica con NOM-151
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
-                Existe un tercer nivel que va más allá del mínimo legal exigido por la LFEA: la
-                firma biométrica con sello de tiempo certificado bajo la <strong>NOM-151</strong>.
-                Esta norma oficial mexicana establece los requisitos para la conservación de mensajes
-                de datos y digitalización de documentos, incluyendo la certificación de sellos de
-                tiempo por parte de prestadores de servicios de certificación acreditados ante la
-                Secretaría de Economía.
+                Existe un tercer nivel que agrega verificación de identidad mediante reconocimiento
+                facial. Antes de firmar, el sistema confirma que la persona es quien dice ser:
+                analiza el rostro en tiempo real y detecta que es una persona real, no una foto
+                o imagen pregrabada.
               </p>
               <p className="text-gray-600 leading-relaxed mb-4">
-                La firma biométrica con NOM-151 añade las siguientes capas sobre la firma avanzada:
+                Esto es especialmente útil cuando el firmante es alguien que la empresa no conoce
+                previamente — por ejemplo, en la apertura digital de una cuenta, la contratación de
+                un crédito o el onboarding de nuevos clientes.
               </p>
               <ul className="list-disc pl-6 mb-6 space-y-2 text-gray-600">
-                <li>
-                  <strong>Biometría facial con detección de vida (liveness):</strong> Confirma que
-                  quien firma es una persona real y que está presente en el momento de la firma,
-                  descartando el uso de fotografías o videos pregrabados.
-                </li>
-                <li>
-                  <strong>Sello de tiempo NOM-151 certificado:</strong> Un tercero de confianza
-                  acreditado certifica el momento exacto en que se realizó la firma con validez legal.
-                </li>
-                <li>
-                  <strong>Pista de auditoría completa:</strong> Se registra dirección IP, dispositivo,
-                  geolocalización, secuencia de acciones y capturas en cada etapa del proceso.
-                </li>
-                <li>
-                  <strong>OCR y verificación del documento de identidad:</strong> Los datos del INE
-                  o pasaporte son extraídos y validados contra bases de datos oficiales.
-                </li>
+                <li>Verificación del INE o pasaporte del firmante</li>
+                <li>Reconocimiento facial con detección de vida (confirma que es una persona real)</li>
+                <li>Sello de tiempo NOM-151 certificado</li>
+                <li>Expediente digital con video, foto y registro completo del proceso</li>
               </ul>
-              <p className="text-gray-600 leading-relaxed mb-4">
-                Esta combinación convierte cada transacción en un expediente digital prácticamente
-                imposible de impugnar con éxito ante un tribunal. Es la modalidad más defensible
-                disponible hoy en México.
-              </p>
 
               <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-6">
-                Tabla comparativa de tipos de firma
+                Comparativa: ¿qué ofrece cada tipo?
               </h2>
-              <p className="text-gray-600 leading-relaxed mb-4">
-                A continuación se presenta una comparación directa de los tres tipos de firma
-                electrónica según sus características legales y técnicas:
-              </p>
 
               {/* Comparison Grid */}
               <div className="grid md:grid-cols-3 gap-0 my-8 rounded-xl overflow-hidden border border-gray-200">
                 {/* Column headers */}
-                <div className="bg-[#1ECAD3] p-5">
-                  <p className="font-bold text-white text-lg">Simple</p>
-                  <p className="text-white/80 text-sm mt-1">Consentimiento básico</p>
+                <div className="bg-[#64748B] p-5">
+                  <p className="font-bold text-white text-lg">Firma Simple</p>
+                  <p className="text-white/80 text-sm mt-1">Clic / imagen / OTP</p>
                 </div>
-                <div className="bg-[#7C3AED] p-5">
-                  <p className="font-bold text-white text-lg">Avanzada (LFEA)</p>
-                  <p className="text-white/80 text-sm mt-1">Criptografía PKI</p>
+                <div className="bg-[#1ECAD3] p-5">
+                  <p className="font-bold text-white text-lg">Firma NOM-151</p>
+                  <p className="text-white/80 text-sm mt-1">Certificada con sello de tiempo</p>
                 </div>
                 <div className="bg-[#059669] p-5">
                   <p className="font-bold text-white text-lg">Biométrica + NOM-151</p>
-                  <p className="text-white/80 text-sm mt-1">Máxima defensibilidad</p>
+                  <p className="text-white/80 text-sm mt-1">Identidad verificada + certificada</p>
                 </div>
 
-                {/* Row: identidad verificada */}
+                {/* Row: ¿prueba quién firmó? */}
                 <div className="bg-gray-50 p-4 border-t border-gray-200">
-                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Identidad verificada</p>
-                  <p className="text-gray-700">No — solo consentimiento implícito</p>
+                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">¿Prueba quién firmó?</p>
+                  <p className="text-red-600 font-medium">No</p>
                 </div>
                 <div className="bg-white p-4 border-t border-gray-200">
-                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Identidad verificada</p>
-                  <p className="text-gray-700">Sí — mediante certificado digital</p>
+                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">¿Prueba quién firmó?</p>
+                  <p className="text-yellow-600 font-medium">Parcial</p>
                 </div>
                 <div className="bg-gray-50 p-4 border-t border-gray-200">
-                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Identidad verificada</p>
-                  <p className="text-gray-700">Sí — biometría facial + INE validado</p>
+                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">¿Prueba quién firmó?</p>
+                  <p className="text-green-600 font-medium">Sí — con biometría e INE</p>
                 </div>
 
-                {/* Row: integridad del documento */}
+                {/* Row: ¿protege si el documento es modificado? */}
                 <div className="bg-gray-50 p-4 border-t border-gray-200">
-                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Integridad del documento</p>
-                  <p className="text-gray-700">No garantizada</p>
+                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">¿Detecta cambios posteriores?</p>
+                  <p className="text-red-600 font-medium">No</p>
                 </div>
                 <div className="bg-white p-4 border-t border-gray-200">
-                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Integridad del documento</p>
-                  <p className="text-gray-700">Sí — hash criptográfico</p>
+                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">¿Detecta cambios posteriores?</p>
+                  <p className="text-green-600 font-medium">Sí</p>
                 </div>
                 <div className="bg-gray-50 p-4 border-t border-gray-200">
-                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Integridad del documento</p>
-                  <p className="text-gray-700">Sí — hash + evidencia biométrica</p>
+                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">¿Detecta cambios posteriores?</p>
+                  <p className="text-green-600 font-medium">Sí</p>
                 </div>
 
                 {/* Row: sello de tiempo */}
                 <div className="bg-gray-50 p-4 border-t border-gray-200">
-                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Sello de tiempo</p>
-                  <p className="text-gray-700">No certificado</p>
+                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Sello de tiempo NOM-151</p>
+                  <p className="text-red-600 font-medium">No</p>
                 </div>
                 <div className="bg-white p-4 border-t border-gray-200">
-                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Sello de tiempo</p>
-                  <p className="text-gray-700">Opcional / variable</p>
+                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Sello de tiempo NOM-151</p>
+                  <p className="text-green-600 font-medium">Sí — certificado</p>
                 </div>
                 <div className="bg-gray-50 p-4 border-t border-gray-200">
-                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Sello de tiempo</p>
-                  <p className="text-gray-700">Sí — certificado NOM-151</p>
+                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Sello de tiempo NOM-151</p>
+                  <p className="text-green-600 font-medium">Sí — certificado</p>
                 </div>
 
-                {/* Row: valor probatorio */}
+                {/* Row: valor legal */}
                 <div className="bg-gray-50 p-4 border-t border-gray-200">
-                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Valor probatorio</p>
+                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Valor ante un juez</p>
                   <p className="text-gray-700">Bajo — fácilmente refutable</p>
                 </div>
                 <div className="bg-white p-4 border-t border-gray-200">
-                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Valor probatorio</p>
-                  <p className="text-gray-700">Alto — presumción legal de validez</p>
+                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Valor ante un juez</p>
+                  <p className="text-gray-700">Alto — evidencia certificada</p>
                 </div>
                 <div className="bg-gray-50 p-4 border-t border-gray-200">
-                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Valor probatorio</p>
-                  <p className="text-gray-700">Máximo — expediente digital completo</p>
+                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Valor ante un juez</p>
+                  <p className="text-gray-700">Máximo — expediente completo</p>
                 </div>
 
-                {/* Row: nivel de riesgo al impugnar */}
+                {/* Row: para qué sectores */}
                 <div className="bg-gray-50 p-4 border-t border-gray-200">
-                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Riesgo al impugnar</p>
-                  <p className="text-red-600 font-medium">Alto</p>
+                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Ideal para</p>
+                  <p className="text-gray-700">Uso interno, bajo riesgo</p>
                 </div>
                 <div className="bg-white p-4 border-t border-gray-200">
-                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Riesgo al impugnar</p>
-                  <p className="text-yellow-600 font-medium">Medio-bajo</p>
+                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Ideal para</p>
+                  <p className="text-gray-700">Contratos comerciales, arrendamientos</p>
                 </div>
                 <div className="bg-gray-50 p-4 border-t border-gray-200">
-                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Riesgo al impugnar</p>
-                  <p className="text-green-600 font-medium">Muy bajo</p>
-                </div>
-
-                {/* Row: regulación que cumple */}
-                <div className="bg-gray-50 p-4 border-t border-gray-200">
-                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Regulación que cumple</p>
-                  <p className="text-gray-700">Código de Comercio (básico)</p>
-                </div>
-                <div className="bg-white p-4 border-t border-gray-200">
-                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Regulación que cumple</p>
-                  <p className="text-gray-700">LFEA, Código de Comercio</p>
-                </div>
-                <div className="bg-gray-50 p-4 border-t border-gray-200">
-                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Regulación que cumple</p>
-                  <p className="text-gray-700">LFEA, NOM-151, CNBV, LFPIORPI</p>
+                  <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">Ideal para</p>
+                  <p className="text-gray-700">Finanzas, crédito, onboarding digital</p>
                 </div>
               </div>
 
               <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-6">
                 ¿Cuándo usar cada tipo?
               </h2>
-              <p className="text-gray-600 leading-relaxed mb-4">
-                La elección del tipo de firma no debe ser arbitraria: debe responder a un análisis
-                del riesgo legal y regulatorio de cada tipo de documento o transacción.
-              </p>
               <div className="space-y-4 my-6">
                 <div className="bg-gray-50 rounded-xl p-6">
-                  <p className="font-bold text-gray-900 mb-2">Firma simple</p>
-                  <p className="text-gray-600 mb-2">Adecuada para:</p>
+                  <p className="font-bold text-gray-900 mb-2">Firma simple — cuándo sí aplica</p>
                   <ul className="list-disc pl-5 space-y-1 text-gray-600">
-                    <li>Aprobaciones internas de bajo riesgo (solicitudes de vacaciones, formularios internos)</li>
-                    <li>Documentos entre partes con relación comercial establecida y de larga data</li>
-                    <li>NDAs de bajo valor donde el costo de la disputa superaría el valor del contrato</li>
-                    <li>Procesos no regulados donde el nivel de riesgo es mínimo</li>
+                    <li>Aprobaciones internas entre empleados de la misma empresa</li>
+                    <li>Documentos de bajo riesgo entre partes con relación establecida</li>
+                    <li>Procesos donde una disputa es muy poco probable o de consecuencias mínimas</li>
                   </ul>
                 </div>
-                <div className="bg-[#7C3AED]/5 rounded-xl p-6">
-                  <p className="font-bold text-gray-900 mb-2">Firma avanzada (LFEA)</p>
-                  <p className="text-gray-600 mb-2">Recomendada para:</p>
+                <div className="bg-[#1ECAD3]/5 rounded-xl p-6">
+                  <p className="font-bold text-gray-900 mb-2">Firma Digital con Validez NOM-151 — para contratos que deben sostenerse</p>
                   <ul className="list-disc pl-5 space-y-1 text-gray-600">
-                    <li>Contratos comerciales formales con terceros</li>
-                    <li>Obligaciones financieras entre personas morales</li>
-                    <li>Acuerdos de largo plazo o con cláusulas de penalización</li>
-                    <li>Documentos que pudieran ser presentados en arbitraje o litigio comercial</li>
+                    <li>Contratos de arrendamiento residencial o comercial</li>
+                    <li>Acuerdos comerciales con terceros</li>
+                    <li>Contratos de servicios con cláusulas de penalización</li>
+                    <li>Cualquier documento donde la fecha exacta de firma importa</li>
                   </ul>
                 </div>
                 <div className="bg-[#059669]/5 rounded-xl p-6">
-                  <p className="font-bold text-gray-900 mb-2">Firma biométrica + NOM-151</p>
-                  <p className="text-gray-600 mb-2">Obligatoria o altamente recomendada para:</p>
+                  <p className="font-bold text-gray-900 mb-2">Firma Biométrica con NOM-151 — indispensable en sectores regulados</p>
                   <ul className="list-disc pl-5 space-y-1 text-gray-600">
-                    <li>Todo proceso regulado por la CNBV (apertura de cuentas, créditos, inversiones)</li>
-                    <li>Actividades sujetas a la LFPIORPI (prevención de lavado de dinero)</li>
-                    <li>Onboarding digital de clientes en instituciones financieras</li>
+                    <li>Apertura de cuentas y onboarding digital de clientes</li>
                     <li>Contratos de crédito al consumo o empresarial</li>
-                    <li>Cualquier transacción donde la identidad del firmante sea un elemento esencial del acto jurídico</li>
+                    <li>Instituciones reguladas por la CNBV (bancos, Sofomes, financieras)</li>
+                    <li>Cualquier proceso donde sea obligatorio verificar la identidad del firmante</li>
                   </ul>
                 </div>
               </div>
 
               <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-6">
-                El riesgo de elegir mal
+                Lo que puede pasar si eliges mal
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
-                Imagine el siguiente escenario real: una empresa del sector financiero utiliza firma
-                electrónica simple para la contratación de créditos con personas físicas. Un cliente
-                incumple sus pagos y la empresa inicia un proceso de cobranza. El deudor, asesorado
-                por un abogado, impugna el contrato argumentando que nunca lo firmó.
+                Una empresa del sector financiero usa firma simple para contratos de crédito.
+                Un cliente deja de pagar. Cuando la empresa intenta cobrar, el deudor dice
+                que nunca firmó ese contrato.
               </p>
               <p className="text-gray-600 leading-relaxed mb-4">
-                La empresa no puede demostrar quién firmó porque la firma simple era solo una
-                imagen del nombre. No puede probar que el documento no fue alterado porque no
-                existe hash criptográfico. No puede acreditar el momento exacto de la firma porque
-                no hay sello de tiempo certificado. El juez, ante la duda, falla a favor del deudor.
+                La empresa no puede demostrar quién firmó. No puede probar que el documento
+                no fue modificado. No tiene registro certificado de cuándo ocurrió la firma.
+                El juez, ante la falta de pruebas, falla a favor del deudor.
               </p>
               <p className="text-gray-600 leading-relaxed mb-4">
-                Ahora contraste ese escenario con una empresa que utiliza firma biométrica con
-                NOM-151: el expediente digital contiene el video del proceso de firma con
-                detección de vida, el hash del documento vinculado a la biometría del firmante,
-                el sello de tiempo certificado por un PSC acreditado ante la Secretaría de
-                Economía y la pista de auditoría completa con la IP, el dispositivo y la
-                geolocalización. En ese caso, impugnar exitosamente el contrato se vuelve
-                prácticamente imposible.
+                Con una Firma Digital con Validez NOM-151, ese mismo escenario cambia completamente.
+                La empresa tiene el sello de tiempo certificado, la evidencia del proceso de firma
+                y un expediente que puede presentar directamente ante el juez. Impugnar
+                exitosamente ese contrato se vuelve prácticamente imposible.
               </p>
               <div className="bg-[#0066ff]/5 border-l-4 border-[#0066ff] p-6 my-8">
-                <p className="text-gray-700 font-medium mb-2">Costo real del error:</p>
+                <p className="text-gray-700 font-semibold mb-2">El costo real de postergar este cambio:</p>
                 <p className="text-gray-600">
-                  El costo de implementar firma avanzada o biométrica representa una fracción del
-                  costo de un solo litigio perdido. Las empresas que postergan esta decisión
-                  frecuentemente lo descubren de la manera más cara: en los tribunales.
+                  Implementar firma NOM-151 cuesta una fracción de lo que puede costar un solo
+                  litigio perdido. La mayoría de las empresas que cambian lo hacen después de
+                  perder su primer caso — cuando ya fue demasiado tarde.
                 </p>
               </div>
 
               <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-6">
-                ¿Cómo migrar a firma avanzada sin complicaciones?
+                ¿Cómo empezar sin complicaciones?
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
-                La migración hacia firma electrónica avanzada o biométrica no requiere reinventar
-                los flujos de trabajo existentes. JAAK ofrece dos modalidades para adaptarse a las
-                necesidades de cada organización:
+                Con JAAK no necesitas hacer una integración técnica ni contratar un equipo de
+                desarrollo para empezar. Tienes dos caminos:
               </p>
               <ul className="list-disc pl-6 mb-6 space-y-3 text-gray-600">
                 <li>
-                  <strong>Autoservicio:</strong> Comience hoy mismo sin necesidad de integración
-                  técnica. Envíe documentos para firma desde el portal de JAAK en cuestión de
-                  minutos. Ideal para equipos que necesitan adoptar firma avanzada de manera
-                  inmediata sin involucrar al equipo de tecnología.
+                  <strong>Autoservicio:</strong> Entra a la plataforma web hoy mismo, sube tu
+                  documento, indica quién debe firmarlo y listo. En minutos tienes la firma
+                  certificada con NOM-151 y el expediente generado. Sin código, sin contratos,
+                  sin complicaciones.
                 </li>
                 <li>
-                  <strong>Integración empresarial:</strong> Conecte la firma biométrica de JAAK
-                  directamente a su plataforma mediante API REST. Sus clientes firman dentro de
-                  su propia aplicación o portal, con toda la evidencia y el expediente digital
-                  almacenados y disponibles para auditoría.
+                  <strong>Integración con tu plataforma:</strong> Si ya tienes un sistema o
+                  aplicación propia, un equipo técnico especializado de JAAK te ayuda a conectar
+                  la firma directamente a tu flujo existente. Tus clientes firman dentro de tu
+                  propia experiencia, con toda la validez legal respaldada.
                 </li>
               </ul>
-              <p className="text-gray-600 leading-relaxed mb-4">
-                En ambos casos, JAAK gestiona la cadena de custodia digital, la certificación
-                NOM-151 y la generación del expediente probatorio. Su empresa no necesita
-                convertirse en experta en criptografía ni en normativa de firma electrónica:
-                eso es precisamente lo que hacemos por usted.
-              </p>
 
               <div className="bg-gray-50 rounded-xl p-8 my-8">
                 <h3 className="text-xl font-bold text-gray-900 mb-4">
-                  Conclusión clave
+                  La regla simple para elegir
                 </h3>
                 <p className="text-gray-600">
-                  En México, la ley reconoce múltiples tipos de firma electrónica, pero no todas
-                  tienen el mismo valor probatorio. La firma simple ofrece conveniencia a bajo
-                  costo, pero no protege a su empresa en caso de disputa. La firma avanzada bajo
-                  LFEA provee validez legal sólida para contratos comerciales. Y la firma
-                  biométrica con NOM-151 es el estándar que exigen las industrias reguladas y
-                  el que ofrece la máxima defensibilidad ante cualquier impugnación. Elegir el
-                  tipo correcto no es opcional: es parte de la debida diligencia de cualquier
-                  empresa que opera en el entorno legal mexicano.
+                  Si el contrato puede generar una disputa — por dinero, por servicios, por
+                  incumplimiento — necesitas Firma Digital con Validez NOM-151. Si encima no
+                  conoces al firmante y necesitas saber quién es antes de que firme, necesitas
+                  la versión biométrica. La firma simple solo es adecuada cuando las consecuencias
+                  de una disputa son mínimas.
                 </p>
               </div>
 
@@ -552,7 +446,8 @@ export default function FirmaElectronicaSimpleVsAvanzada() {
               <div>
                 <p className="font-bold text-gray-900">Equipo JAAK</p>
                 <p className="text-gray-600">
-                  Especialistas en firma electrónica avanzada y cumplimiento regulatorio para el sector financiero y empresarial mexicano.
+                  Especialistas en firma digital con validez legal y cumplimiento regulatorio
+                  para el sector financiero y empresarial mexicano.
                 </p>
               </div>
             </div>
@@ -586,23 +481,24 @@ export default function FirmaElectronicaSimpleVsAvanzada() {
         <section className="py-16 bg-[#0a0a0a]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl font-black text-white mb-4">
-              ¿Listo para implementar firma electrónica avanzada?
+              Empieza a firmar con validez NOM-151 hoy
             </h2>
             <p className="text-white/60 text-lg mb-8">
-              Proteja sus contratos con firma biométrica y NOM-151. Comience hoy sin integración técnica o conecte la API a su plataforma.
+              Sin integración técnica ni contratos de permanencia. Sube tu primer documento
+              y obtén una firma certificada en minutos.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link
-                href="/contacto"
+                href="/autoservicio"
                 className="px-8 py-4 bg-[#1ECAD3] text-white font-bold rounded-lg hover:bg-[#19b5bd] transition-all"
               >
-                Solicitar demo
+                Probar gratis
               </Link>
               <Link
                 href="/plataforma/firma-electronica"
                 className="px-8 py-4 bg-white/10 text-white font-bold rounded-lg hover:bg-white/20 transition-all"
               >
-                Conocer Signa
+                Ver cómo funciona
               </Link>
             </div>
           </div>
