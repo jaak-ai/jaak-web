@@ -139,6 +139,73 @@ export default function FirmaThemeShell() {
                       </p>
                     </div>
                   </div>
+
+                  {/* Autoservicio / Enterprise cards */}
+                  <div className="mt-3 grid grid-cols-2 gap-3">
+                    {/* Autoservicio */}
+                    <div
+                      className="flex flex-col gap-2.5 p-4 rounded-xl"
+                      style={{ background: "rgba(30,202,211,0.06)", border: "1px solid rgba(30,202,211,0.2)" }}
+                    >
+                      <div className="flex items-center gap-2">
+                        <div
+                          className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 text-sm"
+                          style={{ background: "rgba(30,202,211,0.15)" }}
+                          aria-hidden="true"
+                        >
+                          🖥️
+                        </div>
+                        <span className="text-xs font-bold uppercase tracking-wider" style={{ color: "#1ECAD3" }}>
+                          Autoservicio
+                        </span>
+                      </div>
+                      <p className="text-xs text-gray-400 leading-relaxed">
+                        Usa la plataforma web desde el día uno. Sin integración técnica ni costos adicionales.
+                      </p>
+                      <Link
+                        href="/autoservicio"
+                        className="text-xs font-bold flex items-center gap-1 transition-opacity hover:opacity-80"
+                        style={{ color: "#1ECAD3" }}
+                      >
+                        Probar ahora
+                        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                      </Link>
+                    </div>
+
+                    {/* Enterprise / Alianzas */}
+                    <div
+                      className="flex flex-col gap-2.5 p-4 rounded-xl"
+                      style={{ background: "rgba(139,92,246,0.06)", border: "1px solid rgba(139,92,246,0.2)" }}
+                    >
+                      <div className="flex items-center gap-2">
+                        <div
+                          className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 text-sm"
+                          style={{ background: "rgba(139,92,246,0.15)" }}
+                          aria-hidden="true"
+                        >
+                          🔗
+                        </div>
+                        <span className="text-xs font-bold uppercase tracking-wider" style={{ color: "#A78BFA" }}>
+                          Enterprise
+                        </span>
+                      </div>
+                      <p className="text-xs text-gray-400 leading-relaxed">
+                        Intégrate con tu plataforma actual. Equipo técnico especializado te acompaña en cada paso.
+                      </p>
+                      <Link
+                        href="/contacto"
+                        className="text-xs font-bold flex items-center gap-1 transition-opacity hover:opacity-80"
+                        style={{ color: "#A78BFA" }}
+                      >
+                        Hablar con alianzas
+                        <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                      </Link>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
