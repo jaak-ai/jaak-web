@@ -21,12 +21,16 @@ export const metadata: Metadata = {
     title: "Firma Electrónica en México | JAAK",
     description:
       "Firma electrónica con validez legal, biometría y NOM-151. La solución más completa para empresas reguladas en México.",
-    url: "https://jaak.ai/plataforma/firma-electronica",
+    url: "https://jaak.ai/firma-electronica",
     type: "website",
     locale: "es_MX",
   },
   alternates: {
     canonical: "https://jaak.ai/firma-electronica",
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
@@ -94,6 +98,9 @@ const serviceSchema = {
     "@type": "Organization",
     name: "JAAK",
     url: "https://jaak.ai",
+    sameAs: [
+      "https://www.linkedin.com/company/jaak-ai",
+    ],
   },
   featureList: [
     "Firma electrónica simple",
@@ -105,7 +112,26 @@ const serviceSchema = {
   ],
 };
 
-export default function FirmaElectronica() {
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Inicio",
+      item: "https://jaak.ai",
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Firma Electrónica",
+      item: "https://jaak.ai/firma-electronica",
+    },
+  ],
+};
+
+export default function FirmaElectronicaPage() {
   return (
     <>
       <script
@@ -115,6 +141,10 @@ export default function FirmaElectronica() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <Header />
       <main>
@@ -155,8 +185,8 @@ export default function FirmaElectronica() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               {/* Left: Content */}
               <div>
-                <div
-                  className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full mb-6 text-xs font-semibold"
+                {/* Badge */}
+                <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full mb-6 text-xs font-semibold"
                   style={{
                     background: "rgba(30,202,211,0.1)",
                     border: "1px solid rgba(30,202,211,0.25)",
@@ -188,19 +218,24 @@ export default function FirmaElectronica() {
                   NOM-151, verificación biométrica y expediente auditable en segundos.
                 </p>
 
+                {/* Trust indicators */}
                 <div className="flex flex-wrap gap-4 mb-8">
                   {[
                     { icon: "⚡", text: "Firma en menos de 3 min" },
                     { icon: "⚖️", text: "Válida ante CNBV y SAT" },
                     { icon: "🔒", text: "Expediente auditable" },
                   ].map((item) => (
-                    <div key={item.text} className="flex items-center gap-2 text-sm text-gray-400">
+                    <div
+                      key={item.text}
+                      className="flex items-center gap-2 text-sm text-gray-400"
+                    >
                       <span aria-hidden="true">{item.icon}</span>
                       {item.text}
                     </div>
                   ))}
                 </div>
 
+                {/* CTAs */}
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Link
                     href="/autoservicio"
@@ -235,6 +270,7 @@ export default function FirmaElectronica() {
 
               {/* Right: UI Mock */}
               <div className="relative flex justify-center lg:justify-end" aria-hidden="true">
+                {/* Main document card */}
                 <div
                   className="relative w-full max-w-sm rounded-2xl p-6"
                   style={{
@@ -244,6 +280,7 @@ export default function FirmaElectronica() {
                     boxShadow: "0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(30,202,211,0.1)",
                   }}
                 >
+                  {/* Doc header */}
                   <div className="flex items-center gap-3 mb-5">
                     <div
                       className="w-10 h-12 rounded-lg flex items-center justify-center text-xl"
@@ -257,6 +294,7 @@ export default function FirmaElectronica() {
                     </div>
                   </div>
 
+                  {/* Doc lines */}
                   <div className="space-y-2 mb-5">
                     {[100, 85, 92, 78, 60].map((w, i) => (
                       <div
@@ -270,6 +308,7 @@ export default function FirmaElectronica() {
                     ))}
                   </div>
 
+                  {/* Signature area */}
                   <div
                     className="rounded-xl p-4 mb-4"
                     style={{
@@ -289,21 +328,40 @@ export default function FirmaElectronica() {
                     </svg>
                   </div>
 
+                  {/* Status badges */}
                   <div className="flex gap-2 flex-wrap">
-                    {[
-                      { label: "NOM-151", color: "#10B981", bg: "rgba(16,185,129,0.1)", border: "rgba(16,185,129,0.25)" },
-                      { label: "Biometría", color: "#1ECAD3", bg: "rgba(30,202,211,0.1)", border: "rgba(30,202,211,0.25)" },
-                      { label: "KYC", color: "#A78BFA", bg: "rgba(139,92,246,0.1)", border: "rgba(139,92,246,0.25)" },
-                    ].map((badge) => (
-                      <span
-                        key={badge.label}
-                        className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full font-semibold"
-                        style={{ background: badge.bg, border: `1px solid ${badge.border}`, color: badge.color }}
-                      >
-                        <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: badge.color }} />
-                        {badge.label}
-                      </span>
-                    ))}
+                    <span
+                      className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full font-semibold"
+                      style={{
+                        background: "rgba(16,185,129,0.1)",
+                        border: "1px solid rgba(16,185,129,0.25)",
+                        color: "#34D399",
+                      }}
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      NOM-151
+                    </span>
+                    <span
+                      className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full font-semibold"
+                      style={{
+                        background: "rgba(30,202,211,0.1)",
+                        border: "1px solid rgba(30,202,211,0.25)",
+                        color: "#1ECAD3",
+                      }}
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#1ECAD3] animate-pulse" />
+                      Biometría
+                    </span>
+                    <span
+                      className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full font-semibold"
+                      style={{
+                        background: "rgba(139,92,246,0.1)",
+                        border: "1px solid rgba(139,92,246,0.25)",
+                        color: "#A78BFA",
+                      }}
+                    >
+                      KYC
+                    </span>
                   </div>
                 </div>
 
@@ -318,8 +376,11 @@ export default function FirmaElectronica() {
                     animation: "float 4s ease-in-out infinite",
                   }}
                 >
-                  <div className="flex items-center gap-2 mb-1">
-                    <div className="w-7 h-7 rounded-full flex items-center justify-center text-sm" style={{ background: "rgba(16,185,129,0.2)" }}>
+                  <div className="flex items-center gap-2 mb-2">
+                    <div
+                      className="w-7 h-7 rounded-full flex items-center justify-center text-sm"
+                      style={{ background: "rgba(16,185,129,0.2)" }}
+                    >
                       ✓
                     </div>
                     <div>
@@ -330,6 +391,7 @@ export default function FirmaElectronica() {
                   <div className="text-xs text-gray-600">INE · CURP · Biometría</div>
                 </div>
 
+                {/* Glow under the card */}
                 <div
                   className="absolute -bottom-8 inset-x-8 h-16 blur-2xl opacity-20 rounded-full pointer-events-none"
                   style={{ background: "#1ECAD3" }}
@@ -349,7 +411,12 @@ export default function FirmaElectronica() {
                 { value: "API REST", label: "Integración en días" },
               ].map((stat) => (
                 <div key={stat.label} className="text-center">
-                  <div className="text-2xl font-black mb-1" style={{ color: "#1ECAD3" }}>{stat.value}</div>
+                  <div
+                    className="text-2xl font-black mb-1"
+                    style={{ color: "#1ECAD3" }}
+                  >
+                    {stat.value}
+                  </div>
                   <div className="text-xs text-gray-500">{stat.label}</div>
                 </div>
               ))}
@@ -368,11 +435,18 @@ export default function FirmaElectronica() {
             <div className="text-center mb-10">
               <div
                 className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5"
-                style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#1ECAD3" }}
+                style={{
+                  background: "rgba(30,202,211,0.08)",
+                  border: "1px solid rgba(30,202,211,0.2)",
+                  color: "#1ECAD3",
+                }}
               >
                 Comparativa
               </div>
-              <h2 id="comparacion-heading" className="text-3xl sm:text-4xl font-black text-white mb-4">
+              <h2
+                id="comparacion-heading"
+                className="text-3xl sm:text-4xl font-black text-white mb-4"
+              >
                 ¿Cuál es la firma que necesitas?
               </h2>
               <p className="text-gray-400 max-w-2xl mx-auto text-base">
@@ -394,11 +468,18 @@ export default function FirmaElectronica() {
             <div className="text-center mb-10">
               <div
                 className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5"
-                style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#1ECAD3" }}
+                style={{
+                  background: "rgba(30,202,211,0.08)",
+                  border: "1px solid rgba(30,202,211,0.2)",
+                  color: "#1ECAD3",
+                }}
               >
                 Soluciones
               </div>
-              <h2 id="soluciones-heading" className="text-3xl sm:text-4xl font-black text-white mb-4">
+              <h2
+                id="soluciones-heading"
+                className="text-3xl sm:text-4xl font-black text-white mb-4"
+              >
                 4 niveles de firma para cada necesidad
               </h2>
               <p className="text-gray-400 max-w-2xl mx-auto text-base">
@@ -420,11 +501,18 @@ export default function FirmaElectronica() {
             <div className="text-center mb-12">
               <div
                 className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5"
-                style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#1ECAD3" }}
+                style={{
+                  background: "rgba(30,202,211,0.08)",
+                  border: "1px solid rgba(30,202,211,0.2)",
+                  color: "#1ECAD3",
+                }}
               >
                 Flujo de firma
               </div>
-              <h2 id="flujo-heading" className="text-3xl sm:text-4xl font-black text-white mb-4">
+              <h2
+                id="flujo-heading"
+                className="text-3xl sm:text-4xl font-black text-white mb-4"
+              >
                 Cómo funciona
               </h2>
               <p className="text-gray-400 max-w-2xl mx-auto text-base">
@@ -446,11 +534,18 @@ export default function FirmaElectronica() {
             <div className="text-center mb-10">
               <div
                 className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5"
-                style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#1ECAD3" }}
+                style={{
+                  background: "rgba(30,202,211,0.08)",
+                  border: "1px solid rgba(30,202,211,0.2)",
+                  color: "#1ECAD3",
+                }}
               >
                 Diferenciación
               </div>
-              <h2 id="diferenciacion-heading" className="text-3xl sm:text-4xl font-black text-white mb-4">
+              <h2
+                id="diferenciacion-heading"
+                className="text-3xl sm:text-4xl font-black text-white mb-4"
+              >
                 No solo firmas.{" "}
                 <span
                   style={{
@@ -464,7 +559,7 @@ export default function FirmaElectronica() {
                 </span>
               </h2>
               <p className="text-gray-400 max-w-2xl mx-auto text-base">
-                Haz clic en cada punto para explorar el detalle. Pasa el cursor sobre los términos subrayados para ver definiciones.
+                Haz clic en cada punto para explorar el detalle técnico y legal de cada diferenciador. Pasa el cursor sobre los términos subrayados para ver definiciones.
               </p>
             </div>
             <FirmaDifferentiation />
@@ -482,16 +577,23 @@ export default function FirmaElectronica() {
             <div className="text-center mb-10">
               <div
                 className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5"
-                style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)", color: "#FCA5A5" }}
+                style={{
+                  background: "rgba(239,68,68,0.08)",
+                  border: "1px solid rgba(239,68,68,0.2)",
+                  color: "#FCA5A5",
+                }}
               >
                 Evaluación de riesgo
               </div>
-              <h2 id="riesgo-heading" className="text-3xl sm:text-4xl font-black text-white mb-4">
+              <h2
+                id="riesgo-heading"
+                className="text-3xl sm:text-4xl font-black text-white mb-4"
+              >
                 ¿Tu firma es defendible{" "}
                 <span style={{ color: "#FCA5A5" }}>en auditoría</span>?
               </h2>
               <p className="text-gray-400 max-w-2xl mx-auto text-base">
-                Selecciona las situaciones que aplican a tu empresa para evaluar la solidez legal de tu proceso actual.
+                Selecciona las situaciones que aplican a tu empresa para evaluar la solidez legal de tu proceso de firma actual.
               </p>
             </div>
             <FirmaRiskChecklist />
@@ -509,11 +611,18 @@ export default function FirmaElectronica() {
             <div className="text-center mb-10">
               <div
                 className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5"
-                style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#1ECAD3" }}
+                style={{
+                  background: "rgba(30,202,211,0.08)",
+                  border: "1px solid rgba(30,202,211,0.2)",
+                  color: "#1ECAD3",
+                }}
               >
                 Casos de uso
               </div>
-              <h2 id="casos-heading" className="text-3xl sm:text-4xl font-black text-white mb-4">
+              <h2
+                id="casos-heading"
+                className="text-3xl sm:text-4xl font-black text-white mb-4"
+              >
                 Firma en cada industria
               </h2>
               <p className="text-gray-400 max-w-2xl mx-auto text-base">
@@ -535,11 +644,18 @@ export default function FirmaElectronica() {
             <div className="text-center mb-10">
               <div
                 className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5"
-                style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#1ECAD3" }}
+                style={{
+                  background: "rgba(30,202,211,0.08)",
+                  border: "1px solid rgba(30,202,211,0.2)",
+                  color: "#1ECAD3",
+                }}
               >
                 Preguntas frecuentes
               </div>
-              <h2 id="faq-heading" className="text-3xl sm:text-4xl font-black text-white mb-4">
+              <h2
+                id="faq-heading"
+                className="text-3xl sm:text-4xl font-black text-white mb-4"
+              >
                 Todo sobre firma electrónica en México
               </h2>
               <p className="text-gray-400 max-w-2xl mx-auto text-base">
@@ -548,6 +664,7 @@ export default function FirmaElectronica() {
             </div>
             <FirmaFAQ />
 
+            {/* Internal linking to subpages */}
             <div className="mt-10 grid grid-cols-2 gap-3">
               {[
                 { href: "/firma-electronica-simple", label: "Firma Simple →" },
@@ -559,7 +676,11 @@ export default function FirmaElectronica() {
                   key={link.href}
                   href={link.href}
                   className="text-sm font-semibold px-4 py-3 rounded-xl text-center transition-all hover:bg-white/10"
-                  style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "#1ECAD3" }}
+                  style={{
+                    background: "rgba(255,255,255,0.04)",
+                    border: "1px solid rgba(255,255,255,0.08)",
+                    color: "#1ECAD3",
+                  }}
                 >
                   {link.label}
                 </Link>
@@ -584,12 +705,17 @@ export default function FirmaElectronica() {
                 boxShadow: "0 0 80px rgba(30,202,211,0.07)",
               }}
             >
+              {/* Background glow */}
               <div
                 className="absolute top-0 right-0 w-64 h-64 rounded-full opacity-10 blur-3xl pointer-events-none"
                 aria-hidden="true"
                 style={{ background: "#1ECAD3" }}
               />
-              <h2 id="cta-heading" className="text-3xl sm:text-4xl font-black text-white mb-4 text-center">
+
+              <h2
+                id="cta-heading"
+                className="text-3xl sm:text-4xl font-black text-white mb-4 text-center"
+              >
                 Empieza hoy mismo
               </h2>
               <p className="text-gray-400 text-center max-w-xl mx-auto mb-10">
@@ -597,21 +723,34 @@ export default function FirmaElectronica() {
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Autoservicio */}
                 <div
                   className="rounded-2xl p-6 flex flex-col gap-5"
-                  style={{ background: "rgba(30,202,211,0.06)", border: "1px solid rgba(30,202,211,0.2)" }}
+                  style={{
+                    background: "rgba(30,202,211,0.06)",
+                    border: "1px solid rgba(30,202,211,0.2)",
+                  }}
                 >
                   <div>
-                    <div className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#1ECAD3" }}>
+                    <div
+                      className="text-xs font-bold uppercase tracking-widest mb-2"
+                      style={{ color: "#1ECAD3" }}
+                    >
                       Autoservicio
                     </div>
-                    <h3 className="text-xl font-black text-white mb-2">Empieza en minutos</h3>
+                    <h3 className="text-xl font-black text-white mb-2">
+                      Empieza en minutos
+                    </h3>
                     <p className="text-sm text-gray-400 leading-relaxed">
                       Crea tu cuenta, sube tu primer documento y obtén una firma con NOM-151 sin hablar con nadie.
                     </p>
                   </div>
                   <ul className="space-y-2">
-                    {["Sin contrato ni permanencia", "Pago por uso", "Soporte por chat"].map((item) => (
+                    {[
+                      "Sin contrato ni permanencia",
+                      "Pago por uso",
+                      "Soporte por chat",
+                    ].map((item) => (
                       <li key={item} className="flex items-center gap-2 text-sm text-gray-300">
                         <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" style={{ color: "#1ECAD3" }} aria-hidden="true">
                           <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -632,21 +771,34 @@ export default function FirmaElectronica() {
                   </Link>
                 </div>
 
+                {/* Enterprise */}
                 <div
                   className="rounded-2xl p-6 flex flex-col gap-5"
-                  style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)" }}
+                  style={{
+                    background: "rgba(255,255,255,0.03)",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                  }}
                 >
                   <div>
-                    <div className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#8B5CF6" }}>
+                    <div
+                      className="text-xs font-bold uppercase tracking-widest mb-2"
+                      style={{ color: "#8B5CF6" }}
+                    >
                       Enterprise / Integración
                     </div>
-                    <h3 className="text-xl font-black text-white mb-2">Integración completa</h3>
+                    <h3 className="text-xl font-black text-white mb-2">
+                      Integración completa
+                    </h3>
                     <p className="text-sm text-gray-400 leading-relaxed">
                       API REST + SDK + onboarding técnico + soporte dedicado. Para volumen alto y cumplimiento regulatorio total.
                     </p>
                   </div>
                   <ul className="space-y-2">
-                    {["API documentada + webhooks", "Soporte técnico dedicado", "SLA garantizado"].map((item) => (
+                    {[
+                      "API documentada + webhooks",
+                      "Soporte técnico dedicado",
+                      "SLA garantizado",
+                    ].map((item) => (
                       <li key={item} className="flex items-center gap-2 text-sm text-gray-300">
                         <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" style={{ color: "#8B5CF6" }} aria-hidden="true">
                           <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -658,7 +810,11 @@ export default function FirmaElectronica() {
                   <Link
                     href="/contacto"
                     className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all hover:bg-white/10"
-                    style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)", color: "#E2E8F0" }}
+                    style={{
+                      background: "rgba(255,255,255,0.06)",
+                      border: "1px solid rgba(255,255,255,0.15)",
+                      color: "#E2E8F0",
+                    }}
                   >
                     Hablar con ventas
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
