@@ -247,8 +247,8 @@ export default function VerificacionIdentidad() {
                   icon: "🏛️",
                   badge: "Tiempo real",
                   title: "Validación con fuentes oficiales",
-                  body: "Consulta en tiempo real INE/RENAPO, SAT (RFC) y listas de sancionados AML/PLD. La evidencia de cada consulta queda registrada en el expediente del usuario.",
-                  tag: "RENAPO · SAT · Listas AML",
+                  body: "Consulta en tiempo real RENAPO (CURP), Lista Nominal INE y SAT. La evidencia de cada consulta queda registrada en el expediente del usuario — lista para cualquier auditoría.",
+                  tag: "RENAPO · INE · SAT RFC",
                 },
               ].map((c, i) => (
                 <div
@@ -539,6 +539,266 @@ export default function VerificacionIdentidad() {
                   <p className="text-sm leading-relaxed" style={{ color: "#64748B" }}>{s.detail}</p>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── 7b. LISTAS AML/PLD ── */}
+        <section className="py-24 relative overflow-hidden" style={{ background: "#0E1133" }}>
+          <div
+            className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full blur-[140px] pointer-events-none"
+            style={{ background: "rgba(245,158,11,0.05)" }}
+          />
+          <div
+            className="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full blur-[120px] pointer-events-none"
+            style={{ background: "rgba(45,182,193,0.06)" }}
+          />
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            {/* Header */}
+            <div className="max-w-2xl mb-5">
+              <div
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
+                style={{ color: "#fcd34d", border: "1px solid rgba(252,211,77,0.22)", background: "rgba(252,211,77,0.08)" }}
+              >
+                Consulta de listas AML/PLD
+              </div>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight mb-5">
+                Un KYC sin consulta de listas{" "}
+                <span style={{ color: "rgba(255,255,255,0.35)" }}>es un KYC con brechas.</span>
+              </h2>
+              <p className="text-lg leading-relaxed mb-4" style={{ color: "rgba(255,255,255,0.50)" }}>
+                JAAK consulta automáticamente cinco fuentes en cada verificación: listas internacionales de sanciones,
+                registros nominales mexicanos y el padrón de contribuyentes irregulares del SAT.
+                Cada consulta queda registrada en el expediente como evidencia auditable.
+              </p>
+            </div>
+
+            {/* Group labels */}
+            <div className="mb-10 flex flex-wrap gap-6 items-center">
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full" style={{ background: "rgba(239,68,68,0.7)" }} />
+                <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "rgba(255,255,255,0.35)" }}>
+                  Listas internacionales de sanciones
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full" style={{ background: "rgba(45,182,193,0.7)" }} />
+                <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "rgba(255,255,255,0.35)" }}>
+                  Fuentes nominales mexicanas
+                </span>
+              </div>
+            </div>
+
+            {/* Cards grid */}
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-6">
+
+              {/* OFAC */}
+              <div
+                className="rounded-2xl p-6 flex flex-col"
+                style={{
+                  background: "rgba(239,68,68,0.07)",
+                  border: "1px solid rgba(239,68,68,0.18)",
+                  borderTop: "3px solid rgba(239,68,68,0.55)",
+                }}
+              >
+                <div className="flex items-start justify-between gap-3 mb-4">
+                  <div>
+                    <div className="text-base font-black text-white">Lista OFAC</div>
+                    <div className="text-xs mt-0.5" style={{ color: "rgba(255,255,255,0.35)" }}>Office of Foreign Assets Control · EE.UU.</div>
+                  </div>
+                  <span
+                    className="text-xs font-bold px-2 py-0.5 rounded-full whitespace-nowrap flex-shrink-0"
+                    style={{ background: "rgba(239,68,68,0.15)", color: "#fca5a5", border: "1px solid rgba(239,68,68,0.25)" }}
+                  >
+                    Internacional
+                  </span>
+                </div>
+                <p className="text-sm leading-relaxed flex-1 mb-4" style={{ color: "rgba(255,255,255,0.55)" }}>
+                  Sanciones del Tesoro de EE.UU. Su omisión en operaciones con alcance internacional expone
+                  a sanciones extraterritoriales. Instituida bajo equivalencia GAFI para entidades con
+                  exposición a dólares o corresponsalía extranjera.
+                </p>
+                <div className="space-y-1.5 text-xs">
+                  <div className="flex items-center gap-2">
+                    <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: "#fca5a5" }} />
+                    <span style={{ color: "rgba(255,255,255,0.35)" }}>LFPIORPI Art. 3 y 17 · Equivalencia GAFI</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: "#fca5a5" }} />
+                    <span style={{ color: "rgba(255,255,255,0.35)" }}>Riesgo: multas $20K–$500K USD por operación</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* INTERPOL */}
+              <div
+                className="rounded-2xl p-6 flex flex-col"
+                style={{
+                  background: "rgba(99,102,241,0.07)",
+                  border: "1px solid rgba(99,102,241,0.18)",
+                  borderTop: "3px solid rgba(99,102,241,0.55)",
+                }}
+              >
+                <div className="flex items-start justify-between gap-3 mb-4">
+                  <div>
+                    <div className="text-base font-black text-white">Listas INTERPOL</div>
+                    <div className="text-xs mt-0.5" style={{ color: "rgba(255,255,255,0.35)" }}>Difusiones rojas · Personas buscadas</div>
+                  </div>
+                  <span
+                    className="text-xs font-bold px-2 py-0.5 rounded-full whitespace-nowrap flex-shrink-0"
+                    style={{ background: "rgba(99,102,241,0.15)", color: "#a5b4fc", border: "1px solid rgba(99,102,241,0.25)" }}
+                  >
+                    Mejores prácticas
+                  </span>
+                </div>
+                <p className="text-sm leading-relaxed flex-1 mb-4" style={{ color: "rgba(255,255,255,0.55)" }}>
+                  No obligatorio por ley, pero su ausencia genera observaciones en auditorías CNBV.
+                  GAFI Recomendación 6 establece controles sobre personas políticamente expuestas
+                  y buscados internacionales — brecha frecuente en inspecciones.
+                </p>
+                <div className="space-y-1.5 text-xs">
+                  <div className="flex items-center gap-2">
+                    <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: "#a5b4fc" }} />
+                    <span style={{ color: "rgba(255,255,255,0.35)" }}>GAFI Recomendación 6 · Mejores prácticas CNBV</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: "#a5b4fc" }} />
+                    <span style={{ color: "rgba(255,255,255,0.35)" }}>Riesgo: observaciones en auditoría regulatoria</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* SAT 69-B */}
+              <div
+                className="rounded-2xl p-6 flex flex-col"
+                style={{
+                  background: "rgba(245,158,11,0.08)",
+                  border: "1px solid rgba(245,158,11,0.22)",
+                  borderTop: "3px solid rgba(245,158,11,0.65)",
+                }}
+              >
+                <div className="flex items-start justify-between gap-3 mb-4">
+                  <div>
+                    <div className="text-base font-black text-white">Lista SAT 69-B</div>
+                    <div className="text-xs mt-0.5" style={{ color: "rgba(255,255,255,0.35)" }}>EFOS · Operaciones inexistentes</div>
+                  </div>
+                  <span
+                    className="text-xs font-bold px-2 py-0.5 rounded-full whitespace-nowrap flex-shrink-0"
+                    style={{ background: "rgba(245,158,11,0.15)", color: "#fcd34d", border: "1px solid rgba(245,158,11,0.25)" }}
+                  >
+                    ⚠ Crítico
+                  </span>
+                </div>
+                <p className="text-sm leading-relaxed flex-1 mb-4" style={{ color: "rgba(255,255,255,0.55)" }}>
+                  Empresas o personas físicas que emiten facturas sin respaldo económico real (EFOS).
+                  Incorporar un cliente en esta lista puede nulificar deducciones fiscales de tu empresa
+                  y generar responsabilidad fiscal solidaria.
+                </p>
+                <div className="space-y-1.5 text-xs">
+                  <div className="flex items-center gap-2">
+                    <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: "#fcd34d" }} />
+                    <span style={{ color: "rgba(255,255,255,0.35)" }}>LFPIORPI Art. 17 · CNBV Circular 12/2012</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: "#fcd34d" }} />
+                    <span style={{ color: "rgba(255,255,255,0.35)" }}>Riesgo: $100K–$5M MXN + responsabilidad penal</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Lista Nominal INE */}
+              <div
+                className="rounded-2xl p-6 flex flex-col"
+                style={{
+                  background: "rgba(45,182,193,0.07)",
+                  border: "1px solid rgba(45,182,193,0.18)",
+                  borderTop: "3px solid rgba(45,182,193,0.55)",
+                }}
+              >
+                <div className="flex items-start justify-between gap-3 mb-4">
+                  <div>
+                    <div className="text-base font-black text-white">Lista Nominal INE</div>
+                    <div className="text-xs mt-0.5" style={{ color: "rgba(255,255,255,0.35)" }}>Padrón electoral · Credenciales activas</div>
+                  </div>
+                  <span
+                    className="text-xs font-bold px-2 py-0.5 rounded-full whitespace-nowrap flex-shrink-0"
+                    style={{ background: "rgba(45,182,193,0.12)", color: "#2DB6C1", border: "1px solid rgba(45,182,193,0.22)" }}
+                  >
+                    Obligatorio CNBV
+                  </span>
+                </div>
+                <p className="text-sm leading-relaxed flex-1 mb-4" style={{ color: "rgba(255,255,255,0.55)" }}>
+                  Verifica que la INE presentada exista en el padrón electoral y esté activa. Detecta
+                  credenciales falsificadas físicamente correctas que superan revisión visual
+                  — incluso algunas que pasan por OCR sin esta consulta.
+                </p>
+                <div className="space-y-1.5 text-xs">
+                  <div className="flex items-center gap-2">
+                    <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: "#2DB6C1" }} />
+                    <span style={{ color: "rgba(255,255,255,0.35)" }}>CNBV Circular 12/2012 · LFPIORPI</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: "#2DB6C1" }} />
+                    <span style={{ color: "rgba(255,255,255,0.35)" }}>Riesgo: onboarding con identidad sintética</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* RENAPO */}
+              <div
+                className="rounded-2xl p-6 flex flex-col sm:col-span-1 lg:col-span-2"
+                style={{
+                  background: "rgba(42,215,150,0.07)",
+                  border: "1px solid rgba(42,215,150,0.18)",
+                  borderTop: "3px solid rgba(42,215,150,0.55)",
+                }}
+              >
+                <div className="flex items-start justify-between gap-3 mb-4">
+                  <div>
+                    <div className="text-base font-black text-white">RENAPO / CURP</div>
+                    <div className="text-xs mt-0.5" style={{ color: "rgba(255,255,255,0.35)" }}>Registro Nacional de Población · Fuente raíz de identidad en México</div>
+                  </div>
+                  <span
+                    className="text-xs font-bold px-2 py-0.5 rounded-full whitespace-nowrap flex-shrink-0"
+                    style={{ background: "rgba(42,215,150,0.12)", color: "#2AD796", border: "1px solid rgba(42,215,150,0.22)" }}
+                  >
+                    Fuente raíz
+                  </span>
+                </div>
+                <p className="text-sm leading-relaxed flex-1 mb-4" style={{ color: "rgba(255,255,255,0.55)" }}>
+                  La fuente de verdad definitiva para identidades en México. Valida CURP, nombre completo, fecha de nacimiento y vigencia de la clave de población.
+                  Su consulta es obligatoria para generar el <strong className="text-white font-semibold">Expediente de Identidad del Cliente (EIC)</strong> que exige la CNBV —
+                  sin ella, el expediente queda incompleto para efectos regulatorios.
+                </p>
+                <div className="flex flex-wrap gap-x-6 gap-y-1.5 text-xs">
+                  <div className="flex items-center gap-2">
+                    <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: "#2AD796" }} />
+                    <span style={{ color: "rgba(255,255,255,0.35)" }}>CNBV obligatorio EIC · LFPIORPI</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: "#2AD796" }} />
+                    <span style={{ color: "rgba(255,255,255,0.35)" }}>Riesgo: expediente incompleto en auditoría CNBV</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: "#2AD796" }} />
+                    <span style={{ color: "rgba(255,255,255,0.35)" }}>Confirma que CURP + datos documentales + biometría coinciden</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            {/* Bottom note */}
+            <div
+              className="rounded-2xl px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center gap-4"
+              style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}
+            >
+              <div className="text-xl flex-shrink-0">📋</div>
+              <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.45)" }}>
+                JAAK consulta las cinco fuentes en paralelo durante el proceso de verificación y registra el resultado
+                de cada consulta en el expediente del usuario. El área de compliance puede descargar evidencia
+                individual por consulta para responder requerimientos de CNBV, UIF o auditorías internas.
+              </p>
             </div>
           </div>
         </section>
