@@ -11,6 +11,39 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    title: "¿Qué es KYC y cuándo es obligatorio en México?",
+    excerpt:
+      "Entiende qué es el proceso KYC (Know Your Customer), qué dice la regulación mexicana (LFPIORPI, CNBV, UIF) y en qué sectores es obligatorio implementarlo sin perder clientes en el proceso.",
+    date: "11 de abril, 2026",
+    dateISO: "2026-04-11",
+    category: "KYC",
+    slug: "que-es-kyc-cuando-es-obligatorio-mexico",
+    readTime: "10 min",
+    image: "/images/blog/que-es-kyc-mexico.jpg",
+  },
+  {
+    title: "Firma electrónica simple vs avanzada: diferencias legales en México",
+    excerpt:
+      "No todas las firmas electrónicas tienen el mismo peso legal. Conoce las diferencias entre firma simple, avanzada y biométrica con NOM-151 según el Código de Comercio y la LFEA.",
+    date: "11 de abril, 2026",
+    dateISO: "2026-04-11",
+    category: "Firma Electrónica",
+    slug: "firma-electronica-simple-vs-avanzada",
+    readTime: "9 min",
+    image: "/images/blog/firma-simple-vs-avanzada.jpg",
+  },
+  {
+    title: "¿Qué es la NOM-151 y por qué importa en contratos digitales?",
+    excerpt:
+      "Descubre qué es la NOM-151-SCFI-2016, cómo funciona el sello de tiempo certificado y por qué es el estándar legal indispensable para que tus contratos digitales sean irrebatibles en México.",
+    date: "11 de abril, 2026",
+    dateISO: "2026-04-11",
+    category: "Firma Electrónica",
+    slug: "que-es-nom-151-contratos-digitales",
+    readTime: "8 min",
+    image: "/images/blog/que-es-nom-151.jpg",
+  },
+  {
     title: "Mientras el resto habla de IA, nosotros la operamos",
     excerpt:
       "No es un demo. No es una promesa. Descubre cómo JAAK opera con agentes de inteligencia artificial en producción — y por qué esa diferencia lo cambia todo para el fintech mexicano.",
@@ -124,6 +157,7 @@ export const blogPosts: BlogPost[] = [
 ];
 
 export const categoryColors: Record<string, { bg: string; text: string }> = {
+  "Firma Electrónica": { bg: "bg-[#1ECAD3]/10", text: "text-[#1ECAD3]" },
   IA: { bg: "bg-emerald-500/10", text: "text-emerald-500" },
   Análisis: { bg: "bg-red-500/10", text: "text-red-500" },
   KYC: { bg: "bg-[#0066ff]/10", text: "text-[#0066ff]" },
