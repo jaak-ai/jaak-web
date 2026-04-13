@@ -283,19 +283,22 @@ body {
   color: #0A1628 !important;
 }
 
-/* KYC scanner beam animation */
+/* KYC scanner beam animation — uses translateY for cross-browser reliability */
 @keyframes hp-scan {
-  0%   { top: 8%;  opacity: 0; }
-  8%   { opacity: 1; }
-  88%  { top: 84%; opacity: 1; }
-  100% { top: 84%; opacity: 0; }
+  0%   { transform: translateY(0);     opacity: 0; }
+  5%   { transform: translateY(0);     opacity: 1; }
+  88%  { transform: translateY(170px); opacity: 1; }
+  100% { transform: translateY(170px); opacity: 0; }
 }
 .hp-scan-beam {
   position: absolute;
-  left: 16px;
-  right: 16px;
-  height: 2px;
-  animation: hp-scan 2.0s ease-in-out infinite;
+  top: 10%;
+  left: 12px;
+  right: 12px;
+  height: 4px;
+  border-radius: 2px;
+  animation: hp-scan 2.2s ease-in-out infinite;
+  will-change: transform, opacity;
 }
 
 /* Client logos marquee */
