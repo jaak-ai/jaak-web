@@ -260,19 +260,56 @@ body {
 .hp-bg-2   { background: #141a3a; }
 .hp-bg-hero { background: linear-gradient(160deg, #0A1628 0%, #0E1133 45%, #0A1628 100%); }
 .hp-bg-cta  { background: linear-gradient(160deg, #0A1628 0%, #0E1133 60%, #0A1628 100%); }
-.hp-bg-logos { background: #141a3a; }
+.hp-bg-logos { background: #141a3a; --hp-logos-fade: #141a3a; }
 
 [data-hp-theme="light"] .hp-bg-1    { background: #EFF4FF; }
 [data-hp-theme="light"] .hp-bg-2    { background: #FFFFFF; }
 [data-hp-theme="light"] .hp-bg-hero { background: linear-gradient(160deg, #E8EEFF 0%, #F2F6FF 45%, #E8EEFF 100%); }
 [data-hp-theme="light"] .hp-bg-cta  { background: linear-gradient(160deg, #EFF4FF 0%, #F5F8FF 60%, #EFF4FF 100%); }
-[data-hp-theme="light"] .hp-bg-logos { background: #F5F7FF; }
+[data-hp-theme="light"] .hp-bg-logos { background: #F5F7FF; --hp-logos-fade: #F5F7FF; }
 
 /* Heading color override in light mode */
 [data-hp-theme="light"] .hp-section h1,
 [data-hp-theme="light"] .hp-section h2,
 [data-hp-theme="light"] .hp-section h3 {
   color: #0A1628 !important;
+}
+
+/* Non-heading text-white override in light mode (excludes a, button, svg) */
+[data-hp-theme="light"] .hp-section div.text-white,
+[data-hp-theme="light"] .hp-section span.text-white,
+[data-hp-theme="light"] .hp-section p.text-white,
+[data-hp-theme="light"] .hp-section li.text-white {
+  color: #0A1628 !important;
+}
+
+/* KYC scanner beam animation */
+@keyframes hp-scan {
+  0%   { top: 8%;  opacity: 0; }
+  8%   { opacity: 1; }
+  88%  { top: 84%; opacity: 1; }
+  100% { top: 84%; opacity: 0; }
+}
+.hp-scan-beam {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  height: 2px;
+  animation: hp-scan 2.0s ease-in-out infinite;
+}
+
+/* Client logos marquee */
+@keyframes hp-marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.hp-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: hp-marquee 28s linear infinite;
+}
+.hp-marquee-track:hover {
+  animation-play-state: paused;
 }
 
 /* Glass card utility for HP sections */

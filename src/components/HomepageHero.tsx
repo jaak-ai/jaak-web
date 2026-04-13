@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 
-/* Nav pills — only links that exist and are meaningful from the hero */
 const navPills = [
   { label: "Autoservicio", href: "/autoservicio" },
   { label: "Firma Digital NOM-151", href: "/signa" },
@@ -12,21 +11,37 @@ const navPills = [
 ];
 
 const kycSteps = [
-  { label: "Prueba de vida", icon: "👁️" },
-  { label: "Biometría 1:1", icon: "🤳" },
+  { label: "Prueba de vida anti-spoofing", icon: "👁️" },
+  { label: "Biometría facial 1:1", icon: "🤳" },
   { label: "OCR documental", icon: "📄" },
   { label: "Geolocalización", icon: "📍" },
-  { label: "Listas nominales", icon: "🗂️" },
-  { label: "Listas negras", icon: "🚫" },
+  { label: "Listas nominales (INE/RENAPO)", icon: "🗂️" },
+  { label: "Listas negras (OFAC/SAT)", icon: "🚫" },
 ];
 
+type KYCPhase = "scanning" | "processing" | "done";
+
 export default function HomepageHero() {
-  const [step, setStep] = useState(0);
+  const [phase, setPhase] = useState<KYCPhase>("scanning");
+  const [step, setStep] = useState(-1);
 
   useEffect(() => {
-    const t = setInterval(() => setStep((p) => (p + 1) % kycSteps.length), 1100);
-    return () => clearInterval(t);
-  }, []);
+    if (phase === "scanning") {
+      const t = setTimeout(() => { setPhase("processing"); setStep(0); }, 2800);
+      return () => clearTimeout(t);
+    } else if (phase === "processing") {
+      if (step < kycSteps.length - 1) {
+        const t = setTimeout(() => setStep((s) => s + 1), 820);
+        return () => clearTimeout(t);
+      } else {
+        const t = setTimeout(() => setPhase("done"), 700);
+        return () => clearTimeout(t);
+      }
+    } else {
+      const t = setTimeout(() => { setPhase("scanning"); setStep(-1); }, 2200);
+      return () => clearTimeout(t);
+    }
+  }, [phase, step]);
 
   return (
     <section className="hp-section hp-bg-hero min-h-screen pt-28 relative overflow-hidden">
@@ -57,7 +72,7 @@ export default function HomepageHero() {
             <Link
               key={p.label}
               href={p.href}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 hover:text-white hover:border-white/20"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium transition-all duration-200"
               style={{
                 color: "var(--hp-neutral-pill-text)",
                 border: "1px solid var(--hp-neutral-pill-border)",
@@ -121,12 +136,12 @@ export default function HomepageHero() {
                 <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
               </svg>
               <p className="text-xs font-medium" style={{ color: "#2AD796" }}>
-                Disponible en <strong>marca blanca</strong> — tu logo, tus colores, tu dominio.
+                Disponible en <strong>marca blanca</strong> — tu logo, tus colores y mensajes personalizados.
               </p>
             </div>
 
             {/* Urgency */}
-            <p className="text-sm font-medium mb-10 max-w-lg flex items-start gap-2" style={{ color: "rgba(255,160,80,0.90)" }}>
+            <p className="text-sm font-medium mb-10 max-w-lg flex items-start gap-2" style={{ color: "var(--hp-orange-text)" }}>
               <svg className="w-4 h-4 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
               </svg>
@@ -181,7 +196,7 @@ export default function HomepageHero() {
                 style={{ boxShadow: "0 32px 64px rgba(0,0,0,0.30), inset 0 1px 0 rgba(255,255,255,0.07)" }}
               >
                 {/* Card header */}
-                <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center justify-between mb-5">
                   <div className="flex items-center gap-3">
                     <div
                       className="w-10 h-10 rounded-2xl flex items-center justify-center"
@@ -192,7 +207,7 @@ export default function HomepageHero() {
                       </svg>
                     </div>
                     <div>
-                      <div className="text-white font-bold text-sm">Proceso KYC activo</div>
+                      <div className="font-bold text-sm" style={{ color: "var(--hp-text-hi)" }}>Proceso KYC activo</div>
                       <div className="text-xs" style={{ color: "var(--hp-text-faint)" }}>Evidencia siendo generada</div>
                     </div>
                   </div>
@@ -202,52 +217,134 @@ export default function HomepageHero() {
                   </div>
                 </div>
 
-                {/* Steps */}
-                <div className="space-y-2.5 mb-5">
-                  {kycSteps.map((s, i) => {
-                    const done = i < step;
-                    const active = i === step;
-                    return (
+                {/* ── Animated area (fixed height to avoid layout shifts) ── */}
+                <div className="relative mb-5" style={{ minHeight: "232px" }}>
+
+                  {/* SCAN phase */}
+                  <div
+                    className="absolute inset-0 transition-opacity duration-700"
+                    style={{ opacity: phase === "scanning" ? 1 : 0, pointerEvents: phase === "scanning" ? "auto" : "none" }}
+                  >
+                    <div
+                      className="relative rounded-2xl overflow-hidden"
+                      style={{
+                        height: "232px",
+                        background: "rgba(30,202,211,0.04)",
+                        border: "1px solid rgba(30,202,211,0.10)",
+                      }}
+                    >
+                      {/* Corner brackets */}
+                      <div className="absolute top-4 left-4 w-6 h-6" style={{ borderTop: "2px solid #1ECAD3", borderLeft: "2px solid #1ECAD3" }} />
+                      <div className="absolute top-4 right-4 w-6 h-6" style={{ borderTop: "2px solid #1ECAD3", borderRight: "2px solid #1ECAD3" }} />
+                      <div className="absolute bottom-10 left-4 w-6 h-6" style={{ borderBottom: "2px solid #1ECAD3", borderLeft: "2px solid #1ECAD3" }} />
+                      <div className="absolute bottom-10 right-4 w-6 h-6" style={{ borderBottom: "2px solid #1ECAD3", borderRight: "2px solid #1ECAD3" }} />
+
+                      {/* Face outline */}
+                      <div className="absolute inset-0 flex items-center justify-center" style={{ paddingBottom: "32px" }}>
+                        <svg width="80" height="90" viewBox="0 0 80 90" fill="none" style={{ opacity: 0.25 }}>
+                          <ellipse cx="40" cy="34" rx="24" ry="30" stroke="#1ECAD3" strokeWidth="1.5"/>
+                          <path d="M18 72 Q40 62 62 72" stroke="#1ECAD3" strokeWidth="1.5" fill="none"/>
+                          <circle cx="30" cy="29" r="4" stroke="#1ECAD3" strokeWidth="1.5"/>
+                          <circle cx="50" cy="29" r="4" stroke="#1ECAD3" strokeWidth="1.5"/>
+                          <path d="M33 44 Q40 48 47 44" stroke="#1ECAD3" strokeWidth="1.5" fill="none"/>
+                          {/* scan dots */}
+                          <circle cx="30" cy="29" r="1.5" fill="#1ECAD3" opacity="0.6"/>
+                          <circle cx="50" cy="29" r="1.5" fill="#1ECAD3" opacity="0.6"/>
+                        </svg>
+                      </div>
+
+                      {/* Scan beam */}
                       <div
-                        key={s.label}
-                        className="flex items-center justify-between px-4 py-2.5 rounded-xl transition-all duration-500"
+                        className="hp-scan-beam"
                         style={{
-                          background: done
-                            ? "linear-gradient(90deg, rgba(30,202,211,0.12), rgba(42,215,150,0.06))"
-                            : active
-                            ? "var(--hp-step-active-bg)"
-                            : "var(--hp-step-inactive-bg)",
-                          border: done
-                            ? "1px solid rgba(42,215,150,0.18)"
-                            : active
-                            ? "1px solid var(--hp-step-active-border)"
-                            : "1px solid var(--hp-step-inactive-border)",
+                          background: "linear-gradient(90deg, transparent, rgba(30,202,211,0.75) 50%, transparent)",
+                          boxShadow: "0 0 12px rgba(30,202,211,0.50)",
                         }}
+                      />
+
+                      {/* Status bar */}
+                      <div
+                        className="absolute bottom-0 left-0 right-0 px-4 py-2.5 flex items-center gap-2"
+                        style={{ background: "rgba(30,202,211,0.08)", borderTop: "1px solid rgba(30,202,211,0.12)" }}
                       >
-                        <div className="flex items-center gap-2.5">
-                          <span className="text-base">{s.icon}</span>
-                          <span
-                            className="text-xs font-medium"
+                        <div className="w-2 h-2 rounded-full animate-pulse" style={{ background: "#1ECAD3" }} />
+                        <span className="text-xs font-semibold" style={{ color: "#1ECAD3" }}>
+                          Escaneando biometría facial…
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* PROCESSING + DONE phase */}
+                  <div
+                    className="absolute inset-0 transition-opacity duration-700"
+                    style={{ opacity: phase !== "scanning" ? 1 : 0, pointerEvents: phase !== "scanning" ? "auto" : "none" }}
+                  >
+                    <div className="space-y-1.5">
+                      {kycSteps.map((s, i) => {
+                        const done = phase === "done" || i < step;
+                        const active = phase === "processing" && i === step;
+                        return (
+                          <div
+                            key={s.label}
+                            className="flex items-center justify-between px-3.5 py-2 rounded-xl transition-all duration-500"
                             style={{
-                              color: done ? "var(--hp-text-hi)" : active ? "var(--hp-text-md)" : "var(--hp-text-faint)",
+                              background: done
+                                ? "linear-gradient(90deg, rgba(30,202,211,0.12), rgba(42,215,150,0.06))"
+                                : active
+                                ? "var(--hp-step-active-bg)"
+                                : "var(--hp-step-inactive-bg)",
+                              border: done
+                                ? "1px solid rgba(42,215,150,0.18)"
+                                : active
+                                ? "1px solid var(--hp-step-active-border)"
+                                : "1px solid var(--hp-step-inactive-border)",
                             }}
                           >
-                            {s.label}
-                          </span>
-                        </div>
-                        {done ? (
+                            <div className="flex items-center gap-2.5">
+                              <span className="text-sm">{s.icon}</span>
+                              <span
+                                className="text-xs font-medium"
+                                style={{
+                                  color: done ? "var(--hp-text-hi)" : active ? "var(--hp-text-md)" : "var(--hp-text-faint)",
+                                }}
+                              >
+                                {s.label}
+                              </span>
+                            </div>
+                            {done ? (
+                              <svg className="w-3.5 h-3.5 flex-shrink-0" style={{ color: "#2AD796" }} fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                              </svg>
+                            ) : active ? (
+                              <div
+                                className="w-3.5 h-3.5 rounded-full border-2 animate-spin flex-shrink-0"
+                                style={{ borderColor: "var(--hp-spinner-track)", borderTopColor: "#1ECAD3" }}
+                              />
+                            ) : null}
+                          </div>
+                        );
+                      })}
+
+                      {/* Done banner */}
+                      {phase === "done" && (
+                        <div
+                          className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl mt-2"
+                          style={{
+                            background: "linear-gradient(90deg, rgba(42,215,150,0.14), rgba(30,202,211,0.07))",
+                            border: "1px solid rgba(42,215,150,0.28)",
+                          }}
+                        >
                           <svg className="w-4 h-4 flex-shrink-0" style={{ color: "#2AD796" }} fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                           </svg>
-                        ) : active ? (
-                          <div
-                            className="w-4 h-4 rounded-full border-2 animate-spin flex-shrink-0"
-                            style={{ borderColor: "var(--hp-spinner-track)", borderTopColor: "#1ECAD3" }}
-                          />
-                        ) : null}
-                      </div>
-                    );
-                  })}
+                          <span className="text-xs font-semibold" style={{ color: "#2AD796" }}>
+                            Expediente generado — listo para auditoría
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
 
                 {/* Card footer */}
@@ -260,22 +357,20 @@ export default function HomepageHero() {
                 </div>
               </div>
 
-              {/* Floating badges */}
+              {/* Floating badges — keep white text with inline style (colored bg, always dark) */}
               <div
-                className="absolute -top-4 -right-3 px-3 py-1.5 rounded-full text-xs font-bold text-white shadow-lg"
-                style={{ background: "linear-gradient(135deg, #1ECAD3, #17a8b0)", boxShadow: "0 4px 16px rgba(30,202,211,0.40)" }}
+                className="absolute -top-4 -right-3 px-3 py-1.5 rounded-full text-xs font-bold shadow-lg"
+                style={{ background: "linear-gradient(135deg, #1ECAD3, #17a8b0)", boxShadow: "0 4px 16px rgba(30,202,211,0.40)", color: "white" }}
               >
                 ISO 27001
               </div>
               <div
-                className="absolute -bottom-4 -left-3 px-3 py-1.5 rounded-full text-xs font-bold text-white shadow-lg"
-                style={{ background: "linear-gradient(135deg, #0E1133, #1ECAD3)", boxShadow: "0 4px 16px rgba(14,17,51,0.50)" }}
+                className="absolute -bottom-4 -left-3 px-3 py-1.5 rounded-full text-xs font-bold shadow-lg"
+                style={{ background: "linear-gradient(135deg, #0E1133, #1ECAD3)", boxShadow: "0 4px 16px rgba(14,17,51,0.50)", color: "white" }}
               >
                 iBeta PAD
               </div>
-              <div
-                className="absolute -right-10 top-1/3 hidden xl:flex flex-col items-center px-4 py-3 rounded-2xl hp-glass"
-              >
+              <div className="absolute -right-10 top-1/3 hidden xl:flex flex-col items-center px-4 py-3 rounded-2xl hp-glass">
                 <div
                   className="text-2xl font-black"
                   style={{ background: "linear-gradient(90deg, #1ECAD3, #2AD796)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}

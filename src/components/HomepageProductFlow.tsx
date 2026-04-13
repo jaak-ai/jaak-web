@@ -126,10 +126,8 @@ export default function HomepageProductFlow() {
                 >
                   {s.icon}
                   <div
-                    className="absolute -top-2.5 -right-2.5 w-7 h-7 rounded-full flex items-center justify-center text-xs font-black text-white"
-                    style={{
-                      background: "linear-gradient(135deg, #1ECAD3, #2AD796)",
-                    }}
+                    className="absolute -top-2.5 -right-2.5 w-7 h-7 rounded-full flex items-center justify-center text-xs font-black"
+                    style={{ background: "linear-gradient(135deg, #1ECAD3, #2AD796)", color: "white" }}
                   >
                     {s.number.replace("0", "")}
                   </div>

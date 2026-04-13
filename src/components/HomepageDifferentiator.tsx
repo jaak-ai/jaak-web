@@ -185,7 +185,7 @@ export default function HomepageDifferentiator() {
               >
                 {d.icon}
               </div>
-              <div className="text-sm font-bold text-white mb-1.5">{d.title}</div>
+              <div className="text-sm font-bold mb-1.5" style={{ color: "var(--hp-text-hi)" }}>{d.title}</div>
               <p
                 className="text-xs leading-relaxed"
                 style={{ color: "var(--hp-text-md)" }}

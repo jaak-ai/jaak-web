@@ -128,7 +128,7 @@ export default function HomepageProducts() {
                     Paquete completo
                   </span>
                 )}
-                <div className="text-sm font-bold text-white mb-1.5">{p.name}</div>
+                <div className="text-sm font-bold mb-1.5" style={{ color: "var(--hp-text-hi)" }}>{p.name}</div>
                 <p className="text-xs leading-relaxed flex-1 mb-3" style={{ color: "var(--hp-text-md)" }}>{p.desc}</p>
                 <div className="flex flex-wrap gap-1.5">
                   {p.tags.map((t) => (
@@ -160,7 +160,7 @@ export default function HomepageProducts() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-black text-white">Firma Digital con Validez NOM-151</h3>
+              <h3 className="text-lg font-black text-white">Firma Digital — 4 niveles de validez</h3>
               <span className="text-xs px-2.5 py-1 rounded-full font-semibold" style={{ color: "#2AD796", background: "rgba(42,215,150,0.08)", border: "1px solid rgba(42,215,150,0.18)" }}>
                 Signa
               </span>
@@ -180,7 +180,7 @@ export default function HomepageProducts() {
                     >
                       {s.level}
                     </span>
-                    <span className="text-sm font-bold text-white">{s.name}</span>
+                    <span className="text-sm font-bold" style={{ color: "var(--hp-text-hi)" }}>{s.name}</span>
                     {s.highlight && (
                       <span className="text-xs px-2 py-0.5 rounded-full font-bold ml-auto" style={{ background: "rgba(42,215,150,0.15)", color: "#2AD796" }}>
                         NOM-151
@@ -227,13 +227,13 @@ export default function HomepageProducts() {
               </p>
               <ul className="space-y-2.5">
                 {[
-                  "Hash SHA-256 de integridad por expediente",
+                  "Vincula KYC, firma y documento en un solo registro",
                   "Sello de tiempo con valor probatorio",
                   "Consentimiento informado registrado",
-                  "Exportación en PDF y JSON estructurado",
+                  "Descarga del expediente en PDF certificado",
                   "Retención configurable hasta 10 años",
                   "Cadena de custodia inmutable",
-                  "Acceso por API para auditorías externas",
+                  "Consulta y respuesta inmediata ante auditorías",
                 ].map((f, i) => (
                   <li key={i} className="flex items-start gap-2.5 text-sm" style={{ color: "var(--hp-text-hi)" }}>
                     <svg className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: "#2AD796" }} fill="currentColor" viewBox="0 0 20 20">
@@ -265,14 +265,14 @@ export default function HomepageProducts() {
             </svg>
           </div>
           <div className="flex-1">
-            <div className="text-white font-black text-lg mb-1">
+            <div className="font-black text-lg mb-1" style={{ color: "var(--hp-text-hi)" }}>
               Todos los productos disponibles en{" "}
               <span style={{ background: "linear-gradient(90deg, #1ECAD3, #2AD796)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
                 marca blanca
               </span>
             </div>
             <p className="text-sm" style={{ color: "var(--hp-text-md)" }}>
-              Integra con tu logo, colores y dominio. Tus clientes ven tu marca,
+              Tu logo, tus colores y mensajes personalizados. Tus clientes ven tu marca,
               no la de JAAK. Disponible para KYC, firma y expediente digital.
             </p>
           </div>
