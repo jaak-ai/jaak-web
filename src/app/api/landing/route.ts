@@ -1,17 +1,59 @@
 import { NextResponse } from "next/server";
 
 const EXTERNAL_API = "https://api-kairos.jaak.ai/api/v1/public/leads";
+const TURNSTILE_VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, empresa, email, telefono, mensaje, source } = body;
+    const {
+      name,
+      empresa,
+      email,
+      telefono,
+      mensaje,
+      source,
+      turnstile_token,
+      utm_source,
+      utm_medium,
+      utm_campaign,
+    } = body;
 
     if (!name || !email || !telefono) {
       return NextResponse.json(
         { error: "Nombre, correo y teléfono son requeridos" },
         { status: 400 }
       );
+    }
+
+    // Validación Turnstile server-side (solo si el secret está configurado)
+    const TURNSTILE_SECRET = process.env.TURNSTILE_SECRET_KEY;
+    if (TURNSTILE_SECRET) {
+      if (!turnstile_token) {
+        return NextResponse.json(
+          { error: "Verificación de seguridad requerida." },
+          { status: 400 }
+        );
+      }
+      try {
+        const verifyRes = await fetch(TURNSTILE_VERIFY_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            secret: TURNSTILE_SECRET,
+            response: turnstile_token,
+          }),
+        });
+        const verifyData = await verifyRes.json() as { success: boolean };
+        if (!verifyData.success) {
+          return NextResponse.json(
+            { error: "Verificación de seguridad fallida. Intenta de nuevo." },
+            { status: 400 }
+          );
+        }
+      } catch (e) {
+        console.error("Turnstile verify error:", e);
+      }
     }
 
     // Forward to external CRM
@@ -28,6 +70,10 @@ export async function POST(request: Request) {
           message: mensaje || "",
           country: "México",
           source: source || "landing",
+          ...(turnstile_token && { turnstile_token }),
+          ...(utm_source && { utm_source }),
+          ...(utm_medium && { utm_medium }),
+          ...(utm_campaign && { utm_campaign }),
         }),
       });
       crmSuccess = crmRes.ok;

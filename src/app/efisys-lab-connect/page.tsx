@@ -1,9 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import {
+  TurnstileWidget,
+  TurnstileScript,
+  getUtmParams,
+} from "@/components/CloudflareTurnstile";
 
 // ── Tipos ──────────────────────────────────────────────────────────────────
 
@@ -204,11 +209,39 @@ export default function EfisysLabConnectPage() {
   });
   const [status, setStatus] = useState<FormStatus>("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const [turnstileKey, setTurnstileKey] = useState(0);
+
+  const handleTurnstileVerify = useCallback((token: string) => {
+    setTurnstileToken(token);
+  }, []);
+
+  const handleTurnstileExpire = useCallback(() => {
+    setTurnstileToken("");
+  }, []);
+
+  const handleTurnstileError = useCallback(() => {
+    setErrorMessage("Error de verificación de seguridad. Por favor, recarga la página.");
+  }, []);
+
+  const resetTurnstile = () => {
+    setTurnstileToken("");
+    setTurnstileKey((k) => k + 1);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!turnstileToken) {
+      setStatus("error");
+      setErrorMessage("Por favor, completa la verificación de seguridad.");
+      return;
+    }
+
     setStatus("loading");
     setErrorMessage("");
+
+    const utmParams = getUtmParams();
 
     try {
       const res = await fetch("/api/landing", {
@@ -221,6 +254,8 @@ export default function EfisysLabConnectPage() {
           telefono: formData.telefono,
           mensaje: `Cargo: ${formData.cargo}. Ciudad: ${formData.ciudad}. Interés: ${formData.interes}. Acepta contacto JAAK: ${formData.contacto ? "Sí" : "No"}.`,
           source: "landing-efisys-lab-connect",
+          turnstile_token: turnstileToken,
+          ...utmParams,
         }),
       });
 
@@ -236,21 +271,25 @@ export default function EfisysLabConnectPage() {
           interes: "",
           contacto: false,
         });
+        resetTurnstile();
       } else {
         const data = await res.json().catch(() => ({}));
         setStatus("error");
         setErrorMessage(
           (data as { error?: string }).error || "Error al enviar. Intenta de nuevo."
         );
+        resetTurnstile();
       }
     } catch {
       setStatus("error");
       setErrorMessage("Error de conexión. Intenta de nuevo.");
+      resetTurnstile();
     }
   };
 
   return (
     <>
+      <TurnstileScript />
       <Header />
       <main>
 
@@ -683,10 +722,18 @@ export default function EfisysLabConnectPage() {
                       </span>
                     </label>
 
+                    {/* Verificación anti-bot */}
+                    <TurnstileWidget
+                      key={turnstileKey}
+                      onVerify={handleTurnstileVerify}
+                      onExpire={handleTurnstileExpire}
+                      onError={handleTurnstileError}
+                    />
+
                     {/* Botón submit */}
                     <button
                       type="submit"
-                      disabled={status === "loading"}
+                      disabled={status === "loading" || !turnstileToken}
                       className="w-full px-6 py-4 bg-[#1ECAD3] text-[#202945] font-bold rounded-lg hover:bg-[#17b5bd] transition-all disabled:opacity-50 disabled:cursor-not-allowed text-base"
                     >
                       {status === "loading" ? "Enviando registro…" : "Enviar registro"}
