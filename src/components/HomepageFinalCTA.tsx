@@ -2,12 +2,7 @@ import Link from "next/link";
 
 export default function HomepageFinalCTA() {
   return (
-    <section
-      className="py-24 relative overflow-hidden"
-      style={{
-        background: "linear-gradient(160deg, #0A1628 0%, #0E1133 60%, #0A1628 100%)",
-      }}
-    >
+    <section className="hp-section hp-bg-cta py-24 relative overflow-hidden">
       {/* Ambient glow */}
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[140px] pointer-events-none"
@@ -23,7 +18,7 @@ export default function HomepageFinalCTA() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Top label */}
-        <div className="text-center mb-10">
+        <div className="text-center mb-10" data-sr>
           <div
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-4"
             style={{
@@ -50,18 +45,9 @@ export default function HomepageFinalCTA() {
         </div>
 
         {/* Two CTA cards */}
-        <div className="grid md:grid-cols-2 gap-5 max-w-4xl mx-auto mb-10">
+        <div className="grid md:grid-cols-2 gap-5 max-w-4xl mx-auto mb-10" data-sr-grid>
           {/* Autoservicio */}
-          <div
-            className="rounded-3xl p-8 flex flex-col"
-            style={{
-              background:
-                "linear-gradient(145deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%)",
-              backdropFilter: "blur(24px)",
-              WebkitBackdropFilter: "blur(24px)",
-              border: "1px solid rgba(255,255,255,0.10)",
-            }}
-          >
+          <div className="hp-glass rounded-3xl p-8 flex flex-col">
             <div
               className="w-11 h-11 rounded-2xl flex items-center justify-center mb-5"
               style={{ background: "rgba(30,202,211,0.15)" }}
@@ -93,7 +79,7 @@ export default function HomepageFinalCTA() {
             </h3>
             <p
               className="text-sm leading-relaxed mb-6 flex-1"
-              style={{ color: "rgba(255,255,255,0.50)" }}
+              style={{ color: "var(--hp-text-md)" }}
             >
               Sin vendedor, sin esperas, sin compromiso. Configura tu primer flujo
               de verificación y genera tu primer expediente hoy mismo.
@@ -108,7 +94,7 @@ export default function HomepageFinalCTA() {
                 <div
                   key={i}
                   className="flex items-center gap-2 text-xs"
-                  style={{ color: "rgba(255,255,255,0.55)" }}
+                  style={{ color: "var(--hp-text-md)" }}
                 >
                   <svg
                     className="w-3.5 h-3.5 flex-shrink-0"
@@ -153,16 +139,7 @@ export default function HomepageFinalCTA() {
           </div>
 
           {/* Demo */}
-          <div
-            className="rounded-3xl p-8 flex flex-col"
-            style={{
-              background:
-                "linear-gradient(145deg, rgba(30,202,211,0.10) 0%, rgba(42,215,150,0.05) 100%)",
-              backdropFilter: "blur(24px)",
-              WebkitBackdropFilter: "blur(24px)",
-              border: "1px solid rgba(30,202,211,0.20)",
-            }}
-          >
+          <div className="hp-glass-teal rounded-3xl p-8 flex flex-col">
             <div
               className="w-11 h-11 rounded-2xl flex items-center justify-center mb-5"
               style={{
@@ -196,7 +173,7 @@ export default function HomepageFinalCTA() {
             </h3>
             <p
               className="text-sm leading-relaxed mb-6 flex-1"
-              style={{ color: "rgba(255,255,255,0.55)" }}
+              style={{ color: "var(--hp-text-md)" }}
             >
               Un especialista regulatorio analiza tu marco de cumplimiento y
               te muestra exactamente cómo JAAK resuelve tu caso específico.
@@ -211,7 +188,7 @@ export default function HomepageFinalCTA() {
                 <div
                   key={i}
                   className="flex items-center gap-2 text-xs"
-                  style={{ color: "rgba(255,255,255,0.62)" }}
+                  style={{ color: "var(--hp-text-md)" }}
                 >
                   <svg
                     className="w-3.5 h-3.5 flex-shrink-0"
@@ -247,7 +224,7 @@ export default function HomepageFinalCTA() {
         {/* Trust signals */}
         <div
           className="max-w-4xl mx-auto flex flex-wrap justify-center gap-6 text-xs"
-          style={{ color: "rgba(255,255,255,0.28)" }}
+          style={{ color: "var(--hp-text-faint)" }}
         >
           {[
             "Sin compromiso de contratación",

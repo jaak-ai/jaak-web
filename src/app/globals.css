@@ -176,6 +176,117 @@ body {
   animation: fade-in-up 0.6s ease-out forwards;
 }
 
+/* ── Homepage theme system ── */
+
+/* Dark defaults (always active as base) */
+:root {
+  --hp-text-hi:    rgba(255,255,255,0.82);
+  --hp-text-md:    rgba(255,255,255,0.52);
+  --hp-text-lo:    rgba(255,255,255,0.38);
+  --hp-text-faint: rgba(255,255,255,0.28);
+  --hp-card-bg:    linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+  --hp-card-border: rgba(255,255,255,0.09);
+  --hp-divider:    rgba(255,255,255,0.07);
+  --hp-pill-bg:    rgba(255,255,255,0.04);
+  --hp-pill-border: rgba(255,255,255,0.09);
+}
+
+[data-hp-theme="light"] {
+  --hp-text-hi:    rgba(10,22,40,0.85);
+  --hp-text-md:    rgba(10,22,40,0.60);
+  --hp-text-lo:    rgba(10,22,40,0.42);
+  --hp-text-faint: rgba(10,22,40,0.30);
+  --hp-card-bg:    linear-gradient(145deg, rgba(10,22,40,0.04) 0%, rgba(10,22,40,0.01) 100%);
+  --hp-card-border: rgba(10,22,40,0.09);
+  --hp-divider:    rgba(10,22,40,0.07);
+  --hp-pill-bg:    rgba(10,22,40,0.04);
+  --hp-pill-border: rgba(10,22,40,0.09);
+}
+
+/* Section backgrounds */
+.hp-bg-1   { background: #0E1133; }
+.hp-bg-2   { background: #141a3a; }
+.hp-bg-hero { background: linear-gradient(160deg, #0A1628 0%, #0E1133 45%, #0A1628 100%); }
+.hp-bg-cta  { background: linear-gradient(160deg, #0A1628 0%, #0E1133 60%, #0A1628 100%); }
+.hp-bg-logos { background: #141a3a; }
+
+[data-hp-theme="light"] .hp-bg-1    { background: #EFF4FF; }
+[data-hp-theme="light"] .hp-bg-2    { background: #FFFFFF; }
+[data-hp-theme="light"] .hp-bg-hero { background: linear-gradient(160deg, #E8EEFF 0%, #F2F6FF 45%, #E8EEFF 100%); }
+[data-hp-theme="light"] .hp-bg-cta  { background: linear-gradient(160deg, #EFF4FF 0%, #F5F8FF 60%, #EFF4FF 100%); }
+[data-hp-theme="light"] .hp-bg-logos { background: #F5F7FF; }
+
+/* Heading color override in light mode */
+[data-hp-theme="light"] .hp-section h1,
+[data-hp-theme="light"] .hp-section h2,
+[data-hp-theme="light"] .hp-section h3 {
+  color: #0A1628 !important;
+}
+
+/* Glass card utility for HP sections */
+.hp-glass {
+  background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.09);
+}
+[data-hp-theme="light"] .hp-glass {
+  background: rgba(255,255,255,0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(10,22,40,0.09);
+  box-shadow: 0 4px 24px rgba(10,22,40,0.06);
+}
+
+.hp-glass-red {
+  background: linear-gradient(145deg, rgba(200,60,60,0.08) 0%, rgba(255,100,100,0.02) 100%);
+  border: 1px solid rgba(200,60,60,0.15);
+}
+[data-hp-theme="light"] .hp-glass-red {
+  background: rgba(255,243,243,0.92);
+  border: 1px solid rgba(200,60,60,0.18);
+}
+
+.hp-glass-teal {
+  background: linear-gradient(145deg, rgba(30,202,211,0.08) 0%, rgba(42,215,150,0.04) 100%);
+  border: 1px solid rgba(30,202,211,0.16);
+}
+[data-hp-theme="light"] .hp-glass-teal {
+  background: rgba(240,253,252,0.95);
+  border: 1px solid rgba(30,202,211,0.22);
+}
+
+/* Toggle button */
+.hp-theme-toggle {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 100;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+[data-hp-theme="dark"]  .hp-theme-toggle,
+.hp-theme-toggle {
+  background: rgba(255,255,255,0.10);
+  border: 1px solid rgba(255,255,255,0.15);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.30);
+}
+[data-hp-theme="light"] .hp-theme-toggle {
+  background: rgba(10,22,40,0.08);
+  border: 1px solid rgba(10,22,40,0.14);
+  box-shadow: 0 4px 20px rgba(10,22,40,0.12);
+}
+.hp-theme-toggle:hover { transform: scale(1.08); }
+
 /* ── Glassmorphism utilities ── */
 .glass {
   background: linear-gradient(145deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.02) 100%);

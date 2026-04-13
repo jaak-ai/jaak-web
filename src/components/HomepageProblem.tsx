@@ -36,10 +36,7 @@ const auditScenarios = [
 
 export default function HomepageProblem() {
   return (
-    <section
-      className="py-24 relative overflow-hidden"
-      style={{ background: "#0E1133" }}
-    >
+    <section className="hp-section hp-bg-1 py-24 relative overflow-hidden">
       {/* Decorative glows */}
       <div
         className="absolute top-1/2 right-0 w-[400px] h-[400px] rounded-full blur-[110px] pointer-events-none"
@@ -55,7 +52,7 @@ export default function HomepageProblem() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section label */}
-        <div className="text-center mb-14">
+        <div className="text-center mb-14" data-sr>
           <div
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
             style={{
@@ -68,13 +65,13 @@ export default function HomepageProblem() {
           </div>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight max-w-3xl mx-auto">
             Verificar no es suficiente.{" "}
-            <span style={{ color: "rgba(255,255,255,0.38)" }}>
+            <span style={{ color: "var(--hp-text-lo)" }}>
               Hay que demostrarlo cuando te lo pidan, años después.
             </span>
           </h2>
           <p
             className="mt-6 text-lg max-w-2xl mx-auto leading-relaxed"
-            style={{ color: "rgba(255,255,255,0.48)" }}
+            style={{ color: "var(--hp-text-md)" }}
           >
             La regulación mexicana exige conservar evidencia de identidad,{" "}
             <span className="font-semibold" style={{ color: "rgba(255,200,100,0.90)" }}>
@@ -86,15 +83,11 @@ export default function HomepageProblem() {
         </div>
 
         {/* Audit scenarios — concrete pain */}
-        <div className="grid md:grid-cols-3 gap-4 max-w-5xl mx-auto mb-10">
+        <div className="grid md:grid-cols-3 gap-4 max-w-5xl mx-auto mb-10" data-sr-grid>
           {auditScenarios.map((s, i) => (
             <div
               key={i}
-              className="rounded-2xl p-5"
-              style={{
-                background: "rgba(200,60,60,0.06)",
-                border: "1px solid rgba(200,60,60,0.14)",
-              }}
+              className="hp-glass-red rounded-2xl p-5"
             >
               <div className="flex items-center gap-2.5 mb-3">
                 <span className="text-xl">{s.icon}</span>
@@ -107,7 +100,7 @@ export default function HomepageProblem() {
               </div>
               <p
                 className="text-sm leading-relaxed"
-                style={{ color: "rgba(255,255,255,0.55)" }}
+                style={{ color: "var(--hp-text-md)" }}
               >
                 {s.question}
               </p>
@@ -135,7 +128,7 @@ export default function HomepageProblem() {
               clipRule="evenodd"
             />
           </svg>
-          <p className="text-sm leading-relaxed" style={{ color: "rgba(255,200,120,0.85)" }}>
+          <p className="text-sm leading-relaxed" style={{ color: "rgba(255,190,100,0.90)" }}>
             <span className="font-bold">Retención obligatoria:</span>{" "}
             LFPIORPI y disposiciones CNBV exigen conservar expedientes de identificación
             de clientes por un mínimo de 5 años, y hasta 10 años para operaciones en riesgo.
@@ -145,16 +138,9 @@ export default function HomepageProblem() {
         </div>
 
         {/* Before / After comparison */}
-        <div className="grid md:grid-cols-2 gap-5 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-5 max-w-5xl mx-auto" data-sr-grid>
           {/* ANTES */}
-          <div
-            className="rounded-3xl p-7"
-            style={{
-              background:
-                "linear-gradient(145deg, rgba(200,60,60,0.08) 0%, rgba(255,100,100,0.02) 100%)",
-              border: "1px solid rgba(200,60,60,0.15)",
-            }}
-          >
+          <div className="hp-glass-red rounded-3xl p-7">
             <div className="flex items-center gap-3 mb-6">
               <div
                 className="w-9 h-9 rounded-xl flex items-center justify-center"
@@ -182,7 +168,7 @@ export default function HomepageProblem() {
                 </div>
                 <div
                   className="text-xs"
-                  style={{ color: "rgba(255,255,255,0.30)" }}
+                  style={{ color: "var(--hp-text-lo)" }}
                 >
                   Proceso típico que no resiste una auditoría
                 </div>
@@ -222,14 +208,7 @@ export default function HomepageProblem() {
           </div>
 
           {/* CON JAAK */}
-          <div
-            className="rounded-3xl p-7"
-            style={{
-              background:
-                "linear-gradient(145deg, rgba(30,202,211,0.08) 0%, rgba(42,215,150,0.04) 100%)",
-              border: "1px solid rgba(30,202,211,0.16)",
-            }}
-          >
+          <div className="hp-glass-teal rounded-3xl p-7">
             <div className="flex items-center gap-3 mb-6">
               <div
                 className="w-9 h-9 rounded-xl flex items-center justify-center"
@@ -257,7 +236,7 @@ export default function HomepageProblem() {
                 </div>
                 <div
                   className="text-xs"
-                  style={{ color: "rgba(255,255,255,0.30)" }}
+                  style={{ color: "var(--hp-text-lo)" }}
                 >
                   Evidencia legal lista hoy, en 5 años y en 10
                 </div>
@@ -287,7 +266,7 @@ export default function HomepageProblem() {
                   </svg>
                   <span
                     className="text-sm font-medium leading-snug"
-                    style={{ color: "rgba(255,255,255,0.82)" }}
+                    style={{ color: "var(--hp-text-hi)" }}
                   >
                     {item.label}
                   </span>
@@ -298,14 +277,8 @@ export default function HomepageProblem() {
         </div>
 
         {/* Consequence bar */}
-        <div
-          className="mt-8 max-w-5xl mx-auto rounded-2xl px-7 py-5"
-          style={{
-            background: "rgba(255,255,255,0.02)",
-            border: "1px solid rgba(255,255,255,0.06)",
-          }}
-        >
-          <p className="text-center text-sm" style={{ color: "rgba(255,255,255,0.35)" }}>
+        <div className="hp-glass mt-8 max-w-5xl mx-auto rounded-2xl px-7 py-5">
+          <p className="text-center text-sm" style={{ color: "var(--hp-text-lo)" }}>
             Sin evidencia defendible — hoy o en 10 años — te expones a:{" "}
             <span style={{ color: "rgba(255,150,150,0.80)" }}>
               observaciones regulatorias · multas · riesgo reputacional · retrabajo en auditoría · responsabilidad legal

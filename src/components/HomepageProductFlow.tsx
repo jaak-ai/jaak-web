@@ -57,10 +57,7 @@ const kycBadges = [
 
 export default function HomepageProductFlow() {
   return (
-    <section
-      className="py-24 relative overflow-hidden"
-      style={{ background: "#141a3a" }}
-    >
+    <section className="hp-section hp-bg-2 py-24 relative overflow-hidden">
       {/* Ambient glow */}
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full blur-[120px] pointer-events-none"
@@ -69,7 +66,7 @@ export default function HomepageProductFlow() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-16" data-sr>
           <div
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
             style={{
@@ -96,7 +93,7 @@ export default function HomepageProductFlow() {
           </h2>
           <p
             className="text-lg max-w-xl mx-auto"
-            style={{ color: "rgba(255,255,255,0.42)" }}
+            style={{ color: "var(--hp-text-lo)" }}
           >
             Cada paso queda registrado, sellado y vinculado al expediente del usuario.
           </p>
@@ -113,7 +110,7 @@ export default function HomepageProductFlow() {
             }}
           />
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5" data-sr-grid>
             {flowSteps.map((s) => (
               <div key={s.number} className="flex flex-col items-center text-center group">
                 {/* Icon circle */}
@@ -139,19 +136,11 @@ export default function HomepageProductFlow() {
                 </div>
 
                 {/* Card */}
-                <div
-                  className="w-full rounded-3xl p-5 flex flex-col items-center"
-                  style={{
-                    background:
-                      "linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%)",
-                    backdropFilter: "blur(16px)",
-                    border: "1px solid rgba(255,255,255,0.08)",
-                  }}
-                >
+                <div className="hp-glass w-full rounded-3xl p-5 flex flex-col items-center">
                   <h3 className="text-base font-bold text-white mb-2">{s.title}</h3>
                   <p
                     className="text-sm leading-relaxed"
-                    style={{ color: "rgba(255,255,255,0.45)" }}
+                    style={{ color: "var(--hp-text-md)" }}
                   >
                     {s.description}
                   </p>
@@ -181,14 +170,8 @@ export default function HomepageProductFlow() {
         </div>
 
         {/* Bottom callout */}
-        <div
-          className="mt-12 rounded-2xl px-8 py-5 text-center"
-          style={{
-            background: "linear-gradient(90deg, rgba(30,202,211,0.06), rgba(42,215,150,0.04))",
-            border: "1px solid rgba(30,202,211,0.12)",
-          }}
-        >
-          <p className="text-sm font-medium" style={{ color: "rgba(255,255,255,0.60)" }}>
+        <div className="hp-glass-teal mt-12 rounded-2xl px-8 py-5 text-center">
+          <p className="text-sm font-medium" style={{ color: "var(--hp-text-md)" }}>
             Cada expediente incluye:{" "}
             <span style={{ color: "#1ECAD3" }}>
               sello de tiempo · hash de integridad · registros biométricos · consentimiento informado · firma electrónica

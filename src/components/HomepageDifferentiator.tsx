@@ -53,10 +53,7 @@ const differentiators = [
 
 export default function HomepageDifferentiator() {
   return (
-    <section
-      className="py-24 relative overflow-hidden"
-      style={{ background: "#141a3a" }}
-    >
+    <section className="hp-section hp-bg-2 py-24 relative overflow-hidden">
       <div
         className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-px pointer-events-none"
         style={{
@@ -71,7 +68,7 @@ export default function HomepageDifferentiator() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
-        <div className="text-center mb-14">
+        <div className="text-center mb-14" data-sr>
           <div
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
             style={{
@@ -98,15 +95,9 @@ export default function HomepageDifferentiator() {
         </div>
 
         {/* Comparison table */}
-        <div className="grid md:grid-cols-2 gap-5 max-w-4xl mx-auto mb-14">
+        <div className="grid md:grid-cols-2 gap-5 max-w-4xl mx-auto mb-14" data-sr-grid>
           {/* Sin JAAK */}
-          <div
-            className="rounded-3xl p-7"
-            style={{
-              background: "rgba(255,255,255,0.02)",
-              border: "1px solid rgba(255,255,255,0.08)",
-            }}
-          >
+          <div className="hp-glass rounded-3xl p-7">
             <div className="flex items-center gap-2 mb-5">
               <span
                 className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full"
@@ -123,7 +114,7 @@ export default function HomepageDifferentiator() {
                 <li
                   key={i}
                   className="flex items-start gap-3 text-sm"
-                  style={{ color: "rgba(255,255,255,0.42)" }}
+                  style={{ color: "var(--hp-text-md)" }}
                 >
                   <svg
                     className="w-4 h-4 flex-shrink-0 mt-0.5"
@@ -144,14 +135,7 @@ export default function HomepageDifferentiator() {
           </div>
 
           {/* Con JAAK */}
-          <div
-            className="rounded-3xl p-7"
-            style={{
-              background:
-                "linear-gradient(145deg, rgba(30,202,211,0.08) 0%, rgba(42,215,150,0.04) 100%)",
-              border: "1px solid rgba(30,202,211,0.18)",
-            }}
-          >
+          <div className="hp-glass-teal rounded-3xl p-7">
             <div className="flex items-center gap-2 mb-5">
               <span
                 className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full"
@@ -169,7 +153,7 @@ export default function HomepageDifferentiator() {
                 <li
                   key={i}
                   className="flex items-start gap-3 text-sm"
-                  style={{ color: "rgba(255,255,255,0.80)" }}
+                  style={{ color: "var(--hp-text-hi)" }}
                 >
                   <svg
                     className="w-4 h-4 flex-shrink-0 mt-0.5"
@@ -191,17 +175,9 @@ export default function HomepageDifferentiator() {
         </div>
 
         {/* Differentiator pills */}
-        <div className="grid sm:grid-cols-3 gap-4 max-w-4xl mx-auto">
+        <div className="grid sm:grid-cols-3 gap-4 max-w-4xl mx-auto" data-sr-grid>
           {differentiators.map((d, i) => (
-            <div
-              key={i}
-              className="rounded-2xl p-5"
-              style={{
-                background:
-                  "linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)",
-                border: "1px solid rgba(255,255,255,0.07)",
-              }}
-            >
+            <div key={i} className="hp-glass rounded-2xl p-5">
               <div
                 className="w-9 h-9 rounded-xl flex items-center justify-center mb-3"
                 style={{ background: "rgba(30,202,211,0.14)", color: "#1ECAD3" }}
@@ -211,7 +187,7 @@ export default function HomepageDifferentiator() {
               <div className="text-sm font-bold text-white mb-1.5">{d.title}</div>
               <p
                 className="text-xs leading-relaxed"
-                style={{ color: "rgba(255,255,255,0.42)" }}
+                style={{ color: "var(--hp-text-md)" }}
               >
                 {d.description}
               </p>
@@ -222,7 +198,7 @@ export default function HomepageDifferentiator() {
         {/* Tagline */}
         <p
           className="text-center mt-10 text-base font-medium italic"
-          style={{ color: "rgba(255,255,255,0.35)" }}
+          style={{ color: "var(--hp-text-lo)" }}
         >
           &ldquo;Diseñado para responder a una auditoría hoy, en 5 años o en 10 — en minutos, no en semanas.&rdquo;
         </p>

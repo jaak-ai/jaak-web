@@ -1,4 +1,5 @@
 import Header from "@/components/Header";
+import HomepageThemeShell from "@/components/HomepageThemeShell";
 import HomepageHero from "@/components/HomepageHero";
 import ClientLogos from "@/components/ClientLogos";
 import HomepageProblem from "@/components/HomepageProblem";
@@ -11,6 +12,7 @@ import HomepageTrust from "@/components/HomepageTrust";
 import HomepageFinalCTA from "@/components/HomepageFinalCTA";
 import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
+import ScrollReveal from "@/components/ScrollReveal";
 
 // FAQ Schema dedicado para la homepage - mejora detección por Perplexity y otros AI crawlers
 const homeFaqSchema = {
@@ -68,30 +70,33 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(homeFaqSchema) }}
       />
       <Header />
-      <main>
-        {/* S1 — Hero */}
-        <HomepageHero />
-        {/* Prueba social */}
-        <ClientLogos />
-        {/* S2 — Problema */}
-        <HomepageProblem />
-        {/* S3 — Flujo de producto */}
-        <HomepageProductFlow />
-        {/* S4 — Componentes KYC */}
-        <HomepageKYCComponents />
-        {/* S5 — Diferenciador */}
-        <HomepageDifferentiator />
-        {/* S6 — Industrias */}
-        <HomepageIndustries />
-        {/* S7 — Productos */}
-        <HomepageProducts />
-        {/* S8 — Prueba / confianza */}
-        <HomepageTrust />
-        {/* S9 — CTA final */}
-        <HomepageFinalCTA />
-        <ContactForm />
-      </main>
-      <Footer />
+      <HomepageThemeShell>
+        <ScrollReveal />
+        <main>
+          {/* S1 — Hero */}
+          <HomepageHero />
+          {/* Prueba social */}
+          <ClientLogos />
+          {/* S2 — Problema */}
+          <HomepageProblem />
+          {/* S3 — Flujo de producto */}
+          <HomepageProductFlow />
+          {/* S4 — Componentes KYC */}
+          <HomepageKYCComponents />
+          {/* S5 — Diferenciador */}
+          <HomepageDifferentiator />
+          {/* S6 — Industrias */}
+          <HomepageIndustries />
+          {/* S7 — Productos */}
+          <HomepageProducts />
+          {/* S8 — Prueba / confianza */}
+          <HomepageTrust />
+          {/* S9 — CTA final */}
+          <HomepageFinalCTA />
+          <ContactForm />
+        </main>
+        <Footer />
+      </HomepageThemeShell>
     </>
   );
 }

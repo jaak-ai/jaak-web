@@ -75,10 +75,7 @@ const trustPoints = [
 
 export default function HomepageTrust() {
   return (
-    <section
-      className="py-24 relative overflow-hidden"
-      style={{ background: "#0E1133" }}
-    >
+    <section className="hp-section hp-bg-1 py-24 relative overflow-hidden">
       <div
         className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-px pointer-events-none"
         style={{
@@ -93,7 +90,7 @@ export default function HomepageTrust() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
-        <div className="max-w-3xl mb-14">
+        <div className="max-w-3xl mb-14" data-sr>
           <div
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
             style={{
@@ -119,7 +116,7 @@ export default function HomepageTrust() {
           </h2>
           <p
             className="text-lg leading-relaxed"
-            style={{ color: "rgba(255,255,255,0.48)" }}
+            style={{ color: "var(--hp-text-md)" }}
           >
             No solo cumplimos con la regulación. Generamos la evidencia que te permite
             demostrar que tú también cumples.
@@ -131,7 +128,7 @@ export default function HomepageTrust() {
           <div>
             <p
               className="text-xs font-semibold uppercase tracking-widest mb-5"
-              style={{ color: "rgba(255,255,255,0.30)" }}
+              style={{ color: "var(--hp-text-lo)" }}
             >
               Marcos regulatorios cubiertos
             </p>
@@ -154,7 +151,7 @@ export default function HomepageTrust() {
                   </div>
                   <div
                     className="text-xs leading-snug"
-                    style={{ color: "rgba(255,255,255,0.38)" }}
+                    style={{ color: "var(--hp-text-lo)" }}
                   >
                     {r.scope}
                   </div>
@@ -167,7 +164,7 @@ export default function HomepageTrust() {
           <div>
             <p
               className="text-xs font-semibold uppercase tracking-widest mb-5"
-              style={{ color: "rgba(255,255,255,0.30)" }}
+              style={{ color: "var(--hp-text-lo)" }}
             >
               Privacidad y soberanía de datos
             </p>
@@ -176,7 +173,7 @@ export default function HomepageTrust() {
                 <li
                   key={i}
                   className="flex items-start gap-3 text-sm"
-                  style={{ color: "rgba(255,255,255,0.60)" }}
+                  style={{ color: "var(--hp-text-md)" }}
                 >
                   <svg
                     className="w-4 h-4 flex-shrink-0 mt-0.5"
@@ -196,14 +193,7 @@ export default function HomepageTrust() {
             </ul>
 
             {/* Highlight box */}
-            <div
-              className="rounded-2xl p-5"
-              style={{
-                background:
-                  "linear-gradient(145deg, rgba(42,215,150,0.08) 0%, rgba(30,202,211,0.05) 100%)",
-                border: "1px solid rgba(42,215,150,0.18)",
-              }}
-            >
+            <div className="hp-glass-teal rounded-2xl p-5">
               <div
                 className="text-sm font-bold mb-1"
                 style={{ color: "#2AD796" }}
@@ -212,7 +202,7 @@ export default function HomepageTrust() {
               </div>
               <p
                 className="text-xs leading-relaxed"
-                style={{ color: "rgba(255,255,255,0.48)" }}
+                style={{ color: "var(--hp-text-md)" }}
               >
                 El único proveedor de KYC + firma con motor biométrico propio,
                 desarrollado y operado en México. Sin intermediarios extranjeros
@@ -226,21 +216,15 @@ export default function HomepageTrust() {
         <div>
           <p
             className="text-xs font-semibold uppercase tracking-widest mb-5 text-center"
-            style={{ color: "rgba(255,255,255,0.28)" }}
+            style={{ color: "var(--hp-text-faint)" }}
           >
             Certificaciones activas
           </p>
-          <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
+          <div className="grid grid-cols-3 md:grid-cols-6 gap-3" data-sr-grid>
             {certifications.map((cert, i) => (
               <div
                 key={i}
-                className="group flex flex-col items-center text-center p-4 rounded-2xl transition-all duration-300 hover:-translate-y-1"
-                style={{
-                  background:
-                    "linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%)",
-                  backdropFilter: "blur(12px)",
-                  border: "1px solid rgba(255,255,255,0.07)",
-                }}
+                className="hp-glass group flex flex-col items-center text-center p-4 rounded-2xl transition-all duration-300 hover:-translate-y-1"
               >
                 <div className="w-12 h-12 mb-2.5 relative">
                   <Image
@@ -252,13 +236,13 @@ export default function HomepageTrust() {
                 </div>
                 <div
                   className="font-bold text-xs mb-0.5"
-                  style={{ color: "rgba(255,255,255,0.75)" }}
+                  style={{ color: "var(--hp-text-hi)" }}
                 >
                   {cert.name}
                 </div>
                 <div
                   className="text-xs leading-tight"
-                  style={{ color: "rgba(255,255,255,0.30)" }}
+                  style={{ color: "var(--hp-text-lo)" }}
                 >
                   {cert.description}
                 </div>

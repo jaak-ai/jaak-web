@@ -51,8 +51,7 @@ export default function HomepageIndustries() {
   return (
     <section
       id="industrias"
-      className="py-24 relative overflow-hidden"
-      style={{ background: "#0E1133" }}
+      className="hp-section hp-bg-1 py-24 relative overflow-hidden"
     >
       <div
         className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-px pointer-events-none"
@@ -68,7 +67,7 @@ export default function HomepageIndustries() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
-        <div className="text-center mb-14">
+        <div className="text-center mb-14" data-sr>
           <div
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
             style={{
@@ -94,24 +93,18 @@ export default function HomepageIndustries() {
           </h2>
           <p
             className="text-lg max-w-xl mx-auto"
-            style={{ color: "rgba(255,255,255,0.40)" }}
+            style={{ color: "var(--hp-text-lo)" }}
           >
             Mismo motor de cumplimiento, adaptado al marco regulatorio de cada industria.
           </p>
         </div>
 
         {/* Industry cards */}
-        <div className="grid md:grid-cols-2 gap-5">
+        <div className="grid md:grid-cols-2 gap-5" data-sr-grid>
           {industries.map((ind, i) => (
             <div
               key={i}
-              className="group rounded-3xl p-7 flex flex-col transition-all duration-300 hover:-translate-y-1"
-              style={{
-                background:
-                  "linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%)",
-                backdropFilter: "blur(16px)",
-                border: "1px solid rgba(255,255,255,0.08)",
-              }}
+              className="hp-glass group rounded-3xl p-7 flex flex-col transition-all duration-300 hover:-translate-y-1"
             >
               {/* Icon + regulation row */}
               <div className="flex items-start justify-between mb-5">
@@ -124,9 +117,9 @@ export default function HomepageIndustries() {
                 <span
                   className="text-xs font-mono px-2.5 py-1 rounded-full"
                   style={{
-                    color: "rgba(255,255,255,0.30)",
-                    background: "rgba(255,255,255,0.04)",
-                    border: "1px solid rgba(255,255,255,0.07)",
+                    color: "var(--hp-text-lo)",
+                    background: "var(--hp-pill-bg)",
+                    border: "1px solid var(--hp-pill-border)",
                   }}
                 >
                   {ind.regulation}
@@ -145,7 +138,7 @@ export default function HomepageIndustries() {
                 </div>
                 <p
                   className="text-sm leading-relaxed"
-                  style={{ color: "rgba(255,255,255,0.48)" }}
+                  style={{ color: "var(--hp-text-md)" }}
                 >
                   {ind.problem}
                 </p>
@@ -161,7 +154,7 @@ export default function HomepageIndustries() {
                 </div>
                 <p
                   className="text-sm leading-relaxed"
-                  style={{ color: "rgba(255,255,255,0.65)" }}
+                  style={{ color: "var(--hp-text-hi)" }}
                 >
                   {ind.solution}
                 </p>
