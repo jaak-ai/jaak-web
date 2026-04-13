@@ -1,15 +1,14 @@
 import Header from "@/components/Header";
-import HeroRegulated from "@/components/HeroRegulated";
+import HomepageHero from "@/components/HomepageHero";
 import ClientLogos from "@/components/ClientLogos";
-import RegulatoryProof from "@/components/RegulatoryProof";
-import RegulatoryProblem from "@/components/RegulatoryProblem";
-import JaakSolution from "@/components/JaakSolution";
-import ComplianceEvidence from "@/components/ComplianceEvidence";
-import RegulatedUseCases from "@/components/RegulatedUseCases";
-import BusinessOutcomes from "@/components/BusinessOutcomes";
-import RecentBlogPosts from "@/components/RecentBlogPosts";
-import ImplementationSteps from "@/components/ImplementationSteps";
-import FinalCTA from "@/components/FinalCTA";
+import HomepageProblem from "@/components/HomepageProblem";
+import HomepageProductFlow from "@/components/HomepageProductFlow";
+import HomepageKYCComponents from "@/components/HomepageKYCComponents";
+import HomepageDifferentiator from "@/components/HomepageDifferentiator";
+import HomepageIndustries from "@/components/HomepageIndustries";
+import HomepageProducts from "@/components/HomepageProducts";
+import HomepageTrust from "@/components/HomepageTrust";
+import HomepageFinalCTA from "@/components/HomepageFinalCTA";
 import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
 
@@ -70,17 +69,26 @@ export default function Home() {
       />
       <Header />
       <main>
-        <HeroRegulated />
+        {/* S1 — Hero */}
+        <HomepageHero />
+        {/* Prueba social */}
         <ClientLogos />
-        <RegulatoryProof />
-        <RegulatoryProblem />
-        <JaakSolution />
-        <ComplianceEvidence />
-        <RegulatedUseCases />
-        <BusinessOutcomes />
-        <RecentBlogPosts />
-        <ImplementationSteps />
-        <FinalCTA />
+        {/* S2 — Problema */}
+        <HomepageProblem />
+        {/* S3 — Flujo de producto */}
+        <HomepageProductFlow />
+        {/* S4 — Componentes KYC */}
+        <HomepageKYCComponents />
+        {/* S5 — Diferenciador */}
+        <HomepageDifferentiator />
+        {/* S6 — Industrias */}
+        <HomepageIndustries />
+        {/* S7 — Productos */}
+        <HomepageProducts />
+        {/* S8 — Prueba / confianza */}
+        <HomepageTrust />
+        {/* S9 — CTA final */}
+        <HomepageFinalCTA />
         <ContactForm />
       </main>
       <Footer />
