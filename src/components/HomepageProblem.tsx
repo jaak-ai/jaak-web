@@ -56,9 +56,9 @@ export default function HomepageProblem() {
           <div
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
             style={{
-              color: "#ff8a8a",
-              border: "1px solid rgba(255,100,100,0.20)",
-              background: "rgba(255,100,100,0.08)",
+              color: "var(--hp-red-text)",
+              border: "1px solid var(--hp-red-border)",
+              background: "var(--hp-red-bg)",
             }}
           >
             El problema real
@@ -74,7 +74,7 @@ export default function HomepageProblem() {
             style={{ color: "var(--hp-text-md)" }}
           >
             La regulación mexicana exige conservar evidencia de identidad,{" "}
-            <span className="font-semibold" style={{ color: "rgba(255,200,100,0.90)" }}>
+            <span className="font-semibold" style={{ color: "var(--hp-orange-text)" }}>
               hasta por 10 años.
             </span>{" "}
             No alcanza con haber verificado. Tienes que poder demostrarlo con
@@ -93,7 +93,7 @@ export default function HomepageProblem() {
                 <span className="text-xl">{s.icon}</span>
                 <span
                   className="text-xs font-bold uppercase tracking-wider"
-                  style={{ color: "rgba(255,140,140,0.80)" }}
+                  style={{ color: "var(--hp-red-text)" }}
                 >
                   {s.year}
                 </span>
@@ -112,13 +112,13 @@ export default function HomepageProblem() {
         <div
           className="max-w-5xl mx-auto rounded-2xl px-6 py-4 mb-10 flex flex-col sm:flex-row items-start sm:items-center gap-3"
           style={{
-            background: "rgba(255,160,60,0.06)",
-            border: "1px solid rgba(255,160,60,0.18)",
+            background: "var(--hp-orange-bg)",
+            border: "1px solid var(--hp-orange-border)",
           }}
         >
           <svg
             className="w-5 h-5 flex-shrink-0 mt-0.5"
-            style={{ color: "rgba(255,160,60,0.90)" }}
+            style={{ color: "var(--hp-orange-icon)" }}
             fill="currentColor"
             viewBox="0 0 20 20"
           >
@@ -128,7 +128,7 @@ export default function HomepageProblem() {
               clipRule="evenodd"
             />
           </svg>
-          <p className="text-sm leading-relaxed" style={{ color: "rgba(255,190,100,0.90)" }}>
+          <p className="text-sm leading-relaxed" style={{ color: "var(--hp-orange-text)" }}>
             <span className="font-bold">Retención obligatoria:</span>{" "}
             LFPIORPI y disposiciones CNBV exigen conservar expedientes de identificación
             de clientes por un mínimo de 5 años, y hasta 10 años para operaciones en riesgo.
@@ -148,7 +148,7 @@ export default function HomepageProblem() {
               >
                 <svg
                   className="w-4 h-4"
-                  style={{ color: "#ff8a8a" }}
+                  style={{ color: "var(--hp-red-text)" }}
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >
@@ -162,7 +162,7 @@ export default function HomepageProblem() {
               <div>
                 <div
                   className="text-sm font-bold uppercase tracking-wider"
-                  style={{ color: "#ff8a8a" }}
+                  style={{ color: "var(--hp-red-text)" }}
                 >
                   Sin JAAK
                 </div>
@@ -186,7 +186,7 @@ export default function HomepageProblem() {
                 >
                   <svg
                     className="w-4 h-4 flex-shrink-0 mt-0.5"
-                    style={{ color: "rgba(255,100,100,0.60)" }}
+                    style={{ color: "var(--hp-red-icon)" }}
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -198,7 +198,7 @@ export default function HomepageProblem() {
                   </svg>
                   <span
                     className="text-sm font-medium leading-snug"
-                    style={{ color: "#ff9898" }}
+                    style={{ color: "var(--hp-red-item-text)" }}
                   >
                     {item.label}
                   </span>
@@ -280,7 +280,7 @@ export default function HomepageProblem() {
         <div className="hp-glass mt-8 max-w-5xl mx-auto rounded-2xl px-7 py-5">
           <p className="text-center text-sm" style={{ color: "var(--hp-text-lo)" }}>
             Sin evidencia defendible — hoy o en 10 años — te expones a:{" "}
-            <span style={{ color: "rgba(255,150,150,0.80)" }}>
+            <span style={{ color: "var(--hp-red-consequence)" }}>
               observaciones regulatorias · multas · riesgo reputacional · retrabajo en auditoría · responsabilidad legal
             </span>
           </p>

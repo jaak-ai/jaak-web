@@ -189,6 +189,32 @@ body {
   --hp-divider:    rgba(255,255,255,0.07);
   --hp-pill-bg:    rgba(255,255,255,0.04);
   --hp-pill-border: rgba(255,255,255,0.09);
+  /* Neutral (muted) pill — section labels without a colour accent */
+  --hp-neutral-pill-text:   rgba(255,255,255,0.42);
+  --hp-neutral-pill-border: rgba(255,255,255,0.10);
+  --hp-neutral-pill-bg:     rgba(255,255,255,0.04);
+  /* Ghost button (secondary CTA) */
+  --hp-ghost-btn-bg:     rgba(255,255,255,0.10);
+  --hp-ghost-btn-border: rgba(255,255,255,0.15);
+  --hp-ghost-btn-color:  rgba(255,255,255,0.90);
+  /* Red / danger accents */
+  --hp-red-text:        #ff8a8a;
+  --hp-red-border:      rgba(255,100,100,0.22);
+  --hp-red-bg:          rgba(255,100,100,0.08);
+  --hp-red-icon:        rgba(255,100,100,0.60);
+  --hp-red-item-text:   #ff9898;
+  --hp-red-consequence: rgba(255,150,150,0.82);
+  /* Orange / warning accents */
+  --hp-orange-text:   rgba(255,190,100,0.92);
+  --hp-orange-bg:     rgba(255,160,60,0.06);
+  --hp-orange-border: rgba(255,160,60,0.18);
+  --hp-orange-icon:   rgba(255,160,60,0.90);
+  /* Animated step states (KYC card) */
+  --hp-step-active-bg:      rgba(255,255,255,0.06);
+  --hp-step-inactive-bg:    rgba(255,255,255,0.02);
+  --hp-step-active-border:  rgba(255,255,255,0.12);
+  --hp-step-inactive-border:rgba(255,255,255,0.04);
+  --hp-spinner-track:       rgba(255,255,255,0.10);
 }
 
 [data-hp-theme="light"] {
@@ -201,6 +227,32 @@ body {
   --hp-divider:    rgba(10,22,40,0.07);
   --hp-pill-bg:    rgba(10,22,40,0.04);
   --hp-pill-border: rgba(10,22,40,0.09);
+  /* Neutral pill */
+  --hp-neutral-pill-text:   rgba(10,22,40,0.55);
+  --hp-neutral-pill-border: rgba(10,22,40,0.14);
+  --hp-neutral-pill-bg:     rgba(10,22,40,0.06);
+  /* Ghost button */
+  --hp-ghost-btn-bg:     rgba(10,22,40,0.07);
+  --hp-ghost-btn-border: rgba(10,22,40,0.18);
+  --hp-ghost-btn-color:  rgba(10,22,40,0.85);
+  /* Red / danger accents — darker for readability on light bg */
+  --hp-red-text:        #b91c1c;
+  --hp-red-border:      rgba(185,28,28,0.28);
+  --hp-red-bg:          rgba(185,28,28,0.07);
+  --hp-red-icon:        rgba(185,28,28,0.70);
+  --hp-red-item-text:   #991b1b;
+  --hp-red-consequence: rgba(153,27,27,0.88);
+  /* Orange / warning accents — darker for readability on light bg */
+  --hp-orange-text:   rgba(120,55,0,0.90);
+  --hp-orange-bg:     rgba(120,80,0,0.07);
+  --hp-orange-border: rgba(120,80,0,0.20);
+  --hp-orange-icon:   rgba(120,55,0,0.85);
+  /* Animated step states */
+  --hp-step-active-bg:      rgba(10,22,40,0.06);
+  --hp-step-inactive-bg:    rgba(10,22,40,0.03);
+  --hp-step-active-border:  rgba(10,22,40,0.14);
+  --hp-step-inactive-border:rgba(10,22,40,0.07);
+  --hp-spinner-track:       rgba(10,22,40,0.15);
 }
 
 /* Section backgrounds */

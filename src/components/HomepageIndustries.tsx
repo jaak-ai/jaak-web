@@ -71,9 +71,9 @@ export default function HomepageIndustries() {
           <div
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
             style={{
-              color: "rgba(255,255,255,0.42)",
-              border: "1px solid rgba(255,255,255,0.10)",
-              background: "rgba(255,255,255,0.04)",
+              color: "var(--hp-neutral-pill-text)",
+              border: "1px solid var(--hp-neutral-pill-border)",
+              background: "var(--hp-neutral-pill-bg)",
             }}
           >
             Industrias
@@ -132,7 +132,7 @@ export default function HomepageIndustries() {
               <div className="mb-4">
                 <div
                   className="text-xs font-semibold uppercase tracking-wider mb-2"
-                  style={{ color: "rgba(255,100,100,0.70)" }}
+                  style={{ color: "var(--hp-red-text)" }}
                 >
                   El problema
                 </div>

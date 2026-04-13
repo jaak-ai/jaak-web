@@ -22,9 +22,9 @@ export default function HomepageFinalCTA() {
           <div
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-4"
             style={{
-              color: "rgba(255,255,255,0.42)",
-              border: "1px solid rgba(255,255,255,0.10)",
-              background: "rgba(255,255,255,0.04)",
+              color: "var(--hp-neutral-pill-text)",
+              border: "1px solid var(--hp-neutral-pill-border)",
+              background: "var(--hp-neutral-pill-bg)",
             }}
           >
             Dos formas de comenzar. Hoy.
@@ -211,9 +211,9 @@ export default function HomepageFinalCTA() {
               href="/contacto"
               className="inline-flex items-center justify-center px-7 py-4 font-bold text-base rounded-xl transition-all duration-200"
               style={{
-                color: "white",
-                background: "rgba(255,255,255,0.10)",
-                border: "1px solid rgba(255,255,255,0.15)",
+                color: "var(--hp-ghost-btn-color)",
+                background: "var(--hp-ghost-btn-bg)",
+                border: "1px solid var(--hp-ghost-btn-border)",
               }}
             >
               Hablar con un experto

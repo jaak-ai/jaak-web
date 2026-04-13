@@ -59,9 +59,9 @@ export default function HomepageHero() {
               href={p.href}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium transition-all duration-200 hover:text-white hover:border-white/20"
               style={{
-                color: "var(--hp-pill-color, rgba(255,255,255,0.50))",
-                border: "1px solid var(--hp-pill-border, rgba(255,255,255,0.09))",
-                background: "var(--hp-pill-bg, rgba(255,255,255,0.03))",
+                color: "var(--hp-neutral-pill-text)",
+                border: "1px solid var(--hp-neutral-pill-border)",
+                background: "var(--hp-neutral-pill-bg)",
                 backdropFilter: "blur(12px)",
               }}
             >
@@ -152,9 +152,9 @@ export default function HomepageHero() {
                 href="/contacto"
                 className="inline-flex items-center justify-center px-7 py-4 font-semibold text-base rounded-xl transition-all duration-200"
                 style={{
-                  color: "var(--hp-text-hi)",
-                  background: "rgba(255,255,255,0.06)",
-                  border: "1px solid rgba(255,255,255,0.12)",
+                  color: "var(--hp-ghost-btn-color)",
+                  background: "var(--hp-ghost-btn-bg)",
+                  border: "1px solid var(--hp-ghost-btn-border)",
                   backdropFilter: "blur(12px)",
                 }}
               >
@@ -215,13 +215,13 @@ export default function HomepageHero() {
                           background: done
                             ? "linear-gradient(90deg, rgba(30,202,211,0.12), rgba(42,215,150,0.06))"
                             : active
-                            ? "rgba(255,255,255,0.06)"
-                            : "rgba(255,255,255,0.02)",
+                            ? "var(--hp-step-active-bg)"
+                            : "var(--hp-step-inactive-bg)",
                           border: done
                             ? "1px solid rgba(42,215,150,0.18)"
                             : active
-                            ? "1px solid rgba(255,255,255,0.12)"
-                            : "1px solid rgba(255,255,255,0.04)",
+                            ? "1px solid var(--hp-step-active-border)"
+                            : "1px solid var(--hp-step-inactive-border)",
                         }}
                       >
                         <div className="flex items-center gap-2.5">
@@ -229,7 +229,7 @@ export default function HomepageHero() {
                           <span
                             className="text-xs font-medium"
                             style={{
-                              color: done ? "rgba(255,255,255,0.82)" : active ? "rgba(255,255,255,0.65)" : "rgba(255,255,255,0.28)",
+                              color: done ? "var(--hp-text-hi)" : active ? "var(--hp-text-md)" : "var(--hp-text-faint)",
                             }}
                           >
                             {s.label}
@@ -242,7 +242,7 @@ export default function HomepageHero() {
                         ) : active ? (
                           <div
                             className="w-4 h-4 rounded-full border-2 animate-spin flex-shrink-0"
-                            style={{ borderColor: "rgba(255,255,255,0.10)", borderTopColor: "#1ECAD3" }}
+                            style={{ borderColor: "var(--hp-spinner-track)", borderTopColor: "#1ECAD3" }}
                           />
                         ) : null}
                       </div>

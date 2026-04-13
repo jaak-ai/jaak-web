@@ -39,7 +39,7 @@ const signatureProducts = [
     level: "N1",
     name: "Firma Simple",
     desc: "Aceptación con clic. Registra IP, dispositivo y timestamp.",
-    color: "rgba(255,255,255,0.45)",
+    color: "var(--hp-text-md)",
   },
   {
     level: "N2",
@@ -135,7 +135,7 @@ export default function HomepageProducts() {
                     <span
                       key={t}
                       className="text-xs px-2 py-0.5 rounded-full"
-                      style={{ background: "rgba(255,255,255,0.05)", color: "var(--hp-text-lo)", border: "1px solid var(--hp-card-border)" }}
+                      style={{ background: "var(--hp-pill-bg)", color: "var(--hp-text-lo)", border: "1px solid var(--hp-pill-border)" }}
                     >
                       {t}
                     </span>
@@ -211,7 +211,7 @@ export default function HomepageProducts() {
                 </svg>
               </div>
               <h3 className="text-lg font-black text-white">Expediente Digital</h3>
-              <span className="text-xs px-2.5 py-1 rounded-full font-semibold" style={{ color: "rgba(255,255,255,0.42)", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+              <span className="text-xs px-2.5 py-1 rounded-full font-semibold" style={{ color: "var(--hp-neutral-pill-text)", background: "var(--hp-neutral-pill-bg)", border: "1px solid var(--hp-neutral-pill-border)" }}>
                 Diferenciador clave
               </span>
             </div>

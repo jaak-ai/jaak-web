@@ -102,8 +102,9 @@ export default function HomepageDifferentiator() {
               <span
                 className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full"
                 style={{
-                  color: "rgba(255,255,255,0.40)",
-                  background: "rgba(255,255,255,0.05)",
+                  color: "var(--hp-neutral-pill-text)",
+                  background: "var(--hp-neutral-pill-bg)",
+                  border: "1px solid var(--hp-neutral-pill-border)",
                 }}
               >
                 Otras soluciones
@@ -118,7 +119,7 @@ export default function HomepageDifferentiator() {
                 >
                   <svg
                     className="w-4 h-4 flex-shrink-0 mt-0.5"
-                    style={{ color: "rgba(255,100,100,0.50)" }}
+                    style={{ color: "var(--hp-red-icon)" }}
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
