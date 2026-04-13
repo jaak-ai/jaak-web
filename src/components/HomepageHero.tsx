@@ -229,43 +229,53 @@ export default function HomepageHero() {
                       className="relative rounded-2xl overflow-hidden"
                       style={{
                         height: "232px",
-                        background: "rgba(30,202,211,0.04)",
-                        border: "1px solid rgba(30,202,211,0.10)",
+                        background: "linear-gradient(160deg, rgba(8,20,40,0.96) 0%, rgba(14,30,52,0.96) 100%)",
+                        border: "1px solid rgba(30,202,211,0.35)",
+                        boxShadow: "inset 0 0 40px rgba(30,202,211,0.06)",
                       }}
                     >
+                      {/* Horizontal scan lines (subtle grid) */}
+                      <div
+                        className="absolute inset-0 pointer-events-none"
+                        style={{
+                          backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 12px, rgba(30,202,211,0.04) 12px, rgba(30,202,211,0.04) 13px)",
+                        }}
+                      />
+
                       {/* Corner brackets */}
-                      <div className="absolute top-4 left-4 w-6 h-6" style={{ borderTop: "2px solid #1ECAD3", borderLeft: "2px solid #1ECAD3" }} />
-                      <div className="absolute top-4 right-4 w-6 h-6" style={{ borderTop: "2px solid #1ECAD3", borderRight: "2px solid #1ECAD3" }} />
-                      <div className="absolute bottom-10 left-4 w-6 h-6" style={{ borderBottom: "2px solid #1ECAD3", borderLeft: "2px solid #1ECAD3" }} />
-                      <div className="absolute bottom-10 right-4 w-6 h-6" style={{ borderBottom: "2px solid #1ECAD3", borderRight: "2px solid #1ECAD3" }} />
+                      <div className="absolute top-4 left-4 w-7 h-7" style={{ borderTop: "2px solid #1ECAD3", borderLeft: "2px solid #1ECAD3", boxShadow: "0 0 8px rgba(30,202,211,0.6)" }} />
+                      <div className="absolute top-4 right-4 w-7 h-7" style={{ borderTop: "2px solid #1ECAD3", borderRight: "2px solid #1ECAD3", boxShadow: "0 0 8px rgba(30,202,211,0.6)" }} />
+                      <div className="absolute bottom-10 left-4 w-7 h-7" style={{ borderBottom: "2px solid #1ECAD3", borderLeft: "2px solid #1ECAD3", boxShadow: "0 0 8px rgba(30,202,211,0.6)" }} />
+                      <div className="absolute bottom-10 right-4 w-7 h-7" style={{ borderBottom: "2px solid #1ECAD3", borderRight: "2px solid #1ECAD3", boxShadow: "0 0 8px rgba(30,202,211,0.6)" }} />
 
                       {/* Face outline */}
                       <div className="absolute inset-0 flex items-center justify-center" style={{ paddingBottom: "32px" }}>
-                        <svg width="80" height="90" viewBox="0 0 80 90" fill="none" style={{ opacity: 0.25 }}>
+                        <svg width="90" height="100" viewBox="0 0 80 90" fill="none" style={{ opacity: 0.55 }}>
                           <ellipse cx="40" cy="34" rx="24" ry="30" stroke="#1ECAD3" strokeWidth="1.5"/>
                           <path d="M18 72 Q40 62 62 72" stroke="#1ECAD3" strokeWidth="1.5" fill="none"/>
                           <circle cx="30" cy="29" r="4" stroke="#1ECAD3" strokeWidth="1.5"/>
                           <circle cx="50" cy="29" r="4" stroke="#1ECAD3" strokeWidth="1.5"/>
                           <path d="M33 44 Q40 48 47 44" stroke="#1ECAD3" strokeWidth="1.5" fill="none"/>
-                          {/* scan dots */}
-                          <circle cx="30" cy="29" r="1.5" fill="#1ECAD3" opacity="0.6"/>
-                          <circle cx="50" cy="29" r="1.5" fill="#1ECAD3" opacity="0.6"/>
+                          <circle cx="30" cy="29" r="1.5" fill="#1ECAD3" opacity="0.8"/>
+                          <circle cx="50" cy="29" r="1.5" fill="#1ECAD3" opacity="0.8"/>
+                          {/* Nose bridge */}
+                          <path d="M40 36 L38 42 L42 42" stroke="#1ECAD3" strokeWidth="1" fill="none" opacity="0.6"/>
                         </svg>
                       </div>
 
-                      {/* Scan beam */}
+                      {/* Scan beam — vivid green-cyan line */}
                       <div
                         className="hp-scan-beam"
                         style={{
-                          background: "linear-gradient(90deg, transparent, rgba(30,202,211,0.75) 50%, transparent)",
-                          boxShadow: "0 0 12px rgba(30,202,211,0.50)",
+                          background: "linear-gradient(90deg, transparent 0%, rgba(30,202,211,0.4) 20%, rgba(30,202,211,1) 50%, rgba(30,202,211,0.4) 80%, transparent 100%)",
+                          boxShadow: "0 0 18px rgba(30,202,211,0.90), 0 0 6px rgba(42,215,150,0.70), 0 2px 24px rgba(30,202,211,0.50)",
                         }}
                       />
 
                       {/* Status bar */}
                       <div
                         className="absolute bottom-0 left-0 right-0 px-4 py-2.5 flex items-center gap-2"
-                        style={{ background: "rgba(30,202,211,0.08)", borderTop: "1px solid rgba(30,202,211,0.12)" }}
+                        style={{ background: "rgba(30,202,211,0.12)", borderTop: "1px solid rgba(30,202,211,0.25)" }}
                       >
                         <div className="w-2 h-2 rounded-full animate-pulse" style={{ background: "#1ECAD3" }} />
                         <span className="text-xs font-semibold" style={{ color: "#1ECAD3" }}>
