@@ -1,17 +1,21 @@
 const withoutJaak = [
   "Verificación sin trazabilidad completa",
+  "Papelería física que se pierde, deteriora o no aparece",
   "Evidencia dispersa o en manos del proveedor",
   "Procesos difíciles de reproducir ante autoridades",
-  "Sin vinculación entre firma e identidad",
-  "Respuesta a auditorías: semanas",
+  "Sin vinculación entre firma e identidad del firmante",
+  "Sin capacidad de conservación a 5 o 10 años",
+  "Respuesta a auditorías retrospectivas: semanas o imposible",
 ];
 
 const withJaak = [
-  "Expediente auditable completo por usuario",
+  "Expediente auditable completo por usuario, KYC y firma",
+  "Conservación digital inmutable hasta 10 años, configurable",
   "Evidencia en tu infraestructura, bajo tu control",
-  "Procesos repetibles y defendibles por diseño",
-  "Firma vinculada al KYC biométrico del firmante",
-  "Respuesta a auditorías: minutos",
+  "Procesos repetibles y defendibles por diseño normativo",
+  "Firma vinculada al KYC biométrico verificado del firmante",
+  "Cadena de custodia con sello de tiempo NOM-151",
+  "Respuesta a auditorías retrospectivas: minutos",
 ];
 
 const differentiators = [
@@ -220,7 +224,7 @@ export default function HomepageDifferentiator() {
           className="text-center mt-10 text-base font-medium italic"
           style={{ color: "rgba(255,255,255,0.35)" }}
         >
-          &ldquo;Diseñado para responder a una auditoría en minutos, no en semanas.&rdquo;
+          &ldquo;Diseñado para responder a una auditoría hoy, en 5 años o en 10 — en minutos, no en semanas.&rdquo;
         </p>
       </div>
     </section>

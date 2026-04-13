@@ -1,15 +1,37 @@
 const before = [
   { label: "Capturas de pantalla como evidencia" },
-  { label: "Procesos manuales sin trazabilidad" },
-  { label: "Datos dispersos en múltiples sistemas" },
-  { label: "Sin defensa ante una auditoría" },
+  { label: "Papelería física extraviada o deteriorada con el tiempo" },
+  { label: "Procesos manuales sin trazabilidad ni cadena de custodia" },
+  { label: "Datos dispersos: no sabes dónde está cada expediente" },
+  { label: "Sin capacidad de conservación a 5 o 10 años" },
+  { label: "Sin defensa ante una auditoría retrospectiva" },
 ];
 
 const after = [
-  { label: "Expediente digital con hash verificable" },
+  { label: "Expediente digital con hash verificable e inmutable" },
+  { label: "Conservación automática con retención configurable hasta 10 años" },
   { label: "Proceso automatizado y auditable end-to-end" },
-  { label: "Evidencia centralizada por usuario" },
-  { label: "Respuesta a auditorías en minutos" },
+  { label: "Evidencia centralizada: KYC, KYB y firma en un solo lugar" },
+  { label: "Cadena de custodia completa con sello de tiempo NOM-151" },
+  { label: "Respuesta a auditorías retrospectivas en minutos" },
+];
+
+const auditScenarios = [
+  {
+    year: "5 años después",
+    question: "Te llega una auditoría sobre operaciones de 2020. ¿Dónde está la evidencia de cada verificación de identidad que hiciste?",
+    icon: "📅",
+  },
+  {
+    year: "Expediente en papel",
+    question: "El expediente KYC está incompleto, deteriorado o simplemente ya no aparece. ¿Qué le presentas al regulador?",
+    icon: "📂",
+  },
+  {
+    year: "Firma electrónica",
+    question: "Se firmó un contrato hace 3 años. ¿Puedes probar con certeza quién firmó, desde dónde, cuándo y que no fue alterado?",
+    icon: "✍️",
+  },
 ];
 
 export default function HomepageProblem() {
@@ -18,7 +40,7 @@ export default function HomepageProblem() {
       className="py-24 relative overflow-hidden"
       style={{ background: "#0E1133" }}
     >
-      {/* Decorative glow */}
+      {/* Decorative glows */}
       <div
         className="absolute top-1/2 right-0 w-[400px] h-[400px] rounded-full blur-[110px] pointer-events-none"
         style={{ background: "rgba(200,60,60,0.05)" }}
@@ -47,22 +69,78 @@ export default function HomepageProblem() {
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight max-w-3xl mx-auto">
             Verificar no es suficiente.{" "}
             <span style={{ color: "rgba(255,255,255,0.38)" }}>
-              Hay que demostrar que cumpliste.
+              Hay que demostrarlo cuando te lo pidan, años después.
             </span>
           </h2>
           <p
             className="mt-6 text-lg max-w-2xl mx-auto leading-relaxed"
             style={{ color: "rgba(255,255,255,0.48)" }}
           >
-            La mayoría de los problemas regulatorios no nacen del fraude.
-            Nacen de{" "}
-            <span
-              className="font-semibold"
-              style={{ color: "rgba(255,255,255,0.78)" }}
-            >
-              procesos que no se pueden defender
+            La regulación mexicana exige conservar evidencia de identidad,{" "}
+            <span className="font-semibold" style={{ color: "rgba(255,200,100,0.90)" }}>
+              hasta por 10 años.
             </span>{" "}
-            ante una auditoría de la CNBV, UIF o cualquier autoridad supervisora.
+            No alcanza con haber verificado. Tienes que poder demostrarlo con
+            evidencia íntegra, trazable y de fácil acceso cuando el regulador llegue.
+          </p>
+        </div>
+
+        {/* Audit scenarios — concrete pain */}
+        <div className="grid md:grid-cols-3 gap-4 max-w-5xl mx-auto mb-10">
+          {auditScenarios.map((s, i) => (
+            <div
+              key={i}
+              className="rounded-2xl p-5"
+              style={{
+                background: "rgba(200,60,60,0.06)",
+                border: "1px solid rgba(200,60,60,0.14)",
+              }}
+            >
+              <div className="flex items-center gap-2.5 mb-3">
+                <span className="text-xl">{s.icon}</span>
+                <span
+                  className="text-xs font-bold uppercase tracking-wider"
+                  style={{ color: "rgba(255,140,140,0.80)" }}
+                >
+                  {s.year}
+                </span>
+              </div>
+              <p
+                className="text-sm leading-relaxed"
+                style={{ color: "rgba(255,255,255,0.55)" }}
+              >
+                {s.question}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        {/* Retention callout */}
+        <div
+          className="max-w-5xl mx-auto rounded-2xl px-6 py-4 mb-10 flex flex-col sm:flex-row items-start sm:items-center gap-3"
+          style={{
+            background: "rgba(255,160,60,0.06)",
+            border: "1px solid rgba(255,160,60,0.18)",
+          }}
+        >
+          <svg
+            className="w-5 h-5 flex-shrink-0 mt-0.5"
+            style={{ color: "rgba(255,160,60,0.90)" }}
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fillRule="evenodd"
+              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+              clipRule="evenodd"
+            />
+          </svg>
+          <p className="text-sm leading-relaxed" style={{ color: "rgba(255,200,120,0.85)" }}>
+            <span className="font-bold">Retención obligatoria:</span>{" "}
+            LFPIORPI y disposiciones CNBV exigen conservar expedientes de identificación
+            de clientes por un mínimo de 5 años, y hasta 10 años para operaciones en riesgo.
+            Papelería extraviada, sistemas dados de baja o evidencia incompleta equivalen
+            a incumplimiento.
           </p>
         </div>
 
@@ -100,28 +178,28 @@ export default function HomepageProblem() {
                   className="text-sm font-bold uppercase tracking-wider"
                   style={{ color: "#ff8a8a" }}
                 >
-                  Antes de JAAK
+                  Sin JAAK
                 </div>
                 <div
                   className="text-xs"
                   style={{ color: "rgba(255,255,255,0.30)" }}
                 >
-                  Proceso típico en el mercado
+                  Proceso típico que no resiste una auditoría
                 </div>
               </div>
             </div>
-            <ul className="space-y-3">
+            <ul className="space-y-2.5">
               {before.map((item, i) => (
                 <li
                   key={i}
-                  className="flex items-center gap-3 px-4 py-3 rounded-2xl"
+                  className="flex items-start gap-3 px-4 py-3 rounded-2xl"
                   style={{
                     background: "rgba(200,60,60,0.06)",
                     border: "1px solid rgba(200,60,60,0.10)",
                   }}
                 >
                   <svg
-                    className="w-4 h-4 flex-shrink-0"
+                    className="w-4 h-4 flex-shrink-0 mt-0.5"
                     style={{ color: "rgba(255,100,100,0.60)" }}
                     fill="currentColor"
                     viewBox="0 0 20 20"
@@ -133,7 +211,7 @@ export default function HomepageProblem() {
                     />
                   </svg>
                   <span
-                    className="text-sm font-medium"
+                    className="text-sm font-medium leading-snug"
                     style={{ color: "#ff9898" }}
                   >
                     {item.label}
@@ -143,7 +221,7 @@ export default function HomepageProblem() {
             </ul>
           </div>
 
-          {/* AHORA */}
+          {/* CON JAAK */}
           <div
             className="rounded-3xl p-7"
             style={{
@@ -181,22 +259,22 @@ export default function HomepageProblem() {
                   className="text-xs"
                   style={{ color: "rgba(255,255,255,0.30)" }}
                 >
-                  Evidencia legal desde el primer contacto
+                  Evidencia legal lista hoy, en 5 años y en 10
                 </div>
               </div>
             </div>
-            <ul className="space-y-3">
+            <ul className="space-y-2.5">
               {after.map((item, i) => (
                 <li
                   key={i}
-                  className="flex items-center gap-3 px-4 py-3 rounded-2xl"
+                  className="flex items-start gap-3 px-4 py-3 rounded-2xl"
                   style={{
                     background: "linear-gradient(90deg, rgba(30,202,211,0.10), rgba(42,215,150,0.05))",
                     border: "1px solid rgba(42,215,150,0.14)",
                   }}
                 >
                   <svg
-                    className="w-4 h-4 flex-shrink-0"
+                    className="w-4 h-4 flex-shrink-0 mt-0.5"
                     style={{ color: "#2AD796" }}
                     fill="currentColor"
                     viewBox="0 0 20 20"
@@ -208,7 +286,7 @@ export default function HomepageProblem() {
                     />
                   </svg>
                   <span
-                    className="text-sm font-medium"
+                    className="text-sm font-medium leading-snug"
                     style={{ color: "rgba(255,255,255,0.82)" }}
                   >
                     {item.label}
@@ -221,16 +299,16 @@ export default function HomepageProblem() {
 
         {/* Consequence bar */}
         <div
-          className="mt-10 max-w-5xl mx-auto rounded-2xl px-7 py-5"
+          className="mt-8 max-w-5xl mx-auto rounded-2xl px-7 py-5"
           style={{
             background: "rgba(255,255,255,0.02)",
             border: "1px solid rgba(255,255,255,0.06)",
           }}
         >
           <p className="text-center text-sm" style={{ color: "rgba(255,255,255,0.35)" }}>
-            Sin evidencia defendible te expones a:{" "}
+            Sin evidencia defendible — hoy o en 10 años — te expones a:{" "}
             <span style={{ color: "rgba(255,150,150,0.80)" }}>
-              observaciones regulatorias · multas · riesgo reputacional · retrabajo en auditoría
+              observaciones regulatorias · multas · riesgo reputacional · retrabajo en auditoría · responsabilidad legal
             </span>
           </p>
         </div>
