@@ -554,10 +554,11 @@ export default function EfisysLabConnectPage() {
                     {/* Fila 1: Nombre + Empresa */}
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-800 mb-1.5">
+                        <label htmlFor="reg-name" className="block text-sm font-medium text-gray-800 mb-1.5">
                           Nombre completo *
                         </label>
                         <input
+                          id="reg-name"
                           type="text"
                           required
                           value={formData.name}
@@ -567,10 +568,11 @@ export default function EfisysLabConnectPage() {
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-800 mb-1.5">
+                        <label htmlFor="reg-empresa" className="block text-sm font-medium text-gray-800 mb-1.5">
                           Empresa *
                         </label>
                         <input
+                          id="reg-empresa"
                           type="text"
                           required
                           value={formData.empresa}
@@ -584,10 +586,11 @@ export default function EfisysLabConnectPage() {
                     {/* Fila 2: Cargo + Ciudad */}
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-800 mb-1.5">
+                        <label htmlFor="reg-cargo" className="block text-sm font-medium text-gray-800 mb-1.5">
                           Cargo *
                         </label>
                         <input
+                          id="reg-cargo"
                           type="text"
                           required
                           value={formData.cargo}
@@ -597,10 +600,11 @@ export default function EfisysLabConnectPage() {
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-800 mb-1.5">
+                        <label htmlFor="reg-ciudad" className="block text-sm font-medium text-gray-800 mb-1.5">
                           Ciudad *
                         </label>
                         <input
+                          id="reg-ciudad"
                           type="text"
                           required
                           value={formData.ciudad}
@@ -614,10 +618,11 @@ export default function EfisysLabConnectPage() {
                     {/* Fila 3: Correo + Teléfono */}
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-800 mb-1.5">
+                        <label htmlFor="reg-email" className="block text-sm font-medium text-gray-800 mb-1.5">
                           Correo electrónico *
                         </label>
                         <input
+                          id="reg-email"
                           type="email"
                           required
                           value={formData.email}
@@ -627,10 +632,11 @@ export default function EfisysLabConnectPage() {
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-800 mb-1.5">
+                        <label htmlFor="reg-telefono" className="block text-sm font-medium text-gray-800 mb-1.5">
                           Teléfono *
                         </label>
                         <input
+                          id="reg-telefono"
                           type="tel"
                           required
                           value={formData.telefono}
@@ -643,10 +649,11 @@ export default function EfisysLabConnectPage() {
 
                     {/* Área de interés */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-800 mb-1.5">
+                      <label htmlFor="reg-interes" className="block text-sm font-medium text-gray-800 mb-1.5">
                         Área de interés
                       </label>
                       <select
+                        id="reg-interes"
                         value={formData.interes}
                         onChange={(e) => setFormData({ ...formData, interes: e.target.value })}
                         className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#1ECAD3] focus:border-transparent outline-none text-gray-900 text-sm transition-all"
