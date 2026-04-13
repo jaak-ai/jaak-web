@@ -43,6 +43,7 @@ export async function POST(request: Request) {
           "landing-inmobiliarias": "Inmobiliarias",
           "landing-financieras": "Financieras",
           "landing-bancos": "Bancos",
+          "landing-efisys-lab-connect": "EFISYS Lab Connect",
         };
         const label = sourceLabel[source] || source || "Landing";
 

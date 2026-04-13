@@ -220,7 +220,7 @@ export default function EfisysLabConnectPage() {
           email: formData.email,
           telefono: formData.telefono,
           mensaje: `Cargo: ${formData.cargo}. Ciudad: ${formData.ciudad}. Interés: ${formData.interes}. Acepta contacto JAAK: ${formData.contacto ? "Sí" : "No"}.`,
-          source: "efisys-lab-connect",
+          source: "landing-efisys-lab-connect",
         }),
       });
 
