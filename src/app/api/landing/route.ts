@@ -36,13 +36,14 @@ export async function POST(request: Request) {
         );
       }
       try {
+        const verifyBody = new URLSearchParams({
+          secret: TURNSTILE_SECRET,
+          response: turnstile_token,
+        });
         const verifyRes = await fetch(TURNSTILE_VERIFY_URL, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            secret: TURNSTILE_SECRET,
-            response: turnstile_token,
-          }),
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: verifyBody.toString(),
         });
         const verifyData = await verifyRes.json() as { success: boolean };
         if (!verifyData.success) {
@@ -53,6 +54,10 @@ export async function POST(request: Request) {
         }
       } catch (e) {
         console.error("Turnstile verify error:", e);
+        return NextResponse.json(
+          { error: "No se pudo verificar la seguridad. Intenta de nuevo." },
+          { status: 503 }
+        );
       }
     }
 

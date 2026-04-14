@@ -6,7 +6,6 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import {
   TurnstileWidget,
-  TurnstileScript,
   getUtmParams,
 } from "@/components/CloudflareTurnstile";
 
@@ -289,7 +288,6 @@ export default function EfisysLabConnectPage() {
 
   return (
     <>
-      <TurnstileScript />
       <Header />
       <main>
 
