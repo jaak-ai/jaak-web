@@ -269,14 +269,6 @@ export const metadata: Metadata = {
       "application/rss+xml": "https://jaak.ai/rss.xml",
     },
   },
-  icons: {
-    icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/favicon.svg", sizes: "any" },
-    ],
-    apple: { url: "/favicon.svg", sizes: "180x180" },
-    shortcut: "/favicon.svg",
-  },
 };
 
 export default function RootLayout({

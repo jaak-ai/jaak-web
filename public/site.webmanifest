@@ -3,12 +3,17 @@
   "short_name": "JAAK",
   "icons": [
     {
-      "src": "/favicon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml"
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
     }
   ],
-  "theme_color": "#212A45",
+  "theme_color": "#101c3b",
   "background_color": "#ffffff",
   "display": "standalone"
 }
