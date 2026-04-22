@@ -286,6 +286,9 @@ export default function Header() {
                   <Link href="/blog" className="block text-gray-700 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
                     Blog
                   </Link>
+                  <Link href="/demos" className="block text-gray-700 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
+                    Probar
+                  </Link>
                   <Link href="/contacto" className="block text-gray-700 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
                     Contacto
                   </Link>
@@ -792,6 +795,20 @@ export default function Header() {
                       <div>
                         <div className="text-[15px] font-semibold text-gray-900 group-hover:text-[#0066ff] transition-colors">Blog</div>
                         <div className="text-sm text-gray-500 mt-0.5">Artículos sobre compliance e identidad</div>
+                      </div>
+                    </div>
+                  </Link>
+                  <Link href="/demos" className="group block">
+                    <div className="flex items-start gap-4">
+                      <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-[#0066ff] transition-colors">
+                        <svg className="w-5 h-5 text-gray-900 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <div className="text-[15px] font-semibold text-gray-900 group-hover:text-[#0066ff] transition-colors">Probar</div>
+                        <div className="text-sm text-gray-500 mt-0.5">Demos interactivas de los componentes</div>
                       </div>
                     </div>
                   </Link>

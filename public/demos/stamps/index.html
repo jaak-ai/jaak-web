@@ -1,0 +1,1965 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+  <title>Jaak ID Detector Component</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <!-- Component scripts will be loaded dynamically -->
+</head>
+<body>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0d1117;
+    color: #e6edf3;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: row;
+  }
+
+  .main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+  }
+
+  .app-container {
+    max-width: 800px;
+    width: 100%;
+  }
+
+  .detector-wrapper {
+    position: relative;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+  }
+
+  .detector-container {
+    height: 500px;
+    width: 100%;
+    background: #0d1117;
+    min-height: 300px;
+  }
+
+  .controls {
+    display: flex;
+    justify-content: flex-start;
+    gap: 8px;
+    padding: 20px;
+    background: #161b22;
+    border-top: 1px solid #30363d;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .controls::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .controls::-webkit-scrollbar-track {
+    background: #21262d;
+    border-radius: 3px;
+  }
+
+  .controls::-webkit-scrollbar-thumb {
+    background: #484f58;
+    border-radius: 3px;
+  }
+
+  .controls::-webkit-scrollbar-thumb:hover {
+    background: #6e7681;
+  }
+
+  .controls button {
+    padding: 12px 20px;
+    background: #21262d;
+    color: #e6edf3;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-width: fit-content;
+  }
+
+  .controls button:hover {
+    background: #30363d;
+    border-color: #484f58;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  }
+
+  .controls button:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .controls button.primary {
+    background: #238636;
+    color: #ffffff;
+    border-color: #238636;
+  }
+
+  .controls button.primary:hover {
+    background: #2ea043;
+    border-color: #2ea043;
+  }
+
+
+  .config-panel-wrapper {
+    position: relative;
+    width: 250px;
+    height: 100vh;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+  }
+
+  .config-panel-wrapper.collapsed {
+    transform: translateX(-250px);
+  }
+
+  .config-panel {
+    background: #161b22;
+    border-right: 1px solid #30363d;
+    padding: 20px;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
+
+  .images-panel-wrapper {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 16px;
+    margin-top: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+    display: none;
+  }
+
+  .images-panel-wrapper.show {
+    display: block;
+  }
+
+  .images-panel {
+    padding: 20px;
+    max-height: 500px;
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
+
+  .toggle-panel {
+    position: absolute;
+    right: -16px;
+    top: 20px;
+    background: #238636;
+    border: 1px solid #238636;
+    border-left: none;
+    border-radius: 0 8px 8px 0;
+    width: 16px;
+    height: 100px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 500;
+    color: #ffffff;
+    transition: background 0.2s ease, border-color 0.2s ease;
+    z-index: 1600;
+  }
+
+  .toggle-panel:hover {
+    background: #2ea043;
+    border-color: #2ea043;
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 1066px) {
+    .config-panel-wrapper {
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 1500;
+      width: 280px;
+      max-width: 85vw;
+    }
+
+    .config-panel-wrapper.collapsed {
+      transform: translateX(-100%);
+    }
+
+    .config-panel {
+      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
+      width: 100%;
+    }
+
+    .toggle-panel {
+      right: -16px;
+      width: 16px;
+      height: 80px;
+      font-size: 10px;
+    }
+
+    .main-content {
+      padding: 20px 10px;
+      width: 100%;
+    }
+
+    .help-content {
+      max-width: 90vw;
+      padding: 24px;
+      margin: 20px;
+    }
+
+    .app-container {
+      max-width: 100%;
+    }
+  }
+
+  .config-panel h3,
+  .images-panel h3 {
+    margin: 0 0 16px 0;
+    color: #e6edf3;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .help-button {
+    background: #238636;
+    border: 1px solid #238636;
+    color: #ffffff;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .help-button:hover {
+    background: #2ea043;
+    border-color: #2ea043;
+    transform: translateY(-1px);
+  }
+
+  .help-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .help-modal.show {
+    display: flex;
+  }
+
+  .help-content {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 16px;
+    padding: 32px;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  }
+
+  .help-content h2 {
+    margin: 0 0 24px 0;
+    color: #e6edf3;
+    font-size: 24px;
+  }
+
+  .help-content h3 {
+    margin: 24px 0 12px 0;
+    color: #e6edf3;
+    font-size: 18px;
+  }
+
+  .help-content p {
+    color: #8b949e;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+
+  .help-content ul {
+    color: #8b949e;
+    line-height: 1.8;
+    padding-left: 24px;
+  }
+
+  .help-content code {
+    background: #0d1117;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 13px;
+    color: #e6edf3;
+    border: 1px solid #30363d;
+  }
+
+  .close-help {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #21262d;
+    border: 1px solid #30363d;
+    color: #8b949e;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+
+  .close-help:hover {
+    background: #30363d;
+    color: #e6edf3;
+  }
+
+  .config-panel-wrapper {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    align-items: start;
+  }
+
+  .config-column {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .config-section-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #58a6ff;
+    margin: 20px 0 12px 0;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #30363d;
+  }
+
+  .config-section-title:first-of-type {
+    margin-top: 0;
+  }
+
+  .config-item {
+    margin-bottom: 16px;
+  }
+
+  .config-item label {
+    display: block;
+    color: #8b949e;
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+
+  .config-item input,
+  .config-item select {
+    width: 100%;
+    padding: 8px 12px;
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    color: #e6edf3;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+
+  .config-item input[type="checkbox"] {
+    width: auto;
+    margin-right: 8px;
+  }
+
+  .config-actions {
+    margin-bottom: 16px;
+  }
+
+  .config-actions button {
+    width: 100%;
+    padding: 10px;
+    background: #238636;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.2s ease;
+  }
+
+  .config-actions button:hover {
+    background: #2ea043;
+  }
+
+  .url-example {
+    margin-top: 12px;
+    padding: 12px;
+    background: #0d1117;
+    border-radius: 6px;
+    font-size: 11px;
+    color: #8b949e;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    font-family: monospace;
+    max-width: 100%;
+  }
+
+  #configVersion optgroup {
+    font-weight: bold;
+    color: #e6edf3;
+    background: #21262d;
+  }
+
+  #configVersion option {
+    font-weight: normal;
+    padding-left: 12px;
+  }
+
+  #configVersion option[data-stable="true"] {
+    color: #3fb950;
+  }
+
+  #versionSearch {
+    width: 100%;
+    padding: 8px 12px;
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    color: #e6edf3;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+
+  #versionSearch:focus {
+    outline: none;
+    border-color: #58a6ff;
+  }
+
+  .captured-images-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  @media (max-width: 768px) {
+    .captured-images-container {
+      grid-template-columns: 1fr;
+    }
+
+    .main-content {
+      padding: 10px;
+    }
+
+    .detector-container {
+      height: 400px;
+    }
+
+    .controls {
+      padding: 12px;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .controls button {
+      padding: 10px 14px;
+      font-size: 13px;
+    }
+
+    .detector-wrapper {
+      border-radius: 12px;
+    }
+
+    .events-panel-wrapper,
+    .images-panel-wrapper {
+      margin-top: 12px;
+      border-radius: 12px;
+    }
+
+    .events-panel,
+    .images-panel {
+      padding: 12px;
+    }
+
+    .help-content {
+      max-width: 95vw;
+      padding: 20px;
+      margin: 10px;
+      max-height: 90vh;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .main-content {
+      padding: 8px;
+    }
+
+    .detector-container {
+      height: 350px;
+    }
+
+    .controls {
+      padding: 10px;
+      gap: 4px;
+    }
+
+    .controls button {
+      padding: 8px 10px;
+      font-size: 12px;
+      flex: 1 1 calc(50% - 4px);
+      min-width: 0;
+      justify-content: center;
+    }
+
+    .detector-wrapper {
+      border-radius: 8px;
+    }
+
+    .events-panel-wrapper,
+    .images-panel-wrapper {
+      margin-top: 8px;
+      border-radius: 8px;
+    }
+
+    .events-panel h3,
+    .images-panel h3 {
+      font-size: 14px;
+    }
+
+    .event-item {
+      padding: 6px 10px;
+      font-size: 11px;
+    }
+
+    .captured-image-item img {
+      max-height: 100px;
+    }
+
+    .mini-download-btn {
+      padding: 6px;
+      font-size: 9px;
+    }
+
+    .help-content {
+      padding: 16px;
+    }
+
+    .help-content h2 {
+      font-size: 18px;
+    }
+
+    .help-content h3 {
+      font-size: 14px;
+    }
+
+    .help-content p,
+    .help-content ul {
+      font-size: 13px;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .detector-container {
+      height: 300px;
+    }
+
+    .controls button {
+      padding: 6px 8px;
+      font-size: 11px;
+    }
+  }
+
+  /* Landscape orientation for mobile */
+  @media (max-height: 500px) and (orientation: landscape) {
+    body {
+      flex-direction: column;
+    }
+
+    .main-content {
+      padding: 8px;
+    }
+
+    .detector-container {
+      height: 60vh;
+      min-height: 200px;
+    }
+
+    .controls {
+      padding: 8px;
+    }
+
+    .controls button {
+      padding: 6px 10px;
+      font-size: 11px;
+    }
+
+    .events-panel {
+      max-height: 150px;
+    }
+
+    .images-panel {
+      max-height: 200px;
+    }
+  }
+
+  .captured-image-item {
+    background: #0d1117;
+    border-radius: 8px;
+    padding: 12px;
+    border: 1px solid #30363d;
+    transition: all 0.2s ease;
+  }
+
+  .captured-image-item:hover {
+    border-color: #484f58;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+  }
+
+  .captured-image-item h4 {
+    margin: 0 0 8px 0;
+    color: #8b949e;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .captured-image-item img {
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid #30363d;
+    object-fit: contain;
+    background: #21262d;
+    max-height: 120px;
+  }
+
+  .captured-image-actions {
+    margin-top: 8px;
+    display: flex;
+    gap: 4px;
+  }
+
+  .mini-download-btn {
+    padding: 4px 8px;
+    background: #21262d;
+    color: #e6edf3;
+    border: 1px solid #30363d;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 10px;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.2s ease;
+    flex: 1;
+    justify-content: center;
+  }
+
+  .mini-download-btn:hover {
+    background: #30363d;
+    border-color: #484f58;
+    transform: translateY(-1px);
+  }
+
+  .image-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 3000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .image-modal.show {
+    display: flex;
+  }
+
+  .image-modal-content {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  }
+
+  .image-modal-header {
+    padding: 16px 20px;
+    background: #21262d;
+    border-bottom: 1px solid #30363d;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .image-modal-title {
+    color: #e6edf3;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .close-image-modal {
+    background: #21262d;
+    border: 1px solid #30363d;
+    color: #8b949e;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+
+  .close-image-modal:hover {
+    background: #30363d;
+    color: #e6edf3;
+  }
+
+  .image-modal-body {
+    padding: 20px;
+    text-align: center;
+  }
+
+  .image-modal img {
+    max-width: 100%;
+    max-height: 70vh;
+    border-radius: 8px;
+    border: 1px solid #30363d;
+    object-fit: contain;
+    background: #0d1117;
+  }
+
+  .events-panel-wrapper {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 16px;
+    margin-top: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  }
+
+  .events-panel {
+    padding: 20px;
+    max-height: 300px;
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
+
+  .events-panel h3 {
+    margin: 0 0 16px 0;
+    color: #e6edf3;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .events-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .event-item {
+    background: #0d1117;
+    border-radius: 6px;
+    padding: 8px 12px;
+    border-left: 3px solid #238636;
+    font-family: monospace;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .event-item.error {
+    border-left-color: #f85149;
+  }
+
+  .event-item.warning {
+    border-left-color: #f79000;
+  }
+
+  .event-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .event-name {
+    color: #58a6ff;
+    font-weight: 600;
+  }
+
+  .event-time {
+    color: #8b949e;
+    font-size: 10px;
+  }
+
+  .event-detail {
+    color: #8b949e;
+    max-height: 60px;
+    overflow-y: auto;
+    word-break: break-all;
+  }
+
+  .clear-events-btn {
+    padding: 4px 12px;
+    background: #21262d;
+    color: #e6edf3;
+    border: 1px solid #30363d;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+
+  .clear-events-btn:hover {
+    background: #30363d;
+    border-color: #484f58;
+  }
+</style>
+
+<div class="config-panel-wrapper" id="configPanelWrapper">
+  <button type="button" class="toggle-panel" id="toggleButton" onclick="togglePanel()">
+    <span id="toggleIcon">◀</span>
+  </button>
+  <div class="config-panel" id="configPanel">
+    <h3>
+      <span>⚙️ Configuración</span>
+      <button type="button" class="help-button" onclick="showHelp()">?</button>
+    </h3>
+
+    <!-- Sección: Autenticación -->
+    <div class="config-section-title">🔐 Autenticación</div>
+
+    <div class="config-item">
+      <label for="configLicense">Licencia</label>
+      <input type="text" id="configLicense" placeholder="Ingrese su licencia...">
+    </div>
+
+    <div class="config-item">
+      <label for="configLicenseEnvironment">Ambiente</label>
+      <select id="configLicenseEnvironment">
+        <option value="dev">Development</option>
+        <option value="qa">QA</option>
+        <option value="sandbox">Sandbox</option>
+        <option value="prod" selected>Production</option>
+      </select>
+    </div>
+
+    <div class="config-item">
+      <label for="configTraceId">Trace ID (opcional)</label>
+      <input type="text" id="configTraceId" placeholder="Auto-generado si está vacío">
+    </div>
+
+    <div class="config-item">
+      <label for="configAppId">App ID</label>
+      <input type="text" id="configAppId" placeholder="jaak-stamps-web">
+    </div>
+
+    <!-- Sección: Cámara -->
+    <div class="config-section-title">📷 Cámara</div>
+
+    <div class="config-item">
+      <label for="configPreferredCamera">Cámara preferida</label>
+      <select id="configPreferredCamera">
+        <option value="auto" selected>Automática</option>
+        <option value="back">Trasera</option>
+        <option value="front">Frontal</option>
+      </select>
+    </div>
+
+    <!-- Sección: Detección -->
+    <div class="config-section-title">🔍 Detección</div>
+
+    <div class="config-item">
+      <label>
+        <input type="checkbox" id="configUseDocumentDetector" checked> Detector de documentos
+      </label>
+    </div>
+
+    <div class="config-item">
+      <label>
+        <input type="checkbox" id="configUseDocumentClassification"> Clasificación de documentos
+      </label>
+    </div>
+
+    <div class="config-item">
+      <label for="configAlignmentTolerance">Tolerancia de alineación</label>
+      <input type="number" id="configAlignmentTolerance" value="15" min="0" max="100">
+    </div>
+
+    <div class="config-item">
+      <label for="configMaskSize">Tamaño de máscara (%)</label>
+      <input type="number" id="configMaskSize" value="90" min="50" max="100">
+    </div>
+
+    <div class="config-item">
+      <label for="configCropMargin">Margen de recorte (px)</label>
+      <input type="number" id="configCropMargin" value="20" min="0" max="50">
+    </div>
+
+    <div class="config-item">
+      <label for="configCaptureDelay">Tiempo de captura (ms)</label>
+      <input type="number" id="configCaptureDelay" value="1500" min="0" max="10000" step="100">
+    </div>
+
+    <!-- Sección: Avanzado -->
+    <div class="config-section-title">⚙️ Avanzado</div>
+
+    <div class="config-item">
+      <label>
+        <input type="checkbox" id="configDebug"> Modo depuración
+      </label>
+    </div>
+
+    <div class="config-item">
+      <label for="configVersion">Versión del componente</label>
+      <input type="text" id="versionSearch" placeholder="Buscar versión..." style="display: none; margin-bottom: 8px;">
+      <select id="configVersion" size="1">
+        <option value="local">Local</option>
+        <option value="loading" disabled>Cargando versiones...</option>
+      </select>
+    </div>
+
+    <div class="config-actions">
+      <button type="button" onclick="applyConfiguration(event)">Aplicar cambios</button>
+    </div>
+
+    <div class="url-example">
+      <strong>Ejemplo URL:</strong><br>
+      <span id="urlExample">?debug=false&alignmentTolerance=20</span>
+    </div>
+  </div>
+</div>
+
+<div class="main-content">
+  <div class="app-container">
+    <div class="detector-wrapper">
+      <div class="detector-container">
+        <jaak-stamps
+          id="detector"
+        ></jaak-stamps>
+      </div>
+
+      <div class="controls">
+        <button id="preloadModel" class="primary">⚡ Precargar</button>
+        <button id="startCapture">🎥 Iniciar</button>
+        <button id="stopCapture">⏹️ Detener</button>
+        <button id="resetCapture">🔄 Reiniciar</button>
+      </div>
+    </div>
+
+    <div class="events-panel-wrapper" id="eventsPanelWrapper">
+      <div class="events-panel" id="eventsPanel">
+        <h3>
+          <span>📡 Registro de Eventos</span>
+          <button type="button" class="clear-events-btn" onclick="clearEvents()">🗑️ Limpiar</button>
+        </h3>
+
+        <div id="eventsList" class="events-list">
+          <div style="color: #8b949e; text-align: center; padding: 20px; font-size: 12px;">
+            No se han capturado eventos aún
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="images-panel-wrapper" id="imagesPanelWrapper">
+      <div class="images-panel" id="imagesPanel">
+        <h3>
+          <span>📸 Imágenes Capturadas</span>
+        </h3>
+
+        <div id="capturedImages" class="captured-images-container">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="helpModal" class="help-modal" onclick="closeHelpOnBackdrop(event)">
+  <div class="help-content">
+    <button type="button" class="close-help" onclick="closeHelp()">×</button>
+
+    <h2>📚 Guía de Uso - Jaak Stamps</h2>
+
+    <h3>🎯 ¿Qué es este componente?</h3>
+    <p>
+      Jaak Stamps es un componente web para capturar y procesar documentos de identificación.
+      Detecta automáticamente el frente y reverso del documento, los alinea correctamente y
+      genera imágenes optimizadas para su procesamiento.
+    </p>
+
+    <h3>🚀 Cómo usar</h3>
+    <p><strong>1. Precargar el modelo (opcional):</strong></p>
+    <p>Haz clic en "⚡ Precargar" para cargar el modelo de detección antes de iniciar.</p>
+
+    <p><strong>2. Iniciar captura:</strong></p>
+    <p>Haz clic en "🎥 Iniciar" para activar la cámara y comenzar la detección.</p>
+
+    <p><strong>3. Posicionar el documento:</strong></p>
+    <ul>
+      <li>Coloca el documento dentro del área marcada</li>
+      <li>Asegúrate de que esté bien iluminado</li>
+      <li>Evita reflejos y sombras</li>
+      <li>El componente detectará automáticamente cuando esté bien alineado</li>
+    </ul>
+
+    <p><strong>4. Captura automática:</strong></p>
+    <p>El sistema capturará automáticamente ambos lados del documento cuando detecte la alineación correcta.</p>
+
+    <h3>⚙️ Configuración</h3>
+    <p>
+      Puedes ajustar el comportamiento del componente usando el panel de configuración.
+      Los cambios se pueden aplicar mediante el botón correspondiente o usando parámetros URL.
+    </p>
+    <ul>
+      <li><strong>Debug:</strong> Muestra información de diagnóstico en pantalla</li>
+      <li><strong>Tolerancia de alineación:</strong> Qué tan preciso debe estar el documento (0-100)</li>
+      <li><strong>Tamaño de máscara:</strong> Porcentaje del área de captura (50-100%)</li>
+      <li><strong>Margen de recorte:</strong> Píxeles adicionales alrededor del documento</li>
+      <li><strong>Tiempo de captura:</strong> Milisegundos que el documento debe mantenerse alineado antes de capturar (0-10000ms)</li>
+      <li><strong>Clasificación:</strong> Activa la clasificación automática del tipo de documento</li>
+      <li><strong>Cámara:</strong> Selecciona entre cámara frontal o trasera</li>
+      <li><strong>Versión del componente:</strong> Permite cambiar entre diferentes versiones del componente:
+        <ul style="margin-top: 8px;">
+          <li><em>Local:</em> Usa la versión de desarrollo local</li>
+          <li><em>Versiones específicas:</em> Selecciona una versión específica publicada en npm</li>
+          <li><em>Buscar versión:</em> Usa el campo de búsqueda para encontrar cualquier versión</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3>🔗 Parámetros por URL</h3>
+    <p>Puedes configurar el componente mediante parámetros en la URL:</p>
+    <code>?debug=false&alignmentTolerance=20&maskSize=85&captureDelay=2000&version=2.0.0-dev.38</code>
+
+    <h3>📡 Registro de Eventos</h3>
+    <p>
+      Debajo del componente encontrarás el registro de eventos, que muestra en tiempo real todos los eventos emitidos:
+    </p>
+    <ul>
+      <li><strong>captureCompleted:</strong> Se emite cuando se completa una captura</li>
+      <li><strong>isReady:</strong> Se emite cuando el componente está listo para usar</li>
+      <li><strong>traceIdGenerated:</strong> Se emite con el ID de rastreo generado o proporcionado</li>
+    </ul>
+    <p>
+      Puedes limpiar el historial de eventos con el botón "🗑️ Limpiar". El registro mantiene hasta 100 eventos, eliminando automáticamente los más antiguos.
+    </p>
+
+    <h3>📸 Imágenes Capturadas</h3>
+    <p>
+      Una vez completada la captura, aparecerá automáticamente debajo del registro de eventos un panel con todas las imágenes procesadas:
+    </p>
+    <ul>
+      <li>Imágenes completas del frame (frente y trasera)</li>
+      <li>Documentos recortados y alineados (frente y trasera)</li>
+      <li>Información de la captura (fecha, hora, total de imágenes)</li>
+      <li>Opciones para descargar cada imagen individualmente</li>
+      <li>Opción para ver las imágenes en tamaño completo</li>
+      <li>Descarga de todos los datos en formato JSON</li>
+    </ul>
+    <p>
+      El panel de imágenes se oculta automáticamente cuando se reinicia la captura.
+    </p>
+  </div>
+</div>
+
+<div id="imageModal" class="image-modal" onclick="closeImageModalOnBackdrop(event)">
+  <div class="image-modal-content">
+    <div class="image-modal-header">
+      <h3 class="image-modal-title" id="imageModalTitle">Imagen</h3>
+      <button type="button" class="close-image-modal" onclick="closeImageModal()">×</button>
+    </div>
+    <div class="image-modal-body">
+      <img id="imageModalImg" src="" alt="Imagen ampliada">
+    </div>
+  </div>
+</div>
+
+<script>
+  // Configuración parametrizable del componente
+  const CONFIG = {
+    debug: getQueryParam('debug', 'false') === 'true',
+    alignmentTolerance: parseInt(getQueryParam('alignmentTolerance', '15')),
+    maskSize: parseInt(getQueryParam('maskSize', '90')),
+    cropMargin: parseInt(getQueryParam('cropMargin', '20')),
+    captureDelay: parseInt(getQueryParam('captureDelay', '1500')),
+    useDocumentClassification: getQueryParam('useDocumentClassification', 'false') === 'true',
+    useDocumentDetector: getQueryParam('useDocumentDetector', 'true') === 'true',
+    preferredCamera: getQueryParam('preferredCamera', 'auto'),
+    license: getQueryParam('license', ''),
+    licenseEnvironment: getQueryParam('licenseEnvironment', 'prod'),
+    traceId: getQueryParam('traceId', ''),
+    appId: getQueryParam('appId', 'jaak-stamps-web'),
+    version: getQueryParam('version', 'local')
+  };
+
+  // Función para obtener parámetros de la URL
+  function getQueryParam(param, defaultValue) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param) || defaultValue;
+  }
+
+  // Cache para las versiones
+  let versionsCache = null;
+  let allVersionsGrouped = null;
+
+  // Función para categorizar versiones
+  function categorizeVersion(version) {
+    if (version.includes('-dev.')) return 'dev';
+    if (version.includes('-beta.')) return 'beta';
+    if (version.includes('-alpha.')) return 'alpha';
+    if (version.includes('-rc.')) return 'rc';
+    if (version.includes('-')) return 'prerelease';
+    return 'stable';
+  }
+
+  // Función para obtener las versiones disponibles desde npm
+  async function fetchNpmVersions() {
+    if (versionsCache) {
+      return versionsCache;
+    }
+
+    try {
+      const response = await fetch('https://registry.npmjs.org/@jaak.ai/stamps');
+      const data = await response.json();
+
+      // Obtener todas las versiones
+      const versions = Object.keys(data.versions).sort((a, b) => {
+        // Ordenar versiones de más reciente a más antigua
+        return data.time[b].localeCompare(data.time[a]);
+      });
+
+      // Agrupar versiones por categoría
+      const grouped = {
+        stable: [],
+        dev: [],
+        beta: [],
+        alpha: [],
+        rc: [],
+        prerelease: []
+      };
+
+      versions.forEach(version => {
+        const category = categorizeVersion(version);
+        grouped[category].push(version);
+      });
+
+      // Guardar en cache
+      versionsCache = {
+        latest: data['dist-tags'].latest,
+        versions: versions,
+        grouped: grouped
+      };
+
+      allVersionsGrouped = grouped;
+
+      return versionsCache;
+    } catch (error) {
+      console.error('Error al obtener versiones desde npm:', error);
+      return null;
+    }
+  }
+
+  // Función para actualizar el dropdown de versiones
+  async function updateVersionDropdown(filter = '') {
+    const versionSelect = document.getElementById('configVersion');
+    const versionSearch = document.getElementById('versionSearch');
+    if (!versionSelect) return;
+
+    const npmData = await fetchNpmVersions();
+
+    if (npmData) {
+      // Mostrar el buscador
+      versionSearch.style.display = 'block';
+
+      // Eliminar la opción "Cargando..."
+      const loadingOption = Array.from(versionSelect.options).find(opt => opt.value === 'loading');
+      if (loadingOption) {
+        versionSelect.remove(loadingOption.index);
+      }
+
+      // Limpiar todas las opciones excepto la primera (local)
+      while (versionSelect.options.length > 1) {
+        versionSelect.remove(1);
+      }
+
+      // Definir el orden y nombres de las categorías
+      const categoryNames = {
+        stable: 'Versiones Estables',
+        dev: 'Desarrollo',
+        beta: 'Beta',
+        alpha: 'Alpha',
+        rc: 'Release Candidate',
+        prerelease: 'Otras Pre-releases'
+      };
+
+      const categoryOrder = ['stable', 'dev', 'beta', 'rc', 'alpha', 'prerelease'];
+
+      // Agregar versiones por categoría
+      let hasVisibleVersions = false;
+
+      // Si hay búsqueda, mostrar todas las versiones que coincidan sin categorías
+      if (filter) {
+        const allVersions = npmData.versions.filter(v =>
+          v.toLowerCase().includes(filter.toLowerCase())
+        );
+
+        if (allVersions.length > 0) {
+          hasVisibleVersions = true;
+
+          // Crear un solo grupo con los resultados
+          const optgroup = document.createElement('optgroup');
+          optgroup.label = `Resultados (${allVersions.length})`;
+
+          allVersions.forEach(version => {
+            const option = document.createElement('option');
+            option.value = version;
+            option.textContent = version;
+
+            // Marcar la última versión estable
+            if (version === npmData.latest) {
+              option.textContent = `${version} ⭐`;
+              option.setAttribute('data-stable', 'true');
+            }
+
+            // Agregar indicador de tipo
+            const versionType = categorizeVersion(version);
+            if (versionType !== 'stable') {
+              option.textContent += ` (${versionType})`;
+            }
+
+            optgroup.appendChild(option);
+          });
+
+          versionSelect.appendChild(optgroup);
+        }
+      } else {
+        // Sin búsqueda, mostrar por categorías con límites
+        categoryOrder.forEach(category => {
+          const versions = npmData.grouped[category];
+          if (!versions || versions.length === 0) return;
+
+          const versionsToShow = versions.slice(0, category === 'stable' ? 10 : 15);
+          if (versionsToShow.length === 0) return;
+
+          hasVisibleVersions = true;
+
+          // Crear grupo
+          const optgroup = document.createElement('optgroup');
+          optgroup.label = categoryNames[category];
+
+          // Agregar contador si hay más versiones
+          if (versions.length > versionsToShow.length) {
+            optgroup.label += ` (${versionsToShow.length}/${versions.length})`;
+          }
+
+          versionsToShow.forEach(version => {
+            const option = document.createElement('option');
+            option.value = version;
+            option.textContent = version;
+
+            // Marcar la última versión estable
+            if (version === npmData.latest) {
+              option.textContent = `${version} ⭐`;
+              option.setAttribute('data-stable', 'true');
+            }
+
+            optgroup.appendChild(option);
+          });
+
+          versionSelect.appendChild(optgroup);
+        });
+      }
+
+      // Si no hay resultados de búsqueda
+      if (!hasVisibleVersions && filter) {
+        const option = document.createElement('option');
+        option.value = '';
+        option.textContent = 'No se encontraron versiones';
+        option.disabled = true;
+        versionSelect.appendChild(option);
+      }
+
+      // Mostrar total de versiones en el placeholder del buscador
+      versionSearch.placeholder = `Buscar versión... (${npmData.versions.length} disponibles)`;
+
+
+      // Si la versión actual está en la lista, seleccionarla
+      if (CONFIG.version && CONFIG.version !== 'local' && !filter) {
+        const currentOption = Array.from(versionSelect.options).find(opt => opt.value === CONFIG.version);
+        if (currentOption) {
+          versionSelect.value = CONFIG.version;
+        } else {
+          // Si la versión no está en la lista, buscarla
+          updateVersionDropdown(CONFIG.version);
+        }
+      }
+    } else {
+      // Si falla la carga, usar versiones predefinidas
+      const loadingOption = Array.from(versionSelect.options).find(opt => opt.value === 'loading');
+      if (loadingOption) {
+        loadingOption.textContent = 'Error al cargar versiones';
+        loadingOption.disabled = true;
+      }
+    }
+  }
+
+  // Cargar versiones al inicio
+  updateVersionDropdown();
+
+  // Variable para almacenar el detector cuando esté listo
+  let detector = null;
+
+  // Función para cargar el componente con la versión especificada
+  async function loadComponentVersion(version) {
+    console.log('Cargando versión del componente:', version);
+
+    // Mostrar estado de carga
+    const detectorContainer = document.querySelector('.detector-container');
+    const originalContent = detectorContainer.innerHTML;
+    detectorContainer.innerHTML = `
+          <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #8b949e;">
+            <div style="text-align: center;">
+              <div style="font-size: 48px; margin-bottom: 16px;">⏳</div>
+              <div>Cargando versión ${version}...</div>
+            </div>
+          </div>
+        `;
+
+    try {
+      // Eliminar scripts anteriores si existen
+      const existingScripts = document.querySelectorAll('script[data-jaak-component]');
+      existingScripts.forEach(script => script.remove());
+
+      // Determinar la URL del script según la versión
+      let scriptUrl;
+      if (version === 'local') {
+        scriptUrl = 'http://localhost:3333/build/jaak-stamps-webcomponent.esm.js';
+      } else {
+        scriptUrl = `https://unpkg.com/@jaak.ai/stamps@${version}/dist/jaak-stamps-webcomponent/jaak-stamps-webcomponent.esm.js`;
+      }
+
+      // Cargar el script
+      const script = document.createElement('script');
+      script.type = 'module';
+      script.src = scriptUrl;
+      script.setAttribute('data-jaak-component', 'true');
+
+      await new Promise((resolve, reject) => {
+        script.onload = resolve;
+        script.onerror = () => reject(new Error(`No se pudo cargar la versión ${version}`));
+        document.head.appendChild(script);
+      });
+
+      // Esperar un momento para que el componente se registre
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      // Restaurar el contenedor y crear el componente
+      detectorContainer.innerHTML = '<jaak-stamps id="detector"></jaak-stamps>';
+
+      // Obtener referencia al nuevo componente
+      detector = document.getElementById('detector');
+
+      // Aplicar configuración al componente
+      Object.entries(CONFIG).forEach(([key, value]) => {
+        if (key !== 'version') {
+          const attrName = key.replace(/([A-Z])/g, '-$1').toLowerCase();
+          if (value !== null && value !== undefined && value !== '') {
+            detector.setAttribute(attrName, value.toString());
+          }
+        }
+      });
+
+      // Re-añadir event listeners
+      detector.addEventListener('captureCompleted', onCaptureCompleted);
+      detector.addEventListener('isReady', onIsReady);
+      detector.addEventListener('traceIdGenerated', onTraceIdGenerated);
+
+      // Agregar listeners para todos los eventos posibles
+      addAllEventListeners();
+
+      console.log('Componente cargado exitosamente:', version);
+
+    } catch (error) {
+      console.error('Error al cargar el componente:', error);
+      detectorContainer.innerHTML = `
+            <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #f85149;">
+              <div style="text-align: center;">
+                <div style="font-size: 48px; margin-bottom: 16px;">❌</div>
+                <div>Error al cargar la versión ${version}</div>
+                <div style="font-size: 12px; margin-top: 8px; color: #8b949e;">${error.message}</div>
+                <button onclick="loadComponentVersion('local')" style="margin-top: 16px; padding: 8px 16px; background: #238636; color: white; border: none; border-radius: 6px; cursor: pointer;">
+                  Cargar versión local
+                </button>
+              </div>
+            </div>
+          `;
+    }
+  }
+
+  // Cargar el componente con la versión especificada
+  loadComponentVersion(CONFIG.version);
+
+  // Mostrar configuración actual en consola
+  console.log('Configuración del componente:', CONFIG);
+
+  // Actualizar valores en el panel de configuración
+  document.getElementById('configDebug').checked = CONFIG.debug;
+  document.getElementById('configAlignmentTolerance').value = CONFIG.alignmentTolerance;
+  document.getElementById('configMaskSize').value = CONFIG.maskSize;
+  document.getElementById('configCropMargin').value = CONFIG.cropMargin;
+  document.getElementById('configCaptureDelay').value = CONFIG.captureDelay;
+  document.getElementById('configUseDocumentClassification').checked = CONFIG.useDocumentClassification;
+  document.getElementById('configUseDocumentDetector').checked = CONFIG.useDocumentDetector;
+  document.getElementById('configPreferredCamera').value = CONFIG.preferredCamera;
+  document.getElementById('configLicense').value = CONFIG.license;
+  document.getElementById('configLicenseEnvironment').value = CONFIG.licenseEnvironment;
+  document.getElementById('configTraceId').value = CONFIG.traceId;
+  document.getElementById('configAppId').value = CONFIG.appId;
+
+  // La versión se manejará después de cargar las opciones desde npm
+
+
+  // Manejar el buscador de versiones
+  const versionSearch = document.getElementById('versionSearch');
+  if (versionSearch) {
+    let searchTimeout;
+    versionSearch.addEventListener('input', function(e) {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        updateVersionDropdown(e.target.value);
+      }, 300); // Debounce de 300ms
+    });
+
+    // Limpiar búsqueda al presionar Escape
+    versionSearch.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        e.target.value = '';
+        updateVersionDropdown('');
+      }
+    });
+  }
+
+  // Actualizar ejemplo de URL
+  updateUrlExample();
+
+  const preloadButton = document.getElementById('preloadModel');
+  const startButton = document.getElementById('startCapture');
+  const stopButton = document.getElementById('stopCapture');
+  const resetButton = document.getElementById('resetCapture');
+
+  // Los event listeners del detector se agregan dentro de loadComponentVersion
+
+  preloadButton.addEventListener('click', () => {
+    preloadModel();
+  });
+  startButton.addEventListener('click', () => {
+    startCapture();
+  });
+  stopButton.addEventListener('click', () => {
+    stopCapture();
+  });
+  resetButton.addEventListener('click', () => {
+    resetCapture();
+  });
+
+
+
+  function onIsReady(event) {
+    // Component is ready
+    logEvent('isReady', event.detail);
+  }
+
+  function onCaptureCompleted(event) {
+    const images = event.detail;
+
+    logEvent('captureCompleted', { totalImages: images.metadata?.totalImages, timestamp: images.timestamp });
+
+    // Ejecutar showCapturedImagesInPanel de forma asíncrona para no bloquear el emit()
+    setTimeout(() => {
+      showCapturedImagesInPanel(images);
+    }, 0);
+  }
+
+  function onTraceIdGenerated(event) {
+    logEvent('traceIdGenerated', event.detail);
+  }
+
+  // Array para almacenar los eventos
+  let eventLog = [];
+  const MAX_EVENTS = 100;
+
+  // Función para agregar un evento al log
+  function logEvent(eventName, eventDetail, eventType = 'info') {
+    const timestamp = new Date();
+    const event = {
+      name: eventName,
+      detail: eventDetail,
+      type: eventType,
+      time: timestamp.toLocaleTimeString(),
+      fullTime: timestamp.toISOString()
+    };
+
+    eventLog.unshift(event);
+
+    // Limitar el número de eventos
+    if (eventLog.length > MAX_EVENTS) {
+      eventLog.pop();
+    }
+
+    // Actualizar UI
+    updateEventsPanel();
+  }
+
+  // Función para actualizar el panel de eventos
+  function updateEventsPanel() {
+    const eventsList = document.getElementById('eventsList');
+
+    if (eventLog.length === 0) {
+      eventsList.innerHTML = `
+        <div style="color: #8b949e; text-align: center; padding: 20px; font-size: 12px;">
+          No se han capturado eventos aún
+        </div>
+      `;
+      return;
+    }
+
+    eventsList.innerHTML = eventLog.map(event => {
+      const detailStr = typeof event.detail === 'object'
+        ? JSON.stringify(event.detail, null, 2)
+        : String(event.detail);
+
+      return `
+        <div class="event-item ${event.type}">
+          <div class="event-header">
+            <span class="event-name">${event.name}</span>
+            <span class="event-time">${event.time}</span>
+          </div>
+          <div class="event-detail">${detailStr}</div>
+        </div>
+      `;
+    }).join('');
+
+    // Auto-scroll al evento más reciente
+    eventsList.scrollTop = 0;
+  }
+
+  // Función para limpiar eventos
+  window.clearEvents = () => {
+    eventLog = [];
+    updateEventsPanel();
+  };
+
+  // Función para agregar listeners de todos los eventos
+  function addAllEventListeners() {
+    if (!detector) return;
+
+    // Lista de eventos conocidos del componente
+    const events = [
+      'captureCompleted',
+      'isReady',
+      'traceIdGenerated'
+      // Agregar más eventos aquí según el componente los tenga
+    ];
+
+    // Ya agregados arriba, pero podemos escuchar otros eventos personalizados
+    // si el componente los emite
+  }
+
+  function downloadFile(data, filename, mimeType = 'image/png') {
+    const link = document.createElement('a');
+
+    if (mimeType === 'application/json') {
+      const blob = new Blob([data], { type: mimeType });
+      link.href = URL.createObjectURL(blob);
+    } else {
+      link.href = data; // data:image/png;base64,...
+    }
+
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    if (mimeType === 'application/json') {
+      URL.revokeObjectURL(link.href);
+    }
+  }
+
+  function clearResults() {
+    // Limpiar el panel de imágenes
+    clearCapturedImagesPanel();
+  }
+
+  function showCapturedImagesInPanel(images) {
+    const capturedImagesContainer = document.getElementById('capturedImages');
+    const imagesPanelWrapper = document.getElementById('imagesPanelWrapper');
+
+    // Mostrar el panel de imágenes
+    imagesPanelWrapper.classList.add('show');
+
+    // Limpiar contenido anterior
+    capturedImagesContainer.innerHTML = '';
+
+    // Crear elementos para cada imagen
+    const imageData = [
+      { title: '🔹 Frente - Completo', src: images.front.fullFrame, type: 'front-full', filename: 'frente-completo.png' },
+      { title: '🔸 Frente - Recortado', src: images.front.cropped, type: 'front-cropped', filename: 'frente-recortado.png' },
+      { title: '🔹 Trasera - Completo', src: images.back.fullFrame, type: 'back-full', filename: 'trasera-completa.png' },
+      { title: '🔸 Trasera - Recortado', src: images.back.cropped, type: 'back-cropped', filename: 'trasera-recortada.png' }
+    ];
+
+    imageData.forEach((item, index) => {
+      const imageItem = document.createElement('div');
+      imageItem.className = 'captured-image-item';
+      imageItem.innerHTML = `
+            <h4>${item.title}</h4>
+            <img src="${item.src}" alt="${item.title}" loading="lazy">
+            <div class="captured-image-actions">
+              <a class="mini-download-btn" onclick="downloadFile('${item.src}', '${item.filename}')">
+                📥 Descargar
+              </a>
+              <a class="mini-download-btn" onclick="showImageModal('${item.src}', '${item.title}')">
+                🔍 Ver más grande
+              </a>
+            </div>
+          `;
+      capturedImagesContainer.appendChild(imageItem);
+    });
+
+    // Mostrar información de timestamp
+    const timestampItem = document.createElement('div');
+    timestampItem.className = 'captured-image-item';
+    timestampItem.style.borderColor = '#f79000';
+    const date = new Date(images.timestamp);
+    timestampItem.innerHTML = `
+          <h4>📅 Información de captura</h4>
+          <div style="color: #8b949e; font-size: 11px; line-height: 1.4;">
+            <strong>Fecha:</strong> ${date.toLocaleDateString()}<br>
+            <strong>Hora:</strong> ${date.toLocaleTimeString()}<br>
+            <strong>Total:</strong> ${images.metadata.totalImages} imágenes
+          </div>
+          <div class="captured-image-actions">
+            <a class="mini-download-btn" id="downloadJsonBtn">
+              📦 JSON
+            </a>
+          </div>
+        `;
+    capturedImagesContainer.appendChild(timestampItem);
+
+    // Agregar event listener para el botón JSON
+    const downloadJsonBtn = document.getElementById('downloadJsonBtn');
+    downloadJsonBtn.addEventListener('click', () => {
+      downloadFile(JSON.stringify(images, null, 2), 'capturas-completas.json', 'application/json');
+    });
+  }
+
+  function clearCapturedImagesPanel() {
+    const capturedImagesContainer = document.getElementById('capturedImages');
+    const imagesPanelWrapper = document.getElementById('imagesPanelWrapper');
+
+    // Ocultar el panel de imágenes
+    imagesPanelWrapper.classList.remove('show');
+
+    // Limpiar el contenido
+    capturedImagesContainer.innerHTML = '';
+  }
+
+  // Funciones públicas para controlar el componente
+  window.preloadModel = async () => {
+    if (!detector) {
+      console.error('El componente aún no está cargado');
+      return;
+    }
+    try {
+      const result = await detector.preloadModel();
+    } catch (error) {
+      console.error('Error al precargar el modelo:', error);
+    }
+  };
+
+  window.startCapture = async () => {
+    if (!detector) {
+      console.error('El componente aún no está cargado');
+      return;
+    }
+    try {
+      await detector.startCapture();
+    } catch (error) {
+      console.error('Error al iniciar captura:', error);
+    }
+  };
+
+  window.stopCapture = async () => {
+    if (!detector) {
+      console.error('El componente aún no está cargado');
+      return;
+    }
+    try {
+      await detector.stopCapture();
+    } catch (error) {
+      console.error('Error al detener captura:', error);
+    }
+  };
+
+  window.resetCapture = async () => {
+    if (!detector) {
+      console.error('El componente aún no está cargado');
+      return;
+    }
+    try {
+      await detector.resetCapture();
+      clearResults(); // Limpiar resultados al reiniciar
+    } catch (error) {
+      console.error('Error al reiniciar captura:', error);
+    }
+  };
+
+  // Función para aplicar la configuración desde el panel
+  window.applyConfiguration = (event) => {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    // Obtener la versión seleccionada
+    let selectedVersion = document.getElementById('configVersion').value;
+
+    const newConfig = {
+      debug: document.getElementById('configDebug').checked,
+      alignmentTolerance: parseInt(document.getElementById('configAlignmentTolerance').value),
+      maskSize: parseInt(document.getElementById('configMaskSize').value),
+      cropMargin: parseInt(document.getElementById('configCropMargin').value),
+      captureDelay: parseInt(document.getElementById('configCaptureDelay').value),
+      useDocumentClassification: document.getElementById('configUseDocumentClassification').checked,
+      useDocumentDetector: document.getElementById('configUseDocumentDetector').checked,
+      preferredCamera: document.getElementById('configPreferredCamera').value,
+      license: document.getElementById('configLicense').value,
+      licenseEnvironment: document.getElementById('configLicenseEnvironment').value,
+      traceId: document.getElementById('configTraceId').value,
+      appId: document.getElementById('configAppId').value,
+      version: selectedVersion
+    };
+
+    // Construir nueva URL con parámetros
+    const params = new URLSearchParams();
+    Object.entries(newConfig).forEach(([key, value]) => {
+      params.set(key, value.toString());
+    });
+
+    // Recargar página con nuevos parámetros
+    window.location.search = params.toString();
+  };
+
+  // Función para actualizar el ejemplo de URL
+  function updateUrlExample() {
+    const currentParams = new URLSearchParams(window.location.search);
+    const baseUrl = window.location.origin + window.location.pathname;
+    const paramString = currentParams.toString();
+    const fullUrl = paramString ? `${baseUrl}?${paramString}` : baseUrl;
+
+    document.getElementById('urlExample').textContent = paramString ? `?${paramString}` : 'Sin parámetros';
+  }
+
+  // Actualizar ejemplo de URL cuando cambien los inputs
+  document.querySelectorAll('.config-item input, .config-item select').forEach(input => {
+    input.addEventListener('change', () => {
+      const params = new URLSearchParams();
+
+      if (document.getElementById('configDebug').checked !== false) {
+        params.set('debug', 'true');
+      }
+      if (document.getElementById('configAlignmentTolerance').value !== '15') {
+        params.set('alignmentTolerance', document.getElementById('configAlignmentTolerance').value);
+      }
+      if (document.getElementById('configMaskSize').value !== '90') {
+        params.set('maskSize', document.getElementById('configMaskSize').value);
+      }
+      if (document.getElementById('configCropMargin').value !== '20') {
+        params.set('cropMargin', document.getElementById('configCropMargin').value);
+      }
+      if (document.getElementById('configCaptureDelay').value !== '1500') {
+        params.set('captureDelay', document.getElementById('configCaptureDelay').value);
+      }
+      if (document.getElementById('configUseDocumentClassification').checked) {
+        params.set('useDocumentClassification', 'true');
+      }
+      if (document.getElementById('configUseDocumentDetector').checked !== true) {
+        params.set('useDocumentDetector', 'false');
+      }
+      if (document.getElementById('configPreferredCamera').value !== 'auto') {
+        params.set('preferredCamera', document.getElementById('configPreferredCamera').value);
+      }
+      if (document.getElementById('configLicense').value !== '') {
+        params.set('license', document.getElementById('configLicense').value);
+      }
+      if (document.getElementById('configLicenseEnvironment').value !== 'prod') {
+        params.set('licenseEnvironment', document.getElementById('configLicenseEnvironment').value);
+      }
+      if (document.getElementById('configTraceId').value !== '') {
+        params.set('traceId', document.getElementById('configTraceId').value);
+      }
+      if (document.getElementById('configAppId').value !== '' && document.getElementById('configAppId').value !== 'jaak-stamps-web') {
+        params.set('appId', document.getElementById('configAppId').value);
+      }
+
+      // Manejar versión
+      let versionValue = document.getElementById('configVersion').value;
+      if (versionValue && versionValue !== 'local') {
+        params.set('version', versionValue);
+      }
+
+      const paramString = params.toString();
+      document.getElementById('urlExample').textContent = paramString ? `?${paramString}` : 'Valores por defecto';
+    });
+  });
+
+  // Funciones para el modal de ayuda
+  window.showHelp = () => {
+    document.getElementById('helpModal').classList.add('show');
+  };
+
+  window.closeHelp = () => {
+    document.getElementById('helpModal').classList.remove('show');
+  };
+
+  window.closeHelpOnBackdrop = (event) => {
+    if (event.target === event.currentTarget) {
+      closeHelp();
+    }
+  };
+
+  // Funciones para el modal de imagen
+  window.showImageModal = (imageSrc, imageTitle) => {
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('imageModalImg');
+    const modalTitle = document.getElementById('imageModalTitle');
+
+    modalImg.src = imageSrc;
+    modalTitle.textContent = imageTitle;
+    modal.classList.add('show');
+  };
+
+  window.closeImageModal = () => {
+    document.getElementById('imageModal').classList.remove('show');
+  };
+
+  window.closeImageModalOnBackdrop = (event) => {
+    if (event.target === event.currentTarget) {
+      closeImageModal();
+    }
+  };
+
+  // Cerrar modales con tecla Escape
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      if (document.getElementById('helpModal').classList.contains('show')) {
+        closeHelp();
+      } else if (document.getElementById('imageModal').classList.contains('show')) {
+        closeImageModal();
+      }
+    }
+  });
+
+  // Función para toggle del panel de configuración
+  window.togglePanel = () => {
+    const wrapper = document.getElementById('configPanelWrapper');
+    const icon = document.getElementById('toggleIcon');
+
+    wrapper.classList.toggle('collapsed');
+
+    if (wrapper.classList.contains('collapsed')) {
+      icon.textContent = '▶';
+    } else {
+      icon.textContent = '◀';
+    }
+
+    // Guardar estado en localStorage
+    localStorage.setItem('configPanelCollapsed', wrapper.classList.contains('collapsed'));
+  };
+
+  // Restaurar estado del panel al cargar
+  document.addEventListener('DOMContentLoaded', () => {
+    // Restaurar estado del panel de configuración
+    const isConfigCollapsed = localStorage.getItem('configPanelCollapsed') === 'true';
+
+    if (isConfigCollapsed) {
+      document.getElementById('configPanelWrapper').classList.add('collapsed');
+      document.getElementById('toggleIcon').textContent = '▶';
+    }
+
+    // En móviles, iniciar el panel de configuración colapsado por defecto
+    if (window.innerWidth <= 1066) {
+      if (localStorage.getItem('configPanelCollapsed') === null) {
+        document.getElementById('configPanelWrapper').classList.add('collapsed');
+        document.getElementById('toggleIcon').textContent = '▶';
+      }
+    }
+  });
+
+</script>
+</body>
+</html>
