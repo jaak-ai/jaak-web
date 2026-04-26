@@ -19,9 +19,9 @@ POST https://api.sandbox.jaak.ai/api/v4/document/extract
 ```
 
 ```kotlin
-   @POST("api/v3/document/extract-both")
-    suspend fun documentExtraBothApi(@Header("Authorization") auth: String,
-                                     @Body request: DocumentExtraBothRequest): Response<DocumentExtraBothResponse>
+   @POST("api/v4/document/extract")
+    suspend fun documentExtractApi(@Header("Authorization") auth: String,
+                                   @Body request: DocumentExtractRequest): Response<DocumentExtractResponse>
 ```
 
 **Header**

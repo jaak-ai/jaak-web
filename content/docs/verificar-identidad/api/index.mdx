@@ -47,3 +47,23 @@ sequenceDiagram
 Todas las llamadas API que realizaremos a continuación será mediante la arquitectura [REST](https://es.wikipedia.org/wiki/Transferencia_de_Estado_Representacional) (Representational State Transfer), con el estándar web [HTTP](https://es.wikipedia.org/wiki/Protocolo_de_transferencia_de_hipertexto) (HyperText Transfer Protocol) y firmando la comunicación con el formato [JSON](https://en.wikipedia.org/wiki/JSON) (JavaScript Object Notation).
 
 Recomendamos tener un conocimiento por lo menos básico de estos 3 conceptos para poder continuar con esta guía.
+
+## Headers comunes
+
+Todos los pasos del flujo (paso 1 al 9) comparten dos headers que se propagan a lo largo de la sesión:
+
+| Header | Cuándo enviarlo | Origen |
+|--------|-----------------|--------|
+| `Authorization: Bearer <token>` | Pasos 1 y 2 con la **API Key** (JWT generado en la plataforma). Pasos 3 al 9 con el **Access Token** devuelto en el paso 2. | API Key desde Plataforma JAAK; Access Token desde la respuesta de `/v1/kyc/session`. |
+| `traceparent` | Recomendado en todos los pasos a partir del paso 2. | Header de respuesta del paso 2 (formato W3C Trace Context). Reenviarlo permite que JAAK correlacione todos los servicios de la sesión KYC en logs y métricas. |
+
+Mantener el `traceparent` consistente a lo largo del flujo es clave para que el equipo de soporte pueda diagnosticar incidencias por sesión sin ambigüedad. Si lo omites, las llamadas se procesarán igual pero los logs quedarán fragmentados.
+
+## Base URL
+
+| Ambiente | URL base |
+|----------|----------|
+| Sandbox | `https://api.sandbox.jaak.ai/api` |
+| Producción | `https://services.api.jaak.ai/api` |
+
+Todos los paths (`/v1/kyc/flow`, `/v1/kyc/session`, `/v3/document/verify`, `/v4/document/extract`, `/v2/blacklist/investigate`, `/v1/liveness/verify-and-bestframe`, `/v2/oto/verify`, `/v1/kyc/session/finish`) son relativos a esta base.
