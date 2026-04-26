@@ -1,0 +1,93 @@
+---
+title: SAT / RFC
+description: Valida el formato y dígito verificador de un RFC mexicano.
+category: api
+order: 2
+---
+
+
+# Validación SAT / RFC
+
+Valida que un RFC tenga formato estructural correcto y dígito verificador (homoclave) válido. La validación se hace localmente sin consultar al SAT — útil para validar antes de enviar a otros servicios.
+
+<Callout type="info" title="¿Necesitas verificar contra SAT 69-B?">
+Para consultar la lista negra de personas morales del SAT (Artículo 69-B), usa el endpoint de [Listas PLD / AML](/docs/consultas-oficiales/api/listas-pld) con `services.sat.sat69b: true`.
+</Callout>
+
+---
+
+## Endpoint
+
+<Endpoint
+  method="POST"
+  path="/api/v1/government/mx/rfc/validate"
+  description="Valida formato y dígito verificador de un RFC"
+/>
+
+### Headers
+
+| Header | Valor | Requerido |
+|--------|-------|-----------|
+| `Authorization` | `Bearer <api-key-jwt>` | Sí |
+| `Content-Type` | `application/json` | Sí |
+
+### Body
+
+<ParamsTable
+  params={[
+    {
+      name: "rfc",
+      type: "string",
+      required: true,
+      description: "RFC a validar. Personas físicas: 13 caracteres (4 letras + 6 dígitos fecha + 3 alfanum). Personas morales: 12 caracteres (3 letras + 6 dígitos fecha + 3 alfanum)."
+    }
+  ]}
+/>
+
+### Ejemplo
+
+```bash
+curl -X POST https://services.api.jaak.ai/api/v1/government/mx/rfc/validate \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIs..." \
+  -H "Content-Type: application/json" \
+  -d '{"rfc": "PEGJ800115QJ8"}'
+```
+
+### Respuesta exitosa (200 OK)
+
+```json
+{
+  "eventId": "evt_789xyz",
+  "requestId": "req_012abc",
+  "timestamp": "2026-04-25T10:30:00Z",
+  "rfc": "PEGJ800115QJ8",
+  "valid": true,
+  "type": "RFC"
+}
+```
+
+| Campo | Descripción |
+|---|---|
+| `valid` | `true` si el formato + dígito verificador son correctos. |
+| `type` | `"RFC"` para físicas, `"RFC_MORAL"` para morales. |
+
+### Respuesta de RFC inválido (200 OK)
+
+```json
+{
+  "eventId": "evt_789xyz",
+  "requestId": "req_012abc",
+  "timestamp": "2026-04-25T10:30:00Z",
+  "rfc": "INVALIDO123",
+  "valid": false,
+  "type": "RFC"
+}
+```
+
+### Errores
+
+| HTTP | `errorCode` | Descripción |
+|---|---|---|
+| 400 | `GOV_RFC_002` | Formato del RFC inválido (longitud o caracteres ilegales) |
+| 401 | — | API Key inválida |
+| 500 | `GOV_RFC_001` | Error interno |

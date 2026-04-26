@@ -48,6 +48,21 @@ export const docsNavigation: NavItem[] = [
     ],
   },
   {
+    title: 'Consultas oficiales',
+    items: [
+      { title: 'Introducción', href: '/docs/consultas-oficiales' },
+      {
+        title: 'API Reference',
+        items: [
+          { title: 'Listas PLD / AML', href: '/docs/consultas-oficiales/api/listas-pld' },
+          { title: 'INE', href: '/docs/consultas-oficiales/api/ine' },
+          { title: 'SAT / RFC', href: '/docs/consultas-oficiales/api/sat-rfc' },
+          { title: 'RENAPO / CURP', href: '/docs/consultas-oficiales/api/renapo-curp' },
+        ],
+      },
+    ],
+  },
+  {
     title: 'Recursos',
     items: [
       { title: 'Webhooks', href: '/docs/recursos/webhooks' },

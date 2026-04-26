@@ -1,0 +1,127 @@
+---
+title: RENAPO / CURP
+description: Valida una CURP contra el Registro Nacional de Población.
+category: api
+order: 3
+---
+
+
+# Validación RENAPO / CURP
+
+Valida que una CURP exista en el Registro Nacional de Población y devuelve los datos completos de la persona registrada.
+
+---
+
+## Endpoint
+
+<Endpoint
+  method="POST"
+  path="/api/v1/official-list/mx/curp/validate"
+  description="Valida una CURP contra RENAPO"
+/>
+
+### Headers
+
+| Header | Valor | Requerido |
+|--------|-------|-----------|
+| `Authorization` | `Bearer <api-key-jwt>` | Sí |
+| `Content-Type` | `application/json` | Sí |
+
+### Body
+
+<ParamsTable
+  params={[
+    {
+      name: "curp",
+      type: "string",
+      required: true,
+      description: "CURP a validar. Formato: 18 caracteres (4 letras + 6 dígitos fecha + 1 letra H/M + 5 letras + 2 alfanum)."
+    }
+  ]}
+/>
+
+### Ejemplo
+
+```bash
+curl -X POST https://services.api.jaak.ai/api/v1/official-list/mx/curp/validate \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIs..." \
+  -H "Content-Type: application/json" \
+  -d '{"curp": "PEGJ800115HDFRRL09"}'
+```
+
+### Respuesta exitosa (200 OK)
+
+```json
+{
+  "curp": "PEGJ800115HDFRRL09",
+  "isValid": true,
+  "message": "",
+  "eventId": "evt_345mno",
+  "details": {
+    "segments": {
+      "consonants": "PGJ",
+      "homonymy": "80",
+      "verificationDigit": "9"
+    },
+    "person": {
+      "fullName": "JUAN PÉREZ GARCÍA",
+      "fullPaternalSurname": "PÉREZ",
+      "fullMaternalSurname": "GARCÍA",
+      "gender": "HOMBRE",
+      "birthDate": "1980-01-15",
+      "birthEntity": "CDMX",
+      "nationality": "MEXICAN",
+      "renapoGender": "HOMBRE",
+      "renapoBirthDate": "15/01/1980",
+      "entityName": "Ciudad de México"
+    },
+    "probatoryDocument": {
+      "registrationYear": "1980",
+      "book": "A001",
+      "certificateNumber": "12345",
+      "registryEntity": "Civil Registry"
+    }
+  }
+}
+```
+
+| Sección | Descripción |
+|---|---|
+| `segments` | Descomposición estructural de la CURP (verificada localmente). |
+| `person` | Datos demográficos según RENAPO. |
+| `probatoryDocument` | Acta de nacimiento que sustenta la CURP (cuando RENAPO la expone). |
+
+### Respuesta CURP no válida (200 OK)
+
+```json
+{
+  "curp": "INVALIDA",
+  "isValid": false,
+  "message": "CURP no encontrada en RENAPO",
+  "eventId": "evt_345mno"
+}
+```
+
+### Errores
+
+| HTTP | `errorCode` | Descripción |
+|---|---|---|
+| 400 | `0002` | CURP con formato inválido (longitud, regex) |
+| 401 | — | API Key inválida |
+| 500 | `0000` | Error consultando RENAPO |
+
+---
+
+## Validar formato sin consultar RENAPO
+
+Si solo necesitas validar el formato de la CURP localmente (sin consumir cuota de RENAPO), valida con regex:
+
+```
+^[A-Z]{4}\d{6}[HM][A-Z]{5}[A-Z0-9]{2}$
+```
+
+- Posiciones 1-4: 4 letras
+- Posiciones 5-10: fecha de nacimiento `YYMMDD`
+- Posición 11: `H` (hombre) o `M` (mujer)
+- Posiciones 12-16: 5 letras
+- Posiciones 17-18: 2 alfanuméricos (homoclave)

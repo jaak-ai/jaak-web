@@ -1,0 +1,75 @@
+---
+title: Consultas oficiales
+description: APIs para validar identidad contra fuentes oficiales mexicanas e internacionales — INE, SAT, RENAPO, listas PLD/AML.
+category: guia
+order: 0
+---
+
+
+# Consultas oficiales
+
+Las APIs de consultas oficiales validan datos de identidad y antecedentes contra fuentes autoritativas del gobierno mexicano y listas internacionales de cumplimiento (PLD/AML). A diferencia de la verificación KYC integral, estas son consultas atómicas que puedes invocar directamente sin necesidad de iniciar una sesión.
+
+<Callout type="info" title="¿Cuándo usar consultas oficiales?">
+Si necesitas validar un dato puntual (un RFC, un CURP, una persona contra listas) y ya tienes la información del usuario, las consultas oficiales son más rápidas y económicas que un flujo KYC completo.
+</Callout>
+
+---
+
+## APIs disponibles
+
+| Producto | Qué valida | Endpoint |
+|---|---|---|
+| **Listas PLD / AML** | Persona contra OFAC, INTERPOL, INE, SAT 69-B, CDC | [POST /api/v2/blacklist/investigate](/docs/consultas-oficiales/api/listas-pld) |
+| **INE** | Imagen de credencial contra padrón electoral del INE | [POST /api/v1/government/mx/ine/verify](/docs/consultas-oficiales/api/ine) |
+| **SAT / RFC** | Validez estructural de un RFC | [POST /api/v1/government/mx/rfc/validate](/docs/consultas-oficiales/api/sat-rfc) |
+| **RENAPO / CURP** | CURP contra Registro Nacional de Población | [POST /api/v1/official-list/mx/curp/validate](/docs/consultas-oficiales/api/renapo-curp) |
+
+---
+
+## Autenticación
+
+Todas las consultas oficiales requieren un API Key con scope adecuado. Pasa el token como Bearer:
+
+```http
+Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
+```
+
+Si aún no tienes API Key, consulta la guía de [Verificación de identidad — Guía rápida](/docs/verificar-identidad/guia-rapida) que explica cómo generar uno desde el dashboard.
+
+---
+
+## URL base
+
+| Ambiente | URL base |
+|---|---|
+| Producción | `https://services.api.jaak.ai` |
+| Sandbox | `https://api.sandbox.jaak.ai` |
+| Desarrollo | `https://api.dev.jaak.ai` |
+
+<Callout type="warning" title="Sandbox tiene cuotas separadas">
+El consumo en sandbox no afecta tu cuota de producción, pero sí tiene límites propios. Consulta [Sandbox](/docs/recursos/sandbox) para más detalle.
+</Callout>
+
+---
+
+## Diferencia con verificación KYC
+
+| Consultas oficiales | Verificación KYC |
+|---|---|
+| Una llamada HTTP atómica | Flujo de sesión con varias etapas (documento + biometría + listas) |
+| El integrador provee los datos a validar | El usuario captura los datos vía SDK web/móvil |
+| Sin captura de imagen ni biometría (excepto INE) | Captura de identificación + selfie + prueba de vida |
+| Resultado inmediato | Resultado al finalizar la sesión |
+| Útil para flujos de onboarding ligero, screening de proveedores, validación periódica | Útil para alta de cliente con KYC formal |
+
+Si necesitas el flujo completo, ve a [Verificar identidad](/docs/verificar-identidad).
+
+---
+
+## Siguientes pasos
+
+- [Listas PLD / AML](/docs/consultas-oficiales/api/listas-pld) — el endpoint más usado para screening
+- [INE](/docs/consultas-oficiales/api/ine) — valida una credencial INE contra el padrón
+- [SAT / RFC](/docs/consultas-oficiales/api/sat-rfc) — valida formato y existencia de un RFC
+- [RENAPO / CURP](/docs/consultas-oficiales/api/renapo-curp) — valida una CURP contra RENAPO

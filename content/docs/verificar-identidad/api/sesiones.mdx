@@ -485,6 +485,90 @@ Usa el `nextCursor` en el parámetro `cursor` de la siguiente solicitud para obt
 
 ---
 
+## Finalizar sesión
+
+<Callout type="info" title="Endpoint actualizado">
+La forma actual de cerrar una sesión KYC desde el integrador es vía el endpoint `POST /api/v1/kyc/session/finish`. Este endpoint dispara el cálculo final de scores, evaluación de fraude y, si tienes webhook configurado, notifica el resultado al `webhookUrl` registrado en tu compañía.
+</Callout>
+
+<Endpoint
+  method="POST"
+  path="/api/v1/kyc/session/finish"
+  description="Finaliza la sesión KYC asociada al API Key del header"
+/>
+
+### Headers
+
+| Header | Valor | Requerido |
+|--------|-------|-----------|
+| `Authorization` | `Bearer <api-key-jwt-tipo-KYC>` | Sí |
+| `Content-Type` | `application/json` | Sí |
+| `Language` | `es` o `en` (default `en`) | No |
+
+<Callout type="warning" title="API Key con scope KYC">
+Este endpoint requiere un API Key con scope `KYC`. La sesión que se cierra es la asociada al token (no se pasa el sessionId en el path o body — se infiere del JWT).
+</Callout>
+
+### Body
+
+Vacío. El servidor identifica la sesión a partir del `session_id` embebido en el `Authorization`.
+
+```json
+{}
+```
+
+### Ejemplo de solicitud
+
+```bash
+curl -X POST https://services.api.jaak.ai/api/v1/kyc/session/finish \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIs..." \
+  -H "Content-Type: application/json"
+```
+
+### Respuesta exitosa (200 OK)
+
+```json
+{
+  "id": "69ed18794fc4af88ecacf4b0",
+  "status": "PASS",
+  "score": 95.5,
+  "validation": "Automatic",
+  "startDate": "2026-04-25T10:30:00Z",
+  "endDate": "2026-04-25T10:45:00Z",
+  "flowName": "KYC Basic"
+}
+```
+
+| Campo | Descripción |
+|---|---|
+| `id` | MongoDB ObjectID de la sesión finalizada |
+| `status` | Resultado final: `PASS`, `FAIL`, `NEED_REVIEW`, `EXPIRED` |
+| `score` | Score total agregado (0-100) |
+| `validation` | `Automatic` (decisión por reglas) o `Manual` (requiere revisión) |
+| `startDate` / `endDate` | ISO 8601 |
+| `flowName` | Nombre del flujo configurado en el dashboard |
+
+### Comportamiento adicional
+
+Al finalizar la sesión, el servicio:
+
+1. Calcula el score total agregando los scores parciales de cada producto (liveness, document, OTO, blacklist).
+2. Evalúa reglas anti-fraude (Fraud Radar) con el contexto completo de la sesión.
+3. Asigna `status` según los thresholds configurados en el flow.
+4. Si tu compañía tiene `webhookUrl` configurado, dispara el webhook con el payload descrito en [Webhooks](/docs/recursos/webhooks).
+5. Marca la sesión como inmutable — no se puede re-procesar.
+
+### Errores
+
+| HTTP | `errorCode` | Descripción |
+|---|---|---|
+| 400 | `KYC01` | Sesión ya finalizada (no se puede llamar `/finish` dos veces) |
+| 401 | — | API Key inválida o sin scope KYC |
+| 404 | `KYC02` | Sesión no encontrada |
+| 500 | `KYC02` | Error interno calculando scores o ejecutando webhook |
+
+---
+
 ## Cancelar sesión
 
 <Endpoint

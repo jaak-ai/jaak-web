@@ -1,0 +1,186 @@
+---
+title: Listas PLD / AML
+description: API para validar a una persona contra listas oficiales — OFAC, INTERPOL, INE, SAT 69-B, CDC.
+category: api
+order: 0
+---
+
+
+# Listas PLD / AML
+
+El endpoint de investigación cruza los datos de una persona contra varias listas oficiales en una sola llamada. Especifica qué listas quieres consultar vía el objeto `services` y recibe un resultado por lista.
+
+## Listas soportadas
+
+| Lista | Qué es | Aplica a |
+|---|---|---|
+| **OFAC** | Office of Foreign Assets Control (sanciones EE. UU.) | Cualquier persona |
+| **INTERPOL** | Red Notice de INTERPOL | Cualquier persona |
+| **INE** | Padrón Electoral del Instituto Nacional Electoral | Personas físicas con clave de elector |
+| **RENAPO / CURP** | Registro Nacional de Población | Personas físicas con CURP |
+| **SAT 69-B** | Lista negra de personas morales del SAT | Empresas / RFC |
+| **CDC** | Buró de crédito (Ficoscore blacklist) | Personas con consentimiento explícito |
+
+---
+
+## Crear consulta
+
+<Endpoint
+  method="POST"
+  path="/api/v2/blacklist/investigate"
+  description="Consulta una persona contra las listas seleccionadas"
+/>
+
+### Headers
+
+| Header | Valor | Requerido |
+|--------|-------|-----------|
+| `Authorization` | `Bearer <api-key-jwt>` | Sí |
+| `Content-Type` | `application/json` | Sí |
+
+### Body
+
+<ParamsTable
+  params={[
+    {
+      name: "payload",
+      type: "object",
+      required: true,
+      description: "Datos de la persona a consultar. Campos a incluir dependen de las listas seleccionadas — ver tabla abajo."
+    },
+    {
+      name: "services",
+      type: "object",
+      required: true,
+      description: "Mapa con las listas a consultar. Cada llave es el nombre de la lista, valor true para activar."
+    }
+  ]}
+/>
+
+### Campos del payload por lista
+
+| Campo del payload | Requerido para |
+|---|---|
+| `firstName` (string) | OFAC, INTERPOL |
+| `lastName` (string) | OFAC, INTERPOL |
+| `motherLastName` (string) | OFAC, INTERPOL (opcional pero mejora matching) |
+| `curp` (string, 18 chars) | RENAPO, INE (si no envías `ine`) |
+| `ine` (string, clave de elector 18 chars) | INE |
+| `rfc` (string, 12-13 chars) | SAT 69-B |
+
+### Ejemplo de solicitud
+
+```bash
+curl -X POST https://services.api.jaak.ai/api/v2/blacklist/investigate \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIs..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "payload": {
+      "firstName": "Juan",
+      "lastName": "Pérez",
+      "motherLastName": "García",
+      "curp": "PEGJ800115HDFRRL09",
+      "rfc": "PEGJ800115QJ8"
+    },
+    "services": {
+      "ine": true,
+      "interpol": true,
+      "ofac": true,
+      "renapo": { "curp": true },
+      "sat": { "sat69b": true }
+    }
+  }'
+```
+
+### Respuesta exitosa (200 OK)
+
+```json
+{
+  "eventId": "abc123-evt",
+  "status": "success",
+  "processTime": 2450,
+  "data": {
+    "ofac": {
+      "found": false,
+      "matches": []
+    },
+    "interpol": {
+      "found": false,
+      "matches": []
+    },
+    "ine": {
+      "found": false,
+      "matches": []
+    },
+    "renapo": {
+      "found": true,
+      "data": {
+        "fullName": "JUAN PÉREZ GARCÍA",
+        "gender": "HOMBRE",
+        "birthDate": "1980-01-15",
+        "nationality": "MEXICAN"
+      }
+    },
+    "sat69b": {
+      "found": false,
+      "matches": []
+    }
+  }
+}
+```
+
+### Interpretación
+
+- **`found: false`** — la persona NO aparece en esa lista.
+- **`found: true`** + `matches: [...]` — hay coincidencias. Cada elemento del array tiene los datos del registro encontrado.
+- **`found: true`** + `data: {...}` (RENAPO) — confirmación de que la CURP existe + datos completos de la persona.
+
+<Callout type="warning" title="Coincidencias no son culpables">
+Una coincidencia en OFAC o INTERPOL no implica automáticamente que sea la misma persona. Aplica criterios adicionales de matching (fecha de nacimiento, nacionalidad, pais de residencia) antes de tomar una decisión de bloqueo.
+</Callout>
+
+### Errores
+
+| Código HTTP | `errorCode` | Descripción |
+|---|---|---|
+| 400 | `BL02` | Falla en validación del payload (campos faltantes para servicios solicitados) |
+| 400 | `BL03` | Payload inválido para algún servicio específico |
+| 401 | — | API Key inválida o expirada |
+| 500 | — | Error interno consultando listas externas |
+
+---
+
+## Consultar listas individualmente
+
+Si solo necesitas una lista, puedes activarla únicamente:
+
+```json
+{
+  "payload": { "rfc": "PEGJ800115QJ8" },
+  "services": { "sat": { "sat69b": true } }
+}
+```
+
+La respuesta solo incluirá la sección `sat69b`.
+
+---
+
+## Costos y latencia
+
+| Lista | Latencia típica | Notas |
+|---|---|---|
+| OFAC | < 200 ms | Búsqueda local indexada |
+| INTERPOL | < 300 ms | Búsqueda local indexada |
+| INE | 800-2000 ms | Consulta externa al INE |
+| RENAPO | 1500-3500 ms | Consulta externa a RENAPO |
+| SAT 69-B | < 500 ms | Lista local actualizada diariamente |
+
+Cada lista activada cuenta como una consulta separada para tu cuota mensual.
+
+---
+
+## Siguientes pasos
+
+- [INE](/docs/consultas-oficiales/api/ine) — consulta INE con imagen del documento
+- [Webhooks](/docs/recursos/webhooks) — recibe notificaciones de consultas asíncronas
+- [Errores](/docs/recursos/errores) — catálogo completo de códigos de error

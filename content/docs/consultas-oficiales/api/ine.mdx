@@ -1,0 +1,97 @@
+---
+title: INE
+description: Valida una credencial INE contra el padrón electoral con imagen del documento.
+category: api
+order: 1
+---
+
+
+# Validación INE
+
+Sube la imagen frontal de una credencial INE y recibe los datos extraídos junto con el estatus de vigencia contra el padrón del Instituto Nacional Electoral.
+
+<Callout type="info" title="Validar sin imagen">
+Si solo necesitas validar la clave de elector contra el padrón sin imagen, usa el endpoint de [Listas PLD / AML](/docs/consultas-oficiales/api/listas-pld) con `services.ine: true`.
+</Callout>
+
+---
+
+## Endpoint
+
+<Endpoint
+  method="POST"
+  path="/api/v1/government/mx/ine/verify"
+  description="Verifica una INE a partir de la imagen del documento"
+/>
+
+### Headers
+
+| Header | Valor | Requerido |
+|--------|-------|-----------|
+| `Authorization` | `Bearer <api-key-jwt>` | Sí |
+| `Content-Type` | `application/json` | Sí |
+
+### Body
+
+<ParamsTable
+  params={[
+    {
+      name: "image",
+      type: "string",
+      required: true,
+      description: "Imagen frontal del INE en base64 (con o sin prefijo data:image/jpeg;base64,)"
+    }
+  ]}
+/>
+
+### Ejemplo
+
+```bash
+curl -X POST https://services.api.jaak.ai/api/v1/government/mx/ine/verify \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIs..." \
+  -H "Content-Type: application/json" \
+  -d "{\"image\": \"$(base64 < ine_front.jpg)\"}"
+```
+
+### Respuesta exitosa (200 OK)
+
+```json
+{
+  "eventId": "evt_123abc",
+  "requestId": "req_456def",
+  "timestamp": "2026-04-25T10:30:00Z",
+  "processTime": 1200.5,
+  "status": "success",
+  "data": {
+    "estado": "CDMX",
+    "municipio": "Cuauhtémoc",
+    "nombre": "JUAN",
+    "apellidoPaterno": "PÉREZ",
+    "apellidoMaterno": "GARCÍA",
+    "curp": "PEGJ800115HDFRRL09",
+    "ocr": "1234567890123",
+    "cic": "123456789",
+    "vigencia": "2028-01-15",
+    "sexo": "HOMBRE",
+    "modelo": "2020",
+    "tipo": "TEMPORAL"
+  }
+}
+```
+
+### Errores
+
+| HTTP | `errorCode` | Descripción |
+|---|---|---|
+| 400 | `GOV_VINE_004` | Falta el campo `image` |
+| 401 | — | API Key inválida |
+| 503 | `GOV_VINE_002` | Servicio Validaine no disponible |
+| 500 | `GOV_VINE_006` | Error verificando contra INE |
+
+---
+
+## Notas
+
+- Resolución mínima recomendada: 1500 px de ancho. Para más detalle ver [Captura óptima de documentos](https://www.jaak.ai).
+- El campo `vigencia` viene en formato ISO `YYYY-MM-DD`.
+- `modelo` indica la generación de la INE (`2008`, `2013`, `2014`, `2019`, `2020`, etc.).
