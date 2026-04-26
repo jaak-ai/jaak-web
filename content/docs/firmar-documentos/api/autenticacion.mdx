@@ -57,7 +57,7 @@ La API de JAAK Signa utiliza autenticación basada en tokens JWT (JSON Web Token
 ### Ejemplo de solicitud
 
 ```bash
-curl -X POST https://signa.dev.jaak.ai/api/v1/sign-in \
+curl -X POST https://signa.sandbox.jaak.ai/api/v1/sign-in \
   -H "Content-Type: application/json" \
   -d '{
     "email": "usuario@empresa.com",
@@ -135,7 +135,7 @@ Usa este endpoint cuando el token de acceso expire para obtener uno nuevo sin pe
 ### Ejemplo de solicitud
 
 ```bash
-curl -X POST https://signa.dev.jaak.ai/api/v1/refresh-token \
+curl -X POST https://signa.sandbox.jaak.ai/api/v1/refresh-token \
   -H "Content-Type: application/json" \
   -d '{
     "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
@@ -186,7 +186,7 @@ Revoca el token de acceso actual y su refresh token asociado. Todos los tokens e
 ### Ejemplo de solicitud
 
 ```bash
-curl -X POST https://signa.dev.jaak.ai/api/v1/sign-out \
+curl -X POST https://signa.sandbox.jaak.ai/api/v1/sign-out \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 ```
 
@@ -215,7 +215,7 @@ Si el usuario tiene sesiones activas en múltiples dispositivos, este endpoint s
 Una vez obtenido el token, inclúyelo en el header `Authorization` de todas las solicitudes:
 
 ```bash
-curl -X GET https://signa.dev.jaak.ai/api/v1/templates \
+curl -X GET https://signa.sandbox.jaak.ai/api/v1/templates \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 ```
 

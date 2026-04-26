@@ -26,7 +26,7 @@ Obtén un token de acceso usando tus credenciales.
 />
 
 ```bash
-curl -X POST https://signa.dev.jaak.ai/api/v1/sign-in \
+curl -X POST https://signa.sandbox.jaak.ai/api/v1/sign-in \
   -H "Content-Type: application/json" \
   -d '{
     "email": "tu-email@empresa.com",
@@ -59,7 +59,7 @@ Sube un documento PDF y define dónde irán las firmas.
 />
 
 ```bash
-curl -X POST https://signa.dev.jaak.ai/api/v1/templates \
+curl -X POST https://signa.sandbox.jaak.ai/api/v1/templates \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: multipart/form-data" \
   -F "file=@contrato.pdf" \
@@ -111,7 +111,7 @@ Genera un enlace de firma para el firmante con los datos específicos.
 />
 
 ```bash
-curl -X POST https://signa.dev.jaak.ai/api/v1/submissions \
+curl -X POST https://signa.sandbox.jaak.ai/api/v1/submissions \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -145,7 +145,7 @@ curl -X POST https://signa.dev.jaak.ai/api/v1/submissions \
       "name": "Juan Pérez García",
       "email": "juan.perez@ejemplo.com",
       "status": "pending",
-      "signUrl": "https://signa.dev.jaak.ai/sign/sub_def456?signer=firmante_1"
+      "signUrl": "https://signa.sandbox.jaak.ai/sign/sub_def456?signer=firmante_1"
     }
   ],
   "expiresAt": "2024-01-22T10:30:00Z",
@@ -168,7 +168,7 @@ Una vez que el firmante complete el proceso, descarga el documento con la firma.
 />
 
 ```bash
-curl -X GET https://signa.dev.jaak.ai/api/v1/submissions/sub_def456/download \
+curl -X GET https://signa.sandbox.jaak.ai/api/v1/submissions/sub_def456/download \
   -H "Authorization: Bearer $TOKEN" \
   -o documento_firmado.pdf
 ```
@@ -191,7 +191,7 @@ Puedes consultar el estado del envío en cualquier momento.
 />
 
 ```bash
-curl -X GET https://signa.dev.jaak.ai/api/v1/submissions/sub_def456 \
+curl -X GET https://signa.sandbox.jaak.ai/api/v1/submissions/sub_def456 \
   -H "Authorization: Bearer $TOKEN"
 ```
 

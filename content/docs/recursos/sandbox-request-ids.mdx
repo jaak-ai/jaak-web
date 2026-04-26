@@ -5,10 +5,10 @@ category: recurso
 order: 4
 ---
 
-> **Estado del servicio**: **Activo en sandbox** desde el **2026-04-17** (imagen `jaak-rest-dummy v0.4.1`). Endpoint operativo: `https://api.sandbox.jaak.ai/api/v1/kyc/sandbox/simulate`.
-> **Nota sobre timeouts (§5.8)**: los prefijos `SET*` devuelven `HTTP 408` (Request Timeout) en lugar de `504` — el api-gateway trata `504` como fallo transitorio y hace retry + fallback al `nfury-api` real, lo que enmascara el escenario. `408` llega intacto al integrador.
-> **Audiencia**: integradores (desarrolladores de clientes), QA, soporte, customer success.
-> **Ambiente afectado**: `https://api.sandbox.jaak.ai` (namespace `api-dummy`).
+> **Estado del servicio**: **Activo en sandbox**. Endpoint operativo: `https://api.sandbox.jaak.ai/api/v1/kyc/sandbox/simulate`.
+> **Nota sobre timeouts (§5.8)**: los prefijos `SET*` devuelven `HTTP 408` (Request Timeout) en lugar de `504`. Esto evita que el gateway interprete el escenario como un fallo transitorio y haga retry — `408` llega intacto al integrador.
+> **Audiencia**: integradores (desarrolladores de clientes).
+> **Ambiente afectado**: `https://api.sandbox.jaak.ai`.
 
 ---
 
@@ -23,7 +23,7 @@ Permitir a los integradores **reproducir cualquier escenario del flujo KYC (appr
 ## 2. Alcance
 
 - Endpoints bajo `/api/v1/kyc/*` en `api.sandbox.jaak.ai`.
-- **No aplica** a producción (`services.api.jaak.ai` y `api.dev.jaak.ai`) — producción siempre usa la lógica real.
+- **No aplica** a producción — producción siempre usa la lógica real.
 - **No aplica** a otros endpoints (`/api-key`, `/auth/*`, `/companies`, etc.) en esta primera versión.
 
 ## 3. Conceptos clave
@@ -209,7 +209,7 @@ curl -X POST https://api.sandbox.jaak.ai/api/v1/kyc/flow \
 # → 200 { "status": "rejected", "result": { "decision": "REJECTED", "reason": "LIVENESS_SPOOF_PHOTO" }, ... }
 ```
 
-**Simular error 401 de licencia** (reproduce el bug que tuvimos en TO-154/TO-155):
+**Simular error 401 de licencia**:
 
 ```bash
 curl -X POST https://api.sandbox.jaak.ai/api/v1/kyc/flow \
@@ -275,7 +275,7 @@ for prefix in SCENARIOS:
 
 ## 8. Shape de respuesta
 
-El dispatcher **respeta el mismo shape** del endpoint en producción (`Flow` y `VerificationFlow` en `jaak-nfury-api`). Solo cambian los valores concretos según el escenario. Así tu parser del cliente puede integrarse sin ramas especiales para sandbox.
+El dispatcher **respeta el mismo shape** que el endpoint en producción. Solo cambian los valores concretos según el escenario. Así tu parser del cliente puede integrarse sin ramas especiales para sandbox.
 
 ### 8.1 Approved (ejemplo con `SAH`)
 
@@ -398,13 +398,10 @@ Reporta a `soporte@jaak.ai` incluyendo: `requestId`, `eventId`, timestamp y ejem
 
 ## 10. Referencias
 
-- Spec técnico (interno, equipo backend): [`jaak-ai/jaak-rest-dummy` — docs/kyc-sandbox-catalog.md](https://github.com/jaak-ai/jaak-rest-dummy/blob/main/docs/kyc-sandbox-catalog.md)
-- PR del spec mergeado: [jaak-ai/jaak-rest-dummy#3](https://github.com/jaak-ai/jaak-rest-dummy/pull/3)
 - Guías KYC relacionadas:
   - [Implementación vs. Integración](/docs/verificar-identidad/como-consumir)
   - [JAAK KYC vía API](/docs/verificar-identidad/)
   - [Webhooks](/docs/recursos/webhooks)
-- Tareas internas origen: Tech Ops — TO-154 (Liveness 401), TO-155 (Document OCR 401).
 
 ---
 
@@ -412,11 +409,9 @@ Reporta a `soporte@jaak.ai` incluyendo: `requestId`, `eventId`, timestamp y ejem
 
 | Campo | Valor |
 |---|---|
-| Estado | En desarrollo (spec aprobado, implementación pendiente) |
-| Versión del catálogo | v0.1 (propuesta) |
+| Estado | Activo en sandbox |
+| Versión del catálogo | v0.1 |
 | Última revisión | 2026-04-17 |
-| Próxima actualización | Al publicar el dispatcher en sandbox (fecha TBD) |
-| Contacto técnico interno | equipo backend (canal `#tech-dev`) |
 | Contacto externo | `soporte@jaak.ai` |
 
 ---
