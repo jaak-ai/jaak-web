@@ -1,9 +1,21 @@
+import { isValidElement, type ReactElement } from 'react'
 import Link from 'next/link'
 import type { MDXComponents } from 'mdx/types'
 import { Callout } from './Callout'
 import { CodeBlock } from './CodeBlock'
+import { Mermaid } from './Mermaid'
 import { Tabs, CodeTabs } from './Tabs'
 import { Endpoint, ParamsTable, ResponseSchema, HttpMethod } from './api'
+
+function extractCodeText(node: unknown): string {
+  if (typeof node === 'string') return node
+  if (Array.isArray(node)) return node.map(extractCodeText).join('')
+  if (isValidElement(node)) {
+    const props = (node as ReactElement<{ children?: unknown }>).props
+    return extractCodeText(props.children)
+  }
+  return ''
+}
 
 export const mdxComponents: MDXComponents = {
   // Custom components for MDX
@@ -63,11 +75,19 @@ export const mdxComponents: MDXComponents = {
       </code>
     )
   },
-  pre: ({ children }) => (
-    <pre className="mb-4 overflow-x-auto rounded-lg bg-[#0a0a0a] p-4 text-sm text-gray-100">
-      {children}
-    </pre>
-  ),
+  pre: ({ children }) => {
+    if (isValidElement(children)) {
+      const child = children as ReactElement<{ className?: string; children?: unknown }>
+      if (child.props.className?.includes('language-mermaid')) {
+        return <Mermaid chart={extractCodeText(child.props.children)} />
+      }
+    }
+    return (
+      <pre className="mb-4 overflow-x-auto rounded-lg bg-[#0a0a0a] p-4 text-sm text-gray-100">
+        {children}
+      </pre>
+    )
+  },
   blockquote: ({ children }) => (
     <blockquote className="mb-4 border-l-4 border-[#0066ff] pl-4 italic text-gray-600">
       {children}
