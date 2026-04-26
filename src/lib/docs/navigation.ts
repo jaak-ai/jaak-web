@@ -32,7 +32,6 @@ export const docsNavigation: NavItem[] = [
         title: 'KYC vía API',
         items: [
           { title: 'Introducción', href: '/docs/verificar-identidad/api' },
-          { title: 'Guía de integración', href: '/docs/verificar-identidad/api/guia-integracion' },
           { title: 'Paso 1 — Crear sesión', href: '/docs/verificar-identidad/api/paso-1-crear-sesion' },
           { title: 'Paso 2 — Short Key', href: '/docs/verificar-identidad/api/paso-2-short-key' },
           { title: 'Paso 3 — Geolocalización', href: '/docs/verificar-identidad/api/paso-3-geolocalizacion' },
@@ -48,7 +47,6 @@ export const docsNavigation: NavItem[] = [
         title: 'KYC vía Android',
         items: [
           { title: 'Introducción', href: '/docs/verificar-identidad/android' },
-          { title: 'Guía de integración', href: '/docs/verificar-identidad/android/guia-integracion' },
           { title: 'Paso 1 — Short Key', href: '/docs/verificar-identidad/android/paso-1-short-key' },
           { title: 'Paso 2 — Geolocalización', href: '/docs/verificar-identidad/android/paso-2-geolocalizacion' },
           { title: 'Paso 3 — Verificación de documento', href: '/docs/verificar-identidad/android/paso-3-verificacion-documento' },
@@ -141,7 +139,6 @@ export const docsNavigation: NavItem[] = [
     title: 'Recursos',
     items: [
       { title: 'Webhooks', href: '/docs/recursos/webhooks' },
-      { title: 'Manual de webhooks KYC', href: '/docs/recursos/webhooks-kyc' },
       { title: 'Errores', href: '/docs/recursos/errores' },
       { title: 'Sandbox', href: '/docs/recursos/sandbox' },
       { title: 'Catálogo Sandbox Request IDs', href: '/docs/recursos/sandbox-request-ids' },
