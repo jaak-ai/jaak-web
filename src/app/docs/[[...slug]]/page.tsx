@@ -64,9 +64,13 @@ export default async function DocPage({ params }: PageProps) {
   }
 
   return (
-    <div className="flex px-8 py-10">
-      {/* Main content */}
-      <article className="flex-1 min-w-0 max-w-3xl">
+    <div className="flex gap-12 px-8 py-10">
+      {/* Main content — takes all available width between Sidebar and TOC.
+         Removed max-w-3xl from the article wrapper so the right-side TOC
+         sits flush against the viewport edge instead of leaving a blank
+         band of whitespace on wide screens. The prose inside still
+         constrains line length for readability via max-w-4xl. */}
+      <article className="flex-1 min-w-0">
         {/* Breadcrumb */}
         {breadcrumbs.length > 1 && (
           <nav className="mb-6 flex items-center gap-2 text-sm text-gray-500">
@@ -106,8 +110,9 @@ export default async function DocPage({ params }: PageProps) {
           </span>
         )}
 
-        {/* Content */}
-        <div className="prose prose-gray max-w-none">
+        {/* Content — max-w-4xl keeps line length readable while letting the
+           article container span the full width between Sidebar and TOC. */}
+        <div className="prose prose-gray max-w-4xl">
           <MDXContent code={doc.body.code} />
         </div>
 
