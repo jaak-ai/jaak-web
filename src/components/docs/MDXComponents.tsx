@@ -50,14 +50,18 @@ export const mdxComponents: MDXComponents = {
   ),
   li: ({ children }) => <li className="leading-relaxed">{children}</li>,
   code: ({ children, className }) => {
-    if (!className) {
-      return (
-        <code className="rounded bg-gray-100 px-1.5 py-0.5 text-sm font-mono text-gray-800">
-          {children}
-        </code>
-      )
+    // Block code: fenced (has language className) OR multi-line content (fence without language).
+    // Inline code is short, single-line, no className — that's the only branch that gets the
+    // light-gray pill style. Otherwise we'd paint a light pill on top of the dark <pre>.
+    const isBlock = !!className || (typeof children === 'string' && children.includes('\n'))
+    if (isBlock) {
+      return <code className={`${className ?? ''} text-gray-100 font-mono`}>{children}</code>
     }
-    return <code className={`${className} text-gray-100 font-mono`}>{children}</code>
+    return (
+      <code className="rounded bg-gray-100 px-1.5 py-0.5 text-sm font-mono text-gray-800">
+        {children}
+      </code>
+    )
   },
   pre: ({ children }) => (
     <pre className="mb-4 overflow-x-auto rounded-lg bg-[#0a0a0a] p-4 text-sm text-gray-100">
