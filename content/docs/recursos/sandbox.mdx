@@ -32,21 +32,21 @@ Usa el sandbox para desarrollar tu integración, hacer pruebas automatizadas y c
 
 | Ambiente | URL base |
 |----------|----------|
-| Sandbox | `https://api.dev.jaak.ai` |
+| Sandbox | `https://api.sandbox.jaak.ai` |
 | Producción | `https://api.jaak.ai` |
 
 ### Firma Digital (Signa)
 
 | Ambiente | URL base |
 |----------|----------|
-| Sandbox | `https://signa.dev.jaak.ai` |
+| Sandbox | `https://signa.sandbox.jaak.ai` |
 | Producción | `https://signa.jaak.ai` |
 
 ### Dashboard
 
 | Ambiente | URL |
 |----------|-----|
-| Sandbox | `https://platform.dev.jaak.ai` |
+| Sandbox | `https://platform.sandbox.jaak.ai` |
 | Producción | `https://platform.jaak.ai` |
 
 ---
@@ -70,7 +70,7 @@ Las credenciales de sandbox solo funcionan con URLs de sandbox, y viceversa. Si 
 </Callout>
 
 Puedes obtener tus credenciales de sandbox en:
-- **Dashboard sandbox:** `https://platform.dev.jaak.ai/settings/api`
+- **Dashboard sandbox:** `https://platform.sandbox.jaak.ai/settings/api`
 
 ---
 
@@ -139,7 +139,7 @@ Usa cualquier fecha de expiración futura y cualquier CVV de 3 dígitos.
 1. Crea una sesión normalmente:
 
 ```bash
-curl -X POST https://api.dev.jaak.ai/api/v1/sessions \
+curl -X POST https://api.sandbox.jaak.ai/api/v1/sessions \
   -H "Content-Type: application/json" \
   -H "X-API-Key: ak_test_1234567890" \
   -H "X-API-Secret: sk_test_abcdefghij" \
@@ -196,11 +196,11 @@ Accede al dashboard de producción (`platform.jaak.ai`) y genera tus API keys de
 
 ### 2. Actualiza las URLs
 
-Cambia todas las URLs de `*.dev.jaak.ai` a `*.jaak.ai`:
+Cambia todas las URLs de `*.sandbox.jaak.ai` a `*.jaak.ai`:
 
 ```javascript
 // Sandbox
-const BASE_URL = 'https://api.dev.jaak.ai';
+const BASE_URL = 'https://api.sandbox.jaak.ai';
 
 // Producción
 const BASE_URL = 'https://api.jaak.ai';
@@ -225,7 +225,7 @@ Guarda las credenciales en variables de entorno para facilitar el cambio entre a
 
 ```bash
 # .env.development
-JAAK_API_URL=https://api.dev.jaak.ai
+JAAK_API_URL=https://api.sandbox.jaak.ai
 JAAK_API_KEY=ak_test_...
 JAAK_API_SECRET=sk_test_...
 
@@ -264,12 +264,12 @@ Mantén ambientes de desarrollo, staging y producción separados:
 ```javascript
 const config = {
   development: {
-    apiUrl: 'https://api.dev.jaak.ai',
+    apiUrl: 'https://api.sandbox.jaak.ai',
     apiKey: process.env.JAAK_API_KEY_DEV,
     apiSecret: process.env.JAAK_API_SECRET_DEV
   },
   staging: {
-    apiUrl: 'https://api.dev.jaak.ai', // También usa sandbox
+    apiUrl: 'https://api.sandbox.jaak.ai', // También usa sandbox
     apiKey: process.env.JAAK_API_KEY_STAGING,
     apiSecret: process.env.JAAK_API_SECRET_STAGING
   },
@@ -293,7 +293,7 @@ Usa el sandbox para pruebas automatizadas en tu CI/CD:
 describe('JAAK Integration', () => {
   const apiKey = process.env.JAAK_TEST_API_KEY;
   const apiSecret = process.env.JAAK_TEST_API_SECRET;
-  const baseUrl = 'https://api.dev.jaak.ai';
+  const baseUrl = 'https://api.sandbox.jaak.ai';
 
   it('should create a session', async () => {
     const response = await fetch(`${baseUrl}/api/v1/sessions`, {
@@ -346,7 +346,7 @@ El sandbox se reinicia automáticamente cada 7 días, pero puedes limpiar tus da
 ### "Credenciales inválidas" en sandbox
 
 1. Verifica que estés usando credenciales con prefijo `test_`
-2. Confirma que las credenciales sean del dashboard de sandbox (`platform.dev.jaak.ai`)
+2. Confirma que las credenciales sean del dashboard de sandbox (`platform.sandbox.jaak.ai`)
 3. Las credenciales de producción no funcionan en sandbox
 
 ### Los webhooks no llegan
