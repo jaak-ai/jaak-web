@@ -1,0 +1,1396 @@
+---
+title: Guía de Integración vía API - JAAK KYC
+description: Manual técnico paso a paso para integrar el flujo completo de KYC mediante API.
+category: api
+order: 1
+---
+
+## **Manual Técnico para Desarrolladores**
+
+### **Tiempo estimado: 2-3 horas para integración completa**
+
+---
+
+## **¿Qué lograrás con esta guía?**
+
+Al finalizar esta integración habrás implementado un sistema completo de verificación de identidad KYC mediante API, con control total sobre la experiencia de usuario y flujo personalizado.
+
+## **Antes de Empezar - Requisitos Técnicos**
+
+### **Conocimientos Necesarios:**
+- API REST básico (GET, POST, Headers)
+- Formato JSON
+- Manejo de tokens de autenticación
+- Codificación Base64 para imágenes
+
+### **Herramientas Requeridas:**
+- Cliente HTTP (Postman, Insomnia, cURL)
+- Acceso a la Plataforma JAAK
+- API Key de JAAK
+- Entorno de desarrollo configurado
+
+### **Información de la Empresa:**
+- Países donde opera (configurados en JAAK)
+- URL de webhook (opcional pero recomendado)
+- URL de redirección para usuarios
+
+---
+
+## **Índice de Contenidos**
+
+| Sección | Actividad | Tiempo |
+|---------|-----------|--------|
+| **Configuración** | Obtener credenciales y configurar endpoints | 30 min |
+| **Flujo Básico** | Implementar verificación completa | 90 min |
+| **Servicios Avanzados** | Configurar validaciones adicionales | 45 min |
+| **Pruebas** | Validar funcionamiento completo | 15 min |
+
+---
+
+# **CONFIGURACIÓN INICIAL**
+
+## **Paso 1: Obtener API Key**
+
+### **Objetivo**
+Generar las credenciales necesarias para autenticar las llamadas API.
+
+### **Navegación en Plataforma**
+`Dashboard → Ajustes → API Keys → Generar nueva API key`
+
+### **Configuración de API Key**
+
+#### **1.1 Crear API Key**
+
+**Información requerida:**
+
+| Campo | Valor recomendado | Propósito |
+|-------|-------------------|-----------|
+| **Nombre** | "API-KYC-[Ambiente]" | Identificación clara |
+| **Expira en** | 1 año o sin vencimiento | Según política de seguridad |
+
+<Callout type="warning" title="Importante">
+Guarda la API Key inmediatamente, no podrás recuperarla después.
+</Callout>
+
+#### **1.2 Configurar Endpoints**
+
+**URLs de API según ambiente:**
+
+| Ambiente | Base URL |
+|----------|----------|
+| **Sandbox** | `https://api.sandbox.jaak.ai/api` |
+| **Producción** | `https://api.jaak.ai` |
+
+---
+
+## **Paso 2: Configurar Headers Base**
+
+### **Headers requeridos para todas las llamadas:**
+
+```http
+Content-Type: application/json
+Authorization: Bearer [TU-API-KEY]
+```
+
+---
+
+# **FLUJO DE INTEGRACIÓN COMPLETO**
+
+## **Paso 3: Crear Sesión KYC**
+
+### **Objetivo**
+Inicializar una nueva sesión de verificación para un cliente.
+
+### **Endpoint**
+```http
+POST /api/v1/kyc/flow
+```
+
+### **Implementación**
+
+#### **3.1 Request Body**
+
+```json
+{
+  "name": "María González Pérez",
+  "flow": "Cliente-001-Onboarding",
+  "redirectUrl": "https://tu-empresa.com/kyc-completado",
+  "countryDocument": "MEX",
+  "flowType": "KYC",
+  "verificationType": "email",
+  "verification": {
+    "SMS": "",
+    "EMAIL": "maria.gonzalez@email.com",
+    "WHATSAPP": ""
+  }
+}
+```
+
+#### **3.2 Parámetros Detallados**
+
+| Campo | Tipo | Requerido | Descripción | Ejemplo |
+|-------|------|-----------|-------------|---------|
+| `name` | string | Sí | Nombre completo del cliente | "María González Pérez" |
+| `flow` | string | Sí | Identificador único de la sesión | "Cliente-001-Onboarding" |
+| `redirectUrl` | string | No | URL donde redirigir al finalizar | "https://tu-empresa.com/success" |
+| `countryDocument` | string | Sí | País del documento (código Alpha-3) | "MEX", "USA", "COL" |
+| `flowType` | string | Sí | Tipo de verificación | "KYC" |
+| `verificationType` | string | No | Método de notificación | "email", "whatsapp", "sms", "" |
+| `verification` | object | No | Datos de contacto según método elegido | Ver tabla abajo |
+
+#### **3.3 Opciones de notificación**
+
+| Método | Campo requerido | Formato | Ejemplo |
+|--------|----------------|---------|---------|
+| **Email** | `verification.EMAIL` | email válido | "cliente@email.com" |
+| **WhatsApp** | `verification.WHATSAPP` | +[código país][número] | "+525551234567" |
+| **SMS** | `verification.SMS` | +[código país][número] | "+525551234567" |
+| **Manual** | Dejar `verificationType` vacío | - | - |
+
+#### **3.4 Response Esperado**
+
+```json
+{
+  "sessionUrl": "https://sandbox.kyc.jaak.ai/session/ABC123X"
+}
+```
+
+**El shortKey es:** `ABC123X` (últimos 7 caracteres de la URL)
+
+---
+
+## **Paso 4: Intercambiar ShortKey por Token de Sesión**
+
+### **Objetivo**
+Obtener un token de acceso para realizar operaciones en la sesión KYC.
+
+### **Endpoint**
+```http
+POST /api/v1/kyc/session
+```
+
+### **Implementación**
+
+#### **4.1 Headers Específicos**
+
+```http
+Content-Type: application/json
+Short-Key: ABC123X
+Origin-Device: API
+```
+
+#### **4.2 Request Body**
+
+```json
+{}
+```
+
+#### **4.3 Response Esperado**
+
+```json
+{
+  "accessToken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
+  "step": 1,
+  "sessionId": "uuid-sesion-id",
+  "assets": {
+    "document": null,
+    "liveness": null
+  },
+  "document": "MEX"
+}
+```
+
+<Callout type="warning" title="Importante">
+El `accessToken` debe usarse en todas las siguientes llamadas con el header `Authorization: Bearer [ACCESS-TOKEN]`.
+</Callout>
+
+---
+
+# **SERVICIOS DE VERIFICACIÓN**
+
+## **Paso 5: Registrar Geolocalización**
+
+### **Objetivo**
+Registrar la ubicación desde donde se realiza la verificación.
+
+### **Endpoint**
+```http
+POST /api/v1/kyc/session/location
+```
+
+### **Implementación**
+
+#### **5.1 Headers**
+
+```http
+Content-Type: application/json
+Authorization: Bearer [ACCESS-TOKEN]
+```
+
+#### **5.2 Request Body**
+
+```json
+{
+  "latitude": 19.432608,
+  "longitude": -99.133209
+}
+```
+
+#### **5.3 Response Esperado**
+
+```json
+{}
+```
+
+**Status Code:** `200 OK` indica éxito.
+
+---
+
+## **Paso 6: Verificar Documento**
+
+### **Objetivo**
+Validar la autenticidad del documento de identidad.
+
+### **Endpoint**
+```http
+POST /api/v3/document/verify
+```
+
+### **Implementación**
+
+#### **6.1 Headers**
+
+```http
+Content-Type: application/json
+Authorization: Bearer [ACCESS-TOKEN]
+```
+
+#### **6.2 Request Body**
+
+```json
+{
+  "imageFront": "[BASE64-IMAGE-FRONT]",
+  "imageBack": "[BASE64-IMAGE-BACK]",
+  "dataVerification": true
+}
+```
+
+#### **6.3 Parámetros**
+
+| Campo | Tipo | Requerido | Descripción |
+|-------|------|-----------|-------------|
+| `imageFront` | string | Sí | Imagen frontal del documento en Base64 |
+| `imageBack` | string | No | Imagen trasera del documento en Base64 |
+| `dataVerification` | boolean | No | Validación con RENAPO (solo México) |
+
+#### **6.4 Response de Ejemplo**
+
+```json
+{
+  "eventId": "evento-123",
+  "requestId": "request-456",
+  "evaluation": "APPROVED",
+  "document": {
+    "type": "INE",
+    "side": "BOTH",
+    "country": "México",
+    "icaoCode": "MEX"
+  },
+  "state": {
+    "documentCompleteSides": true,
+    "dataConsistent": true,
+    "documentLiveness": true,
+    "securityFeatures": true,
+    "documentValidity": true,
+    "imageQuality": true,
+    "handPresence": false,
+    "photoForgery": false,
+    "message": "Document verification successful",
+    "validations": {
+      "namesMatch": true,
+      "lastNameMatch": true,
+      "birthDateMatch": true,
+      "personalIdNumberMatch": true,
+      "message": "All validations passed"
+    }
+  },
+  "processTime": 1250
+}
+```
+
+#### **6.5 Estados de Validación**
+
+| Campo | Descripción | Ideal |
+|-------|-------------|-------|
+| `documentCompleteSides` | Documento capturado completamente | `true` |
+| `dataConsistent` | Información coherente | `true` |
+| `documentLiveness` | Documento físico (no fotocopia) | `true` |
+| `securityFeatures` | Elementos de seguridad válidos | `true` |
+| `documentValidity` | Documento vigente | `true` |
+| `imageQuality` | Calidad de imagen adecuada | `true` |
+| `handPresence` | No hay manos en la imagen | `false` |
+| `photoForgery` | Sin manipulación digital | `false` |
+
+---
+
+## **Paso 7: Extraer Datos (OCR)**
+
+### **Objetivo**
+Extraer información del documento para validaciones posteriores.
+
+### **Endpoint**
+```http
+POST /api/v4/document/extract
+```
+
+### **Implementación**
+
+#### **7.1 Headers**
+
+```http
+Content-Type: application/json
+Authorization: Bearer [ACCESS-TOKEN]
+```
+
+#### **7.2 Request Body**
+
+```json
+{
+  "imageFront": "[BASE64-IMAGE-FRONT]",
+  "imageBack": "[BASE64-IMAGE-BACK]",
+  "documentSessionSelected": {
+    "country": "MEX"
+  }
+}
+```
+
+<Callout type="tip" title="Tip">
+Usa las mismas imágenes del paso anterior.
+</Callout>
+
+#### **7.3 Response de Ejemplo**
+
+```json
+{
+  "eventId": "extract-123",
+  "requestId": "extract-456",
+  "status": "SUCCESS",
+  "processingTime": 1500,
+  "state": {
+    "message": "Extraction completed successfully",
+    "documentCompleteSides": true
+  },
+  "content": {
+    "data": {
+      "personal": {
+        "firstName": "María",
+        "secondName": "",
+        "surname": "González",
+        "motherSurname": "Pérez",
+        "fullName": "María González Pérez",
+        "sex": "M",
+        "dateOfBirth": "15/03/1990",
+        "face": "[BASE64-FACE-IMAGE]",
+        "placeOfBirth": "Ciudad de México",
+        "nationality": "MEXICANA",
+        "maritalStatus": "",
+        "extra": {
+          "ocr": "1234567890123",
+          "registerYear": "2018",
+          "rfc": "GOPM900315XXX"
+        }
+      },
+      "address": {
+        "fullAddress": "Av. Reforma 123, Col. Centro, 06000 Ciudad de México",
+        "postalCode": "06000",
+        "extra": {
+          "street": "Av. Reforma",
+          "externalNumber": "123",
+          "internalNumber": "",
+          "neighborhood": "Centro",
+          "city": "Ciudad de México",
+          "state": "CDMX"
+        }
+      },
+      "document": {
+        "type": "INE",
+        "side": "BOTH",
+        "country": {
+          "name": "México",
+          "isoAlpha3Code": "MEX",
+          "isoAlpha2Code": "MX",
+          "icaoCode": "MEX"
+        },
+        "number": "1234567890123",
+        "personalIdNumber": "GOPM900315MDFNRR02",
+        "additionalNumber": "0123",
+        "dateOfIssue": "01/01/2018",
+        "expiration": {
+          "date": "01/01/2028",
+          "isPermanent": false
+        },
+        "issuingAuthority": "INE",
+        "extra": {}
+      }
+    }
+  }
+}
+```
+
+#### **7.4 Datos Importantes para Siguientes Pasos**
+
+**Para validaciones en listas:**
+- `content.data.personal.firstName` → Nombres
+- `content.data.personal.surname` → Apellidos
+- `content.data.document.personalIdNumber` → CURP
+- `content.data.personal.extra.rfc` → RFC
+- `content.data.personal.extra.ocr` → OCR
+- `content.data.document.additionalNumber` → CIC
+
+**Para comparación facial:**
+- `content.data.personal.face` → Imagen del rostro del documento
+
+---
+
+## **Paso 8: Verificar en Listas Oficiales**
+
+### **Objetivo**
+Validar datos contra listas oficiales (RENAPO, OFAC, Interpol, INE, SAT).
+
+### **Endpoint**
+```http
+POST /api/v2/blacklist/investigate
+```
+
+### **Implementación**
+
+<Callout type="warning" title="Importante">
+Solo puedes consultar una lista por llamada.
+</Callout>
+
+#### **8.1 Headers**
+
+```http
+Content-Type: application/json
+Authorization: Bearer [ACCESS-TOKEN]
+```
+
+#### **8.2 Ejemplo: Verificación RENAPO (CURP)**
+
+```json
+{
+  "services": {
+    "ine": false,
+    "interpol": false,
+    "ofac": false,
+    "renapo": {
+      "curp": true
+    },
+    "sat": {
+      "sat69b": false
+    },
+    "cdc": {
+      "rccFico": false
+    }
+  },
+  "payload": {
+    "identifications": {
+      "curp": "GOPM900315MDFNRR02"
+    }
+  }
+}
+```
+
+#### **8.3 Ejemplo: Verificación OFAC**
+
+```json
+{
+  "services": {
+    "ine": false,
+    "interpol": false,
+    "ofac": true,
+    "renapo": {
+      "curp": false
+    },
+    "sat": {
+      "sat69b": false
+    },
+    "cdc": {
+      "rccFico": false
+    }
+  },
+  "payload": {
+    "person": {
+      "name": "María",
+      "secondName": "",
+      "lastName": "González",
+      "secondLastName": "Pérez"
+    }
+  }
+}
+```
+
+#### **8.4 Configuraciones por Servicio**
+
+**RENAPO (Validación positiva)**
+```json
+{
+  "services": { "renapo": { "curp": true } },
+  "payload": {
+    "identifications": {
+      "curp": "CURP_EXTRAIDA"
+    }
+  }
+}
+```
+
+**OFAC (Validación negativa)**
+```json
+{
+  "services": { "ofac": true },
+  "payload": {
+    "person": {
+      "name": "NOMBRE_EXTRAIDO",
+      "lastName": "APELLIDO_EXTRAIDO"
+    }
+  }
+}
+```
+
+**INE (Validación positiva)**
+```json
+{
+  "services": { "ine": true },
+  "payload": {
+    "identifications": {
+      "ine": {
+        "cic": "CIC_EXTRAIDO",
+        "ocr": "OCR_EXTRAIDO"
+      }
+    }
+  }
+}
+```
+
+#### **8.5 Response de Ejemplo**
+
+```json
+{
+  "eventId": "blacklist-123",
+  "responseId": "response-456",
+  "processTime": 0.5,
+  "organization": "renapo",
+  "service": "validaCurp",
+  "result": {
+    "curp": "GOPM900315MDFNRR02",
+    "nombres": "MARIA",
+    "apellidos": "GONZALEZ PEREZ"
+  },
+  "state": {
+    "foundInService": true,
+    "mustBeFound": true,
+    "message": "Person found in RENAPO database"
+  }
+}
+```
+
+#### **8.6 Interpretación de Resultados**
+
+| Servicio | `mustBeFound` | `foundInService` | Resultado |
+|----------|---------------|------------------|-----------|
+| **RENAPO** | `true` | `true` | Válido (persona existe) |
+| **RENAPO** | `true` | `false` | Inválido (persona no existe) |
+| **OFAC** | `false` | `false` | Válido (persona no está sancionada) |
+| **OFAC** | `false` | `true` | Inválido (persona está sancionada) |
+
+---
+
+## **Paso 9: Verificación de Vida (Liveness)**
+
+### **Objetivo**
+Validar que el usuario es una persona real presente en el momento.
+
+### **Endpoint**
+```http
+POST /api/v3/liveness/verify
+```
+
+### **Implementación**
+
+#### **9.1 Headers**
+
+```http
+Content-Type: application/json
+Authorization: Bearer [ACCESS-TOKEN]
+```
+
+#### **9.2 Request Body**
+
+```json
+{
+  "video": "[BASE64-VIDEO]",
+  "returnBestFrame": true
+}
+```
+
+#### **9.3 Response de Ejemplo**
+
+```json
+{
+  "eventId": "liveness-123",
+  "requestId": "liveness-456",
+  "evaluation": "APPROVED",
+  "score": 0.95,
+  "bestFrame": "[BASE64-BEST-FRAME]",
+  "state": {
+    "liveness": true,
+    "facesDetected": 1,
+    "isRealPerson": true,
+    "message": "Liveness verification successful"
+  },
+  "processTime": 2000
+}
+```
+
+<Callout type="tip" title="Tip">
+Guarda `bestFrame` para el siguiente paso.
+</Callout>
+
+---
+
+## **Paso 10: Comparación Facial (One-to-One)**
+
+### **Objetivo**
+Verificar que la persona del documento es la misma que realizó la prueba de vida.
+
+### **Endpoint**
+```http
+POST /api/v2/oto/verify
+```
+
+### **Implementación**
+
+#### **10.1 Headers**
+
+```http
+Content-Type: application/json
+Authorization: Bearer [ACCESS-TOKEN]
+```
+
+#### **10.2 Request Body**
+
+```json
+{
+  "eventId": "oto-comparison-001",
+  "image1": "[BASE64-BEST-FRAME-FROM-LIVENESS]",
+  "image2": "[BASE64-FACE-FROM-DOCUMENT]"
+}
+```
+
+#### **10.3 Response de Ejemplo**
+
+```json
+{
+  "eventId": "oto-comparison-001",
+  "requestId": "oto-456",
+  "score": 0.89,
+  "distance": 0.11,
+  "process_time": 800,
+  "metadata": {
+    "image1": {
+      "accessories": {
+        "glass": false,
+        "sunGlass": false,
+        "hat": false,
+        "mask": false
+      },
+      "image_quality": {
+        "isCorrectBrightness": true,
+        "isCorrectBlur": true,
+        "isCorrectHeight": true,
+        "isCorrectWidth": true,
+        "isCorrectResolution": true,
+        "isCorrectVerticalRotation": true,
+        "isCorrectHorizontalRotation": true,
+        "isCorrectRotation": true,
+        "isCorrectSizeFace": true,
+        "isCorrectNumberFaces": true
+      }
+    },
+    "image2": {
+      "accessories": {
+        "glass": false,
+        "sunGlass": false,
+        "hat": false,
+        "mask": false
+      },
+      "image_quality": {
+        "isCorrectBrightness": true,
+        "isCorrectBlur": true,
+        "isCorrectHeight": true,
+        "isCorrectWidth": true,
+        "isCorrectResolution": true,
+        "isCorrectVerticalRotation": true,
+        "isCorrectHorizontalRotation": true,
+        "isCorrectRotation": true,
+        "isCorrectSizeFace": true,
+        "isCorrectNumberFaces": true
+      }
+    }
+  },
+  "codes": null,
+  "state": {
+    "rejectedBadQuality": false,
+    "rejectedAccessories": false,
+    "isSamePerson": true,
+    "message": "Face comparison successful"
+  }
+}
+```
+
+#### **10.4 Criterios de Evaluación**
+
+| Campo | Descripción | Ideal |
+|-------|-------------|-------|
+| `isSamePerson` | Misma persona en ambas imágenes | `true` |
+| `rejectedBadQuality` | Calidad de imagen insuficiente | `false` |
+| `rejectedAccessories` | Accesorios que interfieren | `false` |
+| `score` | Puntuación de similitud (0-1) | > 0.7 |
+
+---
+
+## **Paso 11: Finalizar Sesión KYC**
+
+### **Objetivo**
+Cerrar la sesión y consolidar todos los resultados.
+
+### **Endpoint**
+```http
+POST /api/v1/kyc/session/finish
+```
+
+### **Implementación**
+
+#### **11.1 Headers**
+
+```http
+Content-Type: application/json
+Authorization: Bearer [ACCESS-TOKEN]
+```
+
+#### **11.2 Request Body**
+
+```json
+{}
+```
+
+#### **11.3 Response Esperado**
+
+```json
+{}
+```
+
+**Status Code:** `200 OK` confirma finalización exitosa.
+
+---
+
+# **AUTOMATIZACIÓN Y FLUJO COMPLETO**
+
+## **Secuencia Recomendada de Llamadas**
+
+### **Flujo Básico (Orden obligatorio)**
+
+1. **Crear Sesión** → Obtener `shortKey`
+2. **Intercambiar Token** → Obtener `accessToken`
+3. **Registrar Geolocalización** → Ubicación del usuario
+4. **Verificar Documento** → Validar autenticidad
+5. **Extraer Datos (OCR)** → Obtener información
+6. **Verificar Listas** → Validar contra bases oficiales
+7. **Verificación de Vida** → Confirmar presencia real
+8. **Comparación Facial** → Verificar titularidad
+9. **Finalizar Sesión** → Consolidar resultados
+
+### **Consideraciones de Implementación**
+
+#### **Manejo de Errores**
+
+```json
+{
+  "error": {
+    "code": "INVALID_TOKEN",
+    "message": "Access token has expired",
+    "details": "Please obtain a new access token"
+  }
+}
+```
+
+**Códigos de Error Comunes:**
+
+| Código HTTP | Significado | Acción |
+|-------------|-------------|--------|
+| `400` | Request inválido | Verificar formato JSON |
+| `401` | Token inválido/expirado | Renovar accessToken |
+| `404` | Sesión no encontrada | Verificar shortKey |
+| `422` | Datos de validación erróneos | Revisar parámetros |
+| `500` | Error interno | Reintentar o contactar soporte |
+
+#### **Timeout y Reintentos**
+
+| Servicio | Timeout recomendado | Reintentos |
+|----------|-------------------|------------|
+| **Crear Sesión** | 30 segundos | 3 |
+| **Document Verify** | 60 segundos | 2 |
+| **OCR Extract** | 60 segundos | 2 |
+| **Liveness** | 90 segundos | 1 |
+| **One-to-One** | 30 segundos | 2 |
+| **Blacklist** | 45 segundos | 3 |
+
+---
+
+# **CONFIGURACIÓN DE WEBHOOK**
+
+## **Recibir Resultados Automáticamente**
+
+### **Objetivo**
+Configurar endpoint para recibir resultados finales automáticamente.
+
+### **Configuración**
+
+#### **Configurar en Plataforma JAAK:**
+`Dashboard → Ajustes → Mi Compañía → KYC Webhook`
+
+#### **Headers y Método**
+
+JAAK envía un `POST` con `Content-Type: application/json`. Si configuraste una Auth Key en el dashboard, se incluye el header `Api-AuthKey` con el valor configurado (sin prefijo `Bearer`):
+
+```http
+POST /tu-endpoint-webhook
+Content-Type: application/json
+Api-AuthKey: [TU-AUTH-KEY]
+```
+
+Timeout de 10 segundos y entrega **fire-and-forget** (sin reintentos). Si tu endpoint no responde a tiempo, usa `detailsURL` para reconciliar.
+
+#### **Estructura del Webhook**
+
+```json
+{
+  "id": "65f8a1b2c3d4e5f600000001",
+  "shortKey": "ABC123X",
+  "startedAt": "2026-01-15T10:27:36Z",
+  "endedAt": "2026-01-15T10:30:00Z",
+  "duration": "2.40m",
+  "validation": "AUTOMATIC",
+  "stage": "approved",
+  "scores": {
+    "liveness": 96.1,
+    "document": 98.2,
+    "oneToOne": 94.7,
+    "blacklist": 100.0,
+    "total": 95.5,
+    "status": "PASS",
+    "livenessPass": true,
+    "documentPass": true,
+    "oneToOnePass": true
+  },
+  "detailsURL": "https://api.jaak.ai/api/v1/kyc/session/65f8a1b2c3d4e5f600000001"
+}
+```
+
+#### **Campos Principales**
+
+| Campo         | Descripción                                                                            |
+| ------------- | -------------------------------------------------------------------------------------- |
+| `id`          | Identificador único de la sesión (ObjectId).                                            |
+| `shortKey`    | Clave corta legible, la misma que aparece en el dashboard.                              |
+| `startedAt`   | Fecha/hora de inicio (ISO 8601).                                                        |
+| `endedAt`     | Fecha/hora en que finalizó la sesión (ISO 8601).                                        |
+| `duration`    | Duración total en minutos (ej. `"2.40m"`).                                              |
+| `validation`  | Modo de resolución: `AUTOMATIC`, `MANUAL` o `NEED_REVIEW`.                              |
+| `stage`       | Etapa final: `approved`, `rejected`, `in_review`, `expired`, `lapsed`, etc.             |
+| `scores`      | Puntuaciones por componente (0–100) más un `status` global y flags `*Pass` booleanos.   |
+| `detailsURL`  | Endpoint autenticado para consultar los datos extendidos de la sesión.                  |
+
+> El webhook **no incluye** datos personales ni extracciones del documento. Para obtener nombre, CURP, fecha de nacimiento, imágenes y demás, consulta el endpoint indicado en `detailsURL` con tu API Key. Para más detalle, consulta la [guía completa de webhooks](/docs/verificar-identidad/uso-de-webhook-kyc).
+
+---
+
+# **PRUEBAS Y VALIDACIÓN**
+
+## **Lista de Verificación**
+
+### **Pruebas Obligatorias**
+
+- [ ] Crear sesión con datos válidos
+- [ ] Intercambiar shortKey correctamente
+- [ ] Verificar documento con imágenes de buena calidad
+- [ ] Extraer datos correctamente del documento
+- [ ] Validar al menos en RENAPO y OFAC
+- [ ] Realizar prueba de vida exitosa
+- [ ] Comparar rostros con resultado positivo
+- [ ] Finalizar sesión sin errores
+- [ ] Recibir webhook (si configurado)
+
+### **Casos de Prueba**
+
+#### **Documento Válido (Caso Positivo)**
+- Documento mexicano vigente
+- Imágenes nítidas, bien iluminadas
+- Sin reflejos ni obstrucciones
+- Resultado esperado: Todos los pasos `APPROVED`
+
+#### **Documento Inválido (Caso Negativo)**
+- Documento vencido o alterado
+- Imágenes borrosas o mal iluminadas
+- Resultado esperado: Fallas en verificación
+
+#### **Persona No Encontrada en RENAPO**
+- CURP inexistente o incorrecto
+- Resultado esperado: `foundInService: false`
+
+---
+
+# **SOLUCIÓN DE PROBLEMAS**
+
+## **Errores Frecuentes**
+
+### **Token Expirado**
+```json
+{
+  "error": "Access token expired"
+}
+```
+**Solución:** Intercambiar nuevamente el shortKey por un nuevo accessToken
+
+### **Imagen Base64 Inválida**
+```json
+{
+  "error": "Invalid image format"
+}
+```
+**Solución:** Verificar que la imagen esté correctamente codificada en Base64
+
+### **País No Configurado**
+```json
+{
+  "error": "Country not supported for this company"
+}
+```
+**Solución:** Configurar el país en la Plataforma JAAK
+
+### **Webhook No Se Recibe**
+**Causas posibles:**
+- URL incorrecta en configuración
+- Servidor no responde con 200 OK
+- Firewall bloqueando conexiones
+
+---
+
+# **RECURSOS ADICIONALES**
+
+## **Documentación Complementaria**
+
+- **Conceptos Básicos en JAAK** - Terminología y arquitectura
+- **Lista de Países Soportados** - Códigos Alpha-3 disponibles
+- **Códigos de Error Completos** - Referencia de todos los errores posibles
+
+## **Herramientas de Desarrollo**
+
+### **Collection de Postman**
+```json
+{
+	"info": {
+		"_postman_id": "3e6504a2-f998-4118-b3a4-e0a98818793c",
+		"name": "Flujo KYC JAAK",
+		"description": "Colección de Postman para probar el flujo completo de KYC de JAAK a través de la API.\n\n**Instrucciones de Inicio Rápido:**\n\n1. **Configura tu API Key:** Ve a la pestaña 'Variables' de esta colección y pega tu `API Key` generada desde la Plataforma JAAK en el valor actual de la variable `apiKey`.\n    \n2. **Ejecuta las Peticiones en Orden:** Comienza con \"1. Crear Sesión KYC\". El `shortKey` y el `accessToken` se guardarán automáticamente para las siguientes llamadas.\n    \n3. **Reemplaza Datos de Prueba:** En los cuerpos (Body) de las peticiones que envían imágenes o videos (`Verificación de Documento`, `Extracción de Datos`, `Verificación de Vida`), deberás reemplazar los placeholders \"TU_BASE64_AQUI\" con datos reales en formato Base64.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "19991051"
+	},
+	"item": [
+		{
+			"name": "Paso 1: Crear Sesión KYC",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Extrae el shortKey de la respuesta y lo guarda como una variable de la colección.",
+							"var jsonData = pm.response.json();",
+							"var sessionUrl = jsonData.sessionUrl;",
+							"if (sessionUrl) {",
+							"    var shortKey = sessionUrl.substring(sessionUrl.lastIndexOf('/') + 1);",
+							"    pm.collectionVariables.set(\"shortKey\", shortKey);",
+							"    console.log(\"Short Key guardado: \" + shortKey);",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Juan Perez Perez\", // Nombre de la persona a autenticar\n  \"flow\": \"My-First-KYC\",\n  \"redirectUrl\": \"\", // Si estás implementando con Kyc Web Marca Blanca llena este campo\n  \"countryDocument\": \"MEX\", // País dónde se validara la persona\n  \"flowType\": \"KYC\", // Siempre usar 'KYC'\n  \"verificationType\": \"\", // Si estás implementando con Kyc Web Marca Blanca llena este campo: Usa WHATSAPP,SMS, EMAIL para hacer llegar la url por el canal seleccionado, \n  \"verification\": {\n    \"EMAIL\":\"\", // Llena con el valor del destinatario, ejemplo: micorreo@gmail.com\n    \"SMS\":\"\", // Llena con el valor del destinatario, ejemplo: +524661000000\n    \"WHATSAPP\":\"\"// Llena con el valor del destinatario, ejemplo: +524661000000\n  }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{baseURL}}/v1/kyc/flow",
+				"description": "Inicia un nuevo flujo de verificación de identidad (KYC). \n\nEsta llamada requiere tu `API Key` para autenticación y devuelve una `sessionUrl` que contiene el `shortKey` necesario para el siguiente paso. \n\nUn script automático se encargará de extraer y guardar el `shortKey` para que no tengas que hacerlo manualmente."
+			},
+			"response": []
+		},
+		{
+			"name": "Paso 2: Intercambiar Short Key por Token de Sesión",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Extrae el accessToken y el sessionId de la respuesta y los guarda como variables.",
+							"var jsonData = pm.response.json();",
+							"if (jsonData.accessToken) {",
+							"    pm.collectionVariables.set(\"accessToken\", jsonData.accessToken);",
+							"    console.log(\"Access Token guardado.\");",
+							"}",
+							"if (jsonData.sessionId) {",
+							"    pm.collectionVariables.set(\"sessionID\", jsonData.sessionId);",
+							"    console.log(\"Session ID guardado: \" + jsonData.sessionId);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Short-Key",
+						"value": "{{shortKey}}",
+						"type": "text"
+					},
+					{
+						"key": "Origin-Device",
+						"value": "API",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{baseURL}}/v1/kyc/session",
+				"description": "Usa el `shortKey` obtenido en el paso anterior para generar un `accessToken`. \n\nEste token es el que se usará para autenticar todas las llamadas a los servicios JAAK dentro de esta sesión específica. \n\nUn script automático guardará el `accessToken` y el `sessionID` para los siguientes pasos."
+			},
+			"response": []
+		},
+		{
+			"name": "Paso 3.1: Geolocalización",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{accessToken}}"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"latitude\": 19.4326077,// Coloca la latitud obtenida desde el dispositivo del usuario final\n    \"longitude\": -99.133208 // // Coloca la longitud obtenidad desde el dispositivo del usuario final\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{baseURL}}/v1/kyc/session/location",
+				"description": "Registra la ubicación geográfica (latitud y longitud) desde donde se está realizando la sesión de KYC. \n\nEsta llamada se autentica con el `accessToken` de la sesión."
+			},
+			"response": []
+		},
+		{
+			"name": "Paso 3.2: Verificación de Documento",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{accessToken}}"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"imageFront\": \"TU_BASE64_AQUI\", // Coloca aqui la fotografía en Base64 de la cara frontal del documento\n    \"imageBack\": \"TU_BASE64_AQUI\", // Coloca aqui la fotografía en Base64 de la cara trasera del documento\n    \"dataVerification\": false // // Coloca en true si requieres validar datos ante entidades Mexicanas(Sólo México)\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{baseURL}}/v3/document/verify",
+				"description": "Valida la autenticidad de un documento de identidad. \n\n**Importante:** Debes reemplazar los valores `TU_BASE64_..._AQUI` con las imágenes reales de un documento codificadas en Base64. "
+			},
+			"response": []
+		},
+		{
+			"name": "Paso 3.3: Extracción de Datos (OCR)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Extrae la imagen del rostro del documento y la guarda como una variable.",
+							"var jsonData = pm.response.json();",
+							"if (jsonData.content && jsonData.content.data && jsonData.content.data.personal && jsonData.content.data.personal.face) {",
+							"    pm.collectionVariables.set(\"face_from_document\", jsonData.content.data.personal.face);",
+							"    console.log(\"Imagen del rostro (del documento) guardada.\");",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{accessToken}}"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"imageFront\": \"TU_BASE64_AQUI\", // Coloca aqui la fotografía en Base64 de la cara frontal del documento\n    \"imageBack\": \"TU_BASE64_AQUI\" // Coloca aqui la fotografía en Base64 de la cara trasera del documento\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{baseURL}}/v4/document/extract",
+				"description": "Extrae la información de un documento usando tecnología OCR.\n\n**Importante:** Debes usar las mismas imágenes en Base64 que en el paso anterior para mantener la coherencia.\n\nUn script automático guardará la imagen del rostro extraída del documento para usarla en el paso de comparación (OTO)."
+			},
+			"response": []
+		},
+		{
+			"name": "Paso 3.4: Verificación en Listas Negras (RENAPO)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{accessToken}}"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"services\": {\n        \"renapo\": {\n            \"curp\": true // Coloca el servicio que deseas utilizar\n        }\n    },\n    \"payload\": {\n        \"identifications\": {\n            \"curp\": \"TU_CURP_AQUI\" //Coloca el valor a evaluar\n        }\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{baseURL}}/v2/blacklist/investigate",
+				"description": "Verifica la información del usuario contra diversas listas. Este ejemplo consulta el servicio de RENAPO.\n\n**Importante:** Debes reemplazar `TU_CURP_..._AQUI` con la CURP obtenida en el paso de extracción de datos (`content.data.document.personalIdNumber`).\n\nUtiliza este mismo servicio para realizar búsquedas en otras entidades como OFAC, INTERPOL, SAT69B, INE."
+			},
+			"response": []
+		},
+		{
+			"name": "Paso 3.5: Verificación de Vida (Liveness)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Extrae el bestFrame (mejor imagen del video) y lo guarda como variable.",
+							"var jsonData = pm.response.json();",
+							"if (jsonData.bestFrame) {",
+							"    pm.collectionVariables.set(\"bestFrame_from_liveness\", jsonData.bestFrame);",
+							"    console.log(\"Best Frame (de prueba de vida) guardado.\");",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{accessToken}}"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"video\": \"GkXfo5...\" // Coloca aquí el video en Base64 del rostro del usuario\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{baseURL}}/v1/liveness/verify-and-bestframe",
+				"description": "Garantiza que el usuario es una persona real y presente. \n\n**Importante:** Debes reemplazar `TU_VIDEO_EN_BASE64_AQUI` con un video de 5 segundos del rostro del usuario, codificado en Base64. \n\nUn script automático guardará la imagen `bestFrame` para usarla en el siguiente paso."
+			},
+			"response": []
+		},
+		{
+			"name": "Paso 3.6: Verificación de Titularidad (OTO)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{accessToken}}"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"image1\": \"{{bestFrame_from_liveness}}\", //Imagen del rostro 1 (Colocamos el obtenido del servicio Liveness)\n    \"image2\": \"{{face_from_document}}\" // Imagen del rostro 2 (Colocamos el obtenido del servicio OCR)\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{baseURL}}/v2/oto/verify",
+				"description": "Compara biométricamente el rostro extraído del documento contra el rostro capturado en la prueba de vida para confirmar que son la misma persona. \n\nLas variables `{{bestFrame_from_liveness}}` y `{{face_from_document}}` se rellenan automáticamente gracias a los scripts de los pasos anteriores."
+			},
+			"response": []
+		},
+		{
+			"name": "Paso 4: Finalizar Sesión KYC",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{accessToken}}"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{baseURL}}/v1/kyc/session/finish",
+				"description": "Cierra la sesión de KYC una vez que todos los pasos de verificación han sido completados. \n\nEs un paso crucial para asegurar la integridad del proceso."
+			},
+			"response": []
+		},
+		{
+			"name": "Paso 5: Consultar Detalle de una Sesión",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{baseURL}}/v1/kyc/session/{{sessionID}}",
+				"description": "Obtiene la información completa y detallada de una sesión específica usando su `sessionID`. \n\nEl `sessionID` se captura automáticamente del paso 2."
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": {
+			"token": "{{apiKey}}"
+		}
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "https://api.sandbox.jaak.ai/api",
+			"type": "string"
+		},
+		{
+			"key": "apiKey",
+			"value": "TU_API_KEY_AQUI",
+			"type": "string"
+		},
+		{
+			"key": "shortKey",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "accessToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "sessionID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "face_from_document",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "bestFrame_from_liveness",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
+```
+
+## **SDKs Web Recomendados**
+
+Para simplificar la captura de imágenes en el frontend:
+
+- **@jaak.ai/face-detector** - Captura optimizada de rostros
+- **@jaak.ai/stamps** - Captura de documentos de identidad
+
+## **Soporte Técnico**
+
+**Información necesaria para soporte:**
+- ShortKey

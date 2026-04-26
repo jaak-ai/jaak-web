@@ -1,0 +1,57 @@
+---
+title: Introducción a Herramientas SDK
+description: Resumen de las herramientas SDK de JAAK para captura de documentos, rostro, archivos y video.
+category: sdk
+order: 0
+---
+
+En **JAAK**, ofrecemos una serie de herramientas diseñadas para facilitar la integración de tus aplicaciones con nuestros servicios, agilizando procesos y mejorando la comunicación.
+
+Actualmente, contamos con las siguientes herramientas principales:
+
+## Document Detector SDK
+
+Este SDK es fundamental para la verificación de documentos. Utiliza visión por computadora avanzada para identificar y capturar imágenes en la posición y calidad esperada por los motores de Producto JAAK.
+
+**Objetivo**: Integrar el escaneo de documentos en aplicaciones móviles, permitiendo capturar imágenes automáticamente o seleccionarlas desde el almacenamiento del dispositivo, optimizando su calidad para análisis posteriores.
+
+**Funcionalidades clave:**
+
+* **Detección Automática de Documentos**: Captura sin intervención manual.
+* **Selección desde Almacenamiento**: Permite elegir imágenes ya guardadas.
+* **Visualización de Vista Previa**: Muestra las imágenes antes de la confirmación.
+* **Conversión a Base64**: Facilita el envío de los documentos procesados a sistemas backend.
+
+## Face Detector SDK
+
+El Face Detector SDK permite el reconocimiento facial en tiempo real para la validación de identidad. Emplea algoritmos biométricos avanzados para capturar videos de rostros en calidad, posición y formato soportado por los motores de Producto JAAK.
+
+**Objetivo**: Obtener archivos en formato Base64 de rostros, ya sea mediante fotos o videos capturados directamente con la cámara del dispositivo o seleccionados desde el almacenamiento.
+
+**Funcionalidades clave:**
+
+* Captura de fotos y videos de rostros con la cámara del dispositivo, retornando archivos en Base64.
+* Recuperación de imágenes y videos de rostros desde el almacenamiento del dispositivo, también en Base64.
+
+## File Uploader SDK
+
+Este SDK simplifica la carga de documentos e imágenes a tu sistema, garantizando una transferencia rápida, segura y eficiente desde la aplicación móvil o interfaz web al servidor de backend. Soporta diversos formatos como imágenes y videos.
+
+**Objetivo**: Facilitar la integración de capacidades avanzadas de carga de archivos en aplicaciones, permitiendo la selección de imágenes y videos con opciones de personalización (tamaño y formato) y la recuperación de URI para su uso en la aplicación.
+
+**Funcionalidades clave:**
+
+* Obtención de URI de imágenes y videos desde el dispositivo.
+* Personalización del tamaño máximo permitido para la carga.
+* Configuración de los formatos de imagen o video deseados.
+
+## Video Camera Recorder SDK
+
+El Video Camera Recorder SDK está diseñado para la captura de videos en tiempo real desde el dispositivo del usuario. Ofrece grabación con funciones como detección de calidad de imagen y grabación en condiciones de poca luz.
+
+**Objetivo**: Facilitar la integración de capacidades avanzadas de captura de fotos y videos directamente desde la cámara del dispositivo, permitiendo obtener las URI para su uso sencillo en la aplicación.
+
+**Funcionalidades clave:**
+
+* Captura de fotos con la cámara del dispositivo y devolución de su URI.
+* Grabación de videos con la cámara del dispositivo y devolución de su URI.

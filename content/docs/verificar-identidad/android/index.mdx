@@ -1,0 +1,313 @@
+---
+title: JAAK KYC via Android
+description: Implementación de JAAK KYC en aplicaciones Android con Kotlin, Retrofit y los SDKs nativos de captura de documento y rostro.
+category: guia
+order: 0
+---
+
+
+En este apartado explicaremos cómo hacer una implementación de **JAAK KYC para Android**.
+
+Antes de comenzar es necesario haber consultado la sección [**JAAK KYC**](/docs/verificar-identidad) ya que será necesario contar con un **ShortKey**.
+
+## Requisitos
+
+Para comenzar con el desarrollo en Android utilizando JAAK KYC SDK, sigue estos pasos para configurar correctamente tu entorno:
+
+**Librerias compatibles de SDK 30 al 35**
+
+| Nivel de API | AGP   | Kotlin | Core KTX | KSP           | KAPT (Migrado a KSP) | Hilt   | Coroutines Core | Coroutines Android | Coroutines Play Services | Lifecycle Runtime KTX | OkHttp | Retrofit | AppCompat | Material Components | ConstraintLayout | Activity KTX | Core SplashScreen | ML Kit Face Detection | CameraX | Play Services Location | Light Compressor |
+| ------------ | ----- | ------ | -------- | ------------- | :------------------- | ------ | --------------- | ------------------ | ------------------------ | --------------------- | ------ | -------- | --------- | ------------------- | ---------------- | ------------ | ----------------- | --------------------- | ------- | ---------------------- | ---------------- |
+| 30           | 7.1.3 | 1.7.20 | 1.8.0    | 1.7.20-1.0.29 | N/A                  | 2.39   | 1.6.2           | 1.6.2              | 1.6.2                    | 2.5.0                 | 4.9.3  | 2.9.0    | 1.5.1     | 1.6.1               | 2.1.1            | 1.5.1        | 1.0.0             | 16.6.0                | 1.2.1   | 19.3.0                 | 0.9.2            |
+| 31           | 7.2.0 | 1.8.0  | 1.11.0   | 1.8.0-1.0.29  | N/A                  | 2.40   | 1.6.4           | 1.6.4              | 1.6.4                    | 2.5.1                 | 4.9.3  | 2.9.0    | 1.5.2     | 1.6.2               | 2.1.2            | 1.5.2        | 1.0.0             | 16.7.0                | 1.2.1   | 19.4.0                 | 0.9.3            |
+| 32           | 7.2.2 | 1.8.0  | 1.12.0   | 1.8.0-1.0.29  | N/A                  | 2.36   | 1.6.4           | 1.6.4              | 1.6.4                    | 2.5.0                 | 4.9.3  | 2.9.0    | 1.5.0     | 1.7.0               | 2.1.2            | 1.5.0        | 1.0.0             | 16.4.0                | 1.3.0   | 20.2.0                 | 0.9.0            |
+| 33           | 8.0.2 | 1.9.0  | 1.13.0   | 1.9.0-1.0.30  | N/A                  | 2.40   | 1.7.0           | 1.7.0              | 1.7.0                    | 2.6.0                 | 5.0.0  | 2.9.0    | 1.6.0     | 1.9.0               | 2.2.0            | 1.6.0        | 1.0.0             | 17.0.0                | 1.3.0   | 20.3.0                 | 1.0.0            |
+| 34           | 8.5.0 | 2.0.0  | 1.14.0   | 2.0.0-1.0.31  | N/A                  | 2.50   | 1.7.5           | 1.7.5              | 1.7.5                    | 2.7.0                 | 5.0.0  | 2.9.0    | 1.6.1     | 1.10.0              | 2.2.1            | 1.7.0        | 1.0.0             | 17.0.1                | 1.4.0   | 21.0.0                 | 1.1.0            |
+| 35           | 8.7.3 | 2.1.10 | 1.15.0   | 2.1.10-1.0.31 | N/A                  | 2.51.1 | 1.8.0           | 1.8.0              | 1.8.0                    | 2.8.7                 | 5.0.0  | 2.9.0    | 1.7.0     | 1.12.0              | 2.2.1            | 1.10.1       | 1.0.1             | 17.1.0                | 1.4.2   | 21.3.0                 | 1.2.0e           |
+
+**Requisitos Previos**
+
+* Android Studio: Usar la versión recomendada de Meerkat.
+* Compilación del SDK: Establecer el SDK de compilación en 35.
+* Compatibilidad de Source y Target: Utilizar Java 11.
+* minSdkVersion: Configurar en 24.
+* targetSdkVersion: Configurar en 35.
+
+**Creación del Proyecto Android con configuración kotlin (default)**
+
+1. Abrir Android Studio.
+2. Seleccionar Nuevo Proyecto y elegir una plantilla adecuada (por ejemplo, Empty Activity).
+3. Configurar el nombre de la aplicación y asegurarse de que el lenguaje sea Kotlin.
+
+4. Configurar los valores de compilación en Gradle Scripts:
+
+En libs.versions.toml se integran las versiones que se explicaron al inicio del documento.
+
+```kotlin
+[versions]
+agp = "8.7.3"
+kotlin = "2.1.10"
+coreKtx = "1.15.0"
+kspVersion = "2.1.10-1.0.31"
+hiltVersion = "2.51.1"
+kotlinxCoroutinesAndroid = "1.8.0"
+kotlinxCoroutinesAndroidVersion = "1.8.0"
+kotlinxCoroutinesCore = "1.6.0"
+kotlinxCoroutinesPlayServices = "1.8.0"
+lifecycleRuntimeKtx = "2.8.7"
+lifecycleRuntimeKtxVersion = "2.8.7"
+okhttp = "5.0.0-alpha.2"
+retrofit = "2.9.0"
+
+appcompat = "1.7.0"
+material = "1.12.0"
+constraintLayout = "2.2.1"
+activityKtx = "1.10.1"
+coreSplashscreen = "1.0.1"
+jaakDocumentDetector = "2.0.5"
+jaakFaceDetector = "2.0.5"
+mlkitFaceDetection = "17.1.0"
+cameraX = "1.4.2"
+playServicesLocation = "21.3.0"
+lightCompressor = "1.2.0"
+
+[libraries]
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-lifecycle-runtime-ktx-v241 = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtxVersion" }
+androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleRuntimeKtx" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
+kotlinx-coroutines-android-v160 = {module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroidVersion" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
+kotlinx-coroutines-play-services = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-play-services", version.ref = "kotlinxCoroutinesPlayServices" }
+hilt-android = { group = "com.google.dagger", name = "hilt-android" , version.ref = "hiltVersion"}
+hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler" , version.ref = "hiltVersion"}
+
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+google-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintLayout" }
+androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activityKtx" }
+androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
+
+jaak-document-detector = { module = "com.jaak.documentdetectorsdk:jaakdocumentdetector-sdk", version.ref = "jaakDocumentDetector" }
+jaak-face-detector = { module = "com.jaak.facedetectorsdk:jaakfacedetector-sdk", version.ref = "jaakFaceDetector" }
+
+google-mlkit-face-detection = { module = "com.google.android.gms:play-services-mlkit-face-detection", version.ref = "mlkitFaceDetection" }
+
+androidx-camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "cameraX" }
+androidx-camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "cameraX" }
+androidx-camera-core = { module = "androidx.camera:camera-core", version.ref = "cameraX" }
+androidx-camera-view = { module = "androidx.camera:camera-view", version.ref = "cameraX" }
+androidx-camera-video = { module = "androidx.camera:camera-video", version.ref = "cameraX" }
+
+google-play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
+
+light-compressor = { module = "com.github.AbedElazizShe:LightCompressor", version.ref = "lightCompressor" }
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlinAndroidKsp = { id = "com.google.devtools.ksp", version.ref ="kspVersion" }
+hiltAndroid = { id = "com.google.dagger.hilt.android", version.ref ="hiltVersion" }
+```
+
+En build.gradle (Project), hacemos la referencia de plugin android, kotlin, hiltAndroid y kotlinAndroidKSP:
+
+```kotlin
+plugins {
+alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.hiltAndroid) apply false
+    alias(libs.plugins.kotlinAndroidKsp) apply false
+}
+```
+
+En settings.gradle se agrega los maven url faltantes en dependencyResolutionManagement :
+
+```groovy
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            url 'https://us-maven.pkg.dev/jaak-platform/jaak-android'
+        }
+        maven { url 'https://jitpack.io' }
+        maven { url 'https://maven.microblink.com' }
+    }
+}
+```
+
+Por ultimo en build.gradle (Module: app), configurar el SDK y la compatibilidad y librerías:
+
+```kotlin
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlinAndroidKsp)
+    alias(libs.plugins.hiltAndroid)
+}
+android {
+    compileSdk 35
+    defaultConfig {
+        minSdk 24
+        targetSdk 35
+    }
+  	compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+     kotlinOptions {
+        jvmTarget = '11'
+    }
+
+    buildFeatures{
+        viewBinding = true
+    }
+}
+dependencies {
+
+    // Core Android dependencies
+    implementation libs.androidx.core.ktx
+    implementation libs.androidx.lifecycle.runtime.ktx
+
+    // Coroutine Lifecycle Scopes
+    implementation libs.androidx.lifecycle.viewmodel.ktx
+    implementation libs.androidx.lifecycle.runtime.ktx.v241
+
+    // Coroutines
+    implementation libs.kotlinx.coroutines.core
+    implementation libs.kotlinx.coroutines.android
+
+    implementation libs.kotlinx.coroutines.core
+    implementation libs.kotlinx.coroutines.android.v160
+    implementation libs.kotlinx.coroutines.play.services
+
+
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+
+    implementation libs.androidx.appcompat
+    implementation libs.google.material
+    implementation libs.androidx.constraintlayout
+    implementation libs.androidx.activity.ktx
+    implementation libs.androidx.lifecycle.viewmodel.ktx
+    implementation libs.androidx.core.splashscreen
+
+    implementation(libs.jaak.document.detector)
+    implementation(libs.jaak.face.detector)
+
+    implementation(libs.google.mlkit.face.detection)
+
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.camera.view)
+    implementation(libs.androidx.camera.video)
+
+    implementation(libs.google.play.services.location)
+
+    implementation(libs.light.compressor)
+    // Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
+
+    // OkHttp
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
+}
+```
+
+5. Hacer clic en Sync Now para aplicar los cambios.
+
+**Creación del Proyecto Android con configuración Groovy DSL**
+
+1. Abrir Android Studio.
+2. Seleccionar Nuevo Proyecto y elegir una plantilla adecuada (por ejemplo, Empty Activity).
+3. Configurar el nombre de la aplicación y asegurarse de que el lenguaje sea Kotlin.
+4. Configurar los valores de compilación en Gradle Scripts:
+
+   En build.gradle (Project), configurar la versión de Gradle y el Plugin:
+
+   ```groovy
+   dependencies {
+       classpath 'com.android.tools.build:gradle:8.3.2'
+   }
+   ```
+
+   En build.gradle (Module: app), configurar el SDK y la compatibilidad:
+
+   ```groovy
+   distributionUrl=https\://services.gradle.org/distributions/gradle-8.4-all.zip
+   ```
+
+   En build.gradle (Module: app), configurar el SDK y la compatibilidad:
+
+   ```groovy
+   android {
+       compileSdk 33
+       defaultConfig {
+           minSdk 24
+           targetSdk 33
+       }
+       compileOptions {
+           sourceCompatibility JavaVersion.VERSION_18
+           targetCompatibility JavaVersion.VERSION_18
+       }
+   }
+   ```
+5. Hacer clic en Sync Now para aplicar los cambios.
+
+**Integración de Retrofit para Llamados a Servicios**
+
+Todas las llamadas API que realizaremos a continuación será mediante la arquitectura [REST](https://es.wikipedia.org/wiki/Transferencia_de_Estado_Representacional) (Representational State Transfer), con el estándar web [HTTP](https://es.wikipedia.org/wiki/Protocolo_de_transferencia_de_hipertexto) (HyperText Transfer Protocol) y firmando la comunicación con el formato [JSON](https://en.wikipedia.org/wiki/JSON) (JavaScript Object Notation).
+Recomendamos tener un conocimiento por lo menos básico de estos 3 conceptos para poder continuar con esta guía.
+
+Ahora usaremos Retrofit, una librería popular para consumo de APIs en Android.
+
+1. Agregar Dependencias:
+   * Abrir el archivo build.gradle (Module: app).
+   * Agregar las dependencias necesarias para Retrofit y Gson:
+     * Configuración Kotlin DSL
+
+     ```kotlin
+     [versions]
+     okhttp = "5.0.0-alpha.2"
+     retrofit = "2.9.0"
+
+     [libraries]
+     retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+     retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
+     okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+     logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+     ```
+
+     ```kotlin
+       // Retrofit
+         implementation(libs.retrofit)
+         implementation(libs.retrofit.converter.gson)
+
+         // OkHttp
+         implementation(libs.okhttp)
+         implementation(libs.logging.interceptor)
+     ```
+
+     * Configuracion Groovy DSL
+
+   ```groovy
+   dependencies {
+       implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+       implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+       implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
+   }
+   ```
+2. Configurar el Cliente HTTP:
+   * Crear una interfaz con las definiciones de las peticiones.
+   * Implementar una instancia de Retrofit con OkHttpClient.
+3. Uso de la API:
+   * Crear una instancia del servicio y realizar peticiones en una coroutine o CallAdapter.

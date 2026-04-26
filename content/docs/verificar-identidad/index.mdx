@@ -1,76 +1,442 @@
 ---
-title: Verificar identidad
-description: API de verificación de identidad (KYC) con biometría facial, OCR de documentos y prueba de vida.
+title: Integración - JAAK KYC
+description: Guía completa paso a paso para implementar el sistema de verificación de identidad KYC en tu negocio.
 category: guia
 order: 0
 ---
 
+## **Implementar Solución Know Your Client**
 
-# Verificar identidad
+### **Tiempo estimado: 45-60 minutos para implementación completa**
 
-JAAK KYC es nuestra API de verificación de identidad que permite validar la identidad de personas en tiempo real. Combina tecnología de reconocimiento facial, OCR de documentos oficiales y prueba de vida para ofrecer un proceso de verificación seguro y sin fricciones.
+---
 
-## Capacidades
+## **¿Qué lograrás con esta guía?**
 
-| Capacidad | Descripción |
-|-----------|-------------|
-| **Prueba de vida (Liveness)** | Detección anti-spoofing con análisis facial en tiempo real |
-| **OCR de documentos** | Extracción automática de datos de INE, pasaporte y otros documentos |
-| **Comparación facial (Face Match)** | Verificación 1:1 entre selfie y fotografía del documento |
-| **Validación oficial** | Consulta en bases de datos oficiales (INE, RENAPO, SAT) |
-| **Detección de fraude** | Análisis de documentos alterados o falsificados |
+Al finalizar esta guía habrás implementado un sistema completo de verificación de identidad KYC en tu negocio, permitiendo validar la identidad de tus clientes de forma segura y automatizada.
 
-<Callout type="tip" title="Cumplimiento regulatorio">
-JAAK KYC cumple con los requisitos de la LFPIORPI, normativas de la CNBV y estándares internacionales de AML/KYC. Ideal para entidades financieras, fintechs y empresas reguladas.
-</Callout>
+## **Antes de Empezar - Requisitos**
 
-## Flujo básico de verificación
+### **Información Necesaria:**
+- Nombre oficial de tu empresa
+- Correo electrónico empresarial
+- Países donde opera tu negocio
+- URL de redirección (página web donde regresar a los usuarios)
+- Método de notificación preferido (Email, WhatsApp, SMS)
 
-El proceso de verificación de identidad sigue estos pasos:
+### **Accesos Técnicos:**
+- Acceso a la Plataforma JAAK
+- Credenciales de administrador
+- (Opcional) Acceso al código de tu sitio web para integraciones avanzadas
+
+---
+
+## **Índice de Contenidos**
+
+| Sección | Actividad | Tiempo |
+|---------|-----------|--------|
+| **Configuración Inicial** | Preparar tu cuenta y empresa | 15 min |
+| **Implementación Básica** | Crear y enviar verificaciones | 20 min |
+| **Personalización** | Adaptar mensajes a tu marca | 10 min |
+| **Pruebas** | Validar funcionamiento | 10 min |
+| **Operación** | Gestionar verificaciones diarias | 5 min |
+
+---
+
+# **CONFIGURACIÓN INICIAL**
+
+## **Paso 1: Configurar Información de Empresa**
+
+### **Objetivo**
+Establecer los datos básicos de tu empresa en la plataforma JAAK.
+
+### **Navegación**
+`Dashboard → Ajustes → Mi Compañía → Editar`
+
+### **Acciones requeridas**
+
+#### **1.1 Información Empresarial**
+
+Complete los siguientes campos obligatorios:
+
+| Campo | Descripción | Ejemplo |
+|-------|-------------|---------|
+| **Nombre** | Razón social de la empresa | "Fintech ABC S.A. de C.V." |
+| **Correo** | Email oficial de contacto | "contacto@fintechabc.com" |
+| **Teléfono** | Número principal | "+52 55 1234 5678" |
+| **Dominio** | Sitio web empresarial | "fintechabc.com" |
+
+#### **1.2 Configuración Operativa**
+
+**Países Aceptados:**
+- Seleccione únicamente los países donde opera su negocio
+- Esta configuración determina qué documentos se pueden validar
+- **Recomendación:** Menos países = mayor precisión en validación
+
+**Usuarios del Sistema:**
+- Defina cuántos colaboradores usarán la plataforma
+- Asigne roles apropiados (Administrador, Manager, Lector)
+
+#### **1.3 Configuración KYC**
+
+Configure los parámetros operativos:
+
+| Parámetro | Valor Recomendado | Propósito |
+|-----------|-------------------|-----------|
+| **Edad mínima** | 18 años | Cumplimiento legal |
+| **Edad máxima** | 100 años | Rango operativo |
+| **URL Webhook** | Su endpoint | Recibir resultados automáticamente |
+
+**Guarde los cambios** para continuar.
+
+---
+
+## **Paso 2: Gestión de Usuarios**
+
+### **Objetivo**
+Crear cuentas para su equipo de trabajo.
+
+### **Navegación**
+`Dashboard → Ajustes → Accesos → Generar nuevo acceso`
+
+### **Tipos de Roles Disponibles**
+
+| Rol | Permisos | Ideal para |
+|-----|----------|------------|
+| **ADMINISTRADOR** | Configuración completa + Operación | Gerentes, responsables TI |
+| **MANAGER** | Gestión de sesiones + Consultas | Supervisores, coordinadores |
+| **LECTOR** | Solo visualización | Analistas, auditores |
+
+### **Información Requerida por Usuario**
+- Nombre completo
+- Correo electrónico corporativo
+- Rol asignado
+
+---
+
+# **IMPLEMENTACIÓN BÁSICA**
+
+## **Paso 3: Crear Sesión de Verificación**
+
+### **Objetivo**
+Generar enlaces de verificación para sus clientes.
+
+### **Navegación**
+`Dashboard → KYC → Sesiones → Crear nueva Sesión KYC`
+
+### **Configuración de Sesión**
+
+#### **3.1 Información del Cliente**
+
+| Campo | Descripción | Ejemplo |
+|-------|-------------|---------|
+| **Nombre del contacto** | Nombre completo del cliente | "María González Pérez" |
+| **Nombre del flujo** | Identificador interno único | "Cliente-001-Onboarding" |
+| **País de documentación** | País del documento a validar | "México" |
+
+#### **3.2 Configuración de Proceso**
+
+| Campo | Opciones | Recomendación |
+|-------|----------|---------------|
+| **Tipo de flujo** | KYC Tradicional | Para validación completa |
+| **Medio de notificación** | Email / WhatsApp / SMS | Según preferencia del cliente |
+| **URL de redirección** | Su página web | Donde regresar al cliente |
+
+#### **3.3 Métodos de Envío**
+
+**Opción A: Notificación Automática**
+- Configure `verificationType` como "email", "whatsapp" o "sms"
+- Proporcione el contacto del cliente
+- JAAK enviará el enlace automáticamente
+
+**Opción B: Envío Manual**
+- Deje `verificationType` vacío
+- Copie la URL generada
+- Envíe por sus propios canales
+
+### **Resultado**
+El sistema generará una `sessionUrl` como:
+`https://sandbox.kyc.jaak.ai/session/ABC123X`
+
+---
+
+## **Paso 4: Proceso del Cliente**
+
+### **Objetivo**
+Entender el flujo que experimentará su cliente.
+
+### **4.1 Flujo de Verificación**
+
+El cliente pasará por estas etapas:
+
+1. **Bienvenida** - Mensaje personalizado de su empresa
+2. **Permisos** - Autorización para usar cámara y geolocalización
+3. **Documento (Frente)** - Captura del anverso del documento
+4. **Documento (Reverso)** - Captura del reverso (si aplica)
+5. **Biometría** - Video-selfie para prueba de vida
+6. **Procesamiento** - Validación automática de información
+7. **Resultado** - Confirmación y redirección
+
+### **4.2 Tiempo Promedio**
+- **Total:** 3-5 minutos
+- **Captura:** 2-3 minutos
+- **Procesamiento:** 1-2 minutos
+
+### **4.3 Requisitos Técnicos para Cliente**
+- Navegador compatible (Chrome, Safari, Firefox)
+- Cámara funcional
+- Buena iluminación
+- Conexión a internet estable
+
+---
+
+# **PERSONALIZACIÓN**
+
+## **Paso 5: Personalizar Mensajes**
+
+### **Objetivo**
+Adaptar la experiencia a su marca empresarial.
+
+### **Navegación**
+`Dashboard → KYC → Template`
+
+### **Pantallas Personalizables**
+
+#### **5.1 Mensaje de Notificación**
+Personalice el mensaje que recibe el cliente por WhatsApp/SMS/Email:
 
 ```
-1. Crear sesión → 2. Usuario completa verificación → 3. Obtener resultados
+¡Hola! [Tu Empresa] necesita verificar tu identidad para completar tu registro.
+
+Este proceso es seguro y toma solo 3 minutos.
+
+Haz clic aquí para empezar: [ENLACE]
 ```
 
-1. **Crear sesión**: Genera una sesión de verificación con los parámetros requeridos
-2. **Usuario completa verificación**: El usuario captura su documento y realiza la prueba de vida
-3. **Obtener resultados**: Consulta los resultados de la verificación vía API o webhook
+#### **5.2 Pantalla de Bienvenida**
+Configure el mensaje inicial que ve el cliente:
 
-## Opciones de integración
+```
+¡Bienvenido a [Tu Empresa]!
 
-JAAK KYC ofrece múltiples formas de integración según tus necesidades:
+Para completar tu registro, necesitamos verificar tu identidad.
+Este proceso es completamente seguro y toma solo unos minutos.
 
-| Opción | Descripción | Caso de uso |
-|--------|-------------|-------------|
-| **SDK Web** | Widget JavaScript para integrar en tu sitio web | Aplicaciones web, onboarding en navegador |
-| **SDK iOS** | Framework nativo para aplicaciones iOS | Apps móviles iPhone/iPad |
-| **SDK Android** | Librería nativa para aplicaciones Android | Apps móviles Android |
-| **API directa** | Integración server-to-server sin UI | Backend personalizado, flujos custom |
-| **URL de verificación** | Enlace que redirige al usuario al flujo de JAAK | Integración rápida sin desarrollo |
+Tendrás que:
+- Fotografiar tu documento oficial
+- Tomar una selfie para confirmar tu identidad
 
-<Callout type="info" title="SDKs nativos">
-Los SDKs nativos ofrecen la mejor experiencia de usuario y tasas de conversión más altas. Incluyen captura guiada de documentos y detección de calidad de imagen en tiempo real.
-</Callout>
+¿Listo para empezar?
+```
 
-## URLs base
+#### **5.3 Pantalla de Permisos**
+Explique por qué necesita los permisos:
 
-| Ambiente | URL |
-|----------|-----|
-| Sandbox | `https://api.dev.jaak.ai` |
-| Producción | `https://api.jaak.ai` |
+```
+Para completar la verificación necesitamos:
 
-<Callout type="warning" title="Ambiente de pruebas">
-Usa siempre el ambiente sandbox durante el desarrollo. Las verificaciones en sandbox no consultan bases de datos oficiales y los datos se eliminan automáticamente después de 30 días.
-</Callout>
+Acceso a tu cámara para:
+- Fotografiar tu documento de identidad
+- Tomar una selfie de verificación
 
-## Primeros pasos
+Tu ubicación para:
+- Cumplir con requisitos regulatorios
 
-- [Guía rápida](/docs/verificar-identidad/guia-rapida) - Integra verificación de identidad en 10 minutos
-- [Tipos de verificación](/docs/verificar-identidad/conceptos/tipos-verificacion) - Conoce las opciones disponibles
-- [API de Sesiones](/docs/verificar-identidad/api/sesiones) - Referencia completa de endpoints
+Tu privacidad es importante. No guardamos videos ni usamos tu información para otros fines.
+```
 
-## Recursos adicionales
+#### **5.4 Pantalla de Resultados**
+Mensaje de confirmación final:
 
-- [Webhooks](/docs/recursos/webhooks) - Recibe notificaciones cuando se complete una verificación
-- [Errores](/docs/recursos/errores) - Códigos de error y cómo resolverlos
-- [Sandbox](/docs/recursos/sandbox) - Detalles del ambiente de pruebas
+```
+¡Excelente! Tu verificación se completó exitosamente.
+
+¿Qué sigue?
+- Recibirás una confirmación por email en los próximos minutos
+- Tu cuenta ya está activada
+- Puedes comenzar a usar nuestros servicios
+
+¿Tienes preguntas? Contáctanos en soporte@tuempresa.com
+```
+
+### **Consejos para Mensajes Efectivos**
+- Use lenguaje claro y simple
+- Explique el beneficio para el cliente
+- Incluya tiempos específicos
+- Proporcione información de contacto
+
+---
+
+# **PRUEBAS Y VALIDACIÓN**
+
+## **Paso 6: Realizar Prueba Completa**
+
+### **Objetivo**
+Validar que todo funciona correctamente antes del lanzamiento.
+
+### **Lista de Verificación**
+
+#### **6.1 Configuración**
+- [ ] Información de empresa completa
+- [ ] Países configurados correctamente
+- [ ] Mensajes personalizados
+- [ ] Webhook configurado (si aplica)
+
+#### **6.2 Prueba de Verificación**
+1. Cree una sesión de prueba con sus datos
+2. Complete el proceso completo
+3. Verifique que reciba el resultado
+4. Confirme la redirección funciona
+
+#### **6.3 Prueba de Diferentes Escenarios**
+- [ ] Documento mexicano válido
+- [ ] Cliente con buena conectividad
+- [ ] Cliente con mala iluminación
+- [ ] Proceso en dispositivo móvil
+- [ ] Proceso en computadora
+
+### **Estados de Resultado Esperados**
+
+| Estado | Significado | Acción |
+|--------|-------------|--------|
+| **APROBADO** | Verificación exitosa | Proceder con cliente |
+| **RECHAZADO** | Falló validación | Revisar causa, posible reintento |
+| **PENDIENTE** | Requiere revisión manual | Revisar en 24-48 horas |
+| **ERROR** | Problema técnico | Verificar configuración |
+
+---
+
+# **OPERACIÓN DIARIA**
+
+## **Paso 7: Gestión de Verificaciones**
+
+### **Objetivo**
+Administrar las verificaciones de identidad en operación normal.
+
+### **7.1 Monitoreo de Sesiones**
+
+**Dashboard Principal:** `KYC → Sesiones`
+
+Información disponible:
+- Lista de todas las verificaciones
+- Estado actual de cada sesión
+- Tiempo de procesamiento
+- Datos extraídos del cliente
+
+### **7.2 Revisión de Resultados**
+
+**Para cada sesión puede consultar:**
+- Datos personales extraídos
+- Imágenes capturadas
+- Puntuación de confianza
+- Validaciones realizadas
+- Historial de la sesión
+
+### **7.3 Casos que Requieren Atención**
+
+**Sesiones PENDIENTES:**
+- Revise los datos manualmente
+- Valide si las imágenes son claras
+- Tome decisión de aprobación/rechazo
+
+**Sesiones con ERROR:**
+- Verifique la configuración del sistema
+- Confirme que el webhook funciona
+- Contacte soporte si persiste
+
+### **7.4 Métricas Importantes**
+
+Monitoree regularmente:
+- Tasa de aprobación
+- Tiempo promedio de procesamiento
+- Sesiones abandonadas
+- Principales causas de rechazo
+
+---
+
+# **INTEGRACIÓN AVANZADA (OPCIONAL)**
+
+## **Opción A: Implementación vía Marca Blanca**
+
+**Características:**
+- Interfaz completa proporcionada por JAAK
+- Mínimo desarrollo técnico
+- Personalización de marca básica
+- Implementación rápida (1-2 días)
+
+**Ideal para:**
+- Empresas sin equipo técnico
+- Implementación rápida
+- Presupuesto limitado
+
+## **Opción B: Integración vía API**
+
+**Características:**
+- Control total sobre la experiencia
+- Interfaz 100% personalizada
+- Integración con sistemas existentes
+- Desarrollo técnico requerido
+
+**Ideal para:**
+- Empresas con equipo de desarrollo
+- Experiencia de usuario específica
+- Integración con sistemas complejos
+
+### **Herramientas de Desarrollo Disponibles**
+- **@jaak.ai/face-detector:** Componente para captura facial
+- **@jaak.ai/stamps:** Componente para captura de documentos
+- **APIs REST:** Servicios de validación individual
+
+---
+
+# **SOLUCIÓN DE PROBLEMAS**
+
+## **Problemas Frecuentes**
+
+### **Cliente no puede completar verificación**
+
+| Problema | Causa Probable | Solución |
+|----------|----------------|----------|
+| No carga la cámara | Permisos bloqueados | Activar permisos en navegador |
+| Documento rechazado | País no configurado | Verificar lista de países aceptados |
+| Calidad de imagen | Mala iluminación | Instruir mejores condiciones |
+| Proceso se cuelga | Conectividad | Reintentar con mejor conexión |
+
+### **Configuración del sistema**
+
+| Problema | Verificar |
+|----------|-----------|
+| Webhook no funciona | URL correcta y servidor activo |
+| Mensajes no personalizados | Configuración de templates guardada |
+| Países incorrectos | Lista actualizada en configuración |
+
+---
+
+# **SOPORTE Y CONTACTO**
+
+## **Cuándo Contactar Soporte**
+
+- Errores técnicos persistentes
+- Problemas de configuración complejos
+- Dudas sobre integraciones
+- Solicitudes de funcionalidades
+
+## **Información para Soporte**
+
+- Descripción detallada del problema
+- Capturas de pantalla
+- Pasos realizados antes del error
+- Navegador y dispositivo usado
+- ShortKey de la sesión problemática
+
+---
+
+## **Conceptos Básicos**
+
+Para mayor información sobre términos técnicos y arquitectura del sistema, consulte la guía [**Conceptos Básicos en JAAK**](/docs/jaak/conceptos-clave) disponible en la documentación.
+
+## **Documentación Adicional**
+
+- [Guía de integración vía API](/docs/verificar-identidad/)
+- [Referencia de webhooks](/docs/recursos/webhooks)
+- Lista de países soportados: [América](/docs/extras/lista-de-documentos-soportados-america) | [Europa](/docs/extras/lista-de-documentos-soportados-europa)

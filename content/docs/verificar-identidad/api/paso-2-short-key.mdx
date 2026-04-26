@@ -1,0 +1,84 @@
+---
+title: Paso 2 - ShortKey vía API
+description: Intercambio del ShortKey por un Token de Sesión KYC para autenticar las llamadas posteriores.
+category: api
+order: 3
+---
+
+## Intercambio de ShortKey por Token de Sesión de KYC
+
+Un **ShortKey** es un identificador único de una **Sesión KYC**. Para poder realizar llamadas a los **Servicios JAAK** que forman parte de una **Sesión KYC**, es fundamental autenticarse y autorizar dichas llamadas conociendo el origen de la sesión. Para ello, se utiliza un **Token de Sesión KYC**, el cual podemos obtener a partir del **ShortKey**.
+
+Para obtener un **Token de Sesión KYC** a partir de un **ShortKey** debemos hacer la siguiente llamada API:
+
+**URL**
+
+```
+POST https://api.sandbox.jaak.ai/api/v1/kyc/session
+```
+
+**Header**
+
+```
+Short-Key: String
+Origin-Device String
+```
+
+| Parámetro     | Tipo   | Requerido | Descripción                                                                       |
+| :------------ | :----- | :-------- | :-------------------------------------------------------------------------------- |
+| Short-Key     | string | Si        | ShortKey de la Sesión KYC de la cual queremos obtener un Token de Sesión KYC.     |
+| Origin-Device | string | Si        | Identificador desde donde se realizará la Sesión KYC para esta guía seria **API** |
+
+**Request**
+
+```json
+{}
+```
+
+**Response**
+
+```json
+{
+  "accessToken": String,
+  "step": Integer,
+  "sessionId": String,
+  "assets": {
+    "document": null | String,
+    "liveness": null | String,
+  },
+  "document": String
+}
+```
+
+| Campo       | Tipo    | Descripción                                                     |
+| :---------- | :------ | :-------------------------------------------------------------- |
+| accessToken | string  | Token de Sesión KYC creado a partir de Short Key proporcionado. |
+| step        | integer | Número entero que representa el paso actual del proceso.        |
+| sessionId   | string  | Identificador único de la sesión.                               |
+| assets      | string  | Contiene información sobre los activos asociados al proceso.    |
+| document    | string  | Código del documento procesado (ejemplo: "MEX" para México).    |
+
+Objeto *assets*
+
+| Campo    | Tipo   | Descripción                                                      |
+| :------- | :----- | :--------------------------------------------------------------- |
+| document | string | Información del documento asociado (puede ser null o un valor).  |
+| liveness | string | Información sobre la prueba de vida (puede ser null o un valor). |
+
+> Todas las siguientes llamadas API deben ser autenticadas mediante una cabecera denominada "**Authorization**", cuyo valor debe ser "Bearer **token-sesion-kyc**".\
+> El cual puedes obtenerlo del la propiedad accessToken.
+
+Una vez hecho el intercambio del **ShortKey** y obtenido el **Token de Sesión KYC**, ya podemos hacer uso de los **Servicios JAAK** asignados para realizar un proceso KYC.
+
+## Servicios JAAK
+
+El proceso **JAAK KYC para API** requiere de una serie de servicios esenciales, diseñados para verificar la identidad de una persona de manera detallada. Cada uno de los **Servicios JAAK** mencionado a continuación desempeña un papel fundamental para garantizar que el proceso sea seguro, preciso y cumpla con las normativas legales.
+
+* [Geolocalización](/docs/verificar-identidad/api/paso-3-geolocalizacion)
+* [Verificación de documento](/docs/verificar-identidad/api/paso-4-verificacion-documento)
+* [Extracción de datos del documento](/docs/verificar-identidad/api/paso-5-ocr)
+* [Verificación de datos en lista negra](/docs/verificar-identidad/api/paso-6-listas-oficiales)
+* [Verificación de vida](/docs/verificar-identidad/api/paso-7-liveness)
+* [Verificación de la titularidad del documento](/docs/verificar-identidad/api/paso-8-titularidad)
+
+Todos los servicios proporcionados por **JAAK** son vitales para fortalecer la seguridad del proceso KYC y garantizar su fiabilidad. Además, aseguran el cumplimiento de las normativas internacionales, protegiendo la identidad y los documentos de los clientes durante todo el proceso.

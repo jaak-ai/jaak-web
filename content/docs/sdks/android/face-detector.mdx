@@ -1,0 +1,751 @@
+---
+title: Manual SDK Android @jaak.ai/face-detector
+description: SDK Android para captura de fotos y videos faciales desde cámara o almacenamiento, con conversión a Base64.
+category: sdk
+order: 1
+---
+
+## Manual Completo para Detección Facial en Aplicaciones Android
+
+### Tiempo estimado: 45-60 minutos para configuración completa
+
+---
+
+## ¿Qué aprenderás en este manual?
+
+Este manual te enseñará a implementar y usar el SDK Face Detector de JAAK para reconocimiento facial en tiempo real en aplicaciones Android nativas. **No necesitas conocimientos técnicos avanzados** - solo sigue los pasos.
+
+---
+
+## Antes de Empezar - Lista de Verificación
+
+Asegúrate de tener estos elementos listos:
+
+* Android Studio Iguana instalado
+* Dispositivo Android con API 26+ (Android 8.0+)
+* Acceso al repositorio Maven de JAAK
+* Conocimientos básicos de Kotlin/Java
+* Permisos de cámara y almacenamiento configurados
+
+---
+
+## Índice de Contenidos
+
+| Sección | Qué harás | Tiempo |
+|---------|-----------|---------|
+| **Paso 1** | Configurar proyecto y dependencias | 10 min |
+| **Paso 2** | Implementación básica del SDK | 20 min |
+| **Paso 3** | Configurar permisos y FileProvider | 10 min |
+| **Paso 4** | Manejo de respuestas y base64 | 15 min |
+| **Paso 5** | Probar funcionalidades | 10 min |
+
+---
+
+# PASO 1: Configurar Proyecto y Dependencias
+
+## Objetivo
+
+Configurar el entorno de desarrollo y añadir las dependencias necesarias del SDK.
+
+## Requisitos Técnicos
+
+| Requisito | Versión | ¿Obligatorio? |
+|-----------|---------|---------------|
+| Android Studio | Iguana | Sí |
+| Gradle | 8.4+ | Sí |
+| minSdkVersion | 26 | Sí |
+| targetSdkVersion | 33 | Sí |
+| Kotlin | 1.9.22+ | Sí |
+
+### 1.1 Configuración build.gradle (Proyecto)
+
+```groovy
+buildscript {
+    ext.kotlin_version = "1.9.22"
+    ext.hilt_version = '2.46'
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            url 'https://us-maven.pkg.dev/jaak-platform/jaak-android'
+        }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.3.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
+    }
+}
+```
+
+### 1.2 Configuración settings.gradle
+
+```groovy
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            url 'https://us-maven.pkg.dev/jaak-platform/jaak-android'
+        }
+    }
+}
+```
+
+### 1.3 Configuración build.gradle (Módulo app)
+
+```groovy
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
+
+android {
+    compileSdk 35
+
+    defaultConfig {
+        minSdk 26
+        targetSdk 33
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_18
+        targetCompatibility JavaVersion.VERSION_18
+    }
+
+    buildFeatures {
+        viewBinding = true
+    }
+}
+
+dependencies {
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version")
+    implementation("androidx.core:core-ktx:1.15.0")
+    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.2.0")
+    implementation("com.google.dagger:hilt-android:$hilt_version")
+    kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
+
+    // Face Detector SDK
+    implementation("com.jaak.facedetector:jaakfacedetector-sdk:2.0.5")
+}
+```
+
+---
+
+# PASO 2: Implementación Básica del SDK
+
+## Objetivo
+
+Crear la implementación base del Face Detector SDK en tu aplicación.
+
+### 2.1 Crear Application Class
+
+```kotlin
+import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
+
+@HiltAndroidApp
+class TestApp : Application()
+```
+
+### 2.2 MainActivity Básica
+
+```kotlin
+import android.net.Uri
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import com.jaak.facedetector.FaceDetectorSDK
+import com.jaak.facedetector.FaceDetectorListener
+import com.example.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity(), FaceDetectorListener {
+
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var faceDetectorSDK: FaceDetectorSDK
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        setupFaceDetector()
+        setupButtons()
+    }
+
+    private fun setupFaceDetector() {
+        faceDetectorSDK = FaceDetectorSDK(this, this)
+
+        // Configuración básica
+        faceDetectorSDK.setEnableCamera(true)
+        faceDetectorSDK.setEnableDisk(true)
+        faceDetectorSDK.setEnableCameraPhoto(true)
+        faceDetectorSDK.setEnableCameraVideo(true)
+        faceDetectorSDK.setEnableDiskPhoto(true)
+        faceDetectorSDK.setEnableDiskVideo(true)
+        faceDetectorSDK.setFacesOrDocuments(true)
+        faceDetectorSDK.setImageFormat("image/*")
+        faceDetectorSDK.setVideoFormat("video/*")
+        faceDetectorSDK.setImageSize(3)
+        faceDetectorSDK.setVideoSize(10)
+    }
+
+    private fun setupButtons() {
+        binding.btnFullMenu.setOnClickListener {
+            faceDetectorSDK.startFaceDetector(0) // Menú completo
+        }
+
+        binding.btnCameraOnly.setOnClickListener {
+            faceDetectorSDK.startFaceDetector(2) // Solo cámara
+        }
+
+        binding.btnStorageOnly.setOnClickListener {
+            faceDetectorSDK.startFaceDetector(4) // Solo almacenamiento
+        }
+    }
+
+    override fun onSuccessFaceDetector(typeProcess: Int, uri: Uri?) {
+        // Manejar resultado exitoso
+        handleSuccess(typeProcess, uri)
+    }
+
+    override fun onErrorFaceDetector(text: String) {
+        // Manejar errores
+        handleError(text)
+    }
+
+    private fun handleSuccess(typeProcess: Int, uri: Uri?) {
+        val message = when (typeProcess) {
+            1 -> "Foto capturada desde cámara"
+            2 -> "Video capturado desde cámara"
+            3 -> "Foto seleccionada desde almacenamiento"
+            4 -> "Video seleccionado desde almacenamiento"
+            else -> "Proceso completado"
+        }
+
+        binding.tvStatus.text = message
+        // Procesar archivo si es necesario
+        uri?.let { processFile(it, typeProcess) }
+    }
+
+    private fun handleError(text: String) {
+        binding.tvStatus.text = "Error: $text"
+    }
+
+    private fun processFile(uri: Uri, type: Int) {
+        // Aquí puedes procesar el archivo capturado
+        // Por ejemplo, convertir a base64 o enviarlo a un servidor
+    }
+}
+```
+
+### 2.3 Layout XML (activity_main.xml)
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="JAAK Face Detector"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp" />
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Presiona un botón para comenzar"
+        android:textAlignment="center"
+        android:padding="15dp"
+        android:background="@drawable/rounded_background"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="30dp" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/tvStatus"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="40dp">
+
+        <Button
+            android:id="@+id/btnFullMenu"
+            android:layout_width="280dp"
+            android:layout_height="60dp"
+            android:text="Menú Completo"
+            android:textSize="16sp"
+            android:layout_marginBottom="15dp" />
+
+        <Button
+            android:id="@+id/btnCameraOnly"
+            android:layout_width="280dp"
+            android:layout_height="60dp"
+            android:text="Solo Cámara"
+            android:textSize="16sp"
+            android:layout_marginBottom="15dp" />
+
+        <Button
+            android:id="@+id/btnStorageOnly"
+            android:layout_width="280dp"
+            android:layout_height="60dp"
+            android:text="Solo Almacenamiento"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+```
+
+---
+
+# PASO 3: Configurar Permisos y FileProvider
+
+## Objetivo
+
+Configurar correctamente los permisos de cámara y almacenamiento, y el FileProvider para manejo de archivos.
+
+### 3.1 AndroidManifest.xml
+
+```xml
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Permisos necesarios -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:replace="android:maxSdkVersion"
+        android:maxSdkVersion="28" />
+
+    <application
+        android:name=".TestApp"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+        tools:replace="android:theme,android:name">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- FileProvider para manejo seguro de archivos -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+    </application>
+</manifest>
+```
+
+### 3.2 Crear file_paths.xml
+
+Crear archivo `res/xml/file_paths.xml`:
+
+```xml
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <external-path name="my_images" path="Pictures/" />
+    <external-path name="my_files" path="Android/data/${applicationId}/files/" />
+    <cache-path name="my_cache" path="." />
+</paths>
+```
+
+### 3.3 Manejo de Permisos en Runtime
+
+```kotlin
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import android.Manifest
+import android.content.pm.PackageManager
+
+class MainActivity : AppCompatActivity(), FaceDetectorListener {
+
+    companion object {
+        private const val CAMERA_PERMISSION_CODE = 100
+        private const val STORAGE_PERMISSION_CODE = 101
+    }
+
+    private fun checkAndRequestPermissions() {
+        val permissionsNeeded = mutableListOf<String>()
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+            != PackageManager.PERMISSION_GRANTED) {
+            permissionsNeeded.add(Manifest.permission.CAMERA)
+        }
+
+        if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.P) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+                permissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            }
+        }
+
+        if (permissionsNeeded.isNotEmpty()) {
+            ActivityCompat.requestPermissions(
+                this,
+                permissionsNeeded.toTypedArray(),
+                CAMERA_PERMISSION_CODE
+            )
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        when (requestCode) {
+            CAMERA_PERMISSION_CODE -> {
+                if (grantResults.isNotEmpty() &&
+                    grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
+                    binding.tvStatus.text = "Permisos concedidos"
+                } else {
+                    binding.tvStatus.text = "Permisos denegados"
+                }
+            }
+        }
+    }
+}
+```
+
+---
+
+# PASO 4: Manejo de Respuestas y Conversión Base64
+
+## Objetivo
+
+Implementar el manejo completo de respuestas del SDK y conversión a base64.
+
+### 4.1 Clase Utils para Conversión Base64
+
+```kotlin
+import android.content.ContentResolver
+import android.net.Uri
+import android.util.Base64
+import java.io.ByteArrayOutputStream
+import java.io.FileInputStream
+import java.io.InputStream
+
+object Utils {
+
+    fun imageCameraUriToBase64(uri: Uri): String? {
+        return try {
+            val inputStream = FileInputStream(uri.path)
+            val bytes = inputStream.readBytes()
+            inputStream.close()
+            Base64.encodeToString(bytes, Base64.DEFAULT)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    fun imageFileUriToBase64(contentResolver: ContentResolver, uri: Uri): String? {
+        return try {
+            val inputStream = contentResolver.openInputStream(uri)
+            val bytes = inputStream?.readBytes()
+            inputStream?.close()
+            bytes?.let { Base64.encodeToString(it, Base64.DEFAULT) }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    fun videoCameraUriToBase64(uri: Uri): String? {
+        return try {
+            val inputStream = FileInputStream(uri.path)
+            val bytes = inputStream.readBytes()
+            inputStream.close()
+            Base64.encodeToString(bytes, Base64.DEFAULT)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+    fun videoFileUriToBase64(contentResolver: ContentResolver, uri: Uri): String? {
+        return try {
+            val inputStream = contentResolver.openInputStream(uri)
+            val bytes = inputStream?.readBytes()
+            inputStream?.close()
+            bytes?.let { Base64.encodeToString(it, Base64.DEFAULT) }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
+}
+```
+
+### 4.2 Manejo Completo de Respuestas
+
+```kotlin
+override fun onSuccessFaceDetector(typeProcess: Int, uri: Uri?) {
+    var base64Process = ""
+    var message = ""
+
+    uri?.let { fileUri ->
+        when (typeProcess) {
+            1 -> {
+                // Foto desde cámara
+                base64Process = Utils.imageCameraUriToBase64(fileUri) ?: ""
+                message = "Foto capturada desde cámara"
+            }
+            2 -> {
+                // Video desde cámara
+                base64Process = Utils.videoCameraUriToBase64(fileUri) ?: ""
+                message = "Video capturado desde cámara"
+            }
+            3 -> {
+                // Foto desde almacenamiento
+                base64Process = Utils.imageFileUriToBase64(contentResolver, fileUri) ?: ""
+                message = "Foto seleccionada desde almacenamiento"
+            }
+            4 -> {
+                // Video desde almacenamiento
+                base64Process = Utils.videoFileUriToBase64(contentResolver, fileUri) ?: ""
+                message = "Video seleccionado desde almacenamiento"
+            }
+        }
+
+        binding.tvStatus.text = message
+
+        // Procesar el archivo base64
+        if (base64Process.isNotEmpty()) {
+            processBase64File(base64Process, typeProcess)
+            showFileInfo(fileUri, base64Process.length)
+        }
+    }
+}
+
+override fun onErrorFaceDetector(text: String) {
+    binding.tvStatus.text = "Error: $text"
+    // Log para debugging
+    android.util.Log.e("FaceDetector", "Error: $text")
+}
+
+private fun processBase64File(base64: String, type: Int) {
+    // Aquí puedes procesar el archivo base64
+    // Ejemplo: enviarlo a un servidor, guardarlo localmente, etc.
+
+    android.util.Log.d("FaceDetector", "Procesando archivo base64 de tipo: $type")
+    android.util.Log.d("FaceDetector", "Tamaño base64: ${base64.length} caracteres")
+
+    // Ejemplo de envío a servidor
+    // sendToServer(base64, type)
+}
+
+private fun showFileInfo(uri: Uri, base64Length: Int) {
+    val fileInfo = "Archivo procesado:\n" +
+            "URI: ${uri.path}\n" +
+            "Tamaño base64: ${base64Length} caracteres\n" +
+            "Tamaño aprox: ${base64Length * 3 / 4 / 1024} KB"
+
+    // Mostrar información en un TextView adicional o log
+    android.util.Log.i("FaceDetector", fileInfo)
+}
+```
+
+---
+
+# PASO 5: Probar Funcionalidades
+
+## Objetivo
+
+Verificar que todas las funcionalidades del SDK funcionan correctamente.
+
+## Lista de Verificación
+
+| Elemento | Estado | Descripción |
+|----------|----|-----------  |
+| **Permisos de cámara** | ☐ | Aplicación solicita y obtiene permisos |
+| **Captura de foto** | ☐ | Funciona desde cámara |
+| **Captura de video** | ☐ | Funciona desde cámara |
+| **Selección de archivo** | ☐ | Funciona desde almacenamiento |
+| **Conversión base64** | ☐ | Archivos se convierten correctamente |
+
+## Proceso de Prueba
+
+### Paso A: Probar Permisos
+1. **Instalar aplicación** en dispositivo físico
+2. **Abrir aplicación** por primera vez
+3. **Verificar solicitud** de permisos automática
+4. **Conceder permisos** de cámara y almacenamiento
+
+### Paso B: Probar Captura desde Cámara
+1. **Presionar "Solo Cámara"**
+2. **Tomar foto** usando la interfaz de cámara
+3. **Verificar mensaje** de éxito en pantalla
+4. **Revisar logs** para confirmar conversión base64
+
+### Paso C: Probar Selección desde Almacenamiento
+1. **Presionar "Solo Almacenamiento"**
+2. **Seleccionar archivo** de imágenes o videos
+3. **Verificar procesamiento** del archivo
+4. **Confirmar conversión** a base64
+
+## Debugging y Troubleshooting
+
+### Logs Útiles para Debug
+
+```kotlin
+private fun enableDebugLogs() {
+    // Agregar en onCreate() para debugging
+    android.util.Log.d("FaceDetector", "=== INICIANDO DEBUG ===")
+    android.util.Log.d("FaceDetector", "SDK versión: 2.0.5")
+    android.util.Log.d("FaceDetector", "Permisos cámara: ${checkCameraPermission()}")
+    android.util.Log.d("FaceDetector", "Permisos almacenamiento: ${checkStoragePermission()}")
+}
+
+private fun checkCameraPermission(): Boolean {
+    return ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) ==
+           PackageManager.PERMISSION_GRANTED
+}
+
+private fun checkStoragePermission(): Boolean {
+    return if (android.os.Build.VERSION.SDK_INT <= android.os.Build.VERSION_CODES.P) {
+        ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+        PackageManager.PERMISSION_GRANTED
+    } else {
+        true // No se necesita en Android 10+
+    }
+}
+```
+
+### Problemas Comunes
+
+| Problema | Solución |
+|----------|----------|
+| **"Error de permisos"** | Verificar AndroidManifest.xml y permisos runtime |
+| **"FileProvider error"** | Revisar configuración de file_paths.xml |
+| **"Archivo no encontrado"** | Verificar rutas y FileProvider authorities |
+| **"SDK no responde"** | Verificar dependencias y configuración Hilt |
+
+---
+
+# Referencia Completa
+
+## Métodos del SDK
+
+| Método | Descripción | Ejemplo |
+|--------|-------------|---------|
+| **setEnableCamera(Boolean)** | Habilita captura desde cámara | `faceDetectorSDK.setEnableCamera(true)` |
+| **setEnableDisk(Boolean)** | Habilita selección desde almacenamiento | `faceDetectorSDK.setEnableDisk(true)` |
+| **setImageSize(Int)** | Tamaño máximo de imagen en MB | `faceDetectorSDK.setImageSize(3)` |
+| **setVideoSize(Int)** | Tamaño máximo de video en MB | `faceDetectorSDK.setVideoSize(10)` |
+| **startFaceDetector(Int)** | Inicia el proceso | `faceDetectorSDK.startFaceDetector(0)` |
+
+## Tipos de Proceso
+
+| Tipo | Descripción | Cuándo se usa |
+|------|-------------|---------------|
+| **0** | Menú completo | Mostrar todas las opciones |
+| **2** | Solo cámara | Forzar captura desde cámara |
+| **4** | Solo almacenamiento | Forzar selección de archivos |
+
+## Códigos de Respuesta
+
+| Código | Descripción |
+|--------|-------------|
+| **1** | Foto capturada desde cámara |
+| **2** | Video capturado desde cámara |
+| **3** | Foto seleccionada desde almacenamiento |
+| **4** | Video seleccionado desde almacenamiento |
+
+---
+
+# Solución de Problemas
+
+## Problema: "Error de compilación"
+
+```kotlin
+// Incorrecto
+implementation("com.jaak.facedetector:jaakfacedetector-sdk:2.0.5")
+
+// Correcto - Verificar acceso al repositorio
+maven {
+    url 'https://us-maven.pkg.dev/jaak-platform/jaak-android'
+}
+```
+
+## Problema: "Permisos denegados constantemente"
+
+```kotlin
+// Solución: Verificar en Settings si los permisos están bloqueados
+private fun openAppSettings() {
+    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+    val uri = Uri.fromParts("package", packageName, null)
+    intent.data = uri
+    startActivity(intent)
+}
+```
+
+## Problema: "FileProvider authority conflicts"
+
+```xml
+<!-- Usar applicationId para evitar conflictos -->
+<provider
+    android:name="androidx.core.content.FileProvider"
+    android:authorities="${applicationId}.fileprovider"
+    android:exported="false"
+    android:grantUriPermissions="true">
+```
+
+---
+
+# ¿Necesitas Ayuda?
+
+## Información para soporte
+
+* **Descripción del problema:** Qué intentas hacer vs qué sucede
+* **Logs de Android Studio:** Screenshots de errores y warnings
+* **Configuración build.gradle:** Versiones de dependencias
+* **Dispositivo de prueba:** Modelo, Android version, API level
+* **Pasos para reproducir:** Secuencia exacta que causa el error
+
+## Contacto de Soporte
+
+**Email:** soporte@jaak.ai
+**Incluir siempre:** Logs, configuración, versión del SDK
+
+---
+
+Has implementado exitosamente el SDK Face Detector de JAAK en tu aplicación Android. Tu app ahora puede capturar y procesar imágenes/videos faciales para procesos de KYC y verificación biométrica.

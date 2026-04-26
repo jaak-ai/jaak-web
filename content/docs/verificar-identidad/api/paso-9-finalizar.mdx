@@ -1,0 +1,46 @@
+---
+title: Paso 9 - Finalizar Sesión KYC vía API
+description: Cerrar la Sesión KYC para garantizar la integridad y seguridad del proceso.
+category: api
+order: 10
+---
+
+Una vez ejecutados los **productos JAAK**, se debe finalizar la **Sesión KYC** de manera adecuada mediante la API, esto garantiza la seguridad y un correcto funcionamiento del **JAAK KYC**.
+
+El proceso de finalización se lleva a cabo mediante una llamada a la siguiente URL. Es esencial incluir el Token de Sesión KYC para informar la Sesión KYC que queremos finalizar.
+
+**URL**
+
+```
+POST https://api.sandbox.jaak.ai/api/v1/kyc/session/finish
+```
+
+**Header**
+
+```
+Authorization: Bearer token-session-kyc
+```
+
+| Campo         | Tipo   | Requerido | Descripción                                                                                                  |
+| :------------ | :----- | :-------- | :----------------------------------------------------------------------------------------------------------- |
+| Authorization | string | Sí        | En esta cabecera se debe enviar el Token de Sesión KYC que se ha obtenido del intercambiado con de Short Key |
+
+**Request**
+
+```json
+{}
+```
+
+**Response**
+
+```json
+{}
+```
+
+El estado HTTP 200 confirma que una sesión KYC se ha finalizado con éxito. Cualquier otro código de estado HTTP recibido de la llamada indicaría un error.
+
+**¡Excelente!**
+
+Si has llegado hasta aquí, ya tienes todo el conocimiento necesario para implementar correctamente **JAAK KYC**.
+
+Para poder ver el estado de tus sesiones y visualizarlas, continua al siguiente paso donde te explicamos cómo hacerlo.

@@ -1,0 +1,88 @@
+---
+title: Conociendo JAAK KYC vía web (white-label)
+description: Analogía de contenedores y llaves para entender la sesión KYC, sus tipos de autorización y el flujo simplificado.
+category: concepto
+order: 2
+---
+
+Ahora que conoces qué es un proceso [KYC](/docs/verificar-identidad/que-es-kyc), te presentamos **KYC JAAK**, nuestra solución modular y segura para la verificación de identidad, diseñada para adaptarse completamente a las necesidades de tu negocio.
+
+Con **KYC JAAK**, cada aspecto de la implementación está pensado para ofrecerte una solución flexible, alineada con tus objetivos sin sacrificar seguridad ni calidad.
+
+![JAAK KYC Verificación de Identidad](https://files.readme.io/05cd9ff1e20e1a756082740e5329a9b2ed16c7fc7552030885ad97b4b792f84d-JAAK-KYC-Verificacion-de-Identidad.png)
+
+La mejor manera de entenderlo es a través de una simple analogía: imagina que cada proceso de verificación de identidad es un **contenedor seguro y personal**. Esta guía te explicará qué es ese contenedor y qué llaves necesitas para gestionarlo y para que tus usuarios puedan llenarlo.
+
+## 1. La Sesión de KYC
+
+Metafóricamente, una **Sesión de KYC** es un *contenedor digital, individual y seguro* que tú creas para cada uno de tus usuarios. Este contenedor tiene un único propósito: que un usuario deposite en él toda la información necesaria para verificar su identidad (fotos de su documento, una selfie, datos personales, etc.).
+
+Una vez que la información está dentro, los mecanismos internos del contenedor se activan para analizarla.
+
+#### El mecanismo del contenedor
+
+Dentro de cada contenedor hay un **conjunto de engranes (nuestros Servicios JAAK)** que trabajan en conjunto para procesar y verificar la información. Un flujo KYC(Mecanismo) típico activa los siguientes engranes en secuencia:
+
+1. **Engrane de OCR y Document Verify:** Analiza el documento, extrae sus datos y revisa su autenticidad.
+2. **Engrane de Liveness:** Se asegura de que el usuario sea una persona real.
+3. **Engrane de One-to-One:** Compara el rostro del usuario con la foto del documento.
+4. **Engrane de Validaciones y Listas Negras:** Revisa los datos contra fuentes oficiales y listas de riesgo.
+
+Al final, el contenedor no solo almacena la información, sino que te entrega un resultado completo sobre la validez de la identidad del usuario.
+
+<Callout type="info" title="Información importante">
+Una **Sesión KYC** tiene un tiempo de vida de 72 hrs, una vez concluido este tiempo, la sesión KYC(el contenedor) se cierra y finaliza automáticamente.
+</Callout>
+
+***
+
+## 2. Autorización
+
+Para crear y gestionar estos contenedores de forma segura, existen tres tipos de "llaves". Cada una tiene un propósito y un nivel de permiso diferente.
+
+#### La Llave Maestra: `API Key`
+
+Piensa en la `API Key` como *la llave maestra de tu almacén de contenedores*. Es una clave secreta que te identifica a ti, nuestro cliente, y te otorga permisos de gestión a alto nivel.
+
+* **Función:** Te permite comunicarte desde tu servidor con el sistema de JAAK para realizar acciones administrativas.
+* **Permisos Clave:**
+  * Crear contenedores (iniciar nuevas Sesiones de KYC).
+  * Ver y consultar el estado de tus contenedores (obtener los resultados de una verificación ya terminada).
+* **Seguridad:** Esta llave es exclusiva para tu uso en el **back-end (servidor)**. Nunca debe ser expuesta en el lado del cliente (navegador o app móvil).
+
+#### La Contraseña del Contenedor: `shortKey`
+
+La `shortKey` es como *una contraseña única que le asignas a un contenedor específico* al momento de crearlo. No es una llave poderosa, sino más bien una etiqueta de identificación.
+
+* **Función:** Actúa como un identificador único para una sesión en particular.
+* **Propósito:** Su único objetivo es ser intercambiada por la llave final que usará tu usuario. Es el puente entre tu sistema y la sesión del usuario.
+* **Uso:** La generas en tu back-end(al crear la Sesión KYC) y se la pasas a tu front-end para que pueda solicitar el acceso.
+
+#### La Llave del Usuario: `accessToken` (Token KYC)
+
+El `accessToken`(Token KYC) es *la llave que le entregas a tu usuario final para que pueda ingresar a un único contenedor y llenarlo con su información* durante 15 minutos.
+
+* **Función:** Otorga permiso de acceso temporal y de un solo uso a un usuario para interactuar con una Sesión de KYC específica.
+* **¿Cómo se obtiene?:** Tu aplicación (front-end) le presenta la `shortKey` a nuestro sistema. Al confirmar que la "contraseña del contenedor" es correcta, JAAK le entrega a cambio este `accessToken`.
+* **Uso:** Con esta llave, le permiten al usuario final comenzar su proceso de verificación.
+
+<Callout type="info" title="Información importante">
+Si vence el token(después de 15 min), puedes volver a intercambiar el mismo `shortKey` por otro `accessToken` sí la sesión KYC aún esta vigente(menos de 72 hrs).
+</Callout>
+
+***
+
+## 3. Flujo Simplificado: Uniendo las Piezas
+
+Veamos cómo interactúan estas tres llaves en un proceso real:
+
+![Flujo Simplificado KYC](https://files.readme.io/274750f899137e1f75c32f4b2699446a42042a552072b889caa4617d528295ef-Flujo-Simplificado-KYC.png)
+
+1. **(Back-end)** Tu servidor usa tu **`API Key`** (la llave maestra) para pedirle a JAAK que cree un nuevo "contenedor".
+2. **(Back-end)** JAAK crea la Sesión KYC y te devuelve una **`shortKey`** (la contraseña del contenedor).
+3. **(Front-end)** Tu aplicación en el navegador del usuario recibe esa `shortKey` y se la presenta al sistema de JAAK.
+4. **(Front-end)** JAAK intercambia la `shortKey` por un **`accessToken`** de corta duración (la llave del usuario).
+5. **(Front-end)** ¡Listo! Con el `accessToken`, el usuario ahora tiene permiso para abrir el contenedor y comenzar a interactuar con el mecanismo.
+6. **(Back-end)** Una vez finalizado el proceso, tu servidor vuelve a usar su **`API Key`** para consultar el resultado final del contenedor.
+
+Entender este flujo de "contenedores y llaves" es el primer gran paso para una integración exitosa.

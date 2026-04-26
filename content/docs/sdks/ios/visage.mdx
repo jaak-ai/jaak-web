@@ -1,0 +1,1018 @@
+---
+title: Manual SDK iOS @jaak.ai/visage
+description: SDK iOS nativo para detección facial automatizada y grabación de video con prueba de vida.
+category: sdk
+order: 2
+---
+
+## Manual Completo para Detección y Grabación Facial en Aplicaciones iOS
+
+### Tiempo estimado: 45-60 minutos para configuración completa
+
+---
+
+## ¿Qué aprenderás en este manual?
+
+Este manual te enseñará a implementar y usar el JAAKVisage SDK para detección facial automatizada y grabación de video en aplicaciones iOS nativas. **No necesitas conocimientos técnicos avanzados** - solo sigue los pasos.
+
+---
+
+## Antes de Empezar - Lista de Verificación
+
+Asegúrate de tener estos elementos listos:
+
+* Xcode 12.0+ instalado
+* Dispositivo iOS 12.0+ (físico, no simulador)
+* CocoaPods configurado
+* Conocimientos básicos de Swift/UIKit
+* Acceso a cámara funcional
+* Documento de identidad para pruebas faciales
+
+---
+
+## Índice de Contenidos
+
+| Sección | Qué harás | Tiempo |
+|---------|-----------|---------|
+| **Paso 1** | Configurar proyecto y dependencias | 10 min |
+| **Paso 2** | Implementación básica del SDK | 20 min |
+| **Paso 3** | Configurar permisos de cámara | 10 min |
+| **Paso 4** | Manejo de grabación y archivos | 15 min |
+| **Paso 5** | Probar detección facial | 10 min |
+
+---
+
+# PASO 1: Configurar Proyecto y Dependencias
+
+## Objetivo
+
+Instalar el JAAKVisage SDK y configurar el entorno de desarrollo.
+
+## Requisitos Técnicos
+
+| Requisito | Versión | ¿Obligatorio? |
+|-----------|---------|---------------|
+| Xcode | 12.0+ | Sí |
+| iOS | 12.0+ | Sí |
+| Swift | 5.0+ | Sí |
+| CocoaPods | Latest | Sí |
+| Cámara física | Requerida | Sí (no simulador) |
+
+### 1.1 Instalación CocoaPods
+
+```bash
+# Instalar CocoaPods si no lo tienes
+sudo gem install cocoapods
+
+# Crear Podfile en tu proyecto
+cd /ruta/a/tu/proyecto
+pod init
+```
+
+### 1.2 Configuración Podfile
+
+```ruby
+platform :ios, '12.0'
+
+target 'YourApp' do
+  use_frameworks!
+
+  # SDK JAAKVisage - Versión Beta
+  pod 'jaak-visage', '>= 1.0.0-beta.1', '< 1.0.0-dev'
+end
+```
+
+### 1.3 Instalación de Dependencias
+
+```bash
+# Ejecuta instalación
+pod install
+
+# Importante después de la instalación:
+# 1. Cierra Xcode completamente si está abierto
+# 2. Abre el archivo .xcworkspace (NO el .xcodeproj)
+open YourApp.xcworkspace
+```
+
+<Callout type="warning" title="Configuración requerida para compilación">
+Si encuentras errores de sandboxing al **compilar** el proyecto, desactiva **User Script Sandboxing**:
+
+1. Selecciona tu target en Xcode
+2. Ve a **Build Settings**
+3. Busca **"User Script Sandboxing"**
+4. Cambia el valor a **"No"**
+</Callout>
+
+---
+
+# PASO 2: Implementación Básica del SDK
+
+## Objetivo
+
+Crear la implementación base del JAAKVisage SDK con detección y grabación automática.
+
+### 2.1 ViewController Básico
+
+```swift
+import UIKit
+import JAAKVisage
+import AVKit
+
+class ViewController: UIViewController {
+    private var detector: JAAKVisageSDK?
+    private var recordedVideos: [RecordedVideo] = []
+
+    // UI Elements
+    private var statusLabel: UILabel!
+    private var videosTableView: UITableView!
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupUI()
+        setupDetector()
+    }
+
+    private func setupUI() {
+        view.backgroundColor = .systemBackground
+        title = "Face Detection"
+
+        // Status label
+        statusLabel = UILabel()
+        statusLabel.text = "Listo para detectar rostro"
+        statusLabel.textAlignment = .center
+        statusLabel.numberOfLines = 0
+        statusLabel.font = .systemFont(ofSize: 16)
+        statusLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        // Botón de reinicio
+        let restartButton = UIButton(type: .system)
+        restartButton.setTitle("Reiniciar Detector", for: .normal)
+        restartButton.backgroundColor = .systemBlue
+        restartButton.setTitleColor(.white, for: .normal)
+        restartButton.layer.cornerRadius = 8
+        restartButton.translatesAutoresizingMaskIntoConstraints = false
+        restartButton.addTarget(self, action: #selector(restartDetector), for: .touchUpInside)
+
+        // Table view para videos
+        videosTableView = UITableView()
+        videosTableView.delegate = self
+        videosTableView.dataSource = self
+        videosTableView.register(UITableViewCell.self, forCellReuseIdentifier: "VideoCell")
+        videosTableView.translatesAutoresizingMaskIntoConstraints = false
+
+        view.addSubview(statusLabel)
+        view.addSubview(restartButton)
+        view.addSubview(videosTableView)
+
+        // Layout constraints
+        NSLayoutConstraint.activate([
+            statusLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 320),
+            statusLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            statusLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+
+            restartButton.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 16),
+            restartButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            restartButton.heightAnchor.constraint(equalToConstant: 44),
+            restartButton.widthAnchor.constraint(equalToConstant: 160),
+
+            videosTableView.topAnchor.constraint(equalTo: restartButton.bottomAnchor, constant: 16),
+            videosTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            videosTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            videosTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+
+    private func setupDetector() {
+        // 1. Configuración básica
+        var config = JAAKVisageConfiguration()
+        config.videoDuration = 5.0
+        config.disableFaceDetection = false
+        config.enableInstructions = true
+
+        // 2. Inicializar detector
+        detector = JAAKVisageSDK(configuration: config)
+        detector?.delegate = self
+
+        // 3. Crear vista de preview
+        if let previewView = detector?.createPreviewView() {
+            previewView.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(previewView)
+
+            NSLayoutConstraint.activate([
+                previewView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+                previewView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+                previewView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+                previewView.heightAnchor.constraint(equalToConstant: 300)
+            ])
+
+            previewView.layer.cornerRadius = 16
+            previewView.clipsToBounds = true
+        }
+
+        // 4. Iniciar detección
+        do {
+            try detector?.startDetection()
+        } catch {
+            print("Error starting detection: \(error)")
+        }
+    }
+
+    // MARK: - Actions
+    @objc private func restartDetector() {
+        do {
+            try detector?.restartDetection()
+            statusLabel.text = "Detector reiniciado exitosamente"
+        } catch {
+            statusLabel.text = "Error al reiniciar: \(error.localizedDescription)"
+        }
+    }
+
+    // MARK: - Video Playback
+    private func playVideo(data: Data, fileName: String) {
+        let tempDir = FileManager.default.temporaryDirectory
+        let tempURL = tempDir.appendingPathComponent(fileName)
+
+        do {
+            try data.write(to: tempURL)
+            let player = AVPlayer(url: tempURL)
+            let playerController = AVPlayerViewController()
+            playerController.player = player
+
+            present(playerController, animated: true) {
+                player.play()
+            }
+        } catch {
+            print("Error creando archivo temporal: \(error)")
+        }
+    }
+}
+
+// Estructura para video grabado
+struct RecordedVideo {
+    let fileName: String
+    let data: Data
+    let recordedAt: Date
+    let size: Int
+
+    var formattedDate: String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        formatter.timeStyle = .medium
+        return formatter.string(from: recordedAt)
+    }
+
+    var sizeString: String {
+        return ByteCountFormatter.string(fromByteCount: Int64(size), countStyle: .file)
+    }
+}
+
+// MARK: - JAAKVisageSDKDelegate
+extension ViewController: JAAKVisageSDKDelegate {
+    func faceDetector(_ detector: JAAKVisageSDK, didUpdateStatus status: JAAKVisageStatus) {
+        DispatchQueue.main.async {
+            self.statusLabel.text = "Estado: \(status.rawValue)"
+        }
+    }
+
+    func faceDetector(_ detector: JAAKVisageSDK, didCaptureFile result: JAAKFileResult) {
+        DispatchQueue.main.async {
+            let video = RecordedVideo(
+                fileName: result.fileName ?? "video_\(Date().timeIntervalSince1970).mp4",
+                data: result.data,
+                recordedAt: Date(),
+                size: result.fileSize
+            )
+            self.recordedVideos.append(video)
+            self.videosTableView.reloadData()
+            self.statusLabel.text = "Video capturado: \(video.fileName)"
+        }
+    }
+
+    func faceDetector(_ detector: JAAKVisageSDK, didEncounterError error: JAAKVisageError) {
+        DispatchQueue.main.async {
+            self.statusLabel.text = "Error: \(error.localizedDescription)"
+        }
+    }
+
+    func faceDetector(_ detector: JAAKVisageSDK, didDetectFace message: JAAKFaceDetectionMessage) {
+        if message.faceExists && message.correctPosition {
+            DispatchQueue.main.async {
+                self.statusLabel.text = "Rostro detectado en posición correcta"
+            }
+        }
+    }
+}
+
+// MARK: - UITableView DataSource & Delegate
+extension ViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return recordedVideos.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "VideoCell", for: indexPath)
+        let video = recordedVideos[indexPath.row]
+        cell.textLabel?.text = video.fileName
+        cell.detailTextLabel?.text = "\(video.formattedDate) • \(video.sizeString)"
+        cell.accessoryType = .disclosureIndicator
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let video = recordedVideos[indexPath.row]
+        playVideo(data: video.data, fileName: video.fileName)
+    }
+}
+```
+
+### 2.2 Implementación SwiftUI
+
+```swift
+import SwiftUI
+import JAAKVisage
+import AVKit
+
+struct ContentView: View {
+    @StateObject private var visageManager = VisageManager()
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: 16) {
+                // Vista del detector con wrapper UIKit
+                VisageViewWrapper(manager: visageManager)
+                    .frame(height: 400)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                    .padding(.horizontal)
+
+                // Status
+                VStack(spacing: 8) {
+                    Text(visageManager.statusMessage)
+                        .font(.body)
+                        .foregroundColor(.primary)
+
+                    Text("Estado: \(visageManager.currentStatus.rawValue)")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(Color.blue.opacity(0.1))
+                        .cornerRadius(4)
+                }
+                .padding()
+                .background(Color.gray.opacity(0.1))
+                .cornerRadius(8)
+                .padding(.horizontal)
+
+                // Controles
+                Button("Reiniciar Detector") {
+                    visageManager.restartDetector()
+                }
+                .padding()
+                .background(Color.blue)
+                .foregroundColor(.white)
+                .cornerRadius(8)
+
+                // Videos grabados
+                if !visageManager.recordedVideos.isEmpty {
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("Videos Grabados (\(visageManager.recordedVideos.count))")
+                            .font(.headline)
+                            .padding(.horizontal)
+
+                        ForEach(visageManager.recordedVideos.reversed()) { video in
+                            VideoRowView(video: video)
+                                .padding(.horizontal)
+                        }
+                    }
+                    .padding(.bottom)
+                }
+            }
+        }
+    }
+}
+
+// Manager simplificado con reproductor de video
+class VisageManager: ObservableObject {
+    @Published var statusMessage = "Listo para detectar rostro"
+    @Published var currentStatus: JAAKVisageStatus = .notLoaded
+    @Published var recordedVideos: [RecordedVideo] = []
+
+    private(set) var configuration: JAAKVisageConfiguration
+    private var visageUIView: JAAKVisageUIView?
+
+    init() {
+        var config = JAAKVisageConfiguration()
+        config.videoDuration = 5.0
+        config.disableFaceDetection = false
+        config.enableInstructions = true
+        self.configuration = config
+    }
+
+    func setVisageUIView(_ view: JAAKVisageUIView) {
+        self.visageUIView = view
+        // Auto-iniciar detección
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            view.startDetection()
+        }
+    }
+
+    func restartDetector() {
+        do {
+            try visageUIView?.restartDetector()
+            statusMessage = "Detector reiniciado exitosamente"
+        } catch {
+            statusMessage = "Error al reiniciar: \(error.localizedDescription)"
+        }
+    }
+}
+
+// Wrapper para usar UIKit en SwiftUI
+struct VisageViewWrapper: UIViewRepresentable {
+    let manager: VisageManager
+
+    func makeUIView(context: Context) -> JAAKVisageUIView {
+        let view = JAAKVisageUIView()
+        view.backgroundColor = UIColor.black
+        manager.setVisageUIView(view)
+        return view
+    }
+
+    func updateUIView(_ uiView: JAAKVisageUIView, context: Context) {
+        if !uiView.isSetup {
+            let detector = JAAKVisageSDK(configuration: manager.configuration)
+            detector.delegate = manager
+
+            let previewView = detector.createPreviewView()
+            uiView.addSubview(previewView)
+            previewView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                previewView.topAnchor.constraint(equalTo: uiView.topAnchor),
+                previewView.leadingAnchor.constraint(equalTo: uiView.leadingAnchor),
+                previewView.trailingAnchor.constraint(equalTo: uiView.trailingAnchor),
+                previewView.bottomAnchor.constraint(equalTo: uiView.bottomAnchor)
+            ])
+
+            uiView.faceDetector = detector
+            uiView.previewView = previewView
+            uiView.isSetup = true
+        }
+    }
+}
+
+// Extensión del manager como delegate
+extension VisageManager: JAAKVisageSDKDelegate {
+    func faceDetector(_ detector: JAAKVisageSDK, didUpdateStatus status: JAAKVisageStatus) {
+        DispatchQueue.main.async {
+            self.currentStatus = status
+            self.statusMessage = "Estado: \(status.rawValue)"
+        }
+    }
+
+    func faceDetector(_ detector: JAAKVisageSDK, didCaptureFile result: JAAKFileResult) {
+        DispatchQueue.main.async {
+            // Almacenar video grabado
+            let video = RecordedVideo(
+                fileName: result.fileName ?? "video_\(Date().timeIntervalSince1970).mp4",
+                data: result.data,
+                recordedAt: Date(),
+                size: result.fileSize
+            )
+            self.recordedVideos.append(video)
+            self.statusMessage = "Video capturado: \(result.fileName ?? "desconocido")"
+        }
+    }
+
+    func faceDetector(_ detector: JAAKVisageSDK, didEncounterError error: JAAKVisageError) {
+        DispatchQueue.main.async {
+            self.statusMessage = "Error: \(error.localizedDescription)"
+        }
+    }
+
+    func faceDetector(_ detector: JAAKVisageSDK, didDetectFace message: JAAKFaceDetectionMessage) {
+        if message.faceExists && message.correctPosition {
+            DispatchQueue.main.async {
+                self.statusMessage = "Rostro detectado en posición correcta"
+            }
+        }
+    }
+}
+
+// Estructura para video grabado
+struct RecordedVideo: Identifiable {
+    let id = UUID()
+    let fileName: String
+    let data: Data
+    let recordedAt: Date
+    let size: Int
+
+    var formattedDate: String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        formatter.timeStyle = .medium
+        return formatter.string(from: recordedAt)
+    }
+
+    var sizeString: String {
+        return ByteCountFormatter.string(fromByteCount: Int64(size), countStyle: .file)
+    }
+}
+
+// Vista de video simplificada
+struct VideoRowView: View {
+    let video: RecordedVideo
+    @State private var showingPlayer = false
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                VStack(alignment: .leading) {
+                    Text(video.fileName)
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                    Text("Tamaño: \(video.sizeString)")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+
+                Spacer()
+
+                Button("Reproducir") {
+                    showingPlayer = true
+                }
+                .font(.caption)
+                .foregroundColor(.white)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 6)
+                .background(Color.blue)
+                .cornerRadius(6)
+            }
+            .padding()
+            .background(Color(.systemGray6))
+            .cornerRadius(8)
+
+            // Reproductor básico
+            if showingPlayer {
+                if #available(iOS 14.0, *) {
+                    SimpleVideoPlayer(videoData: video.data)
+                        .frame(height: 200)
+                        .cornerRadius(8)
+                        .padding()
+                }
+
+                Button("Cerrar") {
+                    showingPlayer = false
+                }
+                .font(.caption)
+                .foregroundColor(.white)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 8)
+                .background(Color.red)
+                .cornerRadius(8)
+            }
+        }
+    }
+}
+
+@available(iOS 14.0, *)
+struct SimpleVideoPlayer: View {
+    let videoData: Data
+    @State private var player: AVPlayer?
+
+    var body: some View {
+        Group {
+            if let player = player {
+                VideoPlayer(player: player)
+                    .cornerRadius(8)
+            } else {
+                Rectangle()
+                    .fill(Color.black)
+                    .overlay(
+                        ProgressView("Cargando video...")
+                            .foregroundColor(.white)
+                    )
+                    .cornerRadius(8)
+            }
+        }
+        .onAppear {
+            setupPlayer()
+        }
+        .onDisappear {
+            cleanup()
+        }
+    }
+
+    private func setupPlayer() {
+        let tempDir = FileManager.default.temporaryDirectory
+        let tempURL = tempDir.appendingPathComponent(UUID().uuidString).appendingPathExtension("mp4")
+
+        do {
+            try videoData.write(to: tempURL)
+            player = AVPlayer(url: tempURL)
+        } catch {
+            print("Error: \(error)")
+        }
+    }
+
+    private func cleanup() {
+        player?.pause()
+        player = nil
+    }
+}
+```
+
+---
+
+# PASO 3: Configurar Permisos de Cámara
+
+## Objetivo
+
+Configurar correctamente los permisos de cámara requeridos por iOS.
+
+### 3.1 Info.plist
+
+**Método 1 - Xcode moderno (recomendado):**
+1. Selecciona tu target en Xcode
+2. Ve a la pestaña **"Info"**
+3. En "Custom iOS Target Properties", haz clic en "+"
+4. Busca y selecciona "Privacy - Camera Usage Description"
+5. Añade la descripción: "Esta aplicación necesita acceso a la cámara para detectar rostros"
+
+**Método 2 - Archivo Info.plist (alternativo):**
+```xml
+<key>NSCameraUsageDescription</key>
+<string>Esta aplicación necesita acceso a la cámara para detectar rostros</string>
+```
+
+### 3.2 Manejo de Permisos en Código
+
+```swift
+import AVFoundation
+
+class PermissionsManager {
+
+    static func checkCameraPermission() -> AVAuthorizationStatus {
+        return AVCaptureDevice.authorizationStatus(for: .video)
+    }
+
+    static func requestCameraPermission(completion: @escaping (Bool) -> Void) {
+        AVCaptureDevice.requestAccess(for: .video) { granted in
+            DispatchQueue.main.async {
+                completion(granted)
+            }
+        }
+    }
+
+    static func openSettings() {
+        guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+            return
+        }
+
+        if UIApplication.shared.canOpenURL(settingsUrl) {
+            UIApplication.shared.open(settingsUrl)
+        }
+    }
+}
+```
+
+### 3.3 Verificación Antes de Detección
+
+```swift
+private func checkPermissionsAndStart() {
+    let cameraStatus = PermissionsManager.checkCameraPermission()
+
+    switch cameraStatus {
+    case .authorized:
+        startDetection()
+    case .notDetermined:
+        PermissionsManager.requestCameraPermission { granted in
+            if granted {
+                self.startDetection()
+            } else {
+                self.showPermissionAlert()
+            }
+        }
+    case .denied, .restricted:
+        showPermissionAlert()
+    @unknown default:
+        showPermissionAlert()
+    }
+}
+
+private func showPermissionAlert() {
+    let alert = UIAlertController(
+        title: "Permisos de Cámara",
+        message: "Se requiere acceso a la cámara para la detección facial",
+        preferredStyle: .alert
+    )
+
+    alert.addAction(UIAlertAction(title: "Configuración", style: .default) { _ in
+        PermissionsManager.openSettings()
+    })
+
+    alert.addAction(UIAlertAction(title: "Cancelar", style: .cancel))
+
+    present(alert, animated: true)
+}
+```
+
+---
+
+# PASO 4: Manejo de Grabación y Archivos
+
+## Objetivo
+
+Implementar el manejo completo de videos grabados y procesamiento de archivos.
+
+### 4.1 Estructura de Respuesta
+
+**JAAKFileResult:**
+
+```swift
+public struct JAAKFileResult {
+    public let data: Data           // Datos binarios del video
+    public let base64: String       // Video codificado en base64
+    public let mimeType: String?    // Tipo MIME (video/mp4)
+    public let fileName: String?    // Nombre del archivo
+    public let fileSize: Int        // Tamaño del archivo en bytes
+}
+```
+
+### 4.2 Procesamiento de Videos
+
+```swift
+private func processVideoFile(_ fileResult: JAAKFileResult) {
+    print("=== PROCESANDO VIDEO ===")
+    print("Nombre: \(fileResult.fileName ?? "unknown")")
+    print("Tamaño: \(fileResult.fileSize) bytes")
+    print("Tipo MIME: \(fileResult.mimeType ?? "unknown")")
+
+    // Guardar en documentos locales
+    saveToDocuments(fileResult)
+
+    // Convertir a base64 para envío al servidor
+    let base64String = fileResult.base64
+    sendToServer(base64String, fileName: fileResult.fileName)
+}
+
+private func saveToDocuments(_ fileResult: JAAKFileResult) {
+    guard let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+        return
+    }
+
+    let fileName = fileResult.fileName ?? "face_video_\(Date().timeIntervalSince1970).mp4"
+    let fileURL = documentsPath.appendingPathComponent(fileName)
+
+    do {
+        try fileResult.data.write(to: fileURL)
+        print("Video guardado en: \(fileURL)")
+    } catch {
+        print("Error guardando video: \(error)")
+    }
+}
+
+private func sendToServer(_ base64String: String, fileName: String?) {
+    let payload: [String: Any] = [
+        "videoData": base64String,
+        "fileName": fileName ?? "face_video.mp4",
+        "timestamp": Date().timeIntervalSince1970,
+        "platform": "ios",
+        "sdkVersion": "1.0.0"
+    ]
+
+    print("Enviando video al servidor: \(payload.keys)")
+    // Implementar llamada HTTP
+}
+```
+
+### 4.3 Estados del SDK
+
+**JAAKVisageStatus:**
+
+```swift
+public enum JAAKVisageStatus: String, CaseIterable {
+    case notLoaded = "not-loaded"
+    case loading = "loading"
+    case loaded = "loaded"
+    case running = "running"
+    case recording = "recording"
+    case finished = "finished"
+    case stopped = "stopped"
+    case error = "error"
+    case faceDetected = "face-detected"
+    case countdown = "countdown"
+    case captureComplete = "capture-complete"
+    case processingVideo = "processing-video"
+    case videoReady = "video-ready"
+}
+```
+
+---
+
+# PASO 5: Probar Detección Facial
+
+## Objetivo
+
+Verificar que todas las funcionalidades del SDK funcionan correctamente.
+
+## Lista de Verificación
+
+| Elemento | Estado | Descripción |
+|----------|----|-----------  |
+| **Permisos de cámara** | ☐ | App solicita y obtiene permisos |
+| **Detección facial** | ☐ | IA detecta rostros automáticamente |
+| **Grabación automática** | ☐ | Inicia grabación al detectar rostro |
+| **Archivos generados** | ☐ | Videos se guardan correctamente |
+| **Manejo de errores** | ☐ | Errores se manejan correctamente |
+
+## Proceso de Prueba
+
+### Paso A: Probar Permisos
+1. **Instalar aplicación** en dispositivo físico
+2. **Abrir aplicación** por primera vez
+3. **Verificar solicitud** de permisos automática
+4. **Conceder permisos** de cámara
+
+### Paso B: Probar Detección
+1. **Presionar botón** "Iniciar"
+2. **Posicionar rostro** frente a la cámara
+3. **Esperar detección automática** (overlay verde)
+4. **Verificar inicio** de grabación automática
+5. **Revisar logs** para confirmar procesamiento
+
+### Paso C: Probar Funcionalidades
+1. **Cambiar cámara** (frontal/trasera)
+2. **Detener y reiniciar** detección
+3. **Verificar archivos** guardados en documentos
+4. **Probar en diferentes** condiciones de luz
+5. **Confirmar manejo** de errores
+
+## Debugging y Troubleshooting
+
+### Verificar Compatibilidad del Dispositivo
+
+```swift
+private func checkDeviceCompatibility() {
+    print("=== VERIFICANDO COMPATIBILIDAD ===")
+
+    let cameraStatus = PermissionsManager.checkCameraPermission()
+    print("Estado cámara: \(cameraStatus)")
+
+    let systemVersion = UIDevice.current.systemVersion
+    print("Versión iOS: \(systemVersion)")
+
+    let deviceModel = UIDevice.current.model
+    print("Modelo dispositivo: \(deviceModel)")
+}
+
+private func enableDebugMode() {
+    var config = configuration!
+    config.enableInstructions = true
+
+    // Aplicar configuración con debug habilitado
+    detector = JAAKVisageSDK(configuration: config)
+}
+```
+
+### Problemas Comunes
+
+| Problema | Solución |
+|----------|----------|
+| **"Modelos no cargan"** | Verificar conexión a internet y memoria disponible |
+| **"Cámara no inicia"** | Verificar permisos y que no esté ocupada |
+| **"No detecta rostros"** | Mejorar iluminación y posición del rostro |
+| **"Grabación falla"** | Verificar espacio de almacenamiento disponible |
+
+---
+
+# Referencia Completa
+
+## Métodos del SDK
+
+| Método | Descripción | Ejemplo |
+|--------|-------------|---------|
+| **JAAKVisageSDK(configuration:)** | Constructor del SDK | `JAAKVisageSDK(configuration: config)` |
+| **startDetection()** | Inicia detección facial | `try detector.startDetection()` |
+| **stopDetection()** | Detiene detección | `detector.stopDetection()` |
+| **restartDetection()** | Reinicia detector | `try detector.restartDetection()` |
+| **createPreviewView()** | Crea vista de preview | `detector.createPreviewView()` |
+
+## Configuraciones Disponibles
+
+| Configuración | Descripción | Cuándo usar |
+|---------------|-------------|-------------|
+| **videoDuration** | Duración de grabación en segundos | Ajustar según necesidades |
+| **disableFaceDetection** | Deshabilitar detección facial | Para grabación manual |
+| **enableInstructions** | Mostrar instrucciones al usuario | Para usuarios nuevos |
+| **cameraPosition** | Posición de cámara inicial | Según UX requerida |
+
+## Estructura de Respuesta
+
+| Campo | Descripción | Cuándo se genera |
+|-------|-------------|------------------|
+| **data** | Datos binarios del video | Siempre |
+| **base64** | Video codificado en base64 | Para envío a servidor |
+| **fileName** | Nombre sugerido del archivo | Cuando se especifica |
+| **fileSize** | Tamaño del archivo en bytes | Siempre |
+| **mimeType** | Tipo MIME del video | Siempre (video/mp4) |
+
+---
+
+# Solución de Problemas
+
+## Problema: "Error de modelo ML"
+
+```swift
+// Verificar antes de usar
+private func preloadModelsIfNeeded() {
+    // Los modelos se cargan automáticamente
+    // Verificar estado con delegate
+}
+
+private func handleModelLoadingError() {
+    statusLabel.text = "Error cargando modelos. Reinicia la app."
+}
+```
+
+## Problema: "Detección no funciona en simulador"
+
+```swift
+// Solo funciona en dispositivo físico
+#if targetEnvironment(simulator)
+    showAlert(title: "Simulador",
+              message: "La detección facial requiere un dispositivo físico")
+    return
+#endif
+```
+
+## Problema: "Videos no se guardan"
+
+```swift
+// Verificar permisos de almacenamiento
+private func checkStoragePermissions() {
+    let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+
+    if documentsPath == nil {
+        print("No se puede acceder a documentos")
+        return
+    }
+
+    print("Directorio documentos disponible: \(documentsPath!)")
+}
+```
+
+## Problema: "Error de compilación con User Script Sandboxing"
+
+```swift
+// Configuración en Build Settings
+// 1. Seleccionar target
+// 2. Build Settings
+// 3. Buscar "User Script Sandboxing"
+// 4. Cambiar a "No"
+```
+
+---
+
+# Mejores Prácticas
+
+## Uso del SDK
+
+- **Iluminación:** Funciona mejor con buena iluminación frontal
+- **Distancia:** Rostro debe estar a ~30cm de la cámara
+- **Orientación:** Funciona mejor con rostro centrado y vertical
+- **Estabilidad:** Evitar movimientos bruscos durante la grabación
+
+## Integración
+
+- **Threading:** Todos los callbacks se ejecutan en el hilo principal
+- **Memoria:** El SDK maneja automáticamente la memoria, pero monitorear uso en dispositivos antiguos
+- **Limpieza:** Implementar limpieza automática de archivos temporales
+- **Lifecycle:** Detener la detección al pausar la app para conservar batería
+
+## Seguridad
+
+- **Permisos:** Solo solicitar permisos necesarios (cámara obligatorio)
+- **Datos:** Los videos se procesan localmente, no se envían automáticamente a servidores
+- **Privacidad:** Informar claramente al usuario sobre el uso de la cámara
+- **Almacenamiento:** No almacenar videos permanentemente sin consentimiento explícito
+
+---
+
+# ¿Necesitas Ayuda?
+
+## Información para soporte
+
+* **Descripción del problema:** Qué intentas detectar vs qué sucede
+* **Logs de Xcode:** Screenshots de errores en consola
+* **Información del dispositivo:** Modelo iOS, versión, memoria
+* **Configuración SDK:** Parámetros utilizados
+* **Condiciones de uso:** Iluminación, distancia, orientación
+
+## Contacto de Soporte
+
+**Email:** soporte@jaak.ai
+**Incluir siempre:** Logs iOS, configuración, versión SDK
+
+---
+
+Has implementado exitosamente el JAAKVisage SDK en tu aplicación iOS. Tu app ahora puede detectar rostros y grabar videos automáticamente usando inteligencia artificial, generando archivos optimizados para procesos de verificación biométrica.

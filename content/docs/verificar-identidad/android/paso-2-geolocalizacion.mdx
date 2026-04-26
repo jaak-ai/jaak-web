@@ -1,0 +1,147 @@
+---
+title: Paso 2 - Geolocalización vía Android
+description: Registro de la ubicación del dispositivo (latitud y longitud) durante la Sesión KYC desde Android.
+category: api
+order: 3
+---
+
+
+El servicio de Geolocalización de **JAAK** se utiliza para registrar la ubicación (latitud y longitud) donde se lleva a cabo la **Sesión KYC**. Es importante tener en cuenta que la ubicación es recolectada desde el dispositivo que utiliza el usuario final para realizar la Sesión KYC.
+
+### Agrega los permisos en el AndroidManifest.xml
+
+Debes solicitar los permisos adecuados para acceder a la ubicación:
+
+```
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+```
+
+Si la app necesita obtener la ubicación en segundo plano, también agrega:
+
+```
+<uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+```
+
+### Agrega la dependencia de Google Play Services en el build.gradle de app.
+
+```json
+dependencies {
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
+}
+```
+
+### Código para obtener la ubicación en Kotlin
+
+Crea una función para obtener la ubicación del usuario usando FusedLocationProviderClient.
+
+```kotlin
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.pm.PackageManager
+import android.os.Bundle
+import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import com.google.android.gms.location.*
+
+class MainActivity : AppCompatActivity() {
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        checkLocationPermission()
+    }
+
+    private fun checkLocationPermission() {
+        when {
+            ContextCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                getLastKnownLocation()
+            }
+            else -> {
+                requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            }
+        }
+    }
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            getLastKnownLocation()
+        } else {
+            Log.e("Location", "Permiso denegado")
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getLastKnownLocation() {
+        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+            if (location != null) {
+                Log.d("Location", "Latitud: ${location.latitude}, Longitud: ${location.longitude}")
+            } else {
+                Log.e("Location", "No se pudo obtener la ubicación")
+            }
+        }
+    }
+}
+```
+
+Realiza la siguiente llamada API para registrar la ubicación del dispositivo en la Sesión KYC.
+
+**URL**
+
+```
+POST https://api.sandbox.jaak.ai/api/v1/kyc/session/location
+```
+
+```kotlin
+@POST("api/v1/kyc/session/location")
+    suspend fun locationApi(@Body request: LocationRequest): Response<LocationResponse>
+```
+
+**Header**
+
+```
+Authorization: Bearer token-session-kyc
+```
+
+| Campo         | Tipo   | Requerido | Descripción                                                                                                  |
+| :------------ | :----- | :-------- | :----------------------------------------------------------------------------------------------------------- |
+| Authorization | string | Si        | En esta cabecera se debe enviar el Token de Sesión KYC que se ha obtenido del intercambiado con de Short Key |
+
+**Request**
+
+```json
+{
+    "latitude": Double,
+    "longitude": Double
+}
+```
+
+```kotlin
+data class LocationRequest(
+       @SerializedName("latitude") val latitude: Double,
+				 @SerializedName("longitude") val longitude: Double
+)
+```
+
+| Campo     | Tipo   | Requerido | Descripción                                                                               |
+| :-------- | :----- | :-------- | :---------------------------------------------------------------------------------------- |
+| latitude  | double | Si        | Latitud de la posición obtenida por el dispositivo y que se registrara en la Sesión KYC.  |
+| longitude | double | Si        | Longitud de la posición obtenida por el dispositivo y que se registrara en la Sesión KYC. |
+
+**Response**
+
+```
+{}
+```
+
+El servicio de Geolocalización no tiene un impacto directo en los resultados finales de la sesión, pero es una herramienta útil para la recopilación de datos y en algunos casos, como el financiero, necesaria para llevar a cabo sus procesos.
+
+Continuemos con el siguiente servicio...

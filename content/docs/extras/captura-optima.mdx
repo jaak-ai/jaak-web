@@ -1,0 +1,139 @@
+---
+title: Captura óptima de documentos
+description: Guía para obtener imágenes de documentos con la calidad necesaria para que el OCR y la verificación funcionen correctamente.
+category: recurso
+order: 5
+---
+
+## Introducción
+
+Este manual tiene como objetivo guiarte para obtener imágenes de documentos de alta calidad, asegurando así un correcto funcionamiento de nuestros sistemas. Siguiendo estas recomendaciones, garantizamos la captura de imágenes claras y nítidas, cruciales para el procesamiento y la extracción de información precisa.
+
+## Condiciones de Captura Ideales
+
+Para asegurar la mejor calidad de imagen posible, considera los siguientes factores ambientales y de preparación:
+
+### Luminosidad Óptima
+
+* Utiliza luz natural o artificial suave y uniforme.
+* Evita sombras y reflejos que puedan oscurecer partes del documento.
+* Colócate de espaldas a una ventana para aprovechar la luz natural sin generar contrastes fuertes.
+
+### Lente
+
+* Asegúrate de que el lente de la cámara esté limpio, libre de polvo y huellas dactilares.
+* Utiliza un paño suave de microfibra para limpiar el lente sin rayarlo.
+* Considera el enfoque sobre objetos al fondo.
+* Considera el enfoque a distancias cortas para evitar distorsionamientos.
+
+### Estabilidad y Nitidez
+
+* Evita el movimiento de la cámara durante la captura para prevenir imágenes borrosas.
+* Asegúrate de que el documento esté plano y fijo sobre una superficie estable.
+* Evita el "blur", que es lo que sucede cuando hay mucho movimiento.
+* Evita la opacidad de los documentos, los cuales no permiten la lectura de los mismos.
+* Evita el uso de filtros digitales que modifiquen la imagen capturada.
+
+### Resolución Adecuada
+
+* **Mínimo absoluto:** 1000 píxeles en el lado mayor de la imagen. Por debajo de este umbral, la extracción OCR puede devolver campos vacíos (CURP, CIC, RFC, nombres) aunque la imagen "se vea bien" a simple vista.
+* **Recomendado:** 1500 píxeles o más en el lado mayor para una extracción OCR estable.
+* **Formatos soportados:** JPEG y PNG. Otros formatos (WebP, HEIC, etc.) generan un warning de calidad y pueden no procesarse correctamente.
+
+<Callout type="warning" title="Caso real">
+Una imagen de 608x405 px puede pasar todas las validaciones de "verificación de documento" (`/v3/document/verify`) porque el clasificador de tipo de documento es robusto a baja resolución, pero el OCR (`/v4/document/extract`) no podrá leer los campos pequeños como la CURP de 18 caracteres o el CIC de 9 dígitos. El resultado típico es una respuesta exitosa con campos vacíos.
+</Callout>
+
+## Requisitos de Hardware para una Captura Óptima
+
+Para maximizar la calidad de las imágenes capturadas, recomendamos utilizar equipos con las siguientes especificaciones:
+
+### Resolución de Cámara
+
+* Idealmente, utiliza una cámara con una resolución de **2 megapíxeles (MP)** o superior.
+
+### Sensor de Cámara
+
+* Prefiere sensores de tipo **CMOS (Complementary Metal-Oxide Semiconductor)**.
+* Un tamaño de sensor de **1/2.7" o mayor** mejora la captación de luz, resultando en imágenes más claras y con menos ruido.
+
+### Óptica
+
+* Utiliza lentes de vidrio de alta calidad con baja distorsión.
+* Una apertura de **f/2.0 o menor** permite una mayor entrada de luz, mejorando el rendimiento en condiciones de poca iluminación.
+
+### Formato de Imagen
+
+* Elige el formato **RAW** para la máxima calidad y flexibilidad en la edición, o **JPEG (alta calidad)** para un equilibrio entre calidad y tamaño de archivo.
+
+### Configuración de la Cámara
+
+* Ajusta el **ISO entre 100 y 400** para minimizar el ruido en la imagen, especialmente en condiciones de baja luminosidad.
+
+## Consideraciones importantes sobre documentos de Argentina y México
+
+En base a nuestra experiencia y al creciente uso de nuestra plataforma por parte de usuarios en **Argentina** y **México**, compartimos a continuación algunas observaciones relevantes sobre documentos emitidos en estos países:
+
+### Argentina
+
+Los documentos como la **licencia de conducir** y el **DNI** incluyen elementos de seguridad visibles, como **hologramas** que pueden superponerse a campos clave. Bajo ciertas condiciones de luz, estos hologramas pueden dificultar la lectura automática (OCR) de la información. Por esta razón, recomendamos **escanear los documentos en condiciones de iluminación adecuadas**, siguiendo las indicaciones sugeridas para obtener los mejores resultados.
+
+### México
+
+Históricamente, se ha detectado un número por encima del promedio de **documentos falsificados**. Además, incluso entre documentos genuinos, existen **variaciones en el diseño, tipografía y formato** según la región, municipio o autoridad emisora. Estas inconsistencias pueden generar desafíos adicionales para los sistemas de OCR, sobre todo cuando los documentos no siguen lineamientos estandarizados.
+
+### Caracteres del Alfabeto Español
+
+Otro aspecto a considerar es el uso del **alfabeto español**, que incluye caracteres con **tildes y otros diacríticos**. Estos elementos suelen ser pequeños y pueden ser más propensos a errores durante la extracción automática, en comparación con los caracteres del alfabeto inglés.
+
+> Estos puntos no representan limitaciones, sino factores a tener en cuenta para comprender mejor por qué en ciertos casos podría variar la precisión de lectura.
+
+## Recomendaciones Adicionales
+
+* **Software de Captura**: Utiliza los SDK de captura de documentos que ofrece **JAAK**.
+* **Pruebas**: Realiza pruebas para verificar que la configuración y las condiciones de iluminación sean óptimas.
+
+## Diagnóstico de calidad desde tu integración
+
+Si estás integrando contra `/v4/document/extract` y ves campos vacíos de manera intermitente, puedes activar el reporte de calidad de la imagen para diagnosticar el problema sin esperar a reproducirlo en otra sesión.
+
+### Header opt-in `X-Include-Quality`
+
+Por defecto la respuesta de `/v4/document/extract` no incluye métricas de calidad para mantener la respuesta liviana. Si envías el header `X-Include-Quality: true`, la respuesta incluye un campo `quality` con el resultado del análisis sobre la imagen recibida:
+
+```json
+{
+  "eventId": "...",
+  "status": "SUCCESS",
+  "content": { "data": { "personal": { ... } } },
+  "quality": {
+    "width": 608,
+    "height": 405,
+    "score": 0.32,
+    "warnings": ["low_resolution"]
+  }
+}
+```
+
+### Códigos de warning
+
+| Código | Significado | Acción recomendada |
+|--------|-------------|--------------------|
+| `low_resolution` | El lado mayor de la imagen está por debajo de 1000 px | Recapturar a 1500 px o más, o subir el zoom de la cámara |
+| `unsupported_format` | El formato no es JPEG ni PNG | Reconvertir a JPEG en el cliente antes de enviar |
+
+<Callout type="info" title="Compatibilidad">
+El header es opt-in y no rompe ningún contrato existente. Si no lo envías, la respuesta es idéntica a antes. Recomendamos activarlo en ambientes de pruebas y dejarlo apagado en producción salvo que estés diagnosticando un problema concreto.
+</Callout>
+
+## Saneamiento automático de campos OCR (INE / Credencial para Votar de México)
+
+Para documentos tipo `VOTER_ID` (credencial para votar del INE) aplicamos saneamiento y validación automáticos sobre los campos extraídos antes de devolverlos:
+
+* **CURP** (18 caracteres): se eliminan espacios, se normaliza a mayúsculas y se valida el patrón oficial RENAPO. Si no cumple el patrón, el campo se devuelve vacío en lugar de devolver una CURP malformada.
+* **Clave de Elector** (18 caracteres alfanuméricos): se valida contra el patrón oficial. Confusiones típicas de OCR (`0` vs `O`, `1` vs `I`, `5` vs `S`) se corrigen automáticamente cuando el contexto del carácter lo permite (posiciones de letra vs dígito).
+* **CIC** (9 dígitos del IDMEX en la franja inferior del reverso): se valida que sean exactamente 9 dígitos. La línea IDMEX se parsea para extraerlo aunque venga acompañado de otros caracteres.
+
+Si la imagen es de baja resolución, el OCR puede leer caracteres parciales que no pasen estas validaciones; el efecto visible en tu integración es un campo vacío en lugar de un valor incorrecto. **Siempre es preferible un campo vacío a una CURP/CIC malformada que tu sistema acepte como válida.**
+
+Siguiendo estas recomendaciones, garantizamos la **captura de imágenes de documentos de alta calidad**, facilitando el procesamiento y la extracción de información precisa.

@@ -1,0 +1,569 @@
+---
+title: Document Verify
+description: Verificación de autenticidad de documentos oficiales con detección de fraude y validación gubernamental.
+category: concepto
+order: 1
+---
+
+Tiempo estimado de lectura: 20-30 minutos para configuración completa
+
+## ¿Qué aprenderás en esta guía?
+
+Esta guía te enseñará a usar nuestro sistema de verificación de documentos JAAK Document Verify para detectar documentos fraudulentos, validar identidades y asegurar la autenticidad de credenciales oficiales. **No necesitas conocimientos técnicos avanzados** - solo sigue los pasos.
+
+## Antes de Empezar - Lista de Verificación
+
+Asegúrate de tener estos elementos listos:
+
+* Acceso a tu cuenta JAAK
+* API Key válida (proporcionada por tu administrador)
+* Documentos de prueba en formato digital (JPEG/PNG)
+* Lista de países donde opera tu empresa
+* Conocimiento básico de APIs REST (para desarrolladores)
+
+## Índice de Contenidos
+
+| **Sección** | **Qué harás**                         | **Tiempo** |
+| ----------- | ------------------------------------- | ---------- |
+| **Paso 1**  | Configurar acceso al sistema          | 5 min      |
+| **Paso 2**  | Preparar documentos para verificación | 10 min     |
+| **Paso 3**  | Realizar primera verificación         | 10 min     |
+| **Paso 4**  | Interpretar resultados                | 10 min     |
+| **Paso 5**  | Configurar verificación gubernamental | 5 min      |
+
+---
+
+# PASO 1: Configurar Acceso al Sistema
+
+## Objetivo
+
+Configurar tu acceso al sistema JAAK Document Verify y validar que tienes los permisos necesarios.
+
+## Pasos a seguir
+
+### 1.1 Verificar Productos Habilitados
+
+**Paso 1:** Accede a tu dashboard JAAK
+
+**Paso 2:** Verifica que tienes habilitados los siguientes productos:
+
+* **Document Product** - Acceso a servicios de verificación
+* **KYC Product** - Funcionalidades KYC completas
+
+### 1.2 Obtener API Key
+
+**Paso 1:** En el dashboard, ve a **Configuración → API Keys**
+
+**Paso 2:** Copia tu API Key (formato: `Bearer {token}`)
+
+<Callout type="warning">
+Nunca compartas tu API Key. Es tu credencial de acceso único.
+</Callout>
+
+### 1.3 Configurar Países Permitidos
+
+**Paso 1:** Ve a **Configuración → Mi Compañía → Países Permitidos**
+
+**Paso 2:** Selecciona los países donde opera tu empresa:
+
+| **País**       | **Código ISO** | **Documentos Soportados**  |
+| -------------- | -------------- | -------------------------- |
+| México         | MEX            | INE, Pasaporte, Licencia   |
+| Estados Unidos | USA            | Driver's License, Passport |
+| Colombia       | COL            | Cédula, Pasaporte          |
+| España         | ESP            | DNI, Pasaporte             |
+
+<Callout type="tip">
+Solo selecciona países donde realmente operas. Esto mejora la precisión de la verificación.
+</Callout>
+
+# PASO 2: Preparar Documentos para Verificación
+
+## Objetivo
+
+Preparar correctamente las imágenes de documentos para obtener los mejores resultados de verificación.
+
+## Requisitos de Imagen
+
+### 2.1 Especificaciones Técnicas
+
+| **Requisito**    | **Especificación** | **¿Por qué es importante?**   |
+| ---------------- | ------------------ | ----------------------------- |
+| **Resolución**   | Mínimo 1080p       | Mayor precisión en detección  |
+| **Formato**      | JPEG/PNG           | Compatibilidad con el sistema |
+| **Tamaño**       | Máximo 10MB        | Optimización de procesamiento |
+| **Codificación** | Base64             | Formato requerido por la API  |
+
+### 2.2 Mejores Prácticas de Captura
+
+#### Haz esto:
+
+* Usa buena iluminación natural o artificial uniforme
+* Asegúrate de que el documento esté completo en la imagen
+* Mantén la cámara perpendicular al documento
+* Usa una superficie plana y contrastante
+* Verifica que el texto sea legible
+
+#### Evita esto:
+
+* Sombras sobre el documento
+* Reflejos o brillos
+* Documentos parcialmente visibles
+* Imágenes borrosas o desenfocadas
+* Rotación del documento
+
+### 2.3 Convertir Imagen a Base64
+
+**Para desarrolladores:**
+
+```javascript
+// Ejemplo de conversión a Base64
+const convertToBase64 = (imageFile) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      // Remover el header "data:image/..."
+      const base64 = reader.result.split(',')[1];
+      resolve(base64);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(imageFile);
+  });
+};
+```
+
+**Para usuarios no técnicos:**
+
+* Usa herramientas online como base64encode.org
+* Asegúrate de copiar solo la parte Base64 (sin headers)
+
+# PASO 3: Realizar Primera Verificación
+
+## Objetivo
+
+Ejecutar tu primera verificación de documento usando la API Document Verify.
+
+## Endpoint Principal
+
+```
+POST https://api.sandbox.jaak.ai/api/v3/document/verify
+```
+
+### 3.1 Configurar Headers
+
+```json
+{
+  "Authorization": "Bearer TU_API_KEY",
+  "Content-Type": "application/json",
+  "Request-Id": "req_123456789",
+  "Language": "es"
+}
+```
+
+### 3.2 Estructura de Request
+
+```json
+{
+  "imageFront": "iVBORw0KGgoAAAANSUhEUgAAAB4...",
+  "imageBack": "",
+  "imageBarcode": "",
+  "allowedCountries": ["MEX", "USA", "COL"],
+  "dataVerification": false
+}
+```
+
+### 3.3 Parámetros Explicados
+
+| **Parámetro**        | **Tipo** | **Requerido** | **Descripción**                                   |
+| -------------------- | -------- | ------------- | ------------------------------------------------- |
+| **imageFront**       | string   | Sí            | Imagen frontal del documento en Base64            |
+| **imageBack**        | string   | No            | Imagen trasera del documento en Base64            |
+| **imageBarcode**     | string   | No            | Imagen del código de barras en Base64             |
+| **allowedCountries** | array    | No            | Lista de países permitidos para esta verificación |
+| **dataVerification** | boolean  | No            | Habilita verificación gubernamental (México)      |
+
+### 3.4 Ejemplo de Implementación
+
+#### Para Desarrolladores:
+
+```javascript
+const verifyDocument = async (documentData) => {
+  const response = await fetch('https://api.sandbox.jaak.ai/api/v3/document/verify', {
+    method: 'POST',
+    headers: {
+      'Authorization': 'Bearer TU_API_KEY',
+      'Content-Type': 'application/json',
+      'Request-Id': 'req_' + Date.now(),
+      'Language': 'es'
+    },
+    body: JSON.stringify({
+      imageFront: documentData.frontImage,
+      imageBack: documentData.backImage || '',
+      allowedCountries: ['MEX'],
+      dataVerification: true
+    })
+  });
+
+  const result = await response.json();
+  return result;
+};
+```
+
+#### Para Usuarios No Técnicos:
+
+Usa herramientas como **Postman** o **Insomnia**:
+
+1. **Método:** POST
+2. **URL:** `https://api.sandbox.jaak.ai/api/v3/document/verify`
+3. **Headers:** Agrega Authorization, Content-Type, etc.
+4. **Body:** Pega el JSON con tu imagen en Base64
+
+# PASO 4: Interpretar Resultados
+
+## Objetivo
+
+Entender los resultados de verificación y tomar decisiones basadas en ellos.
+
+## Estructura de Respuesta
+
+### 4.1 Respuesta Exitosa
+
+```json
+{
+  "eventId": "evt_1234567890_abcdef",
+  "requestId": "req_1234567890_ghijkl",
+  "evaluation": "SUCCESS",
+  "document": {
+    "type": "driving_license",
+    "side": "front",
+    "country": "MEX",
+    "icaoCode": "MEX123"
+  },
+  "processTime": 1250.5,
+  "state": {
+    "documentCompleteSides": true,
+    "dataConsistent": true,
+    "documentLiveness": true,
+    "securityFeatures": true,
+    "documentValidity": true,
+    "imageQuality": true,
+    "handPresence": false,
+    "photoForgery": false,
+    "message": "Documento verificado exitosamente"
+  }
+}
+```
+
+### 4.2 Niveles de Evaluación
+
+| **Evaluation** | **Significado**       | **Acción Recomendada** |
+| -------------- | --------------------- | ---------------------- |
+| **SUCCESS**    | Documento auténtico   | Aprobar proceso        |
+| **WARNING**    | Documento sospechoso  | Revisar manualmente    |
+| **REJECTED**   | Documento fraudulento | Rechazar proceso       |
+
+### 4.3 Validaciones Detalladas
+
+#### Validaciones de Seguridad
+
+| **Validación**       | **Descripción**            | **Valor True**   | **Valor False**     |
+| -------------------- | -------------------------- | ---------------- | ------------------- |
+| **documentLiveness** | Documento físico vs foto   | Documento real   | Foto de pantalla    |
+| **securityFeatures** | Elementos de seguridad     | Presentes        | Ausentes/Alterados  |
+| **documentValidity** | Validez del documento      | Válido           | Vencido/Inválido    |
+| **imageQuality**     | Calidad de imagen          | Buena calidad    | Baja calidad        |
+| **photoForgery**     | Detección de falsificación | Sin alteraciones | Foto alterada       |
+
+#### Información del Documento
+
+| **Campo**       | **Descripción**         | **Ejemplo**                                    |
+| --------------- | ----------------------- | ---------------------------------------------- |
+| **type**        | Tipo de documento       | "driving\_license", "passport", "national\_id" |
+| **country**     | País de origen          | "MEX", "USA", "COL"                            |
+| **side**        | Lado procesado          | "front", "back", "both"                        |
+| **processTime** | Tiempo de procesamiento | 1250.5 (milisegundos)                          |
+
+### 4.4 Casos de Uso por Resultado
+
+#### SUCCESS - Documento Auténtico
+
+```javascript
+if (result.evaluation === 'SUCCESS') {
+  console.log('Documento verificado exitosamente');
+  console.log('Tipo:', result.document.type);
+  console.log('País:', result.document.country);
+
+  // Continuar con el proceso de onboarding
+  approveUser(result);
+}
+```
+
+#### WARNING - Revisión Manual
+
+```javascript
+if (result.evaluation === 'WARNING') {
+  console.log('Documento requiere revisión manual');
+  console.log('Motivo:', result.state.message);
+
+  // Enviar a cola de revisión manual
+  sendToManualReview(result);
+}
+```
+
+#### REJECTED - Documento Fraudulento
+
+```javascript
+if (result.evaluation === 'REJECTED') {
+  console.log('Documento rechazado');
+  console.log('Motivo:', result.state.message);
+
+  // Rechazar proceso y notificar
+  rejectUser(result);
+}
+```
+
+# PASO 5: Configurar Verificación Gubernamental
+
+## Objetivo
+
+Habilitar la verificación contra bases de datos gubernamentales para mayor seguridad.
+
+## Servicios Disponibles
+
+### 5.1 RENAPO (México)
+
+**¿Qué es?** Registro Nacional de Población de México
+
+**¿Qué verifica?**
+
+* CURP válida
+* Nombres y apellidos
+* Fecha de nacimiento
+* Número de documento
+
+### 5.2 Habilitar Verificación Gubernamental
+
+**Paso 1:** En tu request, cambia `dataVerification` a `true`:
+
+```json
+{
+  "imageFront": "iVBORw0KGgoAAAANSUhEUgAAAB4...",
+  "imageBack": "",
+  "allowedCountries": ["MEX"],
+  "dataVerification": true
+}
+```
+
+**Paso 2:** Revisa los resultados adicionales en la respuesta:
+
+```json
+{
+  "state": {
+    "validations": {
+      "namesMatch": true,
+      "lastNameMatch": true,
+      "birthDateMatch": true,
+      "personalIdNumberMatch": true,
+      "message": "Validación gubernamental exitosa"
+    }
+  }
+}
+```
+
+### 5.3 Interpretación de Resultados Gubernamentales
+
+| **Validación**            | **Descripción**     | **True**  | **False**    |
+| ------------------------- | ------------------- | --------- | ------------ |
+| **namesMatch**            | Nombres coinciden   | Coinciden | No coinciden |
+| **lastNameMatch**         | Apellidos coinciden | Coinciden | No coinciden |
+| **birthDateMatch**        | Fechas coinciden    | Coinciden | No coinciden |
+| **personalIdNumberMatch** | CURP coincide       | Coincide  | No coincide  |
+
+<Callout type="tip">
+**Recomendación:** Usa verificación gubernamental para:
+
+* Procesos de alto riesgo
+* Transacciones financieras
+* Cumplimiento regulatorio estricto
+</Callout>
+
+# Solución de Problemas Comunes
+
+## Errores Frecuentes
+
+### Error DC08 - Formato Base64 Inválido
+
+**Problema:** `"Invalid Base64 format"`
+
+**Causa:** Imagen incluye header "data:image/..."
+
+**Solución:**
+
+```javascript
+// Incorrecto
+const imageWithHeader = 'data:image/jpeg;base64,/9j/4AAQ...';
+
+// Correcto
+const imageBase64 = '/9j/4AAQ...'; // Solo la parte Base64
+```
+
+### Error DC25 - País No Permitido
+
+**Problema:** `"Country not allowed"`
+
+**Causa:** Documento de país no configurado
+
+**Solución:**
+
+1. Agregar país a configuración empresarial
+2. Incluir país en `allowedCountries`
+3. Usar array vacío para permitir todos: `"allowedCountries": []`
+
+### Error DC13 - Calidad de Imagen Insuficiente
+
+**Problema:** `"Insufficient image quality"`
+
+**Causa:** Imagen borrosa, incompleta o mal iluminada
+
+**Solución:**
+
+* Usar resolución mínima 1080p
+* Mejorar iluminación
+* Asegurar documento completo
+* Evitar sombras y reflejos
+
+### Error DC10 - Fallo en Verificación de Vida
+
+**Problema:** `"Document liveness failed"`
+
+**Causa:** Foto de pantalla en lugar de documento físico
+
+**Solución:**
+
+* Usar documento físico original
+* Evitar imágenes de pantalla
+* Mejorar calidad de captura
+
+## Checklist de Troubleshooting
+
+Antes de contactar soporte, verifica:
+
+* [ ] API Key válida y activa
+* [ ] Imagen en formato Base64 puro (sin headers)
+* [ ] Resolución de imagen mínima 1080p
+* [ ] Documento completo y legible
+* [ ] País incluido en configuración
+* [ ] Buena iluminación y sin reflejos
+* [ ] Conexión estable a internet
+
+# Mejores Prácticas
+
+## Para Desarrolladores
+
+### Implementar Retry Logic
+
+```javascript
+const verifyWithRetry = async (documentData, maxRetries = 3) => {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      const result = await verifyDocument(documentData);
+      return result;
+    } catch (error) {
+      if (attempt === maxRetries) throw error;
+      await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+    }
+  }
+};
+```
+
+### Validar Imágenes Antes de Enviar
+
+```javascript
+const validateImage = (base64Image) => {
+  // Verificar que es Base64 válido
+  const base64Regex = /^[A-Za-z0-9+/]*={0,2}$/;
+  if (!base64Regex.test(base64Image)) {
+    throw new Error('Formato Base64 inválido');
+  }
+
+  // Verificar tamaño (máximo 10MB)
+  const sizeInBytes = (base64Image.length * 3) / 4;
+  if (sizeInBytes > 10 * 1024 * 1024) {
+    throw new Error('Imagen muy grande (máximo 10MB)');
+  }
+
+  return true;
+};
+```
+
+## Para Usuarios de Negocio
+
+### Flujo de Decisión
+
+![](https://files.readme.io/b154a3b7829458cdaaa20eee13cffa6cc39173d3fd80a03cfeffb241e7cb959c-Flujo_de_decision.png)
+
+### Configuración de Umbrales
+
+| **Caso de Uso**           | **Configuración Recomendada**        |
+| ------------------------- | ------------------------------------ |
+| **Onboarding Básico**     | Solo SUCCESS aprobado                |
+| **Verificación Estricta** | SUCCESS + Verificación gubernamental |
+| **Revisión Manual**       | WARNING → Cola de revisión           |
+
+# Consideraciones de Seguridad
+
+## Protección de Datos
+
+### API Keys
+
+* Nunca expongas API keys en código frontend
+* Usa variables de entorno
+* Rotación periódica de keys
+* Acceso restringido por IP (opcional)
+
+### Datos Sensibles
+
+* Transmisión siempre por HTTPS
+* No almacenar imágenes sin cifrado
+* Logs sin información personal
+* Cumplimiento GDPR/CCPA
+
+### Rate Limiting
+
+* Implementar límites en cliente
+* Manejar respuestas 429 (Too Many Requests)
+* Usar backoff exponencial
+
+# Soporte y Contacto
+
+## Cuándo Contactar Soporte
+
+* Errores no documentados en esta guía
+* Problemas de rendimiento persistentes
+* Necesidad de configuraciones especiales
+* Dudas sobre integración
+
+## Información de Contacto
+
+**Email:** [soporte@jaak.ai](mailto:soporte@jaak.ai)
+
+**Información a incluir:**
+
+* Descripción específica del problema
+* Código de error (si aplica)
+* EventId de la petición fallida
+* Pasos para reproducir el problema
+* Configuración utilizada
+
+## Recursos Adicionales
+
+* [Documentación Técnica API](https://api.jaak.ai/docs)
+* [Guía de Autenticación](https://docs.jaak.ai/auth)
+* [Códigos de País ISO](https://www.iso.org/iso-3166-country-codes.html)
+* [Especificación Base64](https://tools.ietf.org/html/rfc4648)
+
+**¡Listo para empezar!**
+
+Con esta guía tienes todo lo necesario para implementar JAAK Document Verify en tu producto. Comienza con una verificación básica y gradualmente agrega funcionalidades avanzadas según tus necesidades.
+
+¿Necesitas ayuda adicional? No dudes en contactar a nuestro equipo de soporte.

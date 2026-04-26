@@ -1,0 +1,392 @@
+---
+title: Paso 5 - Listas oficiales y listas negras vía Android
+description: Verificación de los datos del usuario contra listas oficiales (INE, Interpol, OFAC, RENAPO, SAT, CDC) desde Android.
+category: api
+order: 6
+---
+
+
+Una vez extraídos los datos del documento en el paso anterior, se procede a verificar esta información contra diversas **listas oficiales** que permiten validar la identidad del cliente y detectar posibles riesgos. Este paso es fundamental para garantizar que la persona no esté vinculada a actividades ilícitas o se encuentre dentro de registros de alto riesgo, al mismo tiempo que confirma su existencia en bases legítimas del gobierno.
+
+No todas las listas tienen un enfoque restrictivo o de riesgo; algunas están diseñadas para confirmar información oficial. Por ello, en lugar de "listas negras", nos referimos a esta etapa como verificación contra **listas oficiales**. Algunos ejemplos:
+
+**Listas de riesgo internacional:** como **Interpol o OFAC**, utilizadas para detectar vínculos con actividades ilícitas o sanciones.
+
+**Listas de validación nacional:** como **INE, RENAPO o SAT**, empleadas para confirmar la identidad y existencia legal del individuo.
+
+Los servicios disponibles en esta etapa son: **INE, Interpol, OFAC, RENAPO y SAT**.
+
+<Callout type="warning">
+Solo puedes consultar una lista por solicitud. Aunque la firma para consumir el servicio es la misma, cada lista requiere parámetros específicos según la naturaleza de los datos que valida.
+</Callout>
+
+**URL**
+
+```
+POST https://api.sandbox.jaak.ai/api/v2/blacklist/investigate
+```
+
+```kotlin
+@POST("api/v2/blacklist/investigate")
+    suspend fun livenessVerifyApi(@Header("Authorization") auth: String,
+                                  @Body request: InvestigateRequest): Response<InvestigateResponse>
+```
+
+**Header**
+
+```
+Authorization: Bearer token-session-kyc
+```
+
+| Campo         | Tipo   | Requerido | Descripción                                                                                                  |
+| :------------ | :----- | :-------- | :----------------------------------------------------------------------------------------------------------- |
+| Authorization | string | Sí        | En esta cabecera se debe enviar el Token de Sesión KYC que se ha obtenido del intercambiado con de Short Key |
+
+**Request**
+
+```json
+{
+    "services": {
+        "ine": Boolean,
+        "interpol": Boolean,
+        "ofac": Boolean,
+        "renapo": {
+            "curp": Boolean
+        },
+        "sat": {
+            "sat69b": Boolean
+        },
+        "cdc": {
+            "rccFico": Boolean
+        }
+    },
+    "payload": {
+        "person": {
+            "name": String,
+            "secondName": String,
+            "lastName": String,
+            "secondLastName": String,
+            "birthDate": String,
+            "nationality": String,
+            "additionalLastName": String
+        },
+        "address": {
+            "address": String,
+            "neighborhood": String,
+            "municipality": String,
+            "city": String,
+            "state": String,
+            "postalCode": String
+        },
+        "identifications": {
+            "curp": String,
+            "rfc": String,
+            "socialSecurityNumber": String,
+            "electorKey": String,
+            "ine": {
+                "cic": String,
+                "ocr": String
+            }
+        },
+        "extras": {
+            "commonId": String,
+            "wantedIn": String
+        }
+    }
+}
+```
+
+```kotlin
+ data class InvestigateRequest(
+    @SerializedName("services") val services: Services,
+    @SerializedName("payload") val payload: Payload
+)
+
+data class Services(
+    @SerializedName("ine") val ine: Boolean,
+    @SerializedName("interpol") val interpol: Boolean,
+    @SerializedName("ofac") val ofac: Boolean,
+    @SerializedName("renapo") val renapo: Renapo,
+    @SerializedName("sat") val sat: Sat,
+    @SerializedName("cdc") val cdc: Cdc
+)
+
+data class Renapo(
+    @SerializedName("curp") val curp: Boolean
+)
+
+data class Sat(
+    @SerializedName("sat69b") val sat69b: Boolean
+)
+
+data class Cdc(
+    @SerializedName("rccFico") val rccFico: Boolean
+)
+
+data class Payload(
+    @SerializedName("person") val person: Person,
+    @SerializedName("address") val address: Address,
+    @SerializedName("identifications") val identifications: Identifications,
+    @SerializedName("extras") val extras: Extras
+)
+
+data class Person(
+    @SerializedName("name") val name: String,
+    @SerializedName("secondName") val secondName: String,
+    @SerializedName("lastName") val lastName: String,
+    @SerializedName("secondLastName") val secondLastName: String,
+    @SerializedName("birthDate") val birthDate: String,
+    @SerializedName("nationality") val nationality: String,
+    @SerializedName("additionalLastName") val additionalLastName: String
+)
+
+data class Address(
+    @SerializedName("address") val address: String,
+    @SerializedName("neighborhood") val neighborhood: String,
+    @SerializedName("municipality") val municipality: String,
+    @SerializedName("city") val city: String,
+    @SerializedName("state") val state: String,
+    @SerializedName("postalCode") val postalCode: String
+)
+
+data class Identifications(
+    @SerializedName("curp") val curp: String,
+    @SerializedName("rfc") val rfc: String,
+    @SerializedName("socialSecurityNumber") val socialSecurityNumber: String,
+    @SerializedName("electorKey") val electorKey: String,
+    @SerializedName("ine") val ine: Ine
+)
+
+data class Ine(
+    @SerializedName("cic") val cic: String,
+    @SerializedName("ocr") val ocr: String
+)
+
+data class Extras(
+    @SerializedName("commonId") val commonId: String,
+    @SerializedName("wantedIn") val wantedIn: String
+)
+```
+
+| Campo    | Tipo   | Descripción                                                                                                        |
+| :------- | :----- | :----------------------------------------------------------------------------------------------------------------- |
+| services | Objeto | Contiene los distintos servicios de listas negras en los que es posible realizar una verificación (ver sub-tablas) |
+| payload  | Objeto | Contiene la información a buscar del servicio elegido (ver sub-tablas)                                             |
+
+Objeto *services*
+
+| Campo       | tipo    | Descripción                                                               |
+| ----------- | :------ | :------------------------------------------------------------------------ |
+| ine         | boolean | Realiza verificación en Instituto Nacional Electoral (INE).               |
+| interpol    | boolean | Realiza verificación en Interpol.                                         |
+| ofac        | boolean | Realiza verificación en Oficina de Control de Activos Extranjeros (OFAC). |
+| renapo.curp | boolean | Realiza verificación en Registro Nacional de Población (RENAPO).          |
+| sat.sat69b  | boolean | Realiza verificación en Servicio de Administración Tributaria (SAT).      |
+| cdc.rccFico | boolean | Realiza verificación en Centro de Datos de Crédito (CDC).                 |
+
+Objeto *payload*
+
+| Campo                   | Tipo   | Descripción                                           |
+| :---------------------- | :----- | :---------------------------------------------------- |
+| payload.person          | Objeto | Contiene la información de respuesta (ver sub-tablas) |
+| payload.address         | Objeto | Contiene la información de respuesta (ver sub-tablas) |
+| payload.identifications | Objeto | Contiene la información de respuesta (ver sub-tablas) |
+| payload.extras          | Objeto | Contiene la información de respuesta (ver sub-tablas) |
+
+Objeto *payload.person*
+
+| Campo              | tipo   | Descripción                                                         |
+| ------------------ | :----- | :------------------------------------------------------------------ |
+| name               | string | Primer nombre de la persona a buscar.                               |
+| secondName         | string | Segundo nombre de la persona a buscar.                              |
+| lastName           | string | Primer apellido de la persona a buscar.                             |
+| secondLastName     | string | Segundo apellido de la persona a buscar.                            |
+| birthDate          | string | Fecha de nacimiento de la persona a buscar (Formato: `YYYY-MM-DD`). |
+| nationality        | string | Nacionalidad del la persona a buscar.                               |
+| additionalLastName | string | Apellido adicional de la persona a buscar.                          |
+
+Objeto *payload.address*
+
+| Campo        | tipo   | Descripción                                            |
+| ------------ | :----- | :----------------------------------------------------- |
+| address      | string | Calle y número de la dirección de la persona a buscar. |
+| neighborhood | string | Colonia o barrio del usuario de la persona a buscar.   |
+| municipality | string | Municipio o delegación de la persona a buscar.         |
+| city         | string | Ciudad de residencia de la persona a buscar.           |
+| state        | string | Estado de residencia de la persona a buscar.           |
+| postalCode   | string | Código postal de la dirección de la persona a buscar.  |
+
+Objeto *payload.identifications*
+
+| Campo                | tipo   | Descripción                                                                        |
+| -------------------- | :----- | :--------------------------------------------------------------------------------- |
+| curp                 | string | Clave Única de Registro de Población (CURP) de la persona a buscar.                |
+| rfc                  | string | Registro Federal de Contribuyentes (RFC) de la persona a buscar.                   |
+| socialSecurityNumber | string | Número de Seguridad Social (NSS) de la persona a buscar.                           |
+| electorKey           | string | Clave de Elector del INE de la persona a buscar.                                   |
+| ine                  | Object | Objeto con datos de la credencial del INE de la persona a buscar. (ver sub-tablas) |
+
+Objeto *payload.identifications.ine*
+
+| Campo | Tipo   | Descripción                                                           |
+| ----- | ------ | --------------------------------------------------------------------- |
+| cic   | string | Código de Identificación de la Credencial INE del documento a buscar. |
+| ocr   | string | Número Oficial de Identificación (OCR) del documento a buscar.        |
+
+Objeto *payload.extras*
+
+| Campo    | tipo   | Descripción                                                                                |
+| -------- | :----- | :----------------------------------------------------------------------------------------- |
+| commonId | string | Identificador común del usuario (puede ser ID interno del sistema) de la persona a buscar. |
+| wantedIn | string | Código del país donde se busca al usuario (`"MEX"` para México) de la persona a buscar.    |
+
+**Response**
+
+```json
+{
+    "eventId": String,
+    "responseId": String,
+    "processTime": Double,
+    "organization": String,
+    "service": String,
+    "result": {},
+    "state": {
+        "foundInService": Bolean,
+        "mustBeFound": Boolean,
+        "message": String
+    }
+}
+```
+
+```kotlin
+data class InvestigateResponse(
+    @SerializedName("eventId") val eventId: String,
+    @SerializedName("responseId") val responseId: String,
+    @SerializedName("processTime") val processTime: Double,
+    @SerializedName("organization") val organization: String,
+    @SerializedName("service") val service: String,
+    @SerializedName("result") val result: Any?, // Puede ser null o un objeto, depende del uso
+    @SerializedName("state") val state: InvestigationState
+)
+
+data class InvestigationState(
+    @SerializedName("message") val message: String,
+    @SerializedName("foundInService") val foundInService: Boolean,
+    @SerializedName("mustBeFound") val mustBeFound: Boolean
+)
+```
+
+| Campo        | Tipo   | Descripción                                                                    |
+| :----------- | :----- | :----------------------------------------------------------------------------- |
+| eventId      | string | ID para trazabilidad de los detalles del evento.                               |
+| responseId   | string | ID de la respuesta.                                                            |
+| organization | string | La entidad gubernamental en la cual se apoya la consulta                       |
+| service      | string | Es el servicio de la entidad en el cual se realiza la consulta                 |
+| processTime  | double | Tiempo de procesamiento de la consulta del servicio                            |
+| result       | object | Objeto con los datos de la persona encontrada si fuera el caso                 |
+| state        | object | Son estados en el que te puedes apoyar para saber si fue encontrado la persona |
+
+Objeto *state*
+
+| Campo          | Tipo    | Descripción                                                                                                                                                                                                                       |
+| -------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| foundInService | boolean | Indica si la persona fue encontrada en el servicio o no.                                                                                                                                                                          |
+| mustBeFound    | boolean | Define si se espera encontrar la persona en el servicio para que el proceso sea exitoso o no. Por ejemplo: para OFAC el no encontrar a una persona en el servicio es un caso exitoso, por el contrario en INE si se encuentra a una persona es considerado como un caso exitoso. |
+| message        | string  | Mensaje referente a la búsqueda de la persona en servicio                                                                                                                                                                         |
+
+A continuación, se exhibirán una serie de tablas organizadas por servicio de listas. En estas tablas, se detallarán los campos necesarios para cada lista y su correspondencia con los datos extraídos del paso anterior.
+
+Para hacer la verificación mediante el servicio **INE** deberás enviar los siguientes datos:
+
+| Campo enviado en la llamada API | Requerido | Dato extraído del documento en el paso anterior |
+| :------------------------------ | :-------- | :---------------------------------------------- |
+| payload.identifications.ine.cic | Si        | content.data.document.additionalNumber          |
+| payload.identifications.ine.ocr | Si        | content.data.personal.extra.ocr                 |
+
+Para hacer la verificación mediante el servicio **INTERPOL** deberás enviar los siguientes datos:
+
+| Campo enviado en la llamada API | Requerido | Dato extraído del documento en el paso anterior |
+| :------------------------------ | :-------- | :---------------------------------------------- |
+| payload.person.name             | Si        | content.data.personal.name                      |
+| payload.person.secondName       | No        | content.data.personal.secondName                |
+| payload.person.lastName         | Si        | content.data.personal.sureName                  |
+| payload.person.secondLastName   | No        | content.data.personal.motherSurname             |
+
+Para hacer la verificación mediante el servicio **OFAC** deberás enviar los siguientes datos:
+
+| Campo enviado en la llamada API | Requerido | Dato extraído del documento en el paso anterior |
+| :------------------------------ | :-------- | :---------------------------------------------- |
+| payload.person.name             | Si        | content.data.personal.name                      |
+| payload.person.secondName       | No        | content.data.personal.secondName                |
+| payload.person.lastName         | Si        | content.data.personal.sureName                  |
+| payload.person.secondLastName   | No        | content.data.personal.motherSurname             |
+
+Para hacer la verificación mediante el servicio **RENAPO** deberás enviar los siguientes datos:
+
+| Campo enviado en la llamada API | Requerido | Dato extraído del documento en el paso anterior |
+| :------------------------------ | :-------- | :---------------------------------------------- |
+| payload.identifications.curp    | Si        | content.data.document.personalIdNumber          |
+
+Para hacer la verificación mediante el servicio **SAT** deberás enviar los siguientes datos:
+
+| Campo enviado en la llamada API | Requerido | Dato extraído del documento en el paso anterior |
+| :------------------------------ | :-------- | :---------------------------------------------- |
+| payload.person.name             | Si        | content.data.personal.name                      |
+| payload.person.secondName       | No        | content.data.personal.secondName                |
+| payload.person.lastName         | Si        | content.data.personal.sureName                  |
+| payload.person.secondLastName   | No        | content.data.personal.motherSurname             |
+| payload.identifications.rfc     | Si        | content.data.personal.extra.rfc                 |
+
+A continuación, te mostraremos un ejemplo de una consulta al servicio de RENAPO
+
+**Request**
+
+```json
+{
+    "services": {
+        "ine": false,
+        "interpool": false,
+        "ofac": false,
+        "renapo": {
+            "curp": true
+        },
+        "sat": {
+            "sat69b": false
+        },
+        "cdc": {
+            "rccFico": false
+        }
+    },
+    "payload": {
+        "identifications": {
+            "curp": "aqui va la curp"
+        }
+    }
+}
+```
+
+**Response**
+
+```json
+{
+    "eventId": "749f88b9-ecce-4f4c-920a-f8ece706501a",
+    "responseId": "",
+    "processTime": 0.23123526573181152,
+    "organization": "curp",
+    "service": "validaCurp",
+    "result": null,
+    "state": {
+        "message": "Investigation completed successfully",
+        "foundInService": false,
+        "mustBeFound": true
+    }
+}
+```
+
+Como se muestra en el ejemplo anterior, se realizó una consulta al servicio de RENAPO. En la solicitud, podemos observar que solo se activó un servicio, *services.renapo.curp*, y que únicamente se enviaron los campos necesarios para llevar a cabo la búsqueda de dicho servicio.
+
+El campo *state* dentro del *Response* debería haber indicado que se encontró a una persona para que la búsqueda se considere exitosa. Sin embargo, el campo *foundInService* muestra que no se encontró a la persona.
+
+En resumen, al contrastar los datos extraídos del documento con diversas listas negras, garantizamos la protección tanto de la empresa como de los usuarios. Este proceso asegura la integridad y el cumplimiento del sistema, ayudando a prevenir fraudes.
+
+Una vez verificado los datos del documento en las listas negras continuemos con los siguientes pasos.

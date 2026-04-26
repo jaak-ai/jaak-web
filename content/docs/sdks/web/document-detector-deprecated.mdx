@@ -1,0 +1,250 @@
+---
+title: JAAK document-detector SDK Web
+description: Componente web para captura de identificaciones (deprecated). Usa JAAK Stamps SDK como sustituto.
+category: sdk
+order: 3
+---
+
+<Callout type="warning" title="SDK deprecado">
+Este SDK está deprecated. Usa [JAAK Stamps SDK Web](/docs/sdks/web/stamps) como sustituto.
+</Callout>
+
+DocumentDetector es un componente web que permite la captura de identificaciones.
+
+## Introducción
+
+**DocumentDetector** es un componente web diseñado para facilitar la captura y procesamiento de imágenes de documentos de identificación en aplicaciones web modernas. Este componente forma parte de un ecosistema de **componentes web interoperables**, compatibles con los principales estándares de la Web. Su arquitectura basada en **shadow DOM**, **slots (ranuras)** y encapsulamiento de estilos permite una integración limpia, segura y mantenible en cualquier entorno con soporte para Web Components.
+
+## Funcionalidades Clave
+
+* **Carga de archivos locales:** Los usuarios pueden seleccionar imágenes desde su dispositivo. El componente valida el archivo y, si cumple con los criterios de un documento legible, emite el resultado codificado en **Base64**.
+
+* **Captura con cámara:** Activa la cámara del dispositivo para detectar automáticamente un documento en tiempo real. Al detectar una válida, captura y emite los datos codificados también en **Base64**.
+
+## Instalación
+
+1. **Pre-requisitos:**
+   * Node.js y npm instalados.
+   * Descargar desde: [https://nodejs.org](https://nodejs.org)
+   * Verifica la instalación:
+     ```bash
+     node -v
+     npm -v
+     ```
+
+2. **Inicializa tu proyecto (si aplica):**
+   ```bash
+   npm init
+   ```
+
+3. **Instala el paquete:**
+   ```bash
+   npm install @jaak.ai/document-detector
+   ```
+
+4. **Confirma la instalación:** Verifica que el paquete esté listado en `package.json`.
+
+### Opción alternativa de instalación
+
+También puedes instalar el componente directamente mediante una etiqueta `<script>` en la cabecera `head` HTML:
+
+```html
+<script
+  type="module"
+  src="https://unpkg.com/@jaak.ai/document-detector"></script>
+```
+
+## Configuración del Componente
+
+Las propiedades de configuración se pueden establecer como atributos en HTML o a través de JavaScript:
+
+| Propiedad | Descripción | Requerido | Tipo | Valor por defecto |
+|-----------|-------------|-----------|------|-------------------|
+| `key` | Clave de autenticación provista por el equipo de JAAK | Sí | string | * |
+| `mode` | Modo de operación: `'upload-file'` (subida desde dispositivo) o `'video-camera'` (captura con cámara) | Sí | string | `'upload-file'` |
+| `documentDetect` | Activa la detección automática del documento (solo en `video-camera`) | No | boolean | `true` |
+| `videoFeedback` | Muestra retroalimentación visual durante la captura en vivo | No | boolean | `true` |
+| `width` | Ancho del componente, ej. `'200px'` \| `'100%'` | No | string | `'500px'` |
+| `height` | Alto del componente, ej. `'200px'` \| `'100%'` | No | string | `'400px'` |
+| `progressiveDetection` | Habilita captura continua hasta detener o desmontar el componente | No | boolean | `false` |
+| `placeholder` | Texto auxiliar en el modo de carga de archivos (almacenamiento del dispositivo) | No | string | N/A |
+| `buttonText` | Etiqueta del botón en modo `'upload-file'` | No | string | N/A |
+| `size` | Tamaño máximo permitido del archivo (en KB) | No | number | N/A |
+| `translate` | Objeto con textos personalizados para guías e instrucciones | No | object | N/A |
+| `sdkConfig` | Permite configurar opciones avanzadas del SDK de reconocimiento de documentos. | No | object | N/A |
+
+### Propiedades del objeto `translate`
+
+Para configurar las instrucciones de los textos utiliza un objeto con las siguientes propiedades:
+
+| Propiedad                        | Tipo     | Valor por defecto                                       |
+| -------------------------------- | -------- | ------------------------------------------------------- |
+| `front`                          | `string` | Acerca la parte frontal de tu documento                 |
+| `back`                           | `string` | Acerca la parte trasera de tu documento                 |
+| `changeSide`                     | `string` | Voltea tu documento                                     |
+| `adjustAngle`                    | `string` | Ajustar el ángulo                                       |
+| `cameraFeedbackBlur`             | `string` | Quédate quieto                                          |
+| `cameraFeedbackFacePhotoCovered` | `string` | Incline o mueva el documento para eliminar los reflejos |
+| `cameraFeedbackGlare`            | `string` | Dar la vuelta al documento                              |
+| `cameraFeedbackWrongSide`        | `string` | Mantenga la foto de la cara completamente visible       |
+| `moveCloser`                     | `string` | Acércate más                                            |
+| `moveFarther`                    | `string` | Muévete más lejos                                       |
+
+### Propiedades del objeto `sdkConfig`
+
+Para configurar opciones avanzadas del SDK de reconocimiento de documentos utiliza un objeto con las siguientes propiedades:
+
+| Propiedad         | Tipo                    | Descripción                                                                                                               | Valor por defecto |
+| :---------------- | :---------------------- | :------------------------------------------------------------------------------------------------------------------------ | :---------------- |
+| `forceMobileMode` | `boolean`               | Fuerza el modo móvil del SDK independientemente del dispositivo detectado.                                                | false             |
+| `modelIdVariant`  | `'lightweight' \'full'` | Define la variante del SDK a utilizar: 'lightweight' para una versión más ligera o 'full' para todas las funcionalidades. | 'full'            |
+| `initialMemory`   | `number`                | Establece la cantidad inicial de memoria (en MB) asignada al SDK.                                                         | 64                |
+| `numberOfWorkers` | `number \ null`         | Define el número de workers que utilizará el SDK. Si es null, se utilizará el número óptimo según el dispositivo.         | null              |
+
+### Nota importante sobre la licencia (`key`)
+
+La clave de autenticación (`key`) debe ser solicitada al correo **[soporte@jaak.ai](mailto:soporte@jaak.ai)** indicando que se desea dar de alta una licencia del SDK Web. Es importante incluir las **URL (dominios)** donde se instalará el componente. Si se utilizará en un entorno local, también se debe indicar que es un **localhost**.
+
+### Ejemplo de `translate`
+
+```json
+{
+  "front": "Acerca la parte frontal de tu documento",
+  "back": "Acerca la parte trasera de tu documento",
+  "changeSide": "Voltea tu documento",
+  "adjustAngle": "Ajustar el ángulo",
+  "cameraFeedbackBlur": "Quédate quieto",
+  "cameraFeedbackFacePhotoCovered": "Incline o mueva el documento para eliminar los reflejos",
+  "cameraFeedbackGlare": "Dar la vuelta al documento",
+  "cameraFeedbackWrongSide": "Mantenga la foto de la cara completamente visible",
+  "moveCloser": "Acércate más",
+  "moveFarther": "Muévete más lejos"
+}
+```
+
+---
+
+## Ejemplo de Implementación Básica
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script type="module" src="https://unpkg.com/@jaak.ai/document-detector"></script>
+    <style>
+      .demo-container {
+        display: flex;
+        justify-content: center;
+        padding-top: 80px;
+        gap: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="demo-container">
+      <document-detector></document-detector>
+    </div>
+    <script>
+      const detector = document.querySelector("document-detector");
+      const userConfig = {
+        key: 'your-access-key',
+        width: '640px',
+        height: '480px',
+        mode: 'video-camera',
+        placeholder: 'Upload your document',
+        buttonText: 'Upload',
+        size: 2048,
+        translate: {
+          front: 'Acerca el documento',
+          back: 'Acerca el reverso del documento',
+          changeSide: 'Voltea tu documento',
+          adjustAngle: 'Rota tu documento',
+          cameraFeedbackBlur: 'Mantén la cámara estable'
+        }
+      };
+
+      detector.config = userConfig;
+
+      detector.addEventListener("results", e => {
+        console.log('RESULTS:', e.detail);
+      });
+    </script>
+  </body>
+</html>
+```
+
+## Eventos Emitidos
+
+| Evento           | Descripción                                    | Detalle             |
+| ---------------- | ---------------------------------------------- | ------------------- |
+| `results`        | Devuelve los datos del documento detectado     | `e.detail` (objeto) |
+| `status`         | Reporta cambios de estado del componente       | `string`            |
+| `componentError` | Notifica errores internos durante la operación | `object`            |
+
+## Resultado de Ejemplo
+
+```json
+{
+  "documentData": {
+    "generalData": {
+      "type": "ID",
+      "nationality": "MEXICAN",
+      "name": "MARIA FERNANDA",
+      "surname": "RODRIGUEZ",
+      "motherSurname": "VALENCIA",
+      "address": "AV REFORMA 247\nCOL JUAREZ 06600\nCUAUHTEMOC, CDMX",
+      "expiryPermanent": false,
+      "birthDate": "891225",
+      "gender": "M",
+      "documentImage": {
+        "frontFull": "/9j/4AAQ...",
+        "backFull": "/9j/4AAQ...",
+        "front": "/9j/4AAQ...",
+        "back": "/9j/4AAQ...",
+        "signature": "/9j/4AAQ...",
+        "face": "/9j/4AAQ..."
+      }
+    },
+    "mechanicalReadingZone": "IDMEX8901234567<<8912254M2512311MEX<02<<12345<6\nRODRIGUEZ<VALENCIA<<MARIA<FERNANDA<<\n",
+    "specificData": [
+      { "label": "curp", "value": "ROVM123456MDFDRR78" },
+      { "label": "electorKey", "value": "RDVLMF123456M789" },
+      { "label": "registerYear", "value": 2023 },
+      { "label": "registerMonth", "value": 6 },
+      { "label": "emissionYear", "value": 2023 },
+      { "label": "identificationOCR", "value": "0123456789123" },
+      { "label": "numIdentificationCredential", "value": "123456789" }
+    ]
+  }
+}
+```
+
+## Métodos Públicos
+
+| Método               | Función que realiza                                           |
+| -------------------- | ------------------------------------------------------------- |
+| `switchMode(mode)`   | Cambia dinámicamente entre `'upload-file'` y `'video-camera'` |
+| `getMode()`          | Retorna el modo actual de operación                           |
+| `uploadFile()`       | Inicia el flujo de carga de archivo y procesamiento           |
+| `startDetection()`   | Activa la detección en modo cámara                            |
+| `stopComponent()`    | Detiene todas las operaciones y procesos en curso             |
+| `restartComponent()` | Reinicia el componente y lo retorna a su estado original      |
+
+### Ejemplo: Alternar entre modos
+
+```html
+<button onclick="switchMode()">Cambiar modo</button>
+<script>
+  async function switchMode() {
+    const mode = await detector.getMode();
+    detector.switchMode(mode === "video-camera" ? "upload-file" : "video-camera");
+  }
+</script>
+```
+
+## Recursos Complementarios
+
+### Repositorio de ejemplo
+
+Puedes apoyarte con un ejemplo funcional en el siguiente repositorio:
+**[https://github.com/jaak-ai/document-detector-js-example](https://github.com/jaak-ai/document-detector-js-example)**

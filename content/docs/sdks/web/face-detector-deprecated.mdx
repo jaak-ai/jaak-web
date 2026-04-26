@@ -1,0 +1,311 @@
+---
+title: JAAK face-detector SDK Web
+description: Componente web para captura óptima de rostros (deprecated). Usa JAAK Visage SDK como sustituto.
+category: sdk
+order: 4
+---
+
+<Callout type="warning" title="SDK deprecado">
+Este SDK está deprecated. Usa [JAAK Visage SDK Web](/docs/sdks/web/visage) como sustituto.
+</Callout>
+
+`facedetector@v.1.6.0` es un componente web que permite la captura óptima de rostros.
+
+## Introducción
+
+El componente `FaceDetectorComponent` es un Web Component diseñado para capturar rostros mediante video o imágenes. Este componente forma parte de un ecosistema de componentes web interoperables, compatibles con los principales estándares de la Web. Su arquitectura basada en shadow DOM, slots (ranuras) y encapsulamiento de estilos permite una integración limpia, segura y mantenible en cualquier entorno con soporte para Web Components.
+
+## Funcionalidades Clave
+
+* Carga de archivos locales: Los usuarios pueden seleccionar imágenes desde su dispositivo. El componente valida el archivo y, si cumple con los criterios de un documento legible, emite el resultado codificado en Base64.
+* Captura con cámara: Activa la cámara del dispositivo para detectar automáticamente un rostro en tiempo real. Al detectar uno en condiciones óptimas, captura y emite los datos codificados también en Base64.
+
+## Instalación
+
+Utiliza el siguiente comando para instalar el paquete desde NPM:
+
+1. **Pre-requisitos:**
+   * Node.js y npm instalados.
+   * Descargar desde: [https://nodejs.org](https://nodejs.org)
+   * Verifica la instalación:
+     ```bash
+     node -v
+     npm -v
+     ```
+
+2. **Inicializa tu proyecto (si aplica):**
+   ```bash
+   npm init
+   ```
+
+3. **Instala el paquete:**
+
+```bash
+npm install @jaak.ai/face-detecto
+```
+
+4. **Confirma la instalación:** Verifica que el paquete esté listado en `package.json`.
+
+### Opción alternativa de instalación
+
+También puedes instalar el componente directamente mediante una etiqueta `<script>` en la cabecera `head` HTML:
+
+```html
+<script
+  type="module"
+  src="https://unpkg.com/@jaak.ai/document-detector"></script>
+```
+
+## Uso Rápido
+
+```html
+<face-detector
+  config={{
+    width: '640px',
+    height: '480px',
+    enableMicrophone: true,
+    mode: 'video-camera',
+    placeholder: 'Sube tu documento',
+    buttonText: 'Subir',
+    documentAccept: 'image/*',
+    description: 'Por favor sube una imagen legible.',
+    size: 2048
+  }}
+  onStatus={(event) => handleStatusChange(event.detail)}
+  onComponentError={(event) => handleComponentError(event.detail)}
+  onFileResult={(event) => handleFileResult(event.detail)}
+></face-detector>
+```
+
+## Propiedades del Componente
+
+### Configuración del Componente `config: ConfigComponent` (opcional)
+
+| Propiedad                 | Tipo                  | Descripción                                                                                                                                                 |
+| ------------------------- | --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| width                     | string                | Ancho del componente (ej. '640px'). Default: '500px'                                                                                                        |
+| height                    | string                | Alto del componente (ej. '480px'). Default: '400px'                                                                                                         |
+| enableMicrophone          | boolean               | Activa el micrófono. Default: `false`                                                                                                                       |
+| mode                      | string                | Modo de operación: `'video-camera'` o `'upload-file'`                                                                                                       |
+| placeholder               | string                | Texto del campo para subir archivo                                                                                                                          |
+| buttonText                | string                | Texto del botón de carga                                                                                                                                    |
+| documentAccept            | string                | Tipos de archivos permitidos (ej. `image/*`)                                                                                                                |
+| description               | string                | Descripción mostrada junto al input                                                                                                                         |
+| size                      | number                | Tamaño máximo permitido (KB)                                                                                                                                |
+| videoDuration             | number                | Duración del video en segundos                                                                                                                              |
+| video                     | MediaTrackConstraints | Restricciones de video (resolución, fps). Consulta los detalles de la clase [aquí](https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints). |
+| cameraSource              | string                | Cámara a usar: `'user'` o `'environment'`                                                                                                                   |
+| videoFormat               | string                | Formato del video: '1920x1080\@30', etc.                                                                                                                    |
+| autoRecorder              | boolean               | Graba automáticamente si detecta un rostro                                                                                                                  |
+| hideFaceTracker           | boolean               | Oculta la figura de detección facial                                                                                                                        |
+| disableFaceDetection      | boolean               | Desactiva la detección facial                                                                                                                               |
+| progressiveAutoRecorder   | boolean               | Permite grabar múltiples videos sucesivos sin detenerse automáticamente                                                                                     |
+| muteFaceDetectionMessages | boolean               | Silencia los mensajes del sistema de detección                                                                                                              |
+| hideTimer                 | boolean               | Oculta el indicador de grabación                                                                                                                            |
+| timerStyles               | TimerStyles           | Estilo del temporizador                                                                                                                                     |
+| faceTrackerStyles         | FaceTrackerStyles     | Estilo de la figura que marca el rostro                                                                                                                     |
+| offlineModel              | boolean               | Carga el modelo sin peticiones de red (modo offline)                                                                                                        |
+| enableInstructions        | boolean               | Permite mostrar instrucciones para guiar al usuario en el proceso de detección de rostros.                                                                  |
+| delayInstructions         | number                | Tiempo en milisegundos para mostrar cada instrucción durante la primera ejecución. Por defecto: 3000ms.                                                     |
+| delayReplayInstructions   | number                | Tiempo en milisegundos para mostrar cada instrucción durante las repeticiones. Por defecto: 3000ms.                                                         |
+| instructionsButton        | string                | Texto que se mostrará en el botón que permite a los usuarios reproducir las instrucciones.                                                                  |
+
+### Interfaz `TimerStyles`
+
+Define el estilo del indicador de grabación en la propiedad de configuración `timerStyles`:
+
+| Propiedad          | Tipo   | Descripción                      |
+| ------------------ | ------ | -------------------------------- |
+| color              | string | Color del texto del temporizador |
+| circleColor        | string | Color del círculo de progreso    |
+| circleColorEmpty   | string | Color del fondo del círculo      |
+| circleColorSuccess | string | Color al completar exitosamente  |
+| width              | number | Ancho del círculo                |
+| height             | number | Alto del círculo                 |
+| fontSize           | number | Tamaño del texto                 |
+| posX               | number | Posición horizontal (0 - 100)    |
+| posY               | number | Posición vertical (0 - 100)      |
+| strokeWidth        | number | Ancho del trazo                  |
+| dashArray          | string | Patrón del trazo                 |
+
+### Interfaz `FaceTrackerStyles`
+
+Personaliza los colores de detección en la propiedad de configuración `faceTrackerStyles`:
+
+| Propiedad    | Tipo   | Descripción                   |
+| ------------ | ------ | ----------------------------- |
+| validColor   | string | Color para detección válida   |
+| invalidColor | string | Color para detección inválida |
+
+### Mostrar Instrucciones de uso
+
+Habilita la propiedad **enableInstructions** dentro del objeto de configuración de componente `config: ConfigComponent`, utiliza las siguientes propiedades para personalizar las instrucciones.
+
+| Property                | Type       | Description                                                                     |
+| ----------------------- | ---------- | ------------------------------------------------------------------------------- |
+| `instructionsAnimation` | `string[]` | Arreglo de rutas a los archivos de animación utilizados para las instrucciones. |
+| `instructionsText`      | `string[]` | Arreglo de cadenas de texto para mostrar con cada animación de instrucción.     |
+
+Puedes personalizar las instrucciones animadas y los textos asociados siguiendo el siguiente ejemplo:
+
+```javascript
+const faceDetector = document.querySelector('face-detector');
+
+// Habilitas las instrucciones en el config
+faceDetector.config = {
+  // ... otras propiedades del ConfigComponent
+  enableInstructions: true,
+};
+
+// Instrucciones animadas (formato .riv desde una URL)
+faceDetector.instructionsAnimation = [
+  "https://raw.githubusercontent.com/jaak-ai/jaak-storage/main/animations/rive/glasses.riv",
+  "https://raw.githubusercontent.com/jaak-ai/jaak-storage/main/animations/rive/hat.riv",
+  "https://raw.githubusercontent.com/jaak-ai/jaak-storage/main/animations/rive/headphones.riv",
+  "https://raw.githubusercontent.com/jaak-ai/jaak-storage/main/animations/rive/light.riv",
+];
+
+// Texto descriptivo asociado a cada animación
+faceDetector.instructionsText = [
+  "Sin lentes",
+  "Sin gorra",
+  "Sin audífonos",
+  "Ajustar iluminación sin contraluz",
+];
+```
+
+## Eventos
+
+| Evento                 | Emite                  | Descripción                                |
+| ---------------------- | ---------------------- | ------------------------------------------ |
+| `status`               | `StatusFaceDetector`   | Estado actual del componente               |
+| `componentError`       | `webComponentError`    | Errores ocurridos dentro del componente    |
+| `fileResult`           | `FileResult`           | Resultado del archivo capturado            |
+| `faceDetectionMessage` | `FaceDetectionMessage` | Resultados del sistema de detección facial |
+
+## Métodos
+
+| Método                | Parámetros                         | Devuelve           | Descripción                              |
+| --------------------- | ---------------------------------- | ------------------ | ---------------------------------------- |
+| `turnOffFaceDetector` | ninguno                            | `void`             | Detiene la detección facial              |
+| `switchMode`          | `'video-camera'` / `'upload-file'` | `void`             | Cambia entre modos                       |
+| `stopComponent`       | ninguno                            | `void`             | Detiene todas las operaciones            |
+| `restartComponent`    | ninguno                            | `void`             | Reinicia el componente                   |
+| `getMode`             | ninguno                            | `string`           | Devuelve el modo actual                  |
+| `recordVideo`         | ninguno                            | `string` (Base64)  | Inicia la grabación y retorna el video   |
+| `takeSnapshot`        | ninguno                            | `string` (Base64)  | Captura una imagen                       |
+| `getVideoElement`     | ninguno                            | `HTMLVideoElement` | Devuelve el elemento de video            |
+| `getStream`           | ninguno                            | `MediaStream`      | Devuelve el stream de la cámara          |
+| `toggleCamera`        | ninguno                            | `void`             | Cambia entre cámaras (frontal / trasera) |
+| `stopVideoStream`     | ninguno                            | `void`             | Detiene el stream de video               |
+| `restartVideoStream`  | ninguno                            | `void`             | Reinicia el stream de video              |
+| `resetFaceDetector`   | `resetHard: boolean`               | `void`             | Reinicia la configuración interna        |
+
+## Interfaces adicionales
+
+### `FileResult`
+
+Devuelve los datos del resultado de la detección del rostro
+
+| Propiedad | Tipo   | Descripción                            |
+| --------- | ------ | -------------------------------------- |
+| base64    | string | Archivo codificado en base64           |
+| type      | string | MIME type (opcional)                   |
+| name      | string | Nombre original del archivo (opcional) |
+| size      | number | Tamaño del archivo en bytes (opcional) |
+
+### `FaceDetectionMessage`
+
+Devuelve los datos del mensaje durante la detección del rostro
+
+| Propiedad       | Tipo    | Descripción                                      |
+| --------------- | ------- | ------------------------------------------------ |
+| label           | string  | Descripción general del resultado                |
+| details         | string  | Detalles adicionales                             |
+| faceExist       | boolean | Indica si se detectó un rostro                   |
+| correctPosition | boolean | Indica si el rostro está en la posición correcta |
+
+### `webComponentError`
+
+Devuelve los datos del error resultante
+
+| Propiedad | Tipo   | Descripción                                     |
+| --------- | ------ | ----------------------------------------------- |
+| label     | string | Mensaje del error                               |
+| code      | string | Código del error (opcional)                     |
+| details   | any    | Información adicional sobre el error (opcional) |
+
+## Ejemplo de Implementación Básica
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Face Detector Usage</title>
+		<script type="module" src="https://unpkg.com/@jaak.ai/face-detector"></script>
+	</head>
+	<body>
+		<div class="content">
+			<face-detector id="faceDetector"></face-detector>
+		</div>
+	</body>
+	<style>
+		.content {
+			height: 90vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 10px;
+			margin-top: 1rem;
+		}
+	</style>
+
+	<script type="module">
+		// Seleccionar el componente face-detector
+		const faceDetector = document.querySelector('face-detector');
+
+		// Configurar el componente con los ajustes iniciales
+		const config = {
+			mode: 'video-camera',
+			timerStyles: {
+				width: 80,
+				height: 80,
+				fontSize: 40,
+				posY: 70,
+			},
+			width: '100%',
+			height: '100%',
+			offlineModel: false,
+			validateCamera: true,
+			enableInstructions: true,
+			delayInstructions: 1000,
+			delayReplayInstructions: 3000,
+			autoRecorder: true,
+		};
+
+		faceDetector.config = config;
+
+		// Manejar errores
+		faceDetector.addEventListener('componentError', (event) => {
+			console.error('Error event:', event.detail);
+			// Mostrar mensajes de error al usuario
+		});
+
+		// Manejar resultados de archivos
+		faceDetector.addEventListener('fileResult', (event) => {
+			console.log('Video capturado con éxito:');
+			// Procesar el resultado del archivo, por ejemplo, mostrar la imagen o video
+			console.log(event.detail.base64);
+		});
+	</script>
+</html>
+```
+
+## Recursos Complementarios
+
+### Repositorio de ejemplo
+
+Puedes apoyarte con un ejemplo funcional en el siguiente repositorio:
+**[https://github.com/jaak-ai/face-detector-js-example](https://github.com/jaak-ai/face-detector-js-example)**

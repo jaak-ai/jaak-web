@@ -1,0 +1,80 @@
+---
+title: Paso 7 - Verificación de identidad vía API
+description: Validación biométrica de prueba de vida mediante video de 5 segundos del rostro del usuario.
+category: api
+order: 8
+---
+
+El objetivo de la verificación de vida o *liveness* es garantizar que la persona que está realizando el proceso de verificación de identidad es un ser humano real y no una imagen, un video o un intento de fraude. Esta etapa se realiza para prevenir el uso de fotografías o videos falsificados y proteger la integridad del proceso KYC.
+
+Durante esta etapa, se lleva a cabo una validación biométrica para confirmar que la persona que está interactuando con el sistema es realmente quien dice ser. Utilizando tecnologías avanzadas de detección facial, esta verificación asegura que solo personas reales puedan completar el proceso de identificación.
+
+Para utilizar este paso, se requiere un video de 5 segundos con el rostro de la persona a validar. Es esencial que la persona no lleve accesorios y que el video tenga buena iluminación.
+
+Este video debe ser convertido a **Base64** antes de ser enviado al servicio. Por lo tanto, es fundamental realizar el proceso de codificación de video para asegurar su correcta transmisión y procesamiento.
+
+Realiza la siguiente llamada API para realizar el proceso de verificación de vida.
+
+**URL**
+
+```
+POST https://api.sandbox.jaak.ai/api/v1/liveness/verify-and-bestframe
+```
+
+**Header**
+
+```
+Authorization: Bearer token-session-kyc
+```
+
+| Campo         | Tipo   | Requerido | Descripción                                                                                                  |
+| :------------ | :----- | :-------- | :----------------------------------------------------------------------------------------------------------- |
+| Authorization | string | Sí        | En esta cabecera se debe enviar el Token de Sesión KYC que se ha obtenido del intercambiado con de Short Key |
+
+**Request**
+
+```json
+{
+  "video": String
+}
+```
+
+| Campo | Tipo   | Descipción                                    |
+| :---- | :----- | :-------------------------------------------- |
+| video | string | Video de la persona enviado en formato Base64 |
+
+**Response**
+
+```json
+{
+    "eventId": String,
+    "requestId": String,
+    "processTime": String,
+    "score": Double,
+    "bestFrame": String,
+    "state": {
+        "isRealPerson": Boolean,
+        "message": String
+    }
+}
+```
+
+| Campo       | Tipo    | Descripción                                                                |
+| :---------- | :------ | :------------------------------------------------------------------------- |
+| eventId     | string  | ID para trazabilidad de los detalles del evento.                           |
+| requestId   | string  | ID para trazabilidad de la petición.                                       |
+| processTime | string  | Tiempo de procesamiento de la verificación en milisegundos.                |
+| score       | double  | Resultados de diferentes verificaciones sobre el procesamiento del video.  |
+| bestFrame   | string  | Detecta el mejor fotograma del video y genera una imagen en formato Base64 |
+| state       | Objecto | Estado detallado del procesamiento de verificación de vida.                |
+
+Objeto *state*
+
+| Campo        | Tipo    | Descripción                                                                                       |
+| :----------- | :------ | :------------------------------------------------------------------------------------------------ |
+| isRealPerson | boolean | Esta bandera representa si la persona en el video es real y aprueba la verificación de vida.      |
+| message      | string  | Proporciona detalles adicionales en caso de errores o discrepancias con los resultados esperados. |
+
+El valor *true* de la propiedad *state.isRealPerson*, dentro del *Response* de la llamada de prueba de vida, confirma que la verificación fue exitosa y no hubo ningún ataque.
+
+Además, la misma respuesta nos devuelve una propiedad llamada *bestFrame*, que se utiliza para obtener el mejor fotograma del video, es decir, en el que aparece la persona con mejor posición, iluminación, etc. Este fotograma se utilizará en el siguiente paso.

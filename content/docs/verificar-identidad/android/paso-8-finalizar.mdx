@@ -1,0 +1,73 @@
+---
+title: Paso 8 - Finalizar Sesion KYC vía Android
+description: Cierre formal de la Sesión KYC para garantizar la seguridad e integridad del proceso desde Android.
+category: api
+order: 9
+---
+
+
+Una vez ejecutados los **Servicios JAAK**, se debe finalizar la **Sesión KYC** de manera adecuada mediante la API, esto garantiza la seguridad y un correcto funcionamiento del **JAAK KYC**.
+
+El proceso de finalización se lleva a cabo mediante una llamada a la siguiente URL. Es esencial incluir el Token de Sesión KYC para informar la Sesión KYC que queremos finalizar.
+
+**URL**
+
+```
+POST https://api.sandbox.jaak.ai/api/v1/kyc/session/finish
+```
+
+```kotlin
+@POST("api/v1/kyc/session/finish")
+    suspend fun finishApi(@Header("Authorization") auth: String): Response<FinishResponse>
+```
+
+**Header**
+
+```
+Authorization: Bearer token-session-kyc
+```
+
+| Campo         | Tipo   | Requerido | Descripción                                                                                                  |
+| :------------ | :----- | :-------- | :----------------------------------------------------------------------------------------------------------- |
+| Authorization | string | Sí        | En esta cabecera se debe enviar el Token de Sesión KYC que se ha obtenido del intercambiado con de Short Key |
+
+**Request**
+
+```json
+{}
+```
+
+**Response**
+
+```json
+{}
+```
+
+El estado HTTP 200 confirma que una sesión KYC se ha finalizado con éxito. Cualquier otro código de estado HTTP recibido de la llamada indicaría un error.
+
+**¡Excelente!**
+
+Si has llegado hasta aquí, ya tienes todo el conocimiento necesario para integrar correctamente **JAAK KYC para Android**.
+
+Para poder ver el estado de tus sesiones y visualizarlas, continua con la guía en [JAAK KYC](/docs/verificar-identidad) donde te explicamos cómo hacerlo.
+
+## Recursos Complementarios
+
+<Callout type="info" title="Repositorio de ejemplo">
+Contamos con un ejemplo en nuestro repositorio GitHub donde podrás ver un ejemplo de la implementación.
+**JAAK KYC para Android.** [https://github.com/jaak-ai/jaak-android-kyc-example](https://github.com/jaak-ai/jaak-android-kyc-example)
+</Callout>
+
+## Componentes SDKs
+
+<Callout type="info" title="Captura de rostro (Face-Detector)">
+Face-Detector SDK para Android permite realizar el reconocimiento facial en tiempo real, lo que es clave para validar la identidad de una persona en el proceso de KYC. Este SDK utiliza algoritmos avanzados de detección facial biométrica garantizando la verificación de la persona. A través de este componente, se obtiene un alto nivel de seguridad en la autenticación de la identidad visual, previniendo fraudes o suplantaciones.
+
+**Face Detector SDK Android.** [https://docs.jaak.ai/v2.0/docs/face-detector-sdk](https://docs.jaak.ai/v2.0/docs/face-detector-sdk)
+</Callout>
+
+<Callout type="info" title="Captura de documento (Document-Detector)">
+Document-Detector SDK para Android es un componente clave en procesos KYC. Permite identificar y extraer información de documentos oficiales como pasaportes o cédulas, esto para validar su autenticidad y garantizar la integridad de los datos.
+
+**Document Detector SDK Android.** [https://docs.jaak.ai/docs/document-detector-sdk#/](https://docs.jaak.ai/docs/document-detector-sdk#/)
+</Callout>

@@ -1,0 +1,92 @@
+---
+title: Paso 1 - Creación de Sesiones KYC
+description: Cómo generar una API Key y crear una Sesión KYC vía API.
+category: api
+order: 2
+---
+
+![Sesión KYC JAAK](https://files.readme.io/c8c749b93231ce971f2977efbe49f3a8b7e3e7293b8dc2242f49c3edbb970c60-JAAK-Documentacion-Productos.jpg)
+
+## Crear Sesión KYC mediante llamadas APIs
+
+Siempre que realicemos llamadas APIs necesitamos que esas llamadas o peticiones estén autenticadas, para ellos dentro de la **Plataforma JAAK** tienes la opción de crear **API Keys** que son nuestro método para autenticar llamadas APIs.
+
+Dentro de la **Plataforma JAAK**, dirígete a Ajustes -> **API keys** dentro del menú.
+
+Da clic en el botón **Generar nueva API key** y llena el formulario con los siguientes datos:
+
+* **Nombre (requerido)**: Nombre de tu API key, para poder identificar en el futuro.
+* **Expira en (requerido)**: El tiempo de vigencia que quieres que tenga la **API Key**
+
+Una vez llenado el formulario, da click en Guardar.
+
+Copia y guarda en un lugar seguro la **API key** por que no podrás recuperarla en el futuro.
+
+> Damos la opción de poder crear **API key** sin vigencia, para automatizaciones a largo plazo, pero ten en cuenta el riesgo que esto conlleva si llevas a compartirlo.
+
+Ahora que ya tienes una manera de autenticar tus llamadas APIs, vamos a crear una **Sesión KYC**, para ello realiza una llamada API a la siguiente URL, incluyendo los siguientes datos necesarios para la creación de la **Sesión KYC**.
+
+URL
+
+```text
+POST  https://api.sandbox.jaak.ai/api/v1/kyc/flow
+```
+
+Body:
+
+```json
+{
+  "name": "Juan Perez Perez",
+  "flow": "OnBoarding",
+  "redirectUrl": "https://mi-pagina.com",
+  "countryDocument": "MEX",
+  "flowType": "KYC",
+  "verificationType": "whatsapp",
+  "verification": {
+    "SMS": "",
+    "EMAIL": "",
+    "WHATSAPP": "+522222222222"
+  }
+}
+```
+
+* **name (requerido)**: El nombre de la persona que realizará la Sesión KYC
+* **flow (requerido)**: Nombre que puedes otorgarle a la Sesión KYC
+* **redirectUrl (opcional)**: Si deseas redirigir al usuario a una página específica al final de la **Sesión KYC**.
+* **countryDocument (requerido)**: Debes seleccionar el país del cual vas a aceptar documentación para la **Sesión KYC**, se usa la nomenclatura Alpha 3 Code para referirnos al país.
+* **flowType (requerido)**: El tipo de KYC a realizar, por defecto se usa KYC Tradicional.
+* **verificationType (opcional)**: Es el método de notificación que prefieres para enviar un enlace a una persona y que pueda iniciar su **Sesión KYC** desde la **Plataforma KYC**, las opciones permitidas son "whatsapp", "sms", "email" o "" (vacío, para identificar que no quieres enviar notificación).
+* **verification.SMS (opcional)**: Si en el campo "verificationType" seleccionaste "sms" aca deberás colocar el numero telefónico para enviar la notificación.
+* **verification.EMAIL (opcional)**: Si en el campo "verificationType" seleccionaste "email" aca deberás colocar el correo electrónico para enviar la notificación
+* **verification.WHATSAPP (opcional)**: Si en el campo "verificationType" seleccionaste "whatsapp" aca deberás colocar el numero de teléfono para enviar la notificación
+
+> En la configuración de tu compañía, debes seleccionar una lista de países que puedes usar para crear **Sesiones KYC**, dependiendo de esa configuración en la compañía son las opciones que puedes usar para crear el parametro **countryDocument**. Para conocer el listado completo de los países soportados, puedes ver acá.
+
+> El numero que se envia en los parametros "**verification.SMS**" y "**verification.WHATSAPP**" deben contener el código del pais, por ejemplo:
+>
+> * **+52** para México
+> * **+1** para Estados Unidos
+
+Response:
+
+```json
+{
+    "sessionUrl": "https://sandbox.kyc.jaak.ai/session/WIoGa8e"
+}
+```
+
+Una vez realizada la llamada sucederá lo siguientes:
+
+* Se enviará una notificación por el medio que hayas elegido en caso de ser así.
+* Se responderá con una URL con la que podrás iniciar tu **Sesión KYC** a través de nuestra **Plataforma KYC**.
+
+El **ShortKey**, son los últimos 7 caracteres de la URL que fue creado para esta **Sesión KYC**. Guárdalo porque lo necesitarás en el siguiente paso.
+
+> Los **Short Keys** identifican de forma única a una **Sesión KYC**, suelen estar conformados por 7 caracteres alfanuméricos.
+
+## Integración de KYC
+
+Existen dos métodos de implementación disponibles, en donde será necesario utilizar el **ShortKey** generado previamente y llevar a cabo una **Sesión KYC**.
+
+* [KYC JAAK para API](/docs/verificar-identidad/api)
+* [KYC JAAK para Android](/docs/verificar-identidad/android)

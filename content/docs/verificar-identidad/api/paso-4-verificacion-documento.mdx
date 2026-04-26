@@ -1,0 +1,136 @@
+---
+title: Paso 4 - Verificación de documento vía API
+description: Validar la autenticidad del documento de identidad enviando imágenes en Base64.
+category: api
+order: 5
+---
+
+La etapa de verificación de documento tiene como objetivo principal validar la autenticidad de los documentos presentados por el usuario, como identificaciones oficiales y así prevenir el fraude con documentos falsos, alterados o que no corresponden a un documento legítimo.
+
+En algunas ocasiones existen documentos que tienen anverso y reverso, de ahí dependerá si se captura una o dos imágenes por documento para usar este servicio, estas imágenes de dichos documentos deben ser convertidas a **Base64** antes de ser enviadas al servicio. Por lo tanto, es fundamental realizar el proceso de codificación de imagen para asegurar su correcta transmisión y procesamiento.
+
+Realiza la siguiente llamada API enviando las imágenes o imagen del documento.
+
+**URL**
+
+```
+POST https://api.sandbox.jaak.ai/api/v3/document/verify
+```
+
+**Header**
+
+```
+Authorization: Bearer token-session-kyc
+```
+
+| Campo         | Tipo   | Requerido | Descripción                                                                                                  |
+| :------------ | :----- | :-------- | :----------------------------------------------------------------------------------------------------------- |
+| Authorization | string | Si        | En esta cabecera se debe enviar el Token de Sesión KYC que se ha obtenido del intercambiado con de Short Key |
+
+**Request**
+
+```json
+{
+    "imageFront": String,
+    "imageBack": String,
+    "dataVerification": Boolean
+}
+```
+
+| Campo            | Tipo    | Requerido | Descripción                                                                                                                                                                                  |
+| :--------------- | :------ | :-------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| imageFront       | string  | Sí        | Imagen del anverso del documento en formato Base64. Es obligatorio proporcionar esta imagen para la verificación.                                                                            |
+| imageBack        | string  | Opcional  | Imagen del reverso del documento en formato Base64. Debe incluirse si el documento tiene una contraparte posterior.                                                                          |
+| dataVerification | boolean | Opcional  | Por defecto false. Si se establece en true, la API realizará una comparación de los datos del documento con la base de datos de RENAPO (solo disponible para documentos emitidos en México). |
+
+**Response**
+
+```json
+{
+    "eventId": String,
+    "requestId": String,
+    "evaluation": String,
+    "document": {
+        "type": String,
+        "side": String,
+        "country": String,
+        "icaoCode": String
+    },
+    "state": {
+        "documentCompleteSides": Boolean,
+        "dataConsistent": Boolean,
+        "documentLiveness": Boolean,
+        "securityFeatures": Boolean,
+        "documentValidity": Boolean,
+        "imageQuality": Boolean,
+        "handPresence": Boolean,
+        "message": String,
+        "validations": {
+            "namesMatch": Boolean,
+            "lastNameMatch": Boolean,
+            "birthDateMatch": Boolean,
+            "personalIdNumberMatch": Boolean,
+            "message": String
+        },
+        "photoForgery": Boolean
+    },
+    "processTime": Integer
+}
+```
+
+| Campo       | Tipo    | Descripción                                                 |
+| :---------- | :------ | :---------------------------------------------------------- |
+| eventId     | string  | ID para trazabilidad de los detalles del evento.            |
+| requestId   | string  | ID para trazabilidad de la petición.                        |
+| evaluation  | string  | Resultado de la evaluación del documento.                   |
+| document    | object  | Información del documento analizado.                        |
+| state       | object  | Resultados de diferentes verificaciones sobre el documento. |
+| processTime | integer | Tiempo de procesamiento de la verificación en milisegundos. |
+
+Objeto *document*
+
+| Campo    | Tipo   | Descripción                                                                                                      |
+| :------- | :----- | :--------------------------------------------------------------------------------------------------------------- |
+| type     | string | Tipo de documento. [Ver lista](https://docs.jaak.ai/v2.0/docs/lista-de-tipo-de-identificaciones)                 |
+| side     | string | Indica si el documento tiene ambos lados o solo uno.                                                             |
+| country  | string | País donde se emite el documento.                                                                                |
+| icaoCode | string | Código ICAO asociado al documento.( [Descargar lista](https://b737mrg.net/mrg_download/ICAO_country_codes.pdf) ) |
+
+Objeto *state*
+
+| Campo                 | Tipo    | Descripción                                                                                                                                                    |
+| :-------------------- | :------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| documentCompleteSides | boolean | Indica si el documento ha sido capturado completamente por todos los lados requeridos.                                                                         |
+| dataConsistent        | boolean | Valida si la información contenida en el documento es coherente y no presenta inconsistencias.                                                                 |
+| documentLiveness      | boolean | Verifica que el documento sea una identificación física y no una imagen impresa, fotocopia o una fotografía mostrada en una pantalla digital.                  |
+| securityFeatures      | boolean | Determina si el documento cumple con los elementos de seguridad esperados, como sellos holográficos, logotipos, tipografía y otras características antifraude. |
+| documentValidity      | boolean | Indica si el documento está vigente y no ha expirado.                                                                                                          |
+| imageQuality          | boolean | Evalúa la calidad de la imagen del documento para garantizar una verificación precisa.                                                                         |
+| handPresence          | boolean | Detecta si hay manos sosteniendo la identificación durante la captura de la imagen.                                                                            |
+| photoForgery          | boolean | Indica si la imagen del documento ha sido manipulada digitalmente con herramientas de edición.                                                                 |
+| validations           | object  | Validaciones especificas de documentos mexicanos                                                                                                               |
+| message               | string  | Proporciona detalles adicionales en caso de errores o discrepancias con los resultados esperados.                                                              |
+
+Objeto *state.validations*
+
+| Campo                 | Tipo    | Descripción                                                                                                                                                                             |
+| :-------------------- | :------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| namesMatch            | boolean | Verifica si el nombre extraído del documento coincide con el nombre asociado al número de identificación personal (CURP en el caso de México) según la base de datos de RENAPO.         |
+| lastNameMatch         | boolean | Comprueba si el apellido extraído del documento coincide con el apellido asociado al número de identificación personal (CURP en el caso de México) según la base de datos de RENAPO.    |
+| birthDateMatch        | boolean | Indica si la fecha de nacimiento extraída del documento coincide con la registrada en la base de datos de RENAPO para el número de identificación personal (CURP en el caso de México). |
+| personalIdNumberMatch | boolean | Valida si el número de identificación personal extraído del documento coincide con el CURP en la base de datos de RENAPO.                                                               |
+| message               | string  | Mensaje que proporciona información adicional en caso de discrepancia en las validaciones.                                                                                              |
+
+El objeto *state*, ubicado dentro del *Response*, muestra el estado de verificación del documento a lo largo del proceso de validación. Este objeto incluye un grupo de propiedades que indican si el documento cumple o no con los requisitos de autenticidad, calidad y consistencia.
+
+**JAAK recomienda que todas las propiedades de verificación se completen con éxito para una mayor seguridad**, aunque esto no es obligatorio por lo tanto puedes seleccionar solo un conjunto de propiedades según sus necesidades. Algunos ejemplos incluyen:
+
+* Aceptar la verificación si todas las validaciones son exitosas.
+* Solicitar una nueva captura si la calidad de la imagen es baja o faltan elementos claves.
+* Rechazar la verificación si se detectan manipulaciones o inconsistencias graves en los datos.
+
+Cada propiedad dentro de *state* juega un papel específico en la verificación del documento y pueden ser usadas para tomar decisiones y ser integradas en su sistema de verificación.
+
+La propiedad *dataVerification* dentro de *Request*, cuando se establece como *true*, proporciona validaciones adicionales sobre los datos de los documentos mexicanos. Estas validaciones, que se encuentran en *state.validations* de *Response*, se realizan exclusivamente para documentos mexicanos a través de entidades oficiales como RENAPO. Para identificaciones de otras nacionalidades, todas las validaciones serán *false* debido a la incompatibilidad del servicio con estos documentos.
+
+Después de verificar y validar el documento, se puede proceder a la extracción de datos en el siguiente paso, es importante recordar que las mismas imágenes enviadas en este paso se usaran en el siguiente para buscar tener la mayor coherencia en la Sesión KYC.

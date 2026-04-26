@@ -1,0 +1,706 @@
+---
+title: Manual SDK Android @jaak.ai/visage
+description: SDK Android para detección facial automatizada y grabación de video con análisis biométrico.
+category: sdk
+order: 4
+---
+
+## Manual Completo para Detección y Grabación Facial en Aplicaciones Android
+
+### Tiempo estimado: 45-60 minutos para configuración completa
+
+---
+
+## ¿Qué aprenderás en este manual?
+
+Este manual te enseñará a implementar y usar el JAAKVisage SDK para detección facial automatizada y grabación de video en aplicaciones Android nativas. **No necesitas conocimientos técnicos avanzados** - solo sigue los pasos.
+
+---
+
+## Antes de Empezar - Lista de Verificación
+
+Asegúrate de tener estos elementos listos:
+
+* Android Studio Iguana instalado
+* Dispositivo Android 6.0+ (API 23+)
+* Gradle 8.4 configurado
+* Conocimientos básicos de Kotlin/Android
+* Acceso a cámara funcional
+
+---
+
+## Índice de Contenidos
+
+| Sección | Qué harás | Tiempo |
+|---------|-----------|---------|
+| **Paso 1** | Configurar proyecto y dependencias | 10 min |
+| **Paso 2** | Implementación básica del SDK | 20 min |
+| **Paso 3** | Configurar permisos y manifiestos | 10 min |
+| **Paso 4** | Manejo de grabación y videos | 15 min |
+| **Paso 5** | Probar detección facial | 10 min |
+
+---
+
+# PASO 1: Configurar Proyecto y Dependencias
+
+## Objetivo
+
+Configurar el entorno de desarrollo Android y añadir las dependencias necesarias del SDK.
+
+## Requisitos Técnicos
+
+| Requisito | Versión | ¿Obligatorio? |
+|-----------|---------|---------------|
+| Android Studio | Iguana | Sí |
+| minSdkVersion | 23 (Android 6.0+) | Sí |
+| targetSdkVersion | 33 | Sí |
+| compileSdk | 35 | Sí |
+| Gradle | 8.4 | Sí |
+| Java/Kotlin | 18 | Sí |
+
+### 1.1 Configuración build.gradle (Project)
+
+```groovy
+buildscript {
+    ext.kotlin_version = "1.9.22"
+    ext.hilt_version = '2.46'
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            url 'https://us-maven.pkg.dev/jaak-platform/jaak-android'
+        }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.3.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
+    }
+}
+```
+
+### 1.2 Configuración build.gradle (Module: app)
+
+```groovy
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
+
+android {
+    namespace 'com.jaak.visagesdk'
+    compileSdk 35
+
+    defaultConfig {
+        minSdk 23
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_18
+        targetCompatibility JavaVersion.VERSION_18
+    }
+
+    buildFeatures {
+        viewBinding = true
+    }
+}
+
+dependencies {
+    // Android Core
+    implementation("androidx.core:core-ktx:1.15.0")
+    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.2.0")
+    implementation 'com.google.android.material:material:1.12.0'
+
+    // Dependency Injection
+    implementation("com.google.dagger:hilt-android:$hilt_version")
+    kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
+
+    // JAAK Visage SDK
+    implementation("com.jaak.visagesdk:jaakvisage-sdk:1.0.0-beta")
+}
+```
+
+---
+
+# PASO 2: Implementación Básica del SDK
+
+## Objetivo
+
+Crear la implementación base del JAAKVisage SDK con detección facial y grabación automática.
+
+### 2.1 Application Class
+
+```kotlin
+import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
+
+@HiltAndroidApp
+class JaakVisageSDKApp : Application()
+```
+
+### 2.2 MainActivity Básica
+
+```kotlin
+import android.net.Uri
+import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.jaak.visagesdk.databinding.ActivityMainBinding
+import com.jaak.visagesdk.ui.adapter.VisageListener
+import com.jaak.visagesdk.ui.view.VisageSDK
+import com.jaak.visagesdk.utils.CameraFacing
+import com.jaak.visagesdk.utils.Utils
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity(), VisageListener {
+
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var visageSDK: VisageSDK
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        configureVisageSDK()
+
+        binding.btnStartDetection.setOnClickListener {
+            startFaceDetection()
+        }
+    }
+
+    private fun configureVisageSDK() {
+        visageSDK = VisageSDK(this, this)
+
+        // Configuración recomendada para detección facial
+        visageSDK.setCameraFacing(CameraFacing.FRONT) // Cámara frontal recomendada
+
+        // Herramientas de desarrollo (opcional)
+        visageSDK.setDebugMode(true)   // Métricas en tiempo real: FPS | MEM | FACE | CAM
+        visageSDK.setConfigPanel(true) // Panel de configuración visible
+    }
+
+    private fun startFaceDetection() {
+        // El SDK maneja automáticamente permisos de cámara
+        visageSDK.startVisage() // Inicia detección facial y grabación automática
+    }
+
+    override fun onSuccessVisage(typeProcess: Int, uri: Uri?) {
+        // typeProcess siempre es 2 (video con detección facial)
+        uri?.let { videoUri ->
+            val base64Video = Utils.videoCameraUriToBase64(videoUri) ?: ""
+
+            Log.d("Visage", "Video capturado: $videoUri")
+            Log.d("Visage", "Base64 length: ${base64Video.length}")
+
+            if (base64Video.isNotEmpty()) {
+                Toast.makeText(this, "Video facial procesado exitosamente", Toast.LENGTH_LONG).show()
+                // Procesar video según necesidades
+                processVideoForKYC(base64Video, videoUri)
+            } else {
+                Toast.makeText(this, "Error al procesar el video", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    override fun onErrorVisage(text: String) {
+        Log.e("Visage", "Error: $text")
+
+        val errorMessage = when {
+            text.contains("permission", ignoreCase = true) -> "Permisos de cámara requeridos"
+            text.contains("camera", ignoreCase = true) -> "Error de cámara - Verifica que no esté en uso"
+            text.contains("cancelled", ignoreCase = true) -> "Proceso cancelado por el usuario"
+            else -> "Error: $text"
+        }
+
+        Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
+    }
+
+    private fun processVideoForKYC(base64Video: String, originalUri: Uri) {
+        // Crear payload para backend
+        val kycData = mapOf(
+            "facialVideo" to base64Video,
+            "timestamp" to System.currentTimeMillis(),
+            "source" to "visage_sdk_android",
+            "videoUri" to originalUri.toString()
+        )
+
+        Log.d("Visage", "Procesando video para KYC: ${kycData.keys}")
+        // Enviar a tu backend/API para análisis biométrico
+    }
+}
+```
+
+### 2.3 Layout XML (activity_main.xml)
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="JAAK Visage SDK Android"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnStartDetection"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnStartDetection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Iniciar Detección Facial"
+        android:textSize="16sp"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+```
+
+---
+
+# PASO 3: Configurar Permisos y Manifiestos
+
+## Objetivo
+
+Configurar correctamente los permisos y el manifiesto Android.
+
+### 3.1 AndroidManifest.xml
+
+```xml
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:replace="android:maxSdkVersion"
+        android:maxSdkVersion="28"/>
+
+    <application
+        android:name="com.jaak.visagesdk.JaakVisageSDKApp"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+        tools:replace="android:theme,android:name">
+
+        <activity
+            android:name="com.jaak.visagesdk.MainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.jaak.visagesdk"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            tools:replace="android:authorities">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+    </application>
+</manifest>
+```
+
+### 3.2 file_paths.xml
+
+**Crear archivo res/xml/file_paths.xml:**
+
+```xml
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <external-path name="my_images" path="Pictures/" />
+    <external-path name="my_movies" path="Movies/" />
+    <external-path name="my_files" path="Android/data/com.jaak.visagesdk/files/Jaak Visage SDK/" />
+</paths>
+```
+
+---
+
+# PASO 4: Manejo de Grabación y Videos
+
+## Objetivo
+
+Implementar el manejo completo de videos grabados y procesamiento avanzado.
+
+### 4.1 Implementación Avanzada con Configuración
+
+```kotlin
+class AdvancedVisageActivity : AppCompatActivity(), VisageListener {
+
+    private lateinit var binding: ActivityAdvancedBinding
+    private lateinit var visageSDK: VisageSDK
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityAdvancedBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        setupAdvancedConfiguration()
+    }
+
+    private fun setupAdvancedConfiguration() {
+        visageSDK = VisageSDK(this, this)
+
+        // Configuración de cámara
+        setupCameraSpinner()
+
+        // Configurar botón principal
+        binding.btnLaunchVisage.setOnClickListener {
+            if (validateAndApplyConfiguration()) {
+                visageSDK.startVisage()
+            }
+        }
+
+        // Valores por defecto
+        loadDefaultValues()
+    }
+
+    private fun setupCameraSpinner() {
+        val cameraOptions = arrayOf("Cámara Frontal", "Cámara Trasera")
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, cameraOptions)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinnerCameraFacing.adapter = adapter
+    }
+
+    private fun loadDefaultValues() {
+        binding.spinnerCameraFacing.setSelection(0) // Frontal por defecto
+        binding.cbShowConfigPanel.isChecked = false
+        binding.cbShowDebugMode.isChecked = false
+    }
+
+    private fun validateAndApplyConfiguration(): Boolean {
+        try {
+            // Configurar cámara
+            val cameraFacing = if (binding.spinnerCameraFacing.selectedItemPosition == 0)
+                CameraFacing.FRONT else CameraFacing.BACK
+
+            // Aplicar configuración al SDK
+            visageSDK.setCameraFacing(cameraFacing)
+            visageSDK.setConfigPanel(binding.cbShowConfigPanel.isChecked)
+            visageSDK.setDebugMode(binding.cbShowDebugMode.isChecked)
+
+            return true
+        } catch (e: Exception) {
+            Toast.makeText(this, "Error en configuración: ${e.message}", Toast.LENGTH_SHORT).show()
+            return false
+        }
+    }
+
+    override fun onSuccessVisage(typeProcess: Int, uri: Uri?) {
+        try {
+            Log.d("AdvancedVisage", "Procesamiento exitoso - Tipo: $typeProcess")
+
+            uri?.let { videoUri ->
+                // Conversión optimizada a Base64 para videos de cámara
+                val base64Video = Utils.videoCameraUriToBase64(videoUri)
+
+                if (!base64Video.isNullOrEmpty()) {
+                    Log.d("AdvancedVisage", "Video convertido: ${base64Video.length} caracteres")
+
+                    // Procesar el video según necesidades
+                    processCompleteVideo(base64Video, videoUri)
+
+                    Toast.makeText(this, "Video facial procesado exitosamente", Toast.LENGTH_LONG).show()
+                } else {
+                    Log.e("AdvancedVisage", "Error: No se pudo convertir el video a Base64")
+                    Toast.makeText(this, "Error al procesar el video", Toast.LENGTH_SHORT).show()
+                }
+            }
+        } catch (e: Exception) {
+            Log.e("AdvancedVisage", "Error procesando resultado: ${e.message}")
+            Toast.makeText(this, "Error inesperado: ${e.message}", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun processCompleteVideo(base64Video: String, originalUri: Uri) {
+        // Preparar datos completos para KYC
+        val kycData = mapOf(
+            "facialVideo" to base64Video,
+            "timestamp" to System.currentTimeMillis(),
+            "source" to "visage_sdk_android_v1",
+            "deviceInfo" to getDeviceInfo(),
+            "videoUri" to originalUri.toString(),
+            "sessionId" to generateSessionId()
+        )
+
+        // Enviar a backend para análisis biométrico
+        sendToKYCBackend(kycData)
+
+        Log.d("AdvancedVisage", "Video procesado para KYC completamente")
+    }
+
+    private fun getDeviceInfo(): Map<String, String> {
+        return mapOf(
+            "model" to android.os.Build.MODEL,
+            "manufacturer" to android.os.Build.MANUFACTURER,
+            "sdkVersion" to android.os.Build.VERSION.SDK_INT.toString(),
+            "appVersion" to packageManager.getPackageInfo(packageName, 0).versionName
+        )
+    }
+
+    private fun generateSessionId(): String {
+        return "visage_${System.currentTimeMillis()}_${(1000..9999).random()}"
+    }
+
+    override fun onErrorVisage(text: String) {
+        Log.e("AdvancedVisage", "Error: $text")
+
+        // Categorizar errores para mejor manejo
+        when {
+            text.contains("permission", ignoreCase = true) -> handlePermissionError(text)
+            text.contains("camera", ignoreCase = true) -> handleCameraError(text)
+            text.contains("cancelled", ignoreCase = true) -> handleUserCancellation(text)
+            else -> handleGenericError(text)
+        }
+    }
+
+    private fun handlePermissionError(text: String) {
+        Toast.makeText(this, "Permisos de cámara requeridos para detección facial", Toast.LENGTH_LONG).show()
+    }
+
+    private fun handleCameraError(text: String) {
+        Toast.makeText(this, "Error de cámara. Verifica que no esté siendo usada", Toast.LENGTH_LONG).show()
+    }
+
+    private fun handleUserCancellation(text: String) {
+        Toast.makeText(this, "Proceso cancelado por el usuario", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun handleGenericError(text: String) {
+        Toast.makeText(this, "Error: $text", Toast.LENGTH_LONG).show()
+    }
+}
+```
+
+### 4.2 Utilidad de Análisis de Video
+
+```kotlin
+class VideoAnalyzer {
+
+    companion object {
+        fun analyzeVideoQuality(base64Video: String): VideoQualityReport {
+            return VideoQualityReport(
+                sizeInBytes = base64Video.length * 3 / 4, // Aproximación de tamaño
+                base64Length = base64Video.length,
+                estimatedDurationSeconds = estimateDuration(base64Video),
+                qualityScore = calculateQualityScore(base64Video)
+            )
+        }
+
+        private fun estimateDuration(base64Video: String): Float {
+            // Estimación basada en tamaño (muy aproximada)
+            val sizeInMB = (base64Video.length * 3 / 4) / (1024 * 1024)
+            return sizeInMB * 2 // Aproximadamente 2 segundos por MB
+        }
+
+        private fun calculateQualityScore(base64Video: String): Float {
+            // Score simple basado en tamaño del video
+            val sizeInMB = (base64Video.length * 3 / 4) / (1024 * 1024)
+            return when {
+                sizeInMB > 5 -> 0.9f
+                sizeInMB > 2 -> 0.7f
+                sizeInMB > 1 -> 0.5f
+                else -> 0.3f
+            }
+        }
+    }
+}
+
+data class VideoQualityReport(
+    val sizeInBytes: Int,
+    val base64Length: Int,
+    val estimatedDurationSeconds: Float,
+    val qualityScore: Float
+)
+```
+
+---
+
+# PASO 5: Probar Detección Facial
+
+## Objetivo
+
+Verificar que todas las funcionalidades del SDK funcionan correctamente.
+
+## Lista de Verificación
+
+| Elemento | Estado | Descripción |
+|----------|----|-----------  |
+| **Permisos de cámara** | ☐ | App solicita y obtiene permisos automáticamente |
+| **Detección facial** | ☐ | IA detecta rostros en tiempo real |
+| **Grabación automática** | ☐ | Inicia grabación al detectar rostro correctamente |
+| **Conversión Base64** | ☐ | Videos se convierten correctamente |
+| **Manejo de errores** | ☐ | Errores se manejan correctamente |
+
+## Proceso de Prueba
+
+### Paso A: Instalar y Configurar
+1. **Compilar aplicación** en Android Studio
+2. **Instalar en dispositivo físico** (no emulador)
+3. **Verificar permisos** se solicitan automáticamente
+
+### Paso B: Probar Detección Básica
+1. **Abrir aplicación** y presionar "Iniciar Detección Facial"
+2. **Posicionar rostro** frente a la cámara frontal
+3. **Esperar detección automática** (esquinas verdes)
+4. **Verificar inicio automático** de grabación
+5. **Revisar logs** para confirmar procesamiento
+
+### Paso C: Probar Diferentes Condiciones
+1. **Cambiar iluminación** (luz natural, artificial)
+2. **Probar distancias** (cerca, lejos del dispositivo)
+3. **Verificar modo debug** (FPS, memoria, detección)
+4. **Confirmar videos** se guardan correctamente
+
+## Solución de Problemas
+
+### Problemas Comunes
+
+| Problema | Solución |
+|----------|----------|
+| **"SDK no se inicializa"** | Verificar Application class y dependencias |
+| **"Cámara no inicia"** | Verificar permisos y dispositivo físico |
+| **"No detecta rostros"** | Mejorar iluminación y usar cámara frontal |
+| **"Grabación falla"** | Verificar espacio de almacenamiento |
+
+### Debug Avanzado
+
+```kotlin
+private fun enableAdvancedDebugging() {
+    visageSDK.setDebugMode(true)  // Muestra: FPS | MEM | FACE | CAM
+    visageSDK.setConfigPanel(true) // Muestra panel de estado
+
+    Log.d("Visage", "=== INFORMACIÓN DEL DISPOSITIVO ===")
+    Log.d("Visage", "Modelo: ${Build.MODEL}")
+    Log.d("Visage", "Manufacturer: ${Build.MANUFACTURER}")
+    Log.d("Visage", "SDK: ${Build.VERSION.SDK_INT}")
+    Log.d("Visage", "RAM disponible: ${getAvailableMemory()}")
+}
+
+private fun getAvailableMemory(): String {
+    val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+    val memoryInfo = ActivityManager.MemoryInfo()
+    activityManager.getMemoryInfo(memoryInfo)
+    return "${memoryInfo.availMem / (1024 * 1024)} MB"
+}
+```
+
+---
+
+# Referencia Completa
+
+## Métodos del SDK
+
+| Método | Descripción | Ejemplo |
+|--------|-------------|---------|
+| **VisageSDK(context, listener)** | Constructor del SDK | `VisageSDK(this, this)` |
+| **startVisage()** | Inicia detección facial y grabación | `visageSDK.startVisage()` |
+| **setCameraFacing(facing)** | Configura cámara frontal/trasera | `visageSDK.setCameraFacing(CameraFacing.FRONT)` |
+| **setDebugMode(boolean)** | Activa métricas en tiempo real | `visageSDK.setDebugMode(true)` |
+| **setConfigPanel(boolean)** | Muestra panel de configuración | `visageSDK.setConfigPanel(true)` |
+
+## Configuraciones Disponibles
+
+| Configuración | Descripción | Cuándo usar |
+|---------------|-------------|-------------|
+| **CameraFacing.FRONT** | Cámara frontal | Recomendado para rostros |
+| **CameraFacing.BACK** | Cámara trasera | Casos especiales |
+| **setDebugMode(true)** | Métricas en tiempo real | Durante desarrollo |
+| **setConfigPanel(true)** | Panel de estado visible | Para debugging |
+
+## Estructura de Respuesta
+
+| Respuesta | Descripción | Cuándo se genera |
+|-----------|-------------|------------------|
+| **onSuccessVisage(typeProcess, uri)** | Video grabado exitosamente | typeProcess=2, uri del video |
+| **onErrorVisage(text)** | Error en el proceso | Cualquier fallo en detección/grabación |
+
+---
+
+# Solución de Problemas Avanzados
+
+## Problema: "Error de modelos ML Kit"
+
+```kotlin
+// Verificar compatibilidad de ML Kit
+private fun checkMLKitCompatibility() {
+    try {
+        // ML Kit se inicializa automáticamente
+        Log.d("Visage", "ML Kit disponible para detección facial")
+    } catch (e: Exception) {
+        Log.e("Visage", "Error ML Kit: ${e.message}")
+        showError("Dispositivo no compatible con detección facial")
+    }
+}
+```
+
+## Problema: "Videos no se procesan"
+
+```kotlin
+// Verificar conversión de videos
+private fun debugVideoConversion(uri: Uri) {
+    try {
+        val base64Video = Utils.videoCameraUriToBase64(uri)
+
+        if (base64Video.isNullOrEmpty()) {
+            Log.e("Visage", "Error: Conversión a Base64 falló")
+            Log.e("Visage", "URI: $uri")
+
+            // Verificar si el archivo existe
+            contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+                Log.d("Visage", "Archivo existe: ${cursor.count > 0}")
+            }
+        } else {
+            Log.d("Visage", "Conversión exitosa: ${base64Video.length} caracteres")
+        }
+    } catch (e: Exception) {
+        Log.e("Visage", "Error procesando video: ${e.message}")
+    }
+}
+```
+
+---
+
+# ¿Necesitas Ayuda?
+
+## Información para soporte
+
+* **Descripción del problema:** Qué tipo de detección intentas vs qué sucede
+* **Logs de Android Studio:** Screenshots de errores en Logcat
+* **Información del dispositivo:** Modelo, versión Android, RAM
+* **Configuración del SDK:** Parámetros utilizados
+* **Condiciones de prueba:** Iluminación, distancia, orientación
+
+## Contacto de Soporte
+
+**Email:** soporte@jaak.ai
+**Incluir siempre:** Logs Android, configuración build.gradle, versión SDK
+
+---
+
+Has implementado exitosamente el JAAKVisage SDK en tu aplicación Android. Tu app ahora puede detectar rostros y grabar videos automáticamente usando inteligencia artificial, generando archivos optimizados para procesos de verificación biométrica y KYC.

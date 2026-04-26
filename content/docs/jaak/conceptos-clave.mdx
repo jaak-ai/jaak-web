@@ -1,0 +1,166 @@
+---
+title: Conceptos Clave
+description: Glosario de términos esenciales, arquitectura del sistema JAAK, tipos y estados de verificación KYC.
+category: concepto
+order: 2
+---
+
+Para asegurar una integración rápida y exitosa, hemos diseñado esta guía con los conceptos esenciales que necesitas para realizar una integración.
+
+
+# Conceptos Básicos en JAAK
+
+## **Glosario de Términos Esenciales**
+
+### **Identidad Digital**
+Conjunto de atributos y datos que hacen que una persona sea única y distinguible de las demás en el entorno digital.
+
+### **Validación**
+Proceso que confirma que un dato es correcto y consistente con una fuente de verdad.
+**Pregunta que responde:** ¿Es esta información real y precisa?
+
+### **Verificación**
+Proceso que confirma que una persona es quien dice ser, vinculando su ser físico (biometría) con su identidad digital (datos).
+**Pregunta que responde:** ¿Eres tú el legítimo dueño de esta identidad?
+
+### **API (Application Programming Interface)**
+Puente de comunicación que permite enviar datos a nuestros servicios y recibir una respuesta.
+
+### **JSON (JavaScript Object Notation)**
+Formato de texto ligero y estructurado en el que nuestros servicios entregan los resultados.
+
+### **SDK (Software Development Kit)**
+facilitan la creación de aplicaciones al proporcionar componentes preexistentes, lo que ahorra tiempo y recursos al desarrollador.
+
+### **Base64**
+Formato de codificación que convierte imágenes y videos en texto, permitiendo que se envíen de forma segura a través de nuestra API.
+
+---
+
+## **Arquitectura del Sistema JAAK**
+
+![Ecosistema JAAK](https://files.readme.io/417017d270f24035fefab45590b5bd74ff3ce806372593baa4250f68ae0638e5-Ecosistema-JAAK-IT.png)
+
+### **Productos (Engranes)**
+Funciones especializadas que realizan una única tarea específica:
+
+- **Liveness (Prueba de Vida):** Verifica que un usuario es una persona real y presente
+- **Document OCR (Extracción de Datos):** Extrae información de documentos en formato texto
+- **Document Verify (Verificación de Documentos):** Analiza la autenticidad de documentos
+- **One-to-One (Comparación Facial):** Compara biométricamente un rostro contra la foto de un documento
+- **Validaciones Gubernamentales:** Confirma la validez de datos oficiales (CURP, RFC, etc.)
+- **BlackLists (Listas de Riesgo):** Revisa si un usuario figura en listas de riesgo (OFAC, etc.)
+
+### **Herramientas (SDKs)**
+Componentes pre-construidos que facilitan la integración:
+
+- **Aceleran el desarrollo:** Eliminan semanas de programación
+- **Mejoran la experiencia de usuario:** Interfaces probadas y optimizadas
+- **Reducen errores:** Minimizan la fricción durante la captura de datos
+
+### **Soluciones (Mecanismos)**
+Orquestación inteligente de varios productos para resolver procesos de negocio complejos:
+
+**Ejemplo - KYC (Conoce a tu Cliente):**
+Document OCR + Document Verify + Liveness + One-to-One + Validaciones Gubernamentales + BlackLists = **Solución KYC Completa**
+
+![Proceso KYC](https://files.readme.io/77144248cfc09decac3266f724375e8f55f759eb5b845cf394021c8e84cbf47d-Proceso-KYC.png)
+
+---
+
+## **Tipos de Verificación KYC**
+
+### **KYC Tradicional**
+Flujo completo de verificación que incluye:
+- Captura de documento como: Pasaporte e INE (frente y reverso)
+- Extracción automática de datos
+- Verificación de autenticidad del documento
+- Captura de biometría facial
+- Comparación facial documento vs. persona
+- Validaciones gubernamentales
+- Consulta en listas de riesgo
+
+### **KYC POC Web**
+Versión de prueba de concepto para evaluación y testing.
+
+### **KYC Asistido Web**
+Flujo con asistencia humana para casos complejos o cuando se requiere intervención manual.
+
+### **NFury Web**
+Solución especializada para casos de uso específicos con requerimientos particulares.
+
+---
+
+## **Estados de Verificación**
+
+### **APROBADO**
+- Verificación exitosa
+- Todos los controles pasaron correctamente
+- Usuario listo para continuar con el proceso
+
+### **RECHAZADO**
+- No pasó uno o más controles de validación
+- Requiere contactar al cliente para reintentar
+- Revisar causas específicas del rechazo
+
+### **PENDIENTE**
+- Requiere revisión manual
+- Algunos controles necesitan validación humana
+- Tiempo de resolución: 24-48 horas
+
+### **ERROR**
+- Problema técnico durante el proceso
+- Verificar configuración del sistema
+- Contactar soporte si persiste
+
+---
+
+## **Compatibilidad y Requisitos**
+
+### **Navegadores Compatibles**
+- Chrome (recomendado)
+- Safari
+- Firefox
+- Edge
+
+### **Dispositivos Soportados**
+- Computadoras con cámara web
+- Smartphones (iOS/Android)
+- Tablets
+
+### **Requisitos Técnicos**
+- Conexión a internet estable
+- Cámara funcional
+- Permisos de cámara habilitados
+- Buena iluminación para capturas
+
+---
+
+## **Seguridad y Privacidad**
+
+### **Protección de Datos**
+- Encriptación de extremo a extremo
+- Cumplimiento con regulaciones de privacidad
+- Almacenamiento seguro de información biométrica
+
+### **Políticas de Retención**
+- Datos procesados según política de privacidad
+- Tiempos de retención configurables
+- Eliminación segura de información sensible
+
+---
+
+## **Soporte y Contacto**
+
+### **Cuándo Contactar Soporte**
+- Errores técnicos persistentes
+- Problemas de configuración
+- Preguntas sobre integraciones
+- Dudas sobre resultados de verificación
+
+### **Información Necesaria para Soporte**
+- Descripción específica del problema
+- Pasos realizados antes del error
+- Capturas de pantalla (si es posible)
+- Navegador y dispositivo utilizado
+- Hora aproximada del incidente

@@ -1,0 +1,185 @@
+---
+title: Liveness
+description: Verificación de prueba de vida facial para confirmar presencia real y prevenir suplantación.
+category: concepto
+order: 4
+---
+
+Tiempo estimado de lectura: 15-20 minutos
+
+## ¿Qué aprenderás en esta guía?
+
+Este manual te enseñará a utilizar el sistema de Verificación de Vida (Liveness) de JAAK. Con Liveness, podrás confirmar que la persona que interactúa con tu sistema es real y está físicamente presente, previniendo ataques de suplantación de identidad mediante fotos, videos o máscaras. También aprenderás a monitorear y analizar los resultados de estas verificaciones.
+
+No necesitas conocimientos técnicos previos – solo sigue los pasos.
+
+## Antes de Empezar - Lista de Verificación
+
+Asegúrate de tener estos datos listos:
+
+* **API Key (Token Bearer):** Tu clave de autenticación válida proporcionada por JAAK. Es esencial para acceder a nuestros servicios.
+* **Video a analizar:** Un video corto del rostro de la persona, idealmente en formato Base64.
+* **Conocimientos básicos de APIs REST:** Familiaridad con cómo se realizan solicitudes HTTP (POST, GET) y se procesan respuestas JSON.
+
+## Índice de Contenidos
+
+| Sección | Qué aprenderás |
+| :--- | :--- |
+| 1. ¿Qué es la Verificación Liveness? | Entender el propósito y alcance del producto Liveness. |
+| 2. Funcionalidades Clave | Conocer las principales capacidades y beneficios del sistema. |
+| 3. Integración con la API | Guía sobre cómo realizar verificaciones de vida. |
+| 4. Monitoreo de Eventos | Cómo consultar estadísticas y detalles de los procesos de verificación de vida. |
+| 5. Solución de Problemas Comunes | Identificar y resolver los errores más frecuentes. |
+| 6. ¿Necesitas Ayuda? | Cuándo y cómo contactar a nuestro equipo de soporte. |
+| 7. Glosario de Términos | Definiciones de términos clave relacionados con Liveness. |
+
+## 1. ¿Qué es la Verificación Liveness?
+
+El sistema de Verificación de Vida (Liveness) de JAAK es una tecnología de biometría que determina si una persona en una imagen o video está físicamente presente y viva en tiempo real, en lugar de ser una representación falsa como una foto, video pregrabado, o máscara.
+
+Este proceso es crucial para:
+
+* **Prevenir el fraude:** Evitar que delincuentes utilicen identidades robadas o falsas para acceder a servicios.
+* **Asegurar la autenticidad:** Confirmar que la persona que realiza una acción es una entidad viva y no una suplantación.
+* **Cumplir normativas:** Ayudar a las empresas a cumplir con las regulaciones de "Conozca a su Cliente" (KYC) y "Anti Lavado de Dinero" (AML).
+
+## 2. Funcionalidades Clave
+
+Nuestro producto Liveness ofrece las siguientes capacidades principales:
+
+* **Detección de Vida Avanzada:** Analiza videos para identificar signos de vida real y diferenciar entre una persona viva y un ataque de suplantación (ej. fotos, videos, máscaras).
+* **Puntuación de Confianza (Score):** Proporciona un valor numérico (0-100) que indica la probabilidad de que la persona sea real.
+* **Extracción del Mejor Frame (`bestFrame`):** Identifica y devuelve la imagen de mayor calidad del rostro del video, útil para análisis posteriores o comparación facial.
+* **Registro Detallado de Eventos:** Guarda un historial completo de cada verificación de vida, incluyendo el tiempo de procesamiento y el resultado.
+* **Códigos de Error Específicos:** Ofrece códigos detallados para diagnosticar rápidamente problemas como videos no procesables o fallos en la detección de vida.
+
+## 3. Integración con la API
+
+La interacción con el sistema Liveness se realiza a través de llamadas a nuestra API.
+
+### 3.1 Endpoint de Verificación de Vida (POST /api/v1/liveness/verify-and-bestframe)
+
+Este es el endpoint principal para realizar una verificación de vida a partir de un video.
+
+* **Método:** `POST`
+* **URL Base:** `https://api.sandbox.jaak.ai/api/v1/liveness/verify-and-bestframe`
+
+**Headers requeridos:**
+
+* `Authorization`: `Bearer TU_API_KEY_AQUI` (Tu clave de autenticación)
+* `Content-Type`: `application/json`
+
+**Cuerpo de la solicitud (JSON):**
+
+| Parámetro | Tipo     | Requerido | Descripción                                                   | Ejemplo                          |
+| :-------- | :------- | :-------- | :------------------------------------------------------------ | :------------------------------- |
+| `video`   | `string` | Sí        | Video del rostro de la persona, codificado en formato Base64. | `"dmlkZW8gZW4gYmFzZTY0IGFxdWk="` |
+
+**Respuesta Exitosa (HTTP Status: 200 OK):**
+
+La respuesta incluye un `eventId` y `requestId` para seguimiento, `processTime` (tiempo en milisegundos), `score` (puntuación de liveness). El campo `bestFrame` contiene la imagen del mejor cuadro del video codificada en Base64. El objeto `state` indica si `isRealPerson` es `true` o `false` y un `message` asociado.
+
+**Ejemplo de respuesta:**
+
+```json
+{
+  "eventId": "06722190-9de7-4d1b-a9ad-1559a5ab8cb9",
+  "score": 85.6,
+  "bestFrame": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJ...",
+  "state": {
+    "isRealPerson": true,
+    "message": ""
+  }
+}
+```
+
+### 3.2 Consideraciones Importantes para el Video
+
+* **Formato:** Asegúrate de que el video esté correctamente codificado en Base64.
+* **Contenido:** El video debe contener un rostro claro y visible para una detección precisa.
+* **Tamaño:** El límite de tamaño para el cuerpo de la solicitud es de 10MB. Videos más grandes pueden causar timeouts.
+
+## 4. Monitoreo de Eventos
+
+Puedes consultar los detalles de los eventos de verificación de vida para auditoría, análisis de rendimiento y solución de problemas.
+
+### 4.1 Consulta de Eventos (GET /api/v1/liveness/event)
+
+Este endpoint permite filtrar y obtener una lista paginada de todos los eventos de liveness.
+
+* **Método:** `GET`
+* **URL Base:** `https://api.sandbox.jaak.ai/api/v1/liveness/event`
+
+**Headers requeridos:**
+
+* `Authorization`: `Bearer TU_API_KEY_AQUI`
+* `company-id`: Tu ID de empresa
+
+**Parámetros de consulta (Query Params):**
+
+Puedes usar parámetros como `limit` (número de elementos por página, 1-100), `page` (número de página), `status` (`success`, `failed`, `processing`, `rejected`), `action` (`verify-liveness`), `min-process-time`, `max-process-time`, `min-created-at`, `max-created-at`.
+
+**Ejemplo:** `GET /api/v1/liveness/event?limit=10&page=1&status=success`
+
+### 4.2 Consulta de Evento Específico (GET /api/v1/liveness/event/:id)
+
+Para obtener los detalles completos de un evento de liveness individual.
+
+* **Método:** `GET`
+* **URL Base:** `https://api.sandbox.jaak.ai/api/v1/liveness/event/:id` (donde `:id` es el ID único del evento en formato ObjectID de MongoDB)
+
+La respuesta incluye el `status` del evento, `processTime`, el `flow` de procesamiento (detalles de cada paso como `horizon` y `liveness`), y los resultados de la evaluación de liveness (`score`, `is_real`).
+
+## 5. Solución de Problemas Comunes
+
+| Problema | Descripción | Solución |
+| :--- | :--- | :--- |
+| **Error 401 - No Autorizado** | La API Key está ausente, inválida o ha expirado, impidiendo el acceso al endpoint. | 1. Verifica que el header `Authorization` esté en el formato correcto: `Bearer TU_API_KEY_AQUI`. 2. Asegúrate de que tu API Key sea válida y esté vigente. 3. Contacta a soporte para renovar tus credenciales. |
+| **Video No Procesable** | El sistema no puede analizar el video enviado. Esto puede deberse a que el video está corrupto, el formato no es soportado, o no se detecta un rostro claro. | 1. Verifica que el video esté correctamente codificado en Base64. 2. Asegúrate de que el video contenga un rostro humano claro y bien iluminado. 3. Confirma que el formato del video sea compatible. |
+| **Timeout de Procesamiento** | La solicitud se cancela porque el procesamiento excede el tiempo límite (generalmente 30-35 segundos). Esto ocurre si el video es muy grande o el servidor está bajo alta carga. | 1. Reduce el tamaño del video (el límite es 10MB). 2. Implementa una lógica de reintento con backoff exponencial. 3. Si el problema persiste, contacta a soporte. |
+| **Error 400 - Parámetros Inválidos** | Los parámetros de consulta (`limit`, `page`, fechas) no tienen el formato o rango correcto. | 1. Para fechas, usa el formato ISO 8601 (`YYYY-MM-DDTHH:mm:ssZ`). 2. Para `limit` y `page`, asegúrate de que sean números enteros válidos. |
+| **Evento No Encontrado (404)** | Al consultar un evento específico (`/api/v1/liveness/event/:id`), el sistema indica que el ID no existe o no pertenece a tu compañía. | 1. Verifica que el ID del evento sea correcto y tenga el formato ObjectID válido de 24 caracteres hexadecimales. 2. Confirma que el evento fue creado bajo tu cuenta de empresa. |
+| **Respuesta Vacía o Sin Eventos** | Al usar `/api/v1/liveness/event`, la lista de documentos (`docList`) está vacía aunque esperabas resultados. | 1. Revisa los filtros aplicados (`status`, `action`, rango de fechas) para asegurarte de que no son demasiado restrictivos. 2. Verifica que el `company-id` en los headers sea correcto. 3. Prueba la consulta sin filtros. |
+
+## 6. ¿Necesitas Ayuda?
+
+No dudes en contactar a nuestro equipo de soporte ([soporte@jaak.ai](mailto:soporte@jaak.ai)) cuando:
+
+* Los pasos de solución de problemas no resuelven tu inconveniente después de varios intentos.
+* Recibes errores no documentados o inesperados.
+* Necesitas configuraciones especiales o asistencia con integraciones avanzadas.
+* Experimentas problemas de rendimiento persistentes o inconsistencias en los datos.
+
+**Información a tener lista al contactar soporte:**
+
+* Descripción específica del problema
+* Pasos que seguiste antes del error
+* `Event ID` o `Request ID` de las peticiones fallidas (si aplica)
+* Capturas de pantalla del error (si es posible)
+* Navegador y dispositivo usado (si aplica a problemas de cliente)
+* Hora aproximada cuando ocurrió el problema
+* Filtros utilizados en las consultas (si aplica)
+
+## 7. Glosario de Términos
+
+| Término          | Definición                                                                                                             |
+| :--------------- | :--------------------------------------------------------------------------------------------------------------------- |
+| **Liveness**     | Tecnología de detección de vida que verifica si una persona en una imagen o video está viva y presente en tiempo real. |
+| **Best Frame**   | El cuadro (frame) de video con la mejor calidad facial detectada, devuelto en Base64.                                  |
+| **Score**        | Puntuación numérica (0-100) que indica la confianza del algoritmo en la detección de vida.                             |
+| **Threshold**    | Umbral mínimo que debe superar el score para que una verificación sea considerada válida.                              |
+| **API Key**      | Clave de autenticación única que identifica y autoriza tu acceso a nuestra API.                                        |
+| **Base64**       | Codificación utilizada para representar datos binarios (como videos o imágenes) en formato de texto ASCII.             |
+| **Event ID**     | Identificador único generado para cada procesamiento de liveness, útil para trazabilidad y auditoría.                  |
+| **Process Time** | Tiempo total en milisegundos que toma una solicitud para ser procesada por el sistema.                                 |
+| **Flow**         | Secuencia de pasos y validaciones ejecutados durante el procesamiento de un evento de liveness.                        |
+| **ObjectID**     | Identificador único de 24 caracteres hexadecimales utilizado por la base de datos MongoDB para los IDs de eventos.     |
+| **Horizon**      | Servicio interno de JAAK utilizado para el refinamiento de videos antes de la detección de vida.                       |
+
+## Enlaces de Referencia
+
+* Documentación API - POST /api/v1/liveness/verify-and-bestframe
+* Documentación API - GET /api/v1/liveness/event/:id
+* Documentación API - GET /api/v1/liveness/event
+* Documentación general de la API de JAAK
+* Guía de autenticación con API Keys

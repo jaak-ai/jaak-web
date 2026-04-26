@@ -1,0 +1,625 @@
+---
+title: Manual SDK Android @jaak.ai/stamps
+description: SDK Android para captura automatizada de documentos de identidad con clasificación por IA y CameraX.
+category: sdk
+order: 3
+---
+
+## Manual Completo para Captura de Documentos en Aplicaciones Android
+
+### Tiempo estimado: 60-75 minutos para configuración completa
+
+---
+
+## ¿Qué aprenderás en este manual?
+
+Este manual te enseñará a implementar y usar el JAAKStamps SDK para captura automatizada de documentos de identidad en aplicaciones Android nativas con inteligencia artificial. **No necesitas conocimientos técnicos avanzados** - solo sigue los pasos.
+
+---
+
+## Antes de Empezar - Lista de Verificación
+
+Asegúrate de tener estos elementos listos:
+
+* Android Studio Iguana instalado
+* Dispositivo Android 6.0+ (API 23+)
+* Gradle 8.4 configurado
+* Conocimientos básicos de Kotlin/Android
+* Acceso a cámara funcional
+* Documento de identidad (INE, IFE, Pasaporte...) para pruebas
+
+---
+
+## Índice de Contenidos
+
+| Sección | Qué harás | Tiempo |
+|---------|-----------|---------|
+| **Paso 1** | Configurar proyecto y dependencias | 15 min |
+| **Paso 2** | Implementación básica del SDK | 25 min |
+| **Paso 3** | Configurar permisos y manifiestos | 10 min |
+| **Paso 4** | Manejo de respuestas e imágenes | 15 min |
+| **Paso 5** | Probar captura de documentos | 10 min |
+
+---
+
+# PASO 1: Configurar Proyecto y Dependencias
+
+## Objetivo
+
+Configurar el entorno de desarrollo Android y añadir las dependencias necesarias del SDK.
+
+## Requisitos Técnicos
+
+| Requisito | Versión | ¿Obligatorio? |
+|-----------|---------|---------------|
+| Android Studio | Iguana | Sí |
+| minSdkVersion | 23 (Android 6.0+) | Sí |
+| targetSdkVersion | 33 | Sí |
+| compileSdk | 35 | Sí |
+| Gradle | 8.4 | Sí |
+| Java/Kotlin | 17 | Sí |
+
+### 1.1 Configuración build.gradle (Project)
+
+```groovy
+buildscript {
+    ext.kotlin_version = "1.9.22"
+    ext.hilt_version = '2.48'
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            url 'https://us-maven.pkg.dev/jaak-platform/jaak-android'
+        }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.3.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
+    }
+}
+```
+
+### 1.2 Configuración build.gradle (Module: app)
+
+```groovy
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
+
+android {
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "tu.paquete.aqui"
+        minSdk 23
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+
+    buildFeatures {
+        viewBinding = true
+    }
+}
+
+dependencies {
+    // Android Core
+    implementation("androidx.core:core-ktx:1.15.0")
+    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.2.0")
+    implementation 'com.google.android.material:material:1.12.0'
+
+    // Dependency Injection
+    implementation("com.google.dagger:hilt-android:$hilt_version")
+    kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
+
+    // CameraX
+    implementation 'androidx.camera:camera-core:1.3.4'
+    implementation 'androidx.camera:camera-camera2:1.3.4'
+    implementation 'androidx.camera:camera-lifecycle:1.3.4'
+    implementation 'androidx.camera:camera-view:1.3.4'
+
+    // TensorFlow Lite para IA
+    implementation 'org.tensorflow:tensorflow-lite:2.14.0'
+    implementation 'org.tensorflow:tensorflow-lite-support:0.4.4'
+
+    // ONNX Runtime para clasificación
+    implementation 'com.microsoft.onnxruntime:onnxruntime-android:1.16.3'
+
+    // JAAK Stamps SDK
+    implementation("com.jaak.stampssdk:jaakstamps-sdk:1.0.0-beta")
+}
+```
+
+---
+
+# PASO 2: Implementación Básica del SDK
+
+## Objetivo
+
+Crear la implementación base del JAAKStamps SDK con captura automatizada.
+
+### 2.1 Application Class
+
+```kotlin
+import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
+
+@HiltAndroidApp
+class JaakStampsSDKApp : Application()
+```
+
+### 2.2 MainActivity Básica
+
+```kotlin
+import android.net.Uri
+import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.jaak.stampssdk.databinding.ActivityMainBinding
+import com.jaak.stampssdk.sdk.StampsSDK
+import com.jaak.stampssdk.ui.adapter.StampsListener
+import com.jaak.stampssdk.utils.Utils
+import com.jaak.stampssdk.utils.CameraFacing
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity(), StampsListener {
+
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var stampsSDK: StampsSDK
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        installSplashScreen()
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        configureStampsSDK()
+
+        binding.btnStartScanner.setOnClickListener {
+            startDocumentDetection()
+        }
+    }
+
+    private fun configureStampsSDK() {
+        stampsSDK = StampsSDK(this, this)
+
+        // Configuración recomendada
+        stampsSDK.setAlignmentTolerance(15)        // Precisión de alineación (0-100)
+        stampsSDK.setMaskSize(80)                  // Área de detección (50-100)
+        stampsSDK.setCropMargin(100)               // Margen de recorte (0-100)
+        stampsSDK.setCaptureDelay(1500)            // Delay antes de captura (ms)
+        stampsSDK.setCameraFacing(CameraFacing.BACK)  // Cámara trasera
+        stampsSDK.setAutoStampsClassification(true)   // Clasificación automática con IA
+
+        // Herramientas de desarrollo (opcional)
+        stampsSDK.setShowConfigPanel(false)
+        stampsSDK.setShowDebugMode(false)
+    }
+
+    private fun startDocumentDetection() {
+        // El SDK maneja automáticamente permisos de cámara
+        stampsSDK.startStamps(1) // Modo 1: Detección automática con IA
+    }
+
+    override fun onSuccessStamps(
+        typeProcess: Int,
+        frontOriginalUri: Uri?,
+        frontCropUri: Uri?,
+        backOriginalUri: Uri?,
+        backCropUri: Uri?
+    ) {
+        when (typeProcess) {
+            1 -> handleStampsResults(frontOriginalUri, frontCropUri, backOriginalUri, backCropUri)
+        }
+    }
+
+    private fun handleStampsResults(
+        frontOriginal: Uri?,
+        frontCrop: Uri?,
+        backOriginal: Uri?,
+        backCrop: Uri?
+    ) {
+        // Convertir URIs a Base64 si es necesario
+        val frontOriginalBase64 = frontOriginal?.let {
+            Utils.uriToBase64(contentResolver, it) ?: ""
+        } ?: ""
+
+        val frontCropBase64 = frontCrop?.let {
+            Utils.uriToBase64(contentResolver, it) ?: ""
+        } ?: ""
+
+        Log.d("StampsResult", "Front Original: $frontOriginal")
+        Log.d("StampsResult", "Front Crop: $frontCrop")
+        Log.d("StampsResult", "Back Original: $backOriginal")
+        Log.d("StampsResult", "Back Crop: $backCrop")
+
+        Toast.makeText(this, "Documentos capturados exitosamente", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onErrorStamps(text: String) {
+        Log.e("StampsError", text)
+        Toast.makeText(this, "Error: $text", Toast.LENGTH_SHORT).show()
+    }
+}
+```
+
+### 2.3 Layout XML (activity_main.xml)
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="JAAK Stamps SDK Android"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnStartScanner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnStartScanner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Escanear Documento"
+        android:textSize="16sp"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+```
+
+---
+
+# PASO 3: Configurar Permisos y Manifiestos
+
+## Objetivo
+
+Configurar correctamente los permisos y el manifiesto Android.
+
+### 3.1 AndroidManifest.xml
+
+```xml
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:replace="android:maxSdkVersion"
+        android:maxSdkVersion="28" />
+
+    <application
+        android:name="com.jaak.stampssdk.JaakStampsSDKApp"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+        tools:replace="android:theme,android:name">
+
+        <activity
+            android:name="com.jaak.stampssdk.MainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.jaak.stampssdk"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            tools:replace="android:authorities">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+    </application>
+</manifest>
+```
+
+### 3.2 file_paths.xml
+
+**Crear archivo res/xml/file_paths.xml:**
+
+```xml
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <external-path name="my_images" path="Pictures/" />
+    <external-path name="my_files" path="Android/data/com.jaak.stampssdk/files/Jaak Stamps SDK/" />
+</paths>
+```
+
+---
+
+# PASO 4: Manejo de Respuestas e Imágenes
+
+## Objetivo
+
+Implementar el manejo completo de las imágenes capturadas y procesamiento.
+
+### 4.1 Procesamiento Completo de Imágenes
+
+```kotlin
+private fun handleStampsResults(
+    frontOriginal: Uri?,
+    frontCrop: Uri?,
+    backOriginal: Uri?,
+    backCrop: Uri?
+) {
+    val documentImages = DocumentImages()
+
+    // Procesar frente completo
+    frontOriginal?.let {
+        documentImages.frontOriginalBase64 = Utils.uriToBase64(contentResolver, it) ?: ""
+        documentImages.frontOriginalUri = it
+    }
+
+    // Procesar frente recortado
+    frontCrop?.let {
+        documentImages.frontCropBase64 = Utils.uriToBase64(contentResolver, it) ?: ""
+        documentImages.frontCropUri = it
+    }
+
+    // Procesar reverso completo (si existe)
+    backOriginal?.let {
+        documentImages.backOriginalBase64 = Utils.uriToBase64(contentResolver, it) ?: ""
+        documentImages.backOriginalUri = it
+    }
+
+    // Procesar reverso recortado (si existe)
+    backCrop?.let {
+        documentImages.backCropBase64 = Utils.uriToBase64(contentResolver, it) ?: ""
+        documentImages.backCropUri = it
+    }
+
+    // Determinar tipo de documento
+    val documentType = if (backOriginal != null || backCrop != null) "double_sided" else "single_sided"
+
+    // Procesar documento completo
+    processCompleteDocument(documentImages, documentType)
+
+    Log.d("StampsResult", "Documento procesado: $documentType")
+    Toast.makeText(this, "Documento capturado exitosamente", Toast.LENGTH_SHORT).show()
+}
+
+data class DocumentImages(
+    var frontOriginalUri: Uri? = null,
+    var frontCropUri: Uri? = null,
+    var backOriginalUri: Uri? = null,
+    var backCropUri: Uri? = null,
+    var frontOriginalBase64: String? = null,
+    var frontCropBase64: String? = null,
+    var backOriginalBase64: String? = null,
+    var backCropBase64: String? = null
+)
+
+private fun processCompleteDocument(images: DocumentImages, type: String) {
+    // Crear payload para backend
+    val payload = mapOf(
+        "documentType" to type,
+        "timestamp" to System.currentTimeMillis(),
+        "images" to mapOf(
+            "frontOriginal" to (images.frontOriginalBase64 ?: ""),
+            "frontCrop" to (images.frontCropBase64 ?: ""),
+            "backOriginal" to (images.backOriginalBase64 ?: ""),
+            "backCrop" to (images.backCropBase64 ?: "")
+        ),
+        "metadata" to mapOf(
+            "platform" to "android",
+            "sdkVersion" to "1.0.0-beta"
+        )
+    )
+
+    // Enviar a backend o procesar localmente
+    Log.d("DocumentPayload", "Documento listo para procesamiento: ${payload.keys}")
+}
+```
+
+### 4.2 Manejo de Errores
+
+```kotlin
+override fun onErrorStamps(text: String) {
+    Log.e("StampsError", "Error en captura: $text")
+
+    val errorMessage = when {
+        text.contains("permission", ignoreCase = true) -> "Permisos de cámara requeridos"
+        text.contains("camera", ignoreCase = true) -> "Error de cámara - Verifica que no esté en uso"
+        text.contains("model", ignoreCase = true) -> "Error cargando modelos de IA - Reinicia la app"
+        text.contains("detection", ignoreCase = true) -> "Documento no detectado - Mejora la iluminación"
+        else -> "Error: $text"
+    }
+
+    Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
+}
+```
+
+---
+
+# PASO 5: Probar Captura de Documentos
+
+## Objetivo
+
+Verificar que todas las funcionalidades del SDK funcionan correctamente.
+
+## Lista de Verificación
+
+| Elemento | Estado | Descripción |
+|----------|----|-----------  |
+| **Permisos de cámara** | ☐ | App solicita y obtiene permisos automáticamente |
+| **Detección automática** | ☐ | IA detecta documentos automáticamente |
+| **Captura de imágenes** | ☐ | Genera original y crop de frente/reverso |
+| **Conversión base64** | ☐ | Todas las imágenes se convierten correctamente |
+| **Manejo de errores** | ☐ | Errores se manejan correctamente |
+
+## Proceso de Prueba
+
+### Paso A: Instalar y Configurar
+1. **Compilar aplicación** en Android Studio
+2. **Instalar en dispositivo físico** (no emulador)
+3. **Verificar permisos** se solicitan automáticamente
+
+### Paso B: Probar Captura Simple
+1. **Abrir aplicación** y presionar "Escanear Documento"
+2. **Posicionar documento** dentro del marco
+3. **Esperar detección automática** (marco verde)
+4. **Verificar captura automática** del frente
+5. **Revisar logs** para confirmar procesamiento
+
+### Paso C: Probar Documento Doble Cara
+1. **Usar INE o documento similar** con dos caras
+2. **Capturar frente** automáticamente
+3. **Seguir instrucciones** para voltear documento
+4. **Capturar reverso** automáticamente
+5. **Verificar 4 imágenes** en logs
+
+## Solución de Problemas
+
+### Problemas Comunes
+
+| Problema | Solución |
+|----------|----------|
+| **"SDK no compatible"** | Verificar minSdk 23+ y dependencias |
+| **"Cámara no inicia"** | Verificar permisos y dispositivo físico |
+| **"Modelo no carga"** | Reiniciar app y verificar memoria |
+| **"Captura no funciona"** | Usar dispositivo físico, no emulador |
+
+### Debug Avanzado
+
+```kotlin
+private fun enableDebugMode() {
+    stampsSDK.setShowDebugMode(true)
+    stampsSDK.setShowConfigPanel(true)
+
+    Log.d("Debug", "=== INFORMACIÓN DEL DISPOSITIVO ===")
+    Log.d("Debug", "Modelo: ${Build.MODEL}")
+    Log.d("Debug", "SDK: ${Build.VERSION.SDK_INT}")
+    Log.d("Debug", "RAM disponible: ${getAvailableMemory()}")
+}
+
+private fun getAvailableMemory(): String {
+    val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+    val memoryInfo = ActivityManager.MemoryInfo()
+    activityManager.getMemoryInfo(memoryInfo)
+    return "${memoryInfo.availMem / (1024 * 1024)} MB"
+}
+```
+
+---
+
+# Referencia Completa
+
+## Métodos del SDK
+
+| Método | Descripción | Ejemplo |
+|--------|-------------|---------|
+| **StampsSDK(context, listener)** | Constructor del SDK | `StampsSDK(this, this)` |
+| **startStamps(mode)** | Inicia captura (modo 1: IA) | `stampsSDK.startStamps(1)` |
+| **setAlignmentTolerance(int)** | Tolerancia de alineación (0-100) | `stampsSDK.setAlignmentTolerance(15)` |
+| **setMaskSize(int)** | Área de detección (50-100) | `stampsSDK.setMaskSize(80)` |
+| **setCropMargin(int)** | Margen de recorte (0-100) | `stampsSDK.setCropMargin(100)` |
+| **setCaptureDelay(int)** | Delay antes de captura (ms) | `stampsSDK.setCaptureDelay(1500)` |
+
+## Configuraciones Disponibles
+
+| Configuración | Descripción | Cuándo usar |
+|---------------|-------------|-------------|
+| **setAutoStampsClassification(true)** | Clasificación automática con IA | Detección inteligente de tipos |
+| **setCameraFacing(BACK)** | Selección de cámara | Cámara trasera para mejor calidad |
+| **setShowDebugMode(true)** | Métricas en tiempo real | Durante desarrollo |
+
+## Estructura de Respuesta
+
+| Imagen | Descripción | Cuándo se genera |
+|--------|-------------|------------------|
+| **frontOriginalUri** | Imagen completa del frente | Siempre |
+| **frontCropUri** | Frente recortado por IA | Cuando detecta documento |
+| **backOriginalUri** | Imagen completa del reverso | Solo documentos doble cara |
+| **backCropUri** | Reverso recortado por IA | Cuando detecta reverso |
+
+---
+
+# Solución de Problemas Avanzados
+
+## Problema: "Error de modelos de IA"
+
+```kotlin
+// Verificar compatibilidad antes de usar
+private fun checkAICompatibility() {
+    val hasRequiredMemory = Runtime.getRuntime().maxMemory() > 512 * 1024 * 1024 // 512MB
+    val hasRequiredAPI = Build.VERSION.SDK_INT >= 23
+
+    if (!hasRequiredMemory || !hasRequiredAPI) {
+        showError("Dispositivo no compatible con modelos de IA")
+        return
+    }
+
+    // Configurar para dispositivos de bajos recursos
+    if (Runtime.getRuntime().maxMemory() < 1024 * 1024 * 1024) { // < 1GB
+        stampsSDK.setMaskSize(70) // Reducir área de procesamiento
+        stampsSDK.setCaptureDelay(2000) // Más tiempo para procesar
+    }
+}
+```
+
+## Problema: "Documentos no se detectan"
+
+```kotlin
+// Configurar para mejorar detección
+private fun optimizeForDetection() {
+    stampsSDK.setAlignmentTolerance(20) // Más tolerante
+    stampsSDK.setMaskSize(85) // Área más grande
+    stampsSDK.setCaptureDelay(2000) // Más tiempo para estabilizar
+    stampsSDK.setShowDebugMode(true) // Ver métricas en tiempo real
+}
+```
+
+---
+
+# ¿Necesitas Ayuda?
+
+## Información para soporte
+
+* **Descripción del problema:** Qué documento intentas capturar vs qué sucede
+* **Logs de Android Studio:** Screenshots de errores en Logcat
+* **Información del dispositivo:** Modelo, versión Android, RAM
+* **Configuración Gradle:** Versiones de dependencias
+* **Tipo de documento:** INE, pasaporte, licencia, etc.
+
+## Contacto de Soporte
+
+**Email:** soporte@jaak.ai
+**Incluir siempre:** Logs Android, configuración build.gradle, versión SDK
+
+---
+
+Has implementado exitosamente el JAAKStamps SDK en tu aplicación Android. Tu app ahora puede capturar documentos automáticamente usando inteligencia artificial, generando imágenes optimizadas para procesos KYC.

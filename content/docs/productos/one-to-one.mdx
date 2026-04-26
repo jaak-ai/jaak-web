@@ -1,0 +1,197 @@
+---
+title: One To One (OTO)
+description: Comparación facial biométrica para verificar que dos imágenes corresponden a la misma persona.
+category: concepto
+order: 5
+---
+
+Tiempo estimado de lectura: 15-20 minutos
+
+## ¿Qué aprenderás en esta guía?
+
+Este manual te enseñará a utilizar el sistema de Verificación de Identidad One-to-One (OTO) de JAAK. Con OTO, podrás comparar dos imágenes faciales para determinar si corresponden a la misma persona, identificar posibles intentos de suplantación de identidad y asegurar la calidad de las imágenes procesadas.
+
+No necesitas conocimientos técnicos previos – solo sigue los pasos.
+
+## Antes de Empezar - Lista de Verificación
+
+Asegúrate de tener estos datos listos:
+
+* **API Key (Token Bearer):** Tu clave de autenticación válida proporcionada por JAAK. Es esencial para acceder a nuestros servicios.
+* **Imágenes a comparar:** Dos imágenes faciales en formato Base64.
+* **Conocimientos básicos de APIs REST:** Familiaridad con cómo se realizan solicitudes HTTP (GET, POST) y se procesan respuestas JSON.
+
+## Índice de Contenidos
+
+| Sección | Qué aprenderás |
+| :--- | :--- |
+| 1. ¿Qué es la Verificación OTO? | Entender el propósito y alcance del producto OTO. |
+| 2. Funcionalidades Clave | Conocer las principales capacidades y beneficios del sistema. |
+| 3. Integración con la API | Guía sobre cómo realizar comparaciones faciales y obtener resultados. |
+| 4. Monitoreo de Eventos | Cómo consultar estadísticas y detalles de los procesos de verificación. |
+| 5. Solución de Problemas Comunes | Identificar y resolver los errores más frecuentes. |
+| 6. ¿Necesitas Ayuda? | Cuándo y cómo contactar a nuestro equipo de soporte. |
+| 7. Glosario de Términos | Definiciones de términos clave relacionados con OTO. |
+
+## 1. ¿Qué es la Verificación OTO?
+
+El sistema de Verificación OTO (One-to-One) de JAAK es una solución de biometría facial que compara dos imágenes de un rostro para determinar si pertenecen a la misma persona. Este proceso es fundamental para prevenir la suplantación de identidad y garantizar que la persona que presenta un documento o realiza una acción es quien dice ser.
+
+**Casos de uso comunes:**
+
+* **Verificación de documentos:** Comparar una foto del documento de identidad (INE, pasaporte, licencia) con una "selfie" del usuario.
+* **Autenticación en línea:** Confirmar la identidad de un usuario al iniciar sesión o realizar transacciones importantes.
+* **Pruebas de vida:** Aunque OTO se centra en la comparación, se integra con procesos que aseguran que la foto no es una imagen estática o una máscara.
+
+## 2. Funcionalidades Clave
+
+Nuestro producto OTO ofrece las siguientes capacidades principales:
+
+* **Comparación Facial Biométrica:** Determina la similitud entre dos rostros, devolviendo una puntuación de confianza.
+* **Detección de Accesorios:** Identifica si el rostro en las imágenes tiene elementos que puedan interferir con la verificación, como gafas, sombreros o mascarillas.
+* **Análisis de Calidad de Imagen:** Evalúa la claridad, brillo, enfoque, rotación y dimensiones del rostro en las imágenes para asegurar resultados precisos.
+* **Códigos de Error Detallados:** Proporciona códigos específicos para diagnosticar problemas como baja calidad de imagen o detección de accesorios.
+* **Registro de Eventos:** Guarda un historial detallado de cada verificación OTO, incluyendo el flujo de procesamiento, tiempos de respuesta y metadatos.
+* **Estadísticas de Calidad:** Permite obtener métricas agrupadas por problemas de calidad de imagen (desenfoque, brillo, rotación, etc.) para un análisis de rendimiento.
+
+## 3. Integración con la API
+
+La interacción con el sistema OTO se realiza a través de llamadas a nuestra API. A continuación, se detallan los endpoints más relevantes para nuestros clientes.
+
+### 3.1 Endpoint de Verificación Facial (POST /api/v2/oto/verify)
+
+Este es el endpoint principal para realizar una comparación facial entre dos imágenes.
+
+* **Método:** `POST`
+* **URL Base:** `https://api.sandbox.jaak.ai/api/v2/oto/verify`
+
+**Headers requeridos:**
+
+* `Authorization`: `Bearer TU_API_KEY_AQUI` (Tu clave de autenticación)
+* `Content-Type`: `application/json`
+
+**Cuerpo de la solicitud (JSON):**
+
+| Parámetro | Tipo     | Requerido | Descripción                                                            | Ejemplo                         |
+| :-------- | :------- | :-------- | :--------------------------------------------------------------------- | :------------------------------ |
+| `image1`  | `string` | Sí        | Primera imagen a comparar, codificada en formato Base64.               | `"iVBORw0KGgoAAAANSUhEUgAA..."` |
+| `image2`  | `string` | Sí        | Segunda imagen a comparar, codificada en formato Base64.               | `"iVBORw0KGgoAAAANSUhEUgAA..."` |
+| `eventId` | `string` | No        | Identificador único opcional para tu evento (UUID o cualquier string). | `"mi_verificacion_123"`         |
+
+**Respuesta Exitosa (HTTP Status: 200 OK):**
+
+La respuesta incluye un `score` (puntuación de similitud de 0 a 100%), `distance` (distancia métrica, menor es más similar), `process_time` (tiempo de procesamiento en ms), y un objeto `state` que indica si es la `isSamePerson` (misma persona), si fue `rejectedBadQuality` (rechazada por mala calidad) o `rejectedAccessories` (rechazada por accesorios). También proporciona `metadata` detallada sobre la calidad y accesorios de cada imagen.
+
+**Ejemplo simplificado de respuesta:**
+
+```json
+{
+  "eventId": "my_custom_event_id",
+  "score": 96.5,
+  "isSamePerson": true,
+  "rejectedBadQuality": false,
+  "rejectedAccessories": false,
+  "message": "Comparación exitosa",
+  "metadata": {
+    "image1": {
+      "accessories": { "glass": false },
+      "image_quality": { "isCorrectBrightness": true, "isCorrectBlur": true }
+    },
+    "image2": {
+      "accessories": { "glass": false },
+      "image_quality": { "isCorrectBrightness": true, "isCorrectBlur": true }
+    }
+  }
+}
+```
+
+### 3.2 Endpoint de Verificación con Códigos (POST /api/v1/oto/verify-codes)
+
+Este endpoint es similar a `/api/v2/oto/verify`, pero su respuesta incluye un array de `codes` para un diagnóstico más específico de los problemas de calidad o rechazo.
+
+* **Método:** `POST`
+* **URL Base:** `https://api.sandbox.jaak.ai/api/v1/oto/verify-codes`
+
+El cuerpo de la solicitud y respuesta son muy similares a la v2, con la adición del campo `codes` en `VerifyInfo`.
+
+### 3.3 Consideraciones Importantes para las Imágenes
+
+* **Formato:** JPEG o PNG.
+* **Calidad:** Imágenes claras, bien iluminadas, con rostros frontales y claramente visibles. Evita fotos borrosas, con reflejos o sombras fuertes.
+* **Tamaño:** Optimiza el tamaño de las imágenes (recomendado entre 500KB y 2MB) para un mejor rendimiento.
+* **Base64:** Asegúrate de que las cadenas Base64 sean válidas y no incluyan el prefijo `data:image/png;base64,`.
+
+## 4. Monitoreo de Eventos
+
+Puedes consultar los detalles de los eventos de verificación OTO para auditoría, análisis de rendimiento y solución de problemas.
+
+### 4.1 Consulta de Eventos (GET /api/v2/oto/event)
+
+Este endpoint permite filtrar y obtener una lista paginada de todos los eventos OTO.
+
+* **Método:** `GET`
+* **URL Base:** `https://api.sandbox.jaak.ai/api/v2/oto/event`
+
+**Parámetros de consulta (Query Params):**
+
+Puedes usar parámetros como `limit`, `page`, `status` (`success`, `failed`, `pending`), `action` (`verify-liveness`, `face-comparison`), `min-process-time`, `max-process-time`, `min-created-at`, `max-created-at`, entre otros.
+
+**Ejemplo:** `GET /api/v2/oto/event?limit=10&page=1&status=success`
+
+### 4.2 Consulta de Evento Específico (GET /api/v2/oto/event/:id)
+
+Para obtener los detalles completos de un evento OTO individual.
+
+* **Método:** `GET`
+* **URL Base:** `https://api.sandbox.jaak.ai/api/v2/oto/event/:id` (donde `:id` es el ID único del evento)
+
+La respuesta incluye el flujo de procesamiento (`flow`), los resultados de las validaciones de accesorios y calidad de imagen, y los metadatos de la comparación facial (`meta.extra`).
+
+## 5. Solución de Problemas Comunes
+
+Aquí hay algunos problemas frecuentes y sus soluciones:
+
+| Problema | Descripción | Solución |
+| :--- | :--- | :--- |
+| **Error 400 - Solicitud Inválida** | Indica que los parámetros enviados no son correctos, las imágenes tienen un formato incorrecto, son muy pequeñas, o no contienen rostros detectables. (Códigos: `0002`, `OTO06`) | 1. Verifica que las imágenes estén en formato JPEG o PNG válido y contengan rostros claramente visibles. 2. Asegúrate de que las cadenas Base64 sean correctas. 3. Prueba con imágenes de al menos 100x100 píxeles. |
+| **Error 401/403 - Autenticación Fallida** | Tu API Key es inválida, ha expirado o no tienes los permisos necesarios para usar el producto OTO. (Códigos: `0003`) | 1. Verifica que tu API Key sea correcta y esté activa. 2. Asegúrate de que el header `Authorization` esté bien formateado (`Bearer TU_API_KEY`). 3. Contacta a soporte para verificar tus permisos. |
+| **Timeout de Procesamiento** | La solicitud se cancela porque el procesamiento excede el tiempo límite (35 segundos para OTO v2). (Código: `0013`) | 1. Reduce el tamaño de las imágenes (recomendado 500KB - 2MB). 2. Implementa lógica de reintento con backoff exponencial. 3. Si el problema persiste, contacta a soporte. |
+| **Imágenes Rechazadas por Mala Calidad** | El sistema indica `rejectedBadQuality: true` o `rejectedAccessories: true`. Los códigos específicos (`OTO04`, `OTO05`) te darán más detalles. | 1. Mejora la iluminación y el enfoque de las imágenes. 2. Asegúrate de que las imágenes tengan una resolución adecuada (mínimo 400x400 píxeles). 3. Pide al usuario que se quite gafas, gorros o mascarillas. |
+| **Evento no encontrado (404)** | Intentaste consultar un evento específico (`/api/v2/oto/event/:id`) y el sistema indica que no existe o no pertenece a tu compañía. (Código: `511`) | 1. Verifica que el ID del evento sea correcto y tenga el formato ObjectID válido de 24 caracteres hexadecimales. 2. Confirma que el evento fue creado bajo tu cuenta. Puedes usar el endpoint de listado `/api/v2/oto/event` para buscarlo. |
+| **Respuesta vacía al consultar eventos** | Al usar `/api/v2/oto/event`, la lista `docList` está vacía. | 1. Revisa tus filtros (`status`, `action`, rango de fechas) para asegurarte de que no son demasiado restrictivos. 2. Prueba con un rango de fechas más amplio. |
+
+## 6. ¿Necesitas Ayuda?
+
+No dudes en contactar a nuestro equipo de soporte ([soporte@jaak.ai](mailto:soporte@jaak.ai)) cuando:
+
+* Los pasos de solución de problemas no resuelven tu inconveniente.
+* Recibes errores no documentados o inesperados.
+* Necesitas configuraciones especiales o asistencia con integraciones avanzadas.
+* Experimentas problemas de rendimiento persistentes o inconsistencias en los datos.
+
+**Información a tener lista al contactar soporte:**
+
+* Descripción específica del problema.
+* Pasos que seguiste antes del error.
+* Event IDs o Request IDs de las peticiones fallidas (si aplica).
+* Capturas de pantalla del error (si es posible).
+* Navegador y dispositivo usado (si aplica a problemas de cliente).
+* Hora aproximada cuando ocurrió el problema.
+* Filtros utilizados en las consultas (si aplica).
+
+## 7. Glosario de Términos
+
+| Término          | Definición                                                                                                      |
+| :--------------- | :-------------------------------------------------------------------------------------------------------------- |
+| **API Key**      | Clave de autenticación única que identifica y autoriza tu acceso a nuestra API.                                 |
+| **Base64**       | Codificación utilizada para representar datos binarios (como imágenes) en formato de texto ASCII.               |
+| **OTO**          | One-to-One: Proceso de comparación biométrica entre dos imágenes faciales.                                      |
+| **Score**        | Puntuación de similitud entre 0 y 100%, indicando qué tan probable es que los rostros sean de la misma persona. |
+| **Distance**     | Métrica de distancia entre vectores faciales (0.0-1.0), donde un valor menor indica mayor similitud.            |
+| **Event ID**     | Identificador único asignado a cada evento o solicitud de verificación para seguimiento.                        |
+| **Process Time** | Tiempo total de procesamiento de una solicitud en milisegundos.                                                 |
+| **Flow**         | Secuencia de pasos y validaciones ejecutados durante el procesamiento de un evento OTO.                         |
+| **Granularidad** | Nivel de detalle temporal para agrupar estadísticas (minuto, hora, día).                                        |
+| **Bad Quality**  | Problemas detectados en la calidad de imagen (desenfoque, brillo, rotación, etc.).                              |
+| **Threshold**    | Umbral de decisión utilizado por el sistema para determinar un "match" o rechazo.                               |
+| **ObjectID**     | Identificador único de MongoDB de 24 caracteres hexadecimales, utilizado para IDs de eventos específicos.       |

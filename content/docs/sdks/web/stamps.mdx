@@ -1,0 +1,1137 @@
+---
+title: Manual Componente Web @jaak.ai/stamps
+description: SDK web para captura automatizada de documentos de identidad con detección por IA en tiempo real.
+category: sdk
+order: 1
+---
+
+## Manual Completo para Captura Automatizada de Documentos
+
+### Tiempo estimado: 30-45 minutos para configuración completa
+
+---
+
+## ¿Qué aprenderás en este manual?
+
+Este manual te enseñará a implementar y usar el componente web @jaak.ai/stamps para captura automatizada de documentos de identidad desde cero. **No necesitas conocimientos técnicos avanzados** - solo sigue los pasos.
+
+## Demo en Vivo
+
+**Antes de empezar con la implementación, puedes probar el componente en funcionamiento:**
+
+[Demo Live - JAAK Stamps](https://stamps.jaak.solutions/?debug=false&alignmentTolerance=15&maskSize=90&cropMargin=20&captureDelay=1500&useDocumentClassification=false&preferredCamera=auto&version=2.0.0)
+
+**¿Qué puedes hacer en el demo?**
+* Probar captura de documentos (frente y reverso)
+* Ver la detección automática de documentos
+* Verificar compatibilidad con tu dispositivo
+* Entender el flujo completo antes de implementar
+
+---
+
+## Antes de Empezar - Lista de Verificación
+
+Asegúrate de tener estos elementos listos:
+
+* Node.js 16.0+ instalado (para proyectos npm)
+* Navegador moderno (Chrome 67+, Firefox 63+, Safari 12+)
+* Conexión HTTPS (requerida para acceso a cámara)
+* Editor de código
+* Acceso a cámara web funcional
+* Documento de identidad para pruebas
+
+---
+
+## Índice de Contenidos
+
+| Sección | Qué harás | Tiempo |
+|---------|-----------|---------|
+| **Paso 1** | Instalar y configurar el componente | 5 min |
+| **Paso 2** | Implementación básica en HTML | 15 min |
+| **Paso 3** | Configurar eventos y respuestas | 10 min |
+| **Paso 4** | Implementar en frameworks | 10 min |
+| **Paso 5** | Probar captura de documentos | 5 min |
+
+---
+
+# PASO 1: Instalar y Configurar el Componente
+
+## Objetivo
+
+Instalar el componente @jaak.ai/stamps y configurar el entorno.
+
+## Métodos de Instalación
+
+### 1.1 Instalación vía NPM (Recomendado)
+
+```bash
+npm install @jaak.ai/stamps@2.0.0
+```
+
+### 1.2 Instalación vía CDN
+
+```html
+<script type="module" src="https://unpkg.com/@jaak.ai/stamps@2.0.0/dist/jaak-stamps-webcomponent/jaak-stamps-webcomponent.esm.js"></script>
+```
+
+### 1.3 Requisitos Técnicos
+
+| Requisito | Versión | ¿Obligatorio? |
+|-----------|---------|---------------|
+| **Navegadores** | Chrome 67+, Firefox 63+, Safari 12+ | Sí |
+| **HTTPS** | Protocolo seguro | Sí (en producción) |
+| **JavaScript** | ES2017+ | Sí |
+| **RAM** | 4GB+ recomendado | No (mejor rendimiento) |
+
+---
+
+# PASO 2: Implementación Básica en HTML
+
+## Objetivo
+
+Crear tu primera implementación funcional para captura de documentos.
+
+### 2.1 HTML Completo Funcional
+
+```html
+<!DOCTYPE html>
+<html dir="ltr" lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JAAK Stamps - Captura de Documentos</title>
+
+    <script type="module" src="https://unpkg.com/@jaak.ai/stamps@2.0.0/dist/jaak-stamps-webcomponent/jaak-stamps-webcomponent.esm.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Captura de Documentos JAAK Stamps</h1>
+        <p>Componente de captura automatizada de documentos de identidad</p>
+
+        <div class="status" id="statusDiv">
+            <strong>Estado:</strong> <span id="statusText">Inicializando...</span>
+        </div>
+
+        <div class="controls">
+            <button id="preloadBtn" disabled>Precargar Modelos</button>
+            <button id="startBtn" disabled>Iniciar Captura</button>
+            <button id="resetBtn" disabled>Reiniciar</button>
+            <button id="getImagesBtn" disabled>Obtener Imágenes</button>
+        </div>
+
+        <jaak-stamps
+            id="documentCapture"
+            debug="false"
+            mask-size="90"
+            alignment-tolerance="15"
+            crop-margin="20"
+            capture-delay="1500"
+            preferred-camera="auto"
+            use-document-classification="false">
+        </jaak-stamps>
+
+        <div id="results" class="results" style="display: none;">
+            <h3>Documentos Capturados</h3>
+            <div id="captureData"></div>
+        </div>
+    </div>
+
+    <script>
+        // Variables globales
+        let jaakStamps = null;
+        let isComponentReady = false;
+        let modelsPreloaded = false;
+
+        // Inicializar componente correctamente
+        async function initializeJaakStamps() {
+            await customElements.whenDefined('jaak-stamps');
+            jaakStamps = document.getElementById('documentCapture');
+
+            // Event listeners principales
+            jaakStamps.addEventListener('isReady', handleComponentReady);
+            jaakStamps.addEventListener('captureCompleted', handleCaptureCompleted);
+            jaakStamps.addEventListener('error', handleError);
+            jaakStamps.addEventListener('modelsLoaded', handleModelsLoaded);
+        }
+
+        function handleComponentReady(event) {
+            isComponentReady = event.detail;
+        }
+
+        function handleModelsLoaded(event) {
+            modelsPreloaded = true;
+        }
+
+        function handleCaptureCompleted(event) {
+            const images = event.detail;
+            displayResults(images);
+        }
+
+        function handleError(event) {
+            console.error('Error del componente:', event.detail);
+        }
+
+        async function handlePreload() {
+            const result = await jaakStamps.preloadModel();
+            if (result.success) modelsPreloaded = true;
+        }
+
+        async function handleStart() {
+            await jaakStamps.startCapture();
+        }
+
+        async function handleReset() {
+            await jaakStamps.resetCapture();
+        }
+
+        async function handleGetImages() {
+            const isCompleted = await jaakStamps.isProcessCompleted();
+            if (isCompleted) {
+                const images = await jaakStamps.getCapturedImages();
+                displayResults(images);
+            }
+        }
+
+        function displayResults(images) {
+            // Renderizar imágenes capturadas en el DOM (usar DOM API segura)
+            const resultsDiv = document.getElementById('results');
+            const captureDataDiv = document.getElementById('captureData');
+            // ... construir nodos con createElement / appendChild
+            resultsDiv.style.display = 'block';
+        }
+
+        window.addEventListener('load', initializeJaakStamps);
+    </script>
+</body>
+</html>
+```
+
+Al renderizar deberás tener una página HTML como la siguiente:
+
+![](https://files.readme.io/d9c1d1d7bb85f1694a5b99b3015cc7cd95d8ba4c07df2c81ef910f4722824ebc-Captura_de_pantalla_2025-08-06_a_las_2.13.39_p.m..png)
+
+### 2.2 Propiedades del Componente
+
+| Propiedad | Tipo | Valor por Defecto | Descripción | Ejemplo |
+|-----------|------|-------------------|-------------|---------|
+| **debug** | boolean | `false` | Habilita logs detallados | `debug="true"` |
+| **mask-size** | number | `90` | Tamaño de la máscara de detección (%) | `mask-size="85"` |
+| **alignment-tolerance** | number | `15` | Tolerancia de alineación (píxeles) | `alignment-tolerance="10"` |
+| **crop-margin** | number | `20` | Margen de recorte (píxeles) | `crop-margin="25"` |
+| **capture-delay** | number | `1500` | Delay antes de captura (ms) | `capture-delay="2000"` |
+| **preferred-camera** | string | `"auto"` | Preferencia de cámara | `preferred-camera="front"` |
+| **use-document-classification** | boolean | `false` | Clasificación automática de documentos | `use-document-classification="true"` |
+
+---
+
+# PASO 3: Configurar Eventos y Respuestas
+
+## Objetivo
+
+Configurar correctamente los eventos para manejar la captura de documentos.
+
+## Eventos Disponibles
+
+### 3.1 Eventos Principales
+
+| Evento | Cuándo se dispara | Datos del evento | Ejemplo de uso |
+|--------|-------------------|------------------|----------------|
+| **isReady** | Componente listo para usar | `boolean` | Habilitar controles |
+| **modelsLoaded** | Modelos de IA cargados | `object` | Permitir captura |
+| **captureCompleted** | Captura finalizada | `{front, back, metadata}` | Mostrar resultados |
+| **error** | Error en el proceso | `{message, code?}` | Mostrar error |
+
+### 3.2 Implementación de Event Listeners
+
+```javascript
+// Obtener referencia al componente
+const jaakStamps = document.getElementById('documentCapture');
+
+// Configurar eventos principales
+jaakStamps.addEventListener('isReady', (event) => {
+    console.log('Componente listo:', event.detail);
+    enableBasicControls(event.detail);
+});
+
+jaakStamps.addEventListener('modelsLoaded', (event) => {
+    console.log('Modelos cargados:', event.detail);
+    enableCaptureControls();
+});
+
+jaakStamps.addEventListener('captureCompleted', (event) => {
+    console.log('Captura completada:', event.detail);
+    processCapturedDocuments(event.detail);
+});
+
+jaakStamps.addEventListener('error', (event) => {
+    console.error('Error:', event.detail);
+    handleCaptureError(event.detail);
+});
+```
+
+### 3.3 Estructura de Datos de Respuesta
+
+```javascript
+// Ejemplo de datos recibidos en 'captureCompleted'
+{
+    front: {
+        fullFrame: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ...", // Imagen completa
+        croppedDocument: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ...", // Documento recortado
+        confidence: 0.95,
+        detectionBox: { x: 100, y: 50, width: 400, height: 250 }
+    },
+    back: {
+        fullFrame: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ...",
+        croppedDocument: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQ...",
+        confidence: 0.92,
+        detectionBox: { x: 110, y: 55, width: 390, height: 245 }
+    },
+    metadata: {
+        documentsProcessed: 2,
+        processingTime: 3245,
+        averageConfidence: 0.935,
+        timestamp: 1645123456789
+    }
+}
+```
+
+---
+
+# PASO 4: Implementar en Frameworks
+
+## React
+
+```tsx
+import React, { useRef, useEffect, useState } from 'react';
+import { defineCustomElements } from '@jaak.ai/stamps/loader';
+
+defineCustomElements();
+
+const DocumentCapture = () => {
+    const jaakStampsRef = useRef(null);
+    const [isReady, setIsReady] = useState(false);
+    const [modelsLoaded, setModelsLoaded] = useState(false);
+    const [capturedImages, setCapturedImages] = useState(null);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const initComponent = async () => {
+            await customElements.whenDefined('jaak-stamps');
+            const component = jaakStampsRef.current;
+
+            component.addEventListener('isReady', (event) => setIsReady(event.detail));
+            component.addEventListener('modelsLoaded', () => setModelsLoaded(true));
+            component.addEventListener('captureCompleted', (event) => setCapturedImages(event.detail));
+            component.addEventListener('error', (event) => setError(event.detail));
+        };
+
+        initComponent();
+    }, []);
+
+    const handlePreload = async () => {
+        try {
+            setError(null);
+            const result = await jaakStampsRef.current.preloadModel();
+            if (!result.success) setError({ message: result.error });
+        } catch (err) {
+            setError(err);
+        }
+    };
+
+    const handleStartCapture = async () => {
+        try {
+            setError(null);
+            await jaakStampsRef.current.startCapture();
+        } catch (err) {
+            setError(err);
+        }
+    };
+
+    return (
+        <div className="document-capture-container">
+            <h2>Captura de Documentos React</h2>
+
+            <div className={`status ${error ? 'error' : isReady ? 'success' : 'info'}`}>
+                {error ? `Error: ${error.message}` :
+                 modelsLoaded ? 'Listo para capturar' :
+                 isReady ? 'Cargando modelos...' : 'Inicializando...'}
+            </div>
+
+            <div className="controls">
+                <button onClick={handlePreload} disabled={!isReady || modelsLoaded}>
+                    Precargar Modelos
+                </button>
+                <button onClick={handleStartCapture} disabled={!isReady || !modelsLoaded}>
+                    Iniciar Captura
+                </button>
+            </div>
+
+            <jaak-stamps
+                ref={jaakStampsRef}
+                debug="false"
+                mask-size="90"
+                alignment-tolerance="15"
+                capture-delay="1500"
+                preferred-camera="auto">
+            </jaak-stamps>
+
+            {capturedImages && (
+                <div className="results">
+                    <h3>Documentos Capturados</h3>
+                    <div className="document-images">
+                        {capturedImages.front && (
+                            <div>
+                                <h4>Frente</h4>
+                                <img src={capturedImages.front.fullFrame} alt="Documento frente" />
+                            </div>
+                        )}
+                        {capturedImages.back && (
+                            <div>
+                                <h4>Reverso</h4>
+                                <img src={capturedImages.back.fullFrame} alt="Documento reverso" />
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+};
+
+export default DocumentCapture;
+```
+
+## Angular
+
+```typescript
+// document-capture.component.ts
+import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { defineCustomElements } from '@jaak.ai/stamps/loader';
+
+defineCustomElements();
+
+@Component({
+    selector: 'app-document-capture',
+    template: `
+        <div class="document-capture-container">
+            <h2>Captura de Documentos Angular</h2>
+
+            <div class="status">
+                <span *ngIf="error">Error: {{ error.message }}</span>
+                <span *ngIf="!error && isReady && modelsLoaded">Listo para capturar</span>
+                <span *ngIf="!error && isReady && !modelsLoaded">Cargando modelos...</span>
+                <span *ngIf="!error && !isReady">Inicializando...</span>
+            </div>
+
+            <div class="controls">
+                <button (click)="preloadModels()" [disabled]="!isReady || modelsLoaded">
+                    Precargar Modelos
+                </button>
+                <button (click)="startCapture()" [disabled]="!isReady || !modelsLoaded">
+                    Iniciar Captura
+                </button>
+            </div>
+
+            <jaak-stamps
+                #jaakStamps
+                debug="false"
+                mask-size="90"
+                alignment-tolerance="15"
+                capture-delay="1500"
+                preferred-camera="auto">
+            </jaak-stamps>
+
+            <div *ngIf="capturedImages" class="results">
+                <h3>Documentos Capturados</h3>
+                <div class="document-images">
+                    <div *ngIf="capturedImages.front">
+                        <h4>Frente</h4>
+                        <img [src]="capturedImages.front.fullFrame" alt="Documento frente">
+                    </div>
+                    <div *ngIf="capturedImages.back">
+                        <h4>Reverso</h4>
+                        <img [src]="capturedImages.back.fullFrame" alt="Documento reverso">
+                    </div>
+                </div>
+            </div>
+        </div>
+    `,
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+})
+export class DocumentCaptureComponent implements AfterViewInit {
+    @ViewChild('jaakStamps') jaakStamps!: ElementRef;
+
+    isReady = false;
+    modelsLoaded = false;
+    capturedImages: any = null;
+    error: any = null;
+
+    async ngAfterViewInit() {
+        await customElements.whenDefined('jaak-stamps');
+        const component = this.jaakStamps.nativeElement;
+
+        component.addEventListener('isReady', (event: any) => this.isReady = event.detail);
+        component.addEventListener('modelsLoaded', () => this.modelsLoaded = true);
+        component.addEventListener('captureCompleted', (event: any) => this.capturedImages = event.detail);
+        component.addEventListener('error', (event: any) => this.error = event.detail);
+    }
+
+    async preloadModels() {
+        try {
+            this.error = null;
+            const result = await this.jaakStamps.nativeElement.preloadModel();
+            if (!result.success) this.error = { message: result.error };
+        } catch (error) {
+            this.error = error;
+        }
+    }
+
+    async startCapture() {
+        try {
+            this.error = null;
+            await this.jaakStamps.nativeElement.startCapture();
+        } catch (error) {
+            this.error = error;
+        }
+    }
+}
+```
+
+---
+
+# PASO 5: Probar Captura de Documentos
+
+## Objetivo
+
+Configurar un servidor local con HTTPS para probar el componente de captura correctamente, ya que los navegadores requieren HTTPS para acceder a la cámara.
+
+## Métodos para Levantar Servidor Local
+
+### 5.1 Opción 1: Servidor HTTP Simple con Python (Para desarrollo)
+
+```bash
+# Si tienes Python 3 instalado
+python -m http.server 8000
+
+# O con Python 2
+python -m SimpleHTTPServer 8000
+```
+
+**Luego accede a:** `http://localhost:8000`
+
+<Callout type="warning">
+Esta opción funciona solo en localhost para desarrollo. Para producción necesitas HTTPS.
+</Callout>
+
+### 5.2 Opción 2: Servidor HTTPS con Live Server (VS Code)
+
+1. Instalar extensión Live Server en VS Code
+2. Configurar HTTPS en settings.json:
+
+```json
+{
+    "liveServer.settings.https": {
+        "enable": true,
+        "cert": "",
+        "key": "",
+        "passphrase": ""
+    }
+}
+```
+
+3. Clic derecho en el archivo HTML, seleccionar "Open with Live Server"
+
+### 5.3 Opción 3: Servidor HTTPS con http-server (Node.js)
+
+```bash
+# Instalar http-server globalmente
+npm install -g http-server
+
+# Generar certificados autofirmados (solo para desarrollo)
+openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem
+
+# Levantar servidor HTTPS
+http-server -S -C cert.pem -K key.pem -p 8443
+
+# Acceder a: https://localhost:8443
+```
+
+### 5.4 Opción 4: Servidor con Vite (Recomendado)
+
+```bash
+# Crear package.json básico
+npm init -y
+
+# Instalar Vite
+npm install --save-dev vite
+
+# Ejecutar servidor
+npm run dev
+```
+
+## Lista de Verificación
+
+| Elemento | Estado | Descripción |
+|----------|----|-----------  |
+| Servidor HTTPS | ☐ | Servidor corriendo con certificado SSL |
+| Componente carga | ☐ | Elemento aparece en DOM |
+| Modelos se precargan | ☐ | Modelos de IA se descargan |
+| Detección de documentos | ☐ | Detecta documentos automáticamente |
+| Captura frente/reverso | ☐ | Captura ambos lados del documento |
+| Imágenes se generan | ☐ | Devuelve imágenes en base64 |
+
+## Proceso de Prueba
+
+### Paso 1: Preparar el archivo
+1. Copia el código HTML completo del Paso 2 en un archivo llamado `index.html`
+2. Guárdalo en una carpeta vacía
+
+### Paso 2: Levantar servidor
+1. Abre terminal en la carpeta donde guardaste `index.html`
+2. Ejecuta uno de los métodos anteriores
+3. Acepta el certificado autofirmado si aparece advertencia de seguridad
+
+### Paso 3: Preparar Documento
+1. Tener un documento de identidad listo (INE, pasaporte, licencia)
+2. Buena iluminación en el área de captura
+3. Superficie plana para colocar el documento
+
+### Paso 4: Probar Captura
+1. Precargar modelos haciendo clic en "Precargar Modelos"
+2. Iniciar captura con el botón "Iniciar Captura"
+3. Posicionar documento dentro del marco de detección
+4. Esperar captura automática del frente de documento
+5. Voltear documento cuando se solicite
+6. Esperar captura automática del reverso
+7. Verificar resultados en la sección de imágenes capturadas
+
+### Validar Calidad
+
+| Aspecto | ¿Qué verificar? | Estado |
+|---------|-----------------|-----|
+| Nitidez | Texto legible en las imágenes | ☐ |
+| Alineación | Documento centrado y recto | ☐ |
+| Iluminación | Sin sombras o reflejos | ☐ |
+| Completitud | Documento completo visible | ☐ |
+| Resolución | Imágenes de alta calidad | ☐ |
+
+---
+
+# Solución de Problemas Comunes
+
+## Problemas Frecuentes y Soluciones
+
+### Error: "Modelos no se cargan"
+
+| Causa Posible | Solución |
+|---------------|----------|
+| Conexión lenta | Esperar más tiempo o mejorar conexión |
+| Bloqueador de anuncios activo | Desactivar bloqueadores para el sitio |
+| Memoria insuficiente | Cerrar otras pestañas/aplicaciones |
+| Cache corrupto | Limpiar cache del navegador |
+
+### Error: "Documento no se detecta"
+
+```javascript
+// Debugging de detección
+function debugDocumentDetection() {
+    const jaakStamps = document.querySelector('jaak-stamps');
+
+    console.log('Configuración actual:', {
+        maskSize: jaakStamps.getAttribute('mask-size'),
+        alignmentTolerance: jaakStamps.getAttribute('alignment-tolerance'),
+        debug: jaakStamps.getAttribute('debug')
+    });
+
+    jaakStamps.setAttribute('debug', 'true');
+}
+```
+
+**Soluciones:**
+
+* Mejorar iluminación: usar luz natural o lámpara
+* Ajustar tolerancia: aumentar `alignment-tolerance` a 20-25
+* Verificar tamaño: reducir `mask-size` a 80-85
+* Limpiar cámara: limpiar lente de la cámara
+* Probar otro navegador: Chrome funciona mejor
+
+### Error: "Proceso muy lento"
+
+| Problema | Diagnóstico | Solución |
+|----------|-------------|----------|
+| Modelos se descargan cada vez | No se precargan | Usar `preloadModel()` |
+| Dispositivo lento | CPU/RAM limitada | Cerrar otras aplicaciones |
+| Resolución muy alta | Cámara 4K/HD | Reducir resolución de cámara |
+| Red lenta | Ancho de banda bajo | Usar conexión más rápida |
+
+---
+
+# Referencia Completa
+
+## Métodos Públicos
+
+| Método | Parámetros | Retorno | Descripción | Ejemplo |
+|--------|------------|---------|-------------|---------|
+| **preloadModel()** | void | `Promise<{success, error?}>` | Precarga modelos de IA | `await jaakStamps.preloadModel()` |
+| **startCapture()** | void | `Promise<void>` | Inicia proceso de captura | `await jaakStamps.startCapture()` |
+| **resetCapture()** | void | `Promise<void>` | Reinicia el proceso | `await jaakStamps.resetCapture()` |
+| **getCapturedImages()** | void | `Promise<{front, back, metadata}>` | Obtiene imágenes capturadas | `await jaakStamps.getCapturedImages()` |
+| **isProcessCompleted()** | void | `Promise<boolean>` | Verifica si el proceso terminó | `await jaakStamps.isProcessCompleted()` |
+
+## Eventos Completos
+
+| Evento | Datos (event.detail) | Cuándo se dispara |
+|--------|---------------------|------------------|
+| **isReady** | `boolean` | Componente listo para usar |
+| **modelsLoaded** | `{success: boolean, loadTime?: number}` | Modelos de IA cargados |
+| **captureCompleted** | `{front, back, metadata}` | Captura de ambos lados completada |
+| **documentDetected** | `{side: 'front'\|'back', confidence: number}` | Documento detectado en frame |
+| **captureProgress** | `{step: string, progress: number}` | Progreso del proceso |
+| **error** | `{message: string, code?: string}` | Error en cualquier operación |
+
+## Propiedades Avanzadas
+
+| Propiedad | Tipo | Rango | Descripción | Recomendación |
+|-----------|------|-------|-------------|---------------|
+| **mask-size** | number | 50-100 | Tamaño del área de detección (%) | 85-95 para documentos |
+| **alignment-tolerance** | number | 5-30 | Tolerancia de alineación (px) | 10-20 para precisión |
+| **crop-margin** | number | 10-50 | Margen de recorte (px) | 20-30 estándar |
+| **capture-delay** | number | 500-5000 | Delay antes de captura (ms) | 1500-2000 para estabilidad |
+
+---
+
+# Configuración Avanzada
+
+## Personalización Visual
+
+```css
+/* Personalizar la apariencia del componente */
+jaak-stamps {
+    --primary-color: #2196f3;
+    --secondary-color: #ffffff;
+    --success-color: #4caf50;
+    --error-color: #f44336;
+    --detection-frame-color: #2196f3;
+    --background-overlay: rgba(0,0,0,0.7);
+}
+
+/* Personalizar el marco de detección */
+jaak-stamps::part(detection-frame) {
+    border: 3px solid var(--detection-frame-color);
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(33, 150, 243, 0.3);
+}
+
+/* Personalizar instrucciones */
+jaak-stamps::part(instructions) {
+    background: var(--primary-color);
+    color: var(--secondary-color);
+    border-radius: 8px;
+    padding: 15px;
+    font-size: 16px;
+}
+```
+
+## Configuración Programática
+
+```javascript
+// Configuración avanzada via JavaScript
+const jaakStamps = document.querySelector('jaak-stamps');
+
+async function setupAdvancedConfig() {
+    const isMobile = /Android|iPhone|iPad/.test(navigator.userAgent);
+
+    if (isMobile) {
+        jaakStamps.setAttribute('mask-size', '85');
+        jaakStamps.setAttribute('capture-delay', '2000');
+        jaakStamps.setAttribute('alignment-tolerance', '20');
+    } else {
+        jaakStamps.setAttribute('mask-size', '90');
+        jaakStamps.setAttribute('capture-delay', '1500');
+        jaakStamps.setAttribute('alignment-tolerance', '15');
+    }
+}
+
+function adjustForNetworkSpeed() {
+    if (navigator.connection) {
+        const effectiveType = navigator.connection.effectiveType;
+        if (effectiveType === 'slow-2g' || effectiveType === '2g') {
+            jaakStamps.setAttribute('mask-size', '80');
+            jaakStamps.setAttribute('crop-margin', '15');
+        }
+    }
+}
+```
+
+---
+
+# Casos de Uso Avanzados
+
+## Integración con Backend
+
+```javascript
+// Envío automático al servidor tras captura
+jaakStamps.addEventListener('captureCompleted', async (event) => {
+    const images = event.detail;
+
+    try {
+        const formData = new FormData();
+
+        if (images.front) {
+            const frontBlob = dataURLtoBlob(images.front.fullFrame);
+            formData.append('documentFront', frontBlob, 'document_front.jpg');
+
+            if (images.front.croppedDocument) {
+                const frontCroppedBlob = dataURLtoBlob(images.front.croppedDocument);
+                formData.append('documentFrontCropped', frontCroppedBlob, 'document_front_cropped.jpg');
+            }
+        }
+
+        if (images.back) {
+            const backBlob = dataURLtoBlob(images.back.fullFrame);
+            formData.append('documentBack', backBlob, 'document_back.jpg');
+
+            if (images.back.croppedDocument) {
+                const backCroppedBlob = dataURLtoBlob(images.back.croppedDocument);
+                formData.append('documentBackCropped', backCroppedBlob, 'document_back_cropped.jpg');
+            }
+        }
+
+        formData.append('metadata', JSON.stringify(images.metadata));
+        formData.append('sessionId', getCurrentSessionId());
+        formData.append('userId', getCurrentUserId());
+
+        const response = await fetch('/api/documents/upload', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + getAuthToken(),
+                'X-Session-ID': getCurrentSessionId()
+            },
+            body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+            showSuccessMessage('Documentos enviados exitosamente');
+            if (result.extractedData) displayExtractedData(result.extractedData);
+        } else {
+            showErrorMessage(`Error del servidor: ${result.message}`);
+        }
+
+    } catch (error) {
+        console.error('Error enviando documentos:', error);
+        showErrorMessage('Error de conexión con el servidor');
+    }
+});
+
+// Función auxiliar para convertir dataURL a Blob
+function dataURLtoBlob(dataURL) {
+    const arr = dataURL.split(',');
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([u8arr], { type: mime });
+}
+```
+
+## Analytics y Métricas
+
+```javascript
+class DocumentCaptureAnalytics {
+    constructor() {
+        this.sessionId = this.generateSessionId();
+        this.startTime = Date.now();
+        this.events = [];
+    }
+
+    generateSessionId() {
+        return 'doc_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+    }
+
+    trackEvent(eventName, data = {}) {
+        const event = {
+            sessionId: this.sessionId,
+            eventName: eventName,
+            timestamp: Date.now(),
+            data: data
+        };
+
+        this.events.push(event);
+
+        if (window.gtag) {
+            window.gtag('event', eventName, {
+                custom_parameter_1: this.sessionId,
+                custom_parameter_2: JSON.stringify(data)
+            });
+        }
+    }
+
+    trackDocumentCaptureStarted() {
+        this.trackEvent('document_capture_started', {
+            userAgent: navigator.userAgent,
+            viewport: `${window.innerWidth}x${window.innerHeight}`
+        });
+    }
+
+    trackDocumentDetected(side, confidence) {
+        this.trackEvent('document_detected', {
+            side: side,
+            confidence: confidence,
+            timeFromStart: Date.now() - this.startTime
+        });
+    }
+
+    trackCaptureCompleted(images) {
+        this.trackEvent('capture_completed', {
+            totalTime: Date.now() - this.startTime,
+            hasFront: !!images.front,
+            hasBack: !!images.back,
+            frontConfidence: images.front?.confidence,
+            backConfidence: images.back?.confidence,
+            averageConfidence: images.metadata?.averageConfidence
+        });
+    }
+
+    trackError(error) {
+        this.trackEvent('capture_error', {
+            errorMessage: error.message,
+            errorCode: error.code,
+            timeFromStart: Date.now() - this.startTime
+        });
+    }
+}
+
+const analytics = new DocumentCaptureAnalytics();
+
+jaakStamps.addEventListener('captureStarted', () => analytics.trackDocumentCaptureStarted());
+jaakStamps.addEventListener('documentDetected', (e) => analytics.trackDocumentDetected(e.detail.side, e.detail.confidence));
+jaakStamps.addEventListener('captureCompleted', (e) => analytics.trackCaptureCompleted(e.detail));
+jaakStamps.addEventListener('error', (e) => analytics.trackError(e.detail));
+```
+
+---
+
+# Compatibilidad y Dispositivos
+
+## Optimización por Dispositivo
+
+```javascript
+class DeviceOptimizer {
+    static detectDevice() {
+        const ua = navigator.userAgent;
+        return {
+            isMobile: /Android|iPhone|iPad|iPod/.test(ua),
+            isTablet: /iPad|Android.*Tablet/.test(ua),
+            isIOS: /iPhone|iPad|iPod/.test(ua),
+            isAndroid: /Android/.test(ua),
+            isLowEnd: navigator.hardwareConcurrency <= 2 || navigator.deviceMemory <= 2
+        };
+    }
+
+    static optimizeForDevice(jaakStamps) {
+        const device = this.detectDevice();
+
+        if (device.isMobile) {
+            jaakStamps.setAttribute('mask-size', '85');
+            jaakStamps.setAttribute('capture-delay', '2000');
+            jaakStamps.setAttribute('alignment-tolerance', '20');
+        }
+
+        if (device.isLowEnd) {
+            jaakStamps.setAttribute('mask-size', '80');
+            jaakStamps.setAttribute('crop-margin', '15');
+            jaakStamps.setAttribute('capture-delay', '2500');
+        }
+
+        if (device.isIOS) {
+            jaakStamps.setAttribute('preferred-camera', 'back');
+        }
+    }
+}
+
+DeviceOptimizer.optimizeForDevice(jaakStamps);
+```
+
+---
+
+# ¿Necesitas Ayuda?
+
+## Cuándo contactar soporte
+
+* Problemas de rendimiento con modelos de IA
+* Documentos específicos que no se detectan correctamente
+* Integración con sistemas de validación de documentos
+* Necesidades de personalización avanzada del flujo
+
+## Información para soporte
+
+* Descripción del problema: qué documento intentas capturar vs qué sucede
+* Configuración del componente: valores de propiedades usadas
+* Tipo de documento: INE, documento de identificación, pasaporte, licencia, etc.
+* Condiciones de captura: iluminación, superficie, ángulo
+* Logs de la consola: screenshots de errores y warnings
+* Dispositivo y navegador: modelo, OS, versión
+
+## Debug Avanzado
+
+```javascript
+const DocumentDebugger = {
+    enableVerboseLogging() {
+        const jaakStamps = document.querySelector('jaak-stamps');
+        jaakStamps.setAttribute('debug', 'true');
+
+        ['isReady', 'modelsLoaded', 'documentDetected', 'captureCompleted', 'error'].forEach(eventName => {
+            jaakStamps.addEventListener(eventName, (event) => {
+                console.log(`[STAMPS-DEBUG] ${eventName}:`, event.detail);
+            });
+        });
+    },
+
+    async testCameraAndModels() {
+        console.log('=== PRUEBA DE COMPATIBILIDAD ===');
+
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            console.log('Cámara: OK');
+            stream.getTracks().forEach(track => track.stop());
+        } catch (error) {
+            console.error('Cámara:', error);
+        }
+
+        console.log('WebComponents:', 'customElements' in window ? 'OK' : 'NO');
+        console.log('WebAssembly:', 'WebAssembly' in window ? 'OK' : 'NO');
+        console.log('OffscreenCanvas:', 'OffscreenCanvas' in window ? 'OK' : 'NO');
+
+        console.log('Hardware Concurrency:', navigator.hardwareConcurrency || 'No disponible');
+        console.log('Device Memory:', navigator.deviceMemory || 'No disponible');
+        console.log('Connection:', navigator.connection?.effectiveType || 'No disponible');
+    },
+
+    monitorPerformance() {
+        let startTime = performance.now();
+
+        jaakStamps.addEventListener('modelsLoaded', () => {
+            const loadTime = performance.now() - startTime;
+            console.log(`Tiempo de carga de modelos: ${loadTime.toFixed(2)}ms`);
+        });
+
+        jaakStamps.addEventListener('captureCompleted', () => {
+            const totalTime = performance.now() - startTime;
+            console.log(`Tiempo total de proceso: ${totalTime.toFixed(2)}ms`);
+        });
+    }
+};
+
+DocumentDebugger.enableVerboseLogging();
+DocumentDebugger.testCameraAndModels();
+DocumentDebugger.monitorPerformance();
+```
+
+---
+
+# Optimización y Mejores Prácticas
+
+## Rendimiento
+
+### Precarga de Modelos
+
+```javascript
+// Mejor práctica: Precargar modelos al inicio de la sesión
+async function initializeSession() {
+    const jaakStamps = document.querySelector('jaak-stamps');
+
+    showLoadingIndicator('Preparando sistema de captura...');
+
+    try {
+        const result = await jaakStamps.preloadModel();
+
+        if (result.success) {
+            hideLoadingIndicator();
+            enableCaptureControls();
+        } else {
+            showError('Error cargando sistema: ' + result.error);
+        }
+    } catch (error) {
+        showError('Error de inicialización: ' + error.message);
+    }
+}
+
+window.addEventListener('load', initializeSession);
+```
+
+### Gestión de Memoria
+
+```javascript
+class DocumentMemoryManager {
+    constructor() {
+        this.capturedImages = new Map();
+        this.maxStoredCaptures = 3;
+    }
+
+    storeCapture(sessionId, images) {
+        if (this.capturedImages.size >= this.maxStoredCaptures) {
+            const oldestKey = this.capturedImages.keys().next().value;
+            this.cleanupCapture(oldestKey);
+            this.capturedImages.delete(oldestKey);
+        }
+
+        this.capturedImages.set(sessionId, images);
+    }
+
+    cleanupCapture(sessionId) {
+        const images = this.capturedImages.get(sessionId);
+        if (images) {
+            if (images.front) {
+                images.front.fullFrame = null;
+                images.front.croppedDocument = null;
+            }
+            if (images.back) {
+                images.back.fullFrame = null;
+                images.back.croppedDocument = null;
+            }
+        }
+    }
+
+    cleanup() {
+        this.capturedImages.forEach((_, sessionId) => {
+            this.cleanupCapture(sessionId);
+        });
+        this.capturedImages.clear();
+    }
+}
+
+const memoryManager = new DocumentMemoryManager();
+window.addEventListener('beforeunload', () => memoryManager.cleanup());
+```
+
+---
+
+# Conclusión
+
+## Lo que has aprendido
+
+Tras completar este manual, ahora sabes cómo:
+
+* **Instalar y configurar** el componente @jaak.ai/stamps
+* **Implementar captura automatizada** de documentos en HTML, React y Angular
+* **Manejar eventos y resultados** del proceso de captura
+* **Optimizar rendimiento** y gestionar memoria
+* **Solucionar problemas comunes** de detección y captura
+* **Integrar con backends** para procesamiento de documentos
+
+## Próximos Pasos
+
+1. **Personaliza la configuración** según tus tipos de documentos
+2. **Implementa validación de calidad** de las imágenes capturadas
+3. **Añade extracción de datos** con OCR o servicios de terceros
+4. **Optimiza para dispositivos específicos** de tu audiencia
+5. **Implementa analytics** para monitorear el rendimiento
+
+---
+
+Has implementado exitosamente el componente de captura automatizada de documentos JAAK Stamps. Tu aplicación ahora puede capturar documentos de identidad con alta precisión y calidad.

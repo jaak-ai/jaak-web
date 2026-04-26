@@ -1,0 +1,254 @@
+---
+title: Paso 5 - OCR de documento vía API
+description: Extracción y organización de la información del documento mediante OCR.
+category: api
+order: 6
+---
+
+El objetivo de la extracción de datos, es capturar y organizar la información del documento para facilitar su análisis y almacenamiento. Esta información se utilizará posteriormente en los siguientes pasos como la verificación de la titularidad del documento y la búsqueda de datos en listas negras.
+
+Para asegurar la coherencia y eficiencia del proceso, es esencial que uses las mismas imágenes del documento tanto en el paso de verificación del documento como en este paso. Recuerda que la codificación de la imagen a Base64 es crucial antes de enviarlas al servicio para garantizar su correcta transmisión y procesamiento.
+
+Realiza la siguiente llamada API enviando las imágenes o imagen del documento.
+
+**URL**
+
+```
+POST https://api.sandbox.jaak.ai/api/v4/document/extract
+```
+
+**Header**
+
+```
+Authorization: Bearer token-session-kyc
+```
+
+| Campo         | Tipo   | Requerido | Descripción                                                                                                  |
+| :------------ | :----- | :-------- | :----------------------------------------------------------------------------------------------------------- |
+| Authorization | string | Sí        | En esta cabecera se debe enviar el Token de Sesión KYC que se ha obtenido del intercambiado con de Short Key |
+
+**Request**
+
+```json
+{
+  "imageFront": String,
+  "imageBack": String,
+  "documentSessionSelected": {
+    "country": String
+  }
+}
+```
+
+| Campo      | Tipo   | Requerido | Descripción                                                                                                                 |
+| :--------- | :----- | :-------- | :-------------------------------------------------------------------------------------------------------------------------- |
+| imageFront | string | Sí        | Imagen del documento en formato Base64. Es obligatorio proporcionar esta imagen para la verificación.                       |
+| imageBack  | string | opcional  | Imagen de la parte trasera del documento en formato Base64. Debe incluirse si el documento tiene una contraparte posterior. |
+
+**Response**
+
+```json
+{
+    "eventId": String,
+    "requestId": String,
+    "status": String,
+ 		"processingTime": String,
+     "state": {
+        "message": String,
+        "documentCompleteSides": Boolean
+    },
+    "content": {
+        "data": {
+            "personal": {
+                "firstName": String,
+                "secondName": String,
+                "surname": String,
+                "motherSurname": String,
+                "fullName": String,
+                "sex": String,
+                "dateOfBirth": String,
+                "face": String,
+                "placeOfBirth": String,
+                "nationality": String,
+                "maritalStatus": String,
+                "extra": {
+                    "ocr": String,
+                    "registerYear": String,
+                    "rfc": String
+                }
+            },
+            "address": {
+                "fullAddress": String,
+                "postalCode": String,
+                "extra": {
+                    "street": String,
+                    "externalNumber": String,
+                    "internalNumber": String,
+                    "neighborhood": String,
+                    "city": String,
+                    "state": String
+                }
+            },
+            "document": {
+                "type": String,
+                "side": String,
+                "country": {
+                    "name": String,
+                    "isoAlpha3Code": String,
+                    "isoAlpha2Code": String,
+                    "icaoCode": String
+                },
+                "number": String,
+                "personalIdNumber": String,
+                "additionalNumber": String,
+                "dateOfIssue": String,
+                "expiration": {
+                    "date": String,
+                    "isPermanent": Boolean
+                },
+                "issuingAuthority": String,
+                "extra": {}
+            }
+        }
+    }
+}
+```
+
+| Campo          | Tipo   | Descripción                                                  |
+| :------------- | :----- | :----------------------------------------------------------- |
+| eventId        | string | ID para trazabilidad de la petición.                         |
+| requestId      | string | ID para trazabilidad de la petición.                         |
+| status         | string | Estado del procesamiento                                     |
+| processingTime | string | Tiempo de procesamiento de la verificación en milisegundos.  |
+| state          | Object | Estado detallado del procesamiento de extracción             |
+| content        | Object | Contiene la información del contenido extraído del documento |
+
+Objeto *state*
+
+| Campo                 | Tipo    | Descripción                                                                                       |
+| :-------------------- | :------ | :------------------------------------------------------------------------------------------------ |
+| documentCompleteSides | boolean | Indica si el documento ha sido capturado completamente por todos los lados requeridos.            |
+| message               | string  | Proporciona detalles adicionales en caso de errores o discrepancias con los resultados esperados. |
+
+Objeto *content*
+
+| Campo | Tipo   | Descripción                                                                 |
+| :---- | :----- | :-------------------------------------------------------------------------- |
+| data  | Object | Contiene la información del usuario extraída del documento (ver sub-tablas) |
+
+Objeto *content.data*
+
+| Campo    | Tipo   | Descripción                                                    |
+| :------- | :----- | :------------------------------------------------------------- |
+| personal | Objeto | Contiene la información de la persona extraída del documento   |
+| address  | Objeto | Contiene la información de la dirección extraída del documento |
+| document | Objeto | Contiene la información del documento extraída                 |
+
+Objeto *content.data.personal*
+
+| Campo              | Tipo   | Descripción                                                                                                                               |
+| :----------------- | :----- | :---------------------------------------------------------------------------------------------------------------------------------------- |
+| firstName          | string | Primer nombre del usuario **Se usa para el servicio de listas negras**                                                                    |
+| secondName         | string | Segundo nombre del usuario (puede estar vacío).**Se usa para el servicio de listas negras**                                               |
+| surname            | string | Apellido paterno del usuario.**Se usa para el servicio de listas negras**                                                                 |
+| motherSurname      | string | Apellido materno del usuario.**Se usa para el servicio de listas negras**                                                                 |
+| fullName           | string | Nombre completo del usuario.                                                                                                              |
+| sex                | string | Género del usuario (H para hombre, M para mujer).                                                                                         |
+| dateOfBirth        | string | Fecha de nacimiento en formato DD/MM/AAAA.                                                                                                |
+| face               | string | Imagen de la cara del usuario en formato base64. **Usa esta imagen para el servicio de One To One**                                       |
+| placeOfBirth       | string | Lugar de nacimiento (puede estar vacío).                                                                                                  |
+| nationality        | string | Nacionalidad del usuario.**Se usa para el servicio de listas negras**                                                                     |
+| maritalStatus      | string | Estado civil (puede estar vacío).                                                                                                         |
+| extra              | Object | Información adicional obtenida del documento                                                                                              |
+| extra.ocr          | string | Número OCR del documento(puede estar vacío).**Se usa para el servicio de listas negras**                                                  |
+| extra.registerYear | string | Año de registro del documento(puede estar vacío).                                                                                         |
+| extra.rfc          | string | Registro Federal de Contribuyentes (RFC) del usuario(puede estar vacío)(Documentos mexicanos)**Se usa para el servicio de listas negras** |
+
+Objeto *content.data.address*
+
+| Campo                | Tipo   | Descripción                                        |
+| :------------------- | :----- | :------------------------------------------------- |
+| fullAddress          | string | Dirección completa del usuario en formato texto.   |
+| postalCode           | string | Código postal del domicilio.                       |
+| extra.street         | string | Calle del domicilio.                               |
+| extra.externalNumber | string | Número exterior del domicilio.                     |
+| extra.internalNumber | string | Número interior del domicilio (puede estar vacío). |
+| extra.neighborhood   | string | Género del usuario (H para hombre, M para mujer).  |
+| extra.city           | string | Ciudad de residencia.                              |
+| extra.state          | string | Entidad estatal de residencia.                     |
+
+Objeto *content.data.document*
+
+| Campo            | Tipo   | Descripción                                                                                                      |
+| :--------------- | :----- | :--------------------------------------------------------------------------------------------------------------- |
+| type             | string | Tipo de documento. [Ver lista](https://docs.jaak.ai/v2.0/docs/lista-de-tipo-de-identificaciones)                 |
+| side             | string | Lados del documento procesados (BOTH para ambos lados).                                                          |
+| country          | Object | Información del país emisor                                                                                      |
+| number           | string | Número del documento de identidad.                                                                               |
+| personalIdNumber | string | Número de identificación personal asociado al usuario.**Se usa para el servicio de listas negras**               |
+| additionalNumber | string | Número de identificación adicional del documento(puede estar vacío).**Se usa para el servicio de listas negras** |
+| dateOfIssue      | string | Fecha de emisión del documento.                                                                                  |
+| expiration       | Object | Datos de expiración del documento                                                                                |
+| issuingAuthority | string | Autoridad emisora del documento (puede estar vacío).                                                             |
+| extra            | Object | Información adicional obtenida del documento(puede estar vacía).                                                 |
+
+Objeto *content.data.document.country*
+
+| Campo         | Tipo   | Descripción                 |
+| :------------ | :----- | :-------------------------- |
+| name          | string | Nombre del país emisor.     |
+| isoAlpha3Code | string | Código ISO Alpha-3 del país |
+| isoAlpha2Code | string | Código ISO Alpha-2 del país |
+| icaoCode      | string | Código ICAO del documento   |
+
+Objeto *content.data.document.expiration*
+
+| Campo       | Tipo    | Descripción                          |
+| :---------- | :------ | :----------------------------------- |
+| date        | string  | Fecha de vencimiento del documento.  |
+| isPermanent | boolean | Indica si el documento es permanente |
+
+El objeto *state*, ubicado dentro del *Response*, muestra el estado de la extracción del documento. Este objeto incluye un grupo de propiedades que indican si el documento cumple o no con los requisitos de la extracción.
+
+**JAAK recomienda que todas las propiedades de extracción se completen con éxito para una mayor seguridad**, aunque esto no es obligatorio por lo tanto puedes seleccionar solo un conjunto de propiedades según sus necesidades. Algunos ejemplos incluyen:
+
+* Pedir la captura del lado faltante o contraparte del documento en caso de ser requerido.
+* Solicitar una nueva captura si existe un error dentro la extracción de los datos del documento.
+
+De los datos extraídos del documento en esta etapa, hay algunos que serán utilizados en los siguientes pasos del proceso. En la sección Verificación en listas negras los datos que se necesitan son:
+
+Verificación del servicio **INE** en listas negras
+
+* *content.data.document.additionalNumber* (CIC)
+* *content.data.personal.extra.ocr* (OCR)
+
+Verificación del servicio **INTERPOL** en listas negras
+
+* *content.data.personal.name*
+* *content.data.personal.secondName*
+* *content.data.personal.sureName*
+* *content.data.personal.motherSurname*
+
+Verificación del servicio **OFAC** en listas negras
+
+* *content.data.personal.name*
+* *content.data.personal.secondName*
+* *content.data.personal.sureName*
+* *content.data.personal.motherSurname*
+
+Verificación del servicio **RENAPO** en listas negras
+
+* *content.data.document.personalIdNumber* (CURP)
+
+Verificación del servicio **SAT** en listas negras
+
+* *content.data.personal.name*
+* *content.data.personal.secondName*
+* *content.data.personal.sureName*
+* *content.data.personal.motherSurname*
+* *content.data.personal.extra.rfc*
+
+En la sección Verificación de la titularidad del documento, el dato necesario obtenido de esta extracción es:
+
+* *content.data.personal.face*
+
+Una vez extraídos e identificados los datos del documento los utilizaremos en los siguientes pasos.

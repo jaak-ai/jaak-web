@@ -1,0 +1,49 @@
+---
+title: JAAK KYC vía API
+description: Integración del flujo KYC mediante llamadas REST a la API de JAAK.
+category: concepto
+order: 0
+---
+
+En este apartado explicaremos cómo hacer una integración de **JAAK KYC para API**. Antes de comenzar es necesario haber consultado la sección [**JAAK KYC**](/docs/verificar-identidad) ya que será necesario contar con un **Short Key**.
+
+```mermaid
+---
+config:
+  look: handDrawn
+---
+sequenceDiagram
+    participant Usuario a verficar
+    participant Frontend
+    participant JAAK SDK Webs
+    participant Backend
+    participant JAAK API
+    Usuario a verficar->>Frontend: Inicia proceso de verificación.
+    Frontend->>Backend: Inicio flujo de sesión KYC
+    Backend->>JAAK API: Creación de sesión KYC
+    JAAK API-->>Backend: Regresa un shortKey
+    Backend->>JAAK API: Intercambio shortKey por token(accessToken)
+    JAAK API-->>Backend: Regresa un BearerToken
+    Backend->>Frontend: Regresa un BearerToken para autenticar llamdaas
+    Frontend->>JAAK SDK Webs: Carga y configura componentes JAAK.
+    JAAK SDK Webs-->>Usuario a verificar: Guía para captura óptima.
+    Usuario a verficar->>JAAK SDK Webs: Realiza captura (documento/rostro).
+    JAAK SDK Webs->>Frontend: Emite `fileResult` con datos en Base64.
+    Frontend->>Backend:[BearerToken] Envía datos capturados.
+    Backend->>JAAK API: [BearerToken] Peticiones a Servicios (OCR, Document Verify, Liveness, OTO).
+    JAAK API-->>Backend: Respuestas de los servicios de validación.
+    Backend->>Frontend: Respuestas de retroalimentacion de los productos de JAAK.
+    Frontend->>Backend: Finalización de flujo KYC.
+    Backend->>JAAK API: Petición al servicio de finalización de sesión
+    Note over Backend:  Se envían detalles de sesión KYC(Webhook o Consulta API).
+    Backend->>Frontend: Notifica resultado de proceso concluido.
+    Frontend->>Usuario a verficar: Fin del flujo de verificación.
+```
+
+> Este diagrama ilustra un flujo de verificación de identidad (KYC) integrado mediante API. A través de un intercambio de claves, se obtiene un `BearerToken` que autoriza y agrupa las llamadas por sesión KYC (shortKey). En el frontend, los componentes del JAAK SDK se encargan de guiar al usuario para una captura óptima de sus documentos y datos biométricos, emitiendo los resultados en formato Base64. Finalmente, el backend recibe esta información y orquesta las llamadas a los productos de JAAK (como OCR, Liveness y verificación de documentos).
+
+## Requisitos
+
+Todas las llamadas API que realizaremos a continuación será mediante la arquitectura [REST](https://es.wikipedia.org/wiki/Transferencia_de_Estado_Representacional) (Representational State Transfer), con el estándar web [HTTP](https://es.wikipedia.org/wiki/Protocolo_de_transferencia_de_hipertexto) (HyperText Transfer Protocol) y firmando la comunicación con el formato [JSON](https://en.wikipedia.org/wiki/JSON) (JavaScript Object Notation).
+
+Recomendamos tener un conocimiento por lo menos básico de estos 3 conceptos para poder continuar con esta guía.

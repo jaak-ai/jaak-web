@@ -1,0 +1,307 @@
+---
+title: Document OCR
+description: Reconocimiento óptico de caracteres para extraer datos estructurados de documentos de identidad oficiales.
+category: concepto
+order: 2
+---
+
+Tiempo estimado de lectura: 20-25 minutos
+
+## ¿Qué aprenderás en esta guía?
+
+Este manual te enseñará a utilizar el sistema de Reconocimiento Óptico de Caracteres (Document OCR) de JAAK. Con nuestro OCR, podrás extraer automáticamente información de documentos de identidad (INEs, pasaportes, licencias, etc.), verificar su autenticidad y almacenar las imágenes de forma segura. Esto es fundamental para tus procesos de alta de usuarios (onboarding), cumplimiento normativo KYC y prevención de suplantación de identidad.
+
+No necesitas conocimientos técnicos previos – solo sigue los pasos.
+
+## Antes de Empezar - Lista de Verificación
+
+Asegúrate de tener estos datos listos:
+
+* **API Key (Token Bearer):** Tu clave de autenticación válida proporcionada por JAAK. Es esencial para acceder a nuestros servicios.
+* **Imágenes de documentos:** Fotos nítidas del frente y, si aplica, del reverso del documento, en formato Base64.
+* **Conocimientos básicos de APIs REST:** Familiaridad con cómo se realizan solicitudes HTTP (POST, GET) y se procesan respuestas JSON.
+
+## Índice de Contenidos
+
+| Sección | Qué aprenderás |
+| :--- | :--- |
+| 1. ¿Qué es el Producto OCR de JAAK? | Entender el propósito y alcance de nuestro servicio de OCR |
+| 2. Funcionalidades Clave | Conocer las principales capacidades para extracción, verificación y almacenamiento |
+| 3. Integración con la API | Guía sobre cómo realizar operaciones de OCR |
+| 4. Monitoreo de Eventos | Cómo consultar el historial y el estado de los procesamientos de documentos |
+| 5. Solución de Problemas Comunes | Identificar y resolver los errores más frecuentes |
+| 6. ¿Necesitas Ayuda? | Cuándo y cómo contactar a nuestro equipo de soporte |
+| 7. Glosario de Términos | Definiciones de términos clave relacionados con OCR |
+
+## 1. ¿Qué es el Producto OCR de JAAK?
+
+El producto OCR de JAAK utiliza tecnología avanzada de reconocimiento óptico de caracteres para leer y extraer información estructurada de documentos de identidad oficiales como:
+
+* Credenciales para Votar (INE/IFE de México)
+* Pasaportes
+* Cédulas de Ciudadanía (Colombia)
+* Documentos Nacionales de Identidad (Perú)
+* Licencias de conducir
+* Y otros documentos oficiales
+
+Nuestro servicio no solo extrae los datos, sino que también realiza **validaciones de seguridad y autenticidad** para asegurar que el documento es legítimo y no ha sido alterado.
+
+### Casos de uso principales:
+
+* **Onboarding Digital:** Agiliza el proceso de registro de nuevos clientes al extraer automáticamente sus datos y reducir errores manuales.
+* **Prevención de Fraude:** Detecta documentos falsificados, manipulados o alterados, minimizando el riesgo de suplantación de identidad.
+* **Cumplimiento Normativo (KYC/AML):** Facilita el cumplimiento de las regulaciones al verificar la identidad de los usuarios y almacenar la evidencia del proceso.
+* **Procesamiento de Formularios:** Convierte documentos físicos en datos digitales para la automatización de procesos internos.
+
+## 2. Funcionalidades Clave
+
+Nuestro producto OCR ofrece un conjunto robusto de capacidades:
+
+* **Extracción Automática de Datos (OCR):** Lee y estructura información personal (nombre, fecha de nacimiento, sexo, nacionalidad), de dirección y del documento (tipo, número, fecha de emisión/expiración).
+* **Detección de Tipo de Documento y País:** Identifica automáticamente el tipo de documento (INE, Pasaporte, etc.) y su país de origen.
+* **Extracción de Fotografía Facial:** Captura la fotografía del rostro presente en el documento para su uso en comparaciones biométricas One-to-One (OTO).
+* **Validación de Autenticidad (Liveness del Documento):** Evalúa características de seguridad del documento para determinar si es físico y auténtico, previniendo el uso de fotocopias o pantallas.
+* **Verificación de Edad y Expiración:** Comprueba si el documento está vencido y si la edad del titular cumple con tus requisitos configurados.
+* **Almacenamiento Seguro:** Ofrece la opción de guardar las imágenes de los documentos en nuestro sistema de almacenamiento seguro (Babel Storage) y obtener URLs temporales para acceso controlado.
+* **Auditoría y Monitoreo:** Registra cada evento de procesamiento de documentos, permitiéndote consultar el historial, los tiempos de respuesta y los resultados para análisis.
+
+## 3. Integración con la API
+
+La interacción con el sistema OCR de JAAK se realiza a través de llamadas a nuestra API.
+
+### 3.1 Extracción de Datos de Documentos
+
+Este es el endpoint principal para extraer información de documentos. JAAK ofrece varias versiones, siendo `v4` la más avanzada para extracción general, y `extract-both` para documentos de doble cara.
+
+#### 3.1.1 Extracción General (POST /api/v4/document/extract)
+
+Ideal para la extracción avanzada de datos de un documento, generalmente con un solo lado.
+
+* **Método:** `POST`
+* **URL Base:** `https://api.sandbox.jaak.ai/api/v4/document/extract`
+
+**Headers requeridos:**
+
+* `Authorization`: `Bearer TU_API_KEY_AQUI` (Tu clave de autenticación)
+* `Content-Type`: `application/json`
+
+**Cuerpo de la solicitud (JSON):**
+
+| Parámetro          | Tipo            | Requerido | Descripción                                                           | Ejemplo               |
+| :----------------- | :-------------- | :-------- | :-------------------------------------------------------------------- | :-------------------- |
+| `imageFront`       | `string`        | Sí        | Imagen frontal del documento codificada en Base64                     | `"iVBORw0KGgoAAA..."` |
+| `imageBack`        | `string`        | No        | Imagen posterior del documento codificada en Base64                   | `"iVBORw0KGgoAAA..."` |
+| `allowedCountries` | `array[string]` | No        | Lista de códigos ISO Alpha-3 de países permitidos para esta solicitud | `["MEX", "COL"]`      |
+
+**Respuesta Exitosa (HTTP Status: 200 OK):**
+
+La respuesta incluye un `eventId` y `requestId` para seguimiento, el `status` de la operación (`SUCCESS` o `REJECTED`), el `processingTime` en milisegundos, y el objeto `content.data` con toda la información extraída. También se incluye el objeto `state` con validaciones como `documentCompleteSides`, `documentExpired` y `ageValid`.
+
+**Ejemplo simplificado de respuesta:**
+
+```json
+{
+  "eventId": "d99fe2d2...",
+  "status": "SUCCESS",
+  "content": {
+    "data": {
+      "personal": {
+        "fullName": "Juan Carlos Hernández López",
+        "dateOfBirth": "15/01/1990",
+        "face": "base64_face_image"
+      },
+      "document": {
+        "type": "I",
+        "number": "A123456789",
+        "country": { "name": "Mexico" },
+        "expiration": { "date": "01/01/2030" }
+      }
+    }
+  },
+  "state": {
+    "documentCompleteSides": true,
+    "documentExpired": false,
+    "ageValid": true
+  }
+}
+```
+
+#### 3.1.2 Extracción de Documentos Doble Cara (POST /api/v3/document/extract-both)
+
+Específico para documentos que requieren el procesamiento de ambos lados (ej. INE mexicano).
+
+* **Método:** `POST`
+* **URL Base:** `https://api.sandbox.jaak.ai/api/v3/document/extract-both`
+
+**Cuerpo de la solicitud (JSON):**
+
+| Parámetro       | Tipo     | Requerido | Descripción                                         | Ejemplo                |
+| :-------------- | :------- | :-------- | :-------------------------------------------------- | :--------------------- |
+| `documentFront` | `string` | Sí        | Imagen frontal del documento codificada en Base64   | `"iVBORw0KGgoAAAA..."` |
+| `documentBack`  | `string` | No        | Imagen posterior del documento codificada en Base64 | `"iVBORw0KGgoAAAA..."` |
+
+La respuesta es similar a la v4, pero la estructura de los datos de entrada puede variar ligeramente al procesar la salida de un SDK como Microblink BlinkID.
+
+### 3.2 Verificación de Autenticidad de Documentos (POST /api/v3/document/verify)
+
+Este endpoint evalúa la autenticidad de un documento de identidad basándose en el análisis de sus características de seguridad y la calidad de las imágenes.
+
+* **Método:** `POST`
+* **URL Base:** `https://api.sandbox.jaak.ai/api/v3/document/verify`
+
+**Cuerpo de la solicitud (JSON):**
+
+| Parámetro          | Tipo            | Requerido | Descripción                                                      | Ejemplo               |
+| :----------------- | :-------------- | :-------- | :--------------------------------------------------------------- | :-------------------- |
+| `imageFront`       | `string`        | Sí        | Imagen frontal del documento codificada en Base64                | `"iVBORw0KGgoAAA..."` |
+| `imageBack`        | `string`        | No        | Imagen trasera del documento codificada en Base64                | `"iVBORw0KGgoAAA..."` |
+| `allowedCountries` | `array[string]` | No        | Lista de códigos ISO Alpha-3 de países permitidos                | `["MEX", "USA"]`      |
+| `dataVerification` | `boolean`       | No        | Habilita la verificación con datos gubernamentales (solo México) | `true`                |
+
+**Respuesta Exitosa (HTTP Status: 200 OK):**
+
+La `evaluation` general del documento puede ser `SUCCESS`, `WARNING` o `REJECTED`. El objeto `state` proporciona resultados booleanos de diversas validaciones como `documentCompleteSides`, `documentLiveness` (detección de documento físico), `securityFeatures` (características de seguridad), `documentValidity` y `imageQuality`.
+
+**Ejemplo simplificado de respuesta:**
+
+```json
+{
+  "eventId": "evt_123...",
+  "evaluation": "SUCCESS",
+  "document": {
+    "type": "driving_license",
+    "country": "MEX"
+  },
+  "state": {
+    "documentCompleteSides": true,
+    "documentLiveness": true,
+    "securityFeatures": true,
+    "imageQuality": true,
+    "message": "Documento verificado exitosamente"
+  }
+}
+```
+
+### 3.3 Almacenamiento Seguro de Documentos (POST /api/v3/document/store)
+
+Este endpoint te permite almacenar imágenes de documentos de forma segura en nuestro sistema de almacenamiento.
+
+* **Método:** `POST`
+* **URL Base:** `https://api.sandbox.jaak.ai/api/v3/document/store`
+
+**Cuerpo de la solicitud (JSON):**
+
+| Parámetro | Tipo     | Requerido | Descripción                                         | Ejemplo        |
+| :-------- | :------- | :-------- | :-------------------------------------------------- | :------------- |
+| `front`   | `string` | Sí        | Imagen frontal del documento codificada en Base64   | `"aW1hZ2Vu=="` |
+| `back`    | `string` | No        | Imagen posterior del documento codificada en Base64 | `"aW1hZ2Vu=="` |
+
+**Respuesta Exitosa (HTTP Status: 200 OK):**
+
+La respuesta incluye `eventId`, `requestId` y el objeto `image` que contiene las URLs seguras para acceder a las imágenes almacenadas (`image.front` y `image.back`).
+
+**Ejemplo simplificado de respuesta:**
+
+```json
+{
+  "eventId": "d99fe2d2...",
+  "image": {
+    "front": "https://storage.googleapis.com/bucket/path/to/front-image.jpg",
+    "back": "https://storage.googleapis.com/bucket/path/to/back-image.jpg"
+  }
+}
+```
+
+### 3.4 Consideraciones Generales para las Imágenes
+
+**Formato:** JPEG, PNG o BMP
+
+* **Codificación:** Todas las imágenes deben ser Base64 válidas, **sin incluir el prefijo`data:image/...;base64,`**
+* **Calidad:** Es fundamental que las imágenes sean nítidas, bien iluminadas, enfocadas y con el documento completo visible para un OCR preciso y una verificación exitosa
+
+**Tamaño:**
+
+* Para **extracción (v4):** Máximo 5MB por imagen. Resolución mínima recomendada: 600x400 píxeles
+* Para **almacenamiento (v3):** Máximo 10MB por imagen
+
+## 4. Monitoreo de Eventos
+
+Puedes consultar el historial y los detalles de todos los procesamientos de documentos realizados a través de la API.
+
+### 4.1 Consulta de Eventos (GET /api/v2/document/event)
+
+Este endpoint te permite obtener una lista paginada de todos los eventos de procesamiento de documentos.
+
+* **Método:** `GET`
+* **URL Base:** `https://api.sandbox.jaak.ai/api/v2/document/event`
+
+**Headers requeridos:**
+
+* `Authorization`: `Bearer TU_API_KEY_AQUI`
+* `Content-Type`: `application/json`
+
+**Parámetros de consulta (Query Params):**
+
+Puedes usar filtros como `limit`, `page`, `status` (`success`, `failed`, `pending`), `action` (`verify-document`, `extract-document`), `eventId` (ID único del evento), `min-process-time`, `max-process-time`, `min-created-at` y `max-created-at` (en formato RFC3339).
+
+**Ejemplo:** `GET /api/v2/document/event?limit=10&page=1&status=success&action=extract-document`
+
+**Respuesta Exitosa:**
+
+La respuesta incluye un objeto de paginación (`page`, `limit`, `totalDocs`, `totalPages`) y un array `docList` con los eventos encontrados. Cada evento detalla su `id`, `createdAt`, `action`, `status` y `processTime`.
+
+## 5. Solución de Problemas Comunes
+
+| Problema | Descripción | Solución |
+| :--- | :--- | :--- |
+| **Error 400 - Imagen Inválida** | Indicado por `errorCode: DC08` ("Invalid image format") o `DC07` ("No image provided"). La imagen Base64 está corrupta, mal codificada o falta. | 1. **Verifica codificación:** Asegúrate de que la cadena Base64 sea válida y no contenga el prefijo `data:image/...;base64,`. 2. **Formato:** Usa formatos soportados (JPG, PNG, BMP). 3. **Presencia:** Confirma que el campo de imagen (ej. `imageFront`, `front`) no esté vacío. |
+| **Error 400 - Falta Cara Trasera** | `errorCode: DC09` ("Please provide the back side"). Ocurre si el documento es de doble cara (ej. INE) y solo se envía la imagen frontal. | **Envía ambas caras:** Para documentos como INE, DNI, etc., es obligatorio enviar `imageFront` y `imageBack` (o `documentFront` y `documentBack`). |
+| **Error 400 - Documento No Soportado** | `errorCode: DC04` ("Document type not supported") o `DC17` ("Country not supported"). Ocurre si el tipo de documento o el país no están configurados o son reconocidos. | 1. **País permitido:** Revisa que el país del documento esté en tu lista `allowedCountries` o en la configuración de tu empresa. 2. **Documento oficial:** Asegúrate de que sea un documento de identidad oficial y soportado por JAAK. |
+| **Error 403 - Autenticación/Permisos** | Tu API Key es inválida, ha expirado, no tienes los permisos necesarios para el producto (Document/KYC Product). Ocasionalmente, puede indicar falta de sesión KYC activa (v3). | 1. **Verifica API Key:** Confirma que sea correcta y esté vigente. 2. **Formato:** `Authorization: Bearer TU_API_KEY_AQUI`. 3. **Productos/Roles:** Asegúrate de tener `Document Product` y `KYC Product` habilitados y tu rol adecuado. 4. **Sesión KYC (v3):** Para `/api/v3/document/extract-both` y `/api/v3/document/verify`, asegúrate de tener una sesión KYC activa y válida. |
+| **Error 400 - Calidad Insuficiente** | `errorCode: DC13` ("Image quality insufficient") o `DC15` ("Unable to extract document information"). El OCR no puede leer los datos. | 1. **Mejora la imagen:** Asegura una buena iluminación, enfoque nítido, documento completo y sin reflejos/sombras. 2. **Resolución:** Utiliza imágenes con al menos 600x400 píxeles para `v4/extract`. |
+| **Error 500 - Servidor/Timeout** | `errorCode: 0000` (error interno) o `DC31` ("Verification service unavailable"). Ocurre si el servidor interno falla o la solicitud excede el tiempo de respuesta. | 1. **Reintentos:** Implementa una lógica de reintentos con backoff exponencial. 2. **Tamaño de imagen:** Comprime imágenes grandes (máx. 5MB para `v4/extract`, 10MB para `v3/store`). 3. **Contacto soporte:** Si persiste, podría ser un problema del servicio. |
+
+## 6. ¿Necesitas Ayuda?
+
+No dudes en contactar a nuestro equipo de soporte ([soporte@jaak.ai](mailto:soporte@jaak.ai)) cuando:
+
+* Los pasos de solución de problemas no resuelven tu inconveniente después de varios intentos
+* Recibes errores no documentados o inesperados
+* Necesitas configuraciones especiales para tu caso de uso (ej. nuevos tipos de documento, umbrales personalizados)
+* Experimentas problemas de rendimiento persistentes o inconsistencias en los datos extraídos
+
+### Información a tener lista al contactar soporte:
+
+* Descripción específica del problema
+* Pasos que seguiste antes del error
+* `Event ID` o `Request ID` de las peticiones fallidas (si aplica)
+* Logs completos de error de tu lado, con marcas de tiempo (timestamps)
+* Ejemplos de imágenes problemáticas (sin datos sensibles si es posible)
+* Configuración de tu API Key y ambiente (desarrollo, sandbox, producción)
+
+## 7. Glosario de Términos
+
+| Término                  | Definición                                                                                                                           |
+| :----------------------- | :----------------------------------------------------------------------------------------------------------------------------------- |
+| **OCR**                  | Optical Character Recognition (Reconocimiento Óptico de Caracteres): Tecnología para extraer texto de imágenes                       |
+| **Base64**               | Esquema de codificación para representar datos binarios (como imágenes) en formato de texto ASCII                                    |
+| **BlinkID**              | SDK/API de Microblink, especializada en la extracción de datos de documentos de identidad                                            |
+| **KYC Session**          | Sesión activa de "Know Your Customer" (Conozca a su Cliente) requerida para ciertos procesamientos avanzados                         |
+| **MRZ**                  | Machine Readable Zone (Zona de Lectura Mecánica): Sección en documentos de viaje con caracteres especiales para lectura automatizada |
+| **Event ID**             | Identificador único generado por JAAK para cada procesamiento de documento, útil para seguimiento y auditoría                        |
+| **Request ID**           | Identificador único de la solicitud HTTP original, usado para trazabilidad                                                           |
+| **Liveness (Documento)** | Detección que verifica si un documento es físico y auténtico (no una fotocopia o pantalla)                                           |
+| **API Key**              | Clave de autenticación para acceder a los servicios de la API de JAAK                                                                |
+| **ISO Alpha-3 Code**     | Código de 3 letras que representa un país (ej., MEX para México)                                                                     |
+| **CPP Middleware**       | Customer Product Protection: Sistema interno de JAAK para validar los permisos de productos por cliente                              |
+
+## Enlaces de Referencia
+
+* Documentación API - POST /api/v4/document/extract
+* Documentación API - POST /api/v3/document/extract-both
+* Documentación API - POST /api/v3/document/verify
+* Documentación API - POST /api/v3/document/store
+* Documentación API - GET /api/v2/document/event
+* Documentación oficial de Microblink BlinkID
+* Especificación Base64 RFC 4648
+* Códigos de País ISO Alpha-3

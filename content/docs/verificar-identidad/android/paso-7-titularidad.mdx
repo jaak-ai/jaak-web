@@ -1,0 +1,171 @@
+---
+title: Paso 7 - Verificacion de titularidad documento vía Android
+description: Comparación facial 1:1 entre el bestFrame del liveness y el rostro extraído del documento para confirmar la titularidad.
+category: api
+order: 8
+---
+
+
+La etapa final requiere una comparación entre dos imágenes para verificar que la persona que realiza el proceso KYC es la titular del documento. Se comparará la imagen del obtenida (*bestFrame*) durante el paso de verificación de vida con la imagen del rostro extraída del documento (*content.data.personal.face*) durante el paso de extracción de datos.
+
+Así como en pasos anteriores, las imágenes deben estar en **Base64** antes de ser enviadas al servicio. Por lo tanto, es fundamental realizar la verificación de las imagenes para asegurar su correcta transmisión y procesamiento.
+
+**URL**
+
+```
+POST https://api.sandbox.jaak.ai/api/v2/oto/verify
+```
+
+```kotlin
+@POST("api/v2/oto/verify")
+    suspend fun otoVerifyApi(@Header("Authorization") auth: String,
+                             @Body request: OtoVerifyRequest): Response<OtoVerifyResponse>
+```
+
+**Request**
+
+```json
+{
+    "eventId": String,
+    "image1": String,
+    "image2": String
+}
+```
+
+```kotlin
+data class OtoVerifyV2Request(
+    @SerializedName("eventId") val eventId: String, //base64
+    @SerializedName("image1") val image1: String, //base64
+    @SerializedName("image2") val image2: String, //base64
+)
+```
+
+| Campo   | Tipo   | Descripción                                                                                                      |
+| :------ | :----- | :--------------------------------------------------------------------------------------------------------------- |
+| eventId | string | (opcional) es la posibilidad de enviar un identificador unico para poder realizar un seguimiento de esta llamada |
+| image1  | string | La imagen 1 en Base64 para la comparación                                                                        |
+| image2  | string | La imagen 2 en Base64 para la comparación                                                                        |
+
+**Response**
+
+```json
+{
+    "eventId": String,
+    "requestId": String,
+    "score": Double,
+    "distance": Double,
+    "process_time": Integer,
+    "metadata": {
+        "image1": {
+            "accessories": {
+                "glass": Boolean,
+                "sunGlass": Boolean,
+                "hat": Boolean,
+                "mask": Boolean
+            },
+            "image_quality": {
+                "isCorrectBrightness": Boolean,
+                "isCorrectBlur": Boolean,
+                "isCorrectHeight": Boolean,
+                "isCorrectWidth": Boolean,
+                "isCorrectResolution": Boolean,
+                "isCorrectVerticalRotation": Boolean,
+                "isCorrectHorizontalRotation": Boolean,
+                "isCorrectRotation": Boolean,
+                "isCorrectSizeFace": Boolean,
+                "isCorrectNumberFaces": Boolean
+            }
+        },
+        "image2": {
+            "accessories": {
+                "glass": Boolean,
+                "sunGlass": Boolean,
+                "hat": Boolean,
+                "mask": Boolean
+            },
+            "image_quality": {
+                "isCorrectBrightness": Boolean,
+                "isCorrectBlur": Boolean,
+                "isCorrectHeight": Boolean,
+                "isCorrectWidth": Boolean,
+                "isCorrectResolution": Boolean,
+                "isCorrectVerticalRotation": Boolean,
+                "isCorrectHorizontalRotation": Boolean,
+                "isCorrectRotation": Boolean,
+                "isCorrectSizeFace": Boolean,
+                "isCorrectNumberFaces": Boolean
+            }
+        }
+    },
+    "codes": null,
+    "state": {
+        "rejectedBadQuality": Boolean,
+        "rejectedAccessories": Boolean,
+        "isSamePerson": Boolean,
+        "message": String
+    }
+}
+```
+
+```kotlin
+data class OtoVerifyV2Response(
+    @SerializedName("eventId") val eventId: String,
+    @SerializedName("requestId") val requestId: String,
+    @SerializedName("score") val score: Double,
+    @SerializedName("distance") val distance: Double,
+    @SerializedName("process_time") val processTime: Long,
+    @SerializedName("metadata") val metadata: Metadata,
+    @SerializedName("codes") val codes: List<Int>?,
+    @SerializedName("state") val state: State
+)
+
+data class Metadata(
+    @SerializedName("image1") val image1: ImageMetadata,
+    @SerializedName("image2") val image2: ImageMetadata
+)
+
+data class ImageMetadata(
+    @SerializedName("accessories") val accessories: Accessories,
+    @SerializedName("image_quality") val imageQuality: String?
+)
+
+data class Accessories(
+    @SerializedName("glass") val glass: Boolean,
+    @SerializedName("sunGlass") val sunGlass: Boolean,
+    @SerializedName("hat") val hat: Boolean,
+    @SerializedName("mask") val mask: Boolean
+)
+
+data class State(
+    @SerializedName("rejectedBadQuality") val rejectedBadQuality: Boolean,
+    @SerializedName("rejectedAccessories") val rejectedAccessories: Boolean,
+    @SerializedName("isSamePerson") val isSamePerson: Boolean,
+    @SerializedName("message") val message: String
+)
+```
+
+| Campo         | Tipo    | Descripción                                                                                                                                       |
+| :------------ | :------ | :------------------------------------------------------------------------------------------------------------------------------------------------ |
+| eventId       | string  | ID para trazabilidad de los detalles del evento.                                                                                                  |
+| requestId     | string  | ID para trazabilidad de la petición.                                                                                                              |
+| score         | double  | Resultado de la evaluación del prueba de vida.                                                                                                    |
+| distance      | double  | Resultado de la evaluación normalizada del prueba de vida.                                                                                        |
+| process\_time | integer | Tiempo de procesamiento de la verificación en milisegundos.                                                                                       |
+| metadata      | object  | Datos adicionales sobre el análisis de la prueba de vida, como la búsqueda de accesorios y calidad de la imagen dentro de las imágenes comparadas |
+| codes         | object  | Lista de código de errores referente a calidad de imagen y accesorios encontrados dentro de las imagenes comparadas                               |
+| state         | object  | Resultados de diferentes verificaciones sobre la prueba de vida.                                                                                  |
+
+Objeto *state*
+
+| Campo               | Tipo    | Descripción                                                                              |
+| :------------------ | :------ | :--------------------------------------------------------------------------------------- |
+| rejectedBadQuality  | boolean | Bandera que determina si las imagenes no cumple con los minimos estándares de calidad    |
+| rejectedAccessories | boolean | Bandera que determina si las imagenes comparadas detectan accesorios                     |
+| isSamePerson        | boolean | Bandera que determina si ambas personas en las imagenes son la misma                     |
+| message             | string  | Mensaje que proporciona información adicional en caso de discrepancia en la comparación. |
+
+La propiedad *state.isSamePerson* nos permite asegurar que la persona que se está identificando en la verificación de vida sea la misma que la del documento proporcionado.
+
+En resumen, si la propiedad *state.isSamePerson* es aceptada, entonces podemos considerar que la verificación de la titularidad del documento ha sido exitoso.
+
+Es importante que finalices las sesiones KYC. Te explicaremos cómo hacerlo en el siguiente paso.

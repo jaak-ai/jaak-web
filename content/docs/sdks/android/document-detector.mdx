@@ -1,0 +1,802 @@
+---
+title: Manual SDK Android @jaak.ai/document-detector
+description: SDK Android para detección automatizada de documentos de identidad con sistema de 4 imágenes (original y crop por lado).
+category: sdk
+order: 2
+---
+
+## Manual Completo para Detección de Documentos en Aplicaciones Android
+
+### Tiempo estimado: 50-70 minutos para configuración completa
+
+---
+
+## ¿Qué aprenderás en este manual?
+
+Este manual te enseñará a implementar y usar el Document Detector SDK de JAAK para captura automatizada de documentos de identidad en aplicaciones Android nativas. **No necesitas conocimientos técnicos avanzados** - solo sigue los pasos.
+
+---
+
+## Antes de Empezar - Lista de Verificación
+
+Asegúrate de tener estos elementos listos:
+
+* Android Studio Iguana instalado
+* Dispositivo Android con API 26+ (Android 8.0+)
+* Al menos 2GB de RAM libre (para procesamiento ML)
+* Acceso al repositorio Maven de JAAK
+* Conocimientos básicos de Kotlin/Java
+* Documento de identidad para pruebas
+
+---
+
+## Índice de Contenidos
+
+| Sección | Qué harás | Tiempo |
+|---------|-----------|---------|
+| **Paso 1** | Configurar proyecto y dependencias | 15 min |
+| **Paso 2** | Implementación básica del SDK | 20 min |
+| **Paso 3** | Configurar permisos y componentes | 10 min |
+| **Paso 4** | Manejo de respuestas y 4 imágenes | 20 min |
+| **Paso 5** | Probar detección de documentos | 10 min |
+
+---
+
+# PASO 1: Configurar Proyecto y Dependencias
+
+## Objetivo
+
+Configurar el entorno de desarrollo y añadir las dependencias necesarias del SDK.
+
+## Requisitos Técnicos
+
+| Requisito | Versión | ¿Obligatorio? |
+|-----------|---------|---------------|
+| Android Studio | Iguana | Sí |
+| Gradle | 8.4+ | Sí |
+| minSdkVersion | 26 | Sí |
+| targetSdkVersion | 33 | Sí |
+| Kotlin | 1.9.22+ | Sí |
+| RAM libre | 2GB+ | Sí (para ML) |
+
+### 1.1 Configuración build.gradle (Proyecto)
+
+```groovy
+buildscript {
+    ext.kotlin_version = "1.9.22"
+    ext.hilt_version = '2.46'
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            url 'https://us-maven.pkg.dev/jaak-platform/jaak-android'
+        }
+        maven {
+            url 'https://jitpack.io'
+        }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.3.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
+        classpath 'com.google.gms:google-services:4.4.2'
+    }
+}
+```
+
+### 1.2 Configuración settings.gradle
+
+```groovy
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+        maven {
+            url 'https://us-maven.pkg.dev/jaak-platform/jaak-android'
+        }
+    }
+}
+```
+
+### 1.3 Configuración build.gradle (Módulo app)
+
+```groovy
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
+
+android {
+    compileSdk 35
+
+    defaultConfig {
+        minSdk 26
+        targetSdk 33
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_18
+        targetCompatibility JavaVersion.VERSION_18
+    }
+
+    buildFeatures {
+        viewBinding = true
+    }
+}
+
+dependencies {
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version")
+    implementation("androidx.core:core-ktx:1.15.0")
+    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.2.0")
+    implementation("com.google.dagger:hilt-android:$hilt_version")
+    kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
+
+    // Document Detector SDK
+    implementation("com.jaak.documentdetectorsdk:jaakdocumentdetector-sdk:3.0.0")
+
+    // TensorFlow Lite Support
+    implementation 'org.tensorflow:tensorflow-lite-support:0.4.4'
+}
+```
+
+---
+
+# PASO 2: Implementación Básica del SDK
+
+## Objetivo
+
+Crear la implementación base del Document Detector SDK con detección automática.
+
+### 2.1 Crear Application Class
+
+```kotlin
+import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
+
+@HiltAndroidApp
+class DocumentDetectorApp : Application()
+```
+
+### 2.2 MainActivity Básica
+
+```kotlin
+import android.net.Uri
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import com.jaak.documentdetectorsdk.sdk.DocumentDetectorSDK
+import com.jaak.documentdetectorsdk.ui.adapter.DocumentDetectorListener
+import com.jaak.documentdetectorsdk.utils.Utils
+import com.example.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
+class MainActivity : AppCompatActivity(), DocumentDetectorListener {
+
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var documentDetectorSDK: DocumentDetectorSDK
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        setupDocumentDetector()
+        setupButtons()
+    }
+
+    private fun setupDocumentDetector() {
+        documentDetectorSDK = DocumentDetectorSDK(this, this)
+    }
+
+    private fun setupButtons() {
+        binding.btnStartDetection.setOnClickListener {
+            documentDetectorSDK.startDocumentDetector(1)
+        }
+    }
+
+    override fun onSuccessDocumentDetector(
+        typeProcess: Int,
+        frontOriginalUri: Uri?,
+        frontCropUri: Uri?,
+        backOriginalUri: Uri?,
+        backCropUri: Uri?
+    ) {
+        handleSuccess(typeProcess, frontOriginalUri, frontCropUri, backOriginalUri, backCropUri)
+    }
+
+    override fun onErrorDocumentDetector(text: String) {
+        handleError(text)
+    }
+
+    private fun handleSuccess(
+        typeProcess: Int,
+        frontOriginal: Uri?,
+        frontCrop: Uri?,
+        backOriginal: Uri?,
+        backCrop: Uri?
+    ) {
+        val message = when (typeProcess) {
+            1 -> "Documento capturado desde cámara"
+            else -> "Proceso completado"
+        }
+
+        binding.tvStatus.text = message
+
+        // Procesar las 4 imágenes si están disponibles
+        frontOriginal?.let { uri ->
+            val base64 = Utils.uriToBase64(contentResolver, uri)
+            processImage(base64, "front_original")
+        }
+
+        frontCrop?.let { uri ->
+            val base64 = Utils.uriToBase64(contentResolver, uri)
+            processImage(base64, "front_crop")
+        }
+
+        backOriginal?.let { uri ->
+            val base64 = Utils.uriToBase64(contentResolver, uri)
+            processImage(base64, "back_original")
+        }
+
+        backCrop?.let { uri ->
+            val base64 = Utils.uriToBase64(contentResolver, uri)
+            processImage(base64, "back_crop")
+        }
+    }
+
+    private fun handleError(text: String) {
+        binding.tvStatus.text = "Error: $text"
+    }
+
+    private fun processImage(base64: String?, type: String) {
+        base64?.let {
+            android.util.Log.d("DocumentDetector", "$type: ${it.length} caracteres")
+        }
+    }
+}
+```
+
+### 2.3 Layout XML (activity_main.xml)
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="JAAK Document Detector"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp" />
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Presiona el botón para comenzar"
+        android:textAlignment="center"
+        android:padding="15dp"
+        android:background="@drawable/rounded_background"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="30dp" />
+
+    <Button
+        android:id="@+id/btnStartDetection"
+        android:layout_width="280dp"
+        android:layout_height="60dp"
+        android:text="Iniciar Detección"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/tvStatus"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="40dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+```
+
+---
+
+# PASO 3: Configurar Permisos y Componentes
+
+## Objetivo
+
+Configurar correctamente los permisos necesarios y componentes del sistema.
+
+### 3.1 AndroidManifest.xml
+
+```xml
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Permisos necesarios -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:replace="android:maxSdkVersion"
+        android:maxSdkVersion="28" />
+
+    <application
+        android:name=".DocumentDetectorApp"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+        tools:replace="android:theme,android:name">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+    </application>
+</manifest>
+```
+
+### 3.2 Manejo de Permisos en Runtime
+
+```kotlin
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+
+class MainActivity : AppCompatActivity(), DocumentDetectorListener {
+
+    companion object {
+        private const val PERMISSIONS_REQUEST_CODE = 100
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        checkAndRequestPermissions()
+        setupDocumentDetector()
+        setupButtons()
+    }
+
+    private fun checkAndRequestPermissions() {
+        val permissionsNeeded = mutableListOf<String>()
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+            != PackageManager.PERMISSION_GRANTED) {
+            permissionsNeeded.add(Manifest.permission.CAMERA)
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES)
+                != PackageManager.PERMISSION_GRANTED) {
+                permissionsNeeded.add(Manifest.permission.READ_MEDIA_IMAGES)
+            }
+        } else {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+                permissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            }
+        }
+
+        if (permissionsNeeded.isNotEmpty()) {
+            ActivityCompat.requestPermissions(
+                this,
+                permissionsNeeded.toTypedArray(),
+                PERMISSIONS_REQUEST_CODE
+            )
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        when (requestCode) {
+            PERMISSIONS_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() &&
+                    grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
+                    binding.tvStatus.text = "Permisos concedidos"
+                } else {
+                    binding.tvStatus.text = "Permisos denegados"
+                }
+            }
+        }
+    }
+}
+```
+
+---
+
+# PASO 4: Manejo de Respuestas y Sistema de 4 Imágenes
+
+## Objetivo
+
+Implementar el manejo completo del nuevo sistema de 4 imágenes del SDK v3.0.0.
+
+### 4.1 Procesamiento Completo de 4 Imágenes
+
+```kotlin
+override fun onSuccessDocumentDetector(
+    typeProcess: Int,
+    frontOriginalUri: Uri?,
+    frontCropUri: Uri?,
+    backOriginalUri: Uri?,
+    backCropUri: Uri?
+) {
+    try {
+        val documentImages = DocumentImages()
+
+        // Procesar imagen frontal original
+        frontOriginalUri?.let { uri ->
+            documentImages.frontOriginal = Utils.uriToBase64(contentResolver, uri)
+            android.util.Log.d("DocumentDetector", "Front Original: ${documentImages.frontOriginal?.length} chars")
+        }
+
+        // Procesar imagen frontal recortada
+        frontCropUri?.let { uri ->
+            documentImages.frontCrop = Utils.uriToBase64(contentResolver, uri)
+            android.util.Log.d("DocumentDetector", "Front Crop: ${documentImages.frontCrop?.length} chars")
+        }
+
+        // Procesar imagen trasera original (si existe)
+        backOriginalUri?.let { uri ->
+            documentImages.backOriginal = Utils.uriToBase64(contentResolver, uri)
+            android.util.Log.d("DocumentDetector", "Back Original: ${documentImages.backOriginal?.length} chars")
+        }
+
+        // Procesar imagen trasera recortada (si existe)
+        backCropUri?.let { uri ->
+            documentImages.backCrop = Utils.uriToBase64(contentResolver, uri)
+            android.util.Log.d("DocumentDetector", "Back Crop: ${documentImages.backCrop?.length} chars")
+        }
+
+        // Determinar tipo de documento
+        val documentType = if (backOriginalUri != null || backCropUri != null) {
+            "double_sided"
+        } else {
+            "single_sided"
+        }
+
+        // Procesar documento completo
+        processCompleteDocument(documentImages, documentType, typeProcess)
+
+        binding.tvStatus.text = "Documento procesado exitosamente"
+
+    } catch (e: Exception) {
+        android.util.Log.e("DocumentDetector", "Error procesando imágenes: ${e.message}")
+        binding.tvStatus.text = "Error procesando imágenes"
+    }
+}
+
+data class DocumentImages(
+    var frontOriginal: String? = null,
+    var frontCrop: String? = null,
+    var backOriginal: String? = null,
+    var backCrop: String? = null
+)
+
+private fun processCompleteDocument(
+    images: DocumentImages,
+    documentType: String,
+    typeProcess: Int
+) {
+    android.util.Log.d("DocumentDetector", "=== PROCESANDO DOCUMENTO ===")
+    android.util.Log.d("DocumentDetector", "Tipo: $documentType")
+    android.util.Log.d("DocumentDetector", "Proceso: $typeProcess")
+
+    // Validar que tenemos al menos la imagen frontal
+    if (images.frontOriginal.isNullOrEmpty() && images.frontCrop.isNullOrEmpty()) {
+        throw IllegalStateException("No se encontraron imágenes frontales válidas")
+    }
+
+    // Crear payload para backend
+    val payload = createDocumentPayload(images, documentType)
+
+    // Enviar a backend o procesar localmente
+    sendToBackend(payload)
+
+    android.util.Log.d("DocumentDetector", "Documento procesado correctamente")
+}
+
+private fun createDocumentPayload(images: DocumentImages, documentType: String): Map<String, Any> {
+    return mapOf(
+        "documentType" to documentType,
+        "timestamp" to System.currentTimeMillis(),
+        "version" to "3.0.0",
+        "images" to mapOf(
+            "frontOriginal" to (images.frontOriginal ?: ""),
+            "frontCrop" to (images.frontCrop ?: ""),
+            "backOriginal" to (images.backOriginal ?: ""),
+            "backCrop" to (images.backCrop ?: "")
+        ),
+        "metadata" to mapOf(
+            "hasBack" to !images.backOriginal.isNullOrEmpty(),
+            "hasCrop" to !images.frontCrop.isNullOrEmpty(),
+            "platform" to "android"
+        )
+    )
+}
+
+private fun sendToBackend(payload: Map<String, Any>) {
+    android.util.Log.d("DocumentDetector", "Enviando a backend: ${payload.keys}")
+    // Implementar llamada a tu API
+}
+```
+
+### 4.2 Manejo Avanzado de Errores
+
+```kotlin
+override fun onErrorDocumentDetector(text: String) {
+    android.util.Log.e("DocumentDetector", "Error: $text")
+
+    when {
+        text.contains("TensorFlow", ignoreCase = true) -> {
+            handleMLError(text)
+        }
+        text.contains("camera", ignoreCase = true) -> {
+            handleCameraError(text)
+        }
+        text.contains("permission", ignoreCase = true) -> {
+            handlePermissionError(text)
+        }
+        text.contains("memory", ignoreCase = true) -> {
+            handleMemoryError(text)
+        }
+        else -> {
+            handleGenericError(text)
+        }
+    }
+}
+
+private fun handleMLError(error: String) {
+    binding.tvStatus.text = "Error de procesamiento ML"
+    showErrorDialog(
+        "Error de Procesamiento",
+        "El modelo de inteligencia artificial no pudo cargarse.\n\nVerifique que el dispositivo tenga suficiente memoria libre."
+    )
+}
+
+private fun handleCameraError(error: String) {
+    binding.tvStatus.text = "Error de cámara"
+    showErrorDialog(
+        "Error de Cámara",
+        "No se pudo acceder a la cámara.\n\nVerifique los permisos de la aplicación."
+    )
+}
+
+private fun handlePermissionError(error: String) {
+    binding.tvStatus.text = "Permisos denegados"
+    showErrorDialog(
+        "Permisos Requeridos",
+        "La aplicación necesita permisos de cámara y almacenamiento para funcionar correctamente."
+    )
+}
+
+private fun handleMemoryError(error: String) {
+    binding.tvStatus.text = "Memoria insuficiente"
+    showErrorDialog(
+        "Memoria Insuficiente",
+        "El dispositivo no tiene suficiente memoria libre.\n\nCierre otras aplicaciones e intente nuevamente."
+    )
+}
+
+private fun handleGenericError(error: String) {
+    binding.tvStatus.text = "Error: $error"
+}
+
+private fun showErrorDialog(title: String, message: String) {
+    androidx.appcompat.app.AlertDialog.Builder(this)
+        .setTitle(title)
+        .setMessage(message)
+        .setPositiveButton("Entendido") { dialog, _ ->
+            dialog.dismiss()
+        }
+        .show()
+}
+```
+
+---
+
+# PASO 5: Probar Detección de Documentos
+
+## Objetivo
+
+Verificar que todas las funcionalidades del SDK funcionan correctamente.
+
+## Lista de Verificación
+
+| Elemento | Estado | Descripción |
+|----------|----|-----------  |
+| **Detección automática** | ☐ | IA detecta documentos automáticamente |
+| **Sistema 4 imágenes** | ☐ | Genera original y crop de frente/reverso |
+| **Conversión base64** | ☐ | Todas las imágenes se convierten |
+| **Preview 2x2** | ☐ | Muestra las 4 imágenes en cuadrícula |
+| **Documentos doble cara** | ☐ | Detecta y procesa ambos lados |
+
+## Proceso de Prueba
+
+### Paso A: Probar Documento Simple
+1. **Presionar "Iniciar Detección"**
+2. **Posicionar documento** dentro del marco
+3. **Esperar detección automática** (marco verde)
+4. **Verificar captura** automática
+5. **Revisar preview** de imágenes en pantalla
+
+### Paso B: Probar Documento Doble Cara
+1. **Capturar frente** del documento
+2. **Seguir instrucciones** para voltear
+3. **Capturar reverso** automáticamente
+4. **Verificar 4 imágenes** en preview 2x2
+5. **Confirmar procesamiento** exitoso
+
+### Paso C: Verificar Calidad ML
+1. **Probar con mala iluminación** - debe ajustar automáticamente
+2. **Probar con documento inclinado** - debe detectar y recortar
+3. **Probar con diferentes tipos** de documentos
+4. **Verificar logs** de TensorFlow Lite
+
+## Debugging y Troubleshooting
+
+### Verificar Recursos del Dispositivo
+
+```kotlin
+private fun checkDeviceCapability(): Boolean {
+    val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+    val memoryInfo = ActivityManager.MemoryInfo()
+    activityManager.getMemoryInfo(memoryInfo)
+
+    val availableMemoryMB = memoryInfo.availMem / (1024 * 1024)
+    android.util.Log.d("DocumentDetector", "Memoria disponible: ${availableMemoryMB}MB")
+
+    return availableMemoryMB > 500
+}
+
+private fun enableDebugLogs() {
+    android.util.Log.d("DocumentDetector", "=== DEBUG DOCUMENT DETECTOR ===")
+    android.util.Log.d("DocumentDetector", "SDK versión: 3.0.0")
+    android.util.Log.d("DocumentDetector", "Memoria disponible: ${checkDeviceCapability()}")
+    android.util.Log.d("DocumentDetector", "TensorFlow Lite disponible: ${checkTensorFlowLite()}")
+}
+
+private fun checkTensorFlowLite(): Boolean {
+    return try {
+        Class.forName("org.tensorflow.lite.Interpreter")
+        true
+    } catch (e: ClassNotFoundException) {
+        false
+    }
+}
+```
+
+### Problemas Comunes
+
+| Problema | Solución |
+|----------|----------|
+| **"TensorFlow model error"** | Verificar memoria libre y reiniciar app |
+| **"Camera not available"** | Verificar permisos y que no esté en uso |
+| **"Launcher not registered"** | Llamar setup en onCreate(), no inmediatamente |
+| **"Processing failed"** | Verificar RAM disponible y cerrar otras apps |
+
+---
+
+# Referencia Completa
+
+## Métodos del SDK
+
+| Método | Descripción | Ejemplo |
+|--------|-------------|---------|
+| **DocumentDetectorSDK(context, listener)** | Constructor del SDK | `DocumentDetectorSDK(this, this)` |
+| **startDocumentDetector(Int)** | Inicia detección | `documentDetectorSDK.startDocumentDetector(1)` |
+
+## Parámetros de startDocumentDetector
+
+| Modo | Descripción | Cuándo usar |
+|------|-------------|-------------|
+| **1** | Detección directa con cámara | Captura inmediata de documentos |
+
+## Sistema de 4 Imágenes
+
+| Imagen | Descripción | Cuándo se genera |
+|--------|-------------|-----------------|
+| **frontOriginal** | Imagen completa del frente | Siempre |
+| **frontCrop** | Frente recortado por IA | Cuando detecta documento |
+| **backOriginal** | Imagen completa del reverso | Solo si documento requiere reverso |
+| **backCrop** | Reverso recortado por IA | Cuando detecta reverso |
+
+## Utilidades
+
+| Método | Descripción | Ejemplo |
+|--------|-------------|---------|
+| **Utils.uriToBase64()** | Convierte URI a Base64 | `Utils.uriToBase64(contentResolver, uri)` |
+
+---
+
+# Solución de Problemas
+
+## Problema: "Error de memoria"
+
+```kotlin
+// Verificar antes de inicializar
+private fun initializeSDKSafely() {
+    if (checkDeviceCapability()) {
+        setupDocumentDetector()
+    } else {
+        showMemoryWarning()
+    }
+}
+
+private fun showMemoryWarning() {
+    binding.tvStatus.text = "Dispositivo con memoria insuficiente"
+}
+```
+
+## Problema: "Documentos no se detectan"
+
+```kotlin
+// Verificar compatibilidad TensorFlow Lite
+private fun checkMLCompatibility() {
+    try {
+        val interpreter = org.tensorflow.lite.Interpreter(ByteBuffer.allocate(0))
+        android.util.Log.d("DocumentDetector", "Compatible")
+    } catch (e: Exception) {
+        android.util.Log.e("DocumentDetector", "TF Lite no compatible: ${e.message}")
+    }
+}
+```
+
+## Problema: "Preview no muestra 4 imágenes"
+
+El SDK v3.0.0 incluye automáticamente un preview con layout 2x2 que muestra:
+- **Superior izquierda:** Front Original
+- **Superior derecha:** Front Crop
+- **Inferior izquierda:** Back Original
+- **Inferior derecha:** Back Crop
+
+No requiere configuración adicional.
+
+---
+
+# ¿Necesitas Ayuda?
+
+## Información para soporte
+
+* **Descripción del problema:** Qué documento intentas capturar vs qué sucede
+* **Logs de Android Studio:** Screenshots de errores
+* **Información del dispositivo:** RAM, CPU, versión Android
+* **Configuración build.gradle:** Versiones de dependencias
+* **Tipo de documento:** INE, pasaporte, licencia, etc.
+
+## Contacto de Soporte
+
+**Email:** soporte@jaak.ai
+**Incluir siempre:** Logs ML, configuración, versión SDK 3.0.0
+
+---
+
+Has implementado exitosamente el Document Detector SDK v3.0.0 de JAAK en tu aplicación Android. Tu app ahora puede detectar y procesar documentos automáticamente usando inteligencia artificial, generando 4 imágenes optimizadas para procesos KYC.

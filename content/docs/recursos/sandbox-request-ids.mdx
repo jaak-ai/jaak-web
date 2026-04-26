@@ -1,0 +1,430 @@
+---
+title: Sandbox KYC — Catálogo de escenarios vía requestId
+description: Catálogo de prefijos de requestId para reproducir cualquier escenario del flujo KYC (approved, rejected, pending, errores) de forma determinista en sandbox.
+category: recurso
+order: 4
+---
+
+> **Estado del servicio**: **Activo en sandbox** desde el **2026-04-17** (imagen `jaak-rest-dummy v0.4.1`). Endpoint operativo: `https://api.sandbox.jaak.ai/api/v1/kyc/sandbox/simulate`.
+> **Nota sobre timeouts (§5.8)**: los prefijos `SET*` devuelven `HTTP 408` (Request Timeout) en lugar de `504` — el api-gateway trata `504` como fallo transitorio y hace retry + fallback al `nfury-api` real, lo que enmascara el escenario. `408` llega intacto al integrador.
+> **Audiencia**: integradores (desarrolladores de clientes), QA, soporte, customer success.
+> **Ambiente afectado**: `https://api.sandbox.jaak.ai` (namespace `api-dummy`).
+
+---
+
+## 1. Objetivo
+
+Permitir a los integradores **reproducir cualquier escenario del flujo KYC (approved, rejected, pending, errores de infraestructura) de forma determinista** enviando un `requestId` con un prefijo convencional. El objetivo es:
+
+- Desarrollar integraciones cubriendo **todos los caminos** (no solo el happy path).
+- Construir tests automatizados en CI que no dependan de flujos manuales.
+- Evitar que el integrador descubra el manejo de rechazos/pendings hasta producción.
+
+## 2. Alcance
+
+- Endpoints bajo `/api/v1/kyc/*` en `api.sandbox.jaak.ai`.
+- **No aplica** a producción (`services.api.jaak.ai` y `api.dev.jaak.ai`) — producción siempre usa la lógica real.
+- **No aplica** a otros endpoints (`/api-key`, `/auth/*`, `/companies`, etc.) en esta primera versión.
+
+## 3. Conceptos clave
+
+| Término | Significado |
+|---|---|
+| **`requestId`** | Identificador único que el cliente envía en el cuerpo de `POST /api/v1/kyc/flow`. El dispatcher del sandbox lo lee para decidir qué escenario simular. |
+| **Prefijo** | Primeras 3–5 letras del `requestId` que el sandbox reconoce como escenario predefinido. |
+| **Dispatcher** | Componente del sandbox que mapea el `requestId` a una respuesta concreta. |
+| **Modo determinista aleatorio** | Si el `requestId` no tiene un prefijo reconocido, el sandbox calcula un hash y escoge un escenario de forma ponderada; **el mismo `requestId` siempre devuelve el mismo escenario**. |
+
+---
+
+## 4. Convención del `requestId`
+
+### 4.1 Formato
+
+```
+S<resultado><step>[<detalle>][<modificador>]-<N>
+```
+
+| Posición | Letras | Significado |
+|---|---|---|
+| 1 | `S` | Sandbox (fijo) |
+| 2 | `A` / `R` / `P` / `E` | **A**pproved · **R**ejected · **P**ending · **E**rror |
+| 3 | `H` / `D` / `L` / `F` / `B` / `X` | **H**appy (sin step específico) · **D**ocument · **L**iveness · **F**ace · **B**lacklist · **X**-checks (consistencia de datos) |
+| 4 (opcional) | letra | Detalle del step (ej. `P` en `SRLP` = Photo spoof) |
+| 5 (opcional) | letra | Modificador edge case |
+| sufijo | `-<N>` | Número aleatorio para mantener idempotencia por `eventId` sin afectar al escenario |
+
+**Regex que reconoce el dispatcher**:
+
+```
+^S[ARPE][HDLFBX][A-Z]{0,2}(-\d+)?$
+```
+
+### 4.2 Parsing "greedy"
+
+El dispatcher intenta matchear con el prefijo **más específico primero**:
+
+1. 5 letras → escenario muy específico
+2. 4 letras → detalle del step
+3. 3 letras → resultado general
+
+Si tu `requestId` no matchea ninguna variante, cae al **modo determinista aleatorio** (§6) — nunca a un error de parsing.
+
+---
+
+## 5. Catálogo completo de prefijos
+
+### 5.1 Happy paths (Approved)
+
+| Prefijo | Escenario | Caso de uso típico |
+|---|---|---|
+| `SAH-N`   | Approved Happy genérico | Smoke test del flujo entero |
+| `SAHM-N`  | Approved Happy MX (CURP y RFC válidos, RENAPO match) | Integraciones enfocadas en México |
+| `SAHP-N`  | Approved Happy Passport (documento internacional) | Clientes con usuarios extranjeros |
+| `SAL-N`   | Approved Low-confidence (pasa con scores borderline) | Verificar que la UI no alerta scores bajos si el resultado es approved |
+
+### 5.2 Rechazos por Document
+
+| Prefijo | Escenario |
+|---|---|
+| `SRDE-N` | Document Expired — ID caducado |
+| `SRDT-N` | Document Tampered — alteración visible |
+| `SRDQ-N` | Document low Quality — imagen borrosa / reflejos / recortada |
+| `SRDW-N` | Wrong document type — usuario subió comprobante de domicilio en lugar de ID |
+| `SRDO-N` | OCR partial / failure — campos no extraídos |
+
+### 5.3 Rechazos por Liveness (detección de vida)
+
+| Prefijo | Escenario |
+|---|---|
+| `SRLP-N` | Spoof **P**hoto — foto impresa frente a la cámara |
+| `SRLS-N` | Spoof **S**creen — replay de pantalla |
+| `SRLM-N` | Spoof **M**ask — máscara 3D |
+| `SRLC-N` | **C**hallenge failed — el usuario no ejecutó el gesto pedido |
+
+### 5.4 Rechazos por Face (One-to-One)
+
+| Prefijo | Escenario |
+|---|---|
+| `SRFN-N` | **N**o match — el rostro del selfie no coincide con el del ID |
+| `SRFM-N` | **M**ultiple faces — más de una cara visible en el selfie |
+| `SRFO-N` | **O**bscured — lentes oscuros / cubrebocas / obstrucción |
+
+### 5.5 Rechazos por Blacklist (listas negras)
+
+| Prefijo | Escenario |
+|---|---|
+| `SRBO-N` | **O**FAC hit |
+| `SRBP-N` | **P**EP (Personas Expuestas Políticamente) |
+| `SRBI-N` | **I**nternal fraud — blacklist interna de JAAK |
+| `SRBC-N` | **C**riminal record — antecedentes penales |
+
+### 5.6 Rechazos por Cross-checks (consistencia de datos)
+
+| Prefijo | Escenario |
+|---|---|
+| `SRXN-N` | **N**ame mismatch — el nombre del OCR no coincide con el del submitter |
+| `SRXD-N` | **D**OB mismatch — fecha de nacimiento inconsistente |
+| `SRXI-N` | **I**D number mismatch — número de documento inconsistente |
+| `SRXC-N` | **C**URP not found / mismatch |
+
+### 5.7 Pending (requiere revisión manual)
+
+| Prefijo | Escenario |
+|---|---|
+| `SPR-N`   | Pending manual **R**eview (genérico) |
+| `SPLB-N`  | Pending — **L**iveness **B**orderline (score indeterminado) |
+| `SPFB-N`  | Pending — **F**ace **B**orderline (match indeterminado) |
+
+### 5.8 Errores de infraestructura
+
+| Prefijo | Escenario | HTTP |
+|---|---|---|
+| `SET-N`  | **T**imeout genérico | 408 |
+| `SETD-N` | Timeout en **D**ocument | 408 |
+| `SETL-N` | Timeout en **L**iveness | 408 |
+| `SETO-N` | Timeout en **O**TO / Face | 408 |
+| `SEI-N`  | **I**nternal Server Error | 500 |
+| `SEQ-N`  | **Q**uota exceeded | 402 |
+| `SER-N`  | **R**ate limited | 429 |
+| `SEA-N`  | **A**uth / licencia inválida (licence 401) | 401 |
+
+---
+
+## 6. Modo determinista aleatorio
+
+Si el `requestId` **no empieza con un prefijo reconocido**, el sandbox calcula un escenario como sigue:
+
+```pseudocode
+bucket = crc32(requestId) % 100
+scenario = weighted_pick(bucket)
+```
+
+### 6.1 Tabla de pesos por defecto
+
+| Peso | Rango bucket | Escenario asignado |
+|---|---|---|
+| 65 | 0–64   | `SAH` (40), `SAHM` (15), `SAHP` (5), `SAL` (5) |
+| 15 | 65–79  | Rejects distribuidos: `SRDE`, `SRLP`, `SRFN`, `SRBP`, `SRDW` |
+| 10 | 80–89  | Pending: `SPR` (5), `SPLB` (3), `SPFB` (2) |
+| 8  | 90–97  | Cross-checks: `SRXN` (3), `SRXD` (2), `SRXC` (3) |
+| 2  | 98–99  | Errors: `SEI` (1), `SET` (1) |
+
+### 6.2 Propiedades garantizadas
+
+- **Determinismo**: el mismo `requestId` → el mismo escenario siempre. Reproducible en CI.
+- **Distribución**: `crc32` produce una distribución uniforme sobre los 100 buckets, con lo que 100 `requestId` distintos cubren los escenarios según la tabla.
+- **Si necesitas un escenario concreto**: usa el prefijo explícito de §5 (siempre gana sobre el modo aleatorio).
+
+---
+
+## 7. Ejemplos de uso
+
+### 7.1 cURL
+
+**Aprobar siempre** (happy path):
+
+```bash
+curl -X POST https://api.sandbox.jaak.ai/api/v1/kyc/flow \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "requestId": "SAH-42",
+    "submitter": { ... },
+    "config": { ... }
+  }'
+# → 200 { "status": "approved", "result": { "decision": "APPROVED", ... }, ... }
+```
+
+**Simular rechazo por spoof de liveness con foto impresa**:
+
+```bash
+curl -X POST https://api.sandbox.jaak.ai/api/v1/kyc/flow \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "requestId": "SRLP-1234",
+    "submitter": { ... }
+  }'
+# → 200 { "status": "rejected", "result": { "decision": "REJECTED", "reason": "LIVENESS_SPOOF_PHOTO" }, ... }
+```
+
+**Simular error 401 de licencia** (reproduce el bug que tuvimos en TO-154/TO-155):
+
+```bash
+curl -X POST https://api.sandbox.jaak.ai/api/v1/kyc/flow \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{ "requestId": "SEA-999" }'
+# → 401 { "eventId": "...", "statusCode": 401, "errorCode": "A001", "message": "Licencia inválida o ausente" }
+```
+
+**Cobertura automática de escenarios** (CI):
+
+```bash
+for scenario in SAH SAHM SRDE SRLP SRFN SRBP SRXN SPR SET SEI; do
+  RID="${scenario}-$(date +%s%N)"
+  curl -s -X POST https://api.sandbox.jaak.ai/api/v1/kyc/flow \
+    -H "Authorization: Bearer $TOKEN" \
+    -H "Content-Type: application/json" \
+    -d "{\"requestId\":\"${RID}\"}"  \
+    | jq -r --arg s "$scenario" '. | "\($s): \(.status // .errorCode)"'
+done
+```
+
+### 7.2 Node.js
+
+```javascript
+import axios from "axios";
+
+const SCENARIOS = ["SAH", "SRDE", "SRLP", "SRFN", "SPR", "SEI"];
+
+for (const prefix of SCENARIOS) {
+  const requestId = `${prefix}-${Math.floor(Math.random() * 1e6)}`;
+  const { data, status } = await axios.post(
+    "https://api.sandbox.jaak.ai/api/v1/kyc/flow",
+    { requestId },
+    {
+      headers: { Authorization: `Bearer ${token}` },
+      validateStatus: () => true,
+    },
+  );
+  console.log(prefix, status, data.status || data.errorCode);
+}
+```
+
+### 7.3 Python
+
+```python
+import requests, secrets
+
+SCENARIOS = ["SAH", "SAHM", "SRDE", "SRLP", "SRFN", "SRBP", "SPR", "SEI"]
+
+for prefix in SCENARIOS:
+    request_id = f"{prefix}-{secrets.randbelow(10**6)}"
+    r = requests.post(
+        "https://api.sandbox.jaak.ai/api/v1/kyc/flow",
+        headers={"Authorization": f"Bearer {token}"},
+        json={"requestId": request_id},
+    )
+    body = r.json()
+    print(f"{prefix}: HTTP {r.status_code} — {body.get('status', body.get('errorCode'))}")
+```
+
+---
+
+## 8. Shape de respuesta
+
+El dispatcher **respeta el mismo shape** del endpoint en producción (`Flow` y `VerificationFlow` en `jaak-nfury-api`). Solo cambian los valores concretos según el escenario. Así tu parser del cliente puede integrarse sin ramas especiales para sandbox.
+
+### 8.1 Approved (ejemplo con `SAH`)
+
+```json
+{
+  "id": "69e11ec8380058638712a280",
+  "status": "approved",
+  "result": { "decision": "APPROVED", "score": 0.97 },
+  "steps": {
+    "document": {
+      "status": "ok",
+      "type": "INE",
+      "fields": { "name": "Juan Pérez López", "dob": "1990-05-12", "id_number": "..." }
+    },
+    "liveness": { "status": "ok", "score": 0.98 },
+    "face":     { "status": "match", "score": 0.94 },
+    "blacklist":{ "status": "clean" }
+  },
+  "createdAt": "2026-04-17T18:30:00Z",
+  "updatedAt": "2026-04-17T18:30:02Z"
+}
+```
+
+### 8.2 Rejected (ejemplo con `SRLP`)
+
+```json
+{
+  "id": "69e11ec8380058638712a281",
+  "status": "rejected",
+  "result": { "decision": "REJECTED", "reason": "LIVENESS_SPOOF_PHOTO" },
+  "steps": {
+    "document": { "status": "ok", ... },
+    "liveness": { "status": "failed", "reason": "SPOOF_PHOTO", "score": 0.12 },
+    "face":     { "status": "skipped" },
+    "blacklist":{ "status": "skipped" }
+  }
+}
+```
+
+### 8.3 Pending (ejemplo con `SPR`)
+
+```json
+{
+  "id": "69e11ec8380058638712a282",
+  "status": "pending_review",
+  "result": { "decision": "PENDING_REVIEW", "reason": "MANUAL_REVIEW_REQUIRED" },
+  "steps": {
+    "document": { "status": "ok" },
+    "liveness": { "status": "borderline", "score": 0.73 },
+    ...
+  }
+}
+```
+
+### 8.4 Error (ejemplo con `SEI` / `SEA`)
+
+```json
+{
+  "eventId": "69e11ec8-3800-5863-8712-a2830000",
+  "statusCode": 500,
+  "errorCode": "I001",
+  "message": "Internal server error"
+}
+```
+
+---
+
+## 9. Preguntas frecuentes
+
+<details>
+<summary><strong>¿Tengo que cambiar mi integración existente?</strong></summary>
+
+**No.** Si ya envías un `requestId` arbitrario (por ejemplo un UUID), el dispatcher lo procesará por el **modo determinista aleatorio** (§6) y tu integración seguirá recibiendo respuestas válidas. El 65 % de las veces recibirás happy paths — la distribución refleja la realidad de producción.
+
+</details>
+
+<details>
+<summary><strong>¿Qué pasa si no envío <code>requestId</code>?</strong></summary>
+
+El servidor lo genera automáticamente. En ese caso, el escenario se elige según la distribución aleatoria de §6 (pero no será reproducible entre llamadas). Para tener control, **envía siempre un `requestId` explícito**.
+
+</details>
+
+<details>
+<summary><strong>¿Los prefijos son case-sensitive?</strong></summary>
+
+Sí. Usa **mayúsculas**. `sah-42` no matchea, se tratará como aleatorio determinista.
+
+</details>
+
+<details>
+<summary><strong>¿Cómo sé qué versión del catálogo está desplegada?</strong></summary>
+
+Consulta `GET https://api.sandbox.jaak.ai/api/v1/kyc/sandbox-info` (endpoint opcional que devuelve la versión del catálogo activo — será añadido junto con la implementación).
+
+</details>
+
+<details>
+<summary><strong>¿Puedo combinar múltiples escenarios en un solo request?</strong></summary>
+
+No en la v1. Cada `requestId` mapea a **un único** escenario. Si necesitas, por ejemplo, "documento expirado + liveness spoof" combinados, reportá el caso de uso y evaluamos añadir un prefijo específico.
+
+</details>
+
+<details>
+<summary><strong>¿Este mecanismo aplica a producción?</strong></summary>
+
+**No.** Solo en `api.sandbox.jaak.ai` (namespace `api-dummy`). En producción los prefijos son ignorados — se ejecuta el flujo real.
+
+</details>
+
+<details>
+<summary><strong>¿Qué hago si encuentro una diferencia entre la respuesta del sandbox y producción?</strong></summary>
+
+Reporta a `soporte@jaak.ai` incluyendo: `requestId`, `eventId`, timestamp y ejemplos de ambas respuestas. El shape del sandbox **debe** ser idéntico al real; cualquier desviación es un bug.
+
+</details>
+
+---
+
+## 10. Referencias
+
+- Spec técnico (interno, equipo backend): [`jaak-ai/jaak-rest-dummy` — docs/kyc-sandbox-catalog.md](https://github.com/jaak-ai/jaak-rest-dummy/blob/main/docs/kyc-sandbox-catalog.md)
+- PR del spec mergeado: [jaak-ai/jaak-rest-dummy#3](https://github.com/jaak-ai/jaak-rest-dummy/pull/3)
+- Guías KYC relacionadas:
+  - [Implementación vs. Integración](/docs/verificar-identidad/como-consumir)
+  - [JAAK KYC vía API](/docs/verificar-identidad/)
+  - [Webhooks](/docs/recursos/webhooks)
+- Tareas internas origen: Tech Ops — TO-154 (Liveness 401), TO-155 (Document OCR 401).
+
+---
+
+## 11. Validez y versionado
+
+| Campo | Valor |
+|---|---|
+| Estado | En desarrollo (spec aprobado, implementación pendiente) |
+| Versión del catálogo | v0.1 (propuesta) |
+| Última revisión | 2026-04-17 |
+| Próxima actualización | Al publicar el dispatcher en sandbox (fecha TBD) |
+| Contacto técnico interno | equipo backend (canal `#tech-dev`) |
+| Contacto externo | `soporte@jaak.ai` |
+
+---
+
+## Anexo A — Checklist para integradores
+
+- [ ] Envías un `requestId` explícito en cada request (no dependas de autogeneración).
+- [ ] Tu CI prueba al menos un `SAH` y uno por cada familia de rechazo (`SRD*`, `SRL*`, `SRF*`, `SRB*`).
+- [ ] Tu código maneja `status: "pending_review"` (revisa `SPR`, `SPLB`, `SPFB`).
+- [ ] Tu código maneja errores HTTP 4xx/5xx sin crashear (prueba con `SER`, `SEI`, `SET`).
+- [ ] Nunca usas estos prefijos en producción (solo tienen efecto en sandbox).

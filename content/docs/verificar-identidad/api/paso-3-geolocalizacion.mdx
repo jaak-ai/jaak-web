@@ -1,0 +1,50 @@
+---
+title: Paso 3 - Geolocalización vía API
+description: Registrar la ubicación (latitud y longitud) del dispositivo donde se realiza la Sesión KYC.
+category: api
+order: 4
+---
+
+El servicio de Geolocalización de **JAAK** se utiliza para registrar la ubicación (latitud y longitud) donde se lleva a cabo la **Sesión KYC**. Es importante tener en cuenta que la ubicación es recolectada desde el dispositivo que utiliza el usuario final para realizar la Sesión KYC.
+
+Realiza la siguiente llamada API para registrar la ubicación del dispositivo en la Sesión KYC.
+
+**URL**
+
+```
+POST https://api.sandbox.jaak.ai/api/v1/kyc/session/location
+```
+
+**Header**
+
+```
+Authorization: Bearer token-session-kyc
+```
+
+| Campo         | Tipo   | Requerido | Descripción                                                                                                  |
+| :------------ | :----- | :-------- | :----------------------------------------------------------------------------------------------------------- |
+| Authorization | string | Si        | En esta cabecera se debe enviar el Token de Sesión KYC que se ha obtenido del intercambiado con de Short Key |
+
+**Request**
+
+```json
+{
+    "latitude": Double,
+    "longitude": Double
+}
+```
+
+| Campo     | Tipo   | Requerido | Descripción                                                                               |
+| :-------- | :----- | :-------- | :---------------------------------------------------------------------------------------- |
+| latitude  | double | Si        | Latitud de la posición obtenida por el dispositivo y que se registrara en la Sesión KYC.  |
+| longitude | double | Si        | Longitud de la posición obtenida por el dispositivo y que se registrara en la Sesión KYC. |
+
+**Response**
+
+```
+{}
+```
+
+El servicio de Geolocalización no tiene un impacto directo en los resultados finales de la sesión, pero es una herramienta útil para la recopilación de datos y en algunos casos, como el financiero, necesaria para llevar a cabo sus procesos.
+
+Continuemos con el siguiente paso...

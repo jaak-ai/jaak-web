@@ -1,0 +1,347 @@
+---
+title: Blacklist
+description: Verificación de personas y entidades contra listas de riesgo nacionales e internacionales.
+category: concepto
+order: 3
+---
+
+Tiempo estimado de lectura: 15-20 minutos
+
+## ¿Qué aprenderás en esta guía?
+
+Este manual te enseñará a utilizar el sistema de Verificación de Listas Negras (BlackList) de JAAK. Con BlackList, podrás verificar personas y entidades contra diversas bases de datos y listas de riesgo nacionales e internacionales, lo cual es fundamental para tus procesos de "Conozca a su Cliente" (KYC) y prevención de lavado de dinero (AML), además de ayudar a mitigar riesgos de suplantación de identidad.
+
+No necesitas conocimientos técnicos previos – solo sigue los pasos.
+
+## Antes de Empezar - Lista de Verificación
+
+Asegúrate de tener estos datos listos:
+
+* **API Key (Token Bearer):** Tu clave de autenticación válida proporcionada por JAAK. Es esencial para acceder a nuestros servicios.
+* **Datos de la persona o entidad a investigar:** Nombre, apellidos, identificaciones (CURP, RFC, CIC, OCR de INE), y opcionalmente, dirección y fecha de nacimiento.
+* **Conocimientos básicos de APIs REST:** Familiaridad con cómo se realizan solicitudes HTTP (POST, GET) y se procesan respuestas JSON.
+
+## Índice de Contenidos
+
+| Sección | Qué aprenderás |
+| :--- | :--- |
+| 1. ¿Qué es la Verificación BlackList? | Entender el propósito y alcance del producto BlackList |
+| 2. Funcionalidades Clave | Conocer las principales capacidades y los servicios de listas negras integrados |
+| 3. Integración con la API | Cómo realizar investigaciones de listas negras |
+| 4. Monitoreo de Eventos | Cómo consultar detalles y el historial de investigaciones |
+| 5. Solución de Problemas Comunes | Identificar y resolver los errores más frecuentes |
+| 6. ¿Necesitas Ayuda? | Cuándo y cómo contactar a nuestro equipo de soporte |
+| 7. Glosario de Términos | Definiciones de términos clave relacionados con BlackList |
+
+## 1. ¿Qué es la Verificación BlackList?
+
+El sistema de Verificación de Listas Negras (BlackList) de JAAK te permite consultar y verificar información de personas y entidades contra diversas bases de datos de riesgo. Esto incluye listas gubernamentales, de sanciones internacionales, de criminales buscados y de contribuyentes con irregularidades fiscales.
+
+### Propósito y Beneficios
+
+* **Prevención de Fraude:** Identifica a individuos o empresas que puedan representar un riesgo de fraude, lavado de dinero o financiamiento al terrorismo.
+* **Cumplimiento Normativo:** Ayuda a tu empresa a cumplir con las regulaciones de Conozca a su Cliente (KYC) y Anti Lavado de Dinero (AML).
+* **Mitigación de Riesgos:** Reduce el riesgo de asociarse con entidades o personas involucradas en actividades ilícitas.
+* **Validación de Identidad:** Complementa la verificación de identidad al cotejar los datos de una persona con registros de riesgo.
+
+## 2. Funcionalidades Clave
+
+Nuestro producto BlackList ofrece las siguientes capacidades principales:
+
+* **Consulta Multi-Servicio:** Permite verificar simultáneamente contra varias listas negras nacionales e internacionales en una sola solicitud.
+* **Servicios Integrados:**
+  * **INE (México):** Verificación de credenciales de elector
+  * **INTERPOL (Internacional):** Consulta de listas rojas internacionales
+  * **OFAC (EE.UU.):** Lista de sanciones de la Oficina de Control de Activos Extranjeros de EE.UU.
+  * **RENAPO/CURP (México):** Verificación de Clave Única de Registro de Población
+  * **SAT69B (México):** Lista de contribuyentes con operaciones inexistentes o simuladas
+  * **CDC RccFico (México):** Módulo en desarrollo para Círculo de Crédito
+* **Resultados Detallados:** Proporciona si la persona fue `foundInService` (encontrada en la lista), un `score` de confianza y el `message` de la investigación.
+* **Registro de Eventos:** Guarda un historial completo y detallado de cada investigación realizada para fines de auditoría y seguimiento.
+* **Flexibilidad de Entrada:** Permite la investigación utilizando diversos datos de la persona: nombre, apellidos, dirección e identificaciones (CURP, RFC, CIC, OCR).
+
+## 3. Integración con la API
+
+La interacción con el sistema BlackList se realiza a través de llamadas a nuestra API.
+
+### 3.1 Endpoint de Investigación
+
+**POST /api/v2/blacklist/investigate**
+
+Este es el endpoint principal para realizar una investigación contra las listas negras.
+
+* **Método:** `POST`
+* **URL Base:** `https://api.sandbox.jaak.ai/api/v2/blacklist/investigate`
+* **Headers requeridos:**
+  * `Authorization`: `Bearer TU_API_KEY_AQUI` (Tu clave de autenticación)
+  * `Content-Type`: `application/json`
+  * `Language`: (Opcional) `es` o `en` para el idioma de los mensajes de error
+
+#### Cuerpo de la solicitud (JSON)
+
+La solicitud se compone de dos secciones principales: `services` y `payload`.
+
+##### 1. `services` (Objeto - Requerido)
+
+Aquí defines qué servicios de listas negras deseas consultar. Al menos uno debe estar activo (`true`).
+
+| Servicio   | Tipo      | Descripción                                                       | Ejemplo              |
+| :--------- | :-------- | :---------------------------------------------------------------- | :------------------- |
+| `ine`      | `boolean` | `true` para verificar contra el INE                               | `true`               |
+| `interpol` | `boolean` | `true` para verificar contra INTERPOL                             | `false`              |
+| `ofac`     | `boolean` | `true` para verificar contra la lista de OFAC (EE.UU.)            | `false`              |
+| `renapo`   | `object`  | Contiene `curp: boolean` para verificar la CURP                   | `{"curp": true}`     |
+| `sat`      | `object`  | Contiene `sat69b: boolean` para verificar contra la lista del SAT | `{"sat69b": false}`  |
+| `cdc`      | `object`  | Contiene `rccFico: boolean` (en desarrollo)                       | `{"rccFico": false}` |
+
+##### 2. `payload` (Objeto - Requerido)
+
+Contiene los datos de la persona o entidad a investigar. Debes proporcionar la información relevante para el/los servicio/s que activaste.
+
+* **`person`(Objeto):** Nombre, apellidos, fecha de nacimiento, nacionalidad
+* **`address`(Objeto):** Detalles de la dirección (calle, número, colonia, municipio, estado, código postal)
+* **`identifications`(Objeto):** Identificadores clave como `curp`, `rfc`, `socialSecurityNumber`, `electorKey`. Para INE, incluye `cic` y `ocr`
+* **`extras`(Objeto):** Campos adicionales como `commonId` o `wantedIn`
+
+#### Ejemplo de solicitud INE
+
+```json
+{
+  "services": {
+    "ine": true
+  },
+  "payload": {
+    "identifications": {
+      "ine": {
+        "cic": "1234567890123",
+        "ocr": "1234567890123456789"
+      }
+    }
+  }
+}
+```
+
+#### Respuesta Exitosa (HTTP Status: 200 OK)
+
+La respuesta incluye un `eventId` para seguimiento, el `processTime` (tiempo en segundos), `organization` y `service` consultados. El objeto `state` es crucial, ya que indica:
+
+* `foundInService`: `true` si se encontró una coincidencia en el servicio consultado, `false` si no
+* `message`: Un mensaje descriptivo del resultado de la investigación
+* `result`: Contiene los detalles de la coincidencia si `foundInService` es `true`
+
+#### Ejemplo de respuesta exitosa (INE - No Encontrado)
+
+```json
+{
+  "eventId": "a9fd763a-f2b8-4908-8ded-ed81e27b4169",
+  "processTime": 27.89,
+  "organization": "ine",
+  "service": "identification",
+  "result": null,
+  "state": {
+    "message": "Investigation completed successfully",
+    "foundInService": false,
+    "mustBeFound": true
+  }
+}
+```
+
+#### Ejemplo de respuesta exitosa (SAT69B - Encontrado)
+
+```json
+{
+  "eventId": "caf144b8-cca5-413c-b546-8a7ce5de8ed1",
+  "processTime": 0.19,
+  "organization": "sat",
+  "service": "sat69b",
+  "result": {
+    "0": {
+      "content": {
+        "rfc": "PELJ721031GV0",
+        "taxpayerName": "PÉREZ LÓPEZ JUANA PATRICIA",
+        "taxpayerStatus": "Definitivo"
+      }
+    }
+  },
+  "state": {
+    "message": "Investigation completed successfully",
+    "foundInService": true,
+    "mustBeFound": false
+  }
+}
+```
+
+### 3.2 Consideraciones Importantes para la Investigación
+
+* **Datos Relevantes:** Proporciona la mayor cantidad posible de datos precisos en el `payload` para mejorar la precisión de la búsqueda.
+* **Servicios Activos:** Activa solo los servicios de blacklist que realmente necesitas para optimizar el tiempo de respuesta.
+* **Respuestas Múltiples (SAT69B):** Algunos servicios como SAT69B pueden devolver múltiples registros si encuentran varias coincidencias.
+
+## 4. Monitoreo de Eventos
+
+Puedes consultar los detalles de las investigaciones de listas negras para auditoría, análisis de resultados y solución de problemas.
+
+### 4.1 Consulta de Evento Específico por ID
+
+**GET /api/v2/blacklist/event/:id**
+
+Para obtener los detalles completos de una investigación específica utilizando el ID del evento como parte de la URL.
+
+* **Método:** `GET`
+* **URL Base:** `https://api.sandbox.jaak.ai/api/v2/blacklist/event/:id` (donde `:id` es el `eventId` único de la investigación)
+* **Headers requeridos:**
+  * `Authorization`: `Bearer TU_API_KEY_AQUI`
+  * `Content-Type`: `application/json`
+
+#### Parámetros de consulta opcionales (Query Params)
+
+* `includePayload`: `boolean` (opcional). Si es `true`, la respuesta incluirá el `payload` original de la solicitud.
+* `includeAnalysis`: `boolean` (opcional). Si es `true`, la respuesta incluirá un análisis detallado de las coincidencias.
+
+#### Respuesta Exitosa
+
+La respuesta es un objeto JSON detallado que incluye el `eventId`, `status` de la investigación, el `service` consultado, `processTime`, y un objeto `state` con `foundInService`, `confidence` y `riskLevel`. También puede contener `person` (información de la persona consultada), `analysis` (detalles de coincidencias y recomendación), y `payload` (si se solicitó).
+
+#### Ejemplo de respuesta
+
+```json
+{
+  "success": true,
+  "data": {
+    "eventId": "evt_1234567890123456789",
+    "status": "completed",
+    "service": "ine",
+    "state": {
+      "foundInService": true,
+      "confidence": 0.95,
+      "riskLevel": "high"
+    },
+    "analysis": {
+      "recommendation": "deny"
+    }
+  }
+}
+```
+
+### 4.2 Consulta de Eventos
+
+**GET /api/v2/blacklist/event**
+
+Este endpoint permite filtrar y obtener una lista paginada de todas las investigaciones de listas negras.
+
+* **Método:** `GET`
+* **URL Base:** `https://api.sandbox.jaak.ai/api/v2/blacklist/event`
+* **Headers requeridos:** `Authorization: Bearer TU_API_KEY_AQUI`, `Content-Type: application/json`
+
+#### Parámetros de consulta (Query Params)
+
+| Parámetro         | Tipo      | Descripción                                                 | Ejemplo                   |
+| :---------------- | :-------- | :---------------------------------------------------------- | :------------------------ |
+| `eventId`         | `string`  | ID específico de la investigación                           | `evt_1234567890123456789` |
+| `includePayload`  | `boolean` | Incluir el payload original en los resultados (opcional)    | `true`                    |
+| `includeAnalysis` | `boolean` | Incluir el análisis detallado de la verificación (opcional) | `true`                    |
+
+<Callout type="info">
+A diferencia del endpoint `/api/v2/blacklist/event/:id` que usa el ID en la ruta, este endpoint usa el `eventId` como un parámetro de consulta normal.
+</Callout>
+
+## 5. Solución de Problemas Comunes
+
+Aquí hay algunos problemas frecuentes y sus soluciones:
+
+### Error 400 - Solicitud Inválida
+
+**Descripción:** Indicado por códigos de error `BL02` o `BL03`. Ocurre si ningún servicio está activo en la solicitud, o si faltan datos requeridos para un servicio específico (ej. `INE` sin `CIC`/`OCR`). También puede indicar formato JSON malformado.
+
+**Solución:**
+
+1. **Verifica`services`:** Asegúrate de que al menos un servicio esté establecido en `true`
+2. **Verifica`payload`:** Incluye todos los datos necesarios para el servicio activado (ej. para INE, `CIC` y `OCR` son obligatorios)
+3. Revisa la estructura JSON de tu solicitud
+
+### Error 403 - Autenticación Fallida
+
+**Descripción:** El API Key es inválido, ha expirado, o no tienes los permisos necesarios para acceder a los servicios de blacklist. (Código: `0003`)
+
+**Solución:**
+
+1. **Verifica API Key:** Confirma que tu API Key sea correcta y esté activa en tu dashboard JAAK
+2. **Formato:** Asegúrate de que el header `Authorization` esté correctamente formateado: `Bearer TU_API_KEY_AQUI`
+3. **Permisos:** Contacta a soporte para verificar que tu API Key tenga los permisos necesarios para `Blacklist Product`
+
+### Error 404 - Evento No Encontrado
+
+**Descripción:** Al consultar un evento específico por ID, el sistema indica que el evento no existe o no pertenece a tu compañía. (Código: `BL_EVENT_NOT_FOUND`)
+
+**Solución:**
+
+1. **Verifica ID:** Asegúrate de que el `eventId` sea correcto y tenga el formato `evt_[19 caracteres alfanuméricos]`
+2. **Pertenencia:** Confirma que el `eventId` corresponda a una investigación realizada bajo tu cuenta
+3. **Expiración:** Los eventos podrían expirar; consulta eventos más recientes si es posible
+
+### Timeout en la Solicitud
+
+**Descripción:** La petición se cancela porque el procesamiento excede el tiempo límite (recomendado 30 segundos). Esto puede ocurrir si hay alta carga en el servicio o el `payload` es muy complejo.
+
+**Solución:**
+
+1. **Optimiza servicios:** Activa solo los servicios estrictamente necesarios
+2. **Reintentos:** Implementa una lógica de reintentos con un tiempo de espera exponencial (retry with exponential backoff)
+3. **Contacta soporte:** Si los timeouts persisten, puede haber problemas de rendimiento en el servidor
+
+### Error `BL04` - Servicio Inválido
+
+**Descripción:** Has especificado un nombre de servicio que no está soportado por la API.
+
+**Solución:**
+
+1. Revisa la tabla de `services` soportados en la sección 3.1
+2. Asegúrate de que los nombres de los servicios estén escritos correctamente (ej. `ine`, `interpol`, `ofac`, `renapo`, `sat`, `cdc`)
+
+## 6. ¿Necesitas Ayuda?
+
+No dudes en contactar a nuestro equipo de soporte ([soporte@jaak.ai](mailto:soporte@jaak.ai)) cuando:
+
+* Los pasos de solución de problemas no resuelven tu inconveniente después de múltiples intentos
+* Recibes errores no documentados o inesperados
+* Necesitas habilitar funcionalidades específicas para tu empresa o requieres información sobre el estado de los servicios (ej. `INTERPOL`, `CDC RccFico`)
+* Experimentas problemas de rendimiento persistentes o inconsistencias en los datos
+
+### Información a tener lista al contactar soporte
+
+* Descripción específica del problema
+* Pasos que seguiste antes del error
+* `Event ID` de la petición fallida (si está disponible)
+* Logs completos de error con marcas de tiempo (timestamps)
+* Configuración actual de tu solicitud (sin incluir tu API Key completa)
+* Ambiente donde ocurre el problema (desarrollo, staging, producción)
+
+## 7. Glosario de Términos
+
+| Término          | Definición                                                                                                                   |
+| :--------------- | :--------------------------------------------------------------------------------------------------------------------------- |
+| **API Key**      | Clave de autenticación única que identifica y autoriza tu acceso a nuestra API                                               |
+| **BlackList**    | Lista de personas o entidades con restricciones, prohibiciones o alertas, utilizada para verificar riesgos                   |
+| **CURP**         | Clave Única de Registro de Población: Identificador único oficial para ciudadanos y residentes en México                     |
+| **RFC**          | Registro Federal de Contribuyentes: Identificador fiscal para personas físicas y morales en México                           |
+| **INE**          | Instituto Nacional Electoral: Organismo público autónomo de México, emisor de la Credencial para Votar                       |
+| **OFAC**         | Office of Foreign Assets Control: Oficina del Departamento del Tesoro de EE.UU. que administra y aplica sanciones económicas |
+| **INTERPOL**     | Organización Internacional de Policía Criminal: Facilita la cooperación policial internacional                               |
+| **RENAPO**       | Registro Nacional de Población: Organismo encargado de la expedición y registro de la CURP en México                         |
+| **SAT**          | Servicio de Administración Tributaria: Órgano desconcentrado de la Secretaría de Hacienda y Crédito Público de México        |
+| **SAT69B**       | Lista de contribuyentes con operaciones inexistentes o simuladas publicada por el SAT                                        |
+| **CDC RccFico**  | Módulo de Círculo de Crédito (sociedad de información crediticia en México)                                                  |
+| **Event ID**     | Identificador único alfanumérico generado por JAAK para cada investigación de BlackList, usado para seguimiento              |
+| **Payload**      | Conjunto de datos enviados en la solicitud de la API, conteniendo la información de la persona a investigar                  |
+| **Process Time** | Tiempo total en segundos que toma una solicitud de investigación para ser procesada por el sistema                           |
+| **Score**        | Puntuación de coincidencia entre 0 y 1 que indica la probabilidad de un "match" en una lista negra                           |
+| **Risk Level**   | Nivel de riesgo evaluado (bajo, medio, alto) basado en el análisis de las coincidencias                                      |
+
+## Enlaces de Referencia
+
+* Documentación API - POST /api/v2/blacklist/investigate
+* Documentación API - GET /api/v2/blacklist/event
+* Documentación API - GET /api/v2/blacklist/event/:id
+* RFC 7159 - Especificación de formato JSON
+* ISO 8601 - Formato de fecha y hora
+* CURP - Documentación oficial de CURP en México

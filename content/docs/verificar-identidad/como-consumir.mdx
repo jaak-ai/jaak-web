@@ -1,0 +1,70 @@
+---
+title: Implementación vs. Integración
+description: Compara los dos modelos de consumo de JAAK KYC (marca blanca vs. integración vía API) y elige el que mejor se adapta a tu negocio.
+category: guia
+order: 3
+---
+
+En **JAAK**, entendemos que cada cliente tiene necesidades y capacidades técnicas distintas.  Por ello, ofrecemos **dos modelos** principales de consumo de servicios para utilizar nuestra solución de verificación de identidad KYC: la **Implementación de nuestra plataforma de Marca Blanca (JAAK KYC Web)** y la **Integración vía API**.
+
+# ¿Implementación o Integración?
+
+Comprender la diferencia es fundamental para tomar el camino que mejor se adapte a tus objetivos de negocio, experiencia de usuario y recursos de desarrollo.
+
+## Modelo 1. Implementación con JAAK KYC (Marca Blanca): Rapidez y Eficiencia
+
+Una **Implementación** se refiere al uso de **JAAK KYC (`jaak-kyc-web`)**, nuestra solución de marca blanca (`white-label`). Este es un flujo de verificación de identidad completo, pre-construido y listo para usar, que JAAK hospeda en su propia infraestructura y puedes ser personalizada para el cliente.
+
+Este modelo es perfecto para clientes que buscan lanzar un proceso de verificación de identidad de manera rápida, con mínimos recursos de desarrollo y asegurando una experiencia de usuario probada y optimizada.
+
+### Características Principales:
+
+* **Solución en mano:** JAAK proporciona una aplicación web completa con todos los pasos del KYC ya integrados: captura de documento (anverso y reverso), prueba de vida, validaciones y pantallas de retroalimentación al usuario.
+* **Mínimo Esfuerzo de Desarrollo:** El cliente no necesita programar una interfaz ni gestionar la lógica de las llamadas a la API. La principal tarea técnica consiste en iniciar el flujo de JAAK KYC desde su plataforma y gestionar la redirección del usuario al finalizar.
+* **Personalización de Marca:** Aunque la estructura del flujo es estándar, la plataforma permite la personalización con el logo, los colores y otros elementos gráficos del cliente para que la experiencia se sienta nativa a su marca.
+* **Rápida Salida a Producción:** Al eliminar la necesidad de un ciclo de diseño y desarrollo de `frontend`, los tiempos para lanzar la solución se reducen drásticamente.
+
+En resumen, la **Implementación con Marca Blanca** ofrece **velocidad y simplicidad**, externalizando el desarrollo y mantenimiento de la interfaz de usuario en JAAK y permitiendo al cliente enfocarse en su negocio principal.
+
+![Implementación KYC](https://files.readme.io/79ca3543a182a640c41c9d18e416a6587adff1449285b5599091b777ebd25669-Implementacion-KYC.png)
+
+## Modelo 2. Integración vía API: Control Total sobre la Experiencia de Usuario
+
+Una **Integración** se refiere al modelo en el que el cliente utiliza la tecnología de JAAK como un motor de fondo (`backend`), mientras **construye y mantiene su propia interfaz de usuario (UI) y experiencia de usuario (UX)**.
+
+Este modelo es ideal para clientes con equipos de desarrollo que desean un control total sobre el flujo, la apariencia y la interacción con el usuario final.
+
+### Características Principales:
+
+* **Lógica en el Backend:** El servidor del cliente se comunica directamente con la API REST de JAAK para realizar todas las operaciones de verificación: crear sesiones, enviar imágenes para análisis, solicitar validaciones de datos, ejecutar pruebas de vida y consultar los resultados.
+* **UI/UX 100% Personalizada:** El cliente diseña y desarrolla el `frontend` de la aplicación. Esto le permite mantener una consistencia total con su marca (`branding`) y adaptar el flujo a los pasos específicos de su proceso de onboarding.
+* **Apoyo con Herramientas de Captura (SDKs Web):** Aunque el cliente construye la interfaz, no tiene que empezar desde cero para la compleja tarea de la captura de imágenes. JAAK ofrece Componentes Web especializados para facilitar este proceso. Estos componentes se insertan directamente en el código del cliente.
+
+![Integración API](https://files.readme.io/cf612b7c8cc4b6af99942d8c22d264a5744ac24126b88b9dd8a558d01bced9d6-Integracion-API.png)
+
+## Herramientas de Apoyo para la Integración:
+
+* **`@jaak.ai/face-detector`**: Es un Componente Web diseñado específicamente para la captura óptima de rostros.
+  * **Funcionalidad:** Activa la cámara del dispositivo para detectar un rostro en tiempo real y, cuando las condiciones son adecuadas, captura la información. También permite la carga de archivos locales.
+  * **Integración:** Se instala vía `npm`  o mediante una etiqueta `<script>` y se integra fácilmente en cualquier entorno web. Ofrece una alta personalización a través de propiedades y eventos para controlar su comportamiento y apariencia.
+
+* **`@jaak.ai/stamps`(Recomendado para documentos):** Es el componente de nueva generación para la captura de documentos de identidad. Simplifica y asegura la obtención de imágenes de alta calidad para el análisis de OCR y la verificación de autenticidad.
+
+En resumen, la **Integración vía API** ofrece **máxima flexibilidad y personalización**, permitiendo al cliente ser el dueño de la experiencia de usuario mientras se apoya en la potencia y seguridad de los servicios de JAAK en su `backend`.
+
+
+***
+
+## ¿Cuál Modelo Elegir?
+
+
+* **`Implementación con JAAK KYC`si:**
+
+    * Necesitas lanzar un proceso de KYC rápidamente.
+    * Tus recursos de desarrollo son limitados.
+    * Prefieres una solución probada y optimizada sin invertir en el diseño de un flujo desde cero.
+* **`Integración vía API`si:**
+
+    * Tienes un equipo de desarrollo `frontend` y `backend`.
+    * Necesitas un control granular sobre cada paso y la apariencia del flujo.
+    * La experiencia de usuario debe estar 100% integrada y ser indistinguible de tu plataforma existente.
