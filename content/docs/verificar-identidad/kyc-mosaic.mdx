@@ -1,0 +1,94 @@
+---
+title: "KYC Mosaic Web - JAAK"
+description: "JAAK KYC Mosaic Web es una solución completa de verificación de identidad que permite procesos KYC en aplicaciones web de forma rápida y segura."
+category: concepto
+order: 10
+---
+
+# KYC Mosaic Web - JAAK
+
+## Descripción
+
+JAAK KYC Mosaic Web es una solución completa de verificación de identidad que permite procesos KYC en aplicaciones web de forma rápida y segura.
+
+## Capacidades
+
+- Extracción automática de datos de documentos de identidad
+- Verificación de autenticidad de documentos
+- Verificación de identidad facial en vivo
+- Comparación facial OTO (One-to-One)
+- Verificación en listas negras contra bases de datos de seguridad
+
+## Modos de Integración
+
+| Modo | Descripción |
+|------|-------------|
+| **Embed (iframe)** | Mantiene al usuario en tu dominio con comunicación bidireccional en tiempo real y control total del layout |
+| **Direct (Nueva Pestaña)** | Experiencia de pantalla completa optimizada para aplicaciones móviles |
+| **Link (URLs)** | URLs autocontenidas que requieren "cero código del lado del cliente", perfecto para campañas de email/SMS |
+
+## Prerequisitos Técnicos
+
+- **Navegadores:** Chrome 80+, Firefox 75+, Safari 13+, Edge 80+
+- **Protocolo:** HTTPS obligatorio para producción
+- **JavaScript:** ES6+ para modos Embed y Direct
+- **API Key** del Dashboard JAAK (solo backend)
+- ShortKey auto-generado por sesión
+
+## Autenticación
+
+```
+Authorization: Bearer YOUR_API_KEY
+```
+
+## URLs Base
+
+| Ambiente | URL |
+|----------|-----|
+| Sandbox | `https://sandbox.kyc.jaak.ai` |
+| Producción | `https://kyc.jaak.ai` |
+
+## Proceso de Creación de Sesión
+
+**Endpoint:**
+```
+POST /api/v1/kyc/flow
+```
+
+**Campos requeridos:**
+- `name` - nombre completo del cliente
+- `flow` - identificador único de sesión
+- `countryDocument` - código Alpha-3 del país
+- `flowType` - "KYC"
+- `verificationType` - email, whatsapp, sms o vacío
+
+**Respuesta:** URL de sesión con ShortKey de 7 caracteres al final.
+
+## Pasos de Verificación
+
+Pasos configurables: `WELCOME`, `DOCUMENT_EXTRACT`, `DOCUMENT_VERIFY`, `BLACKLIST`, `IVERIFICATION` (liveness), `LOCATION_PERMISSIONS`, `OTO`, `FINISH`
+
+## Gestión de Eventos
+
+Los modos Embed y Direct comunican vía `postMessage()`:
+
+| Evento | Descripción |
+|--------|-------------|
+| `READY` | Componente listo |
+| `STEP_COMPLETE` | Paso completado |
+| `FLOW_COMPLETE` | Flujo completado |
+| `ERROR` | Error |
+| `SESSION_EXPIRED` | Sesión expirada (14 min de inactividad) |
+
+## Lineamientos de Seguridad
+
+- Nunca exponer API Keys en código del lado del cliente
+- Usar variables de entorno para almacenamiento de credenciales
+- Validar orígenes de mensajes en producción
+- Rotar llaves periódicamente
+
+## Soporte
+
+- **Email:** support@jaak.ai
+- **Web:** www.jaak.ai
+- **Horario:** Lunes-Viernes, 9:00-18:00 Hora de México

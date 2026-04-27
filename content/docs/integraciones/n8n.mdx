@@ -1,0 +1,71 @@
+---
+title: "Automatización KYC con n8n"
+description: "Guía para automatizar la verificación KYC usando n8n (automatización de flujos de trabajo) integrado con Google Sheets y la API de JAAK."
+category: guia
+order: 1
+---
+
+# Automatización KYC con n8n
+
+## Descripción
+
+Guía para automatizar la verificación KYC usando n8n (automatización de flujos de trabajo) integrado con Google Sheets y la API de JAAK.
+
+**Objetivo:** Cada vez que se agrega una nueva fila en Google Sheet con datos del cliente (nombre y teléfono), n8n enviará automáticamente esta información a JAAK para iniciar el proceso de verificación KYC vía WhatsApp.
+
+## Prerequisitos
+
+- Cuenta activa de n8n (nivel gratuito disponible)
+- Cuenta de Google con acceso a Sheets
+- API Key de JAAK
+
+## Pasos de Implementación
+
+### 1. Obtener API Key de JAAK
+Navegar a Plataforma JAAK → Ajustes → API Keys, generar nueva clave con expiración preferida, guardar inmediatamente (aparece solo una vez).
+
+### 2. Crear Google Sheet
+
+Configurar hoja de cálculo con encabezados de columna:
+- Columna A: `Nombre`
+- Columna B: `Telefono` (10 dígitos, sin espacios)
+
+### 3. Construir Flujo de Trabajo en n8n
+
+Importar JSON pre-configurado con tres nodos conectados:
+
+| Nodo | Función |
+|------|---------|
+| **Google Sheets Trigger** | Monitorea nuevas filas |
+| **Edit Fields** | Formatea el payload de datos |
+| **HTTP Request** | Envía a la API de JAAK |
+
+### 4. Configurar Conexiones
+
+- Autenticar acceso a Google Sheets
+- Establecer autenticación Bearer token usando API key de JAAK para solicitudes HTTP
+
+### 5. Activar Flujo de Trabajo
+
+Cambiar el estado del flujo de "Inactive" a "Active" para habilitar el procesamiento automático.
+
+## Pruebas
+
+1. Agregar fila de prueba con nombre y número de WhatsApp válido
+2. Esperar ~1 minuto para ejecución
+3. Verificar éxito en el panel de Ejecuciones de n8n
+
+## Problemas Comunes
+
+| Problema | Solución |
+|----------|----------|
+| Errores de autenticación | Recrear credenciales |
+| HTTP 401 | Verificar que la API key no tenga espacios extra |
+| Sin ejecución automática | Confirmar estado "Active" y nombres de encabezado exactos |
+| Errores de lectura de propiedades | Validar nombre exacto de columnas sin espacios extra |
+
+## Opciones Avanzadas
+
+- Cambiar sandbox a ambiente de producción
+- Agregar campos de datos adicionales
+- Integrar notificaciones de Slack/email

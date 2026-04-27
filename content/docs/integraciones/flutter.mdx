@@ -1,0 +1,134 @@
+---
+title: "Flutter: Stamps y Visage SDK Android en Flutter"
+description: "Guía para integrar el Android Stamps SDK y Visage SDK de JAAK en un proyecto Flutter usando Platform Channels para comunicación nativa."
+category: sdk
+order: 2
+---
+
+# Flutter: Stamps y Visage SDK Android en Flutter
+
+## Descripción
+
+Guía para integrar el Android Stamps SDK y Visage SDK de JAAK en un proyecto Flutter usando Platform Channels para comunicación nativa.
+
+## Prerequisitos
+
+- Flutter 3.x o superior
+- JDK 17
+- Android Studio configurado
+- Dispositivo Android físico (los SDKs no funcionan bien en emuladores)
+
+## Versiones Requeridas
+
+| Especificación | Versión |
+|----------------|---------|
+| Kotlin | 1.9.22 |
+| Hilt | 2.46 |
+| Java | VERSION_17 |
+| minSdk | 24 |
+| compileSdk | 35 |
+| Stamps SDK | 1.0.0.beta |
+| Visage SDK | 1.0.0.beta |
+
+## Pasos de Configuración
+
+### 1. Repositorios Maven
+
+Agregar a `android/build.gradle.kts`:
+- Google y Maven Central
+- JitPack
+- JAAK Platform Maven: `https://us-maven.pkg.dev/jaak-platform/jaak-android`
+
+### 2. Configuración de Gradle
+
+Configurar plugins en `settings.gradle.kts` y `app/build.gradle.kts` con configuración apropiada de Hilt y Kotlin.
+
+### 3. Dependencias
+
+- Librerías AndroidX Core
+- Hilt para inyección de dependencias (obligatorio)
+- SDKs de JAAK
+- Google ML Kit y CameraX
+- Guava
+
+### 4. Permisos en AndroidManifest
+
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.CAMERA" />
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+```
+
+### 5. Actividades Nativas
+
+```kotlin
+// MyApplication.kt
+@HiltAndroidApp
+class MyApplication : Application()
+
+// StampsActivity.kt
+@AndroidEntryPoint
+class StampsActivity : AppCompatActivity(), StampsListener { ... }
+
+// VisageActivity.kt
+@AndroidEntryPoint
+class VisageActivity : AppCompatActivity(), VisageListener { ... }
+```
+
+### 6. Platform Channels
+
+```kotlin
+// MainActivity.kt - Establece canales de comunicación Flutter-Android
+class MainActivity : FlutterActivity() {
+    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "jaak/stamps")
+            .setMethodCallHandler { call, result ->
+                if (call.method == "startStampsCapture") {
+                    // Iniciar StampsActivity
+                }
+            }
+        // Similar para Visage
+    }
+}
+```
+
+### 7. Servicios Dart
+
+```dart
+class StampsService {
+    static const platform = MethodChannel('jaak/stamps');
+
+    Future<StampsResult> startCapture() async {
+        final result = await platform.invokeMethod('startStampsCapture');
+        return StampsResult.fromMap(result);
+    }
+}
+```
+
+## Notas Críticas
+
+> **Hilt es OBLIGATORIO:** Los SDKs de Stamps y Visage requieren Hilt para inyección de dependencias.
+
+- La consistencia de versiones previene conflictos
+- Se requieren dispositivos físicos
+- Todas las Activities necesitan la anotación `@AndroidEntryPoint`
+
+## Problemas Comunes
+
+| Problema | Solución |
+|----------|----------|
+| `@HiltAndroidApp` faltante | Causa fallos de inicialización de Hilt |
+| Configuración incorrecta de repositorios | Bloquea descarga de SDKs |
+| Emuladores sin soporte de cámara | Usar dispositivo físico |
+| Permisos faltantes | Previene ejecución del SDK |
+
+## Lista de Verificación de Integración
+
+- ✓ Versiones de Kotlin/Hilt/Java coinciden
+- ✓ Repositorios configurados correctamente
+- ✓ Dependencias resueltas
+- ✓ Permisos declarados apropiadamente
+- ✓ Activities anotadas correctamente
+- ✓ Platform Channels registrados completamente
+- ✓ FileProvider configurado apropiadamente

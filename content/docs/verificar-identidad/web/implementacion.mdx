@@ -1,0 +1,116 @@
+---
+title: "KYC Web (White-Label) - Guía de Implementación"
+description: "Personalizar la interfaz para alinearla con la marca de tu empresa:"
+category: guia
+order: 1
+---
+
+# KYC Web (White-Label) - Guía de Implementación
+
+## Cinco Pasos de Implementación
+
+### Paso 1: Configuración White-Label
+
+Personalizar la interfaz para alinearla con la marca de tu empresa:
+
+1. Acceder a la Plataforma JAAK
+2. Navegar a Ajustes → Mi Empresa
+3. Hacer clic en el botón Editar
+4. Modificar nombre de empresa, cargar logo y definir colores primarios/secundarios
+
+### Paso 2: Creación de Sesión KYC
+
+#### Opción A: Método API (Recomendado)
+
+**Endpoint:**
+```
+POST https://sandbox.api.jaak.ai/api/v1/kyc/flow
+```
+
+**Headers requeridos:**
+```
+Authorization: Bearer YOUR_API_KEY
+```
+
+**Parámetros del Body:**
+
+| Parámetro | Requerido | Descripción |
+|-----------|-----------|-------------|
+| `name` | Sí | Nombre completo del usuario |
+| `flow` | Sí | Nombre/identificador de la sesión |
+| `countryDocument` | Sí | Código del país (Alpha 3, ej. "MEX") |
+| `flowType` | Sí | Tipo de KYC (típicamente "KYC") |
+| `redirectUrl` | No | URL de redirección al completar |
+| `verificationType` | No | Método de notificación: "whatsapp", "sms", "email" o "" |
+| `verification` | No | Objeto con detalles de contacto |
+
+**Ejemplo de solicitud:**
+```json
+{
+  "name": "Usuario Nombre",
+  "flow": "OnBoarding",
+  "countryDocument": "MEX",
+  "redirectUrl": "https://www.ejemplo.com/verificacion-completa",
+  "verificationType": "email",
+  "verification": {
+    "EMAIL": "usuario@email.com"
+  }
+}
+```
+
+**Respuesta:**
+```json
+{
+  "sessionUrl": "https://sandbox.kyc.jaak.ai/session/WIoGa8e"
+}
+```
+
+Los últimos 7 caracteres representan el Short Key.
+
+> **Nota:** Los números de teléfono para SMS/WhatsApp deben incluir códigos de país (ej. +52 para México, +1 para USA).
+
+#### Opción B: Método Manual en la Plataforma
+
+1. Navegar a KYC → Sesiones
+2. Hacer clic en "Crear Nueva Sesión KYC"
+3. Completar información del usuario y URL de redirección
+4. Copiar URL de sesión generada
+
+### Paso 3: Dirigir al Usuario al Flujo KYC
+
+**Redirección directa:** Colocar la sessionUrl en un botón ("Verificar Mi Identidad") en tu sitio/app
+
+**Notificación automática:** Configurar la llamada API para que JAAK envíe el enlace vía WhatsApp, SMS o email
+
+Una vez que los usuarios acceden a sessionUrl, navegan por:
+1. Aceptación de términos y política de privacidad
+2. Otorgamiento de permisos de geolocalización
+3. Captura del frente del documento
+4. Captura del reverso del documento
+5. Grabación de video de verificación facial
+
+### Paso 4: Notificación y Recuperación de Resultados
+
+Después de completar, los usuarios son redirigidos a tu `redirectUrl`.
+
+**Opción Webhook (Recomendado):**
+- Ir a Ajustes → Mi Empresa → Editar
+- Localizar sección de Productos
+- Ingresar URL del endpoint en el campo "KYC Webhook"
+
+**Opción Email:** Configurar directamente en las opciones de la Plataforma JAAK
+
+También puedes revisar resultados manualmente en KYC → Sesiones.
+
+### Paso 5: Consulta de Detalle de Sesión
+
+1. Iniciar sesión en https://platform.jaak.ai o https://sandbox.jaak.ai
+2. Seleccionar KYC → Sesiones del sidebar
+3. Ver tabla con nombres de usuarios, estados de sesión y timestamps
+4. Hacer clic en cualquier sesión para acceder a:
+   - Resultados individuales de servicios (verificación de documento, liveness, OFAC)
+   - Evidencias capturadas (fotos, video)
+   - Resultados de aprobación o rechazo
+5. Descargar o compartir datos mediante enlaces temporales (si está permitido)
+
+> **Consejo:** Esta vista permite auditorías, soporte a usuarios y evaluación de calidad de captura.

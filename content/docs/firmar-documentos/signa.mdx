@@ -1,0 +1,118 @@
+---
+title: "Firma Electrónica SIGNA - JAAK"
+description: "JAAK Signa es una API REST para gestión de firmas digitales de documentos. Permite crear plantillas de documentos, enviarlas a firmantes y gestionar el flujo co"
+category: api
+order: 10
+---
+
+# Firma Electrónica SIGNA - JAAK
+
+**Contacto:** engineering@jaak.ai | **Versión:** 1.0.0
+
+## Descripción
+
+JAAK Signa es una API REST para gestión de firmas digitales de documentos. Permite crear plantillas de documentos, enviarlas a firmantes y gestionar el flujo completo de firma electrónica.
+
+## Capacidades
+
+- Cargar PDFs y convertirlos en plantillas reutilizables
+- Distribuir documentos a múltiples firmantes vía email
+- Rastrear procesos de firma y descargar documentos firmados
+- Gestionar directorios de firmantes e información de empresa
+- Manejar certificados digitales (FIEL, PSC)
+- Generar reportes de cumplimiento
+
+## Ambientes
+
+| Ambiente | URL | Propósito |
+|----------|-----|-----------|
+| Sandbox | `https://api.sandbox.jaak.ai` | Pruebas de integración |
+| Producción | `https://services.api.jaak.ai` | Ambiente en vivo |
+
+## Autenticación
+
+JWT Bearer tokens. Obtener via `/api/v1/sign-in`. Header requerido:
+```
+Authorization: Bearer <access_token>
+```
+
+Los tokens pueden refrescarse sin re-autenticación.
+
+## Tipos de Firma Soportados
+
+| Tipo | Descripción | Seguridad |
+|------|-------------|-----------|
+| **Simple** | Firma electrónica básica con dibujo manual o aceptación | Básica |
+| **Avanzada** | Validación de código OTP enviado al email del firmante | Media |
+| **Biométrica** | Verificación de identidad KYC con selfie y documento | Alta |
+
+## Módulos Principales de la API
+
+### 7.1 Autenticación
+Gestión de sesiones con operaciones de inicio/cierre de sesión.
+
+### 7.2 Plantillas (Templates)
+Gestión de documentos:
+- Crear, actualizar, clonar y eliminar plantillas basadas en PDF
+- Campos configurables
+
+### 7.3 Carpetas (Folders)
+Sistema de organización para agrupar plantillas.
+
+### 7.4 Submissions
+Flujo de trabajo principal para distribución de documentos:
+- Estados: `pending`, `in_progress`, `completed`, `declined`, `expired`, `cancelled`
+
+### 7.5 Firma Pública
+Endpoints del firmante - solo requieren identificadores slug, sin bearer tokens.
+
+### 7.8 Firmantes (Signers)
+Funcionalidad de libreta de direcciones para perfiles de firmantes reutilizables.
+
+### 7.7 Empresas (Companies)
+Gestión de clientes B2B con IDs fiscales, información de contacto.
+
+### 7.10 Certificados
+Almacenamiento y validación de certificados digitales para firmas FIEL/PSC.
+
+### 7.11 Almacenamiento (Storage)
+Gestión de archivos con URLs firmadas, descargas y generación de rastros de auditoría.
+
+### 7.13 Cuotas (Quotas)
+Rastreo de consumo del plan y verificación de disponibilidad de funciones.
+
+### 7.17 Webhooks
+Notificaciones de terceros para cambios de estado KYC.
+
+## Flujo de Trabajo Típico
+
+```
+1. Autenticación → /api/v1/sign-in
+2. Crear plantilla → POST /api/v1/templates (desde PDF)
+3. Crear submission → Distribuir a múltiples firmantes
+4. Invitaciones por email enviadas automáticamente
+5. Firmantes acceden a páginas personalizadas (slugs únicos)
+6. Para firmas avanzadas: verificación OTP requerida
+7. Firmantes envían firmas digitales
+8. Documentos descargados con rastros completos de auditoría
+```
+
+## Paginación
+
+- **Basada en offset:** Parámetros `page` y `limit`
+- **Basada en cursor:** Parámetros `after`/`before` para listado de plantillas
+
+## Códigos de Error
+
+| Código | Descripción |
+|--------|-------------|
+| 200 | Éxito |
+| 201 | Recurso creado |
+| 400 | Solicitud inválida |
+| 401 | Fallo de autenticación |
+| 404 | No encontrado |
+| 501 | Endpoint no implementado vía REST (usar gRPC) |
+
+## Nota Técnica
+
+El sistema internamente traduce solicitudes HTTP a servicios gRPC, pero los clientes trabajan exclusivamente con endpoints REST. Las cargas de archivos vía REST no están implementadas; se requiere streaming gRPC directo.
