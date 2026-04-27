@@ -1,0 +1,89 @@
+---
+title: "Descarga PDF - Validación CURP"
+description: "API de JAAK para validación del CURP mexicano. El servicio valida formato, estructura y autenticidad contra la base de datos oficial RENAPO de México."
+category: api
+order: 5
+---
+
+# Descarga PDF - Validación CURP
+
+## Descripción
+
+API de JAAK para validación del CURP mexicano. El servicio valida formato, estructura y autenticidad contra la base de datos oficial RENAPO de México.
+
+## Estructura del CURP
+
+Identificador único de población mexicano de **18 caracteres alfanuméricos** que codifica:
+- Iniciales de apellido y vocales
+- Fecha de nacimiento (formato AAMMDD)
+- Género y código de estado
+- Consonantes internas
+- Dígito verificador
+
+**Ejemplo:** `GAMC850815HDFRRL09` = Carlos García Martínez, nacido el 15 de agosto de 1985 en Ciudad de México.
+
+## Endpoint
+
+```
+POST /api/v1/government/mx/curp/validate
+```
+
+**Autenticación:** Bearer token requerido
+
+## Parámetros
+
+### Headers
+- `Authorization` (Bearer token, requerido)
+- `Content-Type` (application/json, requerido)
+- `Request-Id` (opcional, auto-generado si se omite)
+
+### Body
+
+| Campo | Tipo | Requerido | Descripción |
+|-------|------|-----------|-------------|
+| `curp` | string | Sí | CURP de 18 caracteres a validar |
+| `require_pdf` | boolean | No | Solicitar certificado oficial de RENAPO |
+
+## Respuesta
+
+Respuestas exitosas incluyen:
+- Detalles de validación (formato, estructura, dígito de verificación, reglas de negocio)
+- Información personal extraída del CURP
+- Estado de confirmación de RENAPO
+- Datos del acta de nacimiento
+- URL de descarga del PDF (expiración de 15 minutos si se solicitó)
+
+## Estados de CURP
+
+| Código | Descripción |
+|--------|-------------|
+| **AN** (Activo Normal) | Válido, estado activo |
+| **AB** (Activo Bajo) | Activo pero marcado para eliminación |
+| **IN** (Inactivo) | Desactivado |
+| **RE** (Rectificado) | Corregido/enmendado |
+
+## Manejo de Errores
+
+| Error | Código HTTP |
+|-------|-------------|
+| Formato inválido | 400 |
+| Dígito de verificación incorrecto | 400 |
+| Fechas inválidas | 400 |
+| Campos requeridos faltantes | 400 |
+| Fallos de autenticación | 401 |
+| Rate limit excedido | 429 |
+| Error del servidor | 500 |
+
+## Casos de Uso
+
+- Validación de registro de usuarios
+- Cumplimiento KYC con descargas de certificados
+- Validación en lotes con reportes detallados
+- Obtención y almacenamiento de certificados PDF oficiales
+
+## Mejores Prácticas
+
+- Sanitizar entradas
+- Implementar manejo robusto de errores
+- Usar Request IDs únicos para debugging
+- Cachear CURPs validados para reducir llamadas a la API

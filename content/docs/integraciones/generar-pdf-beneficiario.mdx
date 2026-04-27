@@ -1,0 +1,119 @@
+---
+title: "Generar PDF de Beneficiario Controlador"
+description: "Endpoint que genera automáticamente un documento PDF para el \"Formato de Identificación de Beneficiario Controlador\" del SAT (Anexo 3 para personas físicas)."
+category: api
+order: 6
+---
+
+# Generar PDF de Beneficiario Controlador
+
+**Versión:** 1.0.0 | **Liberado:** Diciembre 2024
+
+## Descripción
+
+Endpoint que genera automáticamente un documento PDF para el "Formato de Identificación de Beneficiario Controlador" del SAT (Anexo 3 para personas físicas).
+
+## Endpoint
+
+```
+GET https://api.jaak.ai/api/v1/kyc/session/{sessionId}/beneficiary-controller-pdf
+```
+
+## Parámetros
+
+| Parámetro | Tipo | Requerido | Descripción |
+|-----------|------|-----------|-------------|
+| `sessionId` | path | Sí | Identificador de la sesión KYC |
+| `Authorization` | header | Sí | API Key o Bearer Token |
+| `Language` | header | No | "es" o "en" (default: español) |
+
+## Métodos de Autenticación
+
+```
+# API Key
+Authorization: YOUR_API_KEY
+
+# Bearer Token
+Authorization: Bearer [JWT_TOKEN]
+```
+
+**Roles permitidos:** God, Administrador, Manager, Lector (solo lectura)
+
+## Respuesta
+
+### Éxito (200 OK)
+```
+Content-Type: application/pdf
+Content-Disposition: attachment; filename="beneficiario_controlador_{sessionId}.pdf"
+```
+Cuerpo: Archivo PDF binario
+
+### Códigos de Error
+
+| Código | Descripción |
+|--------|-------------|
+| 400 | Formato de ID de sesión inválido |
+| 401 | Credenciales inválidas/expiradas |
+| 403 | Permisos insuficientes |
+| 404 (KYC19) | Sesión no existe |
+| 500 | Fallo de generación del PDF |
+
+## Contenido del PDF
+
+El documento incluye automáticamente:
+- Información personal completa (nombres, fecha de nacimiento, nacionalidad, género)
+- CURP y RFC
+- Detalles de identificación del documento
+- Información de dirección completa
+- Detalles de contacto verificados (teléfono/email)
+- Fotografía facial
+- Logo de la empresa (si está configurado)
+- Timestamp de generación
+
+## Flujo de Integración Recomendado
+
+```
+1. Iniciar sesión KYC → recibir sessionId
+2. Usuario completa el proceso de verificación
+3. Confirmar estado de sesión = "completed"
+4. Llamar al endpoint de generación de PDF
+5. Almacenar PDF en el sistema
+6. Asociar con el registro del cliente
+```
+
+## Mejores Prácticas
+
+**Hacer:**
+- Verificar que la sesión KYC esté "completada" antes de solicitar el PDF
+- Descargar inmediatamente después de la completación
+- Usar nombres de archivo descriptivos con sessionId
+- Validar Content-Type como "application/pdf"
+- Implementar backoff exponencial para errores 500
+
+**Evitar:**
+- Solicitudes duplicadas simultáneas
+- Asumir disponibilidad del PDF sin verificar el estado
+- Ignorar errores 404
+- Almacenar descargas sin validar
+
+## Ambientes
+
+| Ambiente | URL |
+|----------|-----|
+| Sandbox | `https://api.sandbox.jaak.ai` |
+| Producción | `https://api.jaak.ai` |
+
+## Información de Cumplimiento
+
+El endpoint genera documentos en conformidad con:
+- Especificaciones del Formato Anexo 3 del SAT
+- Regulaciones mexicanas anti-lavado de dinero
+- Requisitos actuales de identificación oficial
+- Regulaciones federales para prevención de ingresos ilícitos
+
+## Soporte
+
+- **Email:** soporte@jaak.ai
+- **Portal:** https://app.jaak.ai
+- **Documentación:** https://docs.jaak.ai
+- **Horario:** Lunes-Viernes 9am-6pm, Sábado 10am-2pm (Hora Ciudad de México)

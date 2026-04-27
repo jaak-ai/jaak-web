@@ -28,6 +28,24 @@ export const docsNavigation: NavItem[] = [
       { title: 'KYC vía Web (white label)', href: '/docs/verificar-identidad/via-web-white-label' },
       { title: 'Personalizar KYC Web', href: '/docs/verificar-identidad/personalizar-web' },
       { title: 'Notificaciones de sesión', href: '/docs/verificar-identidad/notificaciones' },
+      { title: 'KYC General', href: '/docs/verificar-identidad/kyc-general' },
+      { title: 'KYC Mosaic', href: '/docs/verificar-identidad/kyc-mosaic' },
+      { title: 'Passwordless', href: '/docs/verificar-identidad/passwordless' },
+      { title: 'Listas oficiales', href: '/docs/verificar-identidad/listas-oficiales' },
+      { title: 'Verificación OTP', href: '/docs/verificar-identidad/verificacion-otp' },
+      { title: 'Webhook KYC', href: '/docs/verificar-identidad/webhook' },
+      {
+        title: 'Conceptos',
+        items: [
+          { title: 'Estados de verificación', href: '/docs/verificar-identidad/conceptos/estados-verificacion' },
+        ],
+      },
+      {
+        title: 'Web',
+        items: [
+          { title: 'Implementación', href: '/docs/verificar-identidad/web/implementacion' },
+        ],
+      },
       {
         title: 'KYC vía API',
         items: [
@@ -112,6 +130,7 @@ export const docsNavigation: NavItem[] = [
           { title: 'Tipos de firma', href: '/docs/firmar-documentos/conceptos/tipos-firma' },
         ],
       },
+      { title: 'Firma Electrónica SIGNA', href: '/docs/firmar-documentos/signa' },
       {
         title: 'API Reference',
         items: [
@@ -142,6 +161,17 @@ export const docsNavigation: NavItem[] = [
       { title: 'Errores', href: '/docs/recursos/errores' },
       { title: 'Sandbox', href: '/docs/recursos/sandbox' },
       { title: 'Catálogo Sandbox Request IDs', href: '/docs/recursos/sandbox-request-ids' },
+    ],
+  },
+  {
+    title: 'Integraciones',
+    items: [
+      { title: 'Automatización con N8N', href: '/docs/integraciones/n8n' },
+      { title: 'Flutter (Stamps + Visage)', href: '/docs/integraciones/flutter' },
+      { title: 'Extracción PDF OCR', href: '/docs/integraciones/extraccion-pdf-ocr' },
+      { title: 'Detalle de sesión PDF', href: '/docs/integraciones/detalle-sesion-pdf' },
+      { title: 'Descarga PDF CURP', href: '/docs/integraciones/descarga-pdf-curp' },
+      { title: 'Generar PDF beneficiario', href: '/docs/integraciones/generar-pdf-beneficiario' },
     ],
   },
   {

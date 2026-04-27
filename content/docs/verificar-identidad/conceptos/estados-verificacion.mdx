@@ -1,0 +1,93 @@
+---
+title: "Estados de Verificación KYC"
+description: "Basada en conteo de intentos para balancear seguridad con experiencia de usuario."
+category: concepto
+order: 1
+---
+
+# Estados de Verificación KYC
+
+## Cinco Estados Principales
+
+| Estado | Ícono | Descripción |
+|--------|-------|-------------|
+| **Aprobado** | ✅ | Usuario completó y pasó todas las validaciones |
+| **Rechazado** | ❌ | Usuario no cumplió criterios de seguridad o excedió intentos permitidos |
+| **En Revisión** | ⚠️ | Requiere validación manual por un agente |
+| **Caducado** | ⌛️ | Usuario no completó el flujo dentro del límite de tiempo |
+| **Pendiente / No Iniciado** | 📋 | Sesión creada pero el usuario no ha comenzado |
+
+## Metodología de Determinación
+
+Basada en conteo de intentos para balancear seguridad con experiencia de usuario.
+
+### Umbrales de Verificación de Documento
+
+| Intentos | Estado |
+|----------|--------|
+| 1-3 | Aprobado |
+| 4-5 | En Revisión |
+| +5 | Rechazado |
+
+### Umbrales de Liveness
+
+| Intentos | Estado |
+|----------|--------|
+| 1-2 | Aprobado |
+| 3 | En Revisión |
+| +3 | Rechazado |
+
+### Umbrales de Comparación Biométrica OTO
+
+| Intentos | Estado |
+|----------|--------|
+| 1 | Aprobado o Rechazado (determinado inmediatamente) |
+| +1 | Rechazo automático |
+
+## Estados en Respuesta API
+
+### Pendiente / No Iniciado
+```json
+{
+  "state": "",
+  "statusDetail": { "state": "", "stage": "" }
+}
+```
+
+### Caducado
+```json
+{
+  "state": "",
+  "statusDetail": { "state": "finished", "stage": "lapsed_motor" }
+}
+```
+
+### En Revisión
+```json
+{
+  "status": "NEED_REVIEW",
+  "statusDetail": { "state": "finished", "stage": "in_review" }
+}
+```
+
+### Aprobado
+```json
+{
+  "status": "PASS",
+  "statusDetail": { "state": "finished", "stage": "approved" }
+}
+```
+
+### Rechazado
+```json
+{
+  "status": "FAIL",
+  "statusDetail": { "state": "finished", "stage": "rejected" }
+}
+```
+
+## Endpoint de Consulta
+
+```
+GET /v1/kyc/session/{{sessionID}}
+```

@@ -1,0 +1,94 @@
+---
+title: "Generar Detalle de Sesión PDF"
+description: "Endpoint para descargar un reporte PDF que resume una sesión KYC completa usando el identificador de la sesión."
+category: api
+order: 4
+---
+
+# Generar Detalle de Sesión PDF
+
+## Descripción
+
+Endpoint para descargar un reporte PDF que resume una sesión KYC completa usando el identificador de la sesión.
+
+## Endpoint
+
+```
+GET /api/v1/kyc/session/{id}/pdf
+```
+
+**Método:** GET
+**Autenticación:** Requerida (Bearer Token)
+**Tipo de Respuesta:** `application/octet-stream`
+
+## Parámetros
+
+| Parámetro | Tipo | Requerido | Ejemplo |
+|-----------|------|-----------|---------|
+| `id` (path) | string | Sí | `6994bf1c1f24bffaedfbb9e5` |
+| `Authorization` (header) | string | Sí | Bearer {TU_API_TOKEN} |
+
+## Ambientes
+
+| Ambiente | URL |
+|----------|-----|
+| Sandbox | `https://sandbox.api.jaak.ai` |
+| Producción | `https://services.api.jaak.ai` |
+
+## Ejemplos de Solicitud
+
+### cURL
+
+```bash
+curl -X GET \
+  "https://sandbox.api.jaak.ai/api/v1/kyc/session/6994bf1c1f24bffaedfbb9e5/pdf" \
+  -H "Authorization: Bearer {TU_API_TOKEN}" \
+  -H "Accept: application/octet-stream" \
+  --output "session_report.pdf"
+```
+
+### JavaScript/Fetch
+
+```javascript
+const response = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
+const blob = await response.blob();
+// Disparar descarga o abrir en nueva pestaña
+```
+
+### Python
+
+```python
+response = requests.get(url, headers=headers, stream=True)
+with open('report.pdf', 'wb') as f:
+    for chunk in response.iter_content(chunk_size=8192):
+        f.write(chunk)
+```
+
+## Respuestas
+
+### 200 OK - Éxito
+
+PDF retornado como stream binario con headers:
+```
+Content-Disposition: attachment; filename="session_{id}.pdf"
+```
+
+### Códigos de Error
+
+| Código | Significado |
+|--------|------------|
+| 400 | ID inválido o formato incorrecto |
+| 401 | Token de autenticación inválido |
+| 404 | Sesión no encontrada |
+| 500 | Error del servidor interno |
+
+## Buenas Prácticas
+
+- **Manejo Binario:** Manejar la respuesta siempre como stream binario para evitar corrupción
+- **Nomenclatura:** Nombrar archivos con ID de sesión para rastreabilidad
+- **Reintentos:** Implementar backoff exponencial para errores 5xx; no reintentar 4xx sin correcciones
+- **Estado:** Verificar que la sesión haya completado procesamiento antes de solicitar PDF
+
+## Soporte
+
+**Email:** support@jaak.ai

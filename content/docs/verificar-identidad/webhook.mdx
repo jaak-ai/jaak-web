@@ -1,0 +1,117 @@
+---
+title: "Webhook KYC JAAK"
+description: "Un webhook funciona como un \"mensajero automático\" que JAAK envía a tu sistema al completar una verificación KYC, permitiendo procesamiento en tiempo real en lu"
+category: api
+order: 9
+---
+
+# Webhook KYC JAAK
+
+**Tiempo de configuración estimado:** 45-60 minutos
+
+## ¿Qué es un Webhook?
+
+Un webhook funciona como un "mensajero automático" que JAAK envía a tu sistema al completar una verificación KYC, permitiendo procesamiento en tiempo real en lugar de polling manual de resultados.
+
+**Beneficios:**
+- Entrega automática de resultados
+- Capacidad de procesamiento en tiempo real
+- Notificaciones inmediatas
+- Carga reducida del sistema comparado con polling
+
+## Pasos de Configuración
+
+### Paso 1: Acceder a Ajustes
+Dashboard → Ajustes → Mi Empresa → Editar
+
+### Paso 2: Configurar Detalles del Webhook
+
+| Campo | Propósito | Ejemplo |
+|-------|---------|---------|
+| **URL Webhook** | Destino para resultados de verificación | `https://tu-servidor.com/webhook/kyc` |
+| **Auth Key** | Credencial de seguridad para validación | String de 16+ caracteres |
+
+**Requisitos:**
+- URLs deben usar protocolo HTTPS
+- Solo endpoints públicamente accesibles
+- Auth Key mínimo 16 caracteres
+- Evitar credenciales predecibles
+
+### Paso 3: Implementar Endpoint
+
+**Especificaciones HTTP:**
+```
+POST /webhook-endpoint
+Content-Type: application/json
+Authorization: Bearer [AUTH-KEY]
+User-Agent: JAAK-Webhook/1.0
+```
+
+**Requisitos de Respuesta:** Tu endpoint debe responder con HTTP 200 OK en menos de 30 segundos.
+
+**Política de Reintentos:**
+- Intento inicial + 3 reintentos máximo
+- Intervalos: 1 minuto, 5 minutos, 15 minutos
+
+### Paso 4: Estructura de Datos
+
+El payload del webhook incluye:
+- **Event:** Notificación de completitud de sesión
+- **Timestamp:** Formato ISO 8601
+- **SessionID:** Identificador único
+- **Verification Status:** APPROVED/REJECTED/PENDING/ERROR
+- **Confidence Score:** 0-100
+- **User Data:** Nombre, número de documento, fecha de nacimiento, nacionalidad
+- **Validation Results:** Autenticidad de documento, coincidencia facial, detección de liveness
+- **Metadata:** Dirección IP, geolocalización, información del dispositivo
+
+### Paso 5: Pruebas y Monitoreo
+
+**Lista de Verificación Pre-Test:**
+- URL de Webhook configurada en JAAK
+- Auth Key configurada en JAAK
+- Endpoint operativo con HTTPS
+- Logging habilitado para diagnóstico
+
+**Proceso de Verificación:**
+1. Crear sesión KYC de prueba
+2. Completar el flujo de verificación
+3. Monitorear logs del servidor
+4. Validar estado en Dashboard JAAK
+
+## Interpretación de Estados
+
+| Estado | Significado | Acción |
+|--------|---------|--------|
+| APPROVED | Verificación exitosa | Activar cuenta |
+| REJECTED | Verificación fallida | Solicitar reintento/documentos adicionales |
+| PENDING | Revisión manual requerida | Notificar al equipo de cumplimiento |
+| ERROR | Falla técnica | Permitir reintento del usuario |
+
+## Ejemplos de Código
+
+### Python (Flask)
+Implementación con verificación de autenticación, parseo de JSON y lógica basada en estado.
+
+### Node.js (Express)
+Middleware Express, manejo de errores y enrutamiento por estado.
+
+### PHP
+Implementación nativa con `file_get_contents()` para procesamiento de entrada raw.
+
+## Solución de Problemas
+
+| Problema | Solución |
+|----------|----------|
+| No se reciben webhooks | Verificar URL en configuración; confirmar accesibilidad del servidor |
+| Fallos de autenticación | Validar Auth Key; verificar formato del header Authorization |
+| Timeouts | Optimizar tiempo de respuesta del endpoint; mover procesamiento pesado a tareas de fondo |
+| Errores JSON | Implementar manejo robusto de errores; validar existencia de campos |
+
+## Mejores Prácticas
+
+- Implementar manejo de idempotencia para entregas duplicadas
+- Almacenar firmas de webhook para rastros de auditoría
+- Usar jobs de fondo para operaciones que toman tiempo
+- Monitorear fallos con sistemas de alertas
+- Documentar mapeo de lógica de negocio para diferentes estados

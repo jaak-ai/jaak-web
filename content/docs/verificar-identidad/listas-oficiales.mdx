@@ -1,0 +1,77 @@
+---
+title: "Listas Oficiales JAAK"
+description: "API de Listas Oficiales de JAAK que permite consultas de verificación contra bases de datos del gobierno mexicano y organizaciones internacionales, esencial par"
+category: api
+order: 6
+---
+
+# Listas Oficiales JAAK
+
+## Descripción
+
+API de Listas Oficiales de JAAK que permite consultas de verificación contra bases de datos del gobierno mexicano y organizaciones internacionales, esencial para procesos KYC y verificación de identidad.
+
+## Endpoints
+
+| Ambiente | URL |
+|----------|-----|
+| Sandbox | `POST https://sandbox.api.jaak.ai/api/v2/blacklist/investigate` |
+| Producción | `POST https://services.api.jaak.ai/api/v2/blacklist/investigate` |
+
+## Servicios Soportados
+
+### 1. Servicio CURP
+Valida registros del registro de población mexicano (RENAPO). Retorna datos personales incluyendo nombre, fecha de nacimiento, género, lugar de nacimiento y detalles de registro.
+
+### 2. Servicio INE
+Verifica autenticidad de credencial electoral usando números CIC (9 dígitos) y OCR (13 dígitos). Retorna estado de validación.
+
+### 3. Servicio OFAC
+Consulta listas de sanciones del Tesoro de EE.UU. para individuos involucrados en narcóticos, terrorismo o proliferación de armas.
+
+### 4. Servicio SAT69B
+Verifica si el RFC aparece en la lista negativa del SAT por operaciones fraudulentas.
+
+### 5. Servicio INTERPOL
+Busca en listas internacionales de personas buscadas en todos los tipos de alertas.
+
+## Interpretación de Resultados
+
+| Servicio | `foundInService: true` | `foundInService: false` |
+|----------|----------------------|------------------------|
+| CURP | Registro válido ✅ | Inválido/No encontrado ❌ |
+| INE | Credencial válida ✅ | Credencial inválida ❌ |
+| OFAC | Persona sancionada ❌ | No sancionada ✅ |
+| SAT69B | RFC en lista ❌ | No listado ✅ |
+| INTERPOL | Persona buscada ❌ | No buscada ✅ |
+
+## Límites de Rate
+
+| Ambiente | Límite |
+|----------|--------|
+| Sandbox | 100 solicitudes/minuto |
+| Producción | Según plan contratado |
+
+**Otras restricciones:**
+- Tamaño máximo de solicitud: 1 MB
+- Timeout de solicitud: 30 segundos
+
+## Mejores Prácticas
+
+- Usar UUIDs únicos para seguimiento de `eventId`
+- Implementar backoff exponencial para errores 5xx
+- Nunca exponer tokens de API en frontend
+- Almacenar tokens en variables de entorno
+- Cachear consultas repetidas de CURP/INE
+- Monitorear tiempos de respuesta
+
+## Códigos HTTP
+
+| Código | Descripción |
+|--------|-------------|
+| 200 | Éxito |
+| 400 | Parámetros inválidos |
+| 401 | Fallo de autenticación |
+| 403 | Permisos insuficientes |
+| 429 | Rate limit excedido |
+| 500 | Error del servidor |

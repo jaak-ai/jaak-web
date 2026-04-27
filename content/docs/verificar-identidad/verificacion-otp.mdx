@@ -1,0 +1,97 @@
+---
+title: "Verificación Telefónica por OTP"
+description: "Endpoint que envía contraseñas de un solo uso (OTP) vía SMS y WhatsApp para verificación de números telefónicos como parte de procesos KYC."
+category: api
+order: 7
+---
+
+# Verificación Telefónica por OTP
+
+## Descripción
+
+Endpoint que envía contraseñas de un solo uso (OTP) vía SMS y WhatsApp para verificación de números telefónicos como parte de procesos KYC.
+
+## Autenticación
+
+Bearer Token con API Keys formato `sk_live_` o `sk_test_` seguido de 40 caracteres alfanuméricos.
+
+**Buenas prácticas:**
+- Almacenar en variables de entorno
+- Nunca exponer en código frontend
+- Rotar cada 90 días
+
+## Endpoint
+
+```
+POST /api/v1/kyc/phone/send-otp
+```
+
+**Base URL:** `https://api.jaak.mx`
+
+## Parámetros
+
+### Headers
+
+| Header | Valor | Requerido |
+|--------|-------|-----------|
+| `Content-Type` | application/json | Sí |
+| `Authorization` | Bearer + API Key | Sí |
+
+### Body
+
+| Campo | Tipo | Requerido | Descripción |
+|-------|------|-----------|-------------|
+| `company_id` | string | Sí | Identificador único de la empresa |
+| `country_document` | string | Sí | Código ISO del país (MEX, COL, ARG, CHL, PER, BRA) |
+| `phone_number` | string | Sí | Formato internacional con prefijo + |
+
+**Formato de teléfono:** Incluir código de país con símbolo `+` sin espacios ni guiones. Ejemplo: `"+525512345678"`
+
+## Códigos de Respuesta
+
+| Código | Descripción |
+|--------|-------------|
+| 200 | Éxito - Retorna `session_id` |
+| 400 | Datos inválidos/incompletos o formato de teléfono incorrecto |
+| 401 | API key inválida o faltante |
+| 403 | API key sin permisos necesarios |
+| 404 | `company_id` no encontrado |
+| 429 | Rate limit - 5 solicitudes/10 min por teléfono; 100/hora por empresa |
+| 500 | Error del servidor |
+
+## Ejemplo cURL
+
+```bash
+curl -X POST "https://api.jaak.mx/api/v1/kyc/phone/send-otp" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <TU_ACCESS_TOKEN>" \
+  -d '{
+    "company_id": "5f8d0d55b54764421b7156c5",
+    "country_document": "MEX",
+    "phone_number": "+525512345678"
+  }'
+```
+
+## Flujo de Integración
+
+1. Usuario ingresa número de teléfono
+2. Aplicación valida formato
+3. Llamar `/send-otp` con Bearer Token
+4. JAAK envía OTP vía SMS y WhatsApp
+5. Usuario recibe código de 6 dígitos (válido 5 minutos)
+6. Usuario ingresa código en la aplicación
+7. Aplicación verifica código usando `session_id`
+8. Verificación completada
+
+## Detalles de Seguridad del OTP
+
+- Código numérico de **6 dígitos**
+- Válido por **5 minutos**
+- De un **solo uso**
+- Máximo **5 intentos de validación** por `session_id`
+- El `session_id` expira después de validación o 10 minutos
+
+## Ambiente de Pruebas
+
+- **URL Sandbox:** `https://api-sandbox.jaak.mx`
+- **Teléfono de prueba:** `+525500000001` (siempre exitoso)
