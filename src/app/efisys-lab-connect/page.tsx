@@ -11,7 +11,7 @@ import {
 
 // ── Tipos ──────────────────────────────────────────────────────────────────
 
-interface FormData {
+interface RegistrationFormData {
   name: string;
   empresa: string;
   cargo: string;
@@ -175,7 +175,7 @@ function EfisysMarketplaceLogoLight({ className = "" }: { className?: string }) 
 // ── Componente principal ───────────────────────────────────────────────────
 
 export default function EfisysLabConnectPage() {
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<RegistrationFormData>({
     name: "",
     empresa: "",
     cargo: "",
@@ -325,7 +325,7 @@ export default function EfisysLabConnectPage() {
                       key={i}
                       className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/5 border border-white/10 rounded-lg text-white/70 text-sm font-medium"
                     >
-                      <span>{item.icon}</span>
+                      <span aria-hidden="true">{item.icon}</span>
                       {item.text}
                     </span>
                   ))}
