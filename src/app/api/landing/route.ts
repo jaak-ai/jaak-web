@@ -26,15 +26,10 @@ export async function POST(request: Request) {
       );
     }
 
-    // Validación Turnstile server-side (solo si el secret está configurado)
+    // Validación Turnstile server-side (solo cuando el token viene en el payload)
+    // No se exige a todas las landings para no romper formularios sin Turnstile
     const TURNSTILE_SECRET = process.env.TURNSTILE_SECRET_KEY;
-    if (TURNSTILE_SECRET) {
-      if (!turnstile_token) {
-        return NextResponse.json(
-          { error: "Verificación de seguridad requerida." },
-          { status: 400 }
-        );
-      }
+    if (TURNSTILE_SECRET && turnstile_token) {
       try {
         const verifyBody = new URLSearchParams({
           secret: TURNSTILE_SECRET,

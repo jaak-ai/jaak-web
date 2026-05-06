@@ -152,27 +152,6 @@ function EfisysLogomark({ className = "w-8 h-8" }: { className?: string }) {
   );
 }
 
-function EfisysMarketplaceLogo({ className = "" }: { className?: string }) {
-  return (
-    <div className={`flex items-center gap-3 ${className}`}>
-      <EfisysLogomark className="w-9 h-9 flex-shrink-0" />
-      <div className="flex flex-col leading-tight">
-        <span
-          className="font-black text-xl tracking-tight"
-          style={{ color: "#1A3A5C", fontFamily: "Montserrat, system-ui, sans-serif" }}
-        >
-          EFISYS
-        </span>
-        <span
-          className="text-xs font-semibold tracking-widest"
-          style={{ color: "#1A3A5C", opacity: 0.7 }}
-        >
-          MARKETPLACE
-        </span>
-      </div>
-    </div>
-  );
-}
 
 function EfisysMarketplaceLogoLight({ className = "" }: { className?: string }) {
   return (
