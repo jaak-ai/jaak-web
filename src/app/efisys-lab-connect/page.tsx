@@ -199,7 +199,10 @@ export default function EfisysLabConnectPage() {
   }, []);
 
   const handleTurnstileError = useCallback(() => {
+    setStatus("error");
     setErrorMessage("Error de verificación de seguridad. Por favor, recarga la página.");
+    setTurnstileToken("");
+    setTurnstileKey((k) => k + 1);
   }, []);
 
   const resetTurnstile = () => {
