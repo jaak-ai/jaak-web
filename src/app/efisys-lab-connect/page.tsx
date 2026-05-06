@@ -41,6 +41,19 @@ interface UseCase {
   color: string;
 }
 
+// ── Constantes del evento ──────────────────────────────────────────────────
+
+const EVENT = {
+  dateShort: "07 · Mayo · 2026",
+  dateFull: "07 de Mayo, 2026",
+  dateDay: "Jueves",
+  city: "Oaxaca, Oax.",
+  hotel: "Hotel Fortín Plaza",
+  cost: "Evento sin costo",
+  hotelNote: "Precios especiales de hospedaje en Hotel Fortín Plaza",
+  capacity: "Cupo limitado",
+} as const;
+
 // ── Datos ──────────────────────────────────────────────────────────────────
 
 const jaakBullets: BulletItem[] = [
@@ -189,9 +202,11 @@ export default function EfisysLabConnectPage() {
   const [errorMessage, setErrorMessage] = useState("");
   const [turnstileToken, setTurnstileToken] = useState("");
   const [turnstileKey, setTurnstileKey] = useState(0);
+  const [turnstileError, setTurnstileError] = useState(false);
 
   const handleTurnstileVerify = useCallback((token: string) => {
     setTurnstileToken(token);
+    setTurnstileError(false);
   }, []);
 
   const handleTurnstileExpire = useCallback(() => {
@@ -199,8 +214,7 @@ export default function EfisysLabConnectPage() {
   }, []);
 
   const handleTurnstileError = useCallback(() => {
-    setStatus("error");
-    setErrorMessage("Error de verificación de seguridad. Por favor, recarga la página.");
+    setTurnstileError(true);
     setTurnstileToken("");
     setTurnstileKey((k) => k + 1);
   }, []);
@@ -317,9 +331,9 @@ export default function EfisysLabConnectPage() {
                 {/* Meta-datos del evento */}
                 <div className="flex flex-wrap gap-3 mb-8">
                   {[
-                    { icon: "📅", text: "07 · Mayo · 2026" },
-                    { icon: "📍", text: "Oaxaca, Oax." },
-                    { icon: "🏨", text: "Hotel Fortín Plaza" },
+                    { icon: "📅", text: EVENT.dateShort },
+                    { icon: "📍", text: EVENT.city },
+                    { icon: "🏨", text: EVENT.hotel },
                   ].map((item, i) => (
                     <span
                       key={i}
@@ -709,6 +723,18 @@ export default function EfisysLabConnectPage() {
                       onExpire={handleTurnstileExpire}
                       onError={handleTurnstileError}
                     />
+                    {turnstileError && (
+                      <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm text-center">
+                        Error al cargar la verificación.{" "}
+                        <button
+                          type="button"
+                          onClick={() => { setTurnstileError(false); setTurnstileKey((k) => k + 1); }}
+                          className="underline font-medium"
+                        >
+                          Reintentar
+                        </button>
+                      </div>
+                    )}
 
                     {/* Botón submit */}
                     <button
