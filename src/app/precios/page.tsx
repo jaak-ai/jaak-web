@@ -94,154 +94,224 @@ const faqSchema = {
   ],
 };
 
-const productSchemas = [
+// --- Product Schemas (data-driven, optimizados para SEO) ---
+// Estrategia: un Product por SKU-line con AggregateOffer + Offer[] por tier.
+// Precios sin IVA (declarado en priceSpecification.valueAddedTaxIncluded = false).
+// URL por Offer apunta al checkout pre-llenado del SKU específico — Google indexa
+// cada tier como deep link y permite rich snippets "Desde $X · N planes".
+
+type TierName = "Cobre" | "Bronce" | "Plata" | "Oro" | "Platino";
+
+interface PackageOffer {
+  tier: TierName;
+  sku: string;
+  qty: number;
+  unit: string;        // singular: "verificación", "firma", "sesión", "consulta", "token"
+  unitPlural: string;
+  price: number;       // sin IVA, MXN
+  url: string;         // checkout pre-llenado del SKU
+}
+
+interface ProductDefinition {
+  id: string;          // fragment anchor en /precios (#kyc, #firma-simple, ...)
+  name: string;
+  description: string;
+  category: string;
+  packages: PackageOffer[];
+}
+
+const BRAND_REF = {
+  "@type": "Brand" as const,
+  name: "JAAK",
+  url: "https://jaak.ai",
+};
+
+const SELLER_REF = {
+  "@type": "Organization" as const,
+  name: "JAAK",
+  url: "https://jaak.ai",
+};
+
+const PRODUCT_IMAGE = "https://jaak.ai/apple-icon.png";
+const PRICE_VALID_UNTIL = "2027-12-31";
+const PRECIOS_URL = "https://jaak.ai/precios";
+
+const PRODUCTS: ProductDefinition[] = [
   {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: "JAAK KYC Biométrico – Autoservicio",
-    description: "Verificación de identidad KYC biométrico con prueba de vida certificada iBeta Nivel 2. Para empresas reguladas en México.",
-    brand: { "@type": "Brand", name: "JAAK" },
-    offers: [
-      {
-        "@type": "Offer",
-        name: "Plan Cobre",
-        price: "99",
-        priceCurrency: "MXN",
-        priceValidUntil: "2026-12-31",
-        availability: "https://schema.org/InStock",
-        url: "https://platform.jaak.ai/#/onboarding/user-info",
-        description: "5 verificaciones de identidad por año",
-      },
-      {
-        "@type": "Offer",
-        name: "Plan Bronce",
-        price: "1500",
-        priceCurrency: "MXN",
-        priceValidUntil: "2026-12-31",
-        availability: "https://schema.org/InStock",
-        url: "https://platform.jaak.ai/#/onboarding/plans",
-        description: "50 verificaciones de identidad por año",
-      },
-      {
-        "@type": "Offer",
-        name: "Plan Plata",
-        price: "2800",
-        priceCurrency: "MXN",
-        priceValidUntil: "2026-12-31",
-        availability: "https://schema.org/InStock",
-        url: "https://platform.jaak.ai/#/onboarding/plans",
-        description: "100 verificaciones de identidad por año",
-      },
-      {
-        "@type": "Offer",
-        name: "Plan Oro",
-        price: "6625",
-        priceCurrency: "MXN",
-        priceValidUntil: "2026-12-31",
-        availability: "https://schema.org/InStock",
-        url: "https://platform.jaak.ai/#/onboarding/plans",
-        description: "250 verificaciones de identidad por año",
-      },
-      {
-        "@type": "Offer",
-        name: "Plan Platino",
-        price: "12500",
-        priceCurrency: "MXN",
-        priceValidUntil: "2026-12-31",
-        availability: "https://schema.org/InStock",
-        url: "https://platform.jaak.ai/#/onboarding/plans",
-        description: "500 verificaciones de identidad por año",
-      },
+    id: "kyc",
+    name: "KYC Biométrico – Verificación de Identidad",
+    description:
+      "Verificación de identidad con prueba de vida iBeta Nivel 2, OCR de identificación oficial, consulta INE/RENAPO y validación contra listas negras (OFAC, Interpol, SAT). Diseñado para empresas reguladas en México: CNBV, LFPIORPI, UIF.",
+    category: "Software de Verificación de Identidad / KYC",
+    packages: [
+      { tier: "Cobre",   sku: "JAAK-KYC-COBRE",   qty: 5,   unit: "verificación", unitPlural: "verificaciones", price: 99,    url: "https://platform.jaak.ai/#/onboarding/plans/cobre" },
+      { tier: "Bronce",  sku: "JAAK-KYC-BRONCE",  qty: 50,  unit: "verificación", unitPlural: "verificaciones", price: 1500,  url: "https://platform.jaak.ai/#/onboarding/plans/bronce" },
+      { tier: "Plata",   sku: "JAAK-KYC-PLATA",   qty: 100, unit: "verificación", unitPlural: "verificaciones", price: 2800,  url: "https://platform.jaak.ai/#/onboarding/plans/plata" },
+      { tier: "Oro",     sku: "JAAK-KYC-ORO",     qty: 250, unit: "verificación", unitPlural: "verificaciones", price: 6625,  url: "https://platform.jaak.ai/#/onboarding/plans/oro" },
+      { tier: "Platino", sku: "JAAK-KYC-PLATINO", qty: 500, unit: "verificación", unitPlural: "verificaciones", price: 12500, url: "https://platform.jaak.ai/#/onboarding/plans/platino1" },
     ],
   },
   {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: "JAAK Firma Electrónica Simple – Autoservicio",
-    description: "Firma electrónica simple para documentos sin certificación avanzada.",
-    brand: { "@type": "Brand", name: "JAAK" },
-    offers: [
-      {
-        "@type": "Offer",
-        name: "Plan Cobre",
-        price: "49",
-        priceCurrency: "MXN",
-        priceValidUntil: "2026-12-31",
-        availability: "https://schema.org/InStock",
-        url: "https://platform.jaak.ai/#/onboarding/plans",
-        description: "10 firmas por año",
-      },
-      {
-        "@type": "Offer",
-        name: "Plan Platino",
-        price: "2500",
-        priceCurrency: "MXN",
-        priceValidUntil: "2026-12-31",
-        availability: "https://schema.org/InStock",
-        url: "https://platform.jaak.ai/#/onboarding/plans",
-        description: "500 firmas por año",
-      },
+    id: "firma-simple",
+    name: "Firma Electrónica Simple",
+    description:
+      "Firma electrónica con validez legal en México para contratos comerciales, RR.HH. y flujos de aprobación sin obligación regulatoria de NOM-151. API REST y plataforma web, hasta 4 firmantes por documento.",
+    category: "Software de Firma Electrónica",
+    packages: [
+      { tier: "Cobre",   sku: "JAAK-FIRMA-SIMPLE-COBRE",   qty: 10,  unit: "firma", unitPlural: "firmas", price: 49,   url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWNkNGVkYzNhODg3MzU1MzNmMmI5ZjclMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWNkNGVkYzNhODg3MzU1MzNmMmI5ZjclMjIlMkMlMjJrJTIyJTNBJTIyc2lnbmFfc2ltcGxlJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwU2ltcGxlJTIyJTJDJTIycHIlMjIlM0E1Ni44NCUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJGaXJtYSUyMFNpbXBsZSUyMENvYnJlJTIwMTAlMjIlMkMlMjJxJTIyJTNBNSU3RCU1RCU3RA%3D%3D" },
+      { tier: "Bronce",  sku: "JAAK-FIRMA-SIMPLE-BRONCE",  qty: 50,  unit: "firma", unitPlural: "firmas", price: 400,  url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWNkNGZhYTNhODg3MzU1MzNmMmJhMTYlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWNkNGZhYTNhODg3MzU1MzNmMmJhMTYlMjIlMkMlMjJrJTIyJTNBJTIyc2lnbmFfc2ltcGxlJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwU2ltcGxlJTIyJTJDJTIycHIlMjIlM0E0NjQlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyRmlybWElMjBTaW1wbGUlMjBCcm9uY2UlMjA1MCUyMiUyQyUyMnElMjIlM0E1MCU3RCU1RCU3RA%3D%3D" },
+      { tier: "Plata",   sku: "JAAK-FIRMA-SIMPLE-PLATA",   qty: 100, unit: "firma", unitPlural: "firmas", price: 700,  url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWNkNTQ0ODNhODg3MzU1MzNmMmJhNDUlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWNkNTQ0ODNhODg3MzU1MzNmMmJhNDUlMjIlMkMlMjJrJTIyJTNBJTIyc2lnbmFfc2ltcGxlJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwU2ltcGxlJTIyJTJDJTIycHIlMjIlM0E4MTIlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyRmlybWElMjBTaW1wbGUlMjBQbGF0YSUyMDEwMCUyMiUyQyUyMnElMjIlM0ExMDAlN0QlNUQlN0Q%3D" },
+      { tier: "Oro",     sku: "JAAK-FIRMA-SIMPLE-ORO",     qty: 250, unit: "firma", unitPlural: "firmas", price: 1500, url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWNkNTUwOTNhODg3MzU1MzNmMmJhNGElMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWNkNTUwOTNhODg3MzU1MzNmMmJhNGElMjIlMkMlMjJrJTIyJTNBJTIyc2lnbmFfc2ltcGxlJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwU2ltcGxlJTIyJTJDJTIycHIlMjIlM0ExNzQwJTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMkZpcm1hJTIwU2ltcGxlJTIwT3JvJTIwMjUwJTIyJTJDJTIycSUyMiUzQTI1MCU3RCU1RCU3RA%3D%3D" },
+      { tier: "Platino", sku: "JAAK-FIRMA-SIMPLE-PLATINO", qty: 500, unit: "firma", unitPlural: "firmas", price: 2500, url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWNkNTU4YTNhODg3MzU1MzNmMmJhNGYlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWNkNTU4YTNhODg3MzU1MzNmMmJhNGYlMjIlMkMlMjJrJTIyJTNBJTIyc2lnbmFfc2ltcGxlJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwU2ltcGxlJTIyJTJDJTIycHIlMjIlM0EyOTAwJTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMkZpcm1hJTIwU2ltcGxlJTIwUGxhdGlubyUyMDUwMCUyMiUyQyUyMnElMjIlM0E1MDAlN0QlNUQlN0Q%3D" },
     ],
   },
   {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: "JAAK Firma Electrónica NOM-151 + PSC – Autoservicio",
-    description: "Firma electrónica avanzada con cumplimiento NOM-151 y PSC certificado para México.",
-    brand: { "@type": "Brand", name: "JAAK" },
-    offers: [
-      {
-        "@type": "Offer",
-        name: "Plan Cobre",
-        price: "99",
-        priceCurrency: "MXN",
-        priceValidUntil: "2026-12-31",
-        availability: "https://schema.org/InStock",
-        url: "https://platform.jaak.ai/#/onboarding/plans",
-        description: "5 firmas NOM-151 por año",
-      },
-      {
-        "@type": "Offer",
-        name: "Plan Platino",
-        price: "6000",
-        priceCurrency: "MXN",
-        priceValidUntil: "2026-12-31",
-        availability: "https://schema.org/InStock",
-        url: "https://platform.jaak.ai/#/onboarding/plans",
-        description: "500 firmas NOM-151 por año",
-      },
+    id: "firma-nom151",
+    name: "Firma Electrónica NOM-151",
+    description:
+      "Firma electrónica avanzada con constancia de conservación NOM-151 emitida por PSCC acreditado. Validez plena en juicio bajo Código de Comercio y LFEA. Sellado de tiempo y hash criptográfico por documento.",
+    category: "Software de Firma Electrónica Avanzada",
+    packages: [
+      { tier: "Cobre",   sku: "JAAK-NOM151-COBRE",   qty: 5,   unit: "firma", unitPlural: "firmas", price: 99,   url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWNkNTYyMjNhODg3MzU1MzNmMmJhNTUlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWNkNTYyMjNhODg3MzU1MzNmMmJhNTUlMjIlMkMlMjJrJTIyJTNBJTIyc2lnbmFfYWR2YW5jZWQlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBBdmFuemFkYSUyMChOT00tMTUxKSUyMiUyQyUyMnByJTIyJTNBMTE0Ljg0JTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMkZpcm1hJTIwTk9NMTUxJTIwQ29icmUlMjA1JTIyJTJDJTIycSUyMiUzQTUlN0QlNUQlN0Q%3D" },
+      { tier: "Bronce",  sku: "JAAK-NOM151-BRONCE",  qty: 50,  unit: "firma", unitPlural: "firmas", price: 750,  url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWNkNTY4MTNhODg3MzU1MzNmMmJhNWIlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWNkNTY4MTNhODg3MzU1MzNmMmJhNWIlMjIlMkMlMjJrJTIyJTNBJTIyc2lnbmFfYWR2YW5jZWQlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBBdmFuemFkYSUyMChOT00tMTUxKSUyMiUyQyUyMnByJTIyJTNBODcwJTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMkZpcm1hJTIwTk9NMTUxJTIwQnJvbmNlJTIwNTAlMjIlMkMlMjJxJTIyJTNBNTAlN0QlNUQlN0Q%3D" },
+      { tier: "Plata",   sku: "JAAK-NOM151-PLATA",   qty: 100, unit: "firma", unitPlural: "firmas", price: 1400, url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWNkNTZlYjNhODg3MzU1MzNmMmJhNjQlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWNkNTZlYjNhODg3MzU1MzNmMmJhNjQlMjIlMkMlMjJrJTIyJTNBJTIyc2lnbmFfYWR2YW5jZWQlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBBdmFuemFkYSUyMChOT00tMTUxKSUyMiUyQyUyMnByJTIyJTNBMTYyNCUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJGaXJtYSUyME5PTTE1MSUyMFBsYXRhJTIwMTAwJTIyJTJDJTIycSUyMiUzQTEwMCU3RCU1RCU3RA%3D%3D" },
+      { tier: "Oro",     sku: "JAAK-NOM151-ORO",     qty: 250, unit: "firma", unitPlural: "firmas", price: 3250, url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWNkNWI4ODNhODg3MzU1MzNmMmJhNmYlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWNkNWI4ODNhODg3MzU1MzNmMmJhNmYlMjIlMkMlMjJrJTIyJTNBJTIyc2lnbmFfYWR2YW5jZWQlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBBdmFuemFkYSUyMChOT00tMTUxKSUyMiUyQyUyMnByJTIyJTNBMzc3MCUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJGaXJtYSUyME5PTTE1MSUyME9ybyUyMDI1MCUyMiUyQyUyMnElMjIlM0EyNTAlN0QlNUQlN0Q%3D" },
+      { tier: "Platino", sku: "JAAK-NOM151-PLATINO", qty: 500, unit: "firma", unitPlural: "firmas", price: 6000, url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWNkNWJkMjNhODg3MzU1MzNmMmJhNzQlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWNkNWJkMjNhODg3MzU1MzNmMmJhNzQlMjIlMkMlMjJrJTIyJTNBJTIyc2lnbmFfYWR2YW5jZWQlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBBdmFuemFkYSUyMChOT00tMTUxKSUyMiUyQyUyMnByJTIyJTNBNjk2MCUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJGaXJtYSUyME5PTTE1MSUyMFBsYXRpbm8lMjA1MDAlMjIlMkMlMjJxJTIyJTNBNTAwJTdEJTVEJTdE" },
     ],
   },
   {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: "JAAK Firma NOM-151 + Biometría – Autoservicio",
-    description: "Firma electrónica avanzada NOM-151 con verificación biométrica integrada.",
-    brand: { "@type": "Brand", name: "JAAK" },
-    offers: [
-      {
-        "@type": "Offer",
-        name: "Plan Cobre",
-        price: "99",
-        priceCurrency: "MXN",
-        priceValidUntil: "2026-12-31",
-        availability: "https://schema.org/InStock",
-        url: "https://platform.jaak.ai/#/onboarding/plans",
-        description: "5 firmas NOM-151 + Bio por año",
-      },
-      {
-        "@type": "Offer",
-        name: "Plan Platino",
-        price: "12500",
-        priceCurrency: "MXN",
-        priceValidUntil: "2026-12-31",
-        availability: "https://schema.org/InStock",
-        url: "https://platform.jaak.ai/#/onboarding/plans",
-        description: "500 firmas NOM-151 + Bio por año",
-      },
+    id: "firma-nom151-bio",
+    name: "Firma NOM-151 con Biometría Facial",
+    description:
+      "Firma electrónica avanzada NOM-151 con prueba de vida facial del firmante en tiempo real y validación 1:1 contra identificación oficial. Expediente con video y fotogramas. Ideal para banca, aseguradoras y contratos de alto valor.",
+    category: "Software de Firma Electrónica con Biometría",
+    packages: [
+      { tier: "Cobre",   sku: "JAAK-NOM151BIO-COBRE",   qty: 5,   unit: "sesión", unitPlural: "sesiones", price: 130,   url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWNkNWNhNjNhODg3MzU1MzNmMmJhNzklMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWNkNWNhNjNhODg3MzU1MzNmMmJhNzklMjIlMkMlMjJrJTIyJTNBJTIyc2lnbmFfYWR2YW5jZWRfYmlvbWV0cmljJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwQXZhbnphZGElMjAlMkIlMjBCaW9tZXRyaWElMjIlMkMlMjJwciUyMiUzQTE1MC44JTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMkZpcm1hJTIwTk9NMTUxJTIwJTJCJTIwQklPJTIwQ29icmUlMjA1JTIyJTJDJTIycSUyMiUzQTUlN0QlNUQlN0Q%3D" },
+      { tier: "Bronce",  sku: "JAAK-NOM151BIO-BRONCE",  qty: 50,  unit: "sesión", unitPlural: "sesiones", price: 1500,  url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWNkNWNmZDNhODg3MzU1MzNmMmJhN2UlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWNkNWNmZDNhODg3MzU1MzNmMmJhN2UlMjIlMkMlMjJrJTIyJTNBJTIyc2lnbmFfYWR2YW5jZWRfYmlvbWV0cmljJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwQXZhbnphZGElMjAlMkIlMjBCaW9tZXRyaWElMjIlMkMlMjJwciUyMiUzQTE3NDAlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyRmlybWElMjBOT00xNTElMjAlMkIlMjBCSU8lMjBCcm9uY2UlMjA1MCUyMiUyQyUyMnElMjIlM0E1MCU3RCU1RCU3RA%3D%3D" },
+      { tier: "Plata",   sku: "JAAK-NOM151BIO-PLATA",   qty: 100, unit: "sesión", unitPlural: "sesiones", price: 2700,  url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWNkNWQ0MzNhODg3MzU1MzNmMmJhODMlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWNkNWQ0MzNhODg3MzU1MzNmMmJhODMlMjIlMkMlMjJrJTIyJTNBJTIyc2lnbmFfYWR2YW5jZWRfYmlvbWV0cmljJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwQXZhbnphZGElMjAlMkIlMjBCaW9tZXRyaWElMjIlMkMlMjJwciUyMiUzQTMxMzIlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyRmlybWElMjBOT00xNTElMjAlMkIlMjBCSU8lMjBQbGF0YSUyMDEwMCUyMiUyQyUyMnElMjIlM0ExMDAlN0QlNUQlN0Q%3D" },
+      { tier: "Oro",     sku: "JAAK-NOM151BIO-ORO",     qty: 250, unit: "sesión", unitPlural: "sesiones", price: 6625,  url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWNkNWRhODNhODg3MzU1MzNmMmJhOTklMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWNkNWRhODNhODg3MzU1MzNmMmJhOTklMjIlMkMlMjJrJTIyJTNBJTIyc2lnbmFfYWR2YW5jZWRfYmlvbWV0cmljJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwQXZhbnphZGElMjAlMkIlMjBCaW9tZXRyaWElMjIlMkMlMjJwciUyMiUzQTc2ODUlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyRmlybWElMjBOT00xNTElMjAlMkIlMjBCSU8lMjBPcm8lMjAyNTAlMjIlMkMlMjJxJTIyJTNBMjUwJTdEJTVEJTdE" },
+      { tier: "Platino", sku: "JAAK-NOM151BIO-PLATINO", qty: 500, unit: "sesión", unitPlural: "sesiones", price: 12500, url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWNkNWRmZjNhODg3MzU1MzNmMmJhYTclMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWNkNWRmZjNhODg3MzU1MzNmMmJhYTclMjIlMkMlMjJrJTIyJTNBJTIyc2lnbmFfYWR2YW5jZWRfYmlvbWV0cmljJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwQXZhbnphZGElMjAlMkIlMjBCaW9tZXRyaWElMjIlMkMlMjJwciUyMiUzQTE0NTAwJTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMkZpcm1hJTIwTk9NMTUxJTIwJTJCJTIwQklPJTIwUGxhdGlubyUyMDUwMCUyMiUyQyUyMnElMjIlM0E1MDAlN0QlNUQlN0Q%3D" },
+    ],
+  },
+  {
+    id: "firma-nom151-kyc",
+    name: "Firma NOM-151 + KYC Biométrico",
+    description:
+      "Solución integral de onboarding regulado: firma NOM-151 con biometría facial y KYC completo del firmante (OCR + RENAPO + INE + OFAC + Interpol + SAT) en una sola sesión. Expediente único firma + identidad para AML/PLD y CNBV.",
+    category: "Software de Onboarding Digital Regulado",
+    packages: [
+      { tier: "Cobre",   sku: "JAAK-NOM151KYC-COBRE",   qty: 5,   unit: "sesión", unitPlural: "sesiones", price: 174,   url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWNkNWY5ODNhODg3MzU1MzNmMmJhYjElMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWNkNWY5ODNhODg3MzU1MzNmMmJhYjElMjIlMkMlMjJrJTIyJTNBJTIyc2lnbmFfYmlvbWV0cmljJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwY29uJTIwQmlvbWV0cmlhJTIyJTJDJTIycHIlMjIlM0EyMDEuODQlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyRmlybWElMjBOT00xNTElMjAlMkIlMjBLWUMlMjBDb2JyZSUyMDUlMjIlMkMlMjJxJTIyJTNBNSU3RCU1RCU3RA%3D%3D" },
+      { tier: "Bronce",  sku: "JAAK-NOM151KYC-BRONCE",  qty: 50,  unit: "sesión", unitPlural: "sesiones", price: 2625,  url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWNkNWZkODNhODg3MzU1MzNmMmJhYjYlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWNkNWZkODNhODg3MzU1MzNmMmJhYjYlMjIlMkMlMjJrJTIyJTNBJTIyc2lnbmFfYmlvbWV0cmljJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwY29uJTIwQmlvbWV0cmlhJTIyJTJDJTIycHIlMjIlM0EzMDQ1JTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMkZpcm1hJTIwTk9NMTUxJTIwJTJCJTIwS1lDJTIwQnJvbmNlJTIwNTAlMjIlMkMlMjJxJTIyJTNBNTAlN0QlNUQlN0Q%3D" },
+      { tier: "Plata",   sku: "JAAK-NOM151KYC-PLATA",   qty: 100, unit: "sesión", unitPlural: "sesiones", price: 4725,  url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWNkNjAzNDNhODg3MzU1MzNmMmJhYmIlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWNkNjAzNDNhODg3MzU1MzNmMmJhYmIlMjIlMkMlMjJrJTIyJTNBJTIyc2lnbmFfYmlvbWV0cmljJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwY29uJTIwQmlvbWV0cmlhJTIyJTJDJTIycHIlMjIlM0E1NDgxJTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMkZpcm1hJTIwTk9NMTUxJTIwJTJCJTIwS1lDJTIwUGxhdGElMjAxMDAlMjIlMkMlMjJxJTIyJTNBMTAwJTdEJTVEJTdE" },
+      { tier: "Oro",     sku: "JAAK-NOM151KYC-ORO",     qty: 250, unit: "sesión", unitPlural: "sesiones", price: 11594, url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWNkNjBhNjNhODg3MzU1MzNmMmJhYzAlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWNkNjBhNjNhODg3MzU1MzNmMmJhYzAlMjIlMkMlMjJrJTIyJTNBJTIyc2lnbmFfYmlvbWV0cmljJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwY29uJTIwQmlvbWV0cmlhJTIyJTJDJTIycHIlMjIlM0ExMzQ0OS4wNCUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJGaXJtYSUyME5PTTE1MSUyMCUyQiUyMEtZQyUyME9ybyUyMDI1MCUyMiUyQyUyMnElMjIlM0EyNTAlN0QlNUQlN0Q%3D" },
+      { tier: "Platino", sku: "JAAK-NOM151KYC-PLATINO", qty: 500, unit: "sesión", unitPlural: "sesiones", price: 21875, url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWNkNjBmZjNhODg3MzU1MzNmMmJhYzUlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWNkNjBmZjNhODg3MzU1MzNmMmJhYzUlMjIlMkMlMjJrJTIyJTNBJTIyc2lnbmFfYmlvbWV0cmljJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwY29uJTIwQmlvbWV0cmlhJTIyJTJDJTIycHIlMjIlM0EyNTM3NSUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJGaXJtYSUyME5PTTE1MSUyMCUyQiUyMEtZQyUyMFBsYXRpbm8lMjA1MDAlMjIlMkMlMjJxJTIyJTNBNTAwJTdEJTVEJTdE" },
+    ],
+  },
+  {
+    id: "consulta-ine",
+    name: "Consulta INE / IFE",
+    description:
+      "Validación en tiempo real de credencial INE/IFE contra el padrón electoral oficial. Verificación de vigencia y confirmación de datos biográficos del titular. Respuesta en menos de un minuto con evidencia descargable.",
+    category: "Servicio de Validación de Identidad Oficial",
+    packages: [
+      { tier: "Cobre",   sku: "JAAK-INE-COBRE",   qty: 10,  unit: "consulta", unitPlural: "consultas", price: 14,  url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWQ4M2U4YmU1NzU4OWU3MTk0MmQxYzklMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWQ4M2U4YmU1NzU4OWU3MTk0MmQxYzklMjIlMkMlMjJrJTIyJTNBJTIyYmxhY2tsaXN0JTIyJTJDJTIybiUyMiUzQSUyMkJsYWNrJTIwTGlzdCUyMiUyQyUyMnByJTIyJTNBMTYuMjQlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyQ29uc3VsdGElMjBJTkUlNUN0Q29icmUlMjAxMCUyMiUyQyUyMnElMjIlM0ExMCU3RCU1RCU3RA%3D%3D" },
+      { tier: "Bronce",  sku: "JAAK-INE-BRONCE",  qty: 50,  unit: "consulta", unitPlural: "consultas", price: 105, url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWQ4NTFkM2U1NzU4OWU3MTk0MmQxZmElMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWQ4NTFkM2U1NzU4OWU3MTk0MmQxZmElMjIlMkMlMjJrJTIyJTNBJTIyYmxhY2tsaXN0JTIyJTJDJTIybiUyMiUzQSUyMkJsYWNrJTIwTGlzdCUyMiUyQyUyMnByJTIyJTNBMTIxLjglMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyQ29uc3VsdGElMjBJTkUlNUN0QnJvbmNlJTIwNTAlMjIlMkMlMjJxJTIyJTNBNTAlN0QlNUQlN0Q%3D" },
+      { tier: "Plata",   sku: "JAAK-INE-PLATA",   qty: 100, unit: "consulta", unitPlural: "consultas", price: 200, url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWQ4NTMzY2U1NzU4OWU3MTk0MmQyMGElMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWQ4NTMzY2U1NzU4OWU3MTk0MmQyMGElMjIlMkMlMjJrJTIyJTNBJTIyYmxhY2tsaXN0JTIyJTJDJTIybiUyMiUzQSUyMkJsYWNrJTIwTGlzdCUyMiUyQyUyMnByJTIyJTNBMjMyJTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMkNvbnN1bHRhJTIwSU5FJTVDdFBsYXRhJTIwMTAwJTIyJTJDJTIycSUyMiUzQTEwMCU3RCU1RCU3RA%3D%3D" },
+      { tier: "Oro",     sku: "JAAK-INE-ORO",     qty: 250, unit: "consulta", unitPlural: "consultas", price: 475, url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWQ4NTU5NWU1NzU4OWU3MTk0MmQyMmMlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWQ4NTU5NWU1NzU4OWU3MTk0MmQyMmMlMjIlMkMlMjJrJTIyJTNBJTIyYmxhY2tsaXN0JTIyJTJDJTIybiUyMiUzQSUyMkJsYWNrJTIwTGlzdCUyMiUyQyUyMnByJTIyJTNBNTUxJTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMkNvbnN1bHRhJTIwSU5FJTVDdE9ybyUyMDI1MCUyMiUyQyUyMnElMjIlM0EyNTAlN0QlNUQlN0Q%3D" },
+      { tier: "Platino", sku: "JAAK-INE-PLATINO", qty: 500, unit: "consulta", unitPlural: "consultas", price: 900, url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWQ4NTY1OWU1NzU4OWU3MTk0MmQyMzMlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWQ4NTY1OWU1NzU4OWU3MTk0MmQyMzMlMjIlMkMlMjJrJTIyJTNBJTIyYmxhY2tsaXN0JTIyJTJDJTIybiUyMiUzQSUyMkJsYWNrJTIwTGlzdCUyMiUyQyUyMnByJTIyJTNBMTA0NCUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJDb25zdWx0YSUyMElORSU1Q3RQbGF0aW5vJTIwNTAwJTIyJTJDJTIycSUyMiUzQTUwMCU3RCU1RCU3RA%3D%3D" },
+    ],
+  },
+  {
+    id: "consulta-curp",
+    name: "Consulta CURP / RENAPO",
+    description:
+      "Validación de CURP ante el Registro Nacional de Población (RENAPO) con obtención de datos biográficos completos. Detección de CURPs inválidas o duplicadas. Respuesta en tiempo real con evidencia descargable.",
+    category: "Servicio de Validación de Identidad Oficial",
+    packages: [
+      { tier: "Cobre",   sku: "JAAK-CURP-COBRE",   qty: 10,  unit: "consulta", unitPlural: "consultas", price: 14,  url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWQ4NjJkOGU1NzU4OWU3MTk0MmQyNzMlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWQ4NjJkOGU1NzU4OWU3MTk0MmQyNzMlMjIlMkMlMjJrJTIyJTNBJTIyYmxhY2tsaXN0JTIyJTJDJTIybiUyMiUzQSUyMkJsYWNrJTIwTGlzdCUyMiUyQyUyMnByJTIyJTNBMTYuMjQlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyQ29uc3VsdGElMjBDVVJQJTVDdENvYnJlJTVDdDEwJTIyJTJDJTIycSUyMiUzQTEwJTdEJTVEJTdE" },
+      { tier: "Bronce",  sku: "JAAK-CURP-BRONCE",  qty: 50,  unit: "consulta", unitPlural: "consultas", price: 105, url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWQ4NjMzYmU1NzU4OWU3MTk0MmQyNzglMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWQ4NjMzYmU1NzU4OWU3MTk0MmQyNzglMjIlMkMlMjJrJTIyJTNBJTIyYmxhY2tsaXN0JTIyJTJDJTIybiUyMiUzQSUyMkJsYWNrJTIwTGlzdCUyMiUyQyUyMnByJTIyJTNBMTIxLjglMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyQ29uc3VsdGElMjBDVVJQJTVDdEJyb25jZSU1Q3Q1MCUyMiUyQyUyMnElMjIlM0E1MCU3RCU1RCU3RA%3D%3D" },
+      { tier: "Plata",   sku: "JAAK-CURP-PLATA",   qty: 100, unit: "consulta", unitPlural: "consultas", price: 200, url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWQ4NjM1OGU1NzU4OWU3MTk0MmQyN2QlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWQ4NjM1OGU1NzU4OWU3MTk0MmQyN2QlMjIlMkMlMjJrJTIyJTNBJTIyYmxhY2tsaXN0JTIyJTJDJTIybiUyMiUzQSUyMkJsYWNrJTIwTGlzdCUyMiUyQyUyMnByJTIyJTNBMjMyJTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMkNvbnN1bHRhJTIwQ1VSUCU1Q3RQbGF0YSU1Q3QxMDAlMjIlMkMlMjJxJTIyJTNBMTAwJTdEJTVEJTdE" },
+      { tier: "Oro",     sku: "JAAK-CURP-ORO",     qty: 250, unit: "consulta", unitPlural: "consultas", price: 475, url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWQ4NjM4MGU1NzU4OWU3MTk0MmQyODIlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWQ4NjM4MGU1NzU4OWU3MTk0MmQyODIlMjIlMkMlMjJrJTIyJTNBJTIyYmxhY2tsaXN0JTIyJTJDJTIybiUyMiUzQSUyMkJsYWNrJTIwTGlzdCUyMiUyQyUyMnByJTIyJTNBNTUxJTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMkNvbnN1bHRhJTIwQ1VSUCU1Q3RPcm8lNUN0MjUwJTIyJTJDJTIycSUyMiUzQTI1MCU3RCU1RCU3RA%3D%3D" },
+      { tier: "Platino", sku: "JAAK-CURP-PLATINO", qty: 500, unit: "consulta", unitPlural: "consultas", price: 900, url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWQ4NjNhMWU1NzU4OWU3MTk0MmQyODclMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWQ4NjNhMWU1NzU4OWU3MTk0MmQyODclMjIlMkMlMjJrJTIyJTNBJTIyYmxhY2tsaXN0JTIyJTJDJTIybiUyMiUzQSUyMkJsYWNrJTIwTGlzdCUyMiUyQyUyMnByJTIyJTNBMTA0NCUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJDb25zdWx0YSUyMENVUlAlNUN0UGxhdGlubyU1Q3Q1MDAlMjIlMkMlMjJxJTIyJTNBNTAwJTdEJTVEJTdE" },
+    ],
+  },
+  {
+    id: "ocr-inteligente",
+    name: "OCR Inteligente",
+    description:
+      "Extracción de datos estructurados de +500 tipos de documentos con IA: actas constitutivas, CSF, estados de cuenta, comprobantes de domicilio y más. El consumo de tokens varía según tipo y extensión del documento.",
+    category: "Software de Reconocimiento Óptico de Caracteres (OCR) con IA",
+    packages: [
+      { tier: "Cobre",   sku: "JAAK-OCR-INT-COBRE",   qty: 210,   unit: "token", unitPlural: "tokens", price: 99,    url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWQ4NjY2OWU1NzU4OWU3MTk0MmQyOTUlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWQ4NjY2OWU1NzU4OWU3MTk0MmQyOTUlMjIlMkMlMjJrJTIyJTNBJTIyZG9jdW1lbnQlMjIlMkMlMjJuJTIyJTNBJTIyRG9jdW1lbnQlMjIlMkMlMjJwciUyMiUzQTExNC44NCUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJPQ1IlMjBJbnRlbGlnZW50ZSU1Q3RDb2JyZSU1Q3QyMTAlMjB0b2tlbnMlMjIlMkMlMjJxJTIyJTNBMjEwJTdEJTVEJTdE" },
+      { tier: "Bronce",  sku: "JAAK-OCR-INT-BRONCE",  qty: 2100,  unit: "token", unitPlural: "tokens", price: 1500,  url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWQ4NjZhZGU1NzU4OWU3MTk0MmQyOWIlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWQ4NjZhZGU1NzU4OWU3MTk0MmQyOWIlMjIlMkMlMjJrJTIyJTNBJTIyZG9jdW1lbnQlMjIlMkMlMjJuJTIyJTNBJTIyRG9jdW1lbnQlMjIlMkMlMjJwciUyMiUzQTE3NDAlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyT0NSJTIwSW50ZWxpZ2VudGUlNUN0QnJvbmNlJTVDdDIlMkMxMDAlMjB0b2tlbnMlMjIlMkMlMjJxJTIyJTNBMjEwMCU3RCU1RCU3RA%3D%3D" },
+      { tier: "Plata",   sku: "JAAK-OCR-INT-PLATA",   qty: 4200,  unit: "token", unitPlural: "tokens", price: 2800,  url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWQ4NjcwZmU1NzU4OWU3MTk0MmQyYTIlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWQ4NjcwZmU1NzU4OWU3MTk0MmQyYTIlMjIlMkMlMjJrJTIyJTNBJTIyZG9jdW1lbnQlMjIlMkMlMjJuJTIyJTNBJTIyRG9jdW1lbnQlMjIlMkMlMjJwciUyMiUzQTMyNDglMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyT0NSJTIwSW50ZWxpZ2VudGUlNUN0UGxhdGElNUN0NCUyQzIwMCUyMHRva2VucyUyMiUyQyUyMnElMjIlM0E0MjAwJTdEJTVEJTdE" },
+      { tier: "Oro",     sku: "JAAK-OCR-INT-ORO",     qty: 10500, unit: "token", unitPlural: "tokens", price: 6625,  url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWQ4NjcyZGU1NzU4OWU3MTk0MmQyYTclMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWQ4NjcyZGU1NzU4OWU3MTk0MmQyYTclMjIlMkMlMjJrJTIyJTNBJTIyZG9jdW1lbnQlMjIlMkMlMjJuJTIyJTNBJTIyRG9jdW1lbnQlMjIlMkMlMjJwciUyMiUzQTc2ODUlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyT0NSJTIwSW50ZWxpZ2VudGUlNUN0T3JvJTVDdDEwJTJDNTAwJTIwdG9rZW5zJTIyJTJDJTIycSUyMiUzQTEwNTAwJTdEJTVEJTdE" },
+      { tier: "Platino", sku: "JAAK-OCR-INT-PLATINO", qty: 21000, unit: "token", unitPlural: "tokens", price: 12500, url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWQ4Njg0NmU1NzU4OWU3MTk0MmQyYjIlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWQ4Njg0NmU1NzU4OWU3MTk0MmQyYjIlMjIlMkMlMjJrJTIyJTNBJTIyZG9jdW1lbnQlMjIlMkMlMjJuJTIyJTNBJTIyRG9jdW1lbnQlMjIlMkMlMjJwciUyMiUzQTE0NTAwJTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMk9DUiUyMEludGVsaWdlbnRlJTVDdFBsYXRpbm8lNUN0MjElMkMwMDAlMjB0b2tlbnMlMjIlMkMlMjJxJTIyJTNBMjEwMDAlN0QlNUQlN0Q%3D" },
+    ],
+  },
+  {
+    id: "ocr-id",
+    name: "OCR para Identificación Oficial",
+    description:
+      "Extracción de datos estructurados y fotografía de identificaciones oficiales (INE, pasaporte) con detección de documentos falsificados o alterados. Evidencia descargable, disponible vía plataforma web y API.",
+    category: "Software de Reconocimiento de Identificación Oficial",
+    packages: [
+      { tier: "Cobre",   sku: "JAAK-OCR-ID-COBRE",   qty: 210,   unit: "token", unitPlural: "tokens", price: 99,    url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWQ4Njk3ZGU1NzU4OWU3MTk0MmQyYmIlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWQ4Njk3ZGU1NzU4OWU3MTk0MmQyYmIlMjIlMkMlMjJrJTIyJTNBJTIyZG9jdW1lbnQlMjIlMkMlMjJuJTIyJTNBJTIyRG9jdW1lbnQlMjIlMkMlMjJwciUyMiUzQTExNC44NCUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJPQ1IlMjBwYXJhJTIwSWRlbnRpZmljYWNpJUMzJUIzbiUyME9maWNpYWwlNUN0Q29icmUlNUN0MjEwJTIwdG9rZW5zJTIyJTJDJTIycSUyMiUzQTIxMCU3RCU1RCU3RA%3D%3D" },
+      { tier: "Bronce",  sku: "JAAK-OCR-ID-BRONCE",  qty: 2100,  unit: "token", unitPlural: "tokens", price: 1500,  url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWQ4Njk5OGU1NzU4OWU3MTk0MmQyYzElMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWQ4Njk5OGU1NzU4OWU3MTk0MmQyYzElMjIlMkMlMjJrJTIyJTNBJTIyZG9jdW1lbnQlMjIlMkMlMjJuJTIyJTNBJTIyRG9jdW1lbnQlMjIlMkMlMjJwciUyMiUzQTE3NDAlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyT0NSJTIwcGFyYSUyMElkZW50aWZpY2FjaSVDMyVCM24lMjBPZmljaWFsJTVDdEJyb25jZSU1Q3QyJTJDMTAwJTIwdG9rZW5zJTIyJTJDJTIycSUyMiUzQTIxMDAlN0QlNUQlN0Q%3D" },
+      { tier: "Plata",   sku: "JAAK-OCR-ID-PLATA",   qty: 4200,  unit: "token", unitPlural: "tokens", price: 2800,  url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWQ4NjllN2U1NzU4OWU3MTk0MmQyYzclMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWQ4NjllN2U1NzU4OWU3MTk0MmQyYzclMjIlMkMlMjJrJTIyJTNBJTIyZG9jdW1lbnQlMjIlMkMlMjJuJTIyJTNBJTIyRG9jdW1lbnQlMjIlMkMlMjJwciUyMiUzQTMyNDglMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyT0NSJTIwcGFyYSUyMElkZW50aWZpY2FjaSVDMyVCM24lMjBPZmljaWFsJTVDdFBsYXRhJTVDdDQlMkMyMDAlMjB0b2tlbnMlMjIlMkMlMjJxJTIyJTNBNDIwMCU3RCU1RCU3RA%3D%3D" },
+      { tier: "Oro",     sku: "JAAK-OCR-ID-ORO",     qty: 10500, unit: "token", unitPlural: "tokens", price: 6625,  url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWQ4NmEyOGU1NzU4OWU3MTk0MmQyY2MlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWQ4NmEyOGU1NzU4OWU3MTk0MmQyY2MlMjIlMkMlMjJrJTIyJTNBJTIyZG9jdW1lbnQlMjIlMkMlMjJuJTIyJTNBJTIyRG9jdW1lbnQlMjIlMkMlMjJwciUyMiUzQTc2ODUlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyT0NSJTIwcGFyYSUyMElkZW50aWZpY2FjaSVDMyVCM24lMjBPZmljaWFsJTVDdE9ybyU1Q3QxMCUyQzUwMCUyMHRva2VucyUyMiUyQyUyMnElMjIlM0ExMDUwMCU3RCU1RCU3RA%3D%3D" },
+      { tier: "Platino", sku: "JAAK-OCR-ID-PLATINO", qty: 21000, unit: "token", unitPlural: "tokens", price: 12500, url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWQ4NmE1M2U1NzU4OWU3MTk0MmQyZDIlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWQ4NmE1M2U1NzU4OWU3MTk0MmQyZDIlMjIlMkMlMjJrJTIyJTNBJTIyZG9jdW1lbnQlMjIlMkMlMjJuJTIyJTNBJTIyRG9jdW1lbnQlMjIlMkMlMjJwciUyMiUzQTE0NTAwJTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMk9DUiUyMHBhcmElMjBJZGVudGlmaWNhY2klQzMlQjNuJTIwT2ZpY2lhbCU1Q3RQbGF0aW5vJTVDdDIxJTJDMDAwJTIwdG9rZW5zJTIyJTJDJTIycSUyMiUzQTIxMDAwJTdEJTVEJTdE" },
     ],
   },
 ];
+
+function buildProductSchema(p: ProductDefinition) {
+  const prices = p.packages.map((pkg) => pkg.price);
+  return {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "@id": `${PRECIOS_URL}#${p.id}`,
+    name: p.name,
+    description: p.description,
+    image: PRODUCT_IMAGE,
+    brand: BRAND_REF,
+    category: p.category,
+    mainEntityOfPage: PRECIOS_URL,
+    offers: {
+      "@type": "AggregateOffer",
+      priceCurrency: "MXN",
+      lowPrice: Math.min(...prices).toString(),
+      highPrice: Math.max(...prices).toString(),
+      offerCount: p.packages.length,
+      availability: "https://schema.org/InStock",
+      offers: p.packages.map((pkg) => ({
+        "@type": "Offer",
+        name: `Plan ${pkg.tier} – ${p.name}`,
+        sku: pkg.sku,
+        price: pkg.price.toString(),
+        priceCurrency: "MXN",
+        priceValidUntil: PRICE_VALID_UNTIL,
+        availability: "https://schema.org/InStock",
+        url: pkg.url,
+        description: `${pkg.qty.toLocaleString("es-MX")} ${pkg.qty === 1 ? pkg.unit : pkg.unitPlural} por año`,
+        seller: SELLER_REF,
+        priceSpecification: {
+          "@type": "UnitPriceSpecification",
+          price: (pkg.price / pkg.qty).toFixed(2),
+          priceCurrency: "MXN",
+          valueAddedTaxIncluded: false,
+          referenceQuantity: {
+            "@type": "QuantitativeValue",
+            value: 1,
+            unitText: pkg.unit,
+          },
+        },
+      })),
+    },
+  };
+}
+
+const productSchemas = PRODUCTS.map(buildProductSchema);
 
 export default function PreciosPage() {
   return (
