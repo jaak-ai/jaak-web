@@ -48,7 +48,7 @@ const faqSchema = {
       name: "¿Cuánto cuesta la Firma Electrónica NOM-151?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Firma Simple desde $49 MXN/año (10 firmas). Firma NOM-151 desde $99 MXN/año (5 firmas, $19.80/firma) hasta $6,000 MXN (500 firmas, $12.00/firma). Firma NOM-151+Bio desde $99 MXN (5 firmas) hasta $12,500 MXN (500 firmas). Sin setup fee en Autoservicio.",
+        text: "Firma Simple desde $49 MXN (10 firmas). Firma NOM-151 desde $99 MXN (5 firmas) hasta $6,000 MXN (500 firmas). Firma NOM-151+Bio desde $99 MXN hasta $12,500 MXN (500 firmas). Sin setup fee en Autoservicio.",
       },
     },
     {
@@ -72,20 +72,12 @@ const faqSchema = {
       name: "¿JAAK cumple con LFPIORPI, CNBV y UIF?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Sí. LFPIORPI Art. 17, identificación remota CNBV, evidencia para UIF, NOM-151 con PSC certificado. ISO 27001, ISO 9001, iBeta Liveness Nivel 2.",
+        text: "Sí. LFPIORPI Art. 17, identificación remota CNBV, evidencia para UIF, NOM-151 con PSC certificado. Certificaciones: ISO 27001, ISO 9001, iBeta Liveness Nivel 2.",
       },
     },
     {
       "@type": "Question",
-      name: "¿Diferencia entre KYC Tradicional y KYC Simplificado?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Tradicional (42 tokens) tiene validez legal para regulados (CNBV, UIF, LFPIORPI). Simplificado (30 tokens) sin validez legal, no disponible en Alianzas.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "¿Cómo funciona la facturación Enterprise 80/20?",
+      name: "¿Cómo funciona la facturación Enterprise?",
       acceptedAnswer: {
         "@type": "Answer",
         text: "Mensual: 80% del estimado del mes actual + 20% real del mes anterior. Neto 30 días. Descuento 15% si se paga días 1–10. Cobro mínimo = tier inicial contratado aunque el consumo sea menor.",
@@ -113,10 +105,12 @@ interface PackageOffer {
 }
 
 interface ProductDefinition {
-  id: string;          // fragment anchor en /precios (#kyc, #firma-simple, ...)
+  id: string;                  // fragment anchor en /precios (#kyc, #firma-simple, ...)
   name: string;
   description: string;
   category: string;
+  applicationCategory: string; // SoftwareApplication.applicationCategory (Google enum)
+  image: string;               // URL absoluta ≥696px (requisito Merchant Listings)
   packages: PackageOffer[];
 }
 
@@ -132,7 +126,18 @@ const SELLER_REF = {
   url: "https://jaak.ai",
 };
 
-const PRODUCT_IMAGE = "https://jaak.ai/apple-icon.png";
+// Política de no-reembolso (alineada con FAQ): satisface el requisito de
+// hasMerchantReturnPolicy de Google Merchant Listings sin inventar política.
+const RETURN_POLICY = {
+  "@type": "MerchantReturnPolicy" as const,
+  applicableCountry: "MX",
+  returnPolicyCategory: "https://schema.org/MerchantReturnNotPermitted",
+};
+
+// Imágenes por categoría visual (URLs absolutas, ≥696px lado largo).
+const IMG_IDENTIDAD = "https://jaak.ai/images/jaak-face-recognition.png";   // 1232×1044
+const IMG_FIRMA = "https://jaak.ai/images/firma-electronica-flujo.jpg";     // 1499×817
+
 const PRICE_VALID_UNTIL = "2027-12-31";
 const PRECIOS_URL = "https://jaak.ai/precios";
 
@@ -143,6 +148,8 @@ const PRODUCTS: ProductDefinition[] = [
     description:
       "Verificación de identidad con prueba de vida iBeta Nivel 2, OCR de identificación oficial, consulta INE/RENAPO y validación contra listas negras (OFAC, Interpol, SAT). Diseñado para empresas reguladas en México: CNBV, LFPIORPI, UIF.",
     category: "Software de Verificación de Identidad / KYC",
+    applicationCategory: "SecurityApplication",
+    image: IMG_IDENTIDAD,
     packages: [
       { tier: "Cobre",   sku: "JAAK-KYC-COBRE",   qty: 5,   unit: "verificación", unitPlural: "verificaciones", price: 99,    url: "https://platform.jaak.ai/#/onboarding/plans/cobre" },
       { tier: "Bronce",  sku: "JAAK-KYC-BRONCE",  qty: 50,  unit: "verificación", unitPlural: "verificaciones", price: 1500,  url: "https://platform.jaak.ai/#/onboarding/plans/bronce" },
@@ -157,6 +164,8 @@ const PRODUCTS: ProductDefinition[] = [
     description:
       "Firma electrónica con validez legal en México para contratos comerciales, RR.HH. y flujos de aprobación sin obligación regulatoria de NOM-151. API REST y plataforma web, hasta 4 firmantes por documento.",
     category: "Software de Firma Electrónica",
+    applicationCategory: "BusinessApplication",
+    image: IMG_FIRMA,
     packages: [
       { tier: "Cobre",   sku: "JAAK-FIRMA-SIMPLE-COBRE",   qty: 10,  unit: "firma", unitPlural: "firmas", price: 49,   url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWNkNGVkYzNhODg3MzU1MzNmMmI5ZjclMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWNkNGVkYzNhODg3MzU1MzNmMmI5ZjclMjIlMkMlMjJrJTIyJTNBJTIyc2lnbmFfc2ltcGxlJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwU2ltcGxlJTIyJTJDJTIycHIlMjIlM0E1Ni44NCUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJGaXJtYSUyMFNpbXBsZSUyMENvYnJlJTIwMTAlMjIlMkMlMjJxJTIyJTNBNSU3RCU1RCU3RA%3D%3D" },
       { tier: "Bronce",  sku: "JAAK-FIRMA-SIMPLE-BRONCE",  qty: 50,  unit: "firma", unitPlural: "firmas", price: 400,  url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWNkNGZhYTNhODg3MzU1MzNmMmJhMTYlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWNkNGZhYTNhODg3MzU1MzNmMmJhMTYlMjIlMkMlMjJrJTIyJTNBJTIyc2lnbmFfc2ltcGxlJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwU2ltcGxlJTIyJTJDJTIycHIlMjIlM0E0NjQlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyRmlybWElMjBTaW1wbGUlMjBCcm9uY2UlMjA1MCUyMiUyQyUyMnElMjIlM0E1MCU3RCU1RCU3RA%3D%3D" },
@@ -171,6 +180,8 @@ const PRODUCTS: ProductDefinition[] = [
     description:
       "Firma electrónica avanzada con constancia de conservación NOM-151 emitida por PSCC acreditado. Validez plena en juicio bajo Código de Comercio y LFEA. Sellado de tiempo y hash criptográfico por documento.",
     category: "Software de Firma Electrónica Avanzada",
+    applicationCategory: "BusinessApplication",
+    image: IMG_FIRMA,
     packages: [
       { tier: "Cobre",   sku: "JAAK-NOM151-COBRE",   qty: 5,   unit: "firma", unitPlural: "firmas", price: 99,   url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWNkNTYyMjNhODg3MzU1MzNmMmJhNTUlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWNkNTYyMjNhODg3MzU1MzNmMmJhNTUlMjIlMkMlMjJrJTIyJTNBJTIyc2lnbmFfYWR2YW5jZWQlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBBdmFuemFkYSUyMChOT00tMTUxKSUyMiUyQyUyMnByJTIyJTNBMTE0Ljg0JTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMkZpcm1hJTIwTk9NMTUxJTIwQ29icmUlMjA1JTIyJTJDJTIycSUyMiUzQTUlN0QlNUQlN0Q%3D" },
       { tier: "Bronce",  sku: "JAAK-NOM151-BRONCE",  qty: 50,  unit: "firma", unitPlural: "firmas", price: 750,  url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWNkNTY4MTNhODg3MzU1MzNmMmJhNWIlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWNkNTY4MTNhODg3MzU1MzNmMmJhNWIlMjIlMkMlMjJrJTIyJTNBJTIyc2lnbmFfYWR2YW5jZWQlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBBdmFuemFkYSUyMChOT00tMTUxKSUyMiUyQyUyMnByJTIyJTNBODcwJTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMkZpcm1hJTIwTk9NMTUxJTIwQnJvbmNlJTIwNTAlMjIlMkMlMjJxJTIyJTNBNTAlN0QlNUQlN0Q%3D" },
@@ -185,6 +196,8 @@ const PRODUCTS: ProductDefinition[] = [
     description:
       "Firma electrónica avanzada NOM-151 con prueba de vida facial del firmante en tiempo real y validación 1:1 contra identificación oficial. Expediente con video y fotogramas. Ideal para banca, aseguradoras y contratos de alto valor.",
     category: "Software de Firma Electrónica con Biometría",
+    applicationCategory: "SecurityApplication",
+    image: IMG_IDENTIDAD,
     packages: [
       { tier: "Cobre",   sku: "JAAK-NOM151BIO-COBRE",   qty: 5,   unit: "sesión", unitPlural: "sesiones", price: 130,   url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWNkNWNhNjNhODg3MzU1MzNmMmJhNzklMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWNkNWNhNjNhODg3MzU1MzNmMmJhNzklMjIlMkMlMjJrJTIyJTNBJTIyc2lnbmFfYWR2YW5jZWRfYmlvbWV0cmljJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwQXZhbnphZGElMjAlMkIlMjBCaW9tZXRyaWElMjIlMkMlMjJwciUyMiUzQTE1MC44JTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMkZpcm1hJTIwTk9NMTUxJTIwJTJCJTIwQklPJTIwQ29icmUlMjA1JTIyJTJDJTIycSUyMiUzQTUlN0QlNUQlN0Q%3D" },
       { tier: "Bronce",  sku: "JAAK-NOM151BIO-BRONCE",  qty: 50,  unit: "sesión", unitPlural: "sesiones", price: 1500,  url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWNkNWNmZDNhODg3MzU1MzNmMmJhN2UlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWNkNWNmZDNhODg3MzU1MzNmMmJhN2UlMjIlMkMlMjJrJTIyJTNBJTIyc2lnbmFfYWR2YW5jZWRfYmlvbWV0cmljJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwQXZhbnphZGElMjAlMkIlMjBCaW9tZXRyaWElMjIlMkMlMjJwciUyMiUzQTE3NDAlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyRmlybWElMjBOT00xNTElMjAlMkIlMjBCSU8lMjBCcm9uY2UlMjA1MCUyMiUyQyUyMnElMjIlM0E1MCU3RCU1RCU3RA%3D%3D" },
@@ -199,6 +212,8 @@ const PRODUCTS: ProductDefinition[] = [
     description:
       "Solución integral de onboarding regulado: firma NOM-151 con biometría facial y KYC completo del firmante (OCR + RENAPO + INE + OFAC + Interpol + SAT) en una sola sesión. Expediente único firma + identidad para AML/PLD y CNBV.",
     category: "Software de Onboarding Digital Regulado",
+    applicationCategory: "SecurityApplication",
+    image: IMG_IDENTIDAD,
     packages: [
       { tier: "Cobre",   sku: "JAAK-NOM151KYC-COBRE",   qty: 5,   unit: "sesión", unitPlural: "sesiones", price: 174,   url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWNkNWY5ODNhODg3MzU1MzNmMmJhYjElMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWNkNWY5ODNhODg3MzU1MzNmMmJhYjElMjIlMkMlMjJrJTIyJTNBJTIyc2lnbmFfYmlvbWV0cmljJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwY29uJTIwQmlvbWV0cmlhJTIyJTJDJTIycHIlMjIlM0EyMDEuODQlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyRmlybWElMjBOT00xNTElMjAlMkIlMjBLWUMlMjBDb2JyZSUyMDUlMjIlMkMlMjJxJTIyJTNBNSU3RCU1RCU3RA%3D%3D" },
       { tier: "Bronce",  sku: "JAAK-NOM151KYC-BRONCE",  qty: 50,  unit: "sesión", unitPlural: "sesiones", price: 2625,  url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWNkNWZkODNhODg3MzU1MzNmMmJhYjYlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWNkNWZkODNhODg3MzU1MzNmMmJhYjYlMjIlMkMlMjJrJTIyJTNBJTIyc2lnbmFfYmlvbWV0cmljJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwY29uJTIwQmlvbWV0cmlhJTIyJTJDJTIycHIlMjIlM0EzMDQ1JTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMkZpcm1hJTIwTk9NMTUxJTIwJTJCJTIwS1lDJTIwQnJvbmNlJTIwNTAlMjIlMkMlMjJxJTIyJTNBNTAlN0QlNUQlN0Q%3D" },
@@ -213,6 +228,8 @@ const PRODUCTS: ProductDefinition[] = [
     description:
       "Validación en tiempo real de credencial INE/IFE contra el padrón electoral oficial. Verificación de vigencia y confirmación de datos biográficos del titular. Respuesta en menos de un minuto con evidencia descargable.",
     category: "Servicio de Validación de Identidad Oficial",
+    applicationCategory: "SecurityApplication",
+    image: IMG_IDENTIDAD,
     packages: [
       { tier: "Cobre",   sku: "JAAK-INE-COBRE",   qty: 10,  unit: "consulta", unitPlural: "consultas", price: 14,  url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWQ4M2U4YmU1NzU4OWU3MTk0MmQxYzklMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWQ4M2U4YmU1NzU4OWU3MTk0MmQxYzklMjIlMkMlMjJrJTIyJTNBJTIyYmxhY2tsaXN0JTIyJTJDJTIybiUyMiUzQSUyMkJsYWNrJTIwTGlzdCUyMiUyQyUyMnByJTIyJTNBMTYuMjQlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyQ29uc3VsdGElMjBJTkUlNUN0Q29icmUlMjAxMCUyMiUyQyUyMnElMjIlM0ExMCU3RCU1RCU3RA%3D%3D" },
       { tier: "Bronce",  sku: "JAAK-INE-BRONCE",  qty: 50,  unit: "consulta", unitPlural: "consultas", price: 105, url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWQ4NTFkM2U1NzU4OWU3MTk0MmQxZmElMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWQ4NTFkM2U1NzU4OWU3MTk0MmQxZmElMjIlMkMlMjJrJTIyJTNBJTIyYmxhY2tsaXN0JTIyJTJDJTIybiUyMiUzQSUyMkJsYWNrJTIwTGlzdCUyMiUyQyUyMnByJTIyJTNBMTIxLjglMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyQ29uc3VsdGElMjBJTkUlNUN0QnJvbmNlJTIwNTAlMjIlMkMlMjJxJTIyJTNBNTAlN0QlNUQlN0Q%3D" },
@@ -227,6 +244,8 @@ const PRODUCTS: ProductDefinition[] = [
     description:
       "Validación de CURP ante el Registro Nacional de Población (RENAPO) con obtención de datos biográficos completos. Detección de CURPs inválidas o duplicadas. Respuesta en tiempo real con evidencia descargable.",
     category: "Servicio de Validación de Identidad Oficial",
+    applicationCategory: "SecurityApplication",
+    image: IMG_IDENTIDAD,
     packages: [
       { tier: "Cobre",   sku: "JAAK-CURP-COBRE",   qty: 10,  unit: "consulta", unitPlural: "consultas", price: 14,  url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWQ4NjJkOGU1NzU4OWU3MTk0MmQyNzMlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWQ4NjJkOGU1NzU4OWU3MTk0MmQyNzMlMjIlMkMlMjJrJTIyJTNBJTIyYmxhY2tsaXN0JTIyJTJDJTIybiUyMiUzQSUyMkJsYWNrJTIwTGlzdCUyMiUyQyUyMnByJTIyJTNBMTYuMjQlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyQ29uc3VsdGElMjBDVVJQJTVDdENvYnJlJTVDdDEwJTIyJTJDJTIycSUyMiUzQTEwJTdEJTVEJTdE" },
       { tier: "Bronce",  sku: "JAAK-CURP-BRONCE",  qty: 50,  unit: "consulta", unitPlural: "consultas", price: 105, url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWQ4NjMzYmU1NzU4OWU3MTk0MmQyNzglMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWQ4NjMzYmU1NzU4OWU3MTk0MmQyNzglMjIlMkMlMjJrJTIyJTNBJTIyYmxhY2tsaXN0JTIyJTJDJTIybiUyMiUzQSUyMkJsYWNrJTIwTGlzdCUyMiUyQyUyMnByJTIyJTNBMTIxLjglMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyQ29uc3VsdGElMjBDVVJQJTVDdEJyb25jZSU1Q3Q1MCUyMiUyQyUyMnElMjIlM0E1MCU3RCU1RCU3RA%3D%3D" },
@@ -241,6 +260,8 @@ const PRODUCTS: ProductDefinition[] = [
     description:
       "Extracción de datos estructurados de +500 tipos de documentos con IA: actas constitutivas, CSF, estados de cuenta, comprobantes de domicilio y más. El consumo de tokens varía según tipo y extensión del documento.",
     category: "Software de Reconocimiento Óptico de Caracteres (OCR) con IA",
+    applicationCategory: "BusinessApplication",
+    image: IMG_FIRMA,
     packages: [
       { tier: "Cobre",   sku: "JAAK-OCR-INT-COBRE",   qty: 210,   unit: "token", unitPlural: "tokens", price: 99,    url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWQ4NjY2OWU1NzU4OWU3MTk0MmQyOTUlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWQ4NjY2OWU1NzU4OWU3MTk0MmQyOTUlMjIlMkMlMjJrJTIyJTNBJTIyZG9jdW1lbnQlMjIlMkMlMjJuJTIyJTNBJTIyRG9jdW1lbnQlMjIlMkMlMjJwciUyMiUzQTExNC44NCUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJPQ1IlMjBJbnRlbGlnZW50ZSU1Q3RDb2JyZSU1Q3QyMTAlMjB0b2tlbnMlMjIlMkMlMjJxJTIyJTNBMjEwJTdEJTVEJTdE" },
       { tier: "Bronce",  sku: "JAAK-OCR-INT-BRONCE",  qty: 2100,  unit: "token", unitPlural: "tokens", price: 1500,  url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWQ4NjZhZGU1NzU4OWU3MTk0MmQyOWIlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWQ4NjZhZGU1NzU4OWU3MTk0MmQyOWIlMjIlMkMlMjJrJTIyJTNBJTIyZG9jdW1lbnQlMjIlMkMlMjJuJTIyJTNBJTIyRG9jdW1lbnQlMjIlMkMlMjJwciUyMiUzQTE3NDAlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyT0NSJTIwSW50ZWxpZ2VudGUlNUN0QnJvbmNlJTVDdDIlMkMxMDAlMjB0b2tlbnMlMjIlMkMlMjJxJTIyJTNBMjEwMCU3RCU1RCU3RA%3D%3D" },
@@ -255,6 +276,8 @@ const PRODUCTS: ProductDefinition[] = [
     description:
       "Extracción de datos estructurados y fotografía de identificaciones oficiales (INE, pasaporte) con detección de documentos falsificados o alterados. Evidencia descargable, disponible vía plataforma web y API.",
     category: "Software de Reconocimiento de Identificación Oficial",
+    applicationCategory: "SecurityApplication",
+    image: IMG_IDENTIDAD,
     packages: [
       { tier: "Cobre",   sku: "JAAK-OCR-ID-COBRE",   qty: 210,   unit: "token", unitPlural: "tokens", price: 99,    url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWQ4Njk3ZGU1NzU4OWU3MTk0MmQyYmIlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWQ4Njk3ZGU1NzU4OWU3MTk0MmQyYmIlMjIlMkMlMjJrJTIyJTNBJTIyZG9jdW1lbnQlMjIlMkMlMjJuJTIyJTNBJTIyRG9jdW1lbnQlMjIlMkMlMjJwciUyMiUzQTExNC44NCUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJPQ1IlMjBwYXJhJTIwSWRlbnRpZmljYWNpJUMzJUIzbiUyME9maWNpYWwlNUN0Q29icmUlNUN0MjEwJTIwdG9rZW5zJTIyJTJDJTIycSUyMiUzQTIxMCU3RCU1RCU3RA%3D%3D" },
       { tier: "Bronce",  sku: "JAAK-OCR-ID-BRONCE",  qty: 2100,  unit: "token", unitPlural: "tokens", price: 1500,  url: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWQ4Njk5OGU1NzU4OWU3MTk0MmQyYzElMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWQ4Njk5OGU1NzU4OWU3MTk0MmQyYzElMjIlMkMlMjJrJTIyJTNBJTIyZG9jdW1lbnQlMjIlMkMlMjJuJTIyJTNBJTIyRG9jdW1lbnQlMjIlMkMlMjJwciUyMiUzQTE3NDAlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyT0NSJTIwcGFyYSUyMElkZW50aWZpY2FjaSVDMyVCM24lMjBPZmljaWFsJTVDdEJyb25jZSU1Q3QyJTJDMTAwJTIwdG9rZW5zJTIyJTJDJTIycSUyMiUzQTIxMDAlN0QlNUQlN0Q%3D" },
@@ -269,13 +292,17 @@ function buildProductSchema(p: ProductDefinition) {
   const prices = p.packages.map((pkg) => pkg.price);
   return {
     "@context": "https://schema.org",
-    "@type": "Product",
+    // Multi-type: Product habilita Merchant Listings / Product Snippets,
+    // SoftwareApplication habilita Software App rich result (SaaS).
+    "@type": ["Product", "SoftwareApplication"],
     "@id": `${PRECIOS_URL}#${p.id}`,
     name: p.name,
     description: p.description,
-    image: PRODUCT_IMAGE,
+    image: p.image,
     brand: BRAND_REF,
     category: p.category,
+    applicationCategory: p.applicationCategory,
+    operatingSystem: "Web, API",
     mainEntityOfPage: PRECIOS_URL,
     offers: {
       "@type": "AggregateOffer",
@@ -288,13 +315,16 @@ function buildProductSchema(p: ProductDefinition) {
         "@type": "Offer",
         name: `Plan ${pkg.tier} – ${p.name}`,
         sku: pkg.sku,
+        mpn: pkg.sku,
         price: pkg.price.toString(),
         priceCurrency: "MXN",
         priceValidUntil: PRICE_VALID_UNTIL,
         availability: "https://schema.org/InStock",
+        itemCondition: "https://schema.org/NewCondition",
         url: pkg.url,
         description: `${pkg.qty.toLocaleString("es-MX")} ${pkg.qty === 1 ? pkg.unit : pkg.unitPlural} por año`,
         seller: SELLER_REF,
+        hasMerchantReturnPolicy: RETURN_POLICY,
         priceSpecification: {
           "@type": "UnitPriceSpecification",
           price: (pkg.price / pkg.qty).toFixed(2),
