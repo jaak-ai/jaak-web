@@ -146,7 +146,7 @@ export default function InmobiliariasPage() {
                     Solicitar demo gratuita
                   </a>
                   <Link
-                    href="https://meetings.hubspot.com/jaak-demo/reunion-demo?uuid=104e4d38-124f-42c0-8417-e1d728b5b8ce"
+                    href="https://meetings.hubspot.com/jose-andres-yllescas-lira/meeting"
                     target="_blank"
                     className="px-6 py-3 bg-white/10 border border-white/20 text-white font-semibold rounded-lg hover:bg-white/20 transition-all"
                   >
@@ -337,7 +337,7 @@ export default function InmobiliariasPage() {
                 <div className="mt-10 p-6 bg-[#1ECAD3]/10 border border-[#1ECAD3]/20 rounded-xl">
                   <p className="text-[#1ECAD3] font-bold text-lg mb-1">¿Prefieres hablar ya?</p>
                   <a
-                    href="https://meetings.hubspot.com/jaak-demo/reunion-demo?uuid=104e4d38-124f-42c0-8417-e1d728b5b8ce"
+                    href="https://meetings.hubspot.com/jose-andres-yllescas-lira/meeting"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-white/80 hover:text-white underline"
