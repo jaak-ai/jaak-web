@@ -8,7 +8,7 @@ import Footer from "@/components/Footer";
 
 /* ── Video URL — swap WEBINAR_VIDEO_ID with the real YouTube/Vimeo ID ── */
 const VIDEO_URL =
-  "https://www.youtube.com/embed/WEBINAR_VIDEO_ID?rel=0&modestbranding=1&autoplay=1&color=white";
+  "https://www.youtube.com/embed/rwBuDaPkdeM?rel=0&modestbranding=1&autoplay=1&color=white";
 
 /* ── Simulated live comments ─────────────────────────────────────────── */
 const LIVE_COMMENTS = [
