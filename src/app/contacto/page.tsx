@@ -189,7 +189,7 @@ export default function ContactoPage() {
                     Agenda una demo directamente con nuestro equipo de ventas.
                   </p>
                   <Link
-                    href="https://meetings.hubspot.com/jaak-demo/reunion-demo?uuid=104e4d38-124f-42c0-8417-e1d728b5b8ce"
+                    href="https://meetings.hubspot.com/jose-andres-yllescas-lira"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-6 py-3 bg-[#2DB6C1] text-white font-bold rounded-lg hover:bg-[#25969f] transition-all hover:scale-105"
