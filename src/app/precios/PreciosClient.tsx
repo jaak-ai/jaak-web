@@ -2,6 +2,10 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { productos, formatMXN } from "@/data/autoservicio-catalogo";
+
+// Precio "desde" del autoservicio = paquete más económico del catálogo (fuente única).
+const minAutoPrecio = Math.min(...productos.flatMap((p) => p.paquetes.map((q) => q.precio)));
 
 // --- Scroll Reveal Hook ---
 function useScrollReveal<T extends HTMLElement>(threshold = 0.15) {
@@ -31,9 +35,9 @@ const PLANS = [
     name: "Autoservicio",
     badge: "Empieza en minutos",
     badgeColor: "#1ecad3",
-    price: "Desde $10 MXN",
-    priceSub: "por uso · sin suscripción",
-    desc: "Activa productos de identidad y firma sin integración técnica. Compra por uso, sin contratos ni volumen mínimo.",
+    price: `Desde ${formatMXN(minAutoPrecio)} MXN`,
+    priceSub: "por paquete · sin suscripción",
+    desc: "Arma tu paquete combinando KYC, firma, validaciones y OCR, y actívalo en minutos. Compra en línea, sin contratos ni volumen mínimo.",
     features: [
       "Firma electrónica (Simple y NOM-151)",
       "KYC con biometría",
@@ -242,7 +246,8 @@ export default function PreciosClient() {
             {PLANS.map((plan) => (
               <div
                 key={plan.id}
-                className="relative flex flex-col rounded-2xl p-6 backdrop-blur-sm transition-all duration-200 hover:-translate-y-1"
+                id={plan.id}
+                className="relative flex flex-col scroll-mt-28 rounded-2xl p-6 backdrop-blur-sm transition-all duration-200 hover:-translate-y-1"
                 style={plan.popular ? {
                   background: `linear-gradient(145deg,${plan.color}1e 0%,rgba(255,255,255,0.07) 100%)`,
                   border: `1.5px solid ${plan.color}60`,
@@ -255,7 +260,7 @@ export default function PreciosClient() {
                 {plan.popular && (
                   <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full whitespace-nowrap text-white"
                     style={{ background: `linear-gradient(90deg,${plan.color},#00d4aa)`, boxShadow: `0 4px 16px ${plan.color}60` }}>
-                    ⭐ Más popular
+                    Más popular
                   </div>
                 )}
 
