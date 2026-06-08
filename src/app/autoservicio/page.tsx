@@ -52,7 +52,7 @@ export default function AutoservicioPage() {
                   className="rounded-xl px-6 py-3.5 text-[15px] font-semibold text-white transition-colors"
                   style={{ background: TEAL }}
                 >
-                  Ver propuestas
+                  Empezar
                 </Link>
                 <Link
                   href="#como-funciona"
@@ -141,7 +141,7 @@ export default function AutoservicioPage() {
                 </p>
               </div>
               <div className="flex flex-wrap gap-3">
-                <Link href="#experiencia" className="rounded-xl px-6 py-3.5 text-[15px] font-semibold text-white" style={{ background: TEAL }}>Ver propuestas</Link>
+                <Link href="#experiencia" className="rounded-xl px-6 py-3.5 text-[15px] font-semibold text-white" style={{ background: TEAL }}>Empezar</Link>
                 <Link href="/contacto" className="rounded-xl px-6 py-3.5 text-[15px] font-semibold" style={{ background: "rgba(255,255,255,0.08)", color: "#fff", border: "1px solid rgba(255,255,255,0.18)" }}>Hablar con ventas</Link>
               </div>
             </div>
