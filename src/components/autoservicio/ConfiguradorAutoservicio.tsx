@@ -4,13 +4,12 @@ import { useState } from "react";
 import {
   productos,
   formatMXN,
-  IVA,
-  buildCheckoutUrl,
   type CategoriaId,
   type Producto,
   type Paquete,
 } from "@/data/autoservicio-catalogo";
 import { useCarrito } from "./CarritoContext";
+import CarritoAutoservicio from "./CarritoAutoservicio";
 
 const NAVY = "#212A45";
 const TEAL = "#2DB6C1";
@@ -51,37 +50,25 @@ const volumenes: { id: Paquete["id"]; label: string; rec?: boolean }[] = [
 ];
 
 export default function ConfiguradorAutoservicio() {
-  const { cart, enCarrito, tierDe, setTier, toggle, quitar, aplicarVolumen } = useCarrito();
+  const { enCarrito, tierDe, setTier, toggle, aplicarVolumen } = useCarrito();
   const [seleccionadas, setSeleccionadas] = useState<Set<NecesidadId>>(new Set());
   const [volumen, setVolumen] = useState<Paquete["id"]>("plata");
 
-  const toggleNecesidad = (n: (typeof necesidades)[number]) => {
-    const estaba = seleccionadas.has(n.id);
+  // Mostrar/ocultar una necesidad solo cambia qué productos se listan; lo que ya
+  // está en el carrito permanece (se gestiona desde el resumen compartido).
+  const toggleNecesidad = (n: (typeof necesidades)[number]) =>
     setSeleccionadas((prev) => {
       const next = new Set(prev);
-      if (estaba) next.delete(n.id);
+      if (next.has(n.id)) next.delete(n.id);
       else next.add(n.id);
       return next;
     });
-    // Al ocultar una necesidad, también retira del carrito sus productos.
-    if (estaba) productosDe(n.cat).forEach((p) => quitar(p.id));
-  };
 
   const seleccionadasList = necesidades.filter((n) => seleccionadas.has(n.id));
   // Productos sugeridos (premarcados) según las necesidades elegidas.
   const recomendadosIds = new Set(seleccionadasList.flatMap((n) => n.recomendados));
 
   const paqueteDe = (p: Producto) => p.paquetes.find((q) => q.id === tierDe(p.id))!;
-
-  // Carrito compartido (mismo store que el Catálogo), en orden de inserción.
-  const items = cart.map((id) => {
-    const producto = productos.find((p) => p.id === id)!;
-    return { producto, paquete: paqueteDe(producto) };
-  });
-  const subtotal = items.reduce((s, i) => s + i.paquete.precio, 0);
-  const iva = Math.round(subtotal * IVA);
-  const total = subtotal + iva;
-  const checkoutHref = items.length ? buildCheckoutUrl(items) : "#";
 
   return (
     <section id="configurador" className="bg-white">
@@ -143,14 +130,14 @@ export default function ConfiguradorAutoservicio() {
 
         {/* Paso 3 — recomendación */}
         <Paso numero="3" titulo="Arma tu paquete" sub="Marcamos lo recomendado y el volumen sugerido según tu consumo. Agrega lo que necesites." last>
-          {seleccionadasList.length === 0 ? (
-            <div className="rounded-2xl border border-dashed p-8 text-center" style={{ borderColor: "#CBD0DB" }}>
-              <p className="text-[14px]" style={{ color: "#94A3B8" }}>Selecciona al menos una necesidad en el Paso 1 para ver tu recomendación.</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_320px] lg:items-start">
-              <div className="space-y-6">
-                {seleccionadasList.map((n) => (
+          <div className="grid grid-cols-1 gap-5 lg:grid-cols-[1fr_320px] lg:items-start">
+            <div className="space-y-6">
+              {seleccionadasList.length === 0 ? (
+                <div className="rounded-2xl border border-dashed p-8 text-center" style={{ borderColor: "#CBD0DB" }}>
+                  <p className="text-[14px]" style={{ color: "#94A3B8" }}>Selecciona al menos una necesidad en el Paso 1 para ver recomendaciones. Lo que agregues aparece en tu compra a la derecha.</p>
+                </div>
+              ) : (
+                seleccionadasList.map((n) => (
                   <div key={n.id}>
                     <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.14em]" style={{ color: "#94A3B8" }}>{n.titulo}</p>
                     <div className="space-y-3">
@@ -232,39 +219,13 @@ export default function ConfiguradorAutoservicio() {
                       })}
                     </div>
                   </div>
-                ))}
-              </div>
-
-              {/* Resumen */}
-              <aside className="lg:sticky lg:top-[130px]">
-                <div className="rounded-2xl border bg-white p-5" style={{ borderColor: "#E6E8EF" }}>
-                  <h3 className="text-[15px] font-bold" style={{ color: NAVY }}>Resumen</h3>
-                  {items.length === 0 ? (
-                    <p className="mt-3 text-[13px]" style={{ color: "#94A3B8" }}>Agrega al menos un producto para continuar.</p>
-                  ) : (
-                    <div className="mt-3 space-y-1.5 text-[13px]">
-                      <div className="flex items-center justify-between"><span style={{ color: "#64748B" }}>Subtotal</span><span style={{ color: NAVY }}>{formatMXN(subtotal)}</span></div>
-                      <div className="flex items-center justify-between"><span style={{ color: "#94A3B8" }}>IVA (16%)</span><span style={{ color: "#64748B" }}>{formatMXN(iva)}</span></div>
-                      <div className="flex items-center justify-between border-t pt-2" style={{ borderColor: "#EEF0F4" }}>
-                        <span className="text-[14px] font-bold" style={{ color: NAVY }}>Total</span>
-                        <span className="text-[18px] font-bold" style={{ color: NAVY }}>{formatMXN(total)}</span>
-                      </div>
-                    </div>
-                  )}
-                  {items.length ? (
-                    <a href={checkoutHref} className="mt-4 block w-full rounded-xl py-3 text-center text-[14px] font-semibold text-white" style={{ background: TEAL }}>
-                      Continuar al pago
-                    </a>
-                  ) : (
-                    <span className="mt-4 block w-full cursor-not-allowed rounded-xl py-3 text-center text-[14px] font-semibold" style={{ background: "#EEF0F4", color: "#B6BCCB" }}>
-                      Continuar al pago
-                    </span>
-                  )}
-                  <p className="mt-2 text-center text-[11px]" style={{ color: "#94A3B8" }}>Pago seguro con Stripe · Activación inmediata</p>
-                </div>
-              </aside>
+                ))
+              )}
             </div>
-          )}
+
+            {/* Carrito / resumen compartido (mismo que el Catálogo) */}
+            <CarritoAutoservicio />
+          </div>
         </Paso>
       </div>
     </section>
