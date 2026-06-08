@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import CatalogoAutoservicio from "@/components/autoservicio/CatalogoAutoservicio";
+import AutoservicioVariantes from "@/components/autoservicio/AutoservicioVariantes";
 
 export const metadata: Metadata = {
   title: "Autoservicio — Compra y activa servicios JAAK en minutos",
@@ -48,11 +48,11 @@ export default function AutoservicioPage() {
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <Link
-                  href="#catalogo"
+                  href="#experiencia"
                   className="rounded-xl px-6 py-3.5 text-[15px] font-semibold text-white transition-colors"
                   style={{ background: TEAL }}
                 >
-                  Ver catálogo
+                  Ver propuestas
                 </Link>
                 <Link
                   href="#como-funciona"
@@ -100,8 +100,8 @@ export default function AutoservicioPage() {
           </div>
         </section>
 
-        {/* ─── Catálogo (interactivo) ───────────────────────────────────── */}
-        <CatalogoAutoservicio />
+        {/* ─── Propuestas A/B con toggle (interactivo) ──────────────────── */}
+        <AutoservicioVariantes />
 
         {/* ─── Cómo funciona ────────────────────────────────────────────── */}
         <section id="como-funciona" className="border-t" style={{ background: "#FAFBFC", borderColor: "#EEF0F4" }}>
@@ -141,7 +141,7 @@ export default function AutoservicioPage() {
                 </p>
               </div>
               <div className="flex flex-wrap gap-3">
-                <Link href="#catalogo" className="rounded-xl px-6 py-3.5 text-[15px] font-semibold text-white" style={{ background: TEAL }}>Ver catálogo</Link>
+                <Link href="#experiencia" className="rounded-xl px-6 py-3.5 text-[15px] font-semibold text-white" style={{ background: TEAL }}>Ver propuestas</Link>
                 <Link href="/contacto" className="rounded-xl px-6 py-3.5 text-[15px] font-semibold" style={{ background: "rgba(255,255,255,0.08)", color: "#fff", border: "1px solid rgba(255,255,255,0.18)" }}>Hablar con ventas</Link>
               </div>
             </div>
