@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import CatalogoAutoservicio from "./CatalogoAutoservicio";
 import ConfiguradorAutoservicio from "./ConfiguradorAutoservicio";
+import { CarritoProvider } from "./CarritoContext";
 
 const NAVY = "#212A45";
 
@@ -63,6 +64,7 @@ export default function AutoservicioVariantes() {
   };
 
   return (
+    <CarritoProvider>
     <div id="experiencia">
       {/* Selector de modo según el perfil del comprador. No es fijo: vive al
           inicio de la experiencia y se va con el scroll para no estorbar. */}
@@ -87,5 +89,6 @@ export default function AutoservicioVariantes() {
 
       {variante === "catalogo" ? <CatalogoAutoservicio /> : <ConfiguradorAutoservicio />}
     </div>
+    </CarritoProvider>
   );
 }

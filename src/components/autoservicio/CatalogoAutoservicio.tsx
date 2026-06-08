@@ -11,6 +11,7 @@ import {
   type Producto,
   type Paquete,
 } from "@/data/autoservicio-catalogo";
+import { useCarrito } from "./CarritoContext";
 
 const NAVY = "#212A45";
 const TEAL = "#2DB6C1";
@@ -31,15 +32,10 @@ function CategoryIcon({ categoria, className }: { categoria: CategoriaId; classN
   );
 }
 
-type CartItem = { productoId: string; paqueteId: Paquete["id"] };
-
 export default function CatalogoAutoservicio() {
+  const { cart, enCarrito, tierDe, setTier, toggle, quitar } = useCarrito();
   const [categoriaActiva, setCategoriaActiva] = useState<CategoriaId | "todos">("todos");
-  const [seleccion, setSeleccion] = useState<Record<string, Paquete["id"]>>(
-    () => Object.fromEntries(productos.map((p) => [p.id, p.recomendado ?? "plata"]))
-  );
   const [comparar, setComparar] = useState<Record<string, boolean>>({});
-  const [carrito, setCarrito] = useState<CartItem[]>([]);
   const [carritoAbiertoMovil, setCarritoAbiertoMovil] = useState(false);
 
   const productosFiltrados = useMemo(
@@ -49,26 +45,9 @@ export default function CatalogoAutoservicio() {
 
   const getPaquete = (p: Producto, id: Paquete["id"]) => p.paquetes.find((q) => q.id === id)!;
 
-  const enCarrito = (productoId: string) => carrito.find((c) => c.productoId === productoId);
-
-  const toggleCarrito = (producto: Producto) => {
-    const paqueteId = seleccion[producto.id];
-    setCarrito((prev) => {
-      const existe = prev.find((c) => c.productoId === producto.id);
-      if (existe) return prev.filter((c) => c.productoId !== producto.id);
-      return [...prev, { productoId: producto.id, paqueteId }];
-    });
-  };
-
-  const actualizarPaquete = (productoId: string, paqueteId: Paquete["id"]) => {
-    setSeleccion((prev) => ({ ...prev, [productoId]: paqueteId }));
-    setCarrito((prev) => prev.map((c) => (c.productoId === productoId ? { ...c, paqueteId } : c)));
-  };
-
-  const itemsCarrito = carrito.map((c) => {
-    const producto = productos.find((p) => p.id === c.productoId)!;
-    const paquete = getPaquete(producto, c.paqueteId);
-    return { producto, paquete };
+  const itemsCarrito = cart.map((id) => {
+    const producto = productos.find((p) => p.id === id)!;
+    return { producto, paquete: getPaquete(producto, tierDe(id)) };
   });
 
   const subtotal = itemsCarrito.reduce((s, i) => s + i.paquete.precio, 0);
@@ -103,8 +82,8 @@ export default function CatalogoAutoservicio() {
           {/* Grid de productos */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {productosFiltrados.map((producto) => {
-              const paqueteSel = getPaquete(producto, seleccion[producto.id]);
-              const agregado = !!enCarrito(producto.id);
+              const paqueteSel = getPaquete(producto, tierDe(producto.id));
+              const agregado = enCarrito(producto.id);
               const expandido = !!comparar[producto.id];
               return (
                 <article
@@ -145,11 +124,11 @@ export default function CatalogoAutoservicio() {
                     </div>
                     <div className="mt-2 flex flex-wrap gap-1.5">
                       {producto.paquetes.map((q) => {
-                        const sel = q.id === seleccion[producto.id];
+                        const sel = q.id === tierDe(producto.id);
                         return (
                           <button
                             key={q.id}
-                            onClick={() => actualizarPaquete(producto.id, q.id)}
+                            onClick={() => setTier(producto.id, q.id)}
                             className="rounded-lg px-2.5 py-1.5 text-[12px] font-semibold transition-colors"
                             style={
                               sel
@@ -177,7 +156,7 @@ export default function CatalogoAutoservicio() {
                         </thead>
                         <tbody>
                           {producto.paquetes.map((q) => (
-                            <tr key={q.id} style={{ background: q.id === seleccion[producto.id] ? "#F1FAFB" : "#fff" }}>
+                            <tr key={q.id} style={{ background: q.id === tierDe(producto.id) ? "#F1FAFB" : "#fff" }}>
                               <td className="px-2.5 py-1.5 font-medium" style={{ color: NAVY }}>
                                 {q.nombre}{producto.recomendado === q.id && <span className="ml-1 text-[10px] font-bold" style={{ color: TEAL_DARK }}>· Recomendado</span>}
                               </td>
@@ -204,7 +183,7 @@ export default function CatalogoAutoservicio() {
                       </div>
                     </div>
                     <button
-                      onClick={() => toggleCarrito(producto)}
+                      onClick={() => toggle(producto.id)}
                       className="rounded-xl px-4 py-2.5 text-[13px] font-semibold transition-colors"
                       style={agregado ? { background: "#F1FAFB", color: TEAL_DARK, border: `1px solid ${TEAL}` } : { background: TEAL, color: "#fff" }}
                     >
@@ -218,7 +197,7 @@ export default function CatalogoAutoservicio() {
 
           {/* Carrito / resumen (sticky en desktop) */}
           <aside className="hidden lg:block sticky top-[130px]">
-            <ResumenCarrito items={itemsCarrito} subtotal={subtotal} iva={iva} total={total} checkoutHref={checkoutHref} onQuitar={(id) => setCarrito((p) => p.filter((c) => c.productoId !== id))} />
+            <ResumenCarrito items={itemsCarrito} subtotal={subtotal} iva={iva} total={total} checkoutHref={checkoutHref} onQuitar={quitar} />
           </aside>
         </div>
       </div>
@@ -243,7 +222,7 @@ export default function CatalogoAutoservicio() {
         <div className="lg:hidden fixed inset-0 z-50 flex items-end bg-black/40" onClick={() => setCarritoAbiertoMovil(false)}>
           <div className="w-full rounded-t-2xl bg-white p-5" onClick={(e) => e.stopPropagation()}>
             <div className="mx-auto mb-3 h-1 w-10 rounded-full" style={{ background: "#E2E5EC" }} />
-            <ResumenCarrito items={itemsCarrito} subtotal={subtotal} iva={iva} total={total} checkoutHref={checkoutHref} onQuitar={(id) => setCarrito((p) => p.filter((c) => c.productoId !== id))} />
+            <ResumenCarrito items={itemsCarrito} subtotal={subtotal} iva={iva} total={total} checkoutHref={checkoutHref} onQuitar={quitar} />
           </div>
         </div>
       )}

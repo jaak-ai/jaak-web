@@ -10,6 +10,7 @@ import {
   type Producto,
   type Paquete,
 } from "@/data/autoservicio-catalogo";
+import { useCarrito } from "./CarritoContext";
 
 const NAVY = "#212A45";
 const TEAL = "#2DB6C1";
@@ -50,12 +51,9 @@ const volumenes: { id: Paquete["id"]; label: string; rec?: boolean }[] = [
 ];
 
 export default function ConfiguradorAutoservicio() {
+  const { cart, enCarrito, tierDe, setTier, toggle, quitar, aplicarVolumen } = useCarrito();
   const [seleccionadas, setSeleccionadas] = useState<Set<NecesidadId>>(new Set());
   const [volumen, setVolumen] = useState<Paquete["id"]>("plata");
-  // Productos efectivamente agregados al carrito (ids). Empieza vacío: elegir una
-  // necesidad o un volumen NO agrega nada; solo premarcamos la recomendación.
-  const [activos, setActivos] = useState<Set<string>>(new Set());
-  const [tierOverride, setTierOverride] = useState<Record<string, Paquete["id"]>>({});
 
   const toggleNecesidad = (n: (typeof necesidades)[number]) => {
     const estaba = seleccionadas.has(n.id);
@@ -66,32 +64,20 @@ export default function ConfiguradorAutoservicio() {
       return next;
     });
     // Al ocultar una necesidad, también retira del carrito sus productos.
-    if (estaba) {
-      setActivos((prev) => {
-        const next = new Set(prev);
-        productosDe(n.cat).forEach((p) => next.delete(p.id));
-        return next;
-      });
-    }
+    if (estaba) productosDe(n.cat).forEach((p) => quitar(p.id));
   };
-
-  const toggleProducto = (id: string) =>
-    setActivos((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
 
   const seleccionadasList = necesidades.filter((n) => seleccionadas.has(n.id));
   // Productos sugeridos (premarcados) según las necesidades elegidas.
   const recomendadosIds = new Set(seleccionadasList.flatMap((n) => n.recomendados));
 
-  const tierDe = (p: Producto): Paquete["id"] => tierOverride[p.id] ?? volumen;
-  const paqueteDe = (p: Producto) => p.paquetes.find((q) => q.id === tierDe(p))!;
+  const paqueteDe = (p: Producto) => p.paquetes.find((q) => q.id === tierDe(p.id))!;
 
-  // Carrito en orden del catálogo (fuente única de verdad).
-  const items = productos.filter((p) => activos.has(p.id)).map((p) => ({ producto: p, paquete: paqueteDe(p) }));
+  // Carrito compartido (mismo store que el Catálogo), en orden de inserción.
+  const items = cart.map((id) => {
+    const producto = productos.find((p) => p.id === id)!;
+    return { producto, paquete: paqueteDe(producto) };
+  });
   const subtotal = items.reduce((s, i) => s + i.paquete.precio, 0);
   const iva = Math.round(subtotal * IVA);
   const total = subtotal + iva;
@@ -138,13 +124,9 @@ export default function ConfiguradorAutoservicio() {
                 <button
                   key={v.id}
                   onClick={() => {
-                    // Congela el tier de lo ya agregado al carrito: solo los productos
-                    // aún no agregados (premarcados) siguen el nuevo volumen.
-                    setTierOverride((prev) => {
-                      const next: Record<string, Paquete["id"]> = {};
-                      activos.forEach((id) => { next[id] = prev[id] ?? volumen; });
-                      return next;
-                    });
+                    // Aplica el volumen a los productos NO agregados (premarcados);
+                    // el tier de lo ya agregado al carrito queda congelado.
+                    aplicarVolumen(v.id);
                     setVolumen(v.id);
                   }}
                   className="relative rounded-2xl border px-3 py-4 text-center transition-colors"
@@ -173,7 +155,7 @@ export default function ConfiguradorAutoservicio() {
                     <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.14em]" style={{ color: "#94A3B8" }}>{n.titulo}</p>
                     <div className="space-y-3">
                       {productosDe(n.cat).map((producto) => {
-                        const activo = activos.has(producto.id);
+                        const activo = enCarrito(producto.id);
                         const recomendado = recomendadosIds.has(producto.id);
                         const paquete = paqueteDe(producto);
                         return (
@@ -213,10 +195,10 @@ export default function ConfiguradorAutoservicio() {
                                 </div>
                               </div>
                               {activo ? (
-                                <button onClick={() => toggleProducto(producto.id)} className="flex-shrink-0 text-[12px]" style={{ color: "#94A3B8" }}>Quitar</button>
+                                <button onClick={() => toggle(producto.id)} className="flex-shrink-0 text-[12px]" style={{ color: "#94A3B8" }}>Quitar</button>
                               ) : (
                                 <button
-                                  onClick={() => toggleProducto(producto.id)}
+                                  onClick={() => toggle(producto.id)}
                                   className="flex-shrink-0 rounded-lg px-3 py-1.5 text-[12px] font-semibold text-white transition-colors"
                                   style={{ background: TEAL }}
                                 >
@@ -227,11 +209,11 @@ export default function ConfiguradorAutoservicio() {
                             <div className="mt-4 flex items-center justify-between">
                               <div className="flex flex-wrap gap-1.5">
                                 {producto.paquetes.map((q) => {
-                                  const sel = q.id === tierDe(producto);
+                                  const sel = q.id === tierDe(producto.id);
                                   return (
                                     <button
                                       key={q.id}
-                                      onClick={() => setTierOverride((prev) => ({ ...prev, [producto.id]: q.id }))}
+                                      onClick={() => setTier(producto.id, q.id)}
                                       className="rounded-lg px-2.5 py-1.5 text-[12px] font-semibold transition-colors"
                                       style={sel ? { background: NAVY, color: "#fff" } : { background: "#F3F4F8", color: "#475569" }}
                                     >
