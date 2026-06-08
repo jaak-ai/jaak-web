@@ -64,18 +64,23 @@ export default function AutoservicioVariantes() {
 
   return (
     <div id="experiencia">
-      {/* Selector de modo según el perfil del comprador. Dos caminos, misma ruta. */}
-      <div
-        className="sticky top-[114px] z-30 border-b backdrop-blur-xl"
-        style={{ background: "rgba(255,255,255,0.95)", borderColor: "#EEF0F4" }}
-      >
-        <div className="mx-auto flex max-w-7xl flex-col items-center gap-2 px-4 py-3 sm:px-6 lg:px-8">
-          <span className="text-[11px] font-semibold uppercase tracking-[0.16em]" style={{ color: "#94A3B8" }}>
-            ¿Cómo prefieres avanzar?
-          </span>
-          <div className="flex w-full gap-1 rounded-2xl p-1 sm:w-auto" style={{ background: "#F3F4F8" }}>
-            <Tab v="catalogo" titulo="Sé lo que necesito" sub="Explorar el catálogo" />
-            <Tab v="guia" titulo="Ayúdame a elegir" sub="Te guiamos paso a paso" />
+      {/* Selector de modo según el perfil del comprador. No es fijo: vive al
+          inicio de la experiencia y se va con el scroll para no estorbar. */}
+      <div className="bg-white">
+        <div className="mx-auto flex max-w-7xl justify-center px-4 pt-4 pb-1 sm:px-6 lg:px-8">
+          <div
+            className="flex flex-col items-center gap-2 rounded-2xl border bg-white px-2.5 py-2.5 shadow-[0_14px_34px_-16px_rgba(28,36,64,0.28)]"
+            style={{ borderColor: "#E9ECF2" }}
+            role="group"
+            aria-label="¿Cómo prefieres avanzar?"
+          >
+            <span className="text-[10.5px] font-semibold uppercase tracking-[0.16em]" style={{ color: "#94A3B8" }}>
+              ¿Cómo prefieres avanzar?
+            </span>
+            <div className="flex w-full gap-1 rounded-xl p-1 sm:w-auto" style={{ background: "#F3F4F8" }}>
+              <Tab v="catalogo" titulo="Sé lo que necesito" sub="Explorar el catálogo" />
+              <Tab v="guia" titulo="Ayúdame a elegir" sub="Te guiamos paso a paso" />
+            </div>
           </div>
         </div>
       </div>

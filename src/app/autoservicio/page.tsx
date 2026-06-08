@@ -20,7 +20,7 @@ export default function AutoservicioPage() {
       <main>
         {/* ─── Hero ─────────────────────────────────────────────────────── */}
         <section
-          className="relative overflow-hidden pt-[150px] pb-16 lg:pb-20"
+          className="relative overflow-hidden pt-[150px] pb-10 lg:pb-12"
           style={{ background: "linear-gradient(135deg, #0E1133 0%, #1A2142 55%, #212A45 100%)" }}
         >
           <div

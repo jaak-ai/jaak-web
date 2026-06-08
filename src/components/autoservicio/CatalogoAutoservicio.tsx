@@ -78,7 +78,7 @@ export default function CatalogoAutoservicio() {
 
   return (
     <section id="catalogo" className="bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 lg:py-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-14 lg:pt-10 lg:pb-20">
         <div className="max-w-3xl">
           <p className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: TEAL_DARK }}>Catálogo</p>
           <h2 className="mt-3 text-3xl lg:text-4xl font-bold tracking-tight" style={{ color: NAVY }}>

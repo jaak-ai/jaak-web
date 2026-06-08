@@ -99,7 +99,7 @@ export default function ConfiguradorAutoservicio() {
 
   return (
     <section id="configurador" className="bg-white">
-      <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
+      <div className="mx-auto max-w-5xl px-4 pt-8 pb-14 sm:px-6 lg:px-8 lg:pt-10 lg:pb-20">
 
         {/* Paso 1 */}
         <Paso numero="1" titulo="¿Qué necesitas resolver?" sub="Elige una o varias. Te recomendamos los productos adecuados.">

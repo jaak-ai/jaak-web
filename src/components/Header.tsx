@@ -176,7 +176,7 @@ export default function Header() {
                 href="/autoservicio"
                 className="px-5 py-2.5 bg-[#2DB6C1] text-white font-semibold text-[15px] rounded-lg hover:bg-[#25969f] transition-all"
               >
-                Autoservicio
+                Comprar
               </Link>
 
               {/* Mobile menu button */}
@@ -293,7 +293,7 @@ export default function Header() {
               {/* Autoservicio */}
               <div>
                 <Link href="/autoservicio" className="block w-full text-center px-5 py-3 bg-[#2DB6C1] text-white font-semibold rounded-lg hover:bg-[#25969f]" onClick={() => setMobileMenuOpen(false)}>
-                  Ir a Autoservicio
+                  Comprar
                 </Link>
               </div>
 
