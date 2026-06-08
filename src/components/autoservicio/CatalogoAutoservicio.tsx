@@ -166,23 +166,23 @@ export default function CatalogoAutoservicio() {
 
                   {/* Comparación expandible */}
                   {expandido && (
-                    <div className="mt-3 overflow-hidden rounded-xl border" style={{ borderColor: "#E6E8EF" }}>
+                    <div className="mt-3 overflow-x-auto rounded-xl border" style={{ borderColor: "#E6E8EF" }}>
                       <table className="w-full text-[12px]">
                         <thead>
                           <tr style={{ background: "#FAFBFC", color: "#64748B" }}>
-                            <th className="px-3 py-1.5 text-left font-semibold">Paquete</th>
-                            <th className="px-3 py-1.5 text-right font-semibold">{producto.unidad}</th>
-                            <th className="px-3 py-1.5 text-right font-semibold">Precio</th>
+                            <th className="px-2.5 py-1.5 text-left font-semibold">Paquete</th>
+                            <th className="px-2.5 py-1.5 text-right font-semibold">Cantidad</th>
+                            <th className="px-2.5 py-1.5 text-right font-semibold">Precio</th>
                           </tr>
                         </thead>
                         <tbody>
                           {producto.paquetes.map((q) => (
                             <tr key={q.id} style={{ background: q.id === seleccion[producto.id] ? "#F1FAFB" : "#fff" }}>
-                              <td className="px-3 py-1.5 font-medium" style={{ color: NAVY }}>
+                              <td className="px-2.5 py-1.5 font-medium" style={{ color: NAVY }}>
                                 {q.nombre}{producto.recomendado === q.id && <span className="ml-1 text-[10px] font-bold" style={{ color: TEAL_DARK }}>· Recomendado</span>}
                               </td>
-                              <td className="px-3 py-1.5 text-right" style={{ color: "#4A5568" }}>{q.cantidad.toLocaleString("es-MX")}</td>
-                              <td className="px-3 py-1.5 text-right font-semibold" style={{ color: NAVY }}>{formatMXN(q.precio)}</td>
+                              <td className="px-2.5 py-1.5 text-right whitespace-nowrap" style={{ color: "#4A5568" }}>{q.cantidad.toLocaleString("es-MX")}</td>
+                              <td className="px-2.5 py-1.5 text-right font-semibold whitespace-nowrap" style={{ color: NAVY }}>{formatMXN(q.precio)}</td>
                             </tr>
                           ))}
                         </tbody>
@@ -197,8 +197,10 @@ export default function CatalogoAutoservicio() {
                         <span className="text-2xl font-bold" style={{ color: NAVY }}>{formatMXN(paqueteSel.precio)}</span>
                         <span className="text-[12px]" style={{ color: "#94A3B8" }}>+ IVA</span>
                       </div>
-                      <div className="text-[12px]" style={{ color: "#64748B" }}>
-                        {paqueteSel.cantidad.toLocaleString("es-MX")} {producto.unidad}
+                      <div className="mt-1.5">
+                        <span className="inline-flex items-baseline gap-1 rounded-md px-2 py-1 text-[12px]" style={{ background: "#F1FAFB", color: TEAL_DARK }}>
+                          Incluye <span className="text-[14px] font-bold">{paqueteSel.cantidad.toLocaleString("es-MX")}</span> {producto.unidad}
+                        </span>
                       </div>
                     </div>
                     <button

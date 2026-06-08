@@ -201,7 +201,11 @@ export default function ConfiguradorAutoservicio() {
                                       </span>
                                     ) : null}
                                   </div>
-                                  <p className="text-[12px]" style={{ color: "#64748B" }}>{paquete.cantidad.toLocaleString("es-MX")} {producto.unidad}</p>
+                                  <p className="mt-1">
+                                    <span className="inline-flex items-baseline gap-1 rounded-md px-2 py-1 text-[12px]" style={{ background: "#F1FAFB", color: TEAL_DARK }}>
+                                      Incluye <span className="text-[14px] font-bold">{paquete.cantidad.toLocaleString("es-MX")}</span> {producto.unidad}
+                                    </span>
+                                  </p>
                                   <p className="mt-1.5 flex items-start gap-1.5 text-[12px] leading-snug" style={{ color: TEAL_DARK }}>
                                     <svg className="mt-[3px] h-3 w-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
                                     {producto.incluye[0]}
