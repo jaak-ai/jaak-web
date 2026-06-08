@@ -147,3 +147,44 @@ export const productos: Producto[] = [
 export function formatMXN(n: number): string {
   return new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 0 }).format(n);
 }
+
+// Mapeo a las "keys" de producto que ya usa la plataforma (jaak-nfury-web /register).
+// Permite construir el deep-link de checkout llevando el carrito a la plataforma.
+// En producción, los IDs de pricing deben venir de la API (fuente única de verdad).
+export const productKeys: Record<string, string> = {
+  kyc: "kyc",
+  "firma-simple": "signa_simple",
+  "firma-nom151": "signa_advanced",
+  "firma-nom151-bio": "signa_biometric",
+  "firma-nom151-kyc": "signa_advanced_biometric",
+  ine: "blacklist",
+  curp: "official-list",
+  "ocr-inteligente": "document",
+  "ocr-id": "document",
+};
+
+// Construye el deep-link que la plataforma ya consume: /#/register/user-info?d=<base64>
+// con el carrito embebido (mismo formato que el flujo actual de registro).
+export function buildCheckoutUrl(
+  items: { producto: Producto; paquete: Paquete }[],
+  base = "https://platform.jaak.ai/#/register/user-info"
+): string {
+  const payload = {
+    pk: [] as string[],
+    products: items.map(({ producto, paquete }) => {
+      const nombre = producto.nombre.split(" — ")[0];
+      return {
+        i: "",
+        k: productKeys[producto.id] ?? producto.id,
+        n: nombre,
+        pr: Math.round(paquete.precio * (1 + IVA) * 100) / 100,
+        c: "MXN",
+        s: 0,
+        d: `${nombre} ${paquete.nombre} ${paquete.cantidad}`,
+        q: paquete.cantidad,
+      };
+    }),
+  };
+  const d = btoa(encodeURIComponent(JSON.stringify(payload)));
+  return `${base}?d=${d}`;
+}

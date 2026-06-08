@@ -6,6 +6,7 @@ import {
   categorias,
   IVA,
   formatMXN,
+  buildCheckoutUrl,
   type CategoriaId,
   type Producto,
   type Paquete,
@@ -73,6 +74,7 @@ export default function CatalogoAutoservicio() {
   const subtotal = itemsCarrito.reduce((s, i) => s + i.paquete.precio, 0);
   const iva = Math.round(subtotal * IVA);
   const total = subtotal + iva;
+  const checkoutHref = itemsCarrito.length ? buildCheckoutUrl(itemsCarrito) : "#";
 
   return (
     <section id="catalogo" className="bg-white">
@@ -214,7 +216,7 @@ export default function CatalogoAutoservicio() {
 
           {/* Carrito / resumen (sticky en desktop) */}
           <aside className="hidden lg:block sticky top-[130px]">
-            <ResumenCarrito items={itemsCarrito} subtotal={subtotal} iva={iva} total={total} onQuitar={(id) => setCarrito((p) => p.filter((c) => c.productoId !== id))} />
+            <ResumenCarrito items={itemsCarrito} subtotal={subtotal} iva={iva} total={total} checkoutHref={checkoutHref} onQuitar={(id) => setCarrito((p) => p.filter((c) => c.productoId !== id))} />
           </aside>
         </div>
       </div>
@@ -239,7 +241,7 @@ export default function CatalogoAutoservicio() {
         <div className="lg:hidden fixed inset-0 z-50 flex items-end bg-black/40" onClick={() => setCarritoAbiertoMovil(false)}>
           <div className="w-full rounded-t-2xl bg-white p-5" onClick={(e) => e.stopPropagation()}>
             <div className="mx-auto mb-3 h-1 w-10 rounded-full" style={{ background: "#E2E5EC" }} />
-            <ResumenCarrito items={itemsCarrito} subtotal={subtotal} iva={iva} total={total} onQuitar={(id) => setCarrito((p) => p.filter((c) => c.productoId !== id))} />
+            <ResumenCarrito items={itemsCarrito} subtotal={subtotal} iva={iva} total={total} checkoutHref={checkoutHref} onQuitar={(id) => setCarrito((p) => p.filter((c) => c.productoId !== id))} />
           </div>
         </div>
       )}
@@ -260,10 +262,11 @@ function FiltroChip({ activo, onClick, children }: { activo: boolean; onClick: (
 }
 
 function ResumenCarrito({
-  items, subtotal, iva, total, onQuitar,
+  items, subtotal, iva, total, checkoutHref, onQuitar,
 }: {
   items: { producto: Producto; paquete: Paquete }[];
   subtotal: number; iva: number; total: number;
+  checkoutHref: string;
   onQuitar: (productoId: string) => void;
 }) {
   return (
@@ -303,7 +306,7 @@ function ResumenCarrito({
           </div>
 
           <a
-            href="https://platform.jaak.ai/#/register/products"
+            href={checkoutHref}
             className="mt-4 block w-full rounded-xl py-3 text-center text-[14px] font-semibold text-white transition-colors"
             style={{ background: TEAL }}
           >
