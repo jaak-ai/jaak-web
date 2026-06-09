@@ -107,7 +107,7 @@ export const productos: Producto[] = [
     id: "firma-nom151-bio",
     nombre: "Firma NOM-151 + Biometría",
     categoria: "firma",
-    unidad: "firmas",
+    unidad: "sesiones",
     tagline: "Firma NOM-151 vinculada a la validación facial del firmante.",
     incluye: [
       "Prueba de vida facial del firmante en tiempo real",
@@ -124,7 +124,7 @@ export const productos: Producto[] = [
     id: "firma-nom151-kyc",
     nombre: "Firma NOM-151 + KYC",
     categoria: "firma",
-    unidad: "firmas",
+    unidad: "sesiones",
     tagline: "La solución más completa: onboarding con KYC y firma con validez legal.",
     incluye: [
       "Todo lo de Firma NOM-151 + Biometría",
@@ -175,22 +175,22 @@ export const productos: Producto[] = [
     id: "ocr-inteligente",
     nombre: "OCR Inteligente",
     categoria: "ocr",
-    unidad: "documentos",
+    unidad: "tokens",
     tagline: "Extrae información estructurada de +500 tipos de documentos con IA.",
     incluye: [
       "Actas constitutivas, CSF, estados de cuenta, comprobantes de domicilio y más",
       "+500 tipos de documentos entrenados con IA",
-      "El consumo varía según el tipo y extensión del documento",
+      "El consumo de tokens varía según el tipo y extensión del documento",
       "Modelo que se actualiza y mejora continuamente",
     ],
     recomendado: "plata",
-    paquetes: tiers(99, 1500, 2800, 6625, 12500, 5, 50, 100, 250, 500),
+    paquetes: tiers(99, 1500, 2800, 6625, 12500, 210, 2100, 4200, 10500, 21000),
   },
   {
     id: "ocr-id",
     nombre: "OCR para Identificación Oficial",
     categoria: "ocr",
-    unidad: "documentos",
+    unidad: "tokens",
     tagline: "Extrae datos y fotografía de INE, pasaporte y otras identificaciones.",
     incluye: [
       "Extracción de datos de INE y pasaporte",
@@ -200,7 +200,7 @@ export const productos: Producto[] = [
       "Evidencia descargable",
     ],
     recomendado: "plata",
-    paquetes: tiers(99, 1500, 2800, 6625, 12500, 5, 50, 100, 250, 500),
+    paquetes: tiers(99, 1500, 2800, 6625, 12500, 210, 2100, 4200, 10500, 21000),
   },
 ];
 

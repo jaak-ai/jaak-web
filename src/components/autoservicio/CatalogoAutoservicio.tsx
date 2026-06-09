@@ -186,7 +186,7 @@ export default function CatalogoAutoservicio() {
                 <tr style={{ background: "#FAFBFC", color: "#64748B" }}>
                   <th className="px-2.5 py-1.5 text-left font-semibold">Paquete</th>
                   <th className="px-2.5 py-1.5 text-right font-semibold">Cantidad</th>
-                  <th className="px-2.5 py-1.5 text-right font-semibold">Precio</th>
+                  <th className="px-2.5 py-1.5 text-right font-semibold">Precio (MXN)</th>
                 </tr>
               </thead>
               <tbody>
@@ -210,7 +210,7 @@ export default function CatalogoAutoservicio() {
           <div>
             <div className="flex items-baseline gap-1">
               <span className="text-2xl font-bold" style={{ color: NAVY }}>{formatMXN(paqueteSel.precio)}</span>
-              <span className="text-[12px]" style={{ color: "#64748B" }}>+ IVA</span>
+              <span className="text-[12px]" style={{ color: "#64748B" }}>MXN + IVA</span>
             </div>
             <div className="mt-1.5">
               <span className="inline-flex items-baseline gap-1 rounded-md px-2 py-1 text-[12px]" style={{ background: "#F1FAFB", color: TEAL_DARK }}>

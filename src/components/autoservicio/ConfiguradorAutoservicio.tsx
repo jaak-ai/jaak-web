@@ -213,7 +213,7 @@ export default function ConfiguradorAutoservicio() {
                               </div>
                               <div className="flex items-baseline gap-1">
                                 <span className="text-lg font-bold" style={{ color: NAVY }}>{formatMXN(paquete.precio)}</span>
-                                <span className="text-[11px]" style={{ color: "#64748B" }}>+ IVA</span>
+                                <span className="text-[11px]" style={{ color: "#64748B" }}>MXN + IVA</span>
                               </div>
                             </div>
                           </div>
