@@ -75,7 +75,7 @@ export default function AutoservicioPage() {
             {/* Mini-resumen visual (sin emojis) */}
             <div className="hidden lg:block">
               <div className="ml-auto w-full max-w-md rounded-2xl border p-6" style={{ background: "rgba(255,255,255,0.04)", borderColor: "rgba(255,255,255,0.10)" }}>
-                <p className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: "rgba(255,255,255,0.45)" }}>Tu compra</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: "rgba(255,255,255,0.45)" }}>Tu carrito</p>
                 <div className="mt-4 space-y-3">
                   {[
                     { n: "KYC — Plata", d: "100 verificaciones", p: "$2,800" },

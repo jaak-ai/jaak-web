@@ -77,7 +77,7 @@ function ResumenPanel({
 }) {
   return (
     <div className="rounded-2xl border bg-white p-5" style={{ borderColor: "#E6E8EF" }}>
-      <h3 className="text-[15px] font-bold" style={{ color: NAVY }}>Tu compra</h3>
+      <h3 className="text-[15px] font-bold" style={{ color: NAVY }}>Tu carrito</h3>
 
       {items.length === 0 ? (
         <p className="mt-3 text-[13px] leading-relaxed" style={{ color: "#64748B" }}>
