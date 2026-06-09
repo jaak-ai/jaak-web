@@ -173,12 +173,12 @@ export const productos: Producto[] = [
   },
   {
     id: "ocr-inteligente",
-    nombre: "OCR Inteligente",
+    nombre: "PDF OCR Inteligente",
     categoria: "ocr",
     unidad: "tokens",
     tagline: "Extrae información estructurada de +500 tipos de documentos con IA.",
     incluye: [
-      "Actas constitutivas, CSF, estados de cuenta, comprobantes de domicilio y más",
+      "Actas constitutivas, CSF, estados de cuenta, comprobantes de domicilio (documentos de hasta 20 páginas)",
       "+500 tipos de documentos entrenados con IA",
       "El consumo de tokens varía según el tipo y extensión del documento",
       "Modelo que se actualiza y mejora continuamente",
