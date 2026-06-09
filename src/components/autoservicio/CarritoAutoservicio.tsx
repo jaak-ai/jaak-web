@@ -15,6 +15,14 @@ const NAVY = "#212A45";
 const TEAL = "#2DB6C1";
 const TEAL_DARK = "#25969f";
 
+function CartIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.12-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+    </svg>
+  );
+}
+
 // Carrito/resumen compartido por Catálogo y Guía. Lee el store único, así que
 // siempre refleja lo agregado, independiente del modo o de los filtros de cada
 // vista. Incluye panel desktop (sticky) + barra fija y hoja inferior en móvil.
@@ -47,8 +55,9 @@ export default function CarritoAutoservicio() {
               <div className="text-[12px]" style={{ color: "#64748B" }}>{items.length} producto(s)</div>
               <div className="text-lg font-bold" style={{ color: NAVY }}>{formatMXN(total)}</div>
             </div>
-            <button onClick={() => setAbiertoMovil(true)} className="rounded-xl px-5 py-3 text-[14px] font-semibold text-white" style={{ background: TEAL }}>
-              Ver resumen
+            <button onClick={() => setAbiertoMovil(true)} className="inline-flex items-center gap-2 rounded-xl px-5 py-3 text-[14px] font-semibold text-white" style={{ background: TEAL }}>
+              <CartIcon className="h-[18px] w-[18px]" />
+              Ver carrito
             </button>
           </div>
         </div>
@@ -77,7 +86,15 @@ function ResumenPanel({
 }) {
   return (
     <div className="rounded-2xl border bg-white p-5" style={{ borderColor: "#E6E8EF" }}>
-      <h3 className="text-[15px] font-bold" style={{ color: NAVY }}>Tu carrito</h3>
+      <div className="flex items-center gap-2" style={{ color: NAVY }}>
+        <CartIcon className="h-[18px] w-[18px]" />
+        <h3 className="text-[15px] font-bold" style={{ color: NAVY }}>Tu carrito</h3>
+        {items.length > 0 && (
+          <span className="ml-auto inline-flex h-5 min-w-[20px] items-center justify-center rounded-full px-1.5 text-[11px] font-bold text-white" style={{ background: TEAL }}>
+            {items.length}
+          </span>
+        )}
+      </div>
 
       {items.length === 0 ? (
         <p className="mt-3 text-[13px] leading-relaxed" style={{ color: "#64748B" }}>
