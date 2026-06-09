@@ -11,8 +11,8 @@ export default function UrgentBanner() {
           <span className="relative inline-flex rounded-full h-2 w-2 bg-[#2AD796]"></span>
         </span>
         <span className="text-white/90">
-          <span className="hidden sm:inline">No puedes esperar.</span>
-          <span className="font-semibold text-white"> Agenda una demo ahora</span>
+          <span className="hidden sm:inline">¿Tienes dudas?</span>
+          <span className="font-semibold text-white"> Agenda una demo con un experto</span>
         </span>
         <Link
           href="https://meetings.hubspot.com/jose-andres-yllescas-lira"
@@ -20,7 +20,7 @@ export default function UrgentBanner() {
           rel="noopener noreferrer"
           className="ml-2 inline-flex items-center gap-1.5 px-3 py-1 bg-[#2DB6C1] hover:bg-[#25969f] text-white text-xs font-bold rounded-full transition-all hover:scale-105"
         >
-          Agendar
+          Agendar demo
           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
           </svg>

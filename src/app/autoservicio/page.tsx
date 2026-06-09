@@ -48,18 +48,18 @@ export default function AutoservicioPage() {
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <Link
-                  href="#experiencia"
-                  className="rounded-xl px-6 py-3.5 text-[15px] font-semibold text-white transition-colors"
-                  style={{ background: TEAL }}
-                >
-                  Empezar
-                </Link>
-                <Link
                   href="#como-funciona"
                   className="rounded-xl px-6 py-3.5 text-[15px] font-semibold transition-colors"
                   style={{ background: "rgba(255,255,255,0.08)", color: "#fff", border: "1px solid rgba(255,255,255,0.18)" }}
                 >
                   Cómo funciona
+                </Link>
+                <Link
+                  href="#experiencia"
+                  className="rounded-xl px-6 py-3.5 text-[15px] font-semibold text-white transition-colors"
+                  style={{ background: TEAL }}
+                >
+                  Empezar
                 </Link>
               </div>
               <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-[13px]" style={{ color: "rgba(255,255,255,0.6)" }}>
