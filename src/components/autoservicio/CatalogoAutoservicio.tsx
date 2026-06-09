@@ -164,13 +164,16 @@ export default function CatalogoAutoservicio() {
                 <button
                   key={q.id}
                   onClick={() => setTier(producto.id, q.id)}
-                  className="rounded-lg px-2.5 py-1.5 text-[12px] font-semibold transition-colors"
+                  className="inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-[12px] font-semibold transition-all"
                   style={
                     sel
-                      ? { background: est.base, color: est.on, boxShadow: "inset 0 0 0 1.5px rgba(0,0,0,0.18)" }
+                      ? { background: est.base, color: est.on, boxShadow: `0 0 0 2px ${NAVY}` }
                       : { background: est.soft, color: est.text }
                   }
                 >
+                  {sel && (
+                    <svg className="h-3 w-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
+                  )}
                   {q.nombre}
                 </button>
               );
