@@ -107,8 +107,8 @@ export default function AutoservicioPage() {
         <section id="como-funciona" className="border-t" style={{ background: "#FAFBFC", borderColor: "#EEF0F4" }}>
           <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
             <div className="max-w-2xl">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: "#1E8A95" }}>Cómo funciona</p>
-              <h2 className="mt-3 text-3xl font-bold tracking-tight" style={{ color: NAVY }}>Del catálogo a producción en cuatro pasos</h2>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: "#1E8A95" }}>¿Cómo funciona?</p>
+              <h2 className="mt-3 text-3xl font-bold tracking-tight" style={{ color: NAVY }}>Del catálogo a operar en cuatro pasos</h2>
             </div>
             <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
               {[
