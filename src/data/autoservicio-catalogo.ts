@@ -204,6 +204,20 @@ export const productos: Producto[] = [
   },
 ];
 
+// Estilo metálico de cada paquete para los chips de tier.
+// - base: color del metal (chip seleccionado / punto en tablas)
+// - soft: tinte claro (chip sin seleccionar)
+// - text: texto sobre el tinte claro
+// - on:   texto sobre el metal sólido (contraste legible)
+export interface TierEstilo { base: string; soft: string; text: string; on: string; }
+export const tierEstilos: Record<Paquete["id"], TierEstilo> = {
+  cobre:   { base: "#C77B45", soft: "#F8EDE4", text: "#9A5A2C", on: "#3A2410" },
+  bronce:  { base: "#7E4F28", soft: "#EFE7DF", text: "#6E441F", on: "#FFFFFF" },
+  plata:   { base: "#AEB6C2", soft: "#F1F2F5", text: "#525B68", on: "#1F2937" },
+  oro:     { base: "#D4AF37", soft: "#FAF3DA", text: "#8A6D12", on: "#3A2F08" },
+  platino: { base: "#59677A", soft: "#EBEEF2", text: "#475264", on: "#FFFFFF" },
+};
+
 export function formatMXN(n: number): string {
   return new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 0 }).format(n);
 }

@@ -5,6 +5,7 @@ import {
   productos,
   categorias,
   formatMXN,
+  tierEstilos,
   type CategoriaId,
   type Producto,
   type Paquete,
@@ -113,6 +114,7 @@ export default function CatalogoAutoservicio() {
                     <div className="mt-2 flex flex-wrap gap-1.5">
                       {producto.paquetes.map((q) => {
                         const sel = q.id === tierDe(producto.id);
+                        const est = tierEstilos[q.id];
                         return (
                           <button
                             key={q.id}
@@ -120,8 +122,8 @@ export default function CatalogoAutoservicio() {
                             className="rounded-lg px-2.5 py-1.5 text-[12px] font-semibold transition-colors"
                             style={
                               sel
-                                ? { background: NAVY, color: "#fff" }
-                                : { background: "#F3F4F8", color: "#475569" }
+                                ? { background: est.base, color: est.on, boxShadow: "inset 0 0 0 1.5px rgba(0,0,0,0.18)" }
+                                : { background: est.soft, color: est.text }
                             }
                           >
                             {q.nombre}
@@ -146,6 +148,7 @@ export default function CatalogoAutoservicio() {
                           {producto.paquetes.map((q) => (
                             <tr key={q.id} style={{ background: q.id === tierDe(producto.id) ? "#F1FAFB" : "#fff" }}>
                               <td className="px-2.5 py-1.5 font-medium" style={{ color: NAVY }}>
+                                <span className="mr-1.5 inline-block h-2 w-2 flex-shrink-0 rounded-full align-middle ring-1 ring-black/10" style={{ background: tierEstilos[q.id].base }} />
                                 {q.nombre}{producto.recomendado === q.id && <span className="ml-1 text-[10px] font-bold" style={{ color: TEAL_DARK }}>· Recomendado</span>}
                               </td>
                               <td className="px-2.5 py-1.5 text-right whitespace-nowrap" style={{ color: "#4A5568" }}>{q.cantidad.toLocaleString("es-MX")}</td>

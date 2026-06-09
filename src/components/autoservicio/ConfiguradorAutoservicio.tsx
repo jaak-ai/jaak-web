@@ -4,6 +4,7 @@ import { useState } from "react";
 import {
   productos,
   formatMXN,
+  tierEstilos,
   type CategoriaId,
   type Producto,
   type Paquete,
@@ -197,12 +198,13 @@ export default function ConfiguradorAutoservicio() {
                               <div className="flex flex-wrap gap-1.5">
                                 {producto.paquetes.map((q) => {
                                   const sel = q.id === tierDe(producto.id);
+                                  const est = tierEstilos[q.id];
                                   return (
                                     <button
                                       key={q.id}
                                       onClick={() => setTier(producto.id, q.id)}
                                       className="rounded-lg px-2.5 py-1.5 text-[12px] font-semibold transition-colors"
-                                      style={sel ? { background: NAVY, color: "#fff" } : { background: "#F3F4F8", color: "#475569" }}
+                                      style={sel ? { background: est.base, color: est.on, boxShadow: "inset 0 0 0 1.5px rgba(0,0,0,0.18)" } : { background: est.soft, color: est.text }}
                                     >
                                       {q.nombre}
                                     </button>
