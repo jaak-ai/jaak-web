@@ -53,7 +53,7 @@ export default function CatalogoAutoservicio() {
             Elige tus productos y arma tu paquete
           </h2>
           <p className="mt-3 text-[15px] leading-relaxed" style={{ color: "#4A5568" }}>
-            Selecciona uno o varios productos, ajusta el volumen y agrégalos a tu compra. Mismos precios y paquetes en todo el sitio.
+            Selecciona uno o varios productos, ajusta el volumen y agrégalos a tu compra.
           </p>
         </div>
 
