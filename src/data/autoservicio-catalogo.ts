@@ -36,7 +36,7 @@ export const IVA = 0.16;
 export const categorias: Categoria[] = [
   { id: "identidad", nombre: "Identidad", descripcion: "Verifica quién es tu cliente con biometría y prueba de vida." },
   { id: "firma", nombre: "Firma electrónica", descripcion: "Firma documentos con validez legal, desde simple hasta NOM-151." },
-  { id: "validaciones", nombre: "Validaciones", descripcion: "Consulta identidad contra padrones oficiales (INE, RENAPO)." },
+  { id: "validaciones", nombre: "Listas nominales", descripcion: "Consulta identidad contra padrones oficiales (INE, RENAPO)." },
   { id: "ocr", nombre: "Lectura de documentos", descripcion: "Extrae datos de identificaciones y documentos con IA." },
 ];
 
