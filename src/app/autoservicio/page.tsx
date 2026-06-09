@@ -31,8 +31,8 @@ export default function AutoservicioPage() {
               backgroundSize: "34px 34px",
             }}
           />
-          <div className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
-            <div>
+          <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="max-w-3xl">
               <span
                 className="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold tracking-wide"
                 style={{ background: "rgba(45,182,193,0.12)", border: "1px solid rgba(45,182,193,0.35)", color: "#7FE0E8" }}
@@ -70,32 +70,6 @@ export default function AutoservicioPage() {
                   </li>
                 ))}
               </ul>
-            </div>
-
-            {/* Mini-resumen visual (sin emojis) */}
-            <div className="hidden lg:block">
-              <div className="ml-auto w-full max-w-md rounded-2xl border p-6" style={{ background: "rgba(255,255,255,0.04)", borderColor: "rgba(255,255,255,0.10)" }}>
-                <p className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: "rgba(255,255,255,0.45)" }}>Tu carrito</p>
-                <div className="mt-4 space-y-3">
-                  {[
-                    { n: "KYC — Plata", d: "100 verificaciones", p: "$2,800" },
-                    { n: "Firma NOM-151 — Bronce", d: "50 firmas", p: "$750" },
-                    { n: "Consulta INE — Plata", d: "100 consultas", p: "$200" },
-                  ].map((r) => (
-                    <div key={r.n} className="flex items-center justify-between rounded-xl px-4 py-3" style={{ background: "rgba(255,255,255,0.05)" }}>
-                      <div>
-                        <div className="text-[13px] font-semibold text-white">{r.n}</div>
-                        <div className="text-[12px]" style={{ color: "rgba(255,255,255,0.5)" }}>{r.d}</div>
-                      </div>
-                      <div className="text-[13px] font-semibold" style={{ color: "#7FE0E8" }}>{r.p}</div>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-4 flex items-center justify-between border-t pt-4" style={{ borderColor: "rgba(255,255,255,0.1)" }}>
-                  <span className="text-[13px]" style={{ color: "rgba(255,255,255,0.6)" }}>Total + IVA</span>
-                  <span className="text-lg font-bold text-white">$4,350</span>
-                </div>
-              </div>
             </div>
           </div>
         </section>
