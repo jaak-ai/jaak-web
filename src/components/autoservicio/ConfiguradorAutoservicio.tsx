@@ -176,10 +176,6 @@ export default function ConfiguradorAutoservicio() {
                                       Incluye <span className="text-[14px] font-bold">{paquete.cantidad.toLocaleString("es-MX")}</span> {producto.unidad}
                                     </span>
                                   </p>
-                                  <p className="mt-1.5 flex items-start gap-1.5 text-[12px] leading-snug" style={{ color: TEAL_DARK }}>
-                                    <svg className="mt-[3px] h-3 w-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
-                                    {producto.incluye[0]}
-                                  </p>
                                 </div>
                               </div>
                               {activo ? (
@@ -194,6 +190,14 @@ export default function ConfiguradorAutoservicio() {
                                 </button>
                               )}
                             </div>
+                            <ul className="mt-4 grid grid-cols-1 gap-x-3 gap-y-1.5 sm:grid-cols-2">
+                              {producto.incluye.map((item) => (
+                                <li key={item} className="flex items-start gap-1.5 text-[12px]" style={{ color: "#4A5568" }}>
+                                  <svg className="mt-[3px] h-3 w-3 flex-shrink-0" style={{ color: TEAL }} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
+                                  {item}
+                                </li>
+                              ))}
+                            </ul>
                             <div className="mt-4 flex items-center justify-between">
                               <div className="flex flex-wrap gap-1.5">
                                 {producto.paquetes.map((q) => {
