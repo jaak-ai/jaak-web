@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   productos,
   categorias,
@@ -32,6 +32,68 @@ function CategoryIcon({ categoria, className }: { categoria: CategoriaId; classN
   );
 }
 
+// Desplaza el carrusel de la categoría al que pertenece la flecha pulsada.
+function scrollCarousel(e: React.MouseEvent, dir: number) {
+  const section = (e.currentTarget as HTMLElement).closest("[data-cat-section]");
+  const row = section?.querySelector<HTMLElement>("[data-carousel]");
+  if (row) row.scrollBy({ left: dir * row.clientWidth * 0.85, behavior: "smooth" });
+}
+
+// Carrusel horizontal con fade dinámico en los extremos según haya más contenido.
+function Carrusel({ children }: { children: React.ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [edges, setEdges] = useState({ left: false, right: false });
+
+  const update = () => {
+    const el = ref.current;
+    if (!el) return;
+    setEdges({
+      left: el.scrollLeft > 4,
+      right: el.scrollLeft + el.clientWidth < el.scrollWidth - 4,
+    });
+  };
+
+  useEffect(() => {
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  return (
+    <div className="relative">
+      <div
+        ref={ref}
+        onScroll={update}
+        data-carousel
+        className="flex snap-x snap-mandatory items-stretch gap-5 overflow-x-auto px-0.5 pb-3"
+      >
+        {children}
+      </div>
+      {edges.left && (
+        <div className="pointer-events-none absolute bottom-3 left-0 top-0 w-10" style={{ background: "linear-gradient(to right, #fff, rgba(255,255,255,0))" }} />
+      )}
+      {edges.right && (
+        <div className="pointer-events-none absolute bottom-3 right-0 top-0 w-12" style={{ background: "linear-gradient(to left, #fff, rgba(255,255,255,0))" }} />
+      )}
+    </div>
+  );
+}
+
+function ArrowBtn({ dir }: { dir: number }) {
+  return (
+    <button
+      onClick={(e) => scrollCarousel(e, dir)}
+      aria-label={dir < 0 ? "Anterior" : "Siguiente"}
+      className="flex h-8 w-8 items-center justify-center rounded-full border bg-white transition-colors hover:bg-[#F1F2F5]"
+      style={{ borderColor: "#E6E8EF", color: "#475569" }}
+    >
+      <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={dir < 0 ? "M15 19l-7-7 7-7" : "M9 5l7 7-7 7"} />
+      </svg>
+    </button>
+  );
+}
+
 export default function CatalogoAutoservicio() {
   const { enCarrito, tierDe, setTier, toggle } = useCarrito();
   const [categoriaActiva, setCategoriaActiva] = useState<CategoriaId | "todos">("todos");
@@ -43,6 +105,130 @@ export default function CatalogoAutoservicio() {
   );
 
   const getPaquete = (p: Producto, id: Paquete["id"]) => p.paquetes.find((q) => q.id === id)!;
+
+  // Card de producto. `compacto` (carruseles de "Todos") muestra solo 1 línea de
+  // "incluye" para reducir altura; el detalle completo vive en la vista por categoría.
+  const renderCard = (producto: Producto, compacto = false) => {
+    const paqueteSel = getPaquete(producto, tierDe(producto.id));
+    const agregado = enCarrito(producto.id);
+    const expandido = !!comparar[producto.id];
+    return (
+      <article
+        key={producto.id}
+        className="flex h-full flex-col rounded-2xl border bg-white p-6 transition-shadow hover:shadow-[0_8px_30px_rgba(28,36,64,0.08)]"
+        style={{ borderColor: agregado ? TEAL : "#E6E8EF" }}
+      >
+        <div className="flex items-start gap-3">
+          <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl" style={{ background: "#F1FAFB", color: TEAL_DARK }}>
+            <CategoryIcon categoria={producto.categoria} className="h-5 w-5" />
+          </span>
+          <div className="min-w-0">
+            <h3 className="text-[16px] font-bold leading-snug" style={{ color: NAVY }}>{producto.nombre}</h3>
+            <p className="mt-1 text-[13px] leading-relaxed" style={{ color: "#64748B" }}>{producto.tagline}</p>
+          </div>
+        </div>
+
+        {compacto ? (
+          <p className="mt-3 flex items-start gap-1.5 text-[12.5px] leading-snug" style={{ color: "#4A5568" }}>
+            <svg className="mt-[3px] h-3 w-3 flex-shrink-0" style={{ color: TEAL }} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
+            {producto.incluye[0]}
+          </p>
+        ) : (
+          <ul className="mt-4 grid grid-cols-2 gap-x-3 gap-y-1.5">
+            {producto.incluye.map((item) => (
+              <li key={item} className="flex items-start gap-1.5 text-[12px]" style={{ color: "#4A5568" }}>
+                <svg className="mt-[3px] h-3 w-3 flex-shrink-0" style={{ color: TEAL }} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
+                {item}
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {/* Selector de paquete */}
+        <div className="mt-5">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-semibold uppercase tracking-wider" style={{ color: "#64748B" }}>Paquete</span>
+            <button
+              onClick={() => setComparar((p) => ({ ...p, [producto.id]: !p[producto.id] }))}
+              className="text-[12px] font-semibold"
+              style={{ color: TEAL_DARK }}
+            >
+              {expandido ? "Ocultar comparación" : "Comparar paquetes"}
+            </button>
+          </div>
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {producto.paquetes.map((q) => {
+              const sel = q.id === tierDe(producto.id);
+              const est = tierEstilos[q.id];
+              return (
+                <button
+                  key={q.id}
+                  onClick={() => setTier(producto.id, q.id)}
+                  className="rounded-lg px-2.5 py-1.5 text-[12px] font-semibold transition-colors"
+                  style={
+                    sel
+                      ? { background: est.base, color: est.on, boxShadow: "inset 0 0 0 1.5px rgba(0,0,0,0.18)" }
+                      : { background: est.soft, color: est.text }
+                  }
+                >
+                  {q.nombre}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Comparación expandible */}
+        {expandido && (
+          <div className="mt-3 overflow-x-auto rounded-xl border" style={{ borderColor: "#E6E8EF" }}>
+            <table className="w-full text-[12px]">
+              <thead>
+                <tr style={{ background: "#FAFBFC", color: "#64748B" }}>
+                  <th className="px-2.5 py-1.5 text-left font-semibold">Paquete</th>
+                  <th className="px-2.5 py-1.5 text-right font-semibold">Cantidad</th>
+                  <th className="px-2.5 py-1.5 text-right font-semibold">Precio</th>
+                </tr>
+              </thead>
+              <tbody>
+                {producto.paquetes.map((q) => (
+                  <tr key={q.id} style={{ background: q.id === tierDe(producto.id) ? "#F1FAFB" : "#fff" }}>
+                    <td className="px-2.5 py-1.5 font-medium" style={{ color: NAVY }}>
+                      <span className="mr-1.5 inline-block h-2 w-2 flex-shrink-0 rounded-full align-middle ring-1 ring-black/10" style={{ background: tierEstilos[q.id].base }} />
+                      {q.nombre}{producto.recomendado === q.id && <span className="ml-1 text-[10px] font-bold" style={{ color: TEAL_DARK }}>· Recomendado</span>}
+                    </td>
+                    <td className="px-2.5 py-1.5 text-right whitespace-nowrap" style={{ color: "#4A5568" }}>{q.cantidad.toLocaleString("es-MX")}</td>
+                    <td className="px-2.5 py-1.5 text-right font-semibold whitespace-nowrap" style={{ color: NAVY }}>{formatMXN(q.precio)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {/* Precio + agregar */}
+        <div className="mt-5 flex items-end justify-between border-t pt-4" style={{ borderColor: "#EEF0F4", marginTop: "auto" }}>
+          <div>
+            <div className="flex items-baseline gap-1">
+              <span className="text-2xl font-bold" style={{ color: NAVY }}>{formatMXN(paqueteSel.precio)}</span>
+              <span className="text-[12px]" style={{ color: "#64748B" }}>+ IVA</span>
+            </div>
+            <div className="mt-1.5">
+              <span className="inline-flex items-baseline gap-1 rounded-md px-2 py-1 text-[12px]" style={{ background: "#F1FAFB", color: TEAL_DARK }}>
+                Incluye <span className="text-[14px] font-bold">{paqueteSel.cantidad.toLocaleString("es-MX")}</span> {producto.unidad}
+              </span>
+            </div>
+          </div>
+          <button
+            onClick={() => toggle(producto.id)}
+            className="rounded-xl px-4 py-2.5 text-[13px] font-semibold transition-colors"
+            style={agregado ? { background: "#F1FAFB", color: TEAL_DARK, border: `1px solid ${TEAL}` } : { background: TEAL, color: "#fff" }}
+          >
+            {agregado ? "Quitar" : "Agregar"}
+          </button>
+        </div>
+      </article>
+    );
+  };
 
   return (
     <section id="catalogo" className="bg-white">
@@ -68,122 +254,45 @@ export default function CatalogoAutoservicio() {
         </div>
 
         <div className="mt-8 grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-8 items-start">
-          {/* Grid de productos */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {productosFiltrados.map((producto) => {
-              const paqueteSel = getPaquete(producto, tierDe(producto.id));
-              const agregado = enCarrito(producto.id);
-              const expandido = !!comparar[producto.id];
-              return (
-                <article
-                  key={producto.id}
-                  className="flex flex-col rounded-2xl border bg-white p-6 transition-shadow hover:shadow-[0_8px_30px_rgba(28,36,64,0.08)]"
-                  style={{ borderColor: agregado ? TEAL : "#E6E8EF" }}
-                >
-                  <div className="flex items-start gap-3">
-                    <span className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl" style={{ background: "#F1FAFB", color: TEAL_DARK }}>
-                      <CategoryIcon categoria={producto.categoria} className="h-5 w-5" />
-                    </span>
-                    <div className="min-w-0">
-                      <h3 className="text-[16px] font-bold leading-snug" style={{ color: NAVY }}>{producto.nombre}</h3>
-                      <p className="mt-1 text-[13px] leading-relaxed" style={{ color: "#64748B" }}>{producto.tagline}</p>
-                    </div>
-                  </div>
-
-                  <ul className="mt-4 grid grid-cols-2 gap-x-3 gap-y-1.5">
-                    {producto.incluye.map((item) => (
-                      <li key={item} className="flex items-start gap-1.5 text-[12px]" style={{ color: "#4A5568" }}>
-                        <svg className="mt-[3px] h-3 w-3 flex-shrink-0" style={{ color: TEAL }} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-
-                  {/* Selector de paquete */}
-                  <div className="mt-5">
-                    <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-semibold uppercase tracking-wider" style={{ color: "#64748B" }}>Paquete</span>
-                      <button
-                        onClick={() => setComparar((p) => ({ ...p, [producto.id]: !p[producto.id] }))}
-                        className="text-[12px] font-semibold"
-                        style={{ color: TEAL_DARK }}
-                      >
-                        {expandido ? "Ocultar comparación" : "Comparar paquetes"}
-                      </button>
-                    </div>
-                    <div className="mt-2 flex flex-wrap gap-1.5">
-                      {producto.paquetes.map((q) => {
-                        const sel = q.id === tierDe(producto.id);
-                        const est = tierEstilos[q.id];
-                        return (
-                          <button
-                            key={q.id}
-                            onClick={() => setTier(producto.id, q.id)}
-                            className="rounded-lg px-2.5 py-1.5 text-[12px] font-semibold transition-colors"
-                            style={
-                              sel
-                                ? { background: est.base, color: est.on, boxShadow: "inset 0 0 0 1.5px rgba(0,0,0,0.18)" }
-                                : { background: est.soft, color: est.text }
-                            }
-                          >
-                            {q.nombre}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  {/* Comparación expandible */}
-                  {expandido && (
-                    <div className="mt-3 overflow-x-auto rounded-xl border" style={{ borderColor: "#E6E8EF" }}>
-                      <table className="w-full text-[12px]">
-                        <thead>
-                          <tr style={{ background: "#FAFBFC", color: "#64748B" }}>
-                            <th className="px-2.5 py-1.5 text-left font-semibold">Paquete</th>
-                            <th className="px-2.5 py-1.5 text-right font-semibold">Cantidad</th>
-                            <th className="px-2.5 py-1.5 text-right font-semibold">Precio</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {producto.paquetes.map((q) => (
-                            <tr key={q.id} style={{ background: q.id === tierDe(producto.id) ? "#F1FAFB" : "#fff" }}>
-                              <td className="px-2.5 py-1.5 font-medium" style={{ color: NAVY }}>
-                                <span className="mr-1.5 inline-block h-2 w-2 flex-shrink-0 rounded-full align-middle ring-1 ring-black/10" style={{ background: tierEstilos[q.id].base }} />
-                                {q.nombre}{producto.recomendado === q.id && <span className="ml-1 text-[10px] font-bold" style={{ color: TEAL_DARK }}>· Recomendado</span>}
-                              </td>
-                              <td className="px-2.5 py-1.5 text-right whitespace-nowrap" style={{ color: "#4A5568" }}>{q.cantidad.toLocaleString("es-MX")}</td>
-                              <td className="px-2.5 py-1.5 text-right font-semibold whitespace-nowrap" style={{ color: NAVY }}>{formatMXN(q.precio)}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  )}
-
-                  {/* Precio + agregar */}
-                  <div className="mt-5 flex items-end justify-between border-t pt-4" style={{ borderColor: "#EEF0F4" }}>
-                    <div>
-                      <div className="flex items-baseline gap-1">
-                        <span className="text-2xl font-bold" style={{ color: NAVY }}>{formatMXN(paqueteSel.precio)}</span>
-                        <span className="text-[12px]" style={{ color: "#64748B" }}>+ IVA</span>
+          {/* Columna de productos */}
+          <div className="min-w-0">
+            {categoriaActiva === "todos" ? (
+              // "Todos": un carrusel horizontal por categoría (overview escaneable, sin scroll infinito).
+              <div className="space-y-9">
+                {categorias.map((cat) => {
+                  const prods = productos.filter((p) => p.categoria === cat.id);
+                  if (!prods.length) return null;
+                  return (
+                    <div key={cat.id} data-cat-section>
+                      <div className="mb-3 flex items-end justify-between gap-3">
+                        <div>
+                          <h3 className="text-[15px] font-bold" style={{ color: NAVY }}>{cat.nombre}</h3>
+                          <p className="text-[12.5px]" style={{ color: "#64748B" }}>{cat.descripcion}</p>
+                        </div>
+                        {prods.length > 1 && (
+                          <div className="hidden shrink-0 gap-1.5 sm:flex">
+                            <ArrowBtn dir={-1} />
+                            <ArrowBtn dir={1} />
+                          </div>
+                        )}
                       </div>
-                      <div className="mt-1.5">
-                        <span className="inline-flex items-baseline gap-1 rounded-md px-2 py-1 text-[12px]" style={{ background: "#F1FAFB", color: TEAL_DARK }}>
-                          Incluye <span className="text-[14px] font-bold">{paqueteSel.cantidad.toLocaleString("es-MX")}</span> {producto.unidad}
-                        </span>
-                      </div>
+                      <Carrusel>
+                        {prods.map((p) => (
+                          <div key={p.id} className="w-[320px] shrink-0 snap-start sm:w-[360px]">
+                            {renderCard(p, true)}
+                          </div>
+                        ))}
+                      </Carrusel>
                     </div>
-                    <button
-                      onClick={() => toggle(producto.id)}
-                      className="rounded-xl px-4 py-2.5 text-[13px] font-semibold transition-colors"
-                      style={agregado ? { background: "#F1FAFB", color: TEAL_DARK, border: `1px solid ${TEAL}` } : { background: TEAL, color: "#fff" }}
-                    >
-                      {agregado ? "Quitar" : "Agregar"}
-                    </button>
-                  </div>
-                </article>
-              );
-            })}
+                  );
+                })}
+              </div>
+            ) : (
+              // Categoría específica: grid normal (pocos productos, sin problema de scroll).
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {productosFiltrados.map((producto) => renderCard(producto))}
+              </div>
+            )}
           </div>
 
           {/* Carrito / resumen compartido (desktop sticky + barra/hoja en móvil) */}
