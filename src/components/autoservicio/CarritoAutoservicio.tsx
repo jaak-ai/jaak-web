@@ -102,21 +102,32 @@ function ResumenPanel({
         </p>
       ) : (
         <>
-          <ul className="mt-3 divide-y" style={{ borderColor: "#EEF0F4" }}>
-            {items.map(({ producto, paquete }) => (
-              <li key={producto.id} className="flex items-start justify-between gap-2 py-3">
-                <div className="min-w-0">
-                  <div className="truncate text-[13px] font-semibold" style={{ color: NAVY }}>{producto.nombre.split(" — ")[0]}</div>
-                  <div className="text-[12px]" style={{ color: "#64748B" }}>
-                    {paquete.nombre} · {paquete.cantidad.toLocaleString("es-MX")} {producto.unidad}
+          <ul className="mt-3 divide-y lg:max-h-[300px] lg:overflow-y-auto" style={{ borderColor: "#EEF0F4" }}>
+            {items.map(({ producto, paquete }) => {
+              const nombre = producto.nombre.split(" — ")[0];
+              return (
+                <li key={producto.id} className="flex items-center justify-between gap-2 py-2.5">
+                  <div className="min-w-0">
+                    <div className="truncate text-[13px] font-semibold" style={{ color: NAVY }}>{nombre}</div>
+                    <div className="text-[11.5px]" style={{ color: "#64748B" }}>
+                      {paquete.nombre} · {paquete.cantidad.toLocaleString("es-MX")} {producto.unidad}
+                    </div>
                   </div>
-                </div>
-                <div className="flex flex-col items-end">
-                  <span className="text-[13px] font-semibold" style={{ color: NAVY }}>{formatMXN(paquete.precio)}</span>
-                  <button onClick={() => onQuitar(producto.id)} className="text-[11px]" style={{ color: "#64748B" }}>Quitar</button>
-                </div>
-              </li>
-            ))}
+                  <div className="flex flex-shrink-0 items-center gap-1.5">
+                    <span className="text-[13px] font-semibold" style={{ color: NAVY }}>{formatMXN(paquete.precio)}</span>
+                    <button
+                      onClick={() => onQuitar(producto.id)}
+                      aria-label={`Quitar ${nombre}`}
+                      title="Quitar"
+                      className="flex h-6 w-6 items-center justify-center rounded-full transition-colors hover:bg-[#F1F2F5]"
+                      style={{ color: "#64748B" }}
+                    >
+                      <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18 18 6M6 6l12 12" /></svg>
+                    </button>
+                  </div>
+                </li>
+              );
+            })}
           </ul>
 
           <div className="mt-3 space-y-1.5 border-t pt-3 text-[13px]" style={{ borderColor: "#EEF0F4" }}>
