@@ -57,7 +57,7 @@ export default function AutoservicioVariantes() {
         <ModoIcon v={v} className="h-[18px] w-[18px] flex-shrink-0" />
         <span>
           <span className="block text-[13.5px] font-bold leading-tight">{titulo}</span>
-          <span className="block text-[11px]" style={{ color: activo ? "rgba(255,255,255,0.62)" : "#94A3B8" }}>{sub}</span>
+          <span className="block text-[11px]" style={{ color: activo ? "rgba(255,255,255,0.72)" : "#475569" }}>{sub}</span>
         </span>
       </button>
     );
@@ -76,7 +76,7 @@ export default function AutoservicioVariantes() {
             role="group"
             aria-label="¿Cómo prefieres avanzar?"
           >
-            <span className="text-[10.5px] font-semibold uppercase tracking-[0.16em]" style={{ color: "#94A3B8" }}>
+            <span className="text-[10.5px] font-semibold uppercase tracking-[0.16em]" style={{ color: "#64748B" }}>
               ¿Cómo prefieres avanzar?
             </span>
             <div className="flex w-full gap-1 rounded-xl p-1 sm:w-auto" style={{ background: "#F3F4F8" }}>

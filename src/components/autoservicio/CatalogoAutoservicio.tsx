@@ -101,7 +101,7 @@ export default function CatalogoAutoservicio() {
                   {/* Selector de paquete */}
                   <div className="mt-5">
                     <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-semibold uppercase tracking-wider" style={{ color: "#94A3B8" }}>Paquete</span>
+                      <span className="text-[11px] font-semibold uppercase tracking-wider" style={{ color: "#64748B" }}>Paquete</span>
                       <button
                         onClick={() => setComparar((p) => ({ ...p, [producto.id]: !p[producto.id] }))}
                         className="text-[12px] font-semibold"
@@ -162,7 +162,7 @@ export default function CatalogoAutoservicio() {
                     <div>
                       <div className="flex items-baseline gap-1">
                         <span className="text-2xl font-bold" style={{ color: NAVY }}>{formatMXN(paqueteSel.precio)}</span>
-                        <span className="text-[12px]" style={{ color: "#94A3B8" }}>+ IVA</span>
+                        <span className="text-[12px]" style={{ color: "#64748B" }}>+ IVA</span>
                       </div>
                       <div className="mt-1.5">
                         <span className="inline-flex items-baseline gap-1 rounded-md px-2 py-1 text-[12px]" style={{ background: "#F1FAFB", color: TEAL_DARK }}>

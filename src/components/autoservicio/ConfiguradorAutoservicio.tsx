@@ -121,7 +121,7 @@ export default function ConfiguradorAutoservicio() {
                 >
                   {v.rec && <span className="absolute -top-2 left-1/2 -translate-x-1/2 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wide text-white" style={{ background: TEAL_DARK }}>Popular</span>}
                   <div className="text-[16px] font-bold" style={{ color: NAVY }}>{v.label}</div>
-                  <div className="text-[11px]" style={{ color: "#94A3B8" }}>al mes</div>
+                  <div className="text-[11px]" style={{ color: "#64748B" }}>al mes</div>
                 </button>
               );
             })}
@@ -134,12 +134,12 @@ export default function ConfiguradorAutoservicio() {
             <div className="space-y-6">
               {seleccionadasList.length === 0 ? (
                 <div className="rounded-2xl border border-dashed p-8 text-center" style={{ borderColor: "#CBD0DB" }}>
-                  <p className="text-[14px]" style={{ color: "#94A3B8" }}>Selecciona al menos una necesidad en el Paso 1 para ver recomendaciones. Lo que agregues aparece en tu compra a la derecha.</p>
+                  <p className="text-[14px]" style={{ color: "#64748B" }}>Selecciona al menos una necesidad en el Paso 1 para ver recomendaciones. Lo que agregues aparece en tu compra a la derecha.</p>
                 </div>
               ) : (
                 seleccionadasList.map((n) => (
                   <div key={n.id}>
-                    <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.14em]" style={{ color: "#94A3B8" }}>{n.titulo}</p>
+                    <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.14em]" style={{ color: "#64748B" }}>{n.titulo}</p>
                     <div className="space-y-3">
                       {productosDe(n.cat).map((producto) => {
                         const activo = enCarrito(producto.id);
@@ -182,7 +182,7 @@ export default function ConfiguradorAutoservicio() {
                                 </div>
                               </div>
                               {activo ? (
-                                <button onClick={() => toggle(producto.id)} className="flex-shrink-0 text-[12px]" style={{ color: "#94A3B8" }}>Quitar</button>
+                                <button onClick={() => toggle(producto.id)} className="flex-shrink-0 text-[12px]" style={{ color: "#64748B" }}>Quitar</button>
                               ) : (
                                 <button
                                   onClick={() => toggle(producto.id)}
@@ -211,7 +211,7 @@ export default function ConfiguradorAutoservicio() {
                               </div>
                               <div className="flex items-baseline gap-1">
                                 <span className="text-lg font-bold" style={{ color: NAVY }}>{formatMXN(paquete.precio)}</span>
-                                <span className="text-[11px]" style={{ color: "#94A3B8" }}>+ IVA</span>
+                                <span className="text-[11px]" style={{ color: "#64748B" }}>+ IVA</span>
                               </div>
                             </div>
                           </div>

@@ -80,7 +80,7 @@ function ResumenPanel({
       <h3 className="text-[15px] font-bold" style={{ color: NAVY }}>Tu compra</h3>
 
       {items.length === 0 ? (
-        <p className="mt-3 text-[13px] leading-relaxed" style={{ color: "#94A3B8" }}>
+        <p className="mt-3 text-[13px] leading-relaxed" style={{ color: "#64748B" }}>
           Aún no agregas productos. Elige un paquete y pulsa <span className="font-semibold" style={{ color: TEAL_DARK }}>Agregar</span>.
         </p>
       ) : (
@@ -96,7 +96,7 @@ function ResumenPanel({
                 </div>
                 <div className="flex flex-col items-end">
                   <span className="text-[13px] font-semibold" style={{ color: NAVY }}>{formatMXN(paquete.precio)}</span>
-                  <button onClick={() => onQuitar(producto.id)} className="text-[11px]" style={{ color: "#94A3B8" }}>Quitar</button>
+                  <button onClick={() => onQuitar(producto.id)} className="text-[11px]" style={{ color: "#64748B" }}>Quitar</button>
                 </div>
               </li>
             ))}
@@ -118,7 +118,7 @@ function ResumenPanel({
           >
             Continuar al pago
           </a>
-          <p className="mt-2 text-center text-[11px]" style={{ color: "#94A3B8" }}>Pago seguro con Stripe · Activación inmediata</p>
+          <p className="mt-2 text-center text-[11px]" style={{ color: "#64748B" }}>Pago seguro con Stripe · Activación inmediata</p>
         </>
       )}
     </div>
@@ -128,7 +128,7 @@ function ResumenPanel({
 function Row({ label, value, muted }: { label: string; value: string; muted?: boolean }) {
   return (
     <div className="flex items-center justify-between">
-      <span style={{ color: muted ? "#94A3B8" : "#64748B" }}>{label}</span>
+      <span style={{ color: muted ? "#64748B" : "#64748B" }}>{label}</span>
       <span style={{ color: muted ? "#64748B" : NAVY }}>{value}</span>
     </div>
   );
