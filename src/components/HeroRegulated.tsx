@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 
 const features = [
-  { label: "KYC & KYB", icon: "👤", href: "/plataforma/kyc-kyb" },
+  { label: "KYC", icon: "👤", href: "/plataforma/verificacion-identidad" },
   { label: "Firma Electrónica", icon: "✍️", href: "/signa" },
   { label: "Cumplimiento PLD", icon: "🛡️", href: "/cumplimiento/pld-aml" },
   { label: "Precios", icon: "💎", href: "/precios" },
@@ -96,7 +96,7 @@ export default function HeroRegulated() {
             </h1>
 
             <p className="text-lg md:text-xl mb-6 leading-relaxed max-w-lg" style={{ color: "rgba(255,255,255,0.55)" }}>
-              KYC, KYB y firma electrónica con evidencia legal auditable,
+              KYC y firma electrónica con evidencia legal auditable,
               operando bajo los marcos regulatorios más exigentes de México y Latinoamérica.
             </p>
 

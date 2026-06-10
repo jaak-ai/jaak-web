@@ -28,7 +28,7 @@ export default function Solution() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                 </svg>
               </span>
-              KYC / KYB automatizado
+              KYC automatizado
             </li>
             <li className="flex items-start gap-4 text-lg text-[#374151]">
               <span className="w-6 h-6 bg-[#2DB6C1] rounded-full flex items-center justify-center flex-shrink-0 mt-1">
