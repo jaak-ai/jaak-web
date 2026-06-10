@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 const pillars = [
-  { icon: "👤", title: "KYC & KYB", desc: "Verificación de identidad personal y empresarial con evidencia legal desde el primer contacto.", href: "/plataforma/kyc-kyb", color: "#2DB6C1" },
+  { icon: "👤", title: "KYC", desc: "Verificación de identidad personal con evidencia legal desde el primer contacto.", href: "/plataforma/verificacion-identidad", color: "#2DB6C1" },
   { icon: "✍️", title: "Firma Electrónica", desc: "Firma con validez legal, trazabilidad completa y respaldo NOM-151 para México.", href: "/signa", color: "#2AD796" },
   { icon: "🔍", title: "Evidencia Auditable", desc: "Cada proceso genera registros trazables, defendibles ante autoridades internas y externas.", href: "/cumplimiento/pld-aml", color: "#2DB6C1" },
   { icon: "🔗", title: "Integración API", desc: "SDK y API REST para integrar JAAK en tu operación sin reemplazar tus sistemas actuales.", href: "/documentacion", color: "#2AD796" },
@@ -42,7 +42,7 @@ export default function JaakSolution() {
             </span>
           </h2>
           <p className="text-lg leading-relaxed" style={{ color: "rgba(255,255,255,0.52)" }}>
-            JAAK automatiza verificación de identidad, KYC/KYB y firma electrónica
+            JAAK automatiza verificación de identidad, KYC y firma electrónica
             generando evidencia legal auditable desde el primer contacto hasta el cierre del proceso.
           </p>
         </div>
