@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   productos,
   categorias,
@@ -32,77 +32,34 @@ function CategoryIcon({ categoria, className }: { categoria: CategoriaId; classN
   );
 }
 
-// Desplaza el carrusel de la categoría al que pertenece la flecha pulsada.
-function scrollCarousel(e: React.MouseEvent, dir: number) {
-  const section = (e.currentTarget as HTMLElement).closest("[data-cat-section]");
-  const row = section?.querySelector<HTMLElement>("[data-carousel]");
-  if (row) row.scrollBy({ left: dir * row.clientWidth * 0.85, behavior: "smooth" });
-}
-
-// Carrusel horizontal con fade dinámico en los extremos según haya más contenido.
-function Carrusel({ children }: { children: React.ReactNode }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [edges, setEdges] = useState({ left: false, right: false });
-
-  const update = () => {
-    const el = ref.current;
-    if (!el) return;
-    setEdges({
-      left: el.scrollLeft > 4,
-      right: el.scrollLeft + el.clientWidth < el.scrollWidth - 4,
-    });
-  };
-
-  useEffect(() => {
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, []);
-
-  return (
-    <div className="relative">
-      <div
-        ref={ref}
-        onScroll={update}
-        data-carousel
-        className="flex snap-x snap-mandatory items-stretch gap-5 overflow-x-auto px-0.5 pb-3"
-      >
-        {children}
-      </div>
-      {edges.left && (
-        <div className="pointer-events-none absolute bottom-3 left-0 top-0 w-10" style={{ background: "linear-gradient(to right, #fff, rgba(255,255,255,0))" }} />
-      )}
-      {edges.right && (
-        <div className="pointer-events-none absolute bottom-3 right-0 top-0 w-12" style={{ background: "linear-gradient(to left, #fff, rgba(255,255,255,0))" }} />
-      )}
-    </div>
-  );
-}
-
-function ArrowBtn({ dir }: { dir: number }) {
-  return (
-    <button
-      onClick={(e) => scrollCarousel(e, dir)}
-      aria-label={dir < 0 ? "Anterior" : "Siguiente"}
-      className="flex h-8 w-8 items-center justify-center rounded-full border bg-white transition-colors hover:bg-[#F1F2F5]"
-      style={{ borderColor: "#E6E8EF", color: "#475569" }}
-    >
-      <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={dir < 0 ? "M15 19l-7-7 7-7" : "M9 5l7 7-7 7"} />
-      </svg>
-    </button>
-  );
-}
-
 export default function CatalogoAutoservicio() {
   const { enCarrito, tierDe, setTier, toggle } = useCarrito();
-  const [categoriaActiva, setCategoriaActiva] = useState<CategoriaId | "todos">("todos");
   const [comparar, setComparar] = useState<Record<string, boolean>>({});
+  const [activeCat, setActiveCat] = useState<CategoriaId>(categorias[0].id);
 
-  const productosFiltrados = useMemo(
-    () => (categoriaActiva === "todos" ? productos : productos.filter((p) => p.categoria === categoriaActiva)),
-    [categoriaActiva]
-  );
+  // Scrollspy: resalta el chip de la categoría cuya sección está visible.
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+        const cat = visible?.target.getAttribute("data-cat");
+        if (cat) setActiveCat(cat as CategoriaId);
+      },
+      { rootMargin: "-180px 0px -65% 0px" }
+    );
+    categorias.forEach((c) => {
+      const el = document.getElementById(`cat-${c.id}`);
+      if (el) obs.observe(el);
+    });
+    return () => obs.disconnect();
+  }, []);
+
+  const irA = (id: CategoriaId) => {
+    setActiveCat(id);
+    document.getElementById(`cat-${id}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   const getPaquete = (p: Producto, id: Paquete["id"]) => p.paquetes.find((q) => q.id === id)!;
 
@@ -246,56 +203,45 @@ export default function CatalogoAutoservicio() {
           </p>
         </div>
 
-        {/* Filtro de categorías */}
-        <div className="mt-8 flex flex-wrap gap-2">
-          <FiltroChip activo={categoriaActiva === "todos"} onClick={() => setCategoriaActiva("todos")}>Todos</FiltroChip>
-          {categorias.map((c) => (
-            <FiltroChip key={c.id} activo={categoriaActiva === c.id} onClick={() => setCategoriaActiva(c.id)}>
-              {c.nombre}
-            </FiltroChip>
-          ))}
-        </div>
-
         <div className="mt-8 grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-8 items-start">
-          {/* Columna de productos */}
+          {/* Columna de productos: nav sticky por categoría + secciones */}
           <div className="min-w-0">
-            {categoriaActiva === "todos" ? (
-              // "Todos": un carrusel horizontal por categoría (overview escaneable, sin scroll infinito).
-              <div className="space-y-9">
-                {categorias.map((cat) => {
-                  const prods = productos.filter((p) => p.categoria === cat.id);
-                  if (!prods.length) return null;
+            {/* Navegación por categoría: salta a la sección y resalta la visible (scrollspy) */}
+            <div className="sticky top-[114px] z-30 border-b bg-white py-3" style={{ borderColor: "#EEF0F4" }}>
+              <div className="flex gap-2 overflow-x-auto">
+                {categorias.map((c) => {
+                  const activo = activeCat === c.id;
                   return (
-                    <div key={cat.id} data-cat-section>
-                      <div className="mb-3 flex items-end justify-between gap-3">
-                        <div>
-                          <h3 className="text-[15px] font-bold" style={{ color: NAVY }}>{cat.nombre}</h3>
-                          <p className="text-[12.5px]" style={{ color: "#64748B" }}>{cat.descripcion}</p>
-                        </div>
-                        {prods.length > 1 && (
-                          <div className="hidden shrink-0 gap-1.5 sm:flex">
-                            <ArrowBtn dir={-1} />
-                            <ArrowBtn dir={1} />
-                          </div>
-                        )}
-                      </div>
-                      <Carrusel>
-                        {prods.map((p) => (
-                          <div key={p.id} className="w-[320px] shrink-0 snap-start sm:w-[360px]">
-                            {renderCard(p, true)}
-                          </div>
-                        ))}
-                      </Carrusel>
-                    </div>
+                    <button
+                      key={c.id}
+                      onClick={() => irA(c.id)}
+                      className="whitespace-nowrap rounded-full px-4 py-2 text-[13px] font-semibold transition-colors"
+                      style={activo ? { background: NAVY, color: "#fff" } : { background: "#F3F4F8", color: "#475569" }}
+                    >
+                      {c.nombre}
+                    </button>
                   );
                 })}
               </div>
-            ) : (
-              // Categoría específica: grid normal (pocos productos, sin problema de scroll).
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                {productosFiltrados.map((producto) => renderCard(producto))}
-              </div>
-            )}
+            </div>
+
+            <div className="mt-6 space-y-12">
+              {categorias.map((cat) => {
+                const prods = productos.filter((p) => p.categoria === cat.id);
+                if (!prods.length) return null;
+                return (
+                  <section key={cat.id} id={`cat-${cat.id}`} data-cat={cat.id} className="scroll-mt-[180px]">
+                    <div className="mb-4">
+                      <h3 className="text-xl font-bold tracking-tight" style={{ color: NAVY }}>{cat.nombre}</h3>
+                      <p className="mt-1 text-[13px]" style={{ color: "#64748B" }}>{cat.descripcion}</p>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                      {prods.map((p) => renderCard(p))}
+                    </div>
+                  </section>
+                );
+              })}
+            </div>
           </div>
 
           {/* Carrito / resumen compartido (desktop sticky + barra/hoja en móvil) */}
@@ -306,14 +252,3 @@ export default function CatalogoAutoservicio() {
   );
 }
 
-function FiltroChip({ activo, onClick, children }: { activo: boolean; onClick: () => void; children: React.ReactNode }) {
-  return (
-    <button
-      onClick={onClick}
-      className="rounded-full px-4 py-2 text-[13px] font-semibold transition-colors"
-      style={activo ? { background: NAVY, color: "#fff" } : { background: "#F3F4F8", color: "#475569" }}
-    >
-      {children}
-    </button>
-  );
-}
