@@ -1,7 +1,4 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import Link from "next/link";
-import Image from "next/image";
+import ArticleLayout from "../ArticleLayout";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -62,119 +59,23 @@ const jsonLd = {
 };
 
 export default function CNBVSanciones2025() {
-  const relatedPosts = [
-    {
-      title: "Guía completa de las disposiciones CNBV para verificación de identidad",
-      slug: "disposiciones-cnbv-verificacion-identidad",
-      category: "Regulación",
-    },
-    {
-      title: "Mejores prácticas de compliance para empresas reguladas en México",
-      slug: "mejores-practicas-compliance-mexico",
-      category: "Compliance",
-    },
-    {
-      title: "¿Qué es KYC y cuándo es obligatorio en México?",
-      slug: "que-es-kyc-cuando-es-obligatorio-mexico",
-      category: "KYC",
-    },
-  ];
-
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <Header />
-      <main>
-        {/* Hero Section */}
-        <section className="pt-32 pb-12 bg-[#0a0a0a]">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="mb-6">
-              <Link
-                href="/blog"
-                className="inline-flex items-center text-white/60 hover:text-white transition-colors"
-              >
-                <svg
-                  className="w-4 h-4 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 19l-7-7 7-7"
-                  />
-                </svg>
-                Volver al blog
-              </Link>
-            </div>
-            <div className="flex items-center gap-3 mb-6">
-              <span className="px-3 py-1 bg-purple-500/10 text-purple-500 text-sm font-semibold rounded-full">
-                Regulación
-              </span>
-              <span className="text-white/40 text-sm">12 de junio, 2026</span>
-              <span className="text-white/40 text-sm">•</span>
-              <span className="text-white/40 text-sm">14 min de lectura</span>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
-              Por qué la CNBV aplicó +696 sanciones en 2025: el problema no es
-              el fraude, son los expedientes
-            </h1>
-            <p className="text-xl text-white/60">
-              En 2025, la Comisión Nacional Bancaria y de Valores alcanzó el
-              récord histórico de sanciones PLD: 696 multas y $411.8 millones de
-              pesos, un incremento del 192% respecto a 2024. Analizamos las
-              causas reales, el caso FinCEN y lo que cambió para siempre con la
-              reforma LFPIORPI de julio 2025.
-            </p>
-
-            {/* Estadísticas destacadas */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
-              {[
-                { value: "696", label: "Sanciones ene–nov 2025" },
-                { value: "+192%", label: "vs mismo periodo 2024" },
-                { value: "$411.8 M", label: "MXN en multas 2025" },
-                { value: "10 años", label: "Conservación obligatoria" },
-              ].map((stat) => (
-                <div
-                  key={stat.label}
-                  className="bg-white/5 rounded-xl p-4 text-center"
-                >
-                  <p className="text-2xl font-black text-[#00d4aa]">
-                    {stat.value}
-                  </p>
-                  <p className="text-white/50 text-xs mt-1">{stat.label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Featured Image */}
-        <section className="bg-white pt-12">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="rounded-2xl overflow-hidden shadow-xl">
-              <Image
-                src="/images/blog/cnbv-sanciones-2025-expedientes.jpg"
-                alt="Ejecutivo firmando documentos de cumplimiento regulatorio CNBV en México"
-                width={1200}
-                height={675}
-                className="w-full h-auto"
-                priority
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* Article Content */}
-        <article className="py-12 bg-white">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="prose prose-lg max-w-none">
-
+    <ArticleLayout
+      title="Por qué la CNBV aplicó +696 sanciones en 2025: el problema no es el fraude, son los expedientes"
+      subtitle="En 2025, la Comisión Nacional Bancaria y de Valores alcanzó el récord histórico de sanciones PLD: 696 multas y $411.8 millones de pesos, un incremento del 192% respecto a 2024. Analizamos las causas reales, el caso FinCEN y lo que cambió para siempre con la reforma LFPIORPI de julio 2025."
+      category="Regulación"
+      date="12 de junio, 2026"
+      readTime="14 min"
+      slug="cnbv-sanciones-2025-expedientes"
+      image="/images/blog/cnbv-sanciones-2025-expedientes.jpg"
+      imageAlt="Ejecutivo firmando documentos de cumplimiento regulatorio CNBV en México"
+      jsonLd={jsonLd}
+      relatedPosts={[
+        { title: "Guía completa de las disposiciones CNBV para verificación de identidad", slug: "disposiciones-cnbv-verificacion-identidad", category: "Regulación" },
+        { title: "Mejores prácticas de compliance para empresas reguladas en México", slug: "mejores-practicas-compliance-mexico", category: "Compliance" },
+        { title: "¿Qué es KYC y cuándo es obligatorio en México?", slug: "que-es-kyc-cuando-es-obligatorio-mexico", category: "KYC" },
+      ]}
+    >
               <p className="text-xl text-gray-600 leading-relaxed mb-8">
                 El año 2025 marcó un punto de inflexión en la supervisión
                 financiera mexicana. La CNBV no solo rompió todos los récords de
@@ -678,84 +579,6 @@ export default function CNBVSanciones2025() {
                   nivel de exigencia.
                 </p>
               </div>
-
-            </div>
-          </div>
-        </article>
-
-        {/* Author Section */}
-        <section className="py-12 bg-gray-50">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center gap-6">
-              <div className="w-16 h-16 bg-[#0066ff] rounded-full flex items-center justify-center flex-shrink-0">
-                <span className="text-white font-bold text-xl">J</span>
-              </div>
-              <div>
-                <p className="font-bold text-gray-900">Equipo JAAK</p>
-                <p className="text-gray-600">
-                  Especialistas en verificación de identidad y cumplimiento
-                  regulatorio para el sector financiero mexicano. Datos
-                  verificados con fuente oficial: CNBV · UIF · DOF · FinCEN.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Related Posts */}
-        <section className="py-16 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-8">
-              Artículos relacionados
-            </h2>
-            <div className="grid md:grid-cols-3 gap-6">
-              {relatedPosts.map((post, index) => (
-                <Link
-                  key={index}
-                  href={`/blog/${post.slug}`}
-                  className="block bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow"
-                >
-                  <span className="inline-block px-3 py-1 bg-purple-500/10 text-purple-500 text-xs font-semibold rounded-full mb-3">
-                    {post.category}
-                  </span>
-                  <h3 className="font-bold text-gray-900 hover:text-[#0066ff] transition-colors">
-                    {post.title}
-                  </h3>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="py-16 bg-[#0a0a0a]">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl font-black text-white mb-4">
-              ¿Tu empresa puede responder una auditoría retroactiva de 10 años
-              en menos de una hora?
-            </h2>
-            <p className="text-white/60 text-lg mb-8">
-              Con JAAK, cada expediente se genera automáticamente con trazabilidad
-              completa desde el primer contacto con el cliente.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link
-                href="/autoservicio"
-                className="px-8 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
-              >
-                Ver solución para cumplimiento
-              </Link>
-              <Link
-                href="/contacto"
-                className="px-8 py-4 bg-white/10 text-white font-bold rounded-lg hover:bg-white/20 transition-all"
-              >
-                Hablar con un experto
-              </Link>
-            </div>
-          </div>
-        </section>
-      </main>
-      <Footer />
-    </>
+    </ArticleLayout>
   );
 }
