@@ -113,7 +113,7 @@ export default function CatalogoAutoservicio() {
               {expandido ? "Ocultar comparación" : "Comparar paquetes"}
             </button>
           </div>
-          <div className="mt-2 flex flex-wrap gap-1.5">
+          <div className="mt-2 flex flex-wrap gap-1.5 pb-1">
             {producto.paquetes.map((q) => {
               const sel = q.id === tierDe(producto.id);
               const est = tierEstilos[q.id];
