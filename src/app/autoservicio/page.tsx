@@ -92,7 +92,7 @@ export default function AutoservicioPage() {
                 { n: "04", t: "Empieza a operar", d: "Verifica, firma o consulta desde tu panel o integrando la API." },
               ].map((s) => (
                 <div key={s.n} className="rounded-2xl border bg-white p-6" style={{ borderColor: "#E6E8EF" }}>
-                  <div className="font-serif text-2xl font-bold" style={{ color: TEAL }}>{s.n}</div>
+                  <div className="text-2xl font-bold" style={{ color: TEAL }}>{s.n}</div>
                   <h3 className="mt-3 text-[16px] font-bold" style={{ color: NAVY }}>{s.t}</h3>
                   <p className="mt-2 text-[13px] leading-relaxed" style={{ color: "#64748B" }}>{s.d}</p>
                 </div>
