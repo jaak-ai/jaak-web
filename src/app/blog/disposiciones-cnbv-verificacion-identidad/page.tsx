@@ -1,7 +1,4 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import Link from "next/link";
-import Image from "next/image";
+import ArticleLayout from "../ArticleLayout";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -48,86 +45,23 @@ const jsonLd = {
 };
 
 export default function DisposicionesCNBV() {
-  const relatedPosts = [
-    {
-      title: "Tendencias KYC 2026: Lo que toda institución financiera debe saber",
-      slug: "tendencias-kyc-2026",
-      category: "KYC",
-    },
-    {
-      title: "Mejores prácticas de compliance para empresas reguladas en México",
-      slug: "mejores-practicas-compliance-mexico",
-      category: "Compliance",
-    },
-    {
-      title: "Prevención de fraude en el onboarding digital: Mejores prácticas",
-      slug: "prevencion-fraude-onboarding-digital",
-      category: "Fraude",
-    },
-  ];
-
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <Header />
-      <main>
-        {/* Hero Section */}
-        <section className="pt-32 pb-12 bg-[#0a0a0a]">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="mb-6">
-              <Link
-                href="/blog"
-                className="inline-flex items-center text-white/60 hover:text-white transition-colors"
-              >
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-                Volver al blog
-              </Link>
-            </div>
-            <div className="flex items-center gap-3 mb-6">
-              <span className="px-3 py-1 bg-purple-500/10 text-purple-500 text-sm font-semibold rounded-full">
-                Regulación
-              </span>
-              <span className="text-white/40 text-sm">3 de enero, 2026</span>
-              <span className="text-white/40 text-sm">•</span>
-              <span className="text-white/40 text-sm">15 min de lectura</span>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-black text-white mb-6">
-              Guía completa de las disposiciones CNBV para verificación de identidad
-            </h1>
-            <p className="text-xl text-white/60">
-              Un análisis detallado de los requisitos de la Comisión Nacional Bancaria y de Valores
-              para el proceso de identificación de clientes. Conoce las obligaciones específicas
-              y cómo cumplirlas de manera eficiente.
-            </p>
-          </div>
-        </section>
-
-        {/* Featured Image */}
-        <section className="bg-white pt-12">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="rounded-2xl overflow-hidden shadow-xl">
-              <Image
-                src="/images/blog/disposiciones-cnbv-verificacion-identidad.png"
-                alt="Guía de disposiciones CNBV para verificación de identidad en México"
-                width={1200}
-                height={675}
-                className="w-full h-auto"
-                priority
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* Article Content */}
-        <article className="py-12 bg-white">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="prose prose-lg max-w-none">
-
+    <ArticleLayout
+      title="Guía completa de las disposiciones CNBV para verificación de identidad"
+      subtitle="Un análisis detallado de los requisitos de la Comisión Nacional Bancaria y de Valores para el proceso de identificación de clientes. Conoce las obligaciones específicas y cómo cumplirlas de manera eficiente."
+      category="Regulación"
+      date="3 de enero, 2026"
+      readTime="10 min"
+      slug="disposiciones-cnbv-verificacion-identidad"
+      image="/images/blog/disposiciones-cnbv-verificacion-identidad.png"
+      imageAlt="Guía de disposiciones CNBV para verificación de identidad en México"
+      jsonLd={jsonLd}
+      relatedPosts={[
+        { title: "Tendencias KYC 2026", slug: "tendencias-kyc-2026", category: "KYC" },
+        { title: "Mejores prácticas de compliance para empresas reguladas en México", slug: "mejores-practicas-compliance-mexico", category: "Compliance" },
+        { title: "Prevención de fraude en el onboarding digital", slug: "prevencion-fraude-onboarding-digital", category: "Fraude" },
+      ]}
+    >
               <p className="text-xl text-gray-600 leading-relaxed mb-8">
                 La Comisión Nacional Bancaria y de Valores (CNBV) establece el marco regulatorio
                 que deben seguir las instituciones financieras en México para la identificación
@@ -386,77 +320,20 @@ export default function DisposicionesCNBV() {
                 </p>
               </div>
 
-            </div>
-          </div>
-        </article>
-
-        {/* Author Section */}
-        <section className="py-12 bg-gray-50">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center gap-6">
-              <div className="w-16 h-16 bg-[#0066ff] rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-xl">J</span>
-              </div>
-              <div>
-                <p className="font-bold text-gray-900">Equipo JAAK</p>
-                <p className="text-gray-600">
-                  Especialistas en verificación de identidad y cumplimiento regulatorio para el sector financiero mexicano.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Related Posts */}
-        <section className="py-16 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-8">Artículos relacionados</h2>
-            <div className="grid md:grid-cols-3 gap-6">
-              {relatedPosts.map((post, index) => (
-                <Link
-                  key={index}
-                  href={`/blog/${post.slug}`}
-                  className="block bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow"
-                >
-                  <span className="inline-block px-3 py-1 bg-[#0066ff]/10 text-[#0066ff] text-xs font-semibold rounded-full mb-3">
-                    {post.category}
-                  </span>
-                  <h3 className="font-bold text-gray-900 hover:text-[#0066ff] transition-colors">
-                    {post.title}
-                  </h3>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="py-16 bg-[#0a0a0a]">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl font-black text-white mb-4">
-              Cumple con la CNBV sin complicaciones
-            </h2>
-            <p className="text-white/60 text-lg mb-8">
-              JAAK te ayuda a verificar identidades cumpliendo al 100% con las disposiciones regulatorias.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link
+            <div className="mt-12 flex flex-wrap gap-4">
+              <a
                 href="/contacto"
                 className="px-8 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
               >
                 Solicitar demo
-              </Link>
-              <Link
+              </a>
+              <a
                 href="/cumplimiento"
                 className="px-8 py-4 bg-white/10 text-white font-bold rounded-lg hover:bg-white/20 transition-all"
               >
                 Ver soluciones de cumplimiento
-              </Link>
+              </a>
             </div>
-          </div>
-        </section>
-      </main>
-      <Footer />
-    </>
+    </ArticleLayout>
   );
 }

@@ -1,7 +1,4 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import Link from "next/link";
-import Image from "next/image";
+import ArticleLayout from "../ArticleLayout";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -61,99 +58,23 @@ const jsonLd = {
 };
 
 export default function QueEsNOM151ContratosDigitales() {
-  const relatedPosts = [
-    {
-      title:
-        "Firma electrónica simple vs avanzada: diferencias legales en México",
-      slug: "firma-electronica-simple-vs-avanzada",
-      category: "Firma Electrónica",
-    },
-    {
-      title: "¿Qué es KYC y cuándo es obligatorio en México?",
-      slug: "que-es-kyc-cuando-es-obligatorio-mexico",
-      category: "KYC",
-    },
-    {
-      title:
-        "Guía completa de las disposiciones CNBV para verificación de identidad",
-      slug: "disposiciones-cnbv-verificacion-identidad",
-      category: "Regulación",
-    },
-  ];
-
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <Header />
-      <main>
-        {/* Hero Section */}
-        <section className="pt-32 pb-12 bg-[#0a0a0a]">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="mb-6">
-              <Link
-                href="/blog"
-                className="inline-flex items-center text-white/60 hover:text-white transition-colors"
-              >
-                <svg
-                  className="w-4 h-4 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 19l-7-7 7-7"
-                  />
-                </svg>
-                Volver al blog
-              </Link>
-            </div>
-            <div className="flex items-center gap-3 mb-6">
-              <span className="px-3 py-1 bg-[#1ECAD3]/10 text-[#1ECAD3] text-sm font-semibold rounded-full">
-                Firma Electrónica
-              </span>
-              <span className="text-white/40 text-sm">11 de abril, 2026</span>
-              <span className="text-white/40 text-sm">•</span>
-              <span className="text-white/40 text-sm">8 min de lectura</span>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-black text-white mb-6">
-              ¿Qué es la NOM-151 y por qué importa en contratos digitales?
-            </h1>
-            <p className="text-xl text-white/60">
-              La firma electrónica sin NOM-151 es como una promesa sin testigos:
-              legalmente existe, pero difícilmente sobrevive una impugnación. Descubre
-              qué es la norma, cómo funciona el sello de tiempo certificado y por qué
-              ningún contrato digital serio en México puede prescindir de ella.
-            </p>
-          </div>
-        </section>
-
-        {/* Featured Image */}
-        <section className="bg-white pt-12">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="rounded-2xl overflow-hidden shadow-xl">
-              <Image
-                src="/images/blog/que-es-nom-151.jpg"
-                alt="NOM-151-SCFI-2016: sello de tiempo certificado para contratos digitales en México"
-                width={1200}
-                height={675}
-                className="w-full h-auto"
-                priority
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* Article Content */}
-        <article className="py-12 bg-white">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="prose prose-lg max-w-none">
-
+    <ArticleLayout
+      title="¿Qué es la NOM-151 y por qué importa en contratos digitales?"
+      subtitle="La firma electrónica sin NOM-151 es como una promesa sin testigos: legalmente existe, pero difícilmente sobrevive una impugnación. Descubre qué es la norma, cómo funciona el sello de tiempo certificado y por qué ningún contrato digital serio en México puede prescindir de ella."
+      category="Firma Electrónica"
+      date="11 de abril, 2026"
+      readTime="8 min"
+      slug="que-es-nom-151-contratos-digitales"
+      image="/images/blog/que-es-nom-151.jpg"
+      imageAlt="NOM-151-SCFI-2016: sello de tiempo certificado para contratos digitales en México"
+      jsonLd={jsonLd}
+      relatedPosts={[
+        { title: "Firma electrónica simple vs avanzada", slug: "firma-electronica-simple-vs-avanzada", category: "Firma Electrónica" },
+        { title: "¿Qué es KYC y cuándo es obligatorio en México?", slug: "que-es-kyc-cuando-es-obligatorio-mexico", category: "KYC" },
+        { title: "Guía completa de las disposiciones CNBV para verificación de identidad", slug: "disposiciones-cnbv-verificacion-identidad", category: "Regulación" },
+      ]}
+    >
               <p className="text-xl text-gray-600 leading-relaxed mb-8">
                 Imagine que su empresa firma un contrato de crédito con un cliente,
                 todo en formato digital y sin papel. La firma electrónica está ahí,
@@ -516,82 +437,6 @@ export default function QueEsNOM151ContratosDigitales() {
                   procesos y generan confianza con clientes, socios y reguladores.
                 </p>
               </div>
-
-            </div>
-          </div>
-        </article>
-
-        {/* Author Section */}
-        <section className="py-12 bg-gray-50">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center gap-6">
-              <div className="w-16 h-16 bg-[#1ECAD3] rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-xl">J</span>
-              </div>
-              <div>
-                <p className="font-bold text-gray-900">Equipo JAAK</p>
-                <p className="text-gray-600">
-                  Especialistas en firma electrónica, verificación de identidad y
-                  cumplimiento regulatorio para el sector financiero mexicano.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Related Posts */}
-        <section className="py-16 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-8">
-              Artículos relacionados
-            </h2>
-            <div className="grid md:grid-cols-3 gap-6">
-              {relatedPosts.map((post, index) => (
-                <Link
-                  key={index}
-                  href={`/blog/${post.slug}`}
-                  className="block bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow"
-                >
-                  <span className="inline-block px-3 py-1 bg-[#1ECAD3]/10 text-[#1ECAD3] text-xs font-semibold rounded-full mb-3">
-                    {post.category}
-                  </span>
-                  <h3 className="font-bold text-gray-900 hover:text-[#1ECAD3] transition-colors">
-                    {post.title}
-                  </h3>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="py-16 bg-[#0a0a0a]">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl font-black text-white mb-4">
-              ¿Listo para firmar contratos con plena validez legal?
-            </h2>
-            <p className="text-white/60 text-lg mb-8">
-              Descubre cómo JAAK incorpora la certificación NOM-151 en cada firma
-              electrónica para que sus contratos digitales sean irrefutables.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link
-                href="/contacto"
-                className="px-8 py-4 bg-[#1ECAD3] text-white font-bold rounded-lg hover:bg-[#17adb5] transition-all"
-              >
-                Solicitar demo
-              </Link>
-              <Link
-                href="/plataforma/firma-electronica"
-                className="px-8 py-4 bg-white/10 text-white font-bold rounded-lg hover:bg-white/20 transition-all"
-              >
-                Conocer firma electrónica
-              </Link>
-            </div>
-          </div>
-        </section>
-      </main>
-      <Footer />
-    </>
+    </ArticleLayout>
   );
 }
