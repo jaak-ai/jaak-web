@@ -74,7 +74,7 @@ export const productos: Producto[] = [
     nombre: "Firma Simple",
     categoria: "firma",
     unidad: "firmas",
-    tagline: "Firma electrónica con aceptación, IP, dispositivo y sello de tiempo.",
+    tagline: "Firma electrónica básica sin NOM-151.",
     incluye: [
       "Firma electrónica con validez legal en México",
       "Hasta 4 firmantes por documento",
