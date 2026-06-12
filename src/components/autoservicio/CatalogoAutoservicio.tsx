@@ -91,7 +91,7 @@ export default function CatalogoAutoservicio() {
             {producto.incluye[0]}
           </p>
         ) : (
-          <ul className="mt-4 grid grid-cols-2 gap-x-3 gap-y-1.5">
+          <ul className="mt-4 grid grow content-start grid-cols-2 gap-x-3 gap-y-1.5">
             {producto.incluye.map((item) => (
               <li key={item} className="flex items-start gap-1.5 text-[12px]" style={{ color: "#4A5568" }}>
                 <svg className="mt-[3px] h-3 w-3 flex-shrink-0" style={{ color: TEAL }} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
@@ -166,7 +166,7 @@ export default function CatalogoAutoservicio() {
         )}
 
         {/* Precio + agregar */}
-        <div className="mt-5 flex items-end justify-between border-t pt-4" style={{ borderColor: "#EEF0F4", marginTop: "auto" }}>
+        <div className="mt-5 flex items-end justify-between border-t pt-4" style={{ borderColor: "#EEF0F4" }}>
           <div>
             <div className="flex items-baseline gap-1">
               <span className="text-2xl font-bold" style={{ color: NAVY }}>{formatMXN(paqueteSel.precio)}</span>
