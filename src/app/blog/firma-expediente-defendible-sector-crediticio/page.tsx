@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     description:
       "Las uniones de crédito verifican quién entra. Pero el contrato, el pagaré, la firma — muchas veces no pueden defenderse en un juicio.",
     type: "article",
-    publishedTime: "2026-06-12T00:00:00Z",
+    publishedTime: "2026-06-15T00:00:00Z",
     authors: ["Arianna Quezada"],
   },
 };
@@ -24,11 +24,11 @@ const jsonLd = {
     "Lo que más me preocupa del sector crediticio en México no es el fraude que entra. Es el que ya está adentro.",
   description:
     "Las uniones de crédito verifican quién entra. Pero el contrato, el pagaré, la firma — muchas veces no pueden defenderse en un juicio.",
-  datePublished: "2026-06-12T00:00:00Z",
+  datePublished: "2026-06-15T00:00:00Z",
   author: {
     "@type": "Person",
     name: "Arianna Quezada",
-    jobTitle: "CEO",
+    jobTitle: "CEO y cofundadora",
     worksFor: { "@type": "Organization", name: "JAAK" },
   },
   publisher: {
@@ -45,6 +45,8 @@ const jsonLd = {
     "uniones de crédito",
     "pagaré digital",
     "compliance financiero",
+    "CONDUSEF supervisión 2025",
+    "CNBV UIF",
   ],
 };
 
@@ -52,9 +54,9 @@ export default function ArticleFirmaExpediente() {
   return (
     <ArticleLayout
       title="Lo que más me preocupa del sector crediticio en México no es el fraude que entra. Es el que ya está adentro."
-      subtitle="Las uniones de crédito verifican quién entra. Pero el contrato, el pagaré, la firma — muchas veces no pueden defenderse en un juicio."
+      subtitle="Las uniones de crédito verifican quién entra. Pero el contrato, el pagaré, la firma — muchas veces no pueden defenderse en un juicio. Arianna Quezada, CEO de JAAK, analiza la brecha que el nuevo marco jurisprudencial ya no permite ignorar."
       category="Compliance"
-      date="12 de junio, 2026"
+      date="15 de junio, 2026"
       readTime="7 min"
       slug="firma-expediente-defendible-sector-crediticio"
       image="/images/blog/firma-expediente-crediticio.jpg"
@@ -78,16 +80,31 @@ export default function ArticleFirmaExpediente() {
         },
       ]}
     >
+      <p className="text-sm font-semibold mb-8" style={{ color: "#1ECAD3" }}>
+        Por Arianna Quezada, CEO y cofundadora de JAAK
+      </p>
+
       <p className="text-gray-700 text-lg leading-relaxed mb-6">
-        Llevo años trabajando con instituciones del sector crediticio en México — uniones de crédito, SOFOMES, financieras especializadas. Y hay una conversación que se repite, casi siempre después de un incidente.
+        Hace unas semanas, la CONDUSEF publicó los resultados de su supervisión 2025 al producto de
+        crédito de habilitación o avío en uniones de crédito. El dato fue contundente: 6 de 8
+        entidades evaluadas reprobaron en materia de transparencia financiera.
       </p>
 
       <p className="text-gray-700 leading-relaxed mb-6">
-        Alguien descubre que tienen un problema. No con la identidad del cliente — eso lo verificaron. El problema es con el contrato que ese cliente firmó. O con el pagaré. O con el proceso que siguieron para capturar ese consentimiento. Y cuando llega el momento de defender ese documento ante un juez, no pueden.
+        No me sorprendió el número. Me sorprendió lo que revela sobre cómo muchas instituciones
+        financieras entienden el riesgo.
       </p>
 
       <p className="text-gray-700 leading-relaxed mb-6">
-        Eso es lo que más me preocupa. No el fraude que intenta entrar al sistema — para eso hay controles cada vez más sofisticados. Me preocupa el fraude que ya está adentro: la debilidad estructural de los expedientes que ya existen, firmados, archivados, y que en este momento no podrían sostenerse en un litigio.
+        Porque cuando una entidad falla en transparencia ante el regulador, la conversación suele
+        girar hacia sus contratos, sus comisiones, sus procesos de atención. Rara vez se pregunta
+        algo más profundo: si esa entidad llegara a un litigio sobre alguno de esos contratos,
+        ¿podría demostrar quién los firmó?
+      </p>
+
+      <p className="text-gray-700 leading-relaxed mb-6">
+        En mi experiencia trabajando con instituciones reguladas en México, esa es la pregunta que
+        más se evita. Y la que más cuesta cuando finalmente llega.
       </p>
 
       <h2 className="text-2xl font-bold text-gray-900 mt-10 mb-4">
@@ -95,19 +112,14 @@ export default function ArticleFirmaExpediente() {
       </h2>
 
       <p className="text-gray-700 leading-relaxed mb-6">
-        Las instituciones crediticias en México han invertido mucho en el frente de la incorporación. El proceso de KYC (Know Your Customer) mejoró. La verificación biométrica se volvió más común. Los listas de control (OFAC, listas negras de la UIF) se consultan con mayor sistematicidad. En muchos casos, el onboarding es genuinamente robusto.
+        Hay un patrón que he visto repetirse. Una institución invierte en su proceso de onboarding:
+        valida el INE, implementa reconocimiento facial, consulta listas negras. Hace todo bien en
+        la entrada.
       </p>
 
       <p className="text-gray-700 leading-relaxed mb-6">
-        Pero una vez que el cliente está adentro, el rigor baja.
-      </p>
-
-      <p className="text-gray-700 leading-relaxed mb-6">
-        El contrato se genera en un sistema que no registra metadatos verificables. El pagaré se firma con una firma electrónica simple — un clic, un checkbox, o a lo mucho un OTP enviado por SMS — sin constancia de tiempo certificada, sin evidencia de biometría facial, sin sellado NOM-151. El expediente queda en un PDF en algún servidor, sin cadena de custodia auditable.
-      </p>
-
-      <p className="text-gray-700 leading-relaxed mb-6">
-        Y ese expediente, en caso de impugnación, no tiene defensa técnica.
+        Pero al final del proceso — el contrato de crédito, el pagaré, el expediente del socio —
+        el cierre es una firma simple. Un clic. Una imagen en un PDF.
       </p>
 
       <div
@@ -118,24 +130,40 @@ export default function ArticleFirmaExpediente() {
         }}
       >
         <p className="text-gray-700 leading-relaxed font-medium">
-          <strong>El problema no es que alguien haya actuado de mala fe.</strong> Es que el proceso nunca fue diseñado para ser defendible. Y en el entorno regulatorio y jurisprudencial actual, esa distinción ya no alcanza para proteger a la institución.
+          Construyeron una fortaleza. Y dejaron la puerta trasera abierta.
         </p>
       </div>
+
+      <p className="text-gray-700 leading-relaxed mb-6">
+        El problema no aparece el día que se firma. Aparece el día que ese socio niega haber
+        firmado, o cuando llega una auditoría de la CNBV, o cuando el expediente tiene que
+        sostenerse en un juicio ejecutivo mercantil.
+      </p>
+
+      <p className="text-gray-700 leading-relaxed mb-6">
+        En ese momento, la pregunta no es si verificaste la identidad al inicio del proceso.
+      </p>
+
+      <p className="text-gray-700 leading-relaxed mb-6 font-semibold">
+        La pregunta es: ¿puedes demostrar quién firmó al final?
+      </p>
 
       <h2 className="text-2xl font-bold text-gray-900 mt-10 mb-4">
         Por qué el contexto regulatorio hace esto urgente, no opcional
       </h2>
 
       <p className="text-gray-700 leading-relaxed mb-6">
-        Durante años, el marco legal en México fue suficientemente ambiguo como para que una firma electrónica simple pudiera "pasar". Los jueces tenían poca experiencia con documentos digitales. Los litigantes tampoco sabían muy bien qué exigir.
+        En 2026, las uniones de crédito están bajo una presión regulatoria que no tiene precedente
+        reciente. Las cuotas de supervisión de la CNBV aumentaron hasta un 204% para algunas
+        entidades, según reportó El Economista en marzo de este año citando al propio presidente de
+        ConUnión. La CNBV y la UIF formalizaron en marzo un convenio de colaboración para fortalecer
+        la supervisión con enfoque en riesgos. Y el Acuerdo CNBV 2026 impulsa la digitalización
+        completa de los expedientes KYC y los reportes PLD.
       </p>
 
       <p className="text-gray-700 leading-relaxed mb-6">
-        Eso está cambiando.
-      </p>
-
-      <p className="text-gray-700 leading-relaxed mb-6">
-        El Código de Comercio y la Ley de Firma Electrónica Avanzada ya establecen jerarquías claras entre tipos de firma. La NOM-151-SCFI-2016 define el estándar para preservación de mensajes de datos y tiene efectos directos sobre la admisibilidad de documentos digitales como prueba. Y más recientemente, el Poder Judicial ha comenzado a emitir criterios que elevan el estándar de lo que se considera evidencia válida en contratos digitales.
+        El mensaje del regulador es consistente: los expedientes digitales ya no son una opción
+        moderna. Son la evidencia que se va a pedir.
       </p>
 
       <div
@@ -146,55 +174,60 @@ export default function ArticleFirmaExpediente() {
         }}
       >
         <p className="text-gray-700 leading-relaxed">
-          <strong className="text-amber-800">Nota regulatoria:</strong> Las reformas recientes a la LFPIORPI y las circulares de la CNBV sobre expedientes digitales aumentan la exposición de instituciones que no puedan demostrar trazabilidad en sus procesos de firma. No es solo un riesgo legal — es un riesgo de sanción regulatoria directa.
+          <strong className="text-amber-800">Lo que no siempre se dice:</strong> un expediente
+          digital incompleto puede ser peor que ninguno. Porque crea la ilusión de cumplimiento
+          sin la sustancia que lo respalda.
         </p>
       </div>
-
-      <p className="text-gray-700 leading-relaxed mb-6">
-        Para las instituciones crediticias, esto se traduce en una exposición concreta: si un acreditado impugna su firma o niega haber aceptado los términos de un contrato, la carga de la prueba recae sobre la institución. Y si el expediente no puede acreditar cuándo se firmó, quién lo firmó, y con qué nivel de autenticación, la institución puede perder — aunque tenga razón en el fondo.
-      </p>
 
       <h2 className="text-2xl font-bold text-gray-900 mt-10 mb-4">
         Lo que los tribunales ya están exigiendo
       </h2>
 
       <p className="text-gray-700 leading-relaxed mb-6">
-        Dos tesis recientes del Poder Judicial Federal marcan la dirección con claridad:
+        En octubre de 2025 se publicaron dos tesis aisladas que cambian la conversación para
+        cualquier institución que use pagarés digitales:
       </p>
 
       <div className="grid gap-4 mb-8">
         <div
           className="rounded-xl p-6 border"
           style={{
-            background: "rgba(255,255,255,0.04)",
-            borderColor: "rgba(255,255,255,0.1)",
+            background: "rgba(30,202,211,0.05)",
+            borderColor: "rgba(30,202,211,0.2)",
           }}
         >
           <p className="text-xs font-bold tracking-widest uppercase mb-2" style={{ color: "#1ECAD3" }}>
-            Tesis I.2o.C.38 C
+            Tesis I.2o.C.38 C (11a.)
           </p>
           <p className="text-gray-700 leading-relaxed text-sm">
-            Establece que para que un documento digital tenga plena validez probatoria, debe poder acreditarse la integridad del mensaje de datos desde su creación. Esto implica metadatos verificables, sellado de tiempo, y mecanismos que permitan detectar cualquier alteración posterior.
+            Establece que el pagaré digital debe suscribirse con firma electrónica avanzada
+            generada por un prestador de servicios de certificación para producir los efectos de
+            un título de crédito. No es interpretable. No hay zona gris.
           </p>
         </div>
         <div
           className="rounded-xl p-6 border"
           style={{
-            background: "rgba(255,255,255,0.04)",
-            borderColor: "rgba(255,255,255,0.1)",
+            background: "rgba(30,202,211,0.05)",
+            borderColor: "rgba(30,202,211,0.2)",
           }}
         >
           <p className="text-xs font-bold tracking-widest uppercase mb-2" style={{ color: "#1ECAD3" }}>
-            Tesis I.11o.C.82 C
+            Tesis I.11o.C.82 C (11a.)
           </p>
           <p className="text-gray-700 leading-relaxed text-sm">
-            Señala que la firma electrónica simple no es equivalente a la firma autógrafa en términos de atribución. Para que un tribunal pueda atribuir una firma digital a una persona específica, debe existir evidencia de autenticación que vaya más allá del acceso a un dispositivo o número telefónico.
+            Establece que el endoso del pagaré digital debe incluirse en el propio mensaje de
+            datos, no como documento separado. Ambas publicadas en la Gaceta del Semanario
+            Judicial de la Federación. Ambas vigentes.
           </p>
         </div>
       </div>
 
       <p className="text-gray-700 leading-relaxed mb-6">
-        Ninguna de estas tesis es sorpresiva. Son la consecuencia lógica de aplicar principios de derecho probatorio a la realidad de los documentos digitales. Pero para muchas instituciones, representan una brecha enorme entre lo que tienen hoy y lo que necesitarían para defenderse mañana.
+        Lo que esto significa en términos prácticos: una firma que no cumpla FEA + NOM-151 ya
+        tiene criterio judicial en contra. Y una institución que lleva años acumulando contratos
+        con firma simple está acumulando, también, un pasivo de evidencia que no puede defender.
       </p>
 
       <h2 className="text-2xl font-bold text-gray-900 mt-10 mb-4">
@@ -202,20 +235,22 @@ export default function ArticleFirmaExpediente() {
       </h2>
 
       <p className="text-gray-700 leading-relaxed mb-6">
-        Cuando hablo con equipos de operaciones o legales en instituciones crediticias, la confusión más frecuente es entre <strong>tener un documento firmado</strong> y <strong>tener un expediente defendible</strong>.
+        Hay algo que aprendí al construir JAAK y que hoy es central en cómo pensamos el problema:
+        lo que protege una operación no es el PDF. Es el expediente.
       </p>
 
       <p className="text-gray-700 leading-relaxed mb-4">
-        Un expediente defendible no es solo el PDF. Es el conjunto de evidencias que permiten demostrar:
+        Un expediente auditable no es una carpeta de archivos. Es el conjunto de evidencia que
+        permite reconstruir el proceso completo ante quien lo cuestione:
       </p>
 
-      <ul className="space-y-3 mb-8">
+      <ul className="space-y-3 mb-6">
         {[
-          "Quién firmó (verificación de identidad con biometría facial y documento oficial)",
-          "Cuándo firmó (sello de tiempo certificado bajo NOM-151, no el timestamp del servidor)",
-          "Qué firmó (hash del documento en el momento exacto de la firma, no una versión posterior)",
-          "Que lo hizo de forma libre e informada (evidencia del flujo de consentimiento, no solo el resultado)",
-          "Que el documento no fue alterado después (cadena de custodia verificable, auditoría de accesos)",
+          "El documento firmado",
+          "La constancia NOM-151",
+          "El registro biométrico",
+          "Los metadatos de cada paso con su timestamp",
+          "El resultado de cada verificación",
         ].map((item, i) => (
           <li key={i} className="flex items-start gap-3 text-gray-700">
             <span
@@ -237,7 +272,9 @@ export default function ArticleFirmaExpediente() {
         }}
       >
         <p className="text-gray-700 leading-relaxed">
-          La mayoría de las instituciones tienen el punto 1 parcialmente cubierto. Muy pocas tienen los puntos 2 al 5 documentados de forma que pueda presentarse como evidencia ante un tribunal.
+          Todo vinculado. Todo con integridad técnica. Todo técnicamente imposible de alterar sin
+          que se detecte. La diferencia entre tener razón en un conflicto y poder demostrarla no
+          está en el contrato. Está en ese expediente.
         </p>
       </div>
 
@@ -246,19 +283,20 @@ export default function ArticleFirmaExpediente() {
       </h2>
 
       <p className="text-gray-700 leading-relaxed mb-6">
-        No escribo esto para alarmar. Lo escribo porque creo que hay una ventana de tiempo — que se está cerrando — en la que las instituciones pueden hacer esta corrección de forma proactiva, sin esperar a que un litigio les muestre la vulnerabilidad.
+        Las instituciones que hoy enfrentan problemas ante una auditoría o un litigio no fallaron
+        por usar tecnología. Fallaron porque en algún punto del camino alguien tomó una decisión
+        de baja fricción — una firma simple, un PDF sin sello, un proceso de onboarding
+        desconectado del cierre — que dejó un hueco en el expediente.
       </p>
 
       <p className="text-gray-700 leading-relaxed mb-6">
-        El problema no es técnico en su origen. Es de diseño institucional. Se asumió que el proceso de firma era un trámite administrativo, no un acto jurídico que tendría que sostenerse bajo escrutinio. Y mientras ese supuesto no se corrija — mientras el estándar del expediente no se eleve — la exposición crece con cada contrato que se firma.
+        Ese hueco es evitable. Y dado el ritmo al que se está endureciendo el marco regulatorio y
+        jurisprudencial en México, el costo de no resolverlo va a seguir subiendo.
       </p>
 
-      <p className="text-gray-700 leading-relaxed mb-6">
-        La buena noticia es que la solución existe. No requiere reemplazar todos los sistemas. Requiere incorporar, en el flujo de firma, los componentes que hacen que el expediente sea defendible: verificación biométrica, sellado NOM-151, constancia de integridad del documento. Y hacerlo de forma que no añada fricción al cliente — porque eso también es posible.
-      </p>
-
-      <p className="text-gray-700 leading-relaxed mb-8">
-        Lo que no es posible es seguir asumiendo que el proceso actual es suficiente. Los tribunales ya están diciendo que no lo es. Y el regulador, con el incremento sostenido de sanciones, también.
+      <p className="text-gray-700 leading-relaxed mb-8 font-semibold">
+        Verificar quién entró y garantizar quién firmó son dos momentos del mismo proceso. Los dos
+        tienen que ser igual de sólidos.
       </p>
 
       <div
@@ -277,38 +315,38 @@ export default function ArticleFirmaExpediente() {
           </div>
           <div>
             <p className="font-bold text-gray-900 text-sm">Arianna Quezada</p>
-            <p className="text-xs mb-3" style={{ color: "rgba(255,255,255,0.5)" }}>
-              CEO · JAAK
-            </p>
+            <p className="text-xs mb-3 text-gray-500">CEO y cofundadora · JAAK</p>
             <p className="text-gray-700 text-sm leading-relaxed">
-              Lleva más de una década trabajando en la intersección entre tecnología, regulación financiera e identidad digital en Latinoamérica. En JAAK lidera el desarrollo de infraestructura de confianza para instituciones del sector regulado.
+              Arianna Quezada es cofundadora y CEO de JAAK, empresa mexicana de verificación de
+              identidad biométrica y firma electrónica. Si quieres conocer cómo construir un
+              expediente defendible para tu institución, visita jaak.ai.
             </p>
           </div>
         </div>
       </div>
 
       <div className="mb-10">
-        <p
-          className="text-xs font-bold tracking-widest uppercase mb-4"
-          style={{ color: "rgba(255,255,255,0.3)" }}
-        >
+        <p className="text-xs font-bold tracking-widest uppercase mb-4 text-gray-400">
           Fuentes
         </p>
-        <ol className="space-y-2 text-sm text-gray-700 list-decimal list-inside">
+        <ol className="space-y-2 text-sm text-gray-600 list-decimal list-inside">
           <li>
-            Tesis I.2o.C.38 C — Segundo Tribunal Colegiado en Materia Civil del Primer Circuito. Semanario Judicial de la Federación.
+            CONDUSEF, Supervisión 2025 — Crédito de habilitación o avío en uniones de crédito
+            (mayo 2026)
           </li>
           <li>
-            Tesis I.11o.C.82 C — Décimo Primer Tribunal Colegiado en Materia Civil del Primer Circuito. Semanario Judicial de la Federación.
+            El Economista / Yahoo Noticias, &ldquo;Cuotas de supervisión de la CNBV pegan a
+            uniones de crédito en 2026&rdquo; (marzo 2026)
           </li>
           <li>
-            NOM-151-SCFI-2016 — Requisitos que deben observarse para la conservación de mensajes de datos y digitalización de documentos. Diario Oficial de la Federación.
+            Gaceta del Semanario Judicial de la Federación, Tesis I.2o.C.38 C (11a.) y
+            I.11o.C.82 C (11a.), Libro 2, Tomo IV (octubre 2025)
           </li>
           <li>
-            Ley de Firma Electrónica Avanzada — Cámara de Diputados del H. Congreso de la Unión, México.
+            CNBV-UIF, Convenio de Colaboración para prevención de lavado de dinero (marzo 2026)
           </li>
           <li>
-            CNBV — Informe de sanciones PLD 2025. Comisión Nacional Bancaria y de Valores.
+            Acuerdo CNBV 2026, simplificación PLD/FT y expedientes digitales (DOF)
           </li>
         </ol>
       </div>
@@ -316,7 +354,7 @@ export default function ArticleFirmaExpediente() {
       <div className="mt-12 flex flex-wrap gap-4">
         <a
           href="/contacto"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-200"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-sm transition-all duration-200"
           style={{ background: "#1ECAD3", color: "#0a0f1e" }}
         >
           Hablar con un especialista
@@ -324,7 +362,7 @@ export default function ArticleFirmaExpediente() {
         <a
           href="/signa"
           className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-sm transition-all duration-200 border"
-          style={{ borderColor: "rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.85)" }}
+          style={{ borderColor: "rgba(0,0,0,0.15)", color: "#374151" }}
         >
           Conocer Signa →
         </a>

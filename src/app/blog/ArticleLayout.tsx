@@ -339,23 +339,7 @@ export default function ArticleLayout({
                     <Link
                       key={post.slug}
                       href={`/blog/${post.slug}`}
-                      className="group block p-5 rounded-xl border transition-all duration-200"
-                      style={{
-                        background: "rgba(255,255,255,0.04)",
-                        borderColor: "rgba(255,255,255,0.07)",
-                      }}
-                      onMouseEnter={(e) => {
-                        (e.currentTarget as HTMLElement).style.borderColor =
-                          "rgba(30,202,211,0.28)";
-                        (e.currentTarget as HTMLElement).style.background =
-                          "rgba(255,255,255,0.06)";
-                      }}
-                      onMouseLeave={(e) => {
-                        (e.currentTarget as HTMLElement).style.borderColor =
-                          "rgba(255,255,255,0.07)";
-                        (e.currentTarget as HTMLElement).style.background =
-                          "rgba(255,255,255,0.04)";
-                      }}
+                      className="group block p-5 rounded-xl border transition-all duration-200 related-post-card"
                     >
                       <span
                         className={`inline-block px-2 py-0.5 rounded-full text-[9px] font-bold tracking-wide uppercase mb-3 ${rc.bg} ${rc.text}`}
