@@ -11,17 +11,6 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
-    title: "Lo que más me preocupa del sector crediticio en México no es el fraude que entra. Es el que ya está adentro.",
-    excerpt:
-      "Las uniones de crédito verifican quién entra. Pero el contrato, el pagaré, la firma — muchas veces no pueden defenderse en un juicio. Arianna Quezada, CEO de JAAK, analiza la brecha que el nuevo marco jurisprudencial ya no permite ignorar.",
-    date: "12 de junio, 2026",
-    dateISO: "2026-06-12",
-    category: "Compliance",
-    slug: "firma-expediente-defendible-sector-crediticio",
-    readTime: "7 min",
-    image: "/images/blog/firma-expediente-crediticio.jpg",
-  },
-  {
     title: "Por qué la CNBV aplicó +696 sanciones en 2025: el problema no es el fraude, son los expedientes",
     excerpt:
       "En 2025, la CNBV alcanzó el récord histórico de sanciones PLD: 696 multas y $411.8 millones de pesos, un incremento del 192% respecto a 2024. Analizamos las 9 causas reales, el caso FinCEN y lo que cambió con la reforma LFPIORPI.",
