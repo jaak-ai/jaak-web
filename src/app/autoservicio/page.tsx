@@ -9,6 +9,24 @@ export const metadata: Metadata = {
   description:
     "Compra KYC, firma electrónica NOM-151, validaciones INE/CURP y OCR en línea. Arma tu paquete, paga seguro y activa al instante. Sin vendedores, sin esperas.",
   alternates: { canonical: "/autoservicio" },
+  openGraph: {
+    type: "website",
+    locale: "es_MX",
+    url: "/autoservicio",
+    siteName: "JAAK",
+    title: "Autoservicio JAAK — Compra y activa tus servicios en minutos",
+    description:
+      "Arma tu paquete de KYC, firma electrónica, validaciones y OCR. Paga en línea y actívalo al instante, sin vendedores ni esperas.",
+    images: [{ url: "/images/logos/jaak-logo-azul.png", width: 800, height: 400, alt: "Autoservicio JAAK" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Autoservicio JAAK — Compra y activa tus servicios en minutos",
+    description: "Arma tu paquete de KYC, firma electrónica, validaciones y OCR. Paga en línea y actívalo al instante.",
+    images: ["/images/logos/jaak-logo-azul.png"],
+    creator: "@jaak_ai",
+    site: "@jaak_ai",
+  },
 };
 
 const NAVY = "#212A45";
