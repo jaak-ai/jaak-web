@@ -70,7 +70,6 @@ export default function ArticleTOC() {
                 href={`#${item.id}`}
                 className="block text-xs leading-relaxed py-1 transition-colors duration-150 rounded-sm"
                 style={{
-                  paddingLeft: item.level === 3 ? "0.875rem" : "0",
                   color: isActive ? "#1ECAD3" : "rgba(255,255,255,0.38)",
                   fontFamily: FONT,
                   fontWeight: isActive ? 700 : 500,
