@@ -181,6 +181,9 @@ export default function Header() {
 
               {/* Mobile menu button */}
               <button
+                type="button"
+                aria-label={mobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
+                aria-expanded={mobileMenuOpen}
                 className="lg:hidden p-2 text-gray-700 hover:text-[#0066ff]"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               >
