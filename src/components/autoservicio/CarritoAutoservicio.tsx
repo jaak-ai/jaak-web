@@ -13,7 +13,6 @@ import { useCarrito } from "./CarritoContext";
 
 const NAVY = "#212A45";
 const TEAL = "#2DB6C1";
-const TEAL_DARK = "#25969f";
 
 function CartIcon({ className }: { className?: string }) {
   return (
@@ -98,7 +97,7 @@ function ResumenPanel({
 
       {items.length === 0 ? (
         <p className="mt-3 text-[13px] leading-relaxed" style={{ color: "#64748B" }}>
-          Aún no agregas productos. Elige un paquete y pulsa <span className="font-semibold" style={{ color: TEAL_DARK }}>Agregar</span>.
+          Aún no agregas productos. Elige un paquete y pulsa <span className="font-semibold" style={{ color: NAVY }}>“Agregar”</span>.
         </p>
       ) : (
         <>
