@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: "Autoservicio — Compra y activa servicios JAAK en minutos",
   description:
     "Compra KYC, firma electrónica NOM-151, validaciones INE/CURP y OCR en línea. Arma tu paquete, paga seguro y activa al instante. Sin vendedores, sin esperas.",
+  alternates: { canonical: "/autoservicio" },
 };
 
 const NAVY = "#212A45";

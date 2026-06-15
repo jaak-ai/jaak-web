@@ -48,7 +48,7 @@ export default function AutoservicioVariantes() {
   const Tab = ({ v, titulo, sub }: { v: Variante; titulo: string; sub: string }) => {
     const activo = variante === v;
     return (
-      <button
+      <button type="button"
         onClick={() => elegir(v)}
         className="flex flex-1 items-center gap-2.5 rounded-xl px-4 py-2.5 text-left transition-colors sm:flex-none"
         style={activo ? { background: NAVY, color: "#fff" } : { background: "transparent", color: "#475569" }}

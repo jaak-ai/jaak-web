@@ -105,7 +105,7 @@ export default function CatalogoAutoservicio() {
         <div className="mt-5">
           <div className="flex items-center justify-between">
             <span className="text-[11px] font-semibold uppercase tracking-wider" style={{ color: "#64748B" }}>Paquete</span>
-            <button
+            <button type="button"
               onClick={() => setComparar((p) => ({ ...p, [producto.id]: !p[producto.id] }))}
               className="text-[12px] font-semibold"
               style={{ color: TEAL_DARK }}
@@ -118,7 +118,7 @@ export default function CatalogoAutoservicio() {
               const sel = q.id === tierDe(producto.id);
               const est = tierEstilos[q.id];
               return (
-                <button
+                <button type="button"
                   key={q.id}
                   onClick={() => setTier(producto.id, q.id)}
                   className="inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-[12px] font-semibold transition-all"
@@ -178,7 +178,7 @@ export default function CatalogoAutoservicio() {
               </span>
             </div>
           </div>
-          <button
+          <button type="button"
             onClick={() => toggle(producto.id)}
             className="rounded-xl px-4 py-2.5 text-[13px] font-semibold transition-colors"
             style={agregado ? { background: "#F1FAFB", color: TEAL_DARK, border: `1px solid ${TEAL}` } : { background: TEAL, color: "#fff" }}
@@ -212,7 +212,7 @@ export default function CatalogoAutoservicio() {
                 {categorias.map((c) => {
                   const activo = activeCat === c.id;
                   return (
-                    <button
+                    <button type="button"
                       key={c.id}
                       onClick={() => irA(c.id)}
                       className="whitespace-nowrap rounded-full px-4 py-2 text-[13px] font-semibold transition-colors"

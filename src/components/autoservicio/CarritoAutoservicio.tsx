@@ -54,7 +54,7 @@ export default function CarritoAutoservicio() {
               <div className="text-[12px]" style={{ color: "#64748B" }}>{items.length} producto(s)</div>
               <div className="text-lg font-bold" style={{ color: NAVY }}>{formatMXN(total)} <span className="text-[12px] font-semibold" style={{ color: "#64748B" }}>MXN</span></div>
             </div>
-            <button onClick={() => setAbiertoMovil(true)} className="inline-flex items-center gap-2 rounded-xl px-5 py-3 text-[14px] font-semibold text-white" style={{ background: TEAL }}>
+            <button type="button" onClick={() => setAbiertoMovil(true)} className="inline-flex items-center gap-2 rounded-xl px-5 py-3 text-[14px] font-semibold text-white" style={{ background: TEAL }}>
               <CartIcon className="h-[18px] w-[18px]" />
               Ver carrito
             </button>
@@ -114,7 +114,7 @@ function ResumenPanel({
                   </div>
                   <div className="flex flex-shrink-0 items-center gap-1.5">
                     <span className="text-[13px] font-semibold" style={{ color: NAVY }}>{formatMXN(paquete.precio)}</span>
-                    <button
+                    <button type="button"
                       onClick={() => onQuitar(producto.id)}
                       aria-label={`Quitar ${nombre}`}
                       title="Quitar"

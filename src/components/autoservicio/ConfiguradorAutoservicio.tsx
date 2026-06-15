@@ -81,7 +81,7 @@ export default function ConfiguradorAutoservicio() {
             {necesidades.map((n) => {
               const activa = seleccionadas.has(n.id);
               return (
-                <button
+                <button type="button"
                   key={n.id}
                   onClick={() => toggleNecesidad(n)}
                   className="flex items-start gap-3 rounded-2xl border p-5 text-left transition-shadow hover:shadow-[0_8px_30px_rgba(28,36,64,0.08)]"
@@ -109,7 +109,7 @@ export default function ConfiguradorAutoservicio() {
             {volumenes.map((v) => {
               const activa = volumen === v.id;
               return (
-                <button
+                <button type="button"
                   key={v.id}
                   onClick={() => {
                     // Aplica el volumen a los productos NO agregados (premarcados);
@@ -179,9 +179,9 @@ export default function ConfiguradorAutoservicio() {
                                 </div>
                               </div>
                               {activo ? (
-                                <button onClick={() => toggle(producto.id)} className="flex-shrink-0 text-[12px]" style={{ color: "#64748B" }}>Quitar</button>
+                                <button type="button" onClick={() => toggle(producto.id)} className="flex-shrink-0 text-[12px]" style={{ color: "#64748B" }}>Quitar</button>
                               ) : (
-                                <button
+                                <button type="button"
                                   onClick={() => toggle(producto.id)}
                                   className="flex-shrink-0 rounded-lg px-3 py-1.5 text-[12px] font-semibold text-white transition-colors"
                                   style={{ background: TEAL }}
@@ -204,7 +204,7 @@ export default function ConfiguradorAutoservicio() {
                                   const sel = q.id === tierDe(producto.id);
                                   const est = tierEstilos[q.id];
                                   return (
-                                    <button
+                                    <button type="button"
                                       key={q.id}
                                       onClick={() => setTier(producto.id, q.id)}
                                       className="inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-[12px] font-semibold transition-all"
