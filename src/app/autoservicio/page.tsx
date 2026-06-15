@@ -74,10 +74,7 @@ export default function AutoservicioPage() {
           </div>
         </section>
 
-        {/* ─── Propuestas A/B con toggle (interactivo) ──────────────────── */}
-        <AutoservicioVariantes />
-
-        {/* ─── Cómo funciona ────────────────────────────────────────────── */}
+        {/* ─── Cómo funciona (antes de agregar productos) ──────────────── */}
         <section id="como-funciona" className="border-t" style={{ background: "#FAFBFC", borderColor: "#EEF0F4" }}>
           <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
             <div className="max-w-2xl">
@@ -100,6 +97,9 @@ export default function AutoservicioPage() {
             </div>
           </div>
         </section>
+
+        {/* ─── Experiencia: agregar productos (Catálogo / Guía) ─────────── */}
+        <AutoservicioVariantes />
 
         {/* ─── Cierre ───────────────────────────────────────────────────── */}
         <section className="bg-white">
