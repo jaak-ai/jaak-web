@@ -127,7 +127,7 @@ export default function PagareDigitalPage() {
         subtitle="La ley ya lo permite. El reto es que tu operación pueda sostenerse ante un juez, un auditor o el crimen organizado que analiza cada eslabón de tu proceso."
         presenters="Dr. David Merino · Arianna Quezada, CEO de JAAK"
         duration="60 minutos"
-        comingSoon={true}
+        youtubeId="Mr7B66vxfZ0"
         description={<Description />}
         learnings={LEARNINGS}
         timestamps={TIMESTAMPS}
