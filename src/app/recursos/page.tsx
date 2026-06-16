@@ -69,7 +69,7 @@ const WEBINARS = [
     duration: "60 min",
     presenters: "Dr. David Merino & Arianna Quezada",
     href: "/recursos/pagare-digital",
-    available: false,
+    available: true,
   },
 ];
 

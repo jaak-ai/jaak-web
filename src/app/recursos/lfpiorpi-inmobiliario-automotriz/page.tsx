@@ -133,6 +133,8 @@ export default function InmobiliarioAutomotrizPage() {
         subtitle="El proceso de venta más común en estos dos sectores es también el más expuesto. Esta sesión explica por qué — y qué hay que cambiar."
         presenters="Dr. David Merino · Arianna Quezada, CEO de JAAK"
         duration="50 minutos"
+        youtubeId="lXofsX5DRJc"
+        youtubeUrl="https://youtu.be/lXofsX5DRJc"
         description={<Description />}
         learnings={LEARNINGS}
         timestamps={TIMESTAMPS}

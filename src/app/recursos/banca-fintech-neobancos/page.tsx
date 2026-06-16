@@ -131,6 +131,8 @@ export default function BancaFintechPage() {
         subtitle="¿En qué se diferencian realmente los tres modelos — y por qué todos convergen hacia el mismo estándar de evidencia?"
         presenters="Dr. David Merino · Arianna Quezada, CEO de JAAK"
         duration="60 minutos"
+        youtubeId="rwBuDaPkdeM"
+        youtubeUrl="https://www.youtube.com/watch?v=rwBuDaPkdeM"
         description={<Description />}
         learnings={LEARNINGS}
         timestamps={TIMESTAMPS}
