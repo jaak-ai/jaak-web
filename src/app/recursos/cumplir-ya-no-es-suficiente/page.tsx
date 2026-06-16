@@ -1,7 +1,26 @@
 import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import WebinarLayout from "../webinar-layout";
+import WebinarLayout, { type ProductCard } from "../webinar-layout";
+
+const PRODUCTS: ProductCard[] = [
+  {
+    icon: "🗂️",
+    label: "Gestión de Evidencia",
+    title: "Expediente digital auditable con NOM-151",
+    desc: "Construye evidencia que resiste una auditoría: identidad verificada, integridad documental, sello de tiempo y conservación a 10 años. No archivos — evidencia real.",
+    href: "/plataforma/gestion-evidencia",
+    color: "#1ECAD3",
+  },
+  {
+    icon: "🪪",
+    label: "KYC Biométrico",
+    title: "Identificación de cliente con validez probatoria",
+    desc: "KYC biométrico que genera evidencia desde el alta: liveness, cruce RENAPO, listas PEP/SAT/OFAC y expediente sellado. Exactamente lo que pide la reforma LFPIORPI 2025.",
+    href: "/plataforma/verificacion-identidad",
+    color: "#2AD796",
+  },
+];
 
 export const metadata: Metadata = {
   title: "Cumplir ya no es suficiente: evidencia y LFPIORPI 2025 · JAAK",
@@ -116,6 +135,7 @@ export default function CumplirYaNoPage() {
         ariannaBio="CEO de JAAK. Empresa 100% mexicana especializada en identidad digital, verificación biométrica, firma electrónica y expedientes auditables."
         ctaQuestion="¿Podrías demostrar hoy lo que hiciste hace tres años?"
         ctaBody="Si hay alguna respuesta de 'no sé' en esa pregunta, el riesgo ya existe. JAAK construye la evidencia desde el proceso, no después del problema."
+        products={PRODUCTS}
         related={[
           { title: "Banca, Fintech y Neobancos: la nueva confianza financiera", href: "/recursos/banca-fintech-neobancos" },
           { title: "LFPIORPI en el sector inmobiliario y automotriz", href: "/recursos/lfpiorpi-inmobiliario-automotriz" },

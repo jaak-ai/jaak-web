@@ -1,7 +1,26 @@
 import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import WebinarLayout from "../webinar-layout";
+import WebinarLayout, { type ProductCard } from "../webinar-layout";
+
+const PRODUCTS: ProductCard[] = [
+  {
+    icon: "✍️",
+    label: "Firma Electrónica NOM-151",
+    title: "Firma avanzada que resiste una controversia",
+    desc: "Cada pagaré firmado con JAAK genera cadena de custodia digital: identidad del firmante, consentimiento documentado, integridad del documento y sello de tiempo NOM-151.",
+    href: "/plataforma/firma-electronica",
+    color: "#1ECAD3",
+  },
+  {
+    icon: "🖊️",
+    label: "Signa",
+    title: "Firma electrónica para crédito digital",
+    desc: "Solución de firma pensada para SOFOM, fintech y crédito digital. Simple, ejecutable y con el nivel de evidencia que un juez va a pedir.",
+    href: "/signa",
+    color: "#A78BFA",
+  },
+];
 
 export const metadata: Metadata = {
   title: "Pagaré digital en México: validez jurídica y ejecutabilidad · JAAK",
@@ -116,6 +135,7 @@ export default function PagareDigitalPage() {
         ariannaBio="CEO de JAAK. Empresa 100% mexicana especializada en identidad digital, verificación biométrica, firma electrónica y expedientes auditables para el sector de crédito digital."
         ctaQuestion="¿Tus pagarés digitales resisten una controversia?"
         ctaBody="Una operación ejecutable es la que puede demostrar quién firmó, cuándo, cómo se verificó su identidad, y que el documento es exactamente el mismo desde entonces. JAAK construye esa cadena de evidencia."
+        products={PRODUCTS}
         related={[
           { title: "Cumplir ya no es suficiente", href: "/recursos/cumplir-ya-no-es-suficiente" },
           { title: "Banca, Fintech y Neobancos: la nueva confianza financiera", href: "/recursos/banca-fintech-neobancos" },

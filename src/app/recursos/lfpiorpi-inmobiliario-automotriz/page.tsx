@@ -1,7 +1,26 @@
 import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import WebinarLayout from "../webinar-layout";
+import WebinarLayout, { type ProductCard } from "../webinar-layout";
+
+const PRODUCTS: ProductCard[] = [
+  {
+    icon: "🪪",
+    label: "KYC Biométrico",
+    title: "Identidad verificada, listas cruzadas, expediente sellado",
+    desc: "Valida vigencia, autenticidad y cruza PEP, SAT y OFAC en un solo flujo. El resultado queda en un expediente con integridad demostrable — listo para conservar 10 años.",
+    href: "/plataforma/verificacion-identidad",
+    color: "#1ECAD3",
+  },
+  {
+    icon: "🗂️",
+    label: "Expediente Auditable",
+    title: "El expediente digital que exige la LFPIORPI",
+    desc: "Conservación jurídica bajo NOM-151 con sello de tiempo. Tu expediente puede reconstruirse 10 años después y resiste cualquier auditoría de la UIF o el SAT.",
+    href: "/plataforma/gestion-evidencia",
+    color: "#F59E0B",
+  },
+];
 
 export const metadata: Metadata = {
   title: "LFPIORPI en el sector inmobiliario y automotriz: cumplimiento real · JAAK",
@@ -121,6 +140,7 @@ export default function InmobiliarioAutomotrizPage() {
         ariannaBio="CEO de JAAK. Empresa 100% mexicana especializada en identidad digital, verificación biométrica, firma electrónica y expedientes auditables para el sector inmobiliario, automotriz y financiero."
         ctaQuestion="¿Tu expediente de cliente aguanta 10 años de escrutinio?"
         ctaBody="La ley no va a pedir lo que pasó hoy. Va a pedir lo que pasó hace cuatro años. JAAK construye el expediente digital con la integridad que exige la autoridad — desde la primera operación."
+        products={PRODUCTS}
         related={[
           { title: "Cumplir ya no es suficiente", href: "/recursos/cumplir-ya-no-es-suficiente" },
           { title: "Banca, Fintech y Neobancos: la nueva confianza financiera", href: "/recursos/banca-fintech-neobancos" },

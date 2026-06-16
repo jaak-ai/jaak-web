@@ -1,7 +1,26 @@
 import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import WebinarLayout from "../webinar-layout";
+import WebinarLayout, { type ProductCard } from "../webinar-layout";
+
+const PRODUCTS: ProductCard[] = [
+  {
+    icon: "🪪",
+    label: "KYC Biométrico",
+    title: "Verificación de identidad con biometría facial",
+    desc: "Valida la identidad de tus clientes en segundos con biometría, liveness detection y cruce contra INE/RENAPO. El expediente queda sellado con NOM-151 desde el primer paso.",
+    href: "/plataforma/verificacion-identidad",
+    color: "#1ECAD3",
+  },
+  {
+    icon: "✍️",
+    label: "Firma Electrónica",
+    title: "Firma avanzada con trazabilidad probatoria",
+    desc: "Firma electrónica con valor legal NOM-151. Cada documento firmado genera evidencia de identidad, integridad y temporalidad — lista para soportar una auditoría.",
+    href: "/plataforma/firma-electronica",
+    color: "#2AD796",
+  },
+];
 
 export const metadata: Metadata = {
   title: "Banca, Fintech y Neobancos: cumplimiento y onboarding digital · JAAK",
@@ -119,6 +138,7 @@ export default function BancaFintechPage() {
         ariannaBio="CEO de JAAK. Empresa 100% mexicana especializada en identidad digital, verificación biométrica, firma electrónica y expedientes auditables. Con presencia en fintech, inmobiliario, automotriz, crédito y recursos humanos."
         ctaQuestion="¿Tu proceso de onboarding genera evidencia — o solo completa el alta?"
         ctaBody="La diferencia entre cumplir y poder demostrarlo empieza en el primer paso del proceso. JAAK construye el expediente digital desde el momento del onboarding."
+        products={PRODUCTS}
         related={[
           { title: "Cumplir ya no es suficiente", href: "/recursos/cumplir-ya-no-es-suficiente" },
           { title: "LFPIORPI: Sector Inmobiliario y Automotriz", href: "/recursos/lfpiorpi-inmobiliario-automotriz" },
