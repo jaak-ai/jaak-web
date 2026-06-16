@@ -386,7 +386,7 @@ export default function RecursosPage() {
                     </h3>
                     <p style={{ color: "rgba(255,255,255,0.48)", fontSize: "0.83rem" }}>{ep.desc}</p>
                   </div>
-                  <span style={{ color: "#1ECAD3", fontSize: "1.1rem", shrink: 0 }}>→</span>
+                  <span style={{ color: "#1ECAD3", fontSize: "1.1rem", flexShrink: 0 }}>→</span>
                 </Link>
               ))}
             </div>
