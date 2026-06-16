@@ -5,7 +5,7 @@
 // Las listas "incluye" son el copy real del sitio (AutoservicioPricingGrid).
 // ─────────────────────────────────────────────────────────────────────────────
 
-export type CategoriaId = "identidad" | "firma" | "validaciones" | "ocr";
+export type CategoriaId = "identidad" | "firma" | "validaciones" | "listas-negras" | "ocr";
 
 export interface Categoria {
   id: CategoriaId;
@@ -37,6 +37,7 @@ export const categorias: Categoria[] = [
   { id: "identidad", nombre: "Identidad", descripcion: "Verifica quién es tu cliente con biometría y prueba de vida." },
   { id: "firma", nombre: "Firma electrónica", descripcion: "Firma documentos con validez legal, desde simple hasta NOM-151." },
   { id: "validaciones", nombre: "Listas nominales", descripcion: "Consulta identidad contra padrones oficiales (INE, RENAPO)." },
+  { id: "listas-negras", nombre: "Listas negras", descripcion: "Detecta personas sancionadas, buscadas o en lista de deudores fiscales (OFAC, INTERPOL, SAT-69B)." },
   { id: "ocr", nombre: "Lectura de documentos", descripcion: "Extrae datos de identificaciones y documentos con IA." },
 ];
 
@@ -170,6 +171,22 @@ export const productos: Producto[] = [
     paquetes: tiers(14, 105, 200, 475, 900, 10, 50, 100, 250, 500),
   },
   {
+    id: "listas-negras",
+    nombre: "Consulta de listas negras",
+    categoria: "listas-negras",
+    unidad: "consultas",
+    tagline: "Paquete OFAC + INTERPOL + SAT-69B en una sola consulta.",
+    incluye: [
+      "Verificación simultánea en OFAC, INTERPOL y SAT-69B en segundos",
+      "Detecta personas sancionadas, buscadas o en lista de deudores fiscales",
+      "Resultado documentado y descargable para tu expediente de cumplimiento",
+      "Listas actualizadas de forma continua, sin mantenimiento de tu parte",
+      "Consulta directa desde tu plataforma",
+    ],
+    recomendado: "plata",
+    paquetes: tiers(99, 215, 400, 950, 1790, 35, 50, 100, 250, 500),
+  },
+  {
     id: "ocr-inteligente",
     nombre: "PDF OCR Inteligente",
     categoria: "ocr",
@@ -231,6 +248,7 @@ export const productKeys: Record<string, string> = {
   "firma-nom151-kyc": "signa_advanced_biometric",
   ine: "blacklist",
   curp: "official-list",
+  "listas-negras": "blacklist",
   "ocr-inteligente": "document",
   "ocr-id": "document",
 };
