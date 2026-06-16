@@ -134,6 +134,7 @@ export default function InmobiliarioAutomotrizPage() {
         presenters="Dr. David Merino · Arianna Quezada, CEO de JAAK"
         duration="50 minutos"
         youtubeId="lXofsX5DRJc"
+        youtubeUrl="https://youtu.be/lXofsX5DRJc"
         description={<Description />}
         learnings={LEARNINGS}
         timestamps={TIMESTAMPS}

@@ -128,6 +128,7 @@ export default function PagareDigitalPage() {
         presenters="Dr. David Merino · Arianna Quezada, CEO de JAAK"
         duration="60 minutos"
         youtubeId="Mr7B66vxfZ0"
+        youtubeUrl="https://youtu.be/Mr7B66vxfZ0"
         description={<Description />}
         learnings={LEARNINGS}
         timestamps={TIMESTAMPS}

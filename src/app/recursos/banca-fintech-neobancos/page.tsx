@@ -132,6 +132,7 @@ export default function BancaFintechPage() {
         presenters="Dr. David Merino · Arianna Quezada, CEO de JAAK"
         duration="60 minutos"
         youtubeId="rwBuDaPkdeM"
+        youtubeUrl="https://www.youtube.com/watch?v=rwBuDaPkdeM"
         description={<Description />}
         learnings={LEARNINGS}
         timestamps={TIMESTAMPS}

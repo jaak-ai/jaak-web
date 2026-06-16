@@ -30,6 +30,7 @@ interface WebinarLayoutProps {
   presenters: string;
   duration: string;
   youtubeId?: string;
+  youtubeUrl?: string;
   comingSoon?: boolean;
   description: React.ReactNode;
   learnings: string[];
@@ -49,6 +50,7 @@ export default function WebinarLayout({
   presenters,
   duration,
   youtubeId,
+  youtubeUrl,
   comingSoon,
   description,
   learnings,
@@ -183,6 +185,27 @@ export default function WebinarLayout({
               </div>
             )}
           </section>
+
+          {/* YouTube link */}
+          {youtubeUrl && (
+            <div className="flex items-center gap-3 mt-4 mb-0">
+              <a
+                href={youtubeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all"
+                style={{ background: "rgba(255,0,0,0.12)", color: "#ff4444", border: "1px solid rgba(255,0,0,0.25)" }}
+                onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,0,0,0.22)"; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(255,0,0,0.12)"; }}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                </svg>
+                Ver en YouTube
+              </a>
+              <span style={{ color: "rgba(255,255,255,0.25)", fontSize: "0.78rem" }}>Abre en una nueva pestaña</span>
+            </div>
+          )}
 
           {/* Description */}
           <section style={{ padding: "48px 0", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
