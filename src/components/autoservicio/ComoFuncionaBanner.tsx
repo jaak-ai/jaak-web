@@ -133,7 +133,14 @@ export default function ComoFuncionaBanner() {
               <p className="mx-auto mb-8 max-w-2xl text-center text-[15px] leading-relaxed" style={{ color: "#64748B" }}>
                 Sin reuniones de ventas, sin demos. Sigue el flujo paso a paso y empieza a operar hoy mismo.
               </p>
-              <AutoservicioFlujoTabs />
+              <AutoservicioFlujoTabs
+                onStart={() => {
+                  setOpen(false);
+                  setTimeout(() => {
+                    document.getElementById("experiencia")?.scrollIntoView({ behavior: "smooth" });
+                  }, 120);
+                }}
+              />
             </div>
           </div>
         </div>

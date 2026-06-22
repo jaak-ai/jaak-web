@@ -14,7 +14,7 @@ const FIRMA_STEPS: Step[] = [
   {
     num: "1",
     title: "Elige lo que necesitas",
-    desc: "Selecciona el tipo de firma o módulo que quieres activar. Puedes empezar con un solo uso y escalar después.",
+    desc: "Combina los servicios que necesitas y ajusta el volumen de cada paquete. Empieza con el paquete más pequeño y escala cuando quieras.",
     pills: ["Pago único, sin suscripciones", "Activación inmediata", "Sin compromiso"],
   },
   {
@@ -26,7 +26,7 @@ const FIRMA_STEPS: Step[] = [
   {
     num: "3",
     title: "Completa tu pago seguro",
-    desc: "Estás a punto de activar tu plan de Firma Digital. Realiza el pago de forma segura a través de Stripe.",
+    desc: "Paga tu compra de forma segura a través de Stripe. Tu cuenta y tus productos quedan activos de inmediato.",
     pills: ["Pago seguro encriptado", "Procesado por Stripe", "Activación automática"],
     variant: "warning",
   },
@@ -70,7 +70,7 @@ const KYC_STEPS: Step[] = [
   {
     num: "1",
     title: "Elige lo que necesitas",
-    desc: "Selecciona el tipo de verificación o módulo que quieres activar. Puedes empezar con un solo uso y escalar después.",
+    desc: "Combina los servicios que necesitas y ajusta el volumen de cada paquete. Empieza con el paquete más pequeño y escala cuando quieras.",
     pills: ["Pago único, sin suscripciones", "Activación inmediata", "Sin compromiso"],
   },
   {
@@ -82,7 +82,7 @@ const KYC_STEPS: Step[] = [
   {
     num: "3",
     title: "Completa tu pago seguro",
-    desc: "Estás a punto de activar tu plan de Verificación de Identidad KYC. Realiza el pago de forma segura a través de Stripe.",
+    desc: "Paga tu compra de forma segura a través de Stripe. Tu cuenta y tus productos quedan activos de inmediato.",
     pills: ["Pago seguro encriptado", "Procesado por Stripe", "Activación automática"],
     variant: "warning",
   },
@@ -122,7 +122,7 @@ const KYC_STEPS: Step[] = [
   },
 ];
 
-export default function AutoservicioFlujoTabs() {
+export default function AutoservicioFlujoTabs({ onStart }: { onStart?: () => void }) {
   const [active, setActive] = useState<"firma" | "kyc">("firma");
   const [key, setKey] = useState(0);
 
@@ -178,7 +178,7 @@ export default function AutoservicioFlujoTabs() {
 
         <div className="flex flex-col gap-6">
           {steps.map((step, i) => (
-            <StepCard key={i} step={step} delay={i * 40} />
+            <StepCard key={i} step={step} delay={i * 40} onStart={onStart} />
           ))}
         </div>
       </div>
@@ -186,7 +186,7 @@ export default function AutoservicioFlujoTabs() {
   );
 }
 
-function StepCard({ step, delay }: { step: Step; delay: number }) {
+function StepCard({ step, delay, onStart }: { step: Step; delay: number; onStart?: () => void }) {
   const variantStyles: Record<string, { bg: string; border: string; badge: string; badgeBg: string }> = {
     warning: {
       bg: "rgba(254,243,199,0.6)",
@@ -288,13 +288,14 @@ function StepCard({ step, delay }: { step: Step; delay: number }) {
         {/* Success CTA */}
         {step.variant === "success" && (
           <div className="mt-4 pt-4" style={{ borderTop: "1px solid rgba(101,93,198,0.15)" }}>
-            <a
-              href="#precios"
+            <button
+              type="button"
+              onClick={() => onStart?.()}
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-base text-white transition-all duration-200 hover:opacity-90"
               style={{ background: "linear-gradient(135deg, #1ecad3, #655dc6)" }}
             >
               Empezar ahora →
-            </a>
+            </button>
           </div>
         )}
       </div>
