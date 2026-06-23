@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AutoservicioVariantes from "@/components/autoservicio/AutoservicioVariantes";
 import ComoFuncionaBanner from "@/components/autoservicio/ComoFuncionaBanner";
+import { autoservicioBreadcrumbSchema, autoservicioProductsSchema } from "./schema";
 
 export const metadata: Metadata = {
   title: "Autoservicio — Compra y activa servicios JAAK en minutos",
@@ -35,6 +36,17 @@ const TEAL = "#2DB6C1";
 export default function AutoservicioPage() {
   return (
     <>
+      {/* Structured Data (JSON-LD) — Breadcrumb + catálogo de productos (Product/Offer) */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([
+            autoservicioBreadcrumbSchema,
+            autoservicioProductsSchema,
+          ]),
+        }}
+      />
+
       <Header />
       <main>
         {/* ─── Hero ─────────────────────────────────────────────────────── */}
