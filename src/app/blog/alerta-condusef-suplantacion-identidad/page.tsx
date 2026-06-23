@@ -1,7 +1,5 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import ArticleLayout from "../ArticleLayout";
 import Link from "next/link";
-import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -54,86 +52,23 @@ const jsonLd = {
 };
 
 export default function AlertaCondusefSuplantacion() {
-  const relatedPosts = [
-    {
-      title: "Seguridad biométrica: Cómo la prueba de vida previene el fraude",
-      slug: "seguridad-biometrica-prueba-de-vida",
-      category: "Seguridad",
-    },
-    {
-      title: "Prevención de fraude en el onboarding digital: Mejores prácticas",
-      slug: "prevencion-fraude-onboarding-digital",
-      category: "Fraude",
-    },
-    {
-      title: "La protección de datos personales: un compromiso que va más allá del cumplimiento",
-      slug: "proteccion-datos-personales",
-      category: "Seguridad",
-    },
-  ];
-
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <Header />
-      <main>
-        {/* Hero Section */}
-        <section className="pt-32 pb-12 bg-[#0a0a0a]">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="mb-6">
-              <Link
-                href="/blog"
-                className="inline-flex items-center text-white/60 hover:text-white transition-colors"
-              >
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-                Volver al blog
-              </Link>
-            </div>
-            <div className="flex items-center gap-3 mb-6">
-              <span className="px-3 py-1 bg-amber-500/10 text-amber-600 text-sm font-semibold rounded-full">
-                Fraude
-              </span>
-              <span className="text-white/40 text-sm">10 de febrero, 2026</span>
-              <span className="text-white/40 text-sm">&bull;</span>
-              <span className="text-white/40 text-sm">10 min de lectura</span>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-black text-white mb-6">
-              Alerta CONDUSEF 2026: ¿Por qué persiste la suplantación de instituciones financieras en México?
-            </h1>
-            <p className="text-xl text-white/60">
-              CONDUSEF publicó una alerta sobre la actualización del modus operandi de los
-              suplantadores de bancos en México. La pregunta inevitable es otra: ¿por qué, si las
-              recomendaciones se repiten año con año, la suplantación sigue funcionando?
-            </p>
-          </div>
-        </section>
-
-        {/* Featured Image */}
-        <section className="bg-white pt-12">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="rounded-2xl overflow-hidden shadow-xl">
-              <Image
-                src="/images/blog/alerta-condusef-suplantacion.jpg"
-                alt="Alerta CONDUSEF: ¿Por qué persiste la suplantación? El desafío de la identidad en entornos digitales"
-                width={1200}
-                height={675}
-                className="w-full h-auto"
-                priority
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* Article Content */}
-        <article className="py-12 bg-white">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="prose prose-lg max-w-none">
-
+    <ArticleLayout
+      title="Alerta CONDUSEF 2026: ¿Por qué persiste la suplantación de instituciones financieras en México?"
+      subtitle="CONDUSEF publicó una alerta sobre la actualización del modus operandi de los suplantadores de bancos en México. La pregunta inevitable es otra: ¿por qué, si las recomendaciones se repiten año con año, la suplantación sigue funcionando?"
+      category="Fraude"
+      date="10 de febrero, 2026"
+      readTime="10 min"
+      slug="alerta-condusef-suplantacion-identidad"
+      image="/images/blog/alerta-condusef-suplantacion.jpg"
+      imageAlt="Alerta CONDUSEF: ¿Por qué persiste la suplantación? El desafío de la identidad en entornos digitales"
+      jsonLd={jsonLd}
+      relatedPosts={[
+        { title: "Seguridad biométrica: Cómo la prueba de vida previene el fraude", slug: "seguridad-biometrica-prueba-de-vida", category: "Seguridad" },
+        { title: "Prevención de fraude en el onboarding digital", slug: "prevencion-fraude-onboarding-digital", category: "Fraude" },
+        { title: "La protección de datos personales", slug: "proteccion-datos-personales", category: "Seguridad" },
+      ]}
+    >
               <p className="text-xl text-gray-600 leading-relaxed mb-8">
                 CONDUSEF publicó recientemente una alerta sobre la actualización del modus operandi
                 de los suplantadores de instituciones financieras. El mensaje es claro: hay que estar alerta.
@@ -319,79 +254,6 @@ export default function AlertaCondusefSuplantacion() {
                   </svg>
                 </Link>
               </div>
-
-            </div>
-          </div>
-        </article>
-
-        {/* Author Section */}
-        <section className="py-12 bg-gray-50">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center gap-6">
-              <div className="w-16 h-16 bg-[#0066ff] rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-xl">J</span>
-              </div>
-              <div>
-                <p className="font-bold text-gray-900">Equipo JAAK</p>
-                <p className="text-gray-600">
-                  Especialistas en verificación de identidad y cumplimiento regulatorio para el sector financiero mexicano.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Related Posts */}
-        <section className="py-16 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-8">Artículos relacionados</h2>
-            <div className="grid md:grid-cols-3 gap-6">
-              {relatedPosts.map((post, index) => (
-                <Link
-                  key={index}
-                  href={`/blog/${post.slug}`}
-                  className="block bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow"
-                >
-                  <span className="inline-block px-3 py-1 bg-[#0066ff]/10 text-[#0066ff] text-xs font-semibold rounded-full mb-3">
-                    {post.category}
-                  </span>
-                  <h3 className="font-bold text-gray-900 hover:text-[#0066ff] transition-colors">
-                    {post.title}
-                  </h3>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="py-16 bg-[#0a0a0a]">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl font-black text-white mb-4">
-              ¿Tu sistema de verificación puede prevenir la suplantación?
-            </h2>
-            <p className="text-white/60 text-lg mb-8">
-              Descubre cómo JAAK puede proteger a tu organización con identidad digital verificable
-              y trazabilidad completa.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link
-                href="/contacto"
-                className="px-8 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
-              >
-                Solicitar demo
-              </Link>
-              <Link
-                href="/plataforma/verificacion-identidad"
-                className="px-8 py-4 bg-white/10 text-white font-bold rounded-lg hover:bg-white/20 transition-all"
-              >
-                Conocer la plataforma
-              </Link>
-            </div>
-          </div>
-        </section>
-      </main>
-      <Footer />
-    </>
+    </ArticleLayout>
   );
 }

@@ -1,6 +1,8 @@
 @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap");
 
 :root {
+  --font-montserrat: "Montserrat", sans-serif;
   --primary: #212A45;
   --primary-dark: #0E1133;
   --accent: #2DB6C1;
@@ -500,4 +502,14 @@ body {
 :focus-visible {
   outline: 2px solid #2DB6C1;
   outline-offset: 2px;
+}
+
+/* ── Related posts card hover (ArticleLayout) ── */
+.related-post-card {
+  background: rgba(255,255,255,0.04);
+  border-color: rgba(255,255,255,0.07);
+}
+.related-post-card:hover {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(30,202,211,0.28);
 }

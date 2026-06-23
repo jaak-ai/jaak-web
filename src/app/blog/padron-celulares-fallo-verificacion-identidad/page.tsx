@@ -1,7 +1,4 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import Link from "next/link";
-import Image from "next/image";
+import ArticleLayout from "../ArticleLayout";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -48,85 +45,23 @@ const jsonLd = {
 };
 
 export default function PadronCelularesFalloVerificacion() {
-  const relatedPosts = [
-    {
-      title: "Seguridad biométrica: Cómo la prueba de vida previene el fraude",
-      slug: "seguridad-biometrica-prueba-de-vida",
-      category: "Seguridad",
-    },
-    {
-      title: "Prevención de fraude en onboarding digital",
-      slug: "prevencion-fraude-onboarding-digital",
-      category: "Fraude",
-    },
-    {
-      title: "Tendencias KYC 2026: Lo que toda institución debe saber",
-      slug: "tendencias-kyc-2026",
-      category: "KYC",
-    },
-  ];
-
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <Header />
-      <main>
-        {/* Hero Section */}
-        <section className="pt-32 pb-12 bg-[#0a0a0a]">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="mb-6">
-              <Link
-                href="/blog"
-                className="inline-flex items-center text-white/60 hover:text-white transition-colors"
-              >
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-                Volver al blog
-              </Link>
-            </div>
-            <div className="flex items-center gap-3 mb-6">
-              <span className="px-3 py-1 bg-red-500/20 text-red-400 text-sm font-semibold rounded-full">
-                Análisis
-              </span>
-              <span className="text-white/40 text-sm">13 de enero, 2026</span>
-              <span className="text-white/40 text-sm">•</span>
-              <span className="text-white/40 text-sm">10 min de lectura</span>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-black text-white mb-6">
-              El registro obligatorio de celulares: cuando la identidad se diseña mal, el sistema colapsa
-            </h1>
-            <p className="text-xl text-white/60">
-              Lo que está ocurriendo con el padrón obligatorio de telefonía en México no es una sorpresa.
-              Es la consecuencia lógica de haber confundido &quot;cumplimiento&quot; con &quot;seguridad&quot;.
-            </p>
-          </div>
-        </section>
-
-        {/* Featured Image */}
-        <section className="bg-white pt-12">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="rounded-2xl overflow-hidden shadow-xl">
-              <Image
-                src="/images/blog/padron-celulares-fallo.png"
-                alt="Ilustración del caos en el padrón obligatorio de celulares en México: mercado negro de CURPs e INEs, deepfakes y suplantación de identidad"
-                width={1200}
-                height={1600}
-                className="w-full h-auto"
-                priority
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* Article Content */}
-        <article className="py-12 bg-white">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="prose prose-lg max-w-none">
-
+    <ArticleLayout
+      title="El registro obligatorio de celulares: cuando la identidad se diseña mal, el sistema colapsa"
+      subtitle="Lo que está ocurriendo con el padrón obligatorio de telefonía en México no es una sorpresa. Es la consecuencia lógica de haber confundido &quot;cumplimiento&quot; con &quot;seguridad&quot;."
+      category="Análisis"
+      date="13 de enero, 2026"
+      readTime="8 min"
+      slug="padron-celulares-fallo-verificacion-identidad"
+      image="/images/blog/padron-celulares-fallo.png"
+      imageAlt="Ilustración del caos en el padrón obligatorio de celulares en México: mercado negro de CURPs e INEs, deepfakes y suplantación de identidad"
+      jsonLd={jsonLd}
+      relatedPosts={[
+        { title: "Seguridad biométrica: Cómo la prueba de vida previene el fraude", slug: "seguridad-biometrica-prueba-de-vida", category: "Seguridad" },
+        { title: "Prevención de fraude en onboarding digital", slug: "prevencion-fraude-onboarding-digital", category: "Fraude" },
+        { title: "Tendencias KYC 2026", slug: "tendencias-kyc-2026", category: "KYC" },
+      ]}
+    >
               <div className="bg-red-50 border-l-4 border-red-500 p-6 my-8">
                 <p className="text-red-800 font-medium mb-2">Alerta crítica</p>
                 <p className="text-red-700">
@@ -366,77 +301,20 @@ export default function PadronCelularesFalloVerificacion() {
                 </p>
               </div>
 
-            </div>
-          </div>
-        </article>
-
-        {/* Author Section */}
-        <section className="py-12 bg-gray-50">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center gap-6">
-              <div className="w-16 h-16 bg-[#0066ff] rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-xl">J</span>
-              </div>
-              <div>
-                <p className="font-bold text-gray-900">Equipo JAAK</p>
-                <p className="text-gray-600">
-                  Especialistas en verificación de identidad y cumplimiento regulatorio para el sector financiero mexicano.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Related Posts */}
-        <section className="py-16 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-8">Artículos relacionados</h2>
-            <div className="grid md:grid-cols-3 gap-6">
-              {relatedPosts.map((post, index) => (
-                <Link
-                  key={index}
-                  href={`/blog/${post.slug}`}
-                  className="block bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow"
-                >
-                  <span className="inline-block px-3 py-1 bg-[#0066ff]/10 text-[#0066ff] text-xs font-semibold rounded-full mb-3">
-                    {post.category}
-                  </span>
-                  <h3 className="font-bold text-gray-900 hover:text-[#0066ff] transition-colors">
-                    {post.title}
-                  </h3>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="py-16 bg-[#0a0a0a]">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl font-black text-white mb-4">
-              ¿Tu sistema de verificación resistiría este tipo de ataques?
-            </h2>
-            <p className="text-white/60 text-lg mb-8">
-              Descubre cómo JAAK puede proteger a tu organización con prueba de vida real y detección de deepfakes.
-            </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <Link
+              <a
                 href="/contacto"
                 className="px-8 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
               >
                 Solicitar demo
-              </Link>
-              <Link
+              </a>
+              <a
                 href="/plataforma/verificacion-identidad"
                 className="px-8 py-4 bg-white/10 text-white font-bold rounded-lg hover:bg-white/20 transition-all"
               >
                 Conocer la plataforma
-              </Link>
+              </a>
             </div>
-          </div>
-        </section>
-      </main>
-      <Footer />
-    </>
+    </ArticleLayout>
   );
 }

@@ -11,7 +11,7 @@ const after = [
   { label: "Expediente digital con hash verificable e inmutable" },
   { label: "Conservación automática con retención configurable hasta 10 años" },
   { label: "Proceso automatizado y auditable end-to-end" },
-  { label: "Evidencia centralizada: KYC, KYB y firma en un solo lugar" },
+  { label: "Evidencia centralizada: KYC y firma en un solo lugar" },
   { label: "Cadena de custodia completa con sello de tiempo NOM-151" },
   { label: "Respuesta a auditorías retrospectivas en minutos" },
 ];

@@ -7,7 +7,6 @@ export default function Footer() {
       title: "Plataforma",
       links: [
         { name: "Verificación de identidad", href: "/plataforma/verificacion-identidad" },
-        { name: "Verificación empresarial", href: "/plataforma/verificacion-empresarial" },
         { name: "Firma electrónica", href: "/plataforma/firma-electronica" },
         { name: "Gestión de evidencia", href: "/plataforma/gestion-evidencia" },
         { name: "Chronos (Agentes IA)", href: "/chronos" },

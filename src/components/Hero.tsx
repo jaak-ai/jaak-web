@@ -12,7 +12,7 @@ export default function Hero() {
 
           {/* Subheadline */}
           <p className="text-xl md:text-2xl text-[#4b5563] mb-8 leading-relaxed">
-            Verificación de identidad, KYC/KYB y firma electrónica con evidencia legal auditable, lista para producción en días.
+            Verificación de identidad, KYC y firma electrónica con evidencia legal auditable, lista para producción en días.
           </p>
 
           {/* Supporting bullets */}

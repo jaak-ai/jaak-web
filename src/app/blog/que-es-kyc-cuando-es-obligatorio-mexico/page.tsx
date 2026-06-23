@@ -1,7 +1,5 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import ArticleLayout from "../ArticleLayout";
 import Link from "next/link";
-import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -62,100 +60,23 @@ const jsonLd = {
 };
 
 export default function QueEsKYCMexico() {
-  const relatedPosts = [
-    {
-      title:
-        "¿Qué es la NOM-151 y por qué importa en contratos digitales?",
-      slug: "que-es-nom-151-contratos-digitales",
-      category: "Firma Electrónica",
-    },
-    {
-      title:
-        "Firma electrónica simple vs avanzada: diferencias legales en México",
-      slug: "firma-electronica-simple-vs-avanzada",
-      category: "Firma Electrónica",
-    },
-    {
-      title:
-        "Tendencias KYC 2026: Lo que toda institución financiera debe saber",
-      slug: "tendencias-kyc-2026",
-      category: "KYC",
-    },
-  ];
-
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      <Header />
-      <main>
-        {/* Hero Section */}
-        <section className="pt-32 pb-12 bg-[#0a0a0a]">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="mb-6">
-              <Link
-                href="/blog"
-                className="inline-flex items-center text-white/60 hover:text-white transition-colors"
-              >
-                <svg
-                  className="w-4 h-4 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 19l-7-7 7-7"
-                  />
-                </svg>
-                Volver al blog
-              </Link>
-            </div>
-            <div className="flex items-center gap-3 mb-6">
-              <span className="px-3 py-1 bg-[#0066ff]/10 text-[#0066ff] text-sm font-semibold rounded-full">
-                KYC
-              </span>
-              <span className="text-white/40 text-sm">11 de abril, 2026</span>
-              <span className="text-white/40 text-sm">•</span>
-              <span className="text-white/40 text-sm">10 min de lectura</span>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-black text-white mb-6">
-              ¿Qué es KYC y cuándo es obligatorio en México?
-            </h1>
-            <p className="text-xl text-white/60">
-              Cada año, miles de millones de pesos circulan a través de cuentas
-              fraudulentas en México. El KYC es la primera línea de defensa.
-              Pero muchas empresas no saben con exactitud qué implica, quiénes
-              están obligados ni cómo implementarlo sin perder clientes.
-            </p>
-          </div>
-        </section>
-
-        {/* Featured Image */}
-        <section className="bg-white pt-12">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="rounded-2xl overflow-hidden shadow-xl">
-              <Image
-                src="/images/blog/que-es-kyc-mexico.jpg"
-                alt="¿Qué es KYC y cuándo es obligatorio en México? Guía sobre LFPIORPI, CNBV y UIF"
-                width={1200}
-                height={675}
-                className="w-full h-auto"
-                priority
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* Article Content */}
-        <article className="py-12 bg-white">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="prose prose-lg max-w-none">
-
+    <ArticleLayout
+      title="¿Qué es KYC y cuándo es obligatorio en México?"
+      subtitle="Cada año, miles de millones de pesos circulan a través de cuentas fraudulentas en México. El KYC es la primera línea de defensa. Pero muchas empresas no saben con exactitud qué implica, quiénes están obligados ni cómo implementarlo sin perder clientes en el proceso."
+      category="KYC"
+      date="11 de abril, 2026"
+      readTime="10 min"
+      slug="que-es-kyc-cuando-es-obligatorio-mexico"
+      image="/images/blog/que-es-kyc-mexico.jpg"
+      imageAlt="¿Qué es KYC y cuándo es obligatorio en México? Guía sobre LFPIORPI, CNBV y UIF"
+      jsonLd={jsonLd}
+      relatedPosts={[
+        { title: "¿Qué es la NOM-151 y por qué importa en contratos digitales?", slug: "que-es-nom-151-contratos-digitales", category: "Firma Electrónica" },
+        { title: "Firma electrónica simple vs avanzada", slug: "firma-electronica-simple-vs-avanzada", category: "Firma Electrónica" },
+        { title: "Tendencias KYC 2026", slug: "tendencias-kyc-2026", category: "KYC" },
+      ]}
+    >
               <p className="text-xl text-gray-600 leading-relaxed mb-8">
                 Cada año, miles de millones de pesos transitan por cuentas y
                 estructuras financieras fraudulentas en México. Las consecuencias
@@ -600,9 +521,6 @@ export default function QueEsKYCMexico() {
                 digital a los clientes.
               </p>
 
-            </div>
-
-            {/* CTA inline */}
             <div className="mt-12 flex flex-wrap gap-4">
               <Link
                 href="/contacto"
@@ -617,81 +535,6 @@ export default function QueEsKYCMexico() {
                 Probar autoservicio
               </Link>
             </div>
-          </div>
-        </article>
-
-        {/* Author Section */}
-        <section className="py-12 bg-gray-50">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center gap-6">
-              <div className="w-16 h-16 bg-[#0066ff] rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-xl">J</span>
-              </div>
-              <div>
-                <p className="font-bold text-gray-900">Equipo JAAK</p>
-                <p className="text-gray-600">
-                  Especialistas en verificación de identidad y cumplimiento
-                  regulatorio para el sector financiero mexicano.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Related Posts */}
-        <section className="py-16 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-8">
-              Artículos relacionados
-            </h2>
-            <div className="grid md:grid-cols-3 gap-6">
-              {relatedPosts.map((post, index) => (
-                <Link
-                  key={index}
-                  href={`/blog/${post.slug}`}
-                  className="block bg-gray-50 rounded-xl p-6 hover:shadow-lg transition-shadow"
-                >
-                  <span className="inline-block px-3 py-1 bg-[#0066ff]/10 text-[#0066ff] text-xs font-semibold rounded-full mb-3">
-                    {post.category}
-                  </span>
-                  <h3 className="font-bold text-gray-900 hover:text-[#0066ff] transition-colors">
-                    {post.title}
-                  </h3>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="py-16 bg-[#0a0a0a]">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl font-black text-white mb-4">
-              ¿Listo para implementar KYC en su empresa?
-            </h2>
-            <p className="text-white/60 text-lg mb-8">
-              Descubra cómo JAAK le ayuda a cumplir con la regulación mexicana
-              y verificar identidades en menos de tres minutos, sin papel y
-              sin complicaciones.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link
-                href="/contacto"
-                className="px-8 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
-              >
-                Solicitar demo
-              </Link>
-              <Link
-                href="/autoservicio"
-                className="px-8 py-4 bg-white/10 text-white font-bold rounded-lg hover:bg-white/20 transition-all"
-              >
-                Empezar en autoservicio
-              </Link>
-            </div>
-          </div>
-        </section>
-      </main>
-      <Footer />
-    </>
+    </ArticleLayout>
   );
 }
