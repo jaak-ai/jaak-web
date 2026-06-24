@@ -19,7 +19,7 @@ JAAK Pulse se despliega **en la tenancy de OCI del propio cliente**. Se instalan
 - **Dónde viven los datos:** 100% en la tenancy del cliente (Autonomous DB, Object Storage y Vault del cliente). JAAK **no** tiene acceso a la tenancy ni a la base de datos del cliente.
 - **Qué controla el cliente:** la infraestructura, el acceso, el SO de la VM, DNS/TLS, el monitoreo, los backups y **cuándo/cómo se aplican las actualizaciones**.
 - **Qué controla JAAK:** la licencia, los releases firmados del software y el soporte de aplicación.
-- **Modelo operativo:** **self-managed por el cliente** (JAAK entrega releases firmados + licencia + soporte L2/L3). Ver matriz en §3.
+- **Modelo operativo:** **self-managed por el cliente** (JAAK entrega releases firmados + licencia + soporte L2/L3). Ver matriz en [§3](#s3).
 
 ## 2. Arquitectura
 
@@ -42,12 +42,14 @@ JAAK Pulse se despliega **en la tenancy de OCI del propio cliente**. Se instalan
 
 | Tráfico | Origen | Destino | Propósito | Datos |
 |---|---|---|---|---|
-| HTTPS 443 | VM Pulse | `api.licensing.jaak.ai` | Validar licencia / consultar releases | license key, versión actual, telemetría (§6) |
+| HTTPS 443 | VM Pulse | `api.licensing.jaak.ai` | Validar licencia / consultar releases | license key, versión actual, telemetría ([§6](#s6)) |
 | HTTPS 443 | VM Pulse | Storage privado JAAK | Descargar artefactos firmados | ninguno de negocio |
 | HTTPS 443 | Usuario | Load Balancer OCI | Acceso al dashboard Pulse | sesión del usuario |
 | Interno VCN | API | Autonomous DB / Object Storage / Vault | Persistencia y secretos | datos del cliente (no salen) |
 
-**Nada del negocio sale de la tenancy** salvo la telemetría declarada en §6. Imágenes, eventos y plantillas biométricas **no** se envían a JAAK.
+**Nada del negocio sale de la tenancy** salvo la telemetría declarada en [§6](#s6). Imágenes, eventos y plantillas biométricas **no** se envían a JAAK.
+
+<div id="s3" className="scroll-mt-24" />
 
 ## 3. Modelo de responsabilidades (cliente self-managed)
 
@@ -60,10 +62,12 @@ JAAK Pulse se despliega **en la tenancy de OCI del propio cliente**. Se instalan
 | Backups (DB / Object Storage) | **Cliente** |
 | Acceso SSH a la VM | **Cliente** (JAAK no tiene acceso) |
 | Rotación de secretos en Vault | **Cliente** |
-| Decisión de cuándo actualizar | **Cliente** (ver §4) |
+| Decisión de cuándo actualizar | **Cliente** (ver [§4](#s4)) |
 | Licencia Pulse | **JAAK** |
 | Releases firmados del software | **JAAK** |
 | Soporte de aplicación L2/L3 | **JAAK** ([SLA a definir con JAAK]) |
+
+<div id="s4" className="scroll-mt-24" />
 
 ## 4. Prerequisitos exactos
 
@@ -81,7 +85,7 @@ JAAK Pulse se despliega **en la tenancy de OCI del propio cliente**. Se instalan
 - **Salida a internet:** vía NAT Gateway (la VM está en subred privada).
 - **Regiones soportadas:** cualquier región OCI donde esté disponible `VM.Standard.E5.Flex` (amd64); verificar con `oci compute shape list -c <compartment>`. La lista oficial con SLA: [a definir con JAAK].
 - **License key** válida (la entrega JAAK por canal seguro en el onboarding; variable sensible).
-- **Clave SSH pública** para administración (la genera el cliente; ver tabla de variables en §9).
+- **Clave SSH pública** para administración (la genera el cliente; ver tabla de variables en [§9](#s9)).
 
 ## 5. Modos de actualización (control del cliente)
 
@@ -99,7 +103,9 @@ JAAK publica releases **firmados**. El cliente decide cómo se aplican:
 ### Rollback y migraciones de BBDD (crítico)
 
 - El updater conserva el binario anterior (`.bak`), hace swap atómico, reinicia y verifica `/healthz`; si falla, **revierte automáticamente** al binario previo.
-- **Advertencia honesta:** el rollback es de **binario**. Las **migraciones de esquema** de la BBDD se diseñan **backward-compatible**, pero un rollback de binario **no revierte el esquema**. Para un rollback seguro en cambios de esquema: tomar **backup de la ADB antes de actualizar** (responsabilidad del cliente, §3) y coordinar con JAAK si una versión introduce migraciones no compatibles hacia atrás. La política de compatibilidad de migraciones y retención de versiones: [a definir con JAAK].
+- **Advertencia honesta:** el rollback es de **binario**. Las **migraciones de esquema** de la BBDD se diseñan **backward-compatible**, pero un rollback de binario **no revierte el esquema**. Para un rollback seguro en cambios de esquema: tomar **backup de la ADB antes de actualizar** (responsabilidad del cliente, [§3](#s3)) y coordinar con JAAK si una versión introduce migraciones no compatibles hacia atrás. La política de compatibilidad de migraciones y retención de versiones: [a definir con JAAK].
+
+<div id="s6" className="scroll-mt-24" />
 
 ## 6. Seguridad y privacidad
 
@@ -116,7 +122,7 @@ JAAK publica releases **firmados**. El cliente decide cómo se aplican:
 ### Hardening / auditoría
 
 - VM en subred privada; ingreso solo vía Load Balancer. Acceso SSH controlado por el cliente.
-- Hardening del SO, logging centralizado y auditoría: responsabilidad del cliente (§3).
+- Hardening del SO, logging centralizado y auditoría: responsabilidad del cliente ([§3](#s3)).
 
 ### Privacidad de datos biométricos
 
@@ -202,6 +208,8 @@ curl -fsS https://<dominio>/api/healthz
 **Alcance del soporte en POC:** software Pulse (releases, configuración, incidentes de aplicación). La infraestructura OCI (VM, red, ADB) es responsabilidad del cliente; JAAK puede orientar pero no opera la tenancy del cliente.
 
 **Fuera del alcance:** cambios de requerimiento, integraciones con sistemas de terceros no definidos en el POC, soporte al SO de la VM.
+
+<div id="s9" className="scroll-mt-24" />
 
 ## 9. Anexo técnico
 
