@@ -496,6 +496,14 @@ body {
 [data-firma-light] .dark-zone .text-gray-500 { color: #64748B !important; }
 [data-firma-light] .dark-zone .text-gray-600 { color: #475569 !important; }
 
+/* ── Accesibilidad: anillo de foco visible para navegación por teclado ──
+   Solo aplica con :focus-visible (teclado), no en clics de ratón. El outline
+   sigue el border-radius existente del elemento en navegadores modernos. */
+:focus-visible {
+  outline: 2px solid #2DB6C1;
+  outline-offset: 2px;
+}
+
 /* ── Related posts card hover (ArticleLayout) ── */
 .related-post-card {
   background: rgba(255,255,255,0.04);

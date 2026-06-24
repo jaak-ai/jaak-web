@@ -8,6 +8,7 @@ import HomepageKYCComponents from "@/components/HomepageKYCComponents";
 import HomepageDifferentiator from "@/components/HomepageDifferentiator";
 import HomepageIndustries from "@/components/HomepageIndustries";
 import HomepageProducts from "@/components/HomepageProducts";
+import HomepageAutoservicioCTA from "@/components/HomepageAutoservicioCTA";
 import HomepageTrust from "@/components/HomepageTrust";
 import HomepageFinalCTA from "@/components/HomepageFinalCTA";
 import ContactForm from "@/components/ContactForm";
@@ -37,6 +38,8 @@ export default function Home() {
           <HomepageIndustries />
           {/* S7 — Productos */}
           <HomepageProducts />
+          {/* S7.5 — CTA Autoservicio (descubribilidad en contenido) */}
+          <HomepageAutoservicioCTA />
           {/* S8 — Prueba / confianza */}
           <HomepageTrust />
           {/* S9 — CTA final */}

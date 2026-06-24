@@ -128,14 +128,6 @@ export default function Header() {
                 </button>
               </div>
 
-              {/* Autoservicio Link */}
-              <Link
-                href="/autoservicio"
-                className="px-4 py-2 text-[15px] font-medium text-gray-700 hover:text-[#0066ff] transition-colors"
-              >
-                Autoservicio
-              </Link>
-
               {/* Precios Link */}
               <Link
                 href="/precios"
@@ -176,13 +168,22 @@ export default function Header() {
               </Link>
               <Link
                 href="/contacto"
-                className="px-5 py-2.5 bg-[#0066ff] text-white font-semibold text-[15px] rounded-lg hover:bg-[#0052cc] transition-all"
+                className="hidden md:block px-4 py-2.5 font-semibold text-[15px] rounded-lg border border-gray-300 text-[#212A45] hover:border-[#212A45] transition-all"
               >
                 Solicitar revisión
+              </Link>
+              <Link
+                href="/autoservicio"
+                className="px-5 py-2.5 bg-[#2DB6C1] text-white font-semibold text-[15px] rounded-lg hover:bg-[#25969f] transition-all"
+              >
+                Comprar
               </Link>
 
               {/* Mobile menu button */}
               <button
+                type="button"
+                aria-label={mobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
+                aria-expanded={mobileMenuOpen}
                 className="lg:hidden p-2 text-gray-700 hover:text-[#0066ff]"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               >
@@ -291,8 +292,8 @@ export default function Header() {
 
               {/* Autoservicio */}
               <div>
-                <Link href="/autoservicio" className="block text-gray-700 hover:text-[#0066ff] font-semibold" onClick={() => setMobileMenuOpen(false)}>
-                  Autoservicio
+                <Link href="/autoservicio" className="block w-full text-center px-5 py-3 bg-[#2DB6C1] text-white font-semibold rounded-lg hover:bg-[#25969f]" onClick={() => setMobileMenuOpen(false)}>
+                  Comprar
                 </Link>
               </div>
 
