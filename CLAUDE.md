@@ -24,14 +24,16 @@ Ingeniero senior de Next.js trabajando en un sitio web de marketing que consume 
 ## Comandos
 
 ```bash
-npm ci              # Instalar dependencias (limpio)
-npm run dev         # Servidor de desarrollo (Contentlayer + Next.js en localhost:3000)
-npm run lint        # Verificar código con ESLint
-npm run build       # Build de producción (contentlayer2 build && next build)
+npm ci              # Instalar dependencias (limpio); postinstall corre `contentlayer2 build`
+npm run dev         # Dev: `contentlayer2 dev & next dev` (watch MDX + Next en localhost:3000)
+npm run lint        # ESLint plano (`eslint`, NO `next lint`)
+npm run build       # Build de producción (`contentlayer2 build && next build`)
 npm start           # Servidor de producción
 ```
 
-**Nota**: El dev server ejecuta Contentlayer2 en paralelo con Next.js para procesar archivos MDX de documentación.
+**Notas**:
+- No hay tests automatizados ni framework de test configurado en el repo. La verificación obligatoria antes de commit es `npm run lint` + `npm run build` (el build falla si Contentlayer no genera los tipos MDX).
+- Si el build se queja de tipos faltantes de docs, corre primero `npx contentlayer2 build` para regenerar `.contentlayer/generated/`.
 
 ---
 
@@ -44,6 +46,9 @@ npm start           # Servidor de producción
 | TypeScript | 5 | strict mode |
 | Tailwind CSS | 4 | Estilos |
 | Contentlayer2 | 0.5.8 | Documentación MDX → páginas estáticas |
+| FlexSearch | 0.8 | Búsqueda client-side en docs (`src/lib/docs/search.ts`) |
+| Shiki | 4 | Syntax highlighting de bloques de código en docs |
+| Mermaid | 11 | Diagramas en docs MDX |
 | Vercel Analytics | - | Analytics + Speed Insights |
 | Resend | - | Servicio de email |
 | HubSpot | - | CRM y formularios |
@@ -63,49 +68,44 @@ src/app/
 ├── globals.css                 # CSS variables y clases utilitarias
 ├── robots.ts / sitemap.ts      # SEO automático
 │
-├── api/contact/route.ts        # POST → HubSpot Forms API
+├── api/                        # Route handlers (POST → HubSpot/Resend). Ver sección API Routes
+│   ├── contact/                # Form de contacto principal
+│   ├── landing/                # Captura de leads de landings (CRM webhook + Resend)
+│   ├── capacitacion/           # Form de webinar/capacitación → HubSpot
+│   └── onboarding/             # Form de onboarding/autoservicio → HubSpot
 │
-├── docs/[[...slug]]/page.tsx   # Documentación dinámica (Contentlayer2 MDX)
+├── docs/[[...slug]]/page.tsx   # Documentación dinámica (Contentlayer2 MDX). Sistema nuevo.
+├── documentacion/              # Documentación legacy (NO migrar aquí; usar /docs)
 │
-├── signa/                      # Producto: Firma Electrónica
-│   ├── page.tsx                # Landing principal Signa
-│   ├── calculadora/            # Calculadora de ahorro
-│   ├── comparacion/            # Comparación vs competencia
-│   └── schema.tsx              # JSON-LD structured data
+├── signa/                      # Producto: Firma Electrónica (calculadora/, comparacion/, schema.tsx)
+├── firma-electronica/          # Landing SEO Signa + variantes:
+│   firma-electronica-biometrica|-kyc|-nom-151|-simple/   # páginas SEO por keyword
+├── guardian/                   # Producto: Guardian
+├── chronos/                    # Producto: Chronos
 │
-├── precios/                    # Página de precios (tabs por producto)
-├── blog/                       # Posts del blog (~10 artículos)
-├── soluciones/                 # Páginas por caso de uso (6 páginas)
-├── plataforma/                 # Páginas de features (4 páginas)
-├── cumplimiento/               # Páginas regulatorias (6 páginas)
-├── documentacion/              # Documentación de API y guías (legacy)
+├── precios/                    # Precios (tabs por producto)
+├── blog/                       # Posts del blog
+├── soluciones/ · plataforma/ · cumplimiento/   # Casos de uso, features, regulatorias
+├── recursos/                   # Recursos / contenido
 │
-├── bancos/                     # Landing de conversión: Bancos
-├── financieras/                # Landing de conversión: Financieras
-├── inmobiliarias/              # Landing de conversión: Inmobiliarias
-├── autoservicio/               # Landing de conversión: Autoservicio
+├── bancos/ · financieras/ · inmobiliarias/ · autoservicio/   # Landings de conversión por industria
+├── webinar/ · efisys-lab-connect/              # Landings de campaña
 │
 └── [páginas estáticas]         # privacidad, terminos, cookies, seguridad, contacto, nosotros
 ```
 
+> **Importante**: `src/app/docs/` (Contentlayer) y `src/app/documentacion/` (legacy) coexisten. El sistema activo de documentación es `/docs`; `documentacion/` es legacy.
+
 ### Sistema de Documentación (Contentlayer2)
 
-```
-content/docs/                   # Archivos MDX fuente
-├── index.mdx                   # Página principal de docs
-├── verificar-identidad/        # Sección KYC
-│   ├── index.mdx
-│   ├── guia-rapida.mdx
-│   ├── conceptos/
-│   └── api/
-├── firmar-documentos/          # Sección Signa
-└── recursos/                   # Webhooks, errores, sandbox
+Fuente MDX en `content/docs/` (secciones: `verificar-identidad/` KYC, `firmar-documentos/` Signa, `productos/`, `integraciones/`, `sdks/`, `consultas-oficiales/`, `recursos/`, `extras/`, `jaak/`). El frontmatter (`title`, `description` requeridos; `category`, `order` opcionales) está definido en `contentlayer.config.ts`.
+
+Contentlayer genera tipos en `.contentlayer/generated/`. **Importar desde `contentlayer2/generated`** (con el sufijo `2`), no `contentlayer/generated`:
+```tsx
+import { allDocs } from "contentlayer2/generated";
 ```
 
-Contentlayer genera tipos en `.contentlayer/generated/` que se importan directamente:
-```tsx
-import { allDocs } from "contentlayer/generated";
-```
+La lógica de docs vive en `src/lib/docs/` (`config.ts` URLs de APIs por entorno, `navigation.ts` prev/next y árbol, `search.ts` índice FlexSearch) y los componentes de render en `src/components/docs/` (`MDXContent`, `TableOfContents`, etc.).
 
 ### Componentes (`src/components/`)
 
@@ -169,25 +169,21 @@ Clases utilitarias: `.btn-primary`, `.btn-secondary`, `.btn-blue`, `.btn-cyan`, 
 
 ## API Routes
 
-### POST /api/contact
+Cuatro route handlers `POST`, todos en `src/app/api/*/route.ts`:
 
-Envía datos a HubSpot Forms API:
+| Ruta | Destino | Notas |
+|------|---------|-------|
+| `/api/contact` | HubSpot Forms API | Form de contacto principal |
+| `/api/capacitacion` | HubSpot Forms API | Form de webinar/capacitación |
+| `/api/onboarding` | HubSpot Forms API | Form de onboarding/autoservicio |
+| `/api/landing` | CRM webhook + Resend (fallback) | Captura de leads de landings; sin HubSpot |
 
-```typescript
-interface ContactRequest {
-  name: string;      // Requerido
-  email: string;     // Requerido
-  phone: string;     // Requerido
-  role: string;      // Requerido
-  company?: string;
-  message?: string;
-}
-```
-
-**HubSpot Config**:
+**HubSpot Config** (compartido por contact/capacitacion/onboarding; el Portal y Form ID están **hardcodeados** en cada route):
 - Portal ID: `19644701`
 - Contact Form ID: `b4e48141-58a0-4208-9c42-641bb2731a40`
 - Newsletter Form ID: `db2a19a3-8be3-4f92-a0f8-7b6525ebd7d8`
+
+`ContactRequest` (campos requeridos: `name`, `email`, `phone`, `role`; opcionales: `company`, `message`). `/api/landing` envía al `CRM_WEBHOOK_URL` y, si no está configurado, intenta notificar por Resend.
 
 ---
 
