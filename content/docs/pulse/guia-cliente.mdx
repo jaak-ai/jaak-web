@@ -14,7 +14,7 @@ unlisted: true
 
 ## 1. Resumen ejecutivo
 
-JAAK Pulse se despliega **en la tenancy de OCI del propio cliente**. Se instalan **binarios nativos** gestionados por **systemd** (sin Docker). El software se distribuye como **artefactos firmados** (minisign/Ed25519) que la máquina descarga desde almacenamiento **privado** de JAAK, **solo** tras validar la licencia del cliente.
+JAAK Pulse se despliega **en la tenancy de OCI del propio cliente**. Se instalan **binarios nativos** gestionados por **systemd**. El software se distribuye como **artefactos firmados** (minisign/Ed25519) que la máquina descarga desde almacenamiento **privado** de JAAK, **solo** tras validar la licencia del cliente.
 
 - **Dónde viven los datos:** 100% en la tenancy del cliente (Autonomous DB, Object Storage y Vault del cliente). JAAK **no** tiene acceso a la tenancy ni a la base de datos del cliente.
 - **Qué controla el cliente:** la infraestructura, el acceso, el SO de la VM, DNS/TLS, el monitoreo, los backups y **cuándo/cómo se aplican las actualizaciones**.
