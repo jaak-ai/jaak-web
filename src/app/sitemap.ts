@@ -13,13 +13,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  // Documentation pages from contentlayer
-  const docEntries: MetadataRoute.Sitemap = allDocs.map((doc) => ({
-    url: `${baseUrl}${doc.url}`,
-    lastModified: now,
-    changeFrequency: "weekly",
-    priority: 0.7,
-  }));
+  // Documentation pages from contentlayer (excluye páginas unlisted: solo por enlace)
+  const docEntries: MetadataRoute.Sitemap = allDocs
+    .filter((doc) => !doc.unlisted)
+    .map((doc) => ({
+      url: `${baseUrl}${doc.url}`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.7,
+    }));
 
   return [
     // Homepage

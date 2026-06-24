@@ -21,7 +21,7 @@ export function initSearchIndex(): void {
     cache: true,
   })
 
-  docsCache = allDocs
+  docsCache = allDocs.filter((doc) => !doc.unlisted)
   docsCache.forEach((doc, id) => {
     searchIndex!.add(id, `${doc.title} ${doc.description} ${doc.body.raw}`)
   })

@@ -35,6 +35,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: doc.title,
     description: doc.description,
+    // Páginas unlisted: accesibles solo por enlace, nunca indexadas
+    ...(doc.unlisted ? { robots: { index: false, follow: false } } : {}),
   }
 }
 

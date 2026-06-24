@@ -1,0 +1,269 @@
+---
+title: Guía de despliegue y operación
+description: Guía enterprise de JAAK Pulse en tu Oracle Cloud (OCI) — qué se despliega, dónde viven los datos, qué controla el cliente y qué controla JAAK, con foco en seguridad, gobernabilidad, auditoría y reversibilidad.
+category: guia
+order: 1
+unlisted: true
+---
+
+# JAAK Pulse — Guía de despliegue y operación en tu Oracle Cloud (OCI)
+
+> Documento para el equipo técnico, de seguridad y de compras del cliente. Describe **qué se despliega, dónde vive, qué controla el cliente y qué controla JAAK**, con foco en seguridad, gobernabilidad, auditoría y reversibilidad.
+>
+> Los puntos marcados **[a definir con JAAK]** dependen del contrato/SLA y se cierran en la fase comercial; no son ambigüedades técnicas.
+
+## 1. Resumen ejecutivo
+
+JAAK Pulse se despliega **en la tenancy de OCI del propio cliente**. Se instalan **binarios nativos** gestionados por **systemd** (sin Docker). El software se distribuye como **artefactos firmados** (minisign/Ed25519) que la máquina descarga desde almacenamiento **privado** de JAAK, **solo** tras validar la licencia del cliente.
+
+- **Dónde viven los datos:** 100% en la tenancy del cliente (Autonomous DB, Object Storage y Vault del cliente). JAAK **no** tiene acceso a la tenancy ni a la base de datos del cliente.
+- **Qué controla el cliente:** la infraestructura, el acceso, el SO de la VM, DNS/TLS, el monitoreo, los backups y **cuándo/cómo se aplican las actualizaciones**.
+- **Qué controla JAAK:** la licencia, los releases firmados del software y el soporte de aplicación.
+- **Modelo operativo:** **self-managed por el cliente** (JAAK entrega releases firmados + licencia + soporte L2/L3). Ver matriz en §3.
+
+## 2. Arquitectura
+
+```
+                        TENANCY OCI DEL CLIENTE
+  Usuario ──HTTPS 443──►  Load Balancer  ──► nginx (web estática) ──► API (systemd :8787)
+                          (público)              /opt/jaak-pulse/web      /opt/jaak-pulse/bin
+                                                                              │
+                                          ┌───────────────────────────────────┼───────────────┐
+                                          ▼                ▼                    ▼
+                                   Autonomous DB     Object Storage          OCI Vault
+                                   (privada)         (media/logs/backups)    (secretos)
+
+  ── Tráfico SALIENTE a JAAK (solo desde la VM, HTTPS 443) ─────────────────────────────────────►
+     api.licensing.jaak.ai  : validar licencia + consultar releases
+     storage privado JAAK   : descargar artefactos firmados (PAR temporal)
+```
+
+### Matriz de tráfico
+
+| Tráfico | Origen | Destino | Propósito | Datos |
+|---|---|---|---|---|
+| HTTPS 443 | VM Pulse | `api.licensing.jaak.ai` | Validar licencia / consultar releases | license key, versión actual, telemetría (§6) |
+| HTTPS 443 | VM Pulse | Storage privado JAAK | Descargar artefactos firmados | ninguno de negocio |
+| HTTPS 443 | Usuario | Load Balancer OCI | Acceso al dashboard Pulse | sesión del usuario |
+| Interno VCN | API | Autonomous DB / Object Storage / Vault | Persistencia y secretos | datos del cliente (no salen) |
+
+**Nada del negocio sale de la tenancy** salvo la telemetría declarada en §6. Imágenes, eventos y plantillas biométricas **no** se envían a JAAK.
+
+## 3. Modelo de responsabilidades (cliente self-managed)
+
+| Área | Responsable |
+|---|---|
+| Tenancy OCI y su seguridad | **Cliente** |
+| SO de la VM y parches | **Cliente** |
+| DNS y certificados TLS | **Cliente** (JAAK provee guía) |
+| Monitoreo y alertas | **Cliente** |
+| Backups (DB / Object Storage) | **Cliente** |
+| Acceso SSH a la VM | **Cliente** (JAAK no tiene acceso) |
+| Rotación de secretos en Vault | **Cliente** |
+| Decisión de cuándo actualizar | **Cliente** (ver §4) |
+| Licencia Pulse | **JAAK** |
+| Releases firmados del software | **JAAK** |
+| Soporte de aplicación L2/L3 | **JAAK** ([SLA a definir con JAAK]) |
+
+## 4. Prerequisitos exactos
+
+- **Recursos OCI que crea el stack:** 1 VCN (subred pública + privada, IGW, NAT, Service GW), 1 instancia de cómputo, 1 Autonomous Database (privada), 3 buckets de Object Storage (media/logs/backups, privados), 1 Vault + llave KMS, 1 Load Balancer flexible.
+- **Shape recomendado:** `VM.Standard.E5.Flex` (amd64). Dimensiones por defecto ajustables; los binarios se compilan **solo para amd64**.
+- **IAM mínimo:** el operador necesita estas políticas (las 2 últimas son a nivel **tenancy** porque el despliegue crea un *dynamic-group* + *policy* para que la VM lea sus secretos del Vault):
+  ```
+  Allow group <grupo> to manage all-resources  in compartment <compartment-Pulse>
+  Allow group <grupo> to manage dynamic-groups  in tenancy
+  Allow group <grupo> to manage policies        in tenancy
+  ```
+  Recomendado: **compartment dedicado a Pulse**, no la raíz. Variante de menor privilegio: en lugar de `all-resources`, otorgar `manage` sobre `instance-family`, `vcn`, `autonomous-database-family`, `object-family`, `vaults` y `load-balancers` en el compartment.
+- **Puertos:** entrante 443 (y 80 solo para validación/redirección) al Load Balancer; interno 8787 (API) y 1521/1522 (ADB) dentro de la VCN.
+- **Dominios salientes requeridos (allowlist de egress):** `api.licensing.jaak.ai` y el host de Object Storage privado de JAAK (ambos HTTPS 443).
+- **Salida a internet:** vía NAT Gateway (la VM está en subred privada).
+- **Regiones soportadas:** cualquier región OCI donde esté disponible `VM.Standard.E5.Flex` (amd64); verificar con `oci compute shape list -c <compartment>`. La lista oficial con SLA: [a definir con JAAK].
+- **License key** válida (la entrega JAAK por canal seguro en el onboarding; variable sensible).
+- **Clave SSH pública** para administración (la genera el cliente; ver tabla de variables en §9).
+
+## 5. Modos de actualización (control del cliente)
+
+JAAK publica releases **firmados**. El cliente decide cómo se aplican:
+
+| Modo | Cómo | Estado |
+|---|---|---|
+| **Automático** (default) | `jaak-pulse-updater.timer` (systemd) comprueba cada ~30 min y aplica releases firmados con rollback automático | Disponible |
+| **Manual / ventana de mantenimiento** | Deshabilitar el timer (`systemctl disable --now jaak-pulse-updater.timer`) y ejecutar `jaak-pulse-api update --check` en la ventana elegida | Disponible |
+| **Canal estable** | Único canal `stable` (sin betas a clientes) | Disponible |
+| **Pin de versión / aprobación previa explícita** | Fijar una versión y requerir aprobación antes de aplicar | **[roadmap]** — ver nota |
+
+> **Nota para ambientes regulados:** hoy el control fino (pin de versión, gate de aprobación) se logra operando en **modo manual** (timer deshabilitado; el cliente aplica `update --check` cuando lo aprueba su proceso de cambios). El pin/aprobación como configuración de primera clase está en roadmap. Ningún update se aplica sin que el cliente haya habilitado el modo automático o ejecutado la actualización manualmente.
+
+### Rollback y migraciones de BBDD (crítico)
+
+- El updater conserva el binario anterior (`.bak`), hace swap atómico, reinicia y verifica `/healthz`; si falla, **revierte automáticamente** al binario previo.
+- **Advertencia honesta:** el rollback es de **binario**. Las **migraciones de esquema** de la BBDD se diseñan **backward-compatible**, pero un rollback de binario **no revierte el esquema**. Para un rollback seguro en cambios de esquema: tomar **backup de la ADB antes de actualizar** (responsabilidad del cliente, §3) y coordinar con JAAK si una versión introduce migraciones no compatibles hacia atrás. La política de compatibilidad de migraciones y retención de versiones: [a definir con JAAK].
+
+## 6. Seguridad y privacidad
+
+### Distribución segura
+
+- Artefactos **firmados con minisign/Ed25519**; la VM verifica firma **offline** (clave pública embebida) + checksum SHA-256 **antes** de instalar/actualizar. Lo no firmado se rechaza.
+- La descarga requiere **licencia válida** (gate en `api.licensing.jaak.ai`); el almacenamiento es **privado** (URLs temporales). Cierra el riesgo de software público/suplantado.
+- Secretos (BBDD, JWT, license key) cifrados en **OCI Vault** del cliente; la VM los lee con su propia identidad (instance principal), nunca en claro en disco (`/opt/jaak-pulse/.env`, 0600).
+
+### TLS
+
+- **HTTPS es obligatorio en producción.** HTTP (`http://<LB>/healthz`) se usa **solo** para validación inicial dentro de red controlada. Configurar certificado en OCI Certificates y asociarlo al listener 443 del Load Balancer antes de exponer el servicio.
+
+### Hardening / auditoría
+
+- VM en subred privada; ingreso solo vía Load Balancer. Acceso SSH controlado por el cliente.
+- Hardening del SO, logging centralizado y auditoría: responsabilidad del cliente (§3).
+
+### Privacidad de datos biométricos
+
+- En **modo normal**, Pulse **no almacena imágenes faciales ni identidad nominal**. Genera **plantillas/vectorizaciones biométricas seudonimizadas** (embeddings) para analítica agregada y reidentificación, sujetas a controles de **retención, finalidad, acceso y eliminación**.
+- El **modo laboratorio** es **opt-in**, requiere **consentimiento** y **TTL** configurado por cámara, y es la única ruta que asocia imagen (recorte de rostro) + identidad nominal. Queda registrado en el consentimiento (`CAMERA_CONSENT`).
+- Ubicación de datos: **tenancy del cliente**. Cifrado en reposo (ADB/Object Storage/Vault de OCI) y en tránsito (TLS). TTL, base legal/consentimiento y procedimientos de exportación/borrado: [a definir con JAAK según jurisdicción del cliente].
+
+### Telemetría hacia JAAK (alcance acotado)
+
+La telemetría se limita a **señales operativas y de salud del sistema**, con la única finalidad de que JAAK pueda **monitorizar el estado del despliegue y dar soporte**. **Nunca** incluye datos de negocio.
+
+- **Qué se envía (alcance):**
+  - **Versión instalada** del software y estado de las actualizaciones.
+  - **Heartbeat** de disponibilidad (la instancia está viva y operando).
+  - **Métricas de salud del host:** temperatura, CPU, RAM, disco/almacenamiento y consumo.
+- **Qué NO se envía:** imágenes, rostros, plantillas/vectores biométricos, identidades nominales, eventos de negocio ni ningún dato de la base de datos del cliente. Nada de eso sale de la tenancy.
+- **Estado de implementación (honesto):** hoy la VM transmite la **versión instalada** al consultar releases contra `api.licensing.jaak.ai`. El envío de las **métricas de salud del host** (temperatura/CPU/RAM/disco/consumo) y el heartbeat forman parte del alcance comprometido y están **en implementación**; cuando se activen operarán con el mismo principio (solo salud del sistema, nunca negocio) y por el mismo canal saliente (HTTPS 443 a JAAK).
+- **Desactivación:** el mecanismo para deshabilitar el envío de telemetría se documentará junto con su implementación. La validación de licencia y la consulta de releases —necesarias para operar y actualizar— no forman parte de la telemetría desactivable.
+
+### Lo que JAAK puede y NO puede ver
+
+- ❌ JAAK **no** accede a la tenancy del cliente. ❌ **no** accede a la BBDD del cliente. ❌ **no** recibe imágenes/rostros/eventos.
+- ✅ JAAK recibe: validación de licencia (license key, versión) y la **telemetría operativa** declarada arriba.
+
+## 7. Operación (cliente)
+
+```bash
+# Salud
+curl -fsS https://<dominio>/healthz       # 200 = OK (HTTP solo en validación inicial)
+curl -fsS https://<dominio>/api/healthz
+
+# Servicio
+systemctl status  jaak-pulse-api
+journalctl -u     jaak-pulse-api -f
+systemctl restart jaak-pulse-api
+
+# Updates
+systemctl list-timers jaak-pulse-updater          # próxima comprobación
+systemctl disable --now jaak-pulse-updater.timer  # pasar a modo manual
+sudo /opt/jaak-pulse/bin/jaak-pulse-api update --check   # aplicar bajo control
+
+# Rollback manual de binario (si fuera necesario)
+sudo systemctl stop jaak-pulse-api
+sudo cp /opt/jaak-pulse/bin/jaak-pulse-api.bak /opt/jaak-pulse/bin/jaak-pulse-api
+sudo systemctl start jaak-pulse-api
+```
+
+- **Backups:** responsabilidad del cliente — recomendado backup de ADB **antes** de cada actualización con cambios de esquema, y política de retención de Object Storage.
+- **Monitoreo/alertas:** responsabilidad del cliente (healthz del LB, estado de los servicios systemd, espacio en disco).
+
+## 8. Soporte y SLA *(POC)*
+
+> Este acuerdo aplica durante la fase de prueba de concepto. Los términos de producción se formalizan al cerrar el contrato comercial.
+
+**Canal de soporte:** correo directo al equipo JAAK (`soporte@jaak.ai`) y canal de comunicación dedicado (Slack/Teams, a coordinar en onboarding).
+
+**Horario:** Lunes a viernes, 9:00–18:00 CST. Fuera de horario, solo incidentes Críticos.
+
+### Severidades
+
+| Severidad | Ejemplos | Tiempo de primera respuesta | Compromiso |
+|---|---|---|---|
+| **P1 — Crítico** | Dashboard completamente inaccesible; API no responde en `/healthz`; falla total de autenticación; servicio systemd caído sin recuperación automática | 2 h (incluye fuera de horario) | Diagnóstico activo hasta estabilizar |
+| **P2 — Alto** | Detecciones no se procesan o se procesan con retraso mayor a 15 min; cámaras registradas no aparecen en el dashboard; fallo en el updater que impide aplicar un release crítico; error 5xx persistente en endpoints de analítica | 4 h (en horario) | Workaround o fix en el día |
+| **P3 — Medio** | Métricas incorrectas en reportes (sin bloqueo operativo); comportamiento inesperado en filtros o vistas; update aplicado pero alguna funcionalidad secundaria degradada; error de configuración en modo de actualización | 1 día hábil | Fix en próximo release o workaround |
+| **P4 — Bajo** | Preguntas sobre configuración o parámetros Terraform; ajuste de umbrales o variables de entorno; solicitud de aclaración sobre el modelo de privacidad o telemetría; mejoras o sugerencias para el POC | 2 días hábiles | Se agenda en backlog del POC |
+
+### Qué enviar ante un incidente
+
+```bash
+# Versión instalada
+/opt/jaak-pulse/bin/jaak-pulse-api version
+
+# Logs del servicio (últimas 200 líneas)
+journalctl -u jaak-pulse-api -n 200 --no-pager
+journalctl -u jaak-pulse-updater -n 50 --no-pager
+
+# Estado de salud
+curl -fsS https://<dominio>/healthz
+curl -fsS https://<dominio>/api/healthz
+```
+
+**Alcance del soporte en POC:** software Pulse (releases, configuración, incidentes de aplicación). La infraestructura OCI (VM, red, ADB) es responsabilidad del cliente; JAAK puede orientar pero no opera la tenancy del cliente.
+
+**Fuera del alcance:** cambios de requerimiento, integraciones con sistemas de terceros no definidos en el POC, soporte al SO de la VM.
+
+## 9. Anexo técnico
+
+### Despliegue
+
+JAAK te entrega, durante el onboarding: (a) tu **`license_key`** y (b) la **`minisign_public_key`** ya embebida en el stack. El **instalador TUI es público** (descarga directa, sin credenciales); el `.zip` del stack para Resource Manager te lo entrega JAAK. Elige una ruta:
+
+- **Opción A (recomendada) — TUI de JAAK:** asistente por terminal que valida prerequisitos, pide tus datos de OCI y la `license_key`, descarga el Terraform **firmado** y ejecuta `plan`/`apply`.
+
+  **Instalación rápida (Linux/macOS):**
+  ```bash
+  curl -fsSL https://objectstorage.mx-monterrey-1.oraclecloud.com/n/axqlqkfdtaa0/b/jaak-pulse-tui-releases/o/tui/latest/install.sh | bash
+  ```
+  Detecta tu OS/arquitectura, descarga el binario y verifica su checksum. Deja `jaak-pulse-tui` en el directorio actual (o en `$INSTALL_DIR`).
+
+  **Descarga directa por plataforma** (URLs públicas estables; cada binario trae su firma `<nombre>.minisig` verificable con la `minisign_public_key`):
+
+  | Plataforma | URL |
+  |---|---|
+  | Linux x86-64 | `…/o/tui/latest/jaak-pulse-linux-amd64` |
+  | Linux ARM64 | `…/o/tui/latest/jaak-pulse-linux-arm64` |
+  | macOS Intel | `…/o/tui/latest/jaak-pulse-macos-intel` |
+  | macOS Apple Silicon | `…/o/tui/latest/jaak-pulse-macos-applesilicon` |
+  | Windows | `…/o/tui/latest/jaak-pulse-windows-amd64.exe` |
+
+  Base de las URLs: `https://objectstorage.mx-monterrey-1.oraclecloud.com/n/axqlqkfdtaa0/b/jaak-pulse-tui-releases/o/tui/latest/` — también `manifest.json` y `checksums.txt`. Para fijar una versión, usa `…/o/tui/<versión>/…` en vez de `latest`.
+
+  **Runbook paso a paso:** tu contacto JAAK te entrega el detalle de prerequisitos del operador durante el onboarding.
+  > **La TUI NO envía credenciales OCI a JAAK.** Ejecuta Terraform **localmente** contra tu tenancy usando tus credenciales locales (`~/.oci/config`); no las persiste tras salir.
+- **Opción B — OCI Resource Manager:** para equipos que ya operan con Resource Manager. Subir el `.zip` del stack (lo entrega JAAK), rellenar las variables (ver tabla abajo), `minisign_public_key` ya viene rellenada; **Plan → Apply** (~8–10 min).
+
+> **Estado de disponibilidad:** la entrega de artefactos firmados de la aplicación (primer release de `pulse-api`/`pulse-web` en el storage privado de JAAK) se cierra en la fase de activación con JAAK; sin ese primer release el `first boot` no completa la descarga (ver matriz de prerequisitos con tu contacto JAAK antes de agendar el despliegue).
+
+### Arranque (automático, primer boot)
+
+1. Lee secretos (incl. license key) desde **OCI Vault** (instance principal).
+2. Pide a JAAK el último release autorizado y **descarga firmado**.
+3. **Verifica firma minisign + SHA-256** antes de instalar.
+4. Instala API (`/opt/jaak-pulse/bin/jaak-pulse-api`, systemd) y web (nginx sirve `/opt/jaak-pulse/web`).
+5. Ejecuta `migrate` + `seed` (idempotentes).
+6. Queda detrás del Load Balancer.
+
+### Variables Terraform clave
+
+| Variable | Quién la aporta | Cómo obtenerla |
+|---|---|---|
+| `compartment_id` | **Cliente** | OCID del compartment dedicado a Pulse (Consola OCI → Identity → Compartments) |
+| `region` | **Cliente** | Tu región OCI con `VM.Standard.E5.Flex` disponible (`oci compute shape list -c <compartment>`) |
+| `ssh_public_key` | **Cliente** | `ssh-keygen -t ed25519 -f ~/.ssh/jaak-pulse` → contenido de `~/.ssh/jaak-pulse.pub` |
+| `license_key` (sensible) | **JAAK** | Te la entrega JAAK en el onboarding; se introduce en runtime y **no se commitea** |
+| `minisign_public_key` | **JAAK** | Ya viene con valor por defecto en el stack |
+| `licensing_url` | JAAK (default) | `https://api.licensing.jaak.ai` |
+| tamaños VM/ADB/LB | Cliente (opcional) | Ajustables; hay defaults razonables |
+
+> Cómo obtener cada dato de OCI (API key, compartment, shape, cuotas): tu contacto JAAK te guía durante el onboarding.
+
+### Troubleshooting
+
+| Síntoma | Causa probable | Acción |
+|---|---|---|
+| `/healthz` 502 los primeros minutos | Instalación en curso | Esperar ~5–10 min |
+| `/healthz` 502 persistente | No descargó/verificó el software | Revisar egress a `api.licensing.jaak.ai` y validez de `license_key`; abrir caso con JAAK |
+| Front no carga pero API responde | Artefacto del front no disponible | Reportar a JAAK |
+| "license not active" en logs | Licencia caducada/suspendida | Contactar a JAAK |
+| Update no aplica | Sin egress a JAAK | Revisar NAT Gateway / allowlist |

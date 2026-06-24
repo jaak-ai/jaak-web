@@ -14,6 +14,9 @@ export const Doc = defineDocumentType(() => ({
       default: 'guia'
     },
     order: { type: 'number', default: 999 },
+    // unlisted: accesible solo por enlace directo. Se excluye de sidebar,
+    // búsqueda interna y sitemap, y se marca noindex/nofollow para robots.
+    unlisted: { type: 'boolean', default: false },
   },
   computedFields: {
     slug: {
