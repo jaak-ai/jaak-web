@@ -72,7 +72,12 @@ JAAK Pulse se despliega **en la tenancy de OCI del propio cliente**. Se instalan
 ## 4. Prerequisitos exactos
 
 - **Recursos OCI que crea el stack:** 1 VCN (subred pública + privada, IGW, NAT, Service GW), 1 instancia de cómputo, 1 Autonomous Database (privada), 3 buckets de Object Storage (media/logs/backups, privados), 1 Vault + llave KMS, 1 Load Balancer flexible.
-- **Shape recomendado:** `VM.Standard.E5.Flex` (amd64). Dimensiones por defecto ajustables; los binarios se compilan **solo para amd64**.
+- **Shape recomendado:** `VM.Standard.E5.Flex` (amd64; los binarios se compilan **solo para amd64**). Dimensionamiento por defecto del stack (ajustable):
+  - **Cómputo (VM):** **5 OCPUs / 24 GB de RAM**.
+  - **Base de datos (Autonomous DB):** **2 OCPUs / 200 GB** de almacenamiento.
+  - **Object Storage:** 3 buckets (media/logs/backups) que crecen según uso; sin tamaño fijo.
+
+  Si tu región no ofrece `VM.Standard.E5.Flex`, usa otro shape Flex equivalente (p. ej. `VM.Standard.E4.Flex` o `E3.Flex`) conservando como mínimo el mismo dimensionamiento de cómputo.
 - **IAM mínimo:** el operador necesita estas políticas (las 2 últimas son a nivel **tenancy** porque el despliegue crea un *dynamic-group* + *policy* para que la VM lea sus secretos del Vault):
   ```
   Allow group <grupo> to manage all-resources  in compartment <compartment-Pulse>
