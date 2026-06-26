@@ -4,7 +4,7 @@ import { useState, useCallback } from "react";
 import { gtmEvent } from "./GoogleTagManager";
 import { TurnstileWidget, getUtmParams } from "./CloudflareTurnstile";
 
-const API_ENDPOINT = "https://api-kairos.jaak.ai/api/v1/public/leads";
+const API_ENDPOINT = "/api/contact";
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -59,12 +59,12 @@ export default function ContactForm() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          contact_name: formData.name,
+          name: formData.name,
           email: formData.email,
-          company_name: formData.company,
+          company: formData.company,
           phone: formData.phone,
-          message: formData.role ? `Rol: ${formData.role}. ${formData.message}` : formData.message,
-          country: "México",
+          role: formData.role || "Contacto Web",
+          message: formData.message,
           turnstile_token: turnstileToken,
           ...utmParams,
         }),

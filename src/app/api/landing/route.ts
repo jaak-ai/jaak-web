@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
-const EXTERNAL_API = "https://api-kairos.jaak.ai/api/v1/public/leads";
+const HUBSPOT_PORTAL_ID = "19644701";
+const HUBSPOT_FORM_ID = "b4e48141-58a0-4208-9c42-641bb2731a40";
 const TURNSTILE_VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 
 export async function POST(request: Request) {
@@ -56,29 +57,43 @@ export async function POST(request: Request) {
       }
     }
 
-    // Forward to external CRM
+    // Forward to HubSpot
     let crmSuccess = false;
     try {
-      const crmRes = await fetch(EXTERNAL_API, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contact_name: name,
-          email,
-          company_name: empresa || "",
-          phone: telefono,
-          message: mensaje || "",
-          country: "México",
-          source: source || "landing",
-          ...(turnstile_token && { turnstile_token }),
-          ...(utm_source && { utm_source }),
-          ...(utm_medium && { utm_medium }),
-          ...(utm_campaign && { utm_campaign }),
-        }),
-      });
+      const nameParts = name.trim().split(" ");
+      const firstname = nameParts[0] || "";
+      const lastname = nameParts.slice(1).join(" ") || "";
+
+      const hubspotFields = [
+        { name: "firstname", value: firstname },
+        { name: "lastname", value: lastname },
+        { name: "email", value: email },
+        { name: "phone", value: telefono },
+        { name: "cual_es_tu_funcion_en_la_empresa_", value: source || "landing" },
+      ];
+      if (empresa) hubspotFields.push({ name: "company", value: empresa });
+      if (mensaje) hubspotFields.push({ name: "message", value: mensaje });
+
+      const crmRes = await fetch(
+        `https://api.hsforms.com/submissions/v3/integration/submit/${HUBSPOT_PORTAL_ID}/${HUBSPOT_FORM_ID}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            fields: hubspotFields,
+            context: {
+              pageUri: `https://jaak.ai/${source || "landing"}`,
+              pageName: source || "Landing JAAK",
+            },
+          }),
+        }
+      );
       crmSuccess = crmRes.ok;
+      if (!crmRes.ok) {
+        console.error("HubSpot landing error:", await crmRes.text());
+      }
     } catch (e) {
-      console.error("CRM error:", e);
+      console.error("HubSpot error:", e);
     }
 
     // Send email notification via Resend (optional — only if key is set)
