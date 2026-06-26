@@ -245,7 +245,7 @@ export default function ArticleLayout({
         {/* ── ARTICLE BODY ───────────────────────────────── */}
         <section className="py-12" style={{ background: "#202945" }}>
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex gap-14">
+            <div className="flex flex-col lg:flex-row gap-14">
               {/* Main content */}
               <article className="min-w-0 flex-1">
                 <div
@@ -256,8 +256,8 @@ export default function ArticleLayout({
                 </div>
               </article>
 
-              {/* TOC sidebar */}
-              <div className="w-52 shrink-0">
+              {/* TOC sidebar — hidden on mobile */}
+              <div className="hidden lg:block w-52 shrink-0">
                 <ArticleTOC />
               </div>
             </div>
