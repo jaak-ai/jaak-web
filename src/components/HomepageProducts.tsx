@@ -49,13 +49,13 @@ const signatureProducts = [
   },
   {
     level: "N3",
-    name: "Firma Biométrica",
+    name: "Firma Digital NOM-151 + Biometría",
     desc: "Vinculada a la identidad biométrica verificada del firmante.",
     color: "#1ECAD3",
   },
   {
     level: "N4",
-    name: "Firma NOM-151",
+    name: "Firma Digital NOM-151",
     desc: "Máxima validez legal en México. Constancia de conservación con sello de tiempo certificado.",
     color: "#2AD796",
     highlight: true,

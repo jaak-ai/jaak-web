@@ -28,7 +28,7 @@ const breadcrumbSchema = {
   itemListElement: [
     { "@type": "ListItem", position: 1, name: "Inicio", item: "https://jaak.ai" },
     { "@type": "ListItem", position: 2, name: "Firma Electrónica", item: "https://jaak.ai/plataforma/firma-electronica" },
-    { "@type": "ListItem", position: 3, name: "Firma Biométrica", item: "https://jaak.ai/firma-electronica-biometrica" },
+    { "@type": "ListItem", position: 3, name: "Firma Digital NOM-151 + Biometría", item: "https://jaak.ai/firma-electronica-biometrica" },
   ],
 };
 
@@ -54,7 +54,7 @@ export default function FirmaBiometricaPage() {
                 Firma Electrónica
               </Link>
               <span aria-hidden="true">›</span>
-              <span className="text-gray-400">Firma Biométrica</span>
+              <span className="text-gray-400">Firma Digital NOM-151 + Biometría</span>
             </nav>
 
             <div
@@ -170,7 +170,7 @@ export default function FirmaBiometricaPage() {
         <section className="py-20" style={{ background: "#0A1628" }} aria-labelledby="benefits-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 id="benefits-heading" className="text-2xl font-black text-white mb-8 text-center">
-              ¿Qué incluye la Firma Biométrica?
+              ¿Qué incluye la Firma Digital NOM-151 + Biometría?
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {[
@@ -234,8 +234,8 @@ export default function FirmaBiometricaPage() {
             </p>
             <div className="flex flex-wrap justify-center gap-3 mb-8">
               {[
-                { href: "/firma-electronica-kyc", label: "Firma + KYC Completo" },
-                { href: "/firma-electronica-nom-151", label: "Firma NOM-151" },
+                { href: "/firma-electronica-kyc", label: "Firma Digital NOM-151 + KYC" },
+                { href: "/firma-electronica-nom-151", label: "Firma Digital NOM-151" },
                 { href: "/firma-electronica-simple", label: "Firma Simple" },
                 { href: "/plataforma/firma-electronica", label: "← Hub principal" },
               ].map((link) => (
@@ -258,7 +258,7 @@ export default function FirmaBiometricaPage() {
               className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold text-white text-base transition-all hover:opacity-90"
               style={{ background: "#8B5CF6", boxShadow: "0 0 30px rgba(139,92,246,0.3)" }}
             >
-              Explorar Firma Biométrica →
+              Explorar Firma Digital NOM-151 + Biometría →
             </Link>
           </div>
         </section>

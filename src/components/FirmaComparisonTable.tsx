@@ -41,7 +41,7 @@ const signatureTypes: SignatureType[] = [
   },
   {
     id: "nom151",
-    name: "Firma NOM-151",
+    name: "Firma Digital NOM-151",
     badge: "Certificada",
     badgeColor: "#1ECAD3",
     legalValidity: "Plena validez + Sello de tiempo NOM-151",
@@ -61,7 +61,7 @@ const signatureTypes: SignatureType[] = [
   },
   {
     id: "biometrica",
-    name: "Firma Biométrica",
+    name: "Firma Digital NOM-151 + Biometría",
     badge: "Verificada",
     badgeColor: "#8B5CF6",
     legalValidity: "Plena validez + NOM-151 + Biometría",
@@ -81,7 +81,7 @@ const signatureTypes: SignatureType[] = [
   },
   {
     id: "kyc",
-    name: "Firma + KYC Completo",
+    name: "Firma Digital NOM-151 + KYC",
     badge: "Full Compliance",
     badgeColor: "#10B981",
     legalValidity: "Máxima validez legal + Full compliance",

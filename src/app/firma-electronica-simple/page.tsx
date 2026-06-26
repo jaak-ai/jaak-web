@@ -208,11 +208,11 @@ export default function FirmaSimplePage() {
                 <p className="text-xs text-gray-500 mt-4">
                   Para estos casos, considera{" "}
                   <Link href="/firma-electronica-nom-151" className="text-[#1ECAD3] hover:underline">
-                    Firma NOM-151
+                    Firma Digital NOM-151
                   </Link>{" "}
                   o{" "}
                   <Link href="/firma-electronica-kyc" className="text-[#1ECAD3] hover:underline">
-                    Firma + KYC
+                    Firma Digital NOM-151 + KYC
                   </Link>
                   .
                 </p>
@@ -229,9 +229,9 @@ export default function FirmaSimplePage() {
             </p>
             <div className="flex flex-wrap justify-center gap-3 mb-8">
               {[
-                { href: "/firma-electronica-nom-151", label: "Firma NOM-151" },
-                { href: "/firma-electronica-biometrica", label: "Firma Biométrica" },
-                { href: "/firma-electronica-kyc", label: "Firma + KYC Completo" },
+                { href: "/firma-electronica-nom-151", label: "Firma Digital NOM-151" },
+                { href: "/firma-electronica-biometrica", label: "Firma Digital NOM-151 + Biometría" },
+                { href: "/firma-electronica-kyc", label: "Firma Digital NOM-151 + KYC" },
                 { href: "/plataforma/firma-electronica", label: "← Hub principal" },
               ].map((link) => (
                 <Link

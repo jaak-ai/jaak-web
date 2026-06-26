@@ -88,7 +88,7 @@ export const productos: Producto[] = [
   },
   {
     id: "firma-nom151",
-    nombre: "Firma NOM-151",
+    nombre: "Firma Digital NOM-151",
     categoria: "firma",
     unidad: "firmas",
     tagline: "Firma electrónica avanzada con la máxima validez legal en México.",
@@ -104,12 +104,12 @@ export const productos: Producto[] = [
   },
   {
     id: "firma-nom151-bio",
-    nombre: "Firma NOM-151 + Biometría",
+    nombre: "Firma Digital NOM-151 + Biometría",
     categoria: "firma",
     unidad: "sesiones",
-    tagline: "Firma NOM-151 vinculada a la validación facial del firmante.",
+    tagline: "Firma Digital NOM-151 vinculada a la validación facial del firmante.",
     incluye: [
-      "Todo lo de Firma NOM-151",
+      "Todo lo de Firma Digital NOM-151",
       "Verificación facial del firmante al momento de firmar",
       "Video y fotografías de la sesión vinculados al expediente",
       "Constancia individual por cada firmante",
@@ -121,7 +121,7 @@ export const productos: Producto[] = [
   },
   {
     id: "firma-nom151-kyc",
-    nombre: "Firma NOM-151 + KYC",
+    nombre: "Firma Digital NOM-151 + KYC",
     categoria: "firma",
     unidad: "sesiones",
     tagline: "La solución más completa: onboarding con KYC y firma con validez legal.",

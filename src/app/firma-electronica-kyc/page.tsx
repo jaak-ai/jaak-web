@@ -28,7 +28,7 @@ const breadcrumbSchema = {
   itemListElement: [
     { "@type": "ListItem", position: 1, name: "Inicio", item: "https://jaak.ai" },
     { "@type": "ListItem", position: 2, name: "Firma Electrónica", item: "https://jaak.ai/plataforma/firma-electronica" },
-    { "@type": "ListItem", position: 3, name: "Firma + KYC", item: "https://jaak.ai/firma-electronica-kyc" },
+    { "@type": "ListItem", position: 3, name: "Firma Digital NOM-151 + KYC", item: "https://jaak.ai/firma-electronica-kyc" },
   ],
 };
 
@@ -59,7 +59,7 @@ export default function FirmaKYCPage() {
                 Firma Electrónica
               </Link>
               <span aria-hidden="true">›</span>
-              <span className="text-gray-400">Firma + KYC Completo</span>
+              <span className="text-gray-400">Firma Digital NOM-151 + KYC</span>
             </nav>
 
             <div
@@ -134,7 +134,7 @@ export default function FirmaKYCPage() {
         <section className="py-20" style={{ background: "#070E1A" }} aria-labelledby="flow-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 id="flow-heading" className="text-2xl font-black text-white mb-4 text-center">
-              El flujo completo de Firma + KYC
+              El flujo completo de Firma Digital NOM-151 + KYC
             </h2>
             <p className="text-gray-500 text-center text-sm mb-10 max-w-2xl mx-auto">
               Todo en un solo flujo para el firmante, menos de 5 minutos desde el inicio hasta el expediente generado.
@@ -284,8 +284,8 @@ export default function FirmaKYCPage() {
             </p>
             <div className="flex flex-wrap justify-center gap-3 mb-8">
               {[
-                { href: "/firma-electronica-biometrica", label: "Firma Biométrica" },
-                { href: "/firma-electronica-nom-151", label: "Firma NOM-151" },
+                { href: "/firma-electronica-biometrica", label: "Firma Digital NOM-151 + Biometría" },
+                { href: "/firma-electronica-nom-151", label: "Firma Digital NOM-151" },
                 { href: "/firma-electronica-simple", label: "Firma Simple" },
                 { href: "/plataforma/firma-electronica", label: "← Hub principal" },
               ].map((link) => (
