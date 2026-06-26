@@ -4,7 +4,7 @@ import { useState, useCallback } from "react";
 import { gtmEvent } from "./GoogleTagManager";
 import { TurnstileWidget, getUtmParams } from "./CloudflareTurnstile";
 
-const API_ENDPOINT = "https://api-kairos.jaak.ai/api/v1/public/leads";
+const API_ENDPOINT = "/api/newsletter";
 
 export default function NewsletterForm() {
   const [email, setEmail] = useState("");
@@ -50,8 +50,6 @@ export default function NewsletterForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email,
-          message: "Suscripción a newsletter del blog",
-          country: "México",
           turnstile_token: turnstileToken,
           ...utmParams,
         }),
