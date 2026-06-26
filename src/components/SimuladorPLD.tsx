@@ -4,7 +4,7 @@ import { useState, useRef, useCallback } from "react";
 import { TurnstileWidget, getUtmParams } from "./CloudflareTurnstile";
 import { gtmEvent } from "./GoogleTagManager";
 
-const API_ENDPOINT = "https://api-kairos.jaak.ai/api/v1/public/leads";
+const API_ENDPOINT = "/api/contact";
 
 const UMA_2026 = 117.31;
 
@@ -352,14 +352,14 @@ export default function SimuladorPLD() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          contact_name: formData.name,
+          name: formData.name,
           email: formData.email,
-          company_name: formData.company || "",
+          company: formData.company || "",
           phone: formData.phone,
+          role: "Simulador PLD",
           message: resultado
             ? `[Simulador PLD] Actividad: ${resultado.activaNombre} | Resultado: ${resultado.requiereAviso ? "Aviso + Identificacion" : resultado.requiereIdentificacion ? "Solo identificacion" : "No obligado"} | Volumen: ${resultado.verificacionesMensuales} verif/mes (${resultado.verificacionesAnuales}/año) | Modalidad: ${resultado.modalidadJAAK} | Monto: ${formatMXN(resultado.montoMXN)} (${resultado.montoUMA.toFixed(2)} UMA)`
             : "[Simulador PLD] Solicitud de sesion estrategica",
-          country: "MX",
           turnstile_token: turnstileToken,
           utm_source: utmParams.utm_source,
           utm_medium: utmParams.utm_medium,
