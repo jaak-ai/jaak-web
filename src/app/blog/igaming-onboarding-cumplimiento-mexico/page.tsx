@@ -34,7 +34,7 @@ const jsonLd = {
     "iGaming en México: el onboarding ya no es solo registro, es cumplimiento",
   description:
     "Los operadores de iGaming en México deben conectar lo que la ley exige con infraestructura capaz de demostrar cumplimiento en cada etapa del onboarding.",
-  image: "https://jaak.ai/images/blog/igaming-onboarding-cumplimiento.jpg",
+  image: "https://jaak.ai/images/blog/igaming-onboarding-cumplimiento.png",
   datePublished: "2026-06-26",
   dateModified: "2026-06-26",
   author: {
@@ -74,7 +74,7 @@ export default function IGamingOnboardingCumplimiento() {
       date="26 de junio, 2026"
       readTime="12 min"
       slug="igaming-onboarding-cumplimiento-mexico"
-      image="/images/blog/igaming-onboarding-cumplimiento.jpg"
+      image="/images/blog/igaming-onboarding-cumplimiento.png"
       imageAlt="iGaming en México: onboarding y cumplimiento regulatorio"
       jsonLd={jsonLd}
       relatedPosts={[
