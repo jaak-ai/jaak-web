@@ -11,6 +11,17 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    title: "iGaming en México: el onboarding ya no es solo registro, es cumplimiento",
+    excerpt:
+      "Los operadores de iGaming en México enfrentan un reto muy particular: no basta con tener una buena experiencia de registro. El verdadero reto está en conectar lo que la ley exige con infraestructura capaz de demostrar cumplimiento en cada etapa del onboarding.",
+    date: "26 de junio, 2026",
+    dateISO: "2026-06-26",
+    category: "Compliance",
+    slug: "igaming-onboarding-cumplimiento-mexico",
+    readTime: "12 min",
+    image: "/images/blog/igaming-onboarding-cumplimiento.jpg",
+  },
+  {
     title: "Lo que más me preocupa del sector crediticio en México no es el fraude que entra. Es el que ya está adentro.",
     excerpt:
       "Las uniones de crédito verifican quién entra. Pero el contrato, el pagaré, la firma — muchas veces no pueden defenderse en un juicio. Arianna Quezada, CEO de JAAK, analiza la brecha que el nuevo marco jurisprudencial ya no permite ignorar.",
