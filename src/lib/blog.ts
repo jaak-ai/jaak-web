@@ -19,7 +19,7 @@ export const blogPosts: BlogPost[] = [
     category: "Compliance",
     slug: "igaming-onboarding-cumplimiento-mexico",
     readTime: "12 min",
-    image: "/images/blog/igaming-onboarding-cumplimiento.jpg",
+    image: "/images/blog/igaming-onboarding-cumplimiento.png",
   },
   {
     title: "Lo que más me preocupa del sector crediticio en México no es el fraude que entra. Es el que ya está adentro.",
