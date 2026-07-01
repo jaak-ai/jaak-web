@@ -1,0 +1,106 @@
+---
+title: Instalación con script (get-pulse)
+description: Instala JAAK Pulse (pulse-api + pulse-web) en tu propia VM Linux con un solo comando — modo nativo (systemd + nginx), con tu propia base Oracle 26ai y artefactos firmados verificados con minisign.
+category: guia
+order: 2
+unlisted: true
+---
+
+# Instalación de JAAK Pulse con `get-pulse.sh`
+
+`get-pulse.sh` instala el bundle completo de JAAK Pulse (**pulse-api + pulse-web**) en
+una VM Linux **tuya**, en modo **nativo**: binarios gestionados por systemd y nginx como
+reverse proxy. Es la alternativa ligera al [despliegue con Terraform en OCI](/docs/pulse/guia-cliente):
+tú aportas la máquina y tu base de datos Oracle 26ai, y el script hace el resto.
+
+> **Descarga directa:** [get-pulse.sh](/docs/pulse/get-pulse.sh)
+
+## Prerrequisitos
+
+- **VM Linux Ubuntu/Debian** con acceso `root` (o `sudo`).
+- **Oracle 26ai con AI Vector Search** accesible desde la VM, y su **DSN** a mano, p.ej.
+  `oracle://user:pass@host:1522/service?ssl=true&ssl%20verify=false`.
+  El instalador **no** instala ni levanta Oracle (BYO base de datos).
+- **License key de JAAK** con entitlement PULSE (`JAAK_LICENSE_KEY`).
+- Salida HTTPS hacia `api.licensing.jaak.ai` (descarga de releases firmados).
+- Puertos **80/443** disponibles en la VM.
+
+## Instalación rápida (interactiva)
+
+```bash
+curl -fsSL https://www.jaak.ai/docs/pulse/get-pulse.sh | sudo bash
+```
+
+El script pide de forma interactiva:
+
+- `JAAK_LICENSE_KEY` — tu license key con entitlement PULSE.
+- `ORACLE_DSN` — el DSN de tu Oracle 26ai.
+- `LICENSING_URL` (default `https://api.licensing.jaak.ai`) y el `server_name` de nginx.
+
+## Modo desatendido
+
+Para automatizar (CI, provisioning), pasa la configuración por variables de entorno y
+usa `--yes`:
+
+```bash
+JAAK_LICENSE_KEY=LK-xxxx \
+ORACLE_DSN='oracle://user:pass@host:1522/service?ssl=true&ssl%20verify=false' \
+  curl -fsSL https://www.jaak.ai/docs/pulse/get-pulse.sh | sudo bash -s -- --yes
+```
+
+Flags disponibles:
+
+| Flag | Descripción |
+|---|---|
+| `--yes` | No pregunta nada; falla si falta configuración obligatoria |
+| `--licensing-url <url>` | URL del licensing (default `https://api.licensing.jaak.ai`) |
+| `--server-name <name>` | `server_name` de nginx |
+| `--help` | Ayuda |
+
+Precedencia de configuración: **flags > variables de entorno > prompt interactivo
+(si hay TTY) > error**.
+
+## Inspeccionar antes de ejecutar (recomendado)
+
+`curl … | bash` ejecuta código remoto. Aunque el script se sirve por HTTPS y los
+**artefactos que descarga se verifican siempre con minisign + sha256** (la confianza no
+depende del canal), puedes revisarlo primero:
+
+```bash
+curl -fsSL https://www.jaak.ai/docs/pulse/get-pulse.sh -o get-pulse.sh
+less get-pulse.sh
+sudo bash get-pulse.sh
+```
+
+## Qué hace el instalador
+
+1. Instala prerrequisitos (`nginx`, `jq`, `minisign` pinneado por sha256, …).
+2. Escribe `/opt/jaak-pulse/.env` (permisos `0600`) con tu configuración y secretos
+   efímeros (`JWT_SECRET`, `API_KEY`, `SERVICE_KEY` generados con `openssl`).
+3. Descarga **pulse-api** y **pulse-web** firmados desde licensing-api y los verifica
+   (minisign + sha256).
+4. Ejecuta las migraciones (`migrate` + `seed`) contra tu Oracle.
+5. Configura systemd (`jaak-pulse-api`, `jaak-pulse-updater.timer`), nginx
+   (`/` → web estática, `/api/` → `127.0.0.1:8787`), sysctl/limits, y abre 80/443.
+6. Verifica `http://localhost/healthz` y `/api/healthz`.
+
+Es **idempotente**: es seguro re-ejecutarlo. Las actualizaciones posteriores las aplica
+automáticamente `jaak-pulse-updater.timer` (cada 30 minutos), no este script.
+
+## Post-instalación
+
+```bash
+journalctl -u jaak-pulse-api -f           # logs de la API
+systemctl status jaak-pulse-updater.timer # estado del updater automático
+```
+
+Todo queda bajo `/opt/jaak-pulse/` (binarios en `bin/`, web en `web/`, releases en
+`releases/`, configuración en `.env`).
+
+## Alcance
+
+Fuera de alcance de esta versión: Oracle empaquetado, desinstalación automática
+(`--uninstall`), distros no-apt (RHEL) y TLS/certbot automático (configura TLS en tu
+nginx o balanceador).
+
+¿Dudas o problemas durante la instalación? [Contáctanos](/contacto).
