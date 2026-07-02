@@ -9,6 +9,9 @@ type Tier = Paquete["id"];
 // - tierByProduct: tier elegido por producto (siempre definido; default = recomendado).
 // - cart: ids de productos agregados, en orden de inserción.
 // Así, lo agregado y el tier elegido persisten al cambiar de modo.
+// Índice de pricing (productId → tier → _id) hidratado desde la API en el server.
+type PricingIndex = Record<string, Record<string, string>>;
+
 interface CarritoStore {
   cart: string[];
   enCarrito: (id: string) => boolean;
@@ -19,11 +22,22 @@ interface CarritoStore {
   // Para la Guía: aplica el volumen a los productos NO agregados (premarcados),
   // congelando el tier de los que ya están en el carrito.
   aplicarVolumen: (tier: Tier) => void;
+  // IDs de pricing reales para el checkout, y si un producto es comprable
+  // (tiene renglón de pricing en prod). Si el índice viene vacío (falló el
+  // fetch), `comprable` devuelve true para no ocultar el catálogo.
+  pricingIndex: PricingIndex;
+  comprable: (id: string) => boolean;
 }
 
 const Ctx = createContext<CarritoStore | null>(null);
 
-export function CarritoProvider({ children }: { children: ReactNode }) {
+export function CarritoProvider({
+  children,
+  pricingIndex = {},
+}: {
+  children: ReactNode;
+  pricingIndex?: PricingIndex;
+}) {
   const [tierByProduct, setTierByProduct] = useState<Record<string, Tier>>(() =>
     Object.fromEntries(productos.map((p) => [p.id, p.recomendado ?? "plata"]))
   );
@@ -57,8 +71,14 @@ export function CarritoProvider({ children }: { children: ReactNode }) {
       return next;
     });
 
+  // Sin índice (fetch vacío) → no ocultamos nada; con índice → comprable = tiene id.
+  const indiceVacio = Object.keys(pricingIndex).length === 0;
+  const comprable = (id: string) => indiceVacio || !!pricingIndex[id];
+
   return (
-    <Ctx.Provider value={{ cart, enCarrito, tierDe, setTier, toggle, quitar, aplicarVolumen }}>
+    <Ctx.Provider
+      value={{ cart, enCarrito, tierDe, setTier, toggle, quitar, aplicarVolumen, pricingIndex, comprable }}
+    >
       {children}
     </Ctx.Provider>
   );

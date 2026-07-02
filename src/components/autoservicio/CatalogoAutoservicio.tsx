@@ -34,9 +34,15 @@ function CategoryIcon({ categoria, className }: { categoria: CategoriaId; classN
 }
 
 export default function CatalogoAutoservicio() {
-  const { enCarrito, tierDe, setTier, toggle } = useCarrito();
+  const { enCarrito, tierDe, setTier, toggle, comprable } = useCarrito();
+  // Solo categorías con al menos un producto comprable (con renglón de pricing).
+  const categoriasVisibles = categorias.filter((c) =>
+    productos.some((p) => p.categoria === c.id && comprable(p.id))
+  );
   const [comparar, setComparar] = useState<Record<string, boolean>>({});
-  const [activeCat, setActiveCat] = useState<CategoriaId>(categorias[0].id);
+  const [activeCat, setActiveCat] = useState<CategoriaId>(
+    categoriasVisibles[0]?.id ?? categorias[0].id
+  );
 
   // Scrollspy: resalta el chip de la categoría cuya sección está visible.
   useEffect(() => {
@@ -210,7 +216,7 @@ export default function CatalogoAutoservicio() {
             {/* Navegación por categoría: salta a la sección y resalta la visible (scrollspy) */}
             <div className="sticky top-[114px] z-30 border-b bg-white py-3" style={{ borderColor: "#EEF0F4" }}>
               <div className="flex gap-2 overflow-x-auto">
-                {categorias.map((c) => {
+                {categoriasVisibles.map((c) => {
                   const activo = activeCat === c.id;
                   return (
                     <button type="button"
@@ -227,8 +233,8 @@ export default function CatalogoAutoservicio() {
             </div>
 
             <div className="mt-6 space-y-12">
-              {categorias.map((cat) => {
-                const prods = productos.filter((p) => p.categoria === cat.id);
+              {categoriasVisibles.map((cat) => {
+                const prods = productos.filter((p) => p.categoria === cat.id && comprable(p.id));
                 if (!prods.length) return null;
                 return (
                   <section key={cat.id} id={`cat-${cat.id}`} data-cat={cat.id} className="scroll-mt-[180px]">
