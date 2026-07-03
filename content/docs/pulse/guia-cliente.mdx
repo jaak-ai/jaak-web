@@ -257,6 +257,25 @@ JAAK te entrega, durante el onboarding: (a) tu **`license_key`** y (b) la **`min
 5. Ejecuta `migrate` + `seed` (idempotentes).
 6. Queda detrás del Load Balancer.
 
+### Secrets del Vault
+
+El stack crea 4 secrets en el OCI Vault del cliente. Salvo la license key, **no hay que
+generar ni capturar ninguno manualmente**:
+
+| Secret | Quién lo genera | Qué es |
+|---|---|---|
+| `db-admin-password` | Terraform (aleatorio, 24 caracteres) | Password del usuario **ADMIN** de la Autonomous Database — es el **mismo valor**: el Vault lo genera y la ADB se crea con él |
+| `jwt-secret` | Terraform (aleatorio) | Firma de sesiones del dashboard |
+| `api-key` | Terraform (aleatorio) | Autenticación de la API |
+| `license-key` | **JAAK** (lo captura el operador) | La licencia entregada en el onboarding |
+
+- **No se crea ningún usuario ni esquema de BBDD manualmente.** La API se conecta como
+  `ADMIN` y el primer arranque ejecuta `migrate` + `seed`, que crean el esquema completo
+  de forma idempotente.
+- **No cambiar el password de ADMIN a mano** desde la consola de OCI: si el secret del
+  Vault y el password real de la ADB divergen, la API pierde conexión
+  (`ORA-01017: invalid username/password`). Cualquier rotación se hace vía Terraform.
+
 ### Variables Terraform clave
 
 | Variable | Quién la aporta | Cómo obtenerla |
@@ -277,6 +296,7 @@ JAAK te entrega, durante el onboarding: (a) tu **`license_key`** y (b) la **`min
 |---|---|---|
 | `/healthz` 502 los primeros minutos | Instalación en curso | Esperar ~5–10 min |
 | `/healthz` 502 persistente | No descargó/verificó el software | Revisar egress a `api.licensing.jaak.ai` y validez de `license_key`; abrir caso con JAAK |
+| API sin conexión a BBDD (`ORA-01017`) | Password de ADMIN cambiado manualmente en la consola OCI | No rotar ADMIN a mano; restaurar el valor del secret `db-admin-password` del Vault o rotar vía Terraform |
 | Front no carga pero API responde | Artefacto del front no disponible | Reportar a JAAK |
 | "license not active" en logs | Licencia caducada/suspendida | Contactar a JAAK |
 | Update no aplica | Sin egress a JAAK | Revisar NAT Gateway / allowlist |
