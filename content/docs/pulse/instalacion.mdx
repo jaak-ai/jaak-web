@@ -60,6 +60,58 @@ Flags disponibles:
 Precedencia de configuración: **flags > variables de entorno > prompt interactivo
 (si hay TTY) > error**.
 
+## Secrets desde OCI Vault (infraestructura manual)
+
+Si creaste la infraestructura a mano (VM + base + Vault, sin el
+[stack Terraform](/docs/pulse/guia-cliente)) y guardas tus secretos en **OCI Vault**, el
+patrón recomendado es un **wrapper que lee los secrets con OCI CLI y se los pasa al
+instalador como variables de entorno**. No hay que instalar y luego modificar nada: el
+instalador escribe los valores en `/opt/jaak-pulse/.env` (0600) y el servicio lee ese
+archivo — la aplicación **no consulta el Vault en runtime**.
+
+Solo dos valores son entrada del instalador: `JAAK_LICENSE_KEY` y `ORACLE_DSN` (que
+incluye el password de la base). El resto (`JWT_SECRET`, `API_KEY`, `SERVICE_KEY`) los
+genera el propio instalador; no hace falta guardarlos en el Vault.
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+
+get_secret() {
+  oci secrets secret-bundle get --secret-id "$1" --stage CURRENT \
+    --auth instance_principal --output json \
+    | jq -r '.data."secret-bundle-content".content' | base64 -d
+}
+
+DB_PASSWORD="$(get_secret ocid1.vaultsecret...db-password)"
+JAAK_LICENSE_KEY="$(get_secret ocid1.vaultsecret...license-key)"
+
+# Escapar caracteres especiales del password para la URL
+DB_PASSWORD_ESC="$(python3 -c 'import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1], safe=""))' "$DB_PASSWORD")"
+
+export JAAK_LICENSE_KEY
+export ORACLE_DSN="oracle://admin:${DB_PASSWORD_ESC}@<host>:1522/<service>?ssl=true&ssl%20verify=false"
+
+curl -fsSL https://www.jaak.ai/docs/pulse/get-pulse.sh | sudo -E bash -s -- --yes
+```
+
+Para que `--auth instance_principal` funcione, la VM debe pertenecer a un *dynamic
+group* con esta política:
+
+```
+Allow dynamic-group <grupo> to read secret-family in compartment <compartment>
+```
+
+Alternativa: correr OCI CLI con credenciales de usuario (`~/.oci/config`) y quitar el
+flag `--auth instance_principal`.
+
+Notas:
+
+- El instalador es idempotente, pero **cada ejecución regenera `JWT_SECRET`** (invalida
+  sesiones activas del dashboard; sin más impacto).
+- Si rotas el password de la base en tu Vault, **re-ejecuta el wrapper** para regenerar
+  el `.env` — la API no toma el valor nuevo sola.
+
 ## Inspeccionar antes de ejecutar (recomendado)
 
 `curl … | bash` ejecuta código remoto. Aunque el script se sirve por HTTPS y los
