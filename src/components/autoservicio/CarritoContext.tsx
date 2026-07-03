@@ -71,9 +71,18 @@ export function CarritoProvider({
       return next;
     });
 
-  // Sin índice (fetch vacío) → no ocultamos nada; con índice → comprable = tiene id.
+  // Sin índice (fetch vacío) → no ocultamos nada (fallback). Con índice, un
+  // producto es comprable solo si TODOS los tiers que ofrece resuelven a un _id;
+  // si algún tier faltara, el checkout con ese tier caería en i:"" (el bug),
+  // así que se oculta el producto completo en vez de mostrar un tier roto.
   const indiceVacio = Object.keys(pricingIndex).length === 0;
-  const comprable = (id: string) => indiceVacio || !!pricingIndex[id];
+  const comprable = (id: string) => {
+    if (indiceVacio) return true;
+    const tiers = pricingIndex[id];
+    if (!tiers) return false;
+    const prod = productos.find((p) => p.id === id);
+    return !!prod && prod.paquetes.every((q) => !!tiers[q.id]);
+  };
 
   return (
     <Ctx.Provider

@@ -36,7 +36,7 @@ const TIERS = ["cobre", "bronce", "plata", "oro", "platino"] as const;
 
 const norm = (s: string) => (s || "").replace(/\s+/g, " ").trim().toLowerCase();
 
-interface PricingRow {
+export interface PricingRow {
   id: string;
   productKey: string;
   productName: string;
@@ -48,7 +48,7 @@ interface PricingRow {
 // Deriva (etiqueta, tier) de un `description` del backend, replicando la misma
 // normalización que usa /register: normaliza espacios, ubica el keyword de tier
 // y toma como etiqueta el texto anterior.
-function deriveLabelTier(description: string): { label: string; tier: string } | null {
+export function deriveLabelTier(description: string): { label: string; tier: string } | null {
   const raw = (description || "").replace(/\s+/g, " ").trim();
   if (!raw) return null;
   const idx = TIERS.findIndex((t) => new RegExp(`\\b${t}\\b`, "i").test(raw));
@@ -62,36 +62,45 @@ function deriveLabelTier(description: string): { label: string; tier: string } |
   return { label, tier };
 }
 
-// Consulta la API y construye el índice productId → tier → `_id`.
-// Ante cualquier fallo devuelve un índice vacío: el checkout hará su fallback
-// (sin `id`, como hoy) en vez de romper el render de la página.
-export async function getPricingIndex(): Promise<PricingIndex> {
+// Construye el índice productId → tier → `_id` a partir de las filas del API.
+// Función PURA (sin red) para poder testear el join etiqueta+tier de forma
+// aislada. El join es por etiqueta+tier justamente para esquivar la colisión de
+// `productKey` (blacklist = INE/CURP/Listas; document = ambos OCR).
+export function buildPricingIndex(rows: PricingRow[]): PricingIndex {
   const index: PricingIndex = {};
+
+  // etiqueta+tier (normalizados) → primer `_id` visto
+  const byLabelTier = new Map<string, string>();
+  for (const row of rows) {
+    const dt = deriveLabelTier(row.description);
+    if (!dt || !row.id) continue;
+    const key = `${norm(dt.label)}||${dt.tier}`;
+    if (!byLabelTier.has(key)) byLabelTier.set(key, row.id);
+  }
+
+  for (const [productId, label] of Object.entries(BACKEND_LABEL)) {
+    for (const tier of TIERS) {
+      const id = byLabelTier.get(`${norm(label)}||${tier}`);
+      if (id) (index[productId] ??= {})[tier] = id;
+    }
+  }
+  return index;
+}
+
+// Consulta la API y construye el índice. Ante cualquier fallo devuelve un índice
+// vacío: el checkout hará su fallback (sin `id`, como hoy) en vez de romper el
+// render de la página.
+export async function getPricingIndex(): Promise<PricingIndex> {
   try {
     const res = await fetch(`${API_BASE}/public/v1/product-pricing`, {
       next: { revalidate: 300 },
     });
-    if (!res.ok) return index;
+    if (!res.ok) return {};
     const data = await res.json();
     const rows: PricingRow[] = data?.items ?? (Array.isArray(data) ? data : []);
-
-    // etiqueta+tier (normalizados) → primer `_id` visto
-    const byLabelTier = new Map<string, string>();
-    for (const row of rows) {
-      const dt = deriveLabelTier(row.description);
-      if (!dt || !row.id) continue;
-      const key = `${norm(dt.label)}||${dt.tier}`;
-      if (!byLabelTier.has(key)) byLabelTier.set(key, row.id);
-    }
-
-    for (const [productId, label] of Object.entries(BACKEND_LABEL)) {
-      for (const tier of TIERS) {
-        const id = byLabelTier.get(`${norm(label)}||${tier}`);
-        if (id) (index[productId] ??= {})[tier] = id;
-      }
-    }
+    return buildPricingIndex(rows);
   } catch {
     // red/parseo → índice vacío (fallback en buildCheckoutUrl)
+    return {};
   }
-  return index;
 }

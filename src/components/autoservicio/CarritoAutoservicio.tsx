@@ -37,7 +37,7 @@ export default function CarritoAutoservicio() {
   const subtotal = items.reduce((s, i) => s + i.paquete.precio, 0);
   const iva = Math.round(subtotal * IVA);
   const total = subtotal + iva;
-  const checkoutHref = items.length ? buildCheckoutUrl(items, pricingIndex) : "#";
+  const checkoutHref = items.length ? buildCheckoutUrl(items, { pricingIndex }) : "#";
 
   return (
     <>

@@ -260,9 +260,12 @@ export const productKeys: Record<string, string> = {
 // vacío (fallback: mismo comportamiento previo).
 export function buildCheckoutUrl(
   items: { producto: Producto; paquete: Paquete }[],
-  pricingIndex?: Record<string, Record<string, string>>,
-  base = "https://platform.jaak.ai/#/register/user-info"
+  options: {
+    pricingIndex?: Record<string, Record<string, string>>;
+    base?: string;
+  } = {}
 ): string {
+  const { pricingIndex, base = "https://platform.jaak.ai/#/register/user-info" } = options;
   const products = items.map(({ producto, paquete }) => {
     const nombre = producto.nombre.split(" — ")[0];
     return {
