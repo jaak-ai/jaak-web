@@ -63,7 +63,7 @@ const products = [
     color: "#1ECAD3",
   },
   {
-    name: "Firma NOM-151",
+    name: "Firma Digital NOM-151",
     description: "Firma electrónica con plena validez jurídica en México. Sellado de tiempo certificado.",
     color: "#655DC6",
   },

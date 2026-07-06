@@ -221,10 +221,10 @@ export default function Header() {
                       Firma Digital NOM-151
                     </Link>
                     <Link href="/firma-electronica-biometrica" className="block text-sm text-gray-500 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
-                      Firma NOM-151 + Biometría
+                      Firma Digital NOM-151 + Biometría
                     </Link>
                     <Link href="/firma-electronica-kyc" className="block text-sm text-gray-500 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
-                      Firma NOM-151 + KYC
+                      Firma Digital NOM-151 + KYC
                     </Link>
                   </div>
                   <Link href="/plataforma/gestion-evidencia" className="block text-gray-700 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
@@ -389,10 +389,10 @@ export default function Header() {
                       Firma Digital NOM-151
                     </Link>
                     <Link href="/firma-electronica-biometrica" className="block text-sm text-gray-500 hover:text-[#0066ff] transition-colors">
-                      Firma NOM-151 + Biometría
+                      Firma Digital NOM-151 + Biometría
                     </Link>
                     <Link href="/firma-electronica-kyc" className="block text-sm text-gray-500 hover:text-[#0066ff] transition-colors">
-                      Firma NOM-151 + KYC
+                      Firma Digital NOM-151 + KYC
                     </Link>
                   </div>
                   <Link href="/plataforma/gestion-evidencia" className="group block">

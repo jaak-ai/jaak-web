@@ -192,7 +192,7 @@ const PRODUCTS: ProductDefinition[] = [
   },
   {
     id: "firma-nom151-bio",
-    name: "Firma NOM-151 con Biometría Facial",
+    name: "Firma Digital NOM-151 + Biometría",
     description:
       "Firma electrónica avanzada NOM-151 con prueba de vida facial del firmante en tiempo real y validación 1:1 contra identificación oficial. Expediente con video y fotogramas. Ideal para banca, aseguradoras y contratos de alto valor.",
     category: "Software de Firma Electrónica con Biometría",
@@ -208,7 +208,7 @@ const PRODUCTS: ProductDefinition[] = [
   },
   {
     id: "firma-nom151-kyc",
-    name: "Firma NOM-151 + KYC Biométrico",
+    name: "Firma Digital NOM-151 + KYC",
     description:
       "Solución integral de onboarding regulado: firma NOM-151 con biometría facial y KYC completo del firmante (OCR + RENAPO + INE + OFAC + Interpol + SAT) en una sola sesión. Expediente único firma + identidad para AML/PLD y CNBV.",
     category: "Software de Onboarding Digital Regulado",

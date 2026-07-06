@@ -377,9 +377,9 @@ export default function FirmaThemeShell() {
             <div className="mt-10 grid grid-cols-2 gap-3">
               {[
                 { href: "/firma-electronica-simple", label: "Firma Simple →" },
-                { href: "/firma-electronica-nom-151", label: "Firma NOM-151 →" },
-                { href: "/firma-electronica-biometrica", label: "Firma Biométrica →" },
-                { href: "/firma-electronica-kyc", label: "Firma + KYC →" },
+                { href: "/firma-electronica-nom-151", label: "Firma Digital NOM-151 →" },
+                { href: "/firma-electronica-biometrica", label: "Firma Digital NOM-151 + Biometría →" },
+                { href: "/firma-electronica-kyc", label: "Firma Digital NOM-151 + KYC →" },
               ].map((link) => (
                 <Link
                   key={link.href}

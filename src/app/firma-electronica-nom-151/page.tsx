@@ -28,7 +28,7 @@ const breadcrumbSchema = {
   itemListElement: [
     { "@type": "ListItem", position: 1, name: "Inicio", item: "https://jaak.ai" },
     { "@type": "ListItem", position: 2, name: "Firma Electrónica", item: "https://jaak.ai/plataforma/firma-electronica" },
-    { "@type": "ListItem", position: 3, name: "Firma NOM-151", item: "https://jaak.ai/firma-electronica-nom-151" },
+    { "@type": "ListItem", position: 3, name: "Firma Digital NOM-151", item: "https://jaak.ai/firma-electronica-nom-151" },
   ],
 };
 
@@ -54,7 +54,7 @@ export default function FirmaNom151Page() {
                 Firma Electrónica
               </Link>
               <span aria-hidden="true">›</span>
-              <span className="text-gray-400">Firma NOM-151</span>
+              <span className="text-gray-400">Firma Digital NOM-151</span>
             </nav>
 
             <div
@@ -175,7 +175,7 @@ export default function FirmaNom151Page() {
         <section className="py-20" style={{ background: "#0A1628" }} aria-labelledby="usecases-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 id="usecases-heading" className="text-2xl font-black text-white mb-8 text-center">
-              Casos de uso ideales para Firma NOM-151
+              Casos de uso ideales para Firma Digital NOM-151
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               {[
@@ -232,8 +232,8 @@ export default function FirmaNom151Page() {
             </p>
             <div className="flex flex-wrap justify-center gap-3 mb-8">
               {[
-                { href: "/firma-electronica-biometrica", label: "Firma Biométrica" },
-                { href: "/firma-electronica-kyc", label: "Firma + KYC" },
+                { href: "/firma-electronica-biometrica", label: "Firma Digital NOM-151 + Biometría" },
+                { href: "/firma-electronica-kyc", label: "Firma Digital NOM-151 + KYC" },
                 { href: "/firma-electronica-simple", label: "Firma Simple" },
                 { href: "/plataforma/firma-electronica", label: "← Hub principal" },
               ].map((link) => (
@@ -256,7 +256,7 @@ export default function FirmaNom151Page() {
               className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold text-white text-base transition-all hover:opacity-90"
               style={{ background: "#1ECAD3", boxShadow: "0 0 30px rgba(30,202,211,0.3)" }}
             >
-              Activar Firma NOM-151 →
+              Activar Firma Digital NOM-151 →
             </Link>
           </div>
         </section>
