@@ -9,6 +9,9 @@ type Tier = Paquete["id"];
 // - tierByProduct: tier elegido por producto (siempre definido; default = recomendado).
 // - cart: ids de productos agregados, en orden de inserción.
 // Así, lo agregado y el tier elegido persisten al cambiar de modo.
+// Índice de pricing (productId → tier → _id) hidratado desde la API en el server.
+type PricingIndex = Record<string, Record<string, string>>;
+
 interface CarritoStore {
   cart: string[];
   enCarrito: (id: string) => boolean;
@@ -19,11 +22,22 @@ interface CarritoStore {
   // Para la Guía: aplica el volumen a los productos NO agregados (premarcados),
   // congelando el tier de los que ya están en el carrito.
   aplicarVolumen: (tier: Tier) => void;
+  // IDs de pricing reales para el checkout, y si un producto es comprable
+  // (tiene renglón de pricing en prod). Si el índice viene vacío (falló el
+  // fetch), `comprable` devuelve true para no ocultar el catálogo.
+  pricingIndex: PricingIndex;
+  comprable: (id: string) => boolean;
 }
 
 const Ctx = createContext<CarritoStore | null>(null);
 
-export function CarritoProvider({ children }: { children: ReactNode }) {
+export function CarritoProvider({
+  children,
+  pricingIndex = {},
+}: {
+  children: ReactNode;
+  pricingIndex?: PricingIndex;
+}) {
   const [tierByProduct, setTierByProduct] = useState<Record<string, Tier>>(() =>
     Object.fromEntries(productos.map((p) => [p.id, p.recomendado ?? "plata"]))
   );
@@ -57,8 +71,23 @@ export function CarritoProvider({ children }: { children: ReactNode }) {
       return next;
     });
 
+  // Sin índice (fetch vacío) → no ocultamos nada (fallback). Con índice, un
+  // producto es comprable solo si TODOS los tiers que ofrece resuelven a un _id;
+  // si algún tier faltara, el checkout con ese tier caería en i:"" (el bug),
+  // así que se oculta el producto completo en vez de mostrar un tier roto.
+  const indiceVacio = Object.keys(pricingIndex).length === 0;
+  const comprable = (id: string) => {
+    if (indiceVacio) return true;
+    const tiers = pricingIndex[id];
+    if (!tiers) return false;
+    const prod = productos.find((p) => p.id === id);
+    return !!prod && prod.paquetes.every((q) => !!tiers[q.id]);
+  };
+
   return (
-    <Ctx.Provider value={{ cart, enCarrito, tierDe, setTier, toggle, quitar, aplicarVolumen }}>
+    <Ctx.Provider
+      value={{ cart, enCarrito, tierDe, setTier, toggle, quitar, aplicarVolumen, pricingIndex, comprable }}
+    >
       {children}
     </Ctx.Provider>
   );

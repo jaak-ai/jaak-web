@@ -10,7 +10,8 @@
     "build": "contentlayer2 build && next build",
     "postinstall": "contentlayer2 build || true",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "vitest run"
   },
   "dependencies": {
     "@vercel/analytics": "^1.6.1",
@@ -39,6 +40,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.1.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.9"
   }
 }
