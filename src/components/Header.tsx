@@ -220,6 +220,12 @@ export default function Header() {
                     <Link href="/firma-electronica-nom-151" className="block text-sm text-gray-500 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
                       Firma Digital NOM-151
                     </Link>
+                    <Link href="/firma-electronica-efirma" className="block text-sm text-gray-500 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
+                      Firma con e.firma SAT
+                    </Link>
+                    <Link href="/firma-certificada-sello-tiempo" className="block text-sm text-gray-500 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
+                      Sello de Tiempo
+                    </Link>
                     <Link href="/firma-electronica-biometrica" className="block text-sm text-gray-500 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
                       Firma NOM-151 + Biometría
                     </Link>
@@ -387,6 +393,12 @@ export default function Header() {
                     </Link>
                     <Link href="/firma-electronica-nom-151" className="block text-sm text-gray-500 hover:text-[#0066ff] transition-colors">
                       Firma Digital NOM-151
+                    </Link>
+                    <Link href="/firma-electronica-efirma" className="block text-sm text-gray-500 hover:text-[#0066ff] transition-colors">
+                      Firma con e.firma SAT
+                    </Link>
+                    <Link href="/firma-certificada-sello-tiempo" className="block text-sm text-gray-500 hover:text-[#0066ff] transition-colors">
+                      Sello de Tiempo
                     </Link>
                     <Link href="/firma-electronica-biometrica" className="block text-sm text-gray-500 hover:text-[#0066ff] transition-colors">
                       Firma NOM-151 + Biometría

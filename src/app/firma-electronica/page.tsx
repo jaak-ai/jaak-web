@@ -3,24 +3,26 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FirmaComparisonTable from "@/components/FirmaComparisonTable";
-import FirmaProductCards from "@/components/FirmaProductCards";
 import FirmaHowItWorks from "@/components/FirmaHowItWorks";
 import FirmaDifferentiation from "@/components/FirmaDifferentiation";
 import FirmaRiskChecklist from "@/components/FirmaRiskChecklist";
 import FirmaUseCases from "@/components/FirmaUseCases";
 import FirmaFAQ from "@/components/FirmaFAQ";
 import FirmaSEMHandler from "@/components/FirmaSEMHandler";
+import EvidenceLevelSelector from "@/components/EvidenceLevelSelector";
+import SignatureRecommendationQuiz from "@/components/SignatureRecommendationQuiz";
+import EvidenceFlow from "@/components/EvidenceFlow";
 
 export const metadata: Metadata = {
-  title: "Firma Electrónica en México | Legal, Biométrica y NOM-151 | JAAK",
+  title: "Firma electrónica en México con e.firma, NOM-151 y biometría | JAAK",
   description:
-    "Firma electrónica con validez legal en México. NOM-151, biometría facial, KYC completo y expediente digital auditable. La solución más robusta para bancos, financieras e inmobiliarias.",
+    "Firma documentos digitales con JAAK usando firma simple, e.firma SAT, NOM-151, sello de tiempo, biometría, KYC y expediente auditable. Elige el nivel de evidencia que tu operación necesita.",
   keywords:
-    "firma electrónica México, firma digital, firmar documentos online, firma electrónica legal México, NOM 151 firma electrónica, firma biométrica, firma con verificación de identidad, cómo firmar contratos digitales legalmente, validez firma electrónica México, firma electrónica con KYC",
+    "firma electrónica México, firma digital, firmar documentos online, firma electrónica legal México, NOM 151 firma electrónica, firma biométrica, firma con e.firma SAT, sello de tiempo firma electrónica, firma con verificación de identidad, firma electrónica con KYC",
   openGraph: {
-    title: "Firma Electrónica en México | JAAK",
+    title: "Firma electrónica en México con e.firma, NOM-151 y biometría | JAAK",
     description:
-      "Firma electrónica con validez legal, biometría y NOM-151. La solución más completa para empresas reguladas en México.",
+      "Firma simple, e.firma SAT, NOM-151, sello de tiempo, biometría y KYC en un solo flujo, con expediente auditable. La solución más completa para empresas en México.",
     url: "https://jaak.ai/firma-electronica",
     type: "website",
     locale: "es_MX",
@@ -40,34 +42,34 @@ const faqSchema = {
   mainEntity: [
     {
       "@type": "Question",
-      name: "¿La firma electrónica es legal en México?",
+      name: "¿Qué diferencia hay entre firma simple, NOM-151, biométrica y e.firma?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Sí. La firma electrónica tiene plena validez legal en México conforme al Código de Comercio (artículos 89 al 114) y la Ley Federal de Firma Electrónica Avanzada (LFEA). La firma con certificación NOM-151 agrega un sello de tiempo certificado que fortalece su valor probatorio.",
+        text: "La firma simple permite capturar consentimiento. NOM-151 fortalece la conservación e integridad del documento conforme al marco mexicano. La firma biométrica vincula la firma con una prueba de identidad facial. La e.firma permite que el firmante use su certificado digital vigente del SAT dentro del flujo de firma.",
       },
     },
     {
       "@type": "Question",
-      name: "¿Qué es la NOM-151?",
+      name: "¿JAAK emite e.firma SAT?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "La NOM-151 (Norma Oficial Mexicana NOM-151-SCFI-2016) establece los requisitos para la conservación de mensajes de datos y digitalización de documentos. Un sello de tiempo NOM-151 garantiza la integridad del documento y la fecha exacta de firma.",
+        text: "No. JAAK permite integrar la firma con e.firma vigente del firmante dentro de un flujo digital auditable. La emisión, renovación y administración de la e.firma corresponde al firmante ante la autoridad correspondiente.",
       },
     },
     {
       "@type": "Question",
-      name: "¿Qué diferencia hay entre firma simple y firma avanzada?",
+      name: "¿Qué diferencia hay entre sello de tiempo y NOM-151?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "La firma simple es básica, sin verificación de identidad. La firma avanzada (con NOM-151, biometría o KYC) incluye verificación de identidad, sello de tiempo certificado y generación de evidencia que permite defender la firma en auditorías o procesos legales.",
+        text: "El sello de tiempo registra una fecha y hora confiable asociada a un documento o evento. NOM-151 agrega una capa de conservación e integridad del mensaje de datos conforme al marco mexicano.",
       },
     },
     {
       "@type": "Question",
-      name: "¿Tiene validez ante el SAT?",
+      name: "¿La e.firma sustituye al KYC?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Para contratos comerciales y financieros, la firma con NOM-151 tiene plena validez ante autoridades fiscales como respaldo de operaciones. Para trámites fiscales directos se requiere la e.firma (FIEL) del SAT.",
+        text: "No necesariamente. La e.firma puede reforzar la autoría de la firma, pero si necesitas validar identidad documental, biometría, listas o riesgo del cliente, conviene usar KYC.",
       },
     },
     {
@@ -75,7 +77,7 @@ const faqSchema = {
       name: "¿Cumple con los requisitos de la CNBV y la LFPIORPI?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Sí. La solución Firma + KYC de JAAK cumple con requisitos de identificación de la CNBV, la LFPIORPI y las Disposiciones en materia de PLD/FT, incluyendo validación de INE/pasaporte, CURP, listas de control y generación del expediente de identificación.",
+        text: "Sí. La solución Firma + KYC de JAAK está diseñada para respaldar los requisitos de identificación de la CNBV, la LFPIORPI y las Disposiciones en materia de PLD/FT, incluyendo validación de INE/pasaporte, CURP, listas de control y generación del expediente de identificación.",
       },
     },
   ],
@@ -88,7 +90,7 @@ const serviceSchema = {
   applicationCategory: "BusinessApplication",
   operatingSystem: "Web, iOS, Android",
   description:
-    "Plataforma de firma electrónica con NOM-151, biometría facial, KYC completo y expediente digital auditable para empresas en México.",
+    "Plataforma de firma electrónica con firma simple, e.firma SAT, NOM-151, sello de tiempo, biometría facial, KYC completo y expediente digital auditable para empresas en México.",
   offers: {
     "@type": "Offer",
     priceCurrency: "MXN",
@@ -98,13 +100,13 @@ const serviceSchema = {
     "@type": "Organization",
     name: "JAAK",
     url: "https://jaak.ai",
-    sameAs: [
-      "https://www.linkedin.com/company/jaak-ai",
-    ],
+    sameAs: ["https://www.linkedin.com/company/jaak-ai"],
   },
   featureList: [
     "Firma electrónica simple",
+    "Firma certificada con sello de tiempo",
     "Firma con NOM-151 certificado",
+    "Firma con e.firma SAT",
     "Firma biométrica con liveness",
     "Firma + KYC completo",
     "Expediente digital auditable",
@@ -116,403 +118,290 @@ const breadcrumbSchema = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   itemListElement: [
-    {
-      "@type": "ListItem",
-      position: 1,
-      name: "Inicio",
-      item: "https://jaak.ai",
-    },
-    {
-      "@type": "ListItem",
-      position: 2,
-      name: "Firma Electrónica",
-      item: "https://jaak.ai/firma-electronica",
-    },
+    { "@type": "ListItem", position: 1, name: "Inicio", item: "https://jaak.ai" },
+    { "@type": "ListItem", position: 2, name: "Firma Electrónica", item: "https://jaak.ai/firma-electronica" },
   ],
 };
+
+const badges = ["Firma simple", "e.firma SAT", "NOM-151", "Sello de tiempo", "Biometría", "KYC", "API"];
 
 export default function FirmaElectronicaPage() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <Header />
       <main>
         {/* ── HERO ──────────────────────────────────────────────── */}
         <section
           id="hero"
           className="relative pt-32 pb-20 overflow-hidden"
-          style={{
-            background:
-              "linear-gradient(135deg, #071020 0%, #0A1628 45%, #0D1F3C 100%)",
-          }}
-          aria-label="Firma electrónica en México"
+          style={{ background: "linear-gradient(135deg, #071426 0%, #0A1628 45%, #202945 100%)" }}
+          aria-label="Firma electrónica en México con identidad, e.firma y evidencia certificada"
         >
-          {/* Background grid */}
           <div
             className="absolute inset-0 opacity-[0.03] pointer-events-none"
             aria-hidden="true"
             style={{
-              backgroundImage:
-                "linear-gradient(#1ECAD3 1px, transparent 1px), linear-gradient(90deg, #1ECAD3 1px, transparent 1px)",
+              backgroundImage: "linear-gradient(#1ECAD3 1px, transparent 1px), linear-gradient(90deg, #1ECAD3 1px, transparent 1px)",
               backgroundSize: "60px 60px",
             }}
           />
+          <div className="absolute top-20 right-1/4 w-96 h-96 rounded-full opacity-10 blur-3xl pointer-events-none" aria-hidden="true" style={{ background: "#1ECAD3" }} />
 
-          {/* Glow orbs */}
-          <div
-            className="absolute top-20 right-1/4 w-96 h-96 rounded-full opacity-10 blur-3xl pointer-events-none"
-            aria-hidden="true"
-            style={{ background: "#1ECAD3" }}
-          />
-          <div
-            className="absolute bottom-10 left-1/4 w-64 h-64 rounded-full opacity-5 blur-3xl pointer-events-none"
-            aria-hidden="true"
-            style={{ background: "#8B5CF6" }}
-          />
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative text-center">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-[1.1] mb-6">
+              Firma electrónica en México con{" "}
+              <span
+                style={{
+                  background: "linear-gradient(135deg, #1ECAD3, #2AD796)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
+              >
+                identidad, e.firma y evidencia certificada
+              </span>
+            </h1>
 
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              {/* Left: Content */}
-              <div>
-                {/* Badge */}
-                <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full mb-6 text-xs font-semibold"
-                  style={{
-                    background: "rgba(30,202,211,0.1)",
-                    border: "1px solid rgba(30,202,211,0.25)",
-                    color: "#1ECAD3",
-                  }}
+            <p className="text-lg text-gray-400 leading-relaxed mb-8 max-w-2xl mx-auto">
+              Firma documentos con el nivel de evidencia que tu operación necesita: firma simple, e.firma SAT,
+              NOM-151, biometría, KYC y sellos de tiempo en un expediente auditable.
+            </p>
+
+            <div className="flex flex-wrap justify-center gap-2.5 mb-9">
+              {badges.map((badge) => (
+                <span
+                  key={badge}
+                  className="px-3.5 py-1.5 rounded-full text-xs font-semibold"
+                  style={{ background: "rgba(30,202,211,0.1)", border: "1px solid rgba(30,202,211,0.25)", color: "#1ECAD3" }}
                 >
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#1ECAD3] animate-pulse" aria-hidden="true" />
-                  NOM-151 · Biometría · KYC · API
-                </div>
-
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-[1.1] mb-6">
-                  Firma electrónica en{" "}
-                  <span
-                    style={{
-                      background: "linear-gradient(135deg, #1ECAD3, #2AD796)",
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                      backgroundClip: "text",
-                    }}
-                  >
-                    México
-                  </span>{" "}
-                  con validez legal y biometría
-                </h1>
-
-                <p className="text-lg text-gray-400 leading-relaxed mb-8 max-w-lg">
-                  No solo firmas. Generas{" "}
-                  <strong className="text-gray-200">evidencia legal irrebatible</strong>. Sello de tiempo
-                  NOM-151, verificación biométrica y expediente auditable en segundos.
-                </p>
-
-                {/* Trust indicators */}
-                <div className="flex flex-wrap gap-4 mb-8">
-                  {[
-                    { icon: "⚡", text: "Firma en menos de 3 min" },
-                    { icon: "⚖️", text: "Válida ante CNBV y SAT" },
-                    { icon: "🔒", text: "Expediente auditable" },
-                  ].map((item) => (
-                    <div
-                      key={item.text}
-                      className="flex items-center gap-2 text-sm text-gray-400"
-                    >
-                      <span aria-hidden="true">{item.icon}</span>
-                      {item.text}
-                    </div>
-                  ))}
-                </div>
-
-                {/* CTAs */}
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <Link
-                    href="/autoservicio"
-                    className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-bold text-white text-base transition-all hover:opacity-90 hover:scale-105"
-                    style={{
-                      background: "linear-gradient(135deg, #1ECAD3, #17A8B0)",
-                      boxShadow: "0 0 30px rgba(30,202,211,0.35)",
-                    }}
-                  >
-                    Probar autoservicio
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                  </Link>
-                  <Link
-                    href="/contacto"
-                    className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-bold text-base transition-all hover:bg-white/10"
-                    style={{
-                      background: "rgba(255,255,255,0.06)",
-                      border: "1px solid rgba(255,255,255,0.15)",
-                      color: "#E2E8F0",
-                    }}
-                  >
-                    Ver demo
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </Link>
-                </div>
-              </div>
-
-              {/* Right: UI Mock */}
-              <div className="relative flex justify-center lg:justify-end" aria-hidden="true">
-                {/* Main document card */}
-                <div
-                  className="relative w-full max-w-sm rounded-2xl p-6"
-                  style={{
-                    background: "rgba(255,255,255,0.05)",
-                    border: "1px solid rgba(255,255,255,0.12)",
-                    backdropFilter: "blur(20px)",
-                    boxShadow: "0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(30,202,211,0.1)",
-                  }}
-                >
-                  {/* Doc header */}
-                  <div className="flex items-center gap-3 mb-5">
-                    <div
-                      className="w-10 h-12 rounded-lg flex items-center justify-center text-xl"
-                      style={{ background: "rgba(30,202,211,0.1)", border: "1px solid rgba(30,202,211,0.2)" }}
-                    >
-                      📄
-                    </div>
-                    <div>
-                      <div className="text-sm font-semibold text-white">Contrato_CreditoAutomotriz.pdf</div>
-                      <div className="text-xs text-gray-500">2 firmantes pendientes</div>
-                    </div>
-                  </div>
-
-                  {/* Doc lines */}
-                  <div className="space-y-2 mb-5">
-                    {[100, 85, 92, 78, 60].map((w, i) => (
-                      <div
-                        key={i}
-                        className="h-2 rounded-full"
-                        style={{
-                          width: `${w}%`,
-                          background: i < 3 ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.06)",
-                        }}
-                      />
-                    ))}
-                  </div>
-
-                  {/* Signature area */}
-                  <div
-                    className="rounded-xl p-4 mb-4"
-                    style={{
-                      border: "1px dashed rgba(30,202,211,0.4)",
-                      background: "rgba(30,202,211,0.04)",
-                    }}
-                  >
-                    <div className="text-xs text-gray-500 mb-2">Firma del representante legal</div>
-                    <svg viewBox="0 0 200 40" className="w-40 h-8 opacity-70">
-                      <path
-                        d="M5,30 Q25,8 55,25 Q85,42 115,18 Q145,0 175,20 Q188,27 195,22"
-                        stroke="#1ECAD3"
-                        strokeWidth="2"
-                        fill="none"
-                        strokeLinecap="round"
-                      />
-                    </svg>
-                  </div>
-
-                  {/* Status badges */}
-                  <div className="flex gap-2 flex-wrap">
-                    <span
-                      className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full font-semibold"
-                      style={{
-                        background: "rgba(16,185,129,0.1)",
-                        border: "1px solid rgba(16,185,129,0.25)",
-                        color: "#34D399",
-                      }}
-                    >
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                      NOM-151
-                    </span>
-                    <span
-                      className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full font-semibold"
-                      style={{
-                        background: "rgba(30,202,211,0.1)",
-                        border: "1px solid rgba(30,202,211,0.25)",
-                        color: "#1ECAD3",
-                      }}
-                    >
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#1ECAD3] animate-pulse" />
-                      Biometría
-                    </span>
-                    <span
-                      className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full font-semibold"
-                      style={{
-                        background: "rgba(139,92,246,0.1)",
-                        border: "1px solid rgba(139,92,246,0.25)",
-                        color: "#A78BFA",
-                      }}
-                    >
-                      KYC
-                    </span>
-                  </div>
-                </div>
-
-                {/* Floating verification card */}
-                <div
-                  className="absolute -right-4 top-8 rounded-xl p-4 w-44"
-                  style={{
-                    background: "rgba(10,22,40,0.9)",
-                    border: "1px solid rgba(16,185,129,0.3)",
-                    backdropFilter: "blur(16px)",
-                    boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
-                    animation: "float 4s ease-in-out infinite",
-                  }}
-                >
-                  <div className="flex items-center gap-2 mb-2">
-                    <div
-                      className="w-7 h-7 rounded-full flex items-center justify-center text-sm"
-                      style={{ background: "rgba(16,185,129,0.2)" }}
-                    >
-                      ✓
-                    </div>
-                    <div>
-                      <div className="text-xs font-bold text-white">Verificado</div>
-                      <div className="text-xs text-gray-500">Identidad confirmada</div>
-                    </div>
-                  </div>
-                  <div className="text-xs text-gray-600">INE · CURP · Biometría</div>
-                </div>
-
-                {/* Glow under the card */}
-                <div
-                  className="absolute -bottom-8 inset-x-8 h-16 blur-2xl opacity-20 rounded-full pointer-events-none"
-                  style={{ background: "#1ECAD3" }}
-                />
-              </div>
+                  {badge}
+                </span>
+              ))}
             </div>
 
-            {/* Stats bar */}
-            <div
-              className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 pt-8"
-              style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
-            >
-              {[
-                { value: "99.9%", label: "Uptime garantizado" },
-                { value: "<3 min", label: "Tiempo promedio de firma" },
-                { value: "NOM-151", label: "Certificación incluida" },
-                { value: "API REST", label: "Integración en días" },
-              ].map((stat) => (
-                <div key={stat.label} className="text-center">
-                  <div
-                    className="text-2xl font-black mb-1"
-                    style={{ color: "#1ECAD3" }}
-                  >
-                    {stat.value}
-                  </div>
-                  <div className="text-xs text-gray-500">{stat.label}</div>
-                </div>
-              ))}
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link
+                href="/autoservicio"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-bold text-white text-base transition-all hover:opacity-90 hover:scale-105"
+                style={{ background: "linear-gradient(135deg, #1ECAD3, #17A8B0)", boxShadow: "0 0 30px rgba(30,202,211,0.35)" }}
+              >
+                Probar autoservicio
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
+              <Link
+                href="/contacto"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-bold text-base transition-all hover:bg-white/10"
+                style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)", color: "#E2E8F0" }}
+              >
+                Hablar con un experto
+              </Link>
+            </div>
+
+            <p className="text-sm text-gray-500 mt-5">
+              Desde documentos simples hasta contratos que requieren identidad, trazabilidad y evidencia defendible.
+            </p>
+          </div>
+        </section>
+
+        {/* ── NIVEL DE EVIDENCIA (interactivo) ─────────────────── */}
+        <section id="niveles-evidencia" className="py-20" style={{ background: "#0A1628" }} aria-labelledby="niveles-heading">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-10">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#1ECAD3" }}>
+                Niveles de evidencia
+              </div>
+              <h2 id="niveles-heading" className="text-3xl sm:text-4xl font-black text-white mb-4">
+                Elige el nivel de evidencia correcto para cada documento
+              </h2>
+              <p className="text-gray-400 max-w-2xl mx-auto text-base">
+                No todos los documentos necesitan la misma firma. Compara qué capa de evidencia necesitas según el
+                riesgo, la identidad del firmante y el valor del contrato.
+              </p>
+            </div>
+            <EvidenceLevelSelector />
+          </div>
+        </section>
+
+        {/* ── QUIZ: ¿QUÉ FIRMA NECESITO? ────────────────────────── */}
+        <section id="que-firma-necesito" className="py-20" style={{ background: "#070E1A" }} aria-labelledby="quiz-heading">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-10">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#1ECAD3" }}>
+                Recomendador
+              </div>
+              <h2 id="quiz-heading" className="text-3xl sm:text-4xl font-black text-white mb-4">
+                ¿Qué tipo de firma necesita tu documento?
+              </h2>
+              <p className="text-gray-400 max-w-2xl mx-auto text-base">
+                Responde algunas preguntas y te mostramos una recomendación.
+              </p>
+            </div>
+            <SignatureRecommendationQuiz />
+          </div>
+        </section>
+
+        {/* ── FIRMA NO ES LO MISMO QUE EVIDENCIA ────────────────── */}
+        <section id="evidencia" className="py-20" style={{ background: "#0A1628" }} aria-labelledby="diferenciacion-heading">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-10">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#1ECAD3" }}>
+                Diferenciación
+              </div>
+              <h2 id="diferenciacion-heading" className="text-3xl sm:text-4xl font-black text-white mb-4">
+                Firma no es lo mismo que{" "}
+                <span
+                  style={{
+                    background: "linear-gradient(135deg, #1ECAD3, #2AD796)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
+                  evidencia
+                </span>
+              </h2>
+              <p className="text-gray-400 max-w-2xl mx-auto text-base">
+                Una firma puede capturar consentimiento. Pero cuando el documento importa, también necesitas probar
+                identidad, integridad y trazabilidad. Con JAAK puedes combinar estas capas en un solo flujo.
+              </p>
+            </div>
+            <FirmaDifferentiation />
+          </div>
+        </section>
+
+        {/* ── E.FIRMA SAT ────────────────────────────────────────── */}
+        <section id="efirma" className="py-20" style={{ background: "#070E1A" }} aria-labelledby="efirma-heading">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-10">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(59,130,246,0.1)", border: "1px solid rgba(59,130,246,0.25)", color: "#60A5FA" }}>
+                Nueva capacidad
+              </div>
+              <h2 id="efirma-heading" className="text-3xl sm:text-4xl font-black text-white mb-4">
+                Firma con e.firma SAT dentro de un flujo auditable
+              </h2>
+              <p className="text-gray-400 max-w-2xl mx-auto text-base">
+                Permite que representantes legales, empresas o firmantes autorizados usen su e.firma vigente para
+                firmar documentos electrónicos con mayor certeza de autoría y no repudio.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="rounded-2xl p-6" style={{ background: "rgba(59,130,246,0.06)", border: "1px solid rgba(59,130,246,0.2)" }}>
+                <p className="text-xs font-bold uppercase tracking-wider mb-4" style={{ color: "#60A5FA" }}>Qué aporta</p>
+                <ul className="space-y-3">
+                  {[
+                    "Uso del certificado digital vigente del firmante.",
+                    "Mayor certeza sobre la autoría de la firma.",
+                    "Ideal para contratos de alto valor.",
+                    "Compatible con expedientes auditables.",
+                  ].map((item) => (
+                    <li key={item} className="flex items-start gap-2.5 text-sm text-gray-300">
+                      <svg className="w-4 h-4 mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" style={{ color: "#60A5FA" }} aria-hidden="true">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="rounded-2xl p-6" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)" }}>
+                <p className="text-xs font-bold uppercase tracking-wider mb-4 text-gray-500">Qué no sustituye</p>
+                <ul className="space-y-3">
+                  {[
+                    "No sustituye automáticamente un proceso KYC cuando necesitas verificar identidad documental o biométrica.",
+                    "No sustituye por sí sola la conservación NOM-151 si necesitas reforzar integridad probatoria en el tiempo.",
+                    "No implica que JAAK emita la e.firma del SAT.",
+                  ].map((item) => (
+                    <li key={item} className="flex items-start gap-2.5 text-sm text-gray-400">
+                      <span className="mt-1.5 w-1 h-1 rounded-full flex-shrink-0 bg-gray-500" aria-hidden="true" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+            <div className="text-center mt-8">
+              <Link
+                href="/firma-electronica-efirma"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all hover:opacity-90 hover:scale-105"
+                style={{ background: "#3B82F6" }}
+              >
+                Conocer firma con e.firma
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* ── SELLO DE TIEMPO Y NOM-151 ──────────────────────────── */}
+        <section id="sello-tiempo-nom151" className="py-20" style={{ background: "#0A1628" }} aria-labelledby="sello-heading">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(245,158,11,0.1)", border: "1px solid rgba(245,158,11,0.25)", color: "#F59E0B" }}>
+                Evidencia certificada
+              </div>
+              <h2 id="sello-heading" className="text-3xl sm:text-4xl font-black text-white mb-4">
+                Sello de tiempo y NOM-151: evidencia para defender el documento
+              </h2>
+              <p className="text-gray-400 max-w-2xl mx-auto text-base">
+                Registra cuándo ocurrió la firma, conserva la integridad del documento y genera un expediente
+                auditable.
+              </p>
+            </div>
+            <EvidenceFlow />
+            <div className="mt-10 text-center">
+              <p className="text-sm text-gray-500 max-w-2xl mx-auto mb-6">
+                El expediente puede incluir, cuando aplique: documento firmado, hash del documento, fecha y hora de
+                eventos, sello digital de tiempo, constancia NOM-151, datos del firmante, evidencia biométrica,
+                validación KYC, IP, dispositivo, metadatos y bitácora de eventos.
+              </p>
+              <Link
+                href="/firma-certificada-sello-tiempo"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all hover:opacity-90 hover:scale-105"
+                style={{ background: "#F59E0B" }}
+              >
+                Conocer firma certificada
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
             </div>
           </div>
         </section>
 
         {/* ── COMPARISON TABLE ─────────────────────────────────── */}
-        <section
-          id="comparacion"
-          className="py-20"
-          style={{ background: "#070E1A" }}
-          aria-labelledby="comparacion-heading"
-        >
+        <section id="comparacion" className="py-20" style={{ background: "#070E1A" }} aria-labelledby="comparacion-heading">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <div
-                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5"
-                style={{
-                  background: "rgba(30,202,211,0.08)",
-                  border: "1px solid rgba(30,202,211,0.2)",
-                  color: "#1ECAD3",
-                }}
-              >
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#1ECAD3" }}>
                 Comparativa
               </div>
-              <h2
-                id="comparacion-heading"
-                className="text-3xl sm:text-4xl font-black text-white mb-4"
-              >
-                ¿Cuál es la firma que necesitas?
+              <h2 id="comparacion-heading" className="text-3xl sm:text-4xl font-black text-white mb-4">
+                Compara los 6 tipos de firma electrónica
               </h2>
               <p className="text-gray-400 max-w-2xl mx-auto text-base">
-                Haz clic en cualquier fila para ver los detalles, beneficios y el caso de uso exacto de cada tipo.
+                Activa un filtro para resaltar los tipos de firma recomendados, o haz clic en cualquier fila para ver
+                el detalle.
               </p>
             </div>
             <FirmaComparisonTable />
           </div>
         </section>
 
-        {/* ── PRODUCT CARDS ─────────────────────────────────────── */}
-        <section
-          id="soluciones"
-          className="py-20"
-          style={{ background: "#0A1628" }}
-          aria-labelledby="soluciones-heading"
-        >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-10">
-              <div
-                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5"
-                style={{
-                  background: "rgba(30,202,211,0.08)",
-                  border: "1px solid rgba(30,202,211,0.2)",
-                  color: "#1ECAD3",
-                }}
-              >
-                Soluciones
-              </div>
-              <h2
-                id="soluciones-heading"
-                className="text-3xl sm:text-4xl font-black text-white mb-4"
-              >
-                4 niveles de firma para cada necesidad
-              </h2>
-              <p className="text-gray-400 max-w-2xl mx-auto text-base">
-                Desde la firma más simple hasta el cumplimiento regulatorio más completo. Haz clic para expandir cada solución.
-              </p>
-            </div>
-            <FirmaProductCards />
-          </div>
-        </section>
-
         {/* ── HOW IT WORKS ──────────────────────────────────────── */}
-        <section
-          id="como-funciona"
-          className="py-20"
-          style={{ background: "#070E1A" }}
-          aria-labelledby="flujo-heading"
-        >
+        <section id="como-funciona" className="py-20" style={{ background: "#0A1628" }} aria-labelledby="flujo-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <div
-                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5"
-                style={{
-                  background: "rgba(30,202,211,0.08)",
-                  border: "1px solid rgba(30,202,211,0.2)",
-                  color: "#1ECAD3",
-                }}
-              >
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#1ECAD3" }}>
                 Flujo de firma
               </div>
-              <h2
-                id="flujo-heading"
-                className="text-3xl sm:text-4xl font-black text-white mb-4"
-              >
+              <h2 id="flujo-heading" className="text-3xl sm:text-4xl font-black text-white mb-4">
                 Cómo funciona
               </h2>
               <p className="text-gray-400 max-w-2xl mx-auto text-base">
@@ -523,77 +412,20 @@ export default function FirmaElectronicaPage() {
           </div>
         </section>
 
-        {/* ── DIFFERENTIATION ───────────────────────────────────── */}
-        <section
-          id="diferenciacion"
-          className="py-20"
-          style={{ background: "#0A1628" }}
-          aria-labelledby="diferenciacion-heading"
-        >
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-10">
-              <div
-                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5"
-                style={{
-                  background: "rgba(30,202,211,0.08)",
-                  border: "1px solid rgba(30,202,211,0.2)",
-                  color: "#1ECAD3",
-                }}
-              >
-                Diferenciación
-              </div>
-              <h2
-                id="diferenciacion-heading"
-                className="text-3xl sm:text-4xl font-black text-white mb-4"
-              >
-                No solo firmas.{" "}
-                <span
-                  style={{
-                    background: "linear-gradient(135deg, #1ECAD3, #2AD796)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                  }}
-                >
-                  Generas evidencia legal.
-                </span>
-              </h2>
-              <p className="text-gray-400 max-w-2xl mx-auto text-base">
-                Haz clic en cada punto para explorar el detalle técnico y legal de cada diferenciador. Pasa el cursor sobre los términos subrayados para ver definiciones.
-              </p>
-            </div>
-            <FirmaDifferentiation />
-          </div>
-        </section>
-
         {/* ── RISK / PAIN SECTION ───────────────────────────────── */}
-        <section
-          id="riesgo"
-          className="py-20"
-          style={{ background: "#070E1A" }}
-          aria-labelledby="riesgo-heading"
-        >
+        <section id="riesgo" className="py-20" style={{ background: "#070E1A" }} aria-labelledby="riesgo-heading">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <div
-                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5"
-                style={{
-                  background: "rgba(239,68,68,0.08)",
-                  border: "1px solid rgba(239,68,68,0.2)",
-                  color: "#FCA5A5",
-                }}
-              >
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)", color: "#FCA5A5" }}>
                 Evaluación de riesgo
               </div>
-              <h2
-                id="riesgo-heading"
-                className="text-3xl sm:text-4xl font-black text-white mb-4"
-              >
+              <h2 id="riesgo-heading" className="text-3xl sm:text-4xl font-black text-white mb-4">
                 ¿Tu firma es defendible{" "}
                 <span style={{ color: "#FCA5A5" }}>en auditoría</span>?
               </h2>
               <p className="text-gray-400 max-w-2xl mx-auto text-base">
-                Selecciona las situaciones que aplican a tu empresa para evaluar la solidez legal de tu proceso de firma actual.
+                Selecciona las situaciones que aplican a tu empresa para evaluar la solidez legal de tu proceso de
+                firma actual.
               </p>
             </div>
             <FirmaRiskChecklist />
@@ -601,28 +433,13 @@ export default function FirmaElectronicaPage() {
         </section>
 
         {/* ── USE CASES ─────────────────────────────────────────── */}
-        <section
-          id="casos-uso"
-          className="py-20"
-          style={{ background: "#0A1628" }}
-          aria-labelledby="casos-heading"
-        >
+        <section id="casos-uso" className="py-20" style={{ background: "#0A1628" }} aria-labelledby="casos-heading">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <div
-                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5"
-                style={{
-                  background: "rgba(30,202,211,0.08)",
-                  border: "1px solid rgba(30,202,211,0.2)",
-                  color: "#1ECAD3",
-                }}
-              >
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#1ECAD3" }}>
                 Casos de uso
               </div>
-              <h2
-                id="casos-heading"
-                className="text-3xl sm:text-4xl font-black text-white mb-4"
-              >
+              <h2 id="casos-heading" className="text-3xl sm:text-4xl font-black text-white mb-4">
                 Firma en cada industria
               </h2>
               <p className="text-gray-400 max-w-2xl mx-auto text-base">
@@ -634,41 +451,29 @@ export default function FirmaElectronicaPage() {
         </section>
 
         {/* ── FAQ ───────────────────────────────────────────────── */}
-        <section
-          id="faq"
-          className="py-20"
-          style={{ background: "#070E1A" }}
-          aria-labelledby="faq-heading"
-        >
+        <section id="faq" className="py-20" style={{ background: "#070E1A" }} aria-labelledby="faq-heading">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <div
-                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5"
-                style={{
-                  background: "rgba(30,202,211,0.08)",
-                  border: "1px solid rgba(30,202,211,0.2)",
-                  color: "#1ECAD3",
-                }}
-              >
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#1ECAD3" }}>
                 Preguntas frecuentes
               </div>
-              <h2
-                id="faq-heading"
-                className="text-3xl sm:text-4xl font-black text-white mb-4"
-              >
+              <h2 id="faq-heading" className="text-3xl sm:text-4xl font-black text-white mb-4">
                 Todo sobre firma electrónica en México
               </h2>
               <p className="text-gray-400 max-w-2xl mx-auto text-base">
-                Resuelve tus dudas sobre validez legal, NOM-151, biometría y cumplimiento regulatorio.
+                Resuelve tus dudas sobre validez legal, e.firma, NOM-151, sello de tiempo, biometría y cumplimiento
+                regulatorio.
               </p>
             </div>
             <FirmaFAQ />
 
             {/* Internal linking to subpages */}
-            <div className="mt-10 grid grid-cols-2 gap-3">
+            <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 gap-3">
               {[
                 { href: "/firma-electronica-simple", label: "Firma Simple →" },
+                { href: "/firma-certificada-sello-tiempo", label: "Sello de Tiempo →" },
                 { href: "/firma-electronica-nom-151", label: "Firma NOM-151 →" },
+                { href: "/firma-electronica-efirma", label: "e.firma SAT →" },
                 { href: "/firma-electronica-biometrica", label: "Firma Biométrica →" },
                 { href: "/firma-electronica-kyc", label: "Firma + KYC →" },
               ].map((link) => (
@@ -676,11 +481,7 @@ export default function FirmaElectronicaPage() {
                   key={link.href}
                   href={link.href}
                   className="text-sm font-semibold px-4 py-3 rounded-xl text-center transition-all hover:bg-white/10"
-                  style={{
-                    background: "rgba(255,255,255,0.04)",
-                    border: "1px solid rgba(255,255,255,0.08)",
-                    color: "#1ECAD3",
-                  }}
+                  style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "#1ECAD3" }}
                 >
                   {link.label}
                 </Link>
@@ -690,67 +491,33 @@ export default function FirmaElectronicaPage() {
         </section>
 
         {/* ── FINAL CTA ─────────────────────────────────────────── */}
-        <section
-          id="contacto"
-          className="py-20"
-          style={{ background: "#0A1628" }}
-          aria-labelledby="cta-heading"
-        >
+        <section id="contacto" className="py-20" style={{ background: "#0A1628" }} aria-labelledby="cta-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div
               className="rounded-3xl p-8 md:p-12 overflow-hidden relative"
-              style={{
-                background: "linear-gradient(135deg, #0D1F3C, #071020)",
-                border: "1px solid rgba(30,202,211,0.15)",
-                boxShadow: "0 0 80px rgba(30,202,211,0.07)",
-              }}
+              style={{ background: "linear-gradient(135deg, #202945, #071426)", border: "1px solid rgba(30,202,211,0.15)", boxShadow: "0 0 80px rgba(30,202,211,0.07)" }}
             >
-              {/* Background glow */}
-              <div
-                className="absolute top-0 right-0 w-64 h-64 rounded-full opacity-10 blur-3xl pointer-events-none"
-                aria-hidden="true"
-                style={{ background: "#1ECAD3" }}
-              />
+              <div className="absolute top-0 right-0 w-64 h-64 rounded-full opacity-10 blur-3xl pointer-events-none" aria-hidden="true" style={{ background: "#1ECAD3" }} />
 
-              <h2
-                id="cta-heading"
-                className="text-3xl sm:text-4xl font-black text-white mb-4 text-center"
-              >
-                Empieza hoy mismo
+              <h2 id="cta-heading" className="text-3xl sm:text-4xl font-black text-white mb-4 text-center">
+                Elige la firma correcta para cada documento
               </h2>
               <p className="text-gray-400 text-center max-w-xl mx-auto mb-10">
-                Elige cómo quieres comenzar con JAAK Firma Electrónica.
+                Desde consentimiento simple hasta expedientes con identidad, e.firma, NOM-151 y evidencia certificada.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Autoservicio */}
-                <div
-                  className="rounded-2xl p-6 flex flex-col gap-5"
-                  style={{
-                    background: "rgba(30,202,211,0.06)",
-                    border: "1px solid rgba(30,202,211,0.2)",
-                  }}
-                >
+                <div className="rounded-2xl p-6 flex flex-col gap-5" style={{ background: "rgba(30,202,211,0.06)", border: "1px solid rgba(30,202,211,0.2)" }}>
                   <div>
-                    <div
-                      className="text-xs font-bold uppercase tracking-widest mb-2"
-                      style={{ color: "#1ECAD3" }}
-                    >
-                      Autoservicio
-                    </div>
-                    <h3 className="text-xl font-black text-white mb-2">
-                      Empieza en minutos
-                    </h3>
+                    <div className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#1ECAD3" }}>Autoservicio</div>
+                    <h3 className="text-xl font-black text-white mb-2">Empieza en minutos</h3>
                     <p className="text-sm text-gray-400 leading-relaxed">
-                      Crea tu cuenta, sube tu primer documento y obtén una firma con NOM-151 sin hablar con nadie.
+                      Crea tu cuenta, sube tu primer documento y configura el flujo de firma que necesitas sin hablar
+                      con nadie.
                     </p>
                   </div>
                   <ul className="space-y-2">
-                    {[
-                      "Sin contrato ni permanencia",
-                      "Pago por uso",
-                      "Soporte por chat",
-                    ].map((item) => (
+                    {["Sin contrato ni permanencia", "Pago por uso", "Soporte por chat"].map((item) => (
                       <li key={item} className="flex items-center gap-2 text-sm text-gray-300">
                         <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" style={{ color: "#1ECAD3" }} aria-hidden="true">
                           <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -771,34 +538,17 @@ export default function FirmaElectronicaPage() {
                   </Link>
                 </div>
 
-                {/* Enterprise */}
-                <div
-                  className="rounded-2xl p-6 flex flex-col gap-5"
-                  style={{
-                    background: "rgba(255,255,255,0.03)",
-                    border: "1px solid rgba(255,255,255,0.1)",
-                  }}
-                >
+                <div className="rounded-2xl p-6 flex flex-col gap-5" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)" }}>
                   <div>
-                    <div
-                      className="text-xs font-bold uppercase tracking-widest mb-2"
-                      style={{ color: "#8B5CF6" }}
-                    >
-                      Enterprise / Integración
-                    </div>
-                    <h3 className="text-xl font-black text-white mb-2">
-                      Integración completa
-                    </h3>
+                    <div className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#8B5CF6" }}>Enterprise / Integración</div>
+                    <h3 className="text-xl font-black text-white mb-2">Integración completa</h3>
                     <p className="text-sm text-gray-400 leading-relaxed">
-                      API REST + SDK + onboarding técnico + soporte dedicado. Para volumen alto y cumplimiento regulatorio total.
+                      API REST + SDK + onboarding técnico + soporte dedicado. Configura flujos de firma según
+                      documento, riesgo, industria o regulación.
                     </p>
                   </div>
                   <ul className="space-y-2">
-                    {[
-                      "API documentada + webhooks",
-                      "Soporte técnico dedicado",
-                      "SLA garantizado",
-                    ].map((item) => (
+                    {["API documentada + webhooks", "Soporte técnico dedicado", "SLA garantizado"].map((item) => (
                       <li key={item} className="flex items-center gap-2 text-sm text-gray-300">
                         <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" style={{ color: "#8B5CF6" }} aria-hidden="true">
                           <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -810,11 +560,7 @@ export default function FirmaElectronicaPage() {
                   <Link
                     href="/contacto"
                     className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all hover:bg-white/10"
-                    style={{
-                      background: "rgba(255,255,255,0.06)",
-                      border: "1px solid rgba(255,255,255,0.15)",
-                      color: "#E2E8F0",
-                    }}
+                    style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)", color: "#E2E8F0" }}
                   >
                     Hablar con ventas
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
