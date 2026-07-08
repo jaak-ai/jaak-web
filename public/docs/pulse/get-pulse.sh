@@ -254,9 +254,50 @@ verify_sha256() {
   actual="$(sha256sum "$file" | awk '{print $1}')"
   [[ "$actual" == "$expected" ]] || die "sha256 mismatch $file: got $actual, want $expected"
 }
-fetch_json() {
+# Consulta el endpoint releases de licensing-api con auth por license key. En
+# éxito deja el JSON en la global RELEASE_JSON. Distingue 409 (release incompleto
+# en el servidor — artefactos no publicados del todo, gate INTC-306) y 403
+# (licencia) de otros fallos, para dar un mensaje accionable en vez del error
+# crudo de curl. Args: <url> <product>.
+#
+# Usa una global en vez de capturar stdout a propósito: die() debe correr en el
+# scope de la función para que su exit detenga el script; dentro de $(...) un
+# exit solo terminaría el subshell y el caller seguiría con JSON vacío.
+RELEASE_JSON=""
+fetch_release_json() {
+  local url="$1" product="$2" body_file code
+  body_file="$(mktemp)"
   # shellcheck disable=SC2086
-  curl -fsSL $CURL_RETRY -H "X-License-Key: $JAAK_LICENSE_KEY" -H "Accept: application/json" "$1"
+  code="$(curl -sSL $CURL_RETRY \
+    -H "X-License-Key: $JAAK_LICENSE_KEY" -H "Accept: application/json" \
+    -o "$body_file" -w '%{http_code}' "$url")" \
+    || { rm -f "$body_file"; die "error de red consultando releases para $product"; }
+  case "$code" in
+    2??) RELEASE_JSON="$(cat "$body_file")"; rm -f "$body_file" ;;
+    409) rm -f "$body_file"
+         die "release de $product incompleto en el servidor (HTTP 409): los artefactos aún no están todos publicados en el bucket. Reintenta más tarde o contacta a JAAK." ;;
+    403) rm -f "$body_file"
+         die "licencia rechazada para $product (HTTP 403): revisa tu JAAK_LICENSE_KEY y el entitlement PULSE." ;;
+    *)   rm -f "$body_file"
+         die "consulta a releases para $product falló (HTTP $code)" ;;
+  esac
+}
+
+# Descarga un objeto del release a un archivo, distinguiendo un 404 de release
+# incompleto (objeto aún no en el bucket — pasa contra un licensing-api sin el
+# gate INTC-306) de otros fallos. Args: <url> <dest> <qué>. Se llama como
+# sentencia (no dentro de $(...)) para que die() detenga el script. Usa $version
+# del caller (install_product).
+download_release_file() {
+  local url="$1" dest="$2" what="$3" code
+  # shellcheck disable=SC2086
+  code="$(curl -sSL $CURL_RETRY -o "$dest" -w '%{http_code}' "$url")" \
+    || die "error de red descargando $what"
+  case "$code" in
+    2??) : ;;
+    404) die "release $version parece incompleto en el servidor: falta '$what' (HTTP 404). El publish del release no terminó de subir todos los artefactos (p. ej. la mitad de pulse-web que genera manifest.json). Reintenta más tarde o contacta a JAAK." ;;
+    *)   die "descarga de '$what' falló (HTTP $code)" ;;
+  esac
 }
 
 install_product() {
@@ -267,9 +308,8 @@ install_product() {
   # shellcheck disable=SC2064
   trap "rm -f '$pubkeyfile'; rm -rf '$workdir'" RETURN
 
-  local release_json
-  release_json="$(fetch_json "$LICENSING_URL/api/v1/releases/latest?channel=stable&product=$product")" \
-    || die "no pude consultar releases para $product (¿license key válida?)."
+  fetch_release_json "$LICENSING_URL/api/v1/releases/latest?channel=stable&product=$product" "$product"
+  local release_json="$RELEASE_JSON"
 
   local manifest_url manifest_sig_url version
   manifest_url="$(echo "$release_json" | jq -r '.manifest_url')"
@@ -278,10 +318,8 @@ install_product() {
   log "  version=$version"
 
   local manifest="$workdir/manifest.json" manifest_sig="$workdir/manifest.json.minisig"
-  # shellcheck disable=SC2086
-  curl -fsSL $CURL_RETRY "$manifest_url"     -o "$manifest"
-  # shellcheck disable=SC2086
-  curl -fsSL $CURL_RETRY "$manifest_sig_url" -o "$manifest_sig"
+  download_release_file "$manifest_url"     "$manifest"     "manifest.json"
+  download_release_file "$manifest_sig_url" "$manifest_sig" "manifest.json.minisig"
   verify_minisign "$manifest" "$manifest_sig" "$pubkeyfile"
 
   # name + sha256 vienen del manifest FIRMADO (la verificación no es decorativa);
@@ -297,10 +335,8 @@ install_product() {
   [[ -n "$sig_url" && "$sig_url" != "null" ]] || die "sig_url vacío para $product"
 
   local artifact="$workdir/$name" artifact_sig="$workdir/$name.minisig"
-  # shellcheck disable=SC2086
-  curl -fsSL $CURL_RETRY "$download_url" -o "$artifact"
-  # shellcheck disable=SC2086
-  curl -fsSL $CURL_RETRY "$sig_url"      -o "$artifact_sig"
+  download_release_file "$download_url" "$artifact"     "$name"
+  download_release_file "$sig_url"      "$artifact_sig" "$name.minisig"
   verify_sha256   "$artifact" "$sha256"
   verify_minisign "$artifact" "$artifact_sig" "$pubkeyfile"
 
