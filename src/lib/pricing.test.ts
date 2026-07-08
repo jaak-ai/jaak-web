@@ -56,7 +56,7 @@ describe("buildPricingIndex", () => {
     { id: "simple_cobre", productKey: "signa_simple", productName: "Firma Simple", description: "Firma Simple Cobre 10", quota: 10, price: 57 },
     { id: "bio_oro", productKey: "signa_advanced_biometric", productName: "Firma Avanzada + Biometria", description: "Firma NOM151 + BIO Oro 250", quota: 250, price: 3132 },
     { id: "kyc_firma_oro", productKey: "signa_biometric", productName: "Firma con Biometria", description: "Firma NOM151 + KYC Oro 250", quota: 250, price: 5481 },
-    { id: "junk", productKey: "signa_timestamp", productName: "Sello de Tiempo", description: "Sellos digitales", quota: 5, price: 29 },
+    { id: "junk", productKey: "signa_timestamp", productName: "Sellos de Tiempo", description: "Sellos digitales", quota: 5, price: 29 },
   ];
   const index = buildPricingIndex(rows);
 

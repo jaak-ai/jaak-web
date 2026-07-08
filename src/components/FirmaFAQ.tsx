@@ -29,6 +29,24 @@ const faqItems: FAQItem[] = [
       "La firma simple es cualquier símbolo electrónico que una persona usa para manifestar su consentimiento (un clic, una imagen de firma, un código OTP). No verifica la identidad del firmante y tiene evidencia mínima. La firma avanzada (conforme a la LFEA) requiere: (1) vinculación exclusiva al firmante, (2) identificación del firmante, (3) creación bajo su control exclusivo, y (4) capacidad de detectar modificaciones posteriores. En la práctica, una firma con biometría + NOM-151 cumple todos estos requisitos y agrega un nivel de evidencia que la firma simple jamás puede igualar.",
   },
   {
+    id: "efirma-emision",
+    question: "¿JAAK emite la e.firma del SAT?",
+    answer:
+      "No. JAAK permite integrar la firma con la e.firma vigente del firmante dentro de un flujo digital auditable. La emisión, renovación y administración de la e.firma corresponde al firmante ante el SAT. Lo que JAAK aporta es el flujo de firma, la evidencia y el expediente auditable alrededor de esa firma.",
+  },
+  {
+    id: "sello-vs-nom151",
+    question: "¿Qué diferencia hay entre sello de tiempo y NOM-151?",
+    answer:
+      "El sello de tiempo registra una fecha y hora confiable asociada a un documento o evento. La constancia NOM-151 agrega una capa adicional de conservación e integridad del mensaje de datos conforme al marco mexicano (NOM-151-SCFI-2016). En la práctica, NOM-151 incluye un sello de tiempo, pero fortalece además la evidencia de que el documento no cambió después de firmado.",
+  },
+  {
+    id: "efirma-nom151",
+    question: "¿Puedo combinar e.firma con NOM-151?",
+    answer:
+      "Sí. Para documentos de mayor valor o riesgo, puedes combinar e.firma con NOM-151 dentro del mismo flujo para reforzar autoría, integridad, trazabilidad y conservación del documento.",
+  },
+  {
     id: "sat",
     question: "¿Tiene validez ante el SAT?",
     answer:
@@ -38,7 +56,7 @@ const faqItems: FAQItem[] = [
     id: "kyc-compliance",
     question: "¿Cumple con los requisitos de la CNBV y la LFPIORPI?",
     answer:
-      "Sí. La solución Firma + KYC de JAAK está diseñada para cumplir con los requisitos de identificación de clientes establecidos por la CNBV (Comisión Nacional Bancaria y de Valores), la LFPIORPI (Ley Federal para la Prevención e Identificación de Operaciones con Recursos de Procedencia Ilícita) y las Disposiciones de Carácter General en materia de PLD/FT. Incluye: validación de identificación oficial (INE/pasaporte), consulta en listas de control (PLD, OFAC, SAT 69-B), verificación de CURP en Renapo, y generación del expediente de identificación del cliente (EIC) con todos los elementos requeridos.",
+      "Sí. La solución Firma Digital NOM-151 + KYC de JAAK está diseñada para cumplir con los requisitos de identificación de clientes establecidos por la CNBV (Comisión Nacional Bancaria y de Valores), la LFPIORPI (Ley Federal para la Prevención e Identificación de Operaciones con Recursos de Procedencia Ilícita) y las Disposiciones de Carácter General en materia de PLD/FT. Incluye: validación de identificación oficial (INE/pasaporte), consulta en listas de control (PLD, OFAC, SAT 69-B), verificación de CURP en Renapo, y generación del expediente de identificación del cliente (EIC) con todos los elementos requeridos.",
   },
   {
     id: "impugnar",

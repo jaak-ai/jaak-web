@@ -121,7 +121,7 @@ const steps = [
     num: "02",
     title: "Integrar expediente digital",
     desc: "Documentos, consentimientos y firma electrónica en un expediente auditable desde el primer contacto.",
-    tags: ["Firma NOM-151", "Consentimiento", "Expediente digital"],
+    tags: ["Firma Digital NOM-151", "Consentimiento", "Expediente digital"],
   },
   {
     num: "03",

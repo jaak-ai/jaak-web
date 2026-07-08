@@ -4,9 +4,9 @@ import Footer from "@/components/Footer";
 import PreciosClient from "./PreciosClient";
 
 export const metadata: Metadata = {
-  title: "Precios – KYC Biométrico y Firma NOM-151 | JAAK",
+  title: "Precios – KYC Biométrico y Firma Digital NOM-151 | JAAK",
   description:
-    "KYC biométrico desde $99 MXN/año. Firma NOM-151 desde $49 MXN/año. Sin setup fee. Para empresas reguladas en México. ISO 27001 · iBeta Nivel 2.",
+    "KYC biométrico desde $99 MXN/año. Firma Digital NOM-151 desde $49 MXN/año. Sin setup fee. Para empresas reguladas en México. ISO 27001 · iBeta Nivel 2.",
   keywords: [
     "precios KYC México",
     "KYC biométrico precio",
@@ -20,9 +20,9 @@ export const metadata: Metadata = {
     "cumplimiento CNBV LFPIORPI UIF",
   ],
   openGraph: {
-    title: "Precios – KYC Biométrico y Firma NOM-151 | JAAK",
+    title: "Precios – KYC Biométrico y Firma Digital NOM-151 | JAAK",
     description:
-      "KYC biométrico desde $99 MXN/año. Firma NOM-151 desde $49 MXN/año. Sin setup fee. Autoservicio, Enterprise y Alianzas para empresas reguladas en México.",
+      "KYC biométrico desde $99 MXN/año. Firma Digital NOM-151 desde $49 MXN/año. Sin setup fee. Autoservicio, Enterprise y Alianzas para empresas reguladas en México.",
     url: "https://jaak.ai/precios",
   },
   alternates: {
@@ -48,7 +48,7 @@ const faqSchema = {
       name: "¿Cuánto cuesta la Firma Electrónica NOM-151?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Firma Simple desde $49 MXN (10 firmas). Firma NOM-151 desde $99 MXN (5 firmas) hasta $6,000 MXN (500 firmas). Firma NOM-151+Bio desde $99 MXN hasta $12,500 MXN (500 firmas). Sin setup fee en Autoservicio.",
+        text: "Firma Simple desde $49 MXN (10 firmas). Firma Digital NOM-151 desde $99 MXN (5 firmas) hasta $6,000 MXN (500 firmas). Firma Digital NOM-151+Bio desde $99 MXN hasta $12,500 MXN (500 firmas). Sin setup fee en Autoservicio.",
       },
     },
     {
@@ -160,7 +160,7 @@ const PRODUCTS: ProductDefinition[] = [
   },
   {
     id: "firma-simple",
-    name: "Firma Electrónica Simple",
+    name: "Firma Simple",
     description:
       "Firma electrónica con validez legal en México para contratos comerciales, RR.HH. y flujos de aprobación sin obligación regulatoria de NOM-151. API REST y plataforma web, hasta 4 firmantes por documento.",
     category: "Software de Firma Electrónica",

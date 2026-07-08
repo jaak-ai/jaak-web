@@ -1,0 +1,206 @@
+---
+title: Instalación de la cámara Pulse
+description: Guía paso a paso para instalar una cámara JAAK Pulse desde que llega — enchufar, conectarse al Access Point JAAK_PULSE y configurar la red (WiFi, cable, proxy o circuito cerrado) desde el portal de configuración. Incluye solución de problemas.
+category: guia
+order: 3
+unlisted: true
+---
+
+# Instalación de la cámara JAAK Pulse
+
+Esta guía te lleva desde que **abres la caja** hasta que la cámara queda **en línea y
+configurada**, sin necesidad de conocimientos técnicos. Todo se hace desde el teléfono o
+la laptop, conectándote al **Access Point** que la propia cámara crea la primera vez que
+la enciendes.
+
+<Callout type="info" title="¿Cuánto tarda?">
+Unos 3–5 minutos. Solo necesitas la cámara, un enchufe, y saber el nombre y la contraseña
+del WiFi del sitio (o un cable de red).
+</Callout>
+
+## Qué incluye la caja
+
+- La **cámara JAAK Pulse**.
+- Su **fuente de alimentación** (adaptador USB‑C / PoE según el modelo).
+- Opcional: cable de red Ethernet.
+
+> **Foto de referencia del equipo:**
+>
+> ![Cámara JAAK Pulse y su fuente de alimentación](/docs/pulse/camara-unboxing.png)
+
+## Paso 1 · Enchufa la cámara
+
+Conecta la cámara a la corriente con su fuente. **No necesitas conectar nada más todavía.**
+La cámara arranca sola en unos segundos.
+
+- Si vas a usar **cable de red**, puedes conectarlo ahora al puerto Ethernet.
+- Si vas a usar **WiFi**, no conectes cable: lo configuraremos desde el portal.
+
+## Paso 2 · Espera a que aparezca la red **JAAK_PULSE**
+
+La primera vez que enciende (o siempre que **no logra salir a internet**), la cámara crea
+su propia red WiFi de configuración. Esto ocurre **unos 45 segundos después de encender**.
+
+En tu teléfono o laptop, abre la lista de redes WiFi y busca:
+
+<Callout type="tip" title="Red de configuración">
+**Nombre de la red:** `JAAK_PULSE` — es una red **abierta, sin contraseña**.
+</Callout>
+
+Si la red `JAAK_PULSE` **no aparece** tras un par de minutos, revisa la
+[solución de problemas](#solución-de-problemas) al final de esta guía.
+
+## Paso 3 · Conéctate a **JAAK_PULSE**
+
+Únete a la red `JAAK_PULSE` como a cualquier otro WiFi. Como es abierta, **no pide
+contraseña**.
+
+En la mayoría de teléfonos y laptops se abrirá **automáticamente** la ventana de
+configuración (portal cautivo). Si no se abre sola, abre el navegador y entra a:
+
+<Callout type="info" title="Dirección del portal">
+`http://10.42.0.1`
+</Callout>
+
+## Paso 4 · Elige cómo conectar la cámara a internet
+
+Verás la pantalla **"Configura tu dispositivo"** con cuatro opciones. Usa la que
+corresponda a tu sitio:
+
+![Portal de configuración con las cuatro opciones de conexión](/docs/pulse/onboard-main.png)
+
+- **Red WiFi** — lo más común. Conecta la cámara al WiFi del sitio.
+- **Conexión por cable (Ethernet)** — si conectaste un cable de red.
+- **Proxy de red (opcional)** — solo si tu empresa exige un proxy para salir a internet.
+- **Instalación sin internet (circuito cerrado)** — si la cámara reportará a un servidor
+  Pulse local, sin internet.
+
+### Opción A · WiFi (la más común)
+
+1. Abre **Red WiFi**. La cámara muestra las redes que detecta a su alrededor, con su nivel
+   de señal y un candado si son protegidas.
+2. **Toca la red** del sitio (por ejemplo la de la oficina o sucursal).
+3. Escribe la **contraseña del WiFi** y pulsa **Conectar**. Si la red es abierta, verás el
+   aviso *"Red abierta · no requiere contraseña"* y no hace falta escribir nada.
+
+![Introducir la contraseña del WiFi seleccionado](/docs/pulse/onboard-pass.png)
+
+<Callout type="warning" title="Escribe bien la contraseña">
+La causa nº1 de que la cámara no conecte es una contraseña incorrecta. Usa el botón
+**"Mostrar contraseña"** para verificarla antes de pulsar Conectar.
+</Callout>
+
+### Opción B · Cable de red (Ethernet)
+
+Si conectaste un cable, abre **Conexión por cable (Ethernet)**. La cámara detecta el cable
+automáticamente.
+
+![Configuración de conexión por cable](/docs/pulse/onboard-eth.png)
+
+- **Modo Automático (DHCP)** — recomendado. La red asigna la IP sola. Solo pulsa
+  **Conectar por cable**.
+- **Modo IP estática** — solo si tu red lo exige. Rellena **IP**, **prefijo** (p. ej. `24`),
+  **puerta de enlace (gateway)** y **DNS**.
+- **VLAN ID** *(opcional)* — solo si el puerto de red usa VLAN etiquetada.
+
+### Opción C · Proxy de red (opcional)
+
+Úsala **solo** si tu empresa obliga a salir a internet a través de un proxy. Si no sabes
+qué es esto, **omítela**.
+
+![Configuración de proxy de red](/docs/pulse/onboard-proxy.png)
+
+- **Host del proxy** y **Puerto** (obligatorios si usas proxy).
+- **Usuario** y **Contraseña** — solo si el proxy los pide.
+- **NO_PROXY** — direcciones que deben saltarse el proxy (separadas por comas).
+
+### Opción D · Instalación sin internet (circuito cerrado)
+
+Para sitios **sin acceso a internet**, donde la cámara reporta a un servidor **JAAK Pulse
+local** dentro de la misma red.
+
+![Configuración de circuito cerrado](/docs/pulse/onboard-cc.png)
+
+- Activa **circuito cerrado** e introduce la **URL del Pulse local**.
+
+<Callout type="warning" title="La URL debe ser HTTPS">
+La dirección del Pulse local debe empezar por `https://` (por ejemplo
+`https://pulse.local:8443`). El portal rechaza direcciones `http://`.
+</Callout>
+
+## Paso 5 · Confirmación
+
+Tras pulsar Conectar, la cámara:
+
+1. Apaga su red `JAAK_PULSE`.
+2. Se conecta a la red que elegiste.
+3. Verifica que hay internet.
+
+Cuando termina, verás la pantalla de éxito:
+
+![Pantalla de conexión exitosa](/docs/pulse/onboard-success.png)
+
+<Callout type="tip" title="Señal de que terminó">
+La red `JAAK_PULSE` **desaparece** de la lista de WiFi. Eso confirma que la cámara ya se
+conectó a la red del sitio.
+</Callout>
+
+## Qué pasa después
+
+Una vez conectada, la cámara **se registra sola** en la plataforma JAAK (no tienes que
+introducir ninguna clave ni número de serie). En unos minutos aparecerá **en línea** en el
+panel de administración, lista para operar. Si pierde internet más de unos minutos, volverá
+a crear la red `JAAK_PULSE` para que puedas reconfigurarla.
+
+<Callout type="info" title="Privacidad">
+En operación normal la cámara **no almacena rostros ni identidad de las personas** — solo
+métricas agregadas y anónimas. La captura de imagen con identidad solo ocurre en el modo
+laboratorio, que es opt‑in, temporal y por cámara.
+</Callout>
+
+## Solución de problemas
+
+### La red `JAAK_PULSE` no aparece
+
+- **Espera 1–2 minutos** tras encender: la cámara la crea ~45 s después del arranque.
+- Confirma que la cámara **está encendida** (fuente bien conectada).
+- Si la cámara **ya tenía WiFi configurado antes**, arranca directo conectada y **no crea
+  el AP**. Es normal: ya está en línea. Verifícala en el panel de administración.
+- Actualiza la lista de redes WiFi de tu teléfono/laptop (a veces tarda en refrescar).
+
+### El portal no se abre solo
+
+- Abre el navegador manualmente y entra a **`http://10.42.0.1`**.
+- Asegúrate de estar conectado a la red `JAAK_PULSE` (no a otro WiFi ni a datos móviles).
+- Desactiva los **datos móviles** del teléfono mientras configuras: algunos teléfonos
+  intentan salir por datos y no cargan el portal.
+
+### Dice *"No se pudo conectar — revisa la contraseña"*
+
+![Reintento tras fallo de conexión](/docs/pulse/onboard-main.png)
+
+- Es casi siempre una **contraseña de WiFi incorrecta**. La red `JAAK_PULSE` reaparece
+  automáticamente para que lo intentes de nuevo.
+- Vuelve a `JAAK_PULSE`, pulsa **Volver a las redes**, elige la red y reescribe la
+  contraseña (usa **Mostrar contraseña** para verificarla).
+- Confirma que elegiste la **red correcta** y que tiene **cobertura** donde está instalada
+  la cámara.
+
+### Conectó pero no aparece en el panel
+
+- Espera unos **minutos**: el registro ocurre tras reiniciarse la cámara.
+- Verifica que la red del sitio **permite salida a internet** hacia los servidores de JAAK
+  (`api.licensing.jaak.ai` y `api.pulse.jaak.ai`, HTTPS/443). Si hay un **firewall** o
+  **proxy**, configúralo (ver Opción C) o abre esos destinos.
+- Si el sitio no tiene internet, usa el modo **circuito cerrado** (Opción D) contra tu
+  Pulse local.
+
+### La cámara vuelve a mostrar `JAAK_PULSE` sola
+
+Es el comportamiento de seguridad: si la cámara **pierde internet de forma sostenida**,
+reabre la red de configuración para que puedas corregir la red. Reconfigúrala siguiendo los
+pasos de arriba. Si ocurre a menudo, revisa la **cobertura WiFi** o pasa a **cable**.
+
+---
+
+¿Necesitas ayuda con una instalación? [Contáctanos](/contacto).

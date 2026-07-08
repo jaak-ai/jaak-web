@@ -4,13 +4,13 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Firma Electrónica Simple en México | Sin Fricción y Legal | JAAK",
+  title: "Firma Simple en México | Sin Fricción y Legal | JAAK",
   description:
     "Firma electrónica simple para acuerdos internos, NDAs y documentos de bajo riesgo. Implementación inmediata, sin instalación, con trazabilidad básica. Válida legalmente en México.",
   keywords:
     "firma electrónica simple México, firma digital simple, firmar documentos online rápido, firma electrónica sin verificación, firma digital para acuerdos internos",
   openGraph: {
-    title: "Firma Electrónica Simple | JAAK",
+    title: "Firma Simple | JAAK",
     description:
       "La forma más rápida de obtener consentimiento digital. Sin verificación de identidad, sin fricción, con trazabilidad básica.",
     url: "https://jaak.ai/firma-electronica-simple",

@@ -149,7 +149,7 @@ export default function FirmaElectronicaSimpleVsAvanzada() {
               </div>
 
               <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-6">
-                El nivel máximo: Firma Biométrica con NOM-151
+                El nivel máximo: Firma Digital NOM-151 + Biometría con NOM-151
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
                 Existe un tercer nivel que agrega verificación de identidad mediante reconocimiento
@@ -181,7 +181,7 @@ export default function FirmaElectronicaSimpleVsAvanzada() {
                   <p className="text-white/80 text-sm mt-1">Clic / imagen / OTP</p>
                 </div>
                 <div className="bg-[#1ECAD3] p-5">
-                  <p className="font-bold text-white text-lg">Firma NOM-151</p>
+                  <p className="font-bold text-white text-lg">Firma Digital NOM-151</p>
                   <p className="text-white/80 text-sm mt-1">Certificada con sello de tiempo</p>
                 </div>
                 <div className="bg-[#059669] p-5">
@@ -282,7 +282,7 @@ export default function FirmaElectronicaSimpleVsAvanzada() {
                   </ul>
                 </div>
                 <div className="bg-[#059669]/5 rounded-xl p-6">
-                  <p className="font-bold text-gray-900 mb-2">Firma Biométrica con NOM-151 — indispensable en sectores regulados</p>
+                  <p className="font-bold text-gray-900 mb-2">Firma Digital NOM-151 + Biometría con NOM-151 — indispensable en sectores regulados</p>
                   <ul className="list-disc pl-5 space-y-1 text-gray-600">
                     <li>Apertura de cuentas y onboarding digital de clientes</li>
                     <li>Contratos de crédito al consumo o empresarial</li>

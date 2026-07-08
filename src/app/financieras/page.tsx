@@ -146,7 +146,7 @@ export default function FinancierasPage() {
                 </h1>
 
                 <p className="text-xl text-white/70 mb-8">
-                  Verificación de identidad biométrica + Liveness + Firma NOM-151 diseñada para
+                  Verificación de identidad biométrica + Liveness + Firma Digital NOM-151 diseñada para
                   SOFOMES, fintechs y entidades financieras reguladas en México.
                 </p>
 

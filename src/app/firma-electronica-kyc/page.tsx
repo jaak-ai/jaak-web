@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Firma Electrónica con KYC Completo | JAAK",
     description:
-      "Firma + KYC: validación de INE/pasaporte, CURP, biometría, listas PLD/OFAC y expediente auditable. Full compliance para entidades financieras.",
+      "Firma Digital NOM-151 + KYC: validación de INE/pasaporte, CURP, biometría, listas PLD/OFAC y expediente auditable. Full compliance para entidades financieras.",
     url: "https://jaak.ai/firma-electronica-kyc",
     type: "website",
     locale: "es_MX",
