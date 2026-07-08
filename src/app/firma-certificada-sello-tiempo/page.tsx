@@ -52,7 +52,7 @@ const breadcrumbSchema = {
   itemListElement: [
     { "@type": "ListItem", position: 1, name: "Inicio", item: "https://jaak.ai" },
     { "@type": "ListItem", position: 2, name: "Firma Electrónica", item: "https://jaak.ai/firma-electronica" },
-    { "@type": "ListItem", position: 3, name: "Firma Certificada con Sello de Tiempo", item: "https://jaak.ai/firma-certificada-sello-tiempo" },
+    { "@type": "ListItem", position: 3, name: "Firma Certificada con Sellos de Tiempo", item: "https://jaak.ai/firma-certificada-sello-tiempo" },
   ],
 };
 
@@ -76,7 +76,7 @@ export default function FirmaSelloTiempoPage() {
                 Firma Electrónica
               </Link>
               <span aria-hidden="true">›</span>
-              <span className="text-gray-400">Firma Certificada con Sello de Tiempo</span>
+              <span className="text-gray-400">Firma Certificada con Sellos de Tiempo</span>
             </nav>
 
             <div
@@ -256,10 +256,10 @@ export default function FirmaSelloTiempoPage() {
             <p className="text-gray-500 text-sm mb-6">¿Necesitas también identidad o e.firma? Explora:</p>
             <div className="flex flex-wrap justify-center gap-3 mb-8">
               {[
-                { href: "/firma-electronica-nom-151", label: "Firma NOM-151" },
+                { href: "/firma-electronica-nom-151", label: "Firma Digital NOM-151" },
                 { href: "/firma-electronica-efirma", label: "e.firma SAT" },
-                { href: "/firma-electronica-biometrica", label: "Firma Biométrica" },
-                { href: "/firma-electronica-kyc", label: "Firma + KYC" },
+                { href: "/firma-electronica-biometrica", label: "Firma Digital NOM-151 + Biometría" },
+                { href: "/firma-electronica-kyc", label: "Firma Digital NOM-151 + KYC" },
                 { href: "/firma-electronica", label: "← Hub principal" },
               ].map((link) => (
                 <Link

@@ -88,7 +88,7 @@ export const productos: Producto[] = [
   },
   {
     id: "firma-nom151",
-    nombre: "Firma NOM-151",
+    nombre: "Firma Digital NOM-151",
     categoria: "firma",
     unidad: "firmas",
     tagline: "Firma electrónica avanzada con la máxima validez legal en México.",
@@ -104,12 +104,12 @@ export const productos: Producto[] = [
   },
   {
     id: "firma-nom151-bio",
-    nombre: "Firma NOM-151 + Biometría",
+    nombre: "Firma Digital NOM-151 + Biometría",
     categoria: "firma",
     unidad: "sesiones",
-    tagline: "Firma NOM-151 vinculada a la validación facial del firmante.",
+    tagline: "Firma Digital NOM-151 vinculada a la validación facial del firmante.",
     incluye: [
-      "Todo lo de Firma NOM-151",
+      "Todo lo de Firma Digital NOM-151",
       "Verificación facial del firmante al momento de firmar",
       "Video y fotografías de la sesión vinculados al expediente",
       "Constancia individual por cada firmante",
@@ -121,7 +121,7 @@ export const productos: Producto[] = [
   },
   {
     id: "firma-nom151-kyc",
-    nombre: "Firma NOM-151 + KYC",
+    nombre: "Firma Digital NOM-151 + KYC",
     categoria: "firma",
     unidad: "sesiones",
     tagline: "La solución más completa: onboarding con KYC y firma con validez legal.",
@@ -244,10 +244,10 @@ export const productKeys: Record<string, string> = {
   kyc: "kyc",
   "firma-simple": "signa_simple",
   "firma-nom151": "signa_advanced",
-  "firma-nom151-bio": "signa_biometric",
-  "firma-nom151-kyc": "signa_advanced_biometric",
+  "firma-nom151-bio": "signa_advanced_biometric",
+  "firma-nom151-kyc": "signa_biometric",
   ine: "blacklist",
-  curp: "official-list",
+  curp: "blacklist",
   "listas-negras": "blacklist",
   "ocr-inteligente": "document",
   "ocr-id": "document",
@@ -255,25 +255,33 @@ export const productKeys: Record<string, string> = {
 
 // Construye el deep-link que la plataforma ya consume: /#/register/user-info?d=<base64>
 // con el carrito embebido (mismo formato que el flujo actual de registro).
+// `pricingIndex` (productId → tier → _id) hidrata el `i` real de cada producto,
+// requisito del checkout de /register. Si no se pasa o falta el id, se envía
+// vacío (fallback: mismo comportamiento previo).
 export function buildCheckoutUrl(
   items: { producto: Producto; paquete: Paquete }[],
-  base = "https://platform.jaak.ai/#/register/user-info"
+  options: {
+    pricingIndex?: Record<string, Record<string, string>>;
+    base?: string;
+  } = {}
 ): string {
+  const { pricingIndex, base = "https://platform.jaak.ai/#/register/user-info" } = options;
+  const products = items.map(({ producto, paquete }) => {
+    const nombre = producto.nombre.split(" — ")[0];
+    return {
+      i: pricingIndex?.[producto.id]?.[paquete.id] ?? "",
+      k: productKeys[producto.id] ?? producto.id,
+      n: nombre,
+      pr: Math.round(paquete.precio * (1 + IVA) * 100) / 100,
+      c: "MXN",
+      s: 0,
+      d: `${nombre} ${paquete.nombre} ${paquete.cantidad}`,
+      q: paquete.cantidad,
+    };
+  });
   const payload = {
-    pk: [] as string[],
-    products: items.map(({ producto, paquete }) => {
-      const nombre = producto.nombre.split(" — ")[0];
-      return {
-        i: "",
-        k: productKeys[producto.id] ?? producto.id,
-        n: nombre,
-        pr: Math.round(paquete.precio * (1 + IVA) * 100) / 100,
-        c: "MXN",
-        s: 0,
-        d: `${nombre} ${paquete.nombre} ${paquete.cantidad}`,
-        q: paquete.cantidad,
-      };
-    }),
+    pk: products.map((p) => p.i).filter(Boolean),
+    products,
   };
   const d = btoa(encodeURIComponent(JSON.stringify(payload)));
   return `${base}?d=${d}`;

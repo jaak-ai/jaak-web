@@ -28,7 +28,7 @@ const industries: Industry[] = [
         title: "Apertura de cuenta digital",
         description:
           "Valida la identidad del cliente con KYC biométrico y obtén su firma electrónica en el mismo flujo. Cumple con CNBV y LFPIORPI desde el primer contacto.",
-        signaType: "Firma + KYC",
+        signaType: "Firma Digital NOM-151 + KYC",
         signaColor: "#10B981",
         icon: "💳",
       },
@@ -36,7 +36,7 @@ const industries: Industry[] = [
         title: "Contratos de crédito y pagarés",
         description:
           "Formaliza créditos personales, automotrices e hipotecarios con firma NOM-151 y biometría. El expediente digital sustituye al papel con total validez legal.",
-        signaType: "Firma NOM-151 + Biometría",
+        signaType: "Firma Digital NOM-151 + Biometría",
         signaColor: "#8B5CF6",
         icon: "📑",
       },
@@ -44,7 +44,7 @@ const industries: Industry[] = [
         title: "Actualización periódica de KYC",
         description:
           "Automatiza el proceso de renovación de expedientes con una experiencia completamente digital. Notificaciones automáticas y firma desde cualquier dispositivo.",
-        signaType: "Firma + KYC",
+        signaType: "Firma Digital NOM-151 + KYC",
         signaColor: "#10B981",
         icon: "🔄",
       },
@@ -59,7 +59,7 @@ const industries: Industry[] = [
         title: "Contratos de arrendamiento",
         description:
           "Firma arrendamientos residenciales y comerciales con validez legal completa. Incluid identificación de propietario e inquilino con NOM-151.",
-        signaType: "Firma NOM-151",
+        signaType: "Firma Digital NOM-151",
         signaColor: "#1ECAD3",
         icon: "🔑",
       },
@@ -67,7 +67,7 @@ const industries: Industry[] = [
         title: "Promesas de compraventa",
         description:
           "Formaliza promesas y contratos de compraventa con firma avanzada y sello de tiempo certificado. Protege a compradores y vendedores desde el primer acuerdo.",
-        signaType: "Firma NOM-151",
+        signaType: "Firma Digital NOM-151",
         signaColor: "#1ECAD3",
         icon: "🤝",
       },
@@ -75,7 +75,7 @@ const industries: Industry[] = [
         title: "Poderes y representaciones",
         description:
           "Verifica la identidad del apoderado con biometría facial antes de ejecutar un poder. Genera evidencia de quién firmó y en qué condiciones.",
-        signaType: "Firma Biométrica",
+        signaType: "Firma Digital NOM-151 + Biometría",
         signaColor: "#8B5CF6",
         icon: "⚖️",
       },
@@ -90,7 +90,7 @@ const industries: Industry[] = [
         title: "Solicitudes de financiamiento",
         description:
           "Digitaliza el proceso de crédito automotriz: verificación de identidad, firma del contrato y pagaré en un solo flujo móvil desde el agencia.",
-        signaType: "Firma + KYC",
+        signaType: "Firma Digital NOM-151 + KYC",
         signaColor: "#10B981",
         icon: "📋",
       },
@@ -98,7 +98,7 @@ const industries: Industry[] = [
         title: "Contratos de leasing y arrendamiento",
         description:
           "Firma contratos de arrendamiento puro o financiero con evidencia biométrica y NOM-151. Reducción del ciclo de venta de días a horas.",
-        signaType: "Firma NOM-151 + Biometría",
+        signaType: "Firma Digital NOM-151 + Biometría",
         signaColor: "#8B5CF6",
         icon: "📄",
       },
@@ -121,7 +121,7 @@ const industries: Industry[] = [
         title: "Alta de líneas móviles",
         description:
           "Verifica la identidad del titular con KYC y biometría al momento del alta. Cumple con la regulación del IFT para portación y nuevas altas.",
-        signaType: "Firma + KYC",
+        signaType: "Firma Digital NOM-151 + KYC",
         signaColor: "#10B981",
         icon: "📱",
       },
@@ -129,7 +129,7 @@ const industries: Industry[] = [
         title: "Contratos de servicio empresarial",
         description:
           "Firma contratos de telefonía fija, internet y datos con múltiples firmantes. Gestiona renovaciones y modificaciones de servicio sin papel.",
-        signaType: "Firma NOM-151",
+        signaType: "Firma Digital NOM-151",
         signaColor: "#1ECAD3",
         icon: "🖊️",
       },

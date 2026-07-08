@@ -63,7 +63,7 @@ const products = [
     color: "#1ECAD3",
   },
   {
-    name: "Firma NOM-151",
+    name: "Firma Digital NOM-151",
     description: "Firma electrónica con plena validez jurídica en México. Sellado de tiempo certificado.",
     color: "#655DC6",
   },
@@ -184,7 +184,7 @@ export default function InmobiliariasPage() {
                     <span className="text-white font-semibold">Verificación completada</span>
                   </div>
                   <div className="space-y-3">
-                    {["Documento INE validado ✓", "Prueba de vida aprobada ✓", "Firma NOM-151 generada ✓", "Evidencia almacenada ✓"].map((item, i) => (
+                    {["Documento INE validado ✓", "Prueba de vida aprobada ✓", "Firma Digital NOM-151 generada ✓", "Evidencia almacenada ✓"].map((item, i) => (
                       <div key={i} className="flex items-center gap-3 p-3 bg-white/5 rounded-lg">
                         <span className="text-[#1ECAD3] text-sm">✓</span>
                         <span className="text-white/80 text-sm">{item.replace(" ✓", "")}</span>

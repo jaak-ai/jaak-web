@@ -56,7 +56,7 @@ const faqItems: FAQItem[] = [
     id: "kyc-compliance",
     question: "¿Cumple con los requisitos de la CNBV y la LFPIORPI?",
     answer:
-      "Sí. La solución Firma + KYC de JAAK está diseñada para cumplir con los requisitos de identificación de clientes establecidos por la CNBV (Comisión Nacional Bancaria y de Valores), la LFPIORPI (Ley Federal para la Prevención e Identificación de Operaciones con Recursos de Procedencia Ilícita) y las Disposiciones de Carácter General en materia de PLD/FT. Incluye: validación de identificación oficial (INE/pasaporte), consulta en listas de control (PLD, OFAC, SAT 69-B), verificación de CURP en Renapo, y generación del expediente de identificación del cliente (EIC) con todos los elementos requeridos.",
+      "Sí. La solución Firma Digital NOM-151 + KYC de JAAK está diseñada para cumplir con los requisitos de identificación de clientes establecidos por la CNBV (Comisión Nacional Bancaria y de Valores), la LFPIORPI (Ley Federal para la Prevención e Identificación de Operaciones con Recursos de Procedencia Ilícita) y las Disposiciones de Carácter General en materia de PLD/FT. Incluye: validación de identificación oficial (INE/pasaporte), consulta en listas de control (PLD, OFAC, SAT 69-B), verificación de CURP en Renapo, y generación del expediente de identificación del cliente (EIC) con todos los elementos requeridos.",
   },
   {
     id: "impugnar",

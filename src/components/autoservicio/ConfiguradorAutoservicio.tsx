@@ -53,9 +53,14 @@ const volumenes: { id: Paquete["id"]; label: string; rec?: boolean }[] = [
 ];
 
 export default function ConfiguradorAutoservicio() {
-  const { enCarrito, tierDe, setTier, toggle, aplicarVolumen } = useCarrito();
+  const { enCarrito, tierDe, setTier, toggle, aplicarVolumen, comprable } = useCarrito();
   const [seleccionadas, setSeleccionadas] = useState<Set<NecesidadId>>(new Set());
   const [volumen, setVolumen] = useState<Paquete["id"]>("plata");
+
+  // Solo necesidades con al menos un producto comprable (con renglón de pricing).
+  const necesidadesVisibles = necesidades.filter((n) =>
+    productosDe(n.cat).some((p) => comprable(p.id))
+  );
 
   // Mostrar/ocultar una necesidad solo cambia qué productos se listan; lo que ya
   // está en el carrito permanece (se gestiona desde el resumen compartido).
@@ -80,7 +85,7 @@ export default function ConfiguradorAutoservicio() {
         {/* Paso 1 */}
         <Paso numero="1" titulo="¿Qué necesitas resolver?" sub="Elige una o varias. Te recomendamos los productos adecuados.">
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            {necesidades.map((n) => {
+            {necesidadesVisibles.map((n) => {
               const activa = seleccionadas.has(n.id);
               return (
                 <button type="button"
@@ -144,7 +149,7 @@ export default function ConfiguradorAutoservicio() {
                   <div key={n.id}>
                     <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.14em]" style={{ color: "#64748B" }}>{n.titulo}</p>
                     <div className="space-y-3">
-                      {productosDe(n.cat).map((producto) => {
+                      {productosDe(n.cat).filter((p) => comprable(p.id)).map((producto) => {
                         const activo = enCarrito(producto.id);
                         const recomendado = recomendadosIds.has(producto.id);
                         const paquete = paqueteDe(producto);

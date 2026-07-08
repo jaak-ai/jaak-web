@@ -29,7 +29,13 @@ function ModoIcon({ v, className }: { v: Variante; className?: string }) {
   );
 }
 
-export default function AutoservicioVariantes() {
+type PricingIndex = Record<string, Record<string, string>>;
+
+export default function AutoservicioVariantes({
+  pricingIndex = {},
+}: {
+  pricingIndex?: PricingIndex;
+}) {
   // Default: catálogo (perfil autónomo). El switch fijo permite cambiar de modo
   // en cualquier momento sin salir de /autoservicio.
   const [variante, setVariante] = useState<Variante>("catalogo");
@@ -64,7 +70,7 @@ export default function AutoservicioVariantes() {
   };
 
   return (
-    <CarritoProvider>
+    <CarritoProvider pricingIndex={pricingIndex}>
     <div id="experiencia">
       {/* Selector de modo según el perfil del comprador. No es fijo: vive al
           inicio de la experiencia y se va con el scroll para no estorbar. */}

@@ -63,7 +63,7 @@ const faqSchema = {
       name: "¿Cumple con los requisitos de la CNBV y la LFPIORPI?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Sí. La solución Firma + KYC de JAAK cumple con requisitos de identificación de la CNBV, la LFPIORPI y las Disposiciones en materia de PLD/FT, incluyendo validación de INE/pasaporte, CURP, listas de control y generación del expediente de identificación.",
+        text: "Sí. La solución Firma Digital NOM-151 + KYC de JAAK cumple con requisitos de identificación de la CNBV, la LFPIORPI y las Disposiciones en materia de PLD/FT, incluyendo validación de INE/pasaporte, CURP, listas de control y generación del expediente de identificación.",
       },
     },
   ],
@@ -91,7 +91,7 @@ const serviceSchema = {
     "Firma electrónica simple",
     "Firma con NOM-151 certificado",
     "Firma biométrica con liveness",
-    "Firma + KYC completo",
+    "Firma Digital NOM-151 + KYC completo",
     "Expediente digital auditable",
     "Personalizable con marca propia",
   ],

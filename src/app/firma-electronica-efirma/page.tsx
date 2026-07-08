@@ -4,13 +4,13 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Firma con e.firma SAT en México | JAAK",
+  title: "e.firma (SAT) en México | JAAK",
   description:
     "Firma documentos electrónicos usando la e.firma SAT vigente del firmante dentro de un flujo auditable con evidencia, trazabilidad y expediente digital.",
   keywords:
     "firma con e.firma SAT, e.firma vigente firma electrónica, FIEL firma de documentos, firma electrónica avanzada México, no repudio firma digital, representante legal firma electrónica",
   openGraph: {
-    title: "Firma con e.firma SAT en México | JAAK",
+    title: "e.firma (SAT) en México | JAAK",
     description:
       "Permite que representantes legales y firmantes autorizados usen su e.firma vigente dentro de un flujo de firma auditable.",
     url: "https://jaak.ai/firma-electronica-efirma",
@@ -59,7 +59,7 @@ const breadcrumbSchema = {
   itemListElement: [
     { "@type": "ListItem", position: 1, name: "Inicio", item: "https://jaak.ai" },
     { "@type": "ListItem", position: 2, name: "Firma Electrónica", item: "https://jaak.ai/firma-electronica" },
-    { "@type": "ListItem", position: 3, name: "Firma con e.firma SAT", item: "https://jaak.ai/firma-electronica-efirma" },
+    { "@type": "ListItem", position: 3, name: "e.firma (SAT)", item: "https://jaak.ai/firma-electronica-efirma" },
   ],
 };
 
@@ -83,7 +83,7 @@ export default function FirmaEfirmaPage() {
                 Firma Electrónica
               </Link>
               <span aria-hidden="true">›</span>
-              <span className="text-gray-400">Firma con e.firma SAT</span>
+              <span className="text-gray-400">e.firma (SAT)</span>
             </nav>
 
             <div
@@ -285,10 +285,10 @@ export default function FirmaEfirmaPage() {
             <p className="text-gray-500 text-sm mb-6">¿Necesitas otra capa de evidencia? Explora:</p>
             <div className="flex flex-wrap justify-center gap-3 mb-8">
               {[
-                { href: "/firma-electronica-nom-151", label: "Firma NOM-151" },
-                { href: "/firma-certificada-sello-tiempo", label: "Sello de Tiempo" },
-                { href: "/firma-electronica-biometrica", label: "Firma Biométrica" },
-                { href: "/firma-electronica-kyc", label: "Firma + KYC" },
+                { href: "/firma-electronica-nom-151", label: "Firma Digital NOM-151" },
+                { href: "/firma-certificada-sello-tiempo", label: "Sellos de Tiempo" },
+                { href: "/firma-electronica-biometrica", label: "Firma Digital NOM-151 + Biometría" },
+                { href: "/firma-electronica-kyc", label: "Firma Digital NOM-151 + KYC" },
                 { href: "/firma-electronica", label: "← Hub principal" },
               ].map((link) => (
                 <Link

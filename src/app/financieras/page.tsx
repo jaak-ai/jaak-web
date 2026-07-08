@@ -68,7 +68,7 @@ const products = [
     color: "#655DC6",
   },
   {
-    name: "Firma NOM-151",
+    name: "Firma Digital NOM-151",
     description: "Firma electrónica con sellado de tiempo certificado. Válida para contratos financieros.",
     color: "#1ECAD3",
   },
@@ -146,7 +146,7 @@ export default function FinancierasPage() {
                 </h1>
 
                 <p className="text-xl text-white/70 mb-8">
-                  Verificación de identidad biométrica + Liveness + Firma NOM-151 diseñada para
+                  Verificación de identidad biométrica + Liveness + Firma Digital NOM-151 diseñada para
                   SOFOMES, fintechs y entidades financieras reguladas en México.
                 </p>
 

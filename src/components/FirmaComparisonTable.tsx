@@ -86,7 +86,7 @@ export default function FirmaComparisonTable() {
               {[
                 "Tipo de Firma",
                 "Identidad del Firmante",
-                "Sello de Tiempo",
+                "Sellos de Tiempo",
                 "NOM-151",
                 "Biometría",
                 "KYC",

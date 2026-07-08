@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AutoservicioVariantes from "@/components/autoservicio/AutoservicioVariantes";
 import ComoFuncionaBanner from "@/components/autoservicio/ComoFuncionaBanner";
+import { getPricingIndex } from "@/lib/pricing";
 import { autoservicioBreadcrumbSchema, autoservicioProductsSchema } from "./schema";
 
 export const metadata: Metadata = {
@@ -33,7 +34,10 @@ export const metadata: Metadata = {
 
 const TEAL = "#2DB6C1";
 
-export default function AutoservicioPage() {
+export default async function AutoservicioPage() {
+  // IDs de pricing reales (por producto+tier) para hidratar el checkout.
+  const pricingIndex = await getPricingIndex();
+
   return (
     <>
       {/* Structured Data (JSON-LD) — Breadcrumb + catálogo de productos (Product/Offer) */}
@@ -103,7 +107,7 @@ export default function AutoservicioPage() {
         <ComoFuncionaBanner />
 
         {/* ─── Experiencia: agregar productos (Catálogo / Guía) ─────────── */}
-        <AutoservicioVariantes />
+        <AutoservicioVariantes pricingIndex={pricingIndex} />
 
         {/* ─── Cierre: ¿necesitas más que autoservicio? → /precios ─────── */}
         <section className="bg-white">

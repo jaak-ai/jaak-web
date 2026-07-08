@@ -137,7 +137,7 @@ const faqItems = [
   },
   {
     question: "¿Cuánto cuesta la Firma Electrónica NOM-151?",
-    answer: "Firma Simple desde $49 MXN (10 firmas). Firma NOM-151 desde $99 MXN (5 firmas) hasta $6,000 MXN (500 firmas). Firma NOM-151+Bio desde $99 MXN hasta $12,500 MXN (500 firmas). Sin setup fee en Autoservicio.",
+    answer: "Firma Simple desde $49 MXN (10 firmas). Firma Digital NOM-151 desde $99 MXN (5 firmas) hasta $6,000 MXN (500 firmas). Firma Digital NOM-151+Bio desde $99 MXN hasta $12,500 MXN (500 firmas). Sin setup fee en Autoservicio.",
   },
   {
     question: "¿Qué pasa si supero mi volumen en Autoservicio?",

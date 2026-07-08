@@ -37,7 +37,7 @@ export const signatureLevels: SignatureLevel[] = [
   {
     id: "simple",
     level: 1,
-    name: "Firma Electrónica Simple",
+    name: "Firma Simple",
     shortName: "Firma Simple",
     risk: "Bajo",
     color: "#64748B",
@@ -74,8 +74,8 @@ export const signatureLevels: SignatureLevel[] = [
   {
     id: "sello-tiempo",
     level: 2,
-    name: "Firma Certificada con Sello de Tiempo",
-    shortName: "Sello de Tiempo",
+    name: "Firma Certificada con Sellos de Tiempo",
+    shortName: "Sellos de Tiempo",
     risk: "Medio",
     color: "#F59E0B",
     icon: "⏱",
@@ -111,8 +111,8 @@ export const signatureLevels: SignatureLevel[] = [
   {
     id: "nom151",
     level: 3,
-    name: "Firma NOM-151",
-    shortName: "Firma NOM-151",
+    name: "Firma Digital NOM-151",
+    shortName: "Firma Digital NOM-151",
     risk: "Alto",
     color: "#1ECAD3",
     icon: "🔐",
@@ -148,8 +148,8 @@ export const signatureLevels: SignatureLevel[] = [
   {
     id: "efirma",
     level: 4,
-    name: "Firma con e.firma SAT",
-    shortName: "e.firma SAT",
+    name: "e.firma (SAT)",
+    shortName: "e.firma (SAT)",
     risk: "Alto",
     color: "#3B82F6",
     icon: "🪪",
@@ -185,8 +185,8 @@ export const signatureLevels: SignatureLevel[] = [
   {
     id: "biometrica",
     level: 5,
-    name: "Firma Biométrica",
-    shortName: "Firma Biométrica",
+    name: "Firma Digital NOM-151 + Biometría",
+    shortName: "NOM-151 + Biometría",
     risk: "Alto",
     color: "#8B5CF6",
     icon: "🧬",
@@ -223,8 +223,8 @@ export const signatureLevels: SignatureLevel[] = [
   {
     id: "kyc",
     level: 6,
-    name: "Firma + KYC",
-    shortName: "Firma + KYC",
+    name: "Firma Digital NOM-151 + KYC",
+    shortName: "NOM-151 + KYC",
     risk: "Regulado",
     color: "#10B981",
     icon: "🛡️",

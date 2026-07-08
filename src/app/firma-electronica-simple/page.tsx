@@ -4,13 +4,13 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Firma Electrónica Simple en México | Sin Fricción y Legal | JAAK",
+  title: "Firma Simple en México | Sin Fricción y Legal | JAAK",
   description:
     "Firma electrónica simple para acuerdos internos, NDAs y documentos de bajo riesgo. Implementación inmediata, sin instalación, con trazabilidad básica. Válida legalmente en México.",
   keywords:
     "firma electrónica simple México, firma digital simple, firmar documentos online rápido, firma electrónica sin verificación, firma digital para acuerdos internos",
   openGraph: {
-    title: "Firma Electrónica Simple | JAAK",
+    title: "Firma Simple | JAAK",
     description:
       "La forma más rápida de obtener consentimiento digital. Sin verificación de identidad, sin fricción, con trazabilidad básica.",
     url: "https://jaak.ai/firma-electronica-simple",
@@ -208,11 +208,11 @@ export default function FirmaSimplePage() {
                 <p className="text-xs text-gray-500 mt-4">
                   Para estos casos, considera{" "}
                   <Link href="/firma-electronica-nom-151" className="text-[#1ECAD3] hover:underline">
-                    Firma NOM-151
+                    Firma Digital NOM-151
                   </Link>{" "}
                   o{" "}
                   <Link href="/firma-electronica-kyc" className="text-[#1ECAD3] hover:underline">
-                    Firma + KYC
+                    Firma Digital NOM-151 + KYC
                   </Link>
                   .
                 </p>
@@ -229,9 +229,9 @@ export default function FirmaSimplePage() {
             </p>
             <div className="flex flex-wrap justify-center gap-3 mb-8">
               {[
-                { href: "/firma-electronica-nom-151", label: "Firma NOM-151" },
-                { href: "/firma-electronica-biometrica", label: "Firma Biométrica" },
-                { href: "/firma-electronica-kyc", label: "Firma + KYC Completo" },
+                { href: "/firma-electronica-nom-151", label: "Firma Digital NOM-151" },
+                { href: "/firma-electronica-biometrica", label: "Firma Digital NOM-151 + Biometría" },
+                { href: "/firma-electronica-kyc", label: "Firma Digital NOM-151 + KYC" },
                 { href: "/plataforma/firma-electronica", label: "← Hub principal" },
               ].map((link) => (
                 <Link

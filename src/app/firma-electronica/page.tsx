@@ -77,7 +77,7 @@ const faqSchema = {
       name: "¿Cumple con los requisitos de la CNBV y la LFPIORPI?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Sí. La solución Firma + KYC de JAAK está diseñada para respaldar los requisitos de identificación de la CNBV, la LFPIORPI y las Disposiciones en materia de PLD/FT, incluyendo validación de INE/pasaporte, CURP, listas de control y generación del expediente de identificación.",
+        text: "Sí. La solución Firma Digital NOM-151 + KYC de JAAK está diseñada para respaldar los requisitos de identificación de la CNBV, la LFPIORPI y las Disposiciones en materia de PLD/FT, incluyendo validación de INE/pasaporte, CURP, listas de control y generación del expediente de identificación.",
       },
     },
   ],
@@ -106,9 +106,9 @@ const serviceSchema = {
     "Firma electrónica simple",
     "Firma certificada con sello de tiempo",
     "Firma con NOM-151 certificado",
-    "Firma con e.firma SAT",
+    "e.firma (SAT)",
     "Firma biométrica con liveness",
-    "Firma + KYC completo",
+    "Firma Digital NOM-151 + KYC completo",
     "Expediente digital auditable",
     "API REST con webhooks",
   ],
@@ -282,7 +282,7 @@ export default function FirmaElectronicaPage() {
                 Nueva capacidad
               </div>
               <h2 id="efirma-heading" className="text-3xl sm:text-4xl font-black text-white mb-4">
-                Firma con e.firma SAT dentro de un flujo auditable
+                e.firma (SAT) dentro de un flujo auditable
               </h2>
               <p className="text-gray-400 max-w-2xl mx-auto text-base">
                 Permite que representantes legales, empresas o firmantes autorizados usen su e.firma vigente para
@@ -472,10 +472,10 @@ export default function FirmaElectronicaPage() {
               {[
                 { href: "/firma-electronica-simple", label: "Firma Simple →" },
                 { href: "/firma-certificada-sello-tiempo", label: "Sello de Tiempo →" },
-                { href: "/firma-electronica-nom-151", label: "Firma NOM-151 →" },
+                { href: "/firma-electronica-nom-151", label: "Firma Digital NOM-151 →" },
                 { href: "/firma-electronica-efirma", label: "e.firma SAT →" },
-                { href: "/firma-electronica-biometrica", label: "Firma Biométrica →" },
-                { href: "/firma-electronica-kyc", label: "Firma + KYC →" },
+                { href: "/firma-electronica-biometrica", label: "Firma Digital NOM-151 + Biometría →" },
+                { href: "/firma-electronica-kyc", label: "Firma Digital NOM-151 + KYC →" },
               ].map((link) => (
                 <Link
                   key={link.href}
