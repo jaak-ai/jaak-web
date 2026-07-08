@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# COPIA PUBLICADA — fuente de verdad: jaak-pulse-terraform/installer/get-pulse.sh
-# Esta copia se sirve en https://www.jaak.ai/docs/pulse/get-pulse.sh y se
-# actualiza manualmente al publicar cambios del instalador (Volo: INTC-229).
+# Fuente canónica del instalador standalone: ESTE archivo. Se sirve en
+# https://www.jaak.ai/docs/pulse/get-pulse.sh (Volo: INTC-229). No existe una
+# copia en jaak-pulse-terraform/installer/. Comparte lógica con —pero no se
+# genera desde— modules/compute_pulse/install.sh.tpl; mantener en sync a mano.
 # =============================================================================
 # get-pulse.sh — instalador nativo del bundle JAAK Pulse (pulse-api + pulse-web)
 #
