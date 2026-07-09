@@ -110,7 +110,7 @@ export default function ContactForm() {
               Lleva la seguridad de tu empresa al siguiente nivel
             </p>
             <p className="text-gray-600 mb-8">
-              Con JAAK, la seguridad no es una opción, es una garantía. Completa el formulario y accede a una demostración personalizada que te mostrará cómo nuestras soluciones integradas pueden transformar tu operación.
+              Con JAAK, la seguridad de tu empresa es una prioridad. Completa el formulario y accede a una demostración personalizada que te mostrará cómo nuestras soluciones integradas pueden transformar tu operación.
             </p>
             <div className="space-y-4">
               {benefits.map((benefit, index) => (

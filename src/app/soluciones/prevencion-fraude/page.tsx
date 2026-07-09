@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import { STATS, IBETA } from "@/lib/trust";
 
 export const metadata = {
   title: "Prevención de Fraude | JAAK",
@@ -22,7 +23,7 @@ export default function PrevencionFraude() {
     {
       type: "Deepfakes",
       description: "Videos o imágenes generados artificialmente para engañar sistemas.",
-      prevention: "Prueba de vida certificada iBeta",
+      prevention: `Prueba de vida certificada ${IBETA}`,
     },
     {
       type: "Robo de identidad",
@@ -32,9 +33,9 @@ export default function PrevencionFraude() {
   ];
 
   const stats = [
-    { value: "99.9%", label: "Detección de deepfakes" },
-    { value: "< 1%", label: "Falsos positivos" },
-    { value: "< 30s", label: "Tiempo de verificación" },
+    { value: STATS.precisionBiometrica, label: "Precisión biométrica" },
+    { value: STATS.verificacionBiometrica, label: "Respuesta biométrica" },
+    { value: STATS.procesoKyc, label: "Tiempo de verificación" },
     { value: "24/7", label: "Monitoreo continuo" },
   ];
 
@@ -121,7 +122,7 @@ export default function PrevencionFraude() {
                       <span className="text-white font-bold">1</span>
                     </div>
                     <div>
-                      <div className="font-bold text-gray-900">iBeta</div>
+                      <div className="font-bold text-gray-900">{IBETA}</div>
                       <div className="text-gray-600 text-sm">Certificación de prueba de vida contra ataques de presentación</div>
                     </div>
                   </div>

@@ -86,9 +86,9 @@ export default function TendenciasKYC2026() {
               <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
                 <p className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-2">Dato clave</p>
                 <p className="text-gray-600">
-                  Se estima que los intentos de fraude con deepfakes aumentaron un 300% en 2025.
-                  Las instituciones que no actualicen sus sistemas de detección enfrentarán
-                  riesgos significativos en 2026.
+                  Los intentos de fraude con deepfakes han crecido de forma acelerada en los
+                  últimos años. Las instituciones que no actualicen sus sistemas de detección
+                  enfrentarán riesgos significativos en 2026.
                 </p>
               </div>
 
@@ -150,7 +150,7 @@ export default function TendenciasKYC2026() {
                 <p className="text-gray-600">
                   El reto para 2026 es encontrar el equilibrio entre seguridad robusta y experiencia
                   fluida. Las instituciones que logren verificar identidades en segundos mientras
-                  mantienen el 100% de cumplimiento regulatorio tendrán una ventaja competitiva
+                  mantienen el cumplimiento regulatorio tendrán una ventaja competitiva
                   significativa.
                 </p>
               </div>

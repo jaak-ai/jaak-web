@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { IBETA } from "@/lib/trust";
 
 /* ── Video URL ───────────────────────────────────────────────────────── */
 const VIDEO_URL =
@@ -20,33 +21,33 @@ interface Comment {
 
 /* ── Featured webinar questions (curated, static) ────────────────────── */
 const FEATURED_QUESTIONS: Comment[] = [
-  { id:  1, initials: "MR", name: "Miguel Rodríguez",   color: "#2DB6C1", text: "Excelente punto sobre la convergencia regulatoria entre banca y fintech 👏" },
-  { id:  2, initials: "LC", name: "Laura Castillo",     color: "#5A9EDB", text: "¿El modelo de neobanco aplica también para SOFOMES reguladas?" },
-  { id:  3, initials: "JH", name: "Jorge Hernández",    color: "#7C6EDB", text: "El tema de PLD y liveness detection es muy relevante para nuestro equipo de cumplimiento" },
-  { id:  4, initials: "AP", name: "Ana Pérez",          color: "#4FC89A", text: "Muy claro el punto de quiebre que explica Arianna 🙌" },
-  { id:  5, initials: "CV", name: "Carlos Vega",        color: "#E8956B", text: "¿Cuánto tarda en promedio la integración con un core bancario legacy?" },
-  { id:  6, initials: "SM", name: "Sofía Morales",      color: "#2DB6C1", text: "Perfecto el enfoque sobre NOM-151, gracias por cubrirlo 🙏" },
-  { id:  7, initials: "ER", name: "Eduardo Ríos",       color: "#5A9EDB", text: "La identidad sintética es el mayor reto que enfrentamos actualmente 🔥" },
-  { id:  8, initials: "PL", name: "Patricia López",     color: "#7C6EDB", text: "¿Tienen datos sobre reducción de fraude post-implementación KYC biométrico?" },
-  { id:  9, initials: "DG", name: "Daniel García",      color: "#4FC89A", text: "El Dr. Merino explica perfecto el marco GAFI aplicado a México 💡" },
-  { id: 10, initials: "IG", name: "Itzel González",     color: "#E8956B", text: "¿La NOM-151 es requisito obligatorio para contratos de AFORE también?" },
-  { id: 11, initials: "RV", name: "Roberto Vargas",     color: "#2DB6C1", text: "Ya compartí este webinar con todo mi equipo de compliance 🔗" },
-  { id: 12, initials: "FT", name: "Fernanda Torres",    color: "#5A9EDB", text: "El onboarding sin fricción es el reto más grande en nuestra SOFIPO" },
-  { id: 13, initials: "AM", name: "Alejandro Martínez", color: "#7C6EDB", text: "¿Aplica el mismo estándar de liveness para entidades IFPE?" },
-  { id: 14, initials: "VR", name: "Valeria Ramírez",    color: "#4FC89A", text: "Exactamente lo que necesitábamos para presentar al board 👍" },
-  { id: 15, initials: "HG", name: "Hugo Guerrero",      color: "#E8956B", text: "Bien diferenciados los tres modelos: banca, fintech y neobanco 💡" },
-  { id: 16, initials: "NF", name: "Nadia Fuentes",      color: "#2DB6C1", text: "¿Tienen caso de éxito en SOFOM con volúmenes altos de originación?" },
-  { id: 17, initials: "GO", name: "Gabriela Ochoa",     color: "#5A9EDB", text: "El punto de la firma electrónica en procesos de crédito es clave 🔑" },
-  { id: 18, initials: "LS", name: "Luis Sánchez",       color: "#7C6EDB", text: "Muy completo el webinar, recomendado para cualquier equipo de compliance" },
+  { id:  1, initials: "M", name: "Miguel",    color: "#2DB6C1", text: "Excelente punto sobre la convergencia regulatoria entre banca y fintech." },
+  { id:  2, initials: "L", name: "Laura",     color: "#5A9EDB", text: "¿El modelo de neobanco aplica también para SOFOMES reguladas?" },
+  { id:  3, initials: "J", name: "Jorge",     color: "#7C6EDB", text: "El tema de PLD y liveness detection es muy relevante para nuestro equipo de cumplimiento." },
+  { id:  4, initials: "A", name: "Ana",       color: "#4FC89A", text: "Muy claro el punto de quiebre que explica Arianna." },
+  { id:  5, initials: "C", name: "Carlos",    color: "#E8956B", text: "¿Cuánto tarda en promedio la integración con un core bancario legacy?" },
+  { id:  6, initials: "S", name: "Sofía",     color: "#2DB6C1", text: "Perfecto el enfoque sobre NOM-151, gracias por cubrirlo." },
+  { id:  7, initials: "E", name: "Eduardo",   color: "#5A9EDB", text: "La identidad sintética es el mayor reto que enfrentamos actualmente." },
+  { id:  8, initials: "P", name: "Patricia",  color: "#7C6EDB", text: "¿Tienen datos sobre reducción de fraude tras implementar KYC biométrico?" },
+  { id:  9, initials: "D", name: "Daniel",    color: "#4FC89A", text: "El Dr. Merino explica muy bien el marco GAFI aplicado a México." },
+  { id: 10, initials: "I", name: "Itzel",     color: "#E8956B", text: "¿La NOM-151 es requisito obligatorio para contratos de AFORE también?" },
+  { id: 11, initials: "R", name: "Roberto",   color: "#2DB6C1", text: "Ya compartí este webinar con todo mi equipo de compliance." },
+  { id: 12, initials: "F", name: "Fernanda",  color: "#5A9EDB", text: "El onboarding sin fricción es el reto más grande en nuestra SOFIPO." },
+  { id: 13, initials: "A", name: "Alejandro", color: "#7C6EDB", text: "¿Aplica el mismo estándar de liveness para entidades IFPE?" },
+  { id: 14, initials: "V", name: "Valeria",   color: "#4FC89A", text: "Exactamente lo que necesitábamos para presentar al consejo." },
+  { id: 15, initials: "H", name: "Hugo",      color: "#E8956B", text: "Bien diferenciados los tres modelos: banca, fintech y neobanco." },
+  { id: 16, initials: "N", name: "Nadia",     color: "#2DB6C1", text: "¿Tienen caso de éxito en SOFOM con volúmenes altos de originación?" },
+  { id: 17, initials: "G", name: "Gabriela",  color: "#5A9EDB", text: "El punto de la firma electrónica en procesos de crédito es clave." },
+  { id: 18, initials: "L", name: "Luis",      color: "#7C6EDB", text: "Muy completo el webinar, recomendado para cualquier equipo de compliance." },
 ];
 
 /* ── Speaker data ────────────────────────────────────────────────────── */
 const ariannaHighlights = [
   {
-    title: "Fundadora de la empresa líder en KYC en México",
+    title: "Cofundadora y CEO de JAAK",
     content: (
       <>
-        Escaló JAAK desde cero convirtiéndola en referencia mexicana en{" "}
+        Ha impulsado el desarrollo de JAAK en{" "}
         <strong>biometría facial, liveness detection y verificación de identidad digital</strong>{" "}
         para instituciones financieras y sectores regulados en México y LATAM.
       </>
@@ -89,10 +90,8 @@ const davidHighlights = [
     title: "Consultor de CNBV, UIF, SAT, FGR y Congreso Federal",
     content: (
       <>
-        Capacitador y consultor de las principales autoridades regulatorias de México. Entrenamiento
-        especializado por{" "}
-        <strong>ONU, GAFI, BID, FBI y el Departamento de Seguridad Nacional de EUA</strong>. Experto
-        técnico del Panel de IA de la ONU.
+        Capacitador y consultor de las principales autoridades regulatorias de México en materia de{" "}
+        <strong>PLD, protección de datos y regulación digital</strong>.
       </>
     ),
   },
@@ -188,7 +187,7 @@ const products = [
   },
   {
     name: "Prevención de Fraude",
-    desc: "Tecnología biométrica certificada iBeta Level 1 & 2 para detección de deepfakes, identidad sintética y spoofing. Validación en listas negras, PEP y alertas AML.",
+    desc: `Tecnología biométrica certificada ${IBETA} para detección de deepfakes, identidad sintética y spoofing. Validación en listas negras, PEP y alertas AML.`,
     tags: ["iBeta certificado", "Listas negras", "PEP / AML"],
     icon: (
       <svg viewBox="0 0 22 22" fill="none" className="w-5 h-5">
@@ -200,7 +199,7 @@ const products = [
 ];
 
 const heroTags = ["KYC / PLD-FT", "Firma electrónica", "Onboarding digital", "NOM-151", "Ley Fintech", "CNBV"];
-const certs = ["ISO 27001", "ISO 9001", "iBeta Level 1 & 2", "NOM-151", "Fundada 2017"];
+const certs = ["ISO 27001", "ISO 9001", IBETA, "NOM-151", "Fundada 2017"];
 
 /* ── Accordion ───────────────────────────────────────────────────────── */
 function Accordion({
@@ -510,14 +509,6 @@ export default function WebinarPage() {
                   {status === "loading" ? "Enviando…" : "Ver el webinar gratis →"}
                 </button>
                 <p className="text-[10.5px] text-gray-400 text-center leading-relaxed">Sin spam · Datos protegidos conforme a LFPDPPP</p>
-                <div className="flex items-center gap-2.5 pt-3 border-t border-gray-100">
-                  <div className="flex">
-                    {["M", "R", "A"].map((l, i) => (
-                      <span key={l} className="w-6 h-6 rounded-full border-2 border-white flex items-center justify-center text-[8px] font-black -ml-1.5 first:ml-0" style={{ background: i === 0 ? "#2DB6C1" : i === 1 ? "#5A9EDB" : "#7EC8C2", color: i === 0 ? "#0E1133" : "#fff", zIndex: 3 - i }}>{l}</span>
-                    ))}
-                  </div>
-                  <p className="text-[11px] text-gray-500 leading-snug"><strong className="text-[#212A45]">+200 profesionales</strong> ya accedieron</p>
-                </div>
               </form>
             )}
           </div>
@@ -755,7 +746,7 @@ export default function WebinarPage() {
                 Registrarme y ver el webinar →
               </a>
               <div className="mt-10 flex flex-wrap gap-8 justify-center">
-                {[{ icon: "🎬", label: "1h 20min de contenido" }, { icon: "👥", label: "+200 profesionales registrados" }, { icon: "📋", label: "Guía de cumplimiento incluida" }].map((s) => (
+                {[{ icon: "🎬", label: "1h 20min de contenido" }, { icon: "📋", label: "Guía de cumplimiento incluida" }].map((s) => (
                   <div key={s.label} className="flex items-center gap-2">
                     <span className="text-base">{s.icon}</span>
                     <span className="text-xs text-white/45">{s.label}</span>
@@ -782,8 +773,8 @@ export default function WebinarPage() {
           </p>
           <div className="grid md:grid-cols-2 gap-7">
             {[
-              { name: "Arianna Quezada", role: "CEO & Cofundadora · JAAK IT S.A.P.I. de C.V.", badge: "8 años liderando JAAK", src: "/images/webinar/arianna-quezada.jpg", fallback: "AQ", gradient: "linear-gradient(135deg,#25969f,#2DB6C1)", highlights: ariannaHighlights, open: openA, onToggle: (i: number) => setOpenA(openA === i ? null : i) },
-              { name: "Dr. David Merino", role: "Especialista en Compliance · Contrainteligencia Empresarial", badge: "Entrenado por ONU · GAFI · FBI", src: "/images/webinar/david-merino.jpg", fallback: "DM", gradient: "linear-gradient(135deg,#142654,#1E3A7A)", highlights: davidHighlights, open: openD, onToggle: (i: number) => setOpenD(openD === i ? null : i) },
+              { name: "Arianna Quezada", role: "CEO & Cofundadora · JAAK IT S.A.P.I. de C.V.", badge: "9 años liderando JAAK", src: "/images/webinar/arianna-quezada.jpg", fallback: "AQ", gradient: "linear-gradient(135deg,#25969f,#2DB6C1)", highlights: ariannaHighlights, open: openA, onToggle: (i: number) => setOpenA(openA === i ? null : i) },
+              { name: "Dr. David Merino", role: "Especialista en Compliance · Contrainteligencia Empresarial", badge: "Consultor en PLD y compliance", src: "/images/webinar/david-merino.jpg", fallback: "DM", gradient: "linear-gradient(135deg,#142654,#1E3A7A)", highlights: davidHighlights, open: openD, onToggle: (i: number) => setOpenD(openD === i ? null : i) },
             ].map((speaker) => (
               <div key={speaker.name} className="rounded-2xl overflow-hidden" style={{ border: "1px solid var(--hp-card-border)" }}>
                 <div className="hp-bg-hero relative overflow-hidden p-6 pb-5">

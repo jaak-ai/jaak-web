@@ -9,7 +9,7 @@ export const signaOrganizationSchema = {
   "logo": "https://jaak.ai/logo.png",
   "contactPoint": {
     "@type": "ContactPoint",
-    "telephone": "+52-555-SIGNA",
+    "email": "sales@jaak.ai",
     "contactType": "customer service",
     "availableLanguage": ["Spanish", "English"],
     "areaServed": "MX"

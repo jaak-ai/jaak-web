@@ -4,6 +4,7 @@ import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import { IBETA, STATS } from "@/lib/trust";
 
 const painPoints = [
   {
@@ -64,7 +65,7 @@ const products = [
   },
   {
     name: "Liveness Detection",
-    description: "Prueba de vida certificada iBeta Level 1. Detecta ataques de presentación con IA.",
+    description: `Prueba de vida certificada ${IBETA}. Detecta ataques de presentación con IA.`,
     color: "#655DC6",
   },
   {
@@ -180,7 +181,8 @@ export default function FinancierasPage() {
               {/* Right: compliance card */}
               <div className="hidden lg:flex justify-center">
                 <div className="bg-white/5 border border-white/10 rounded-2xl p-8 max-w-sm w-full backdrop-blur-sm">
-                  <h3 className="text-white font-bold text-lg mb-6">Panel de cumplimiento</h3>
+                  <h3 className="text-white font-bold text-lg mb-1">Panel de cumplimiento</h3>
+                  <p className="text-white/40 text-xs mb-5">Ejemplo ilustrativo</p>
                   <div className="space-y-4">
                     {[
                       { label: "Verificaciones hoy", value: "1,234", color: "#2DB6C1" },
@@ -290,9 +292,9 @@ export default function FinancierasPage() {
             <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6">
               {[
                 { value: "Horas", label: "Tiempo de integración" },
-                { value: "99.9%", label: "Uptime garantizado" },
+                { value: STATS.disponibilidad, label: "Disponibilidad" },
                 { value: "AML/KYC", label: "Evidencia regulatoria" },
-                { value: "iBeta L1", label: "Certificación Liveness" },
+                { value: IBETA, label: "Certificación Liveness" },
               ].map((stat, i) => (
                 <div key={i} className="text-center p-6 bg-white rounded-xl shadow-sm">
                   <div className="text-3xl font-black text-[#655DC6] mb-1">{stat.value}</div>
@@ -320,7 +322,7 @@ export default function FinancierasPage() {
                 <div className="space-y-5">
                   {[
                     "KYC que cumple CNBV, UIF y LFPIORPI desde el día uno",
-                    "Liveness certificado iBeta Level 1 — el estándar más alto",
+                    `Liveness certificado ${IBETA}`,
                     "Integración en horas con API REST y SDK móvil",
                     "Evidencia auditable lista para inspecciones",
                     "Soporte de expertos en compliance financiero",

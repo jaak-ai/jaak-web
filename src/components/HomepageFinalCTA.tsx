@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { IBETA } from "@/lib/trust";
 
 export default function HomepageFinalCTA() {
   return (
@@ -219,7 +220,7 @@ export default function HomepageFinalCTA() {
         >
           {[
             "Sin compromiso de contratación",
-            "ISO 27001 · iBeta PAD certificado",
+            `ISO 27001 · ${IBETA}`,
             "Tecnología 100% mexicana",
             "Soporte técnico en español",
           ].map((t) => (

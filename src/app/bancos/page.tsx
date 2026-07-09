@@ -4,6 +4,7 @@ import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import { IBETA, STATS } from "@/lib/trust";
 
 const painPoints = [
   {
@@ -34,7 +35,7 @@ const painPoints = [
     ),
     title: "Tiempo de respuesta crítico en operaciones",
     description:
-      "Latencia en la verificación biométrica frena operaciones en tiempo real. Con JAAK, la respuesta está en milisegundos, no segundos.",
+      "Latencia en la verificación biométrica frena operaciones en tiempo real. Con JAAK, la verificación biométrica responde en menos de 5 segundos.",
   },
 ];
 
@@ -59,13 +60,13 @@ const steps = [
 const products = [
   {
     name: "Liveness Detection",
-    description: "Prueba de vida certificada iBeta Level 1. Detecta deepfakes y ataques de presentación en tiempo real.",
+    description: `Prueba de vida certificada ${IBETA}. Detecta deepfakes y ataques de presentación en tiempo real.`,
     color: "#2DB6C1",
     tag: "Certificado iBeta",
   },
   {
     name: "Facial Search",
-    description: "Búsqueda biométrica de alto rendimiento. Millones de templates en milisegundos. Infraestructura propia.",
+    description: "Búsqueda biométrica de alto rendimiento. Infraestructura propia.",
     color: "#655DC6",
     tag: "Alta performance",
   },
@@ -77,7 +78,7 @@ const products = [
   },
   {
     name: "Bus Biométrico",
-    description: "Hub central de operaciones biométricas. Reemplaza dependencias de Jumio, Onfido y otros proveedores.",
+    description: "Hub central de operaciones biométricas. Reemplaza dependencias de proveedores externos de biometría.",
     color: "#655DC6",
     tag: "On-premise / Nube privada",
   },
@@ -85,9 +86,9 @@ const products = [
 
 const stats = [
   { value: "100%", label: "Infraestructura propia" },
-  { value: "<100ms", label: "Latencia biométrica" },
-  { value: "iBeta L1", label: "Certificación Liveness" },
-  { value: "99.99%", label: "Disponibilidad SLA" },
+  { value: STATS.verificacionBiometrica, label: "Verificación biométrica" },
+  { value: IBETA, label: "Certificación Liveness" },
+  { value: STATS.disponibilidad, label: "Disponibilidad" },
 ];
 
 export default function BancosPage() {
@@ -436,7 +437,7 @@ export default function BancosPage() {
                       value={formData.mensaje}
                       onChange={(e) => setFormData({ ...formData, mensaje: e.target.value })}
                       className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#2DB6C1] focus:border-transparent outline-none resize-none text-gray-900 placeholder:text-gray-400"
-                      placeholder="Ej: Queremos reemplazar a Jumio para Liveness. Tenemos 500k verificaciones/mes..."
+                      placeholder="Ej: Queremos reemplazar a nuestro proveedor externo de Liveness. Tenemos 500k verificaciones/mes..."
                     />
                   </div>
 

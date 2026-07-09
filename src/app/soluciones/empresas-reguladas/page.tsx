@@ -32,7 +32,7 @@ export default function EmpresasReguladas() {
     },
     {
       problem: "Alto riesgo de suplantación",
-      solution: "Biometría certificada con prueba de vida que elimina el fraude",
+      solution: "Biometría certificada con prueba de vida que reduce el fraude",
     },
   ];
 

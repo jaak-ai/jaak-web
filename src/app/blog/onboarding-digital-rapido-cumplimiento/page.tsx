@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Onboarding digital: De días a minutos sin sacrificar cumplimiento | JAAK",
-  description: "Descubre cómo las instituciones financieras están logrando verificaciones en menos de 30 segundos manteniendo el 100% de cumplimiento regulatorio.",
+  description: "Descubre cómo las instituciones financieras están logrando verificaciones en menos de 30 segundos sin sacrificar el cumplimiento regulatorio.",
   keywords: ["onboarding digital", "verificación rápida", "cumplimiento regulatorio", "KYC", "alta de clientes", "experiencia de usuario"],
   openGraph: {
     title: "Onboarding digital: De días a minutos sin sacrificar cumplimiento",
@@ -48,7 +48,7 @@ export default function OnboardingDigital() {
   return (
     <ArticleLayout
       title="Onboarding digital: De días a minutos sin sacrificar cumplimiento"
-      subtitle="Transformar tu proceso de alta de clientes no significa comprometer la regulación. Descubre cómo las instituciones financieras están logrando verificaciones en menos de 30 segundos manteniendo el 100% de cumplimiento."
+      subtitle="Transformar tu proceso de alta de clientes no significa comprometer la regulación. Descubre cómo las instituciones financieras están logrando verificaciones en menos de 30 segundos sin sacrificar el cumplimiento regulatorio."
       category="Onboarding"
       date="15 de diciembre, 2025"
       readTime="5 min"
@@ -78,20 +78,20 @@ export default function OnboardingDigital() {
 
               <div className="grid md:grid-cols-2 gap-6 my-8">
                 <div className="bg-orange-50 rounded-xl p-6 text-center">
-                  <p className="text-4xl font-black text-orange-500 mb-2">68%</p>
-                  <p className="text-gray-600">de usuarios abandona procesos de registro que toman más de 10 minutos</p>
+                  <p className="text-2xl font-black text-orange-500 mb-2">Abandono</p>
+                  <p className="text-gray-600">Los registros largos hacen que muchos usuarios desistan antes de terminar</p>
                 </div>
                 <div className="bg-orange-50 rounded-xl p-6 text-center">
-                  <p className="text-4xl font-black text-orange-500 mb-2">$150+</p>
-                  <p className="text-gray-600">costo promedio de adquisición de cliente perdido por abandono</p>
+                  <p className="text-2xl font-black text-orange-500 mb-2">Costo hundido</p>
+                  <p className="text-gray-600">Cada cliente que abandona desperdicia la inversión hecha para adquirirlo</p>
                 </div>
                 <div className="bg-orange-50 rounded-xl p-6 text-center">
-                  <p className="text-4xl font-black text-orange-500 mb-2">3-5 días</p>
-                  <p className="text-gray-600">tiempo promedio de onboarding tradicional con revisión manual</p>
+                  <p className="text-2xl font-black text-orange-500 mb-2">Días de espera</p>
+                  <p className="text-gray-600">El onboarding tradicional con revisión manual puede tomar varios días</p>
                 </div>
                 <div className="bg-orange-50 rounded-xl p-6 text-center">
-                  <p className="text-4xl font-black text-orange-500 mb-2">40%</p>
-                  <p className="text-gray-600">de solicitudes se pierden entre el inicio y la aprobación final</p>
+                  <p className="text-2xl font-black text-orange-500 mb-2">Fuga en el embudo</p>
+                  <p className="text-gray-600">Una parte de las solicitudes se pierde entre el inicio y la aprobación final</p>
                 </div>
               </div>
 
@@ -233,7 +233,7 @@ export default function OnboardingDigital() {
                     OCR inteligente
                   </h3>
                   <p className="text-gray-600">
-                    Extracción automática de datos del documento con precisión superior al 99%.
+                    Extracción automática de datos del documento con alta precisión.
                     No más captura manual que genera errores y retrasos.
                   </p>
                 </div>
@@ -285,7 +285,7 @@ export default function OnboardingDigital() {
               </div>
 
               <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-6">
-                Cumplimiento garantizado
+                Cumplimiento regulatorio
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
                 La velocidad no significa saltarse pasos regulatorios. Un sistema bien diseñado
@@ -381,23 +381,23 @@ export default function OnboardingDigital() {
                   <tbody className="divide-y divide-gray-200">
                     <tr className="bg-white">
                       <td className="px-4 py-3 font-medium">Tiempo de verificación</td>
-                      <td className="px-4 py-3 text-gray-600">24-72 horas</td>
+                      <td className="px-4 py-3 text-gray-600">Horas o días</td>
                       <td className="px-4 py-3 text-green-600 font-medium">&lt; 30 segundos</td>
                     </tr>
                     <tr className="bg-gray-50">
                       <td className="px-4 py-3 font-medium">Tasa de conversión</td>
-                      <td className="px-4 py-3 text-gray-600">30-40%</td>
-                      <td className="px-4 py-3 text-green-600 font-medium">80-90%</td>
+                      <td className="px-4 py-3 text-gray-600">Más baja</td>
+                      <td className="px-4 py-3 text-green-600 font-medium">Más alta</td>
                     </tr>
                     <tr className="bg-white">
                       <td className="px-4 py-3 font-medium">Costo por verificación</td>
-                      <td className="px-4 py-3 text-gray-600">$50-100 MXN</td>
-                      <td className="px-4 py-3 text-green-600 font-medium">$10-20 MXN</td>
+                      <td className="px-4 py-3 text-gray-600">Mayor</td>
+                      <td className="px-4 py-3 text-green-600 font-medium">Menor</td>
                     </tr>
                     <tr className="bg-gray-50">
                       <td className="px-4 py-3 font-medium">Fraude detectado</td>
-                      <td className="px-4 py-3 text-gray-600">Variable</td>
-                      <td className="px-4 py-3 text-green-600 font-medium">&gt;99%</td>
+                      <td className="px-4 py-3 text-gray-600">Detección limitada</td>
+                      <td className="px-4 py-3 text-green-600 font-medium">Detección reforzada</td>
                     </tr>
                   </tbody>
                 </table>

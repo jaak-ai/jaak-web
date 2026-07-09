@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import Image from "next/image";
+import { NUM_CERTIFICACIONES, RETENCION, IBETA } from "@/lib/trust";
 
 export const metadata: Metadata = {
   title: "Cumplimiento Regulatorio | JAAK",
@@ -98,7 +99,7 @@ export default function CumplimientoPage() {
       image: "/images/certifications/iso-9001.png",
     },
     {
-      name: "iBeta",
+      name: IBETA,
       description: "Prueba de Vida Certificada",
       image: "/images/certifications/ibeta.png",
     },
@@ -148,15 +149,15 @@ export default function CumplimientoPage() {
                 <div className="text-gray-600">Regulaciones cubiertas</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-black text-gray-900 mb-2">4</div>
+                <div className="text-3xl md:text-4xl font-black text-gray-900 mb-2">{NUM_CERTIFICACIONES}</div>
                 <div className="text-gray-600">Certificaciones activas</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-black text-gray-900 mb-2">100%</div>
-                <div className="text-gray-600">Evidencia auditable</div>
+                <div className="text-3xl md:text-4xl font-black text-gray-900 mb-2">Evidencia</div>
+                <div className="text-gray-600">auditable</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-black text-gray-900 mb-2">5 años</div>
+                <div className="text-3xl md:text-4xl font-black text-gray-900 mb-2">{RETENCION.general}</div>
                 <div className="text-gray-600">Retención de expedientes</div>
               </div>
             </div>

@@ -143,9 +143,9 @@ export default function PrevencionFraude() {
                 <p className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-2">Impacto económico</p>
                 <p className="text-gray-600">
                   Según la Condusef, las quejas por posible robo de identidad en México
-                  han aumentado más del 50% en los últimos años. El costo promedio por
-                  incidente de fraude puede superar los $50,000 pesos, sin contar el daño
-                  reputacional y los costos operativos de investigación.
+                  han aumentado más del 50% en los últimos años. El costo por incidente de
+                  fraude puede ser significativo, sin contar el daño reputacional y los
+                  costos operativos de investigación.
                 </p>
               </div>
 

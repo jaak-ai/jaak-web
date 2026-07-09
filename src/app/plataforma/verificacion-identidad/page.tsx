@@ -4,10 +4,11 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 import KycBiometricAnimation from "@/components/KycBiometricAnimation";
 import ScrollReveal from "@/components/ScrollReveal";
+import { IBETA, STATS } from "@/lib/trust";
 
 export const metadata: Metadata = {
   title: "Verificación de Identidad (KYC) | JAAK",
-  description: "KYC biométrico con prueba de vida certificada iBeta. Verifica identidad en segundos con IA. Cumple LFPIORPI, CNBV y regulación antilavado.",
+  description: `KYC biométrico con prueba de vida certificada ${IBETA}. Verifica identidad en segundos con IA. Cumple LFPIORPI, CNBV y regulación antilavado.`,
   keywords: ["KYC", "verificación de identidad", "prueba de vida", "biometría facial", "iBeta", "LFPIORPI", "onboarding digital", "anti-spoofing"],
   openGraph: {
     title: "Verificación de Identidad (KYC) | JAAK",
@@ -51,7 +52,7 @@ export default function VerificacionIdentidad() {
                     style={{ color: "rgba(255,255,255,0.50)", border: "1px solid rgba(255,255,255,0.10)", background: "rgba(255,255,255,0.04)" }}
                   >
                     <span className="w-1.5 h-1.5 rounded-full bg-[#2DB6C1] animate-pulse" />
-                    iBeta Level 1 · Tecnología propia
+                    {IBETA} · Tecnología propia
                   </div>
                 </div>
 
@@ -167,7 +168,7 @@ export default function VerificacionIdentidad() {
                 {
                   icon: "⚠️",
                   title: "Fraude en el onboarding",
-                  body: "El 73% del fraude financiero digital en México ocurre en el momento de alta del cliente, cuando los controles son más débiles.",
+                  body: "Una parte significativa del fraude financiero digital en México ocurre en el momento de alta del cliente, cuando los controles son más débiles.",
                   accent: "rgba(239,68,68,0.10)",
                   border: "rgba(239,68,68,0.18)",
                   labelColor: "#fca5a5",
@@ -226,24 +227,24 @@ export default function VerificacionIdentidad() {
               {[
                 {
                   icon: "👁️",
-                  badge: "iBeta Level 1",
+                  badge: IBETA,
                   title: "Prueba de vida pasiva",
-                  body: "Detecta en tiempo real si el usuario es una persona real. Sin retos activos, sin fricción. iBeta Level 1 es el estándar más exigente del mercado para liveness detection.",
+                  body: `Detecta en tiempo real si el usuario es una persona real. Sin retos activos, sin fricción. ${IBETA} certifica la detección de ataques de presentación (liveness) según ISO 30107-3.`,
                   tag: "Anti-spoofing · Pasivo",
                 },
                 {
                   icon: "🪪",
-                  badge: ">99% precisión OCR",
+                  badge: `${STATS.precisionBiometrica} precisión`,
                   title: "Verificación de documento",
-                  body: "OCR avanzado sobre INE, pasaporte y comprobantes. Detecta alteraciones, valida vigencia y extrae datos con precisión superior al 99% en condiciones de campo real.",
+                  body: `OCR avanzado sobre INE, pasaporte y comprobantes. Detecta alteraciones, valida vigencia y extrae datos con precisión del ${STATS.precisionBiometrica} en condiciones de campo real.`,
                   tag: "INE · Pasaporte · Comprobante",
                 },
                 {
                   icon: "🤳",
                   badge: "NIST FRVT evaluado",
                   title: "Comparación facial biométrica",
-                  body: "Algoritmos evaluados por el Instituto Nacional de Estándares (NIST). Coteja el rostro en vivo contra la foto del documento con tasa de error facial < 0.1%.",
-                  tag: "Biometría 1:1 · <0.1% error",
+                  body: "Algoritmos evaluados por el Instituto Nacional de Estándares (NIST). Coteja el rostro en vivo contra la foto del documento mediante biometría 1:1.",
+                  tag: "Biometría 1:1 · NIST FRVT",
                 },
                 {
                   icon: "🏛️",
@@ -298,7 +299,7 @@ export default function VerificacionIdentidad() {
               </div>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight mb-5">
                 De usuario desconocido a identidad verificada en{" "}
-                <span style={{ color: "#2DB6C1" }}>30 segundos.</span>
+                <span style={{ color: "#2DB6C1" }}>{STATS.procesoKyc}.</span>
               </h2>
               <p className="text-lg" style={{ color: "rgba(255,255,255,0.50)" }}>
                 Un proceso simple para el usuario. Evidencia completa para tu área de compliance.
@@ -405,16 +406,16 @@ export default function VerificacionIdentidad() {
             <div data-sr-grid className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
                 {
-                  label: "iBeta Level 1",
+                  label: IBETA,
                   question: "¿Tu prueba de vida resiste ataques de presentación?",
-                  answer: "El único estándar internacional que certifica liveness detection. Obligatorio para acreditar biometría ante CNBV.",
+                  answer: "Certifica la detección de ataques de presentación (liveness) según ISO 30107-3, evaluada por un laboratorio acreditado.",
                   reg: "Relevante para CNBV",
                   color: "#2DB6C1",
                 },
                 {
                   label: "NIST FRVT",
                   question: "¿Con qué precisión reconoces un rostro?",
-                  answer: "Evaluación independiente del gobierno de EE.UU. Tasa de error facial < 0.1% en escenarios reales.",
+                  answer: "Evaluación independiente del gobierno de EE.UU. sobre la precisión del reconocimiento facial en escenarios reales.",
                   reg: "Precisión de biometría",
                   color: "#2AD796",
                 },
@@ -823,8 +824,8 @@ export default function VerificacionIdentidad() {
                   Integración técnica
                 </div>
                 <h2 className="text-3xl md:text-4xl font-black text-white leading-tight mb-5">
-                  Integración lista en{" "}
-                  <span style={{ color: "#2AD796" }}>menos de una semana.</span>
+                  Integración{" "}
+                  <span style={{ color: "#2AD796" }}>guiada, con soporte en cada paso.</span>
                 </h2>
                 <p className="text-lg mb-10" style={{ color: "rgba(255,255,255,0.50)" }}>
                   SDK para iOS, Android y Web. API REST documentada. Sandbox disponible desde el primer día.
@@ -880,7 +881,7 @@ export default function VerificacionIdentidad() {
                     <span className="w-3 h-3 rounded-full" style={{ background: "rgba(245,158,11,0.6)" }} />
                     <span className="w-3 h-3 rounded-full" style={{ background: "rgba(42,215,150,0.6)" }} />
                     <span className="ml-3 text-xs font-mono" style={{ color: "rgba(255,255,255,0.35)" }}>
-                      POST /identity/verify → 200 OK
+                      Ejemplo de respuesta · POST /identity/verify → 200 OK
                     </span>
                   </div>
                   {/* Code body */}
@@ -1006,7 +1007,7 @@ export default function VerificacionIdentidad() {
                 className="mt-8 md:mt-10 pt-6 md:pt-8 flex flex-wrap justify-center gap-3 md:gap-6 text-xs"
                 style={{ borderTop: "1px solid rgba(255,255,255,0.07)", color: "rgba(255,255,255,0.28)" }}
               >
-                {["Sin compromiso", "ISO 27001 · iBeta Level 1", "70M+ verificaciones", "Tecnología propia"].map((t) => (
+                {["Sin compromiso", `ISO 27001 · ${IBETA}`, `${STATS.verificacionesAcumuladas} verificaciones`, "Tecnología propia"].map((t) => (
                   <span key={t} className="flex items-center gap-1.5">
                     <svg className="w-4 h-4" style={{ color: "#2AD796" }} fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />

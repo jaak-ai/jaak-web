@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { TurnstileWidget, getUtmParams } from "@/components/CloudflareTurnstile";
 import { gtmEvent } from "@/components/GoogleTagManager";
+import { STATS } from "@/lib/trust";
 
 const API_ENDPOINT = "/api/contact";
 
@@ -24,7 +25,7 @@ export default function ContactoPage() {
 
   const benefits = [
     {
-      title: "Cumplimiento normativo garantizado",
+      title: "Diseñado para cumplir CNBV y NOM-151",
       description: "CNBV, LFPIORPI, LFPDPPP, CUB y todas las regulaciones aplicables.",
     },
     {
@@ -36,8 +37,8 @@ export default function ContactoPage() {
       description: "ISO 27001, ISO 9001, iBeta para prueba de vida.",
     },
     {
-      title: "Reducción de fraude comprobada",
-      description: "Hasta 99.9% de precisión en detección de identidades falsas.",
+      title: "Reducción de fraude",
+      description: `${STATS.precisionBiometrica} de precisión en la detección de identidades falsas.`,
     },
     {
       title: "Soporte especializado",

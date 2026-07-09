@@ -380,11 +380,10 @@ export default function QueEsKYCMexico() {
               </p>
               <p className="text-gray-600 leading-relaxed mb-4">
                 Las instituciones que han adoptado plataformas de KYC digital
-                modernas reportan tasas de conversión superiores al 85% en
-                procesos de onboarding, comparadas con las tasas del 40-60%
-                que logran quienes mantienen procesos manuales o híbridos.
-                La fricción no viene del KYC en sí: viene de los procesos
-                mal diseñados que lo implementan.
+                modernas reportan tasas de conversión notablemente más altas en
+                procesos de onboarding, comparadas con quienes mantienen procesos
+                manuales o híbridos. La fricción no viene del KYC en sí: viene de
+                los procesos mal diseñados que lo implementan.
               </p>
 
               <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-6">

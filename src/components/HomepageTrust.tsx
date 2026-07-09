@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { IBETA } from "@/lib/trust";
 
 const regulations = [
   {
@@ -45,8 +46,8 @@ const certifications = [
     image: "/images/certifications/iso-9001.png",
   },
   {
-    name: "iBeta PAD",
-    description: "Prueba de vida anti-spoofing",
+    name: IBETA,
+    description: "Prueba de vida anti-spoofing (PAD)",
     image: "/images/certifications/ibeta.png",
   },
   {
@@ -67,7 +68,7 @@ const certifications = [
 ];
 
 const trustPoints = [
-  "Biometría propia sin dependencias de AWS Rekognition o Azure Face",
+  "Motor biométrico propio, desarrollado y operado en México",
   "Datos biométricos nunca salen de la infraestructura del cliente",
   "LFPDPPP — cumplimiento con protección de datos personales",
   "Servidores en México para soberanía de datos regulados",
@@ -204,9 +205,9 @@ export default function HomepageTrust() {
                 className="text-xs leading-relaxed"
                 style={{ color: "var(--hp-text-md)" }}
               >
-                El único proveedor de KYC + firma con motor biométrico propio,
-                desarrollado y operado en México. Sin intermediarios extranjeros
-                en el flujo de datos biométricos sensibles.
+                Motor biométrico propio de KYC + firma, desarrollado y operado
+                en México. Sin intermediarios extranjeros en el flujo de datos
+                biométricos sensibles.
               </p>
             </div>
           </div>

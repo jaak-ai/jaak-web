@@ -5,61 +5,28 @@ import Link from "next/link";
 import { chronosComparisonSchema } from "../schema";
 
 export const metadata: Metadata = {
-  title: "Chronos vs OpenClaw vs NemoClaw | Comparación Completa 2026",
-  description: "Comparación detallada entre Chronos, OpenClaw y NemoClaw. Seguridad enterprise, multi-tenancy, cumplimiento regulatorio México (CNBV, UIF). ¿Cuál plataforma de agentes IA elegir?",
+  title: "Chronos | Orquestación de agentes IA para banca regulada en México",
+  description:
+    "Chronos, la plataforma de JAAK para orquestar agentes de IA en instituciones financieras: multi-tenancy, RBAC, audit logs y cumplimiento CNBV, UIF y LFPIORPI.",
   keywords: [
-    // Direct comparison keywords
-    "Chronos vs OpenClaw",
-    "Chronos vs NemoClaw",
-    "OpenClaw vs NemoClaw",
-    "OpenClaw vs NemoClaw vs Chronos",
-    "comparación plataformas agentes IA",
-    "mejor plataforma agentes IA 2026",
-
-    // OpenClaw specific
-    "OpenClaw problemas seguridad",
-    "OpenClaw enterprise",
-    "OpenClaw multi-tenancy",
-    "OpenClaw alternativa segura",
-    "OpenClaw prompt injection",
-    "OpenClaw restricciones China",
-    "OpenClaw Meta prohibido",
-
-    // NemoClaw specific
-    "NemoClaw NVIDIA",
-    "NemoClaw GTC 2026",
-    "NemoClaw enterprise",
-    "NemoClaw sandbox",
-    "NemoClaw políticas seguridad",
-
-    // Chronos advantages
     "Chronos JAAK",
+    "orquestación de agentes IA",
+    "plataforma de agentes IA México",
+    "agentes IA para bancos",
     "Chronos cumplimiento CNBV",
     "Chronos multi-tenancy",
     "Chronos RBAC",
     "Chronos audit logs",
-    "Chronos México",
-
-    // Framework comparisons
-    "LangChain vs OpenClaw",
-    "CrewAI vs OpenClaw",
-    "AutoGen vs OpenClaw",
-    "AI agent frameworks comparison 2026",
-    "agentic AI platforms comparison",
-
-    // Decision keywords
-    "qué plataforma agentes IA elegir",
-    "mejor agentes IA para bancos",
     "agentes IA cumplimiento regulatorio",
-    "OpenClaw es seguro",
-    "NemoClaw vs alternativas"
+    "human-in-the-loop banca",
   ],
   alternates: {
     canonical: "https://jaak.ai/chronos/comparacion",
   },
   openGraph: {
-    title: "Chronos vs OpenClaw vs NemoClaw - Comparación 2026",
-    description: "¿Cuál plataforma de agentes IA elegir? Comparación de seguridad, multi-tenancy, cumplimiento regulatorio y características.",
+    title: "Chronos | Orquestación de agentes IA para banca regulada",
+    description:
+      "Multi-tenancy, RBAC, audit logs y cumplimiento CNBV/UIF/LFPIORPI para automatizar workflows con agentes de IA.",
     type: "website",
     url: "https://jaak.ai/chronos/comparacion",
     images: [
@@ -67,285 +34,110 @@ export const metadata: Metadata = {
         url: "https://jaak.ai/images/chronos-comparison-og.png",
         width: 1200,
         height: 630,
-        alt: "Chronos vs OpenClaw vs NemoClaw",
+        alt: "Chronos por JAAK",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Chronos vs OpenClaw vs NemoClaw - ¿Cuál Elegir?",
-    description: "Comparación completa de plataformas de agentes IA. Seguridad, compliance, features.",
+    title: "Chronos | Orquestación de agentes IA para banca regulada",
+    description:
+      "Multi-tenancy, RBAC, audit logs y cumplimiento regulatorio para agentes de IA.",
     images: ["https://jaak.ai/images/chronos-comparison-twitter.png"],
   },
 };
 
-const detailedComparison = [
+const highlights = [
+  {
+    title: "Multi-tenancy real",
+    desc: "Aislamiento completo de datos por empresa, con RBAC en cuatro niveles y audit logs inmutables.",
+  },
+  {
+    title: "Cumplimiento mexicano",
+    desc: "Diseñado para CNBV, UIF y LFPIORPI, con evidencia auditable para inspecciones.",
+  },
+  {
+    title: "Integración nativa con JAAK",
+    desc: "OCR, Signa y biometría en un solo flujo, más 11 integraciones pre-construidas.",
+  },
+];
+
+const capabilities = [
   {
     category: "Arquitectura",
-    features: [
-      {
-        name: "Persistencia de datos",
-        chronos: "MongoDB + Redis + Oracle DB",
-        openclaw: "Archivos Markdown en disco",
-        nemoclaw: "Configurable (sin default)",
-        winner: "chronos",
-      },
-      {
-        name: "Job Queue",
-        chronos: "Redis Streams + NATS",
-        openclaw: "Sin job queue",
-        nemoclaw: "Básico",
-        winner: "chronos",
-      },
-      {
-        name: "Escalabilidad",
-        chronos: "Kubernetes-native con autoscaling",
-        openclaw: "Local / single instance",
-        nemoclaw: "Container-based",
-        winner: "chronos",
-      },
-      {
-        name: "Vector Database",
-        chronos: "RAG semántico integrado",
-        openclaw: "Sin vector DB",
-        nemoclaw: "Opcional",
-        winner: "chronos",
-      },
+    items: [
+      { name: "Persistencia de datos", value: "MongoDB + Redis + Oracle DB" },
+      { name: "Job queue", value: "Redis Streams + NATS" },
+      { name: "Escalabilidad", value: "Kubernetes-native con autoscaling" },
+      { name: "Vector database", value: "RAG semántico integrado" },
     ],
   },
   {
     category: "Seguridad",
-    features: [
-      {
-        name: "Multi-tenancy",
-        chronos: "Aislamiento completo por empresa",
-        openclaw: "No soportado",
-        nemoclaw: "Básico (contexts)",
-        winner: "chronos",
-      },
-      {
-        name: "RBAC",
-        chronos: "4 niveles (Owner, Admin, Editor, Viewer)",
-        openclaw: "Sin control de acceso",
-        nemoclaw: "Políticas básicas",
-        winner: "chronos",
-      },
-      {
-        name: "Audit Logs",
-        chronos: "Completos e inmutables",
-        openclaw: "No disponible",
-        nemoclaw: "Básicos",
-        winner: "chronos",
-      },
-      {
-        name: "Gestión de Secretos",
-        chronos: "OCI Vault integrado",
-        openclaw: "Variables de entorno",
-        nemoclaw: "Vault opcional",
-        winner: "chronos",
-      },
-      {
-        name: "Sandbox Ejecución",
-        chronos: "Pods aislados en K8s",
-        openclaw: "Ejecución local sin aislamiento",
-        nemoclaw: "OpenShell sandbox",
-        winner: "tie-cn",
-      },
-      {
-        name: "Prompt Injection Protection",
-        chronos: "Guardrails + validación",
-        openclaw: "Susceptible a ataques",
-        nemoclaw: "Políticas de filtrado",
-        winner: "chronos",
-      },
+    items: [
+      { name: "Multi-tenancy", value: "Aislamiento completo por empresa" },
+      { name: "RBAC", value: "4 niveles (Owner, Admin, Editor, Viewer)" },
+      { name: "Audit logs", value: "Completos e inmutables" },
+      { name: "Gestión de secretos", value: "OCI Vault integrado" },
+      { name: "Sandbox de ejecución", value: "Pods aislados en Kubernetes" },
+      { name: "Protección ante prompt injection", value: "Guardrails + validación" },
     ],
   },
   {
-    category: "Cumplimiento Regulatorio",
-    features: [
-      {
-        name: "CNBV México",
-        chronos: "Diseñado para cumplimiento",
-        openclaw: "No aplica",
-        nemoclaw: "No aplica",
-        winner: "chronos",
-      },
-      {
-        name: "UIF / AML",
-        chronos: "Trazabilidad completa",
-        openclaw: "No aplica",
-        nemoclaw: "No aplica",
-        winner: "chronos",
-      },
-      {
-        name: "LFPIORPI",
-        chronos: "Evidencia auditable",
-        openclaw: "No aplica",
-        nemoclaw: "No aplica",
-        winner: "chronos",
-      },
-      {
-        name: "GDPR",
-        chronos: "Data isolation + deletion",
-        openclaw: "Responsabilidad del usuario",
-        nemoclaw: "Parcial",
-        winner: "chronos",
-      },
+    category: "Cumplimiento regulatorio",
+    items: [
+      { name: "CNBV México", value: "Diseñado para cumplimiento" },
+      { name: "UIF / AML", value: "Trazabilidad completa" },
+      { name: "LFPIORPI", value: "Evidencia auditable" },
+      { name: "GDPR", value: "Aislamiento y borrado de datos" },
     ],
   },
   {
     category: "Integraciones",
-    features: [
-      {
-        name: "Integraciones pre-construidas",
-        chronos: "18+ (Slack, GitHub, SAT, Buró)",
-        openclaw: "100+ AgentSkills",
-        nemoclaw: "NVIDIA ecosystem",
-        winner: "tie-oc",
-      },
-      {
-        name: "Integraciones México",
-        chronos: "SAT, Buró, RENAPO, Círculo",
-        openclaw: "No disponible",
-        nemoclaw: "No disponible",
-        winner: "chronos",
-      },
-      {
-        name: "JAAK (OCR, Signa, Biometría)",
-        chronos: "Nativo",
-        openclaw: "No disponible",
-        nemoclaw: "No disponible",
-        winner: "chronos",
-      },
-      {
-        name: "Protocol MCP",
-        chronos: "Gateway MCP propio",
-        openclaw: "Soporte completo",
-        nemoclaw: "Soporte completo",
-        winner: "tie-all",
-      },
+    items: [
+      { name: "Integraciones pre-construidas", value: "11 (Slack, Teams, SAT, Buró, RENAPO)" },
+      { name: "Integraciones México", value: "SAT, Buró, RENAPO, Círculo de Crédito" },
+      { name: "JAAK (OCR, Signa, biometría)", value: "Nativo" },
+      { name: "Protocolo MCP", value: "Gateway MCP propio" },
     ],
   },
   {
     category: "Proveedores LLM",
-    features: [
-      {
-        name: "Anthropic Claude",
-        chronos: "SDK nativo (Opus, Sonnet, Haiku)",
-        openclaw: "Soportado",
-        nemoclaw: "Soportado",
-        winner: "tie-all",
-      },
-      {
-        name: "OpenAI GPT",
-        chronos: "Soportado",
-        openclaw: "Soportado",
-        nemoclaw: "Soportado",
-        winner: "tie-all",
-      },
-      {
-        name: "Google Gemini",
-        chronos: "Soportado",
-        openclaw: "Soportado",
-        nemoclaw: "Soportado + Grounding",
-        winner: "nemoclaw",
-      },
-      {
-        name: "AWS Bedrock",
-        chronos: "Soportado",
-        openclaw: "Parcial",
-        nemoclaw: "Soportado",
-        winner: "tie-cn",
-      },
-      {
-        name: "NVIDIA NeMo/NIM",
-        chronos: "No nativo",
-        openclaw: "No nativo",
-        nemoclaw: "Nativo + aceleración",
-        winner: "nemoclaw",
-      },
+    items: [
+      { name: "Anthropic Claude", value: "SDK nativo (Opus, Sonnet, Haiku)" },
+      { name: "OpenAI GPT", value: "Soportado" },
+      { name: "Google Gemini", value: "Soportado" },
+      { name: "AWS Bedrock", value: "Soportado" },
+      { name: "Azure OpenAI · OCI GenAI", value: "Soportado" },
     ],
   },
   {
-    category: "UX / Developer Experience",
-    features: [
-      {
-        name: "Visual Workflow Editor",
-        chronos: "Drag & drop (Foblex Flow)",
-        openclaw: "Solo código/CLI",
-        nemoclaw: "Solo código/CLI",
-        winner: "chronos",
-      },
-      {
-        name: "Dashboard de Monitoreo",
-        chronos: "Web UI completo",
-        openclaw: "CLI + logs",
-        nemoclaw: "CLI + métricas básicas",
-        winner: "chronos",
-      },
-      {
-        name: "API Documentation",
-        chronos: "OpenAPI + SDK",
-        openclaw: "README + ejemplos",
-        nemoclaw: "NVIDIA docs",
-        winner: "chronos",
-      },
-      {
-        name: "Onboarding Time",
-        chronos: "Horas (plug and play)",
-        openclaw: "Horas (self-service)",
-        nemoclaw: "Días",
-        winner: "tie-chronos-openclaw",
-      },
+    category: "Experiencia de desarrollo",
+    items: [
+      { name: "Visual workflow editor", value: "Drag & drop (Foblex Flow)" },
+      { name: "Dashboard de monitoreo", value: "Web UI completo" },
+      { name: "Documentación de API", value: "OpenAPI + SDK" },
+      { name: "Tiempo de onboarding", value: "Horas (plug and play)" },
     ],
   },
   {
-    category: "Human-in-the-Loop",
-    features: [
-      {
-        name: "Aprobaciones Multi-nivel",
-        chronos: "Configurable con RBAC",
-        openclaw: "Manual (no integrado)",
-        nemoclaw: "Políticas básicas",
-        winner: "chronos",
-      },
-      {
-        name: "Escalación Automática",
-        chronos: "Por tiempo + severidad",
-        openclaw: "No disponible",
-        nemoclaw: "Básica",
-        winner: "chronos",
-      },
-      {
-        name: "Notificaciones",
-        chronos: "Slack, Email, Webhook",
-        openclaw: "Manual",
-        nemoclaw: "Configurable",
-        winner: "chronos",
-      },
+    category: "Human-in-the-loop",
+    items: [
+      { name: "Aprobaciones multi-nivel", value: "Configurable con RBAC" },
+      { name: "Escalación automática", value: "Por tiempo y severidad" },
+      { name: "Notificaciones", value: "Slack, Email, Webhook" },
     ],
   },
 ];
 
-const securityIncidents = [
-  {
-    platform: "OpenClaw",
-    incident: "China prohibió uso en gobierno y empresas estatales",
-    date: "Marzo 2026",
-    impact: "Restricción de uso en sector público chino por riesgos de seguridad",
-  },
-  {
-    platform: "OpenClaw",
-    incident: "Meta bloqueó uso en dispositivos corporativos",
-    date: "Marzo 2026",
-    impact: "Empleados de Meta no pueden ejecutar OpenClaw en equipos de trabajo",
-  },
-  {
-    platform: "OpenClaw",
-    incident: "Vulnerabilidad a prompt injection",
-    date: "Documentado",
-    impact: "Instrucciones maliciosas pueden ser interpretadas como comandos legítimos",
-  },
+const chronosFit = [
+  "Eres un banco, financiera o aseguradora regulada",
+  "Necesitas cumplimiento CNBV, UIF, LFPIORPI",
+  "Requieres multi-tenancy con aislamiento de datos",
+  "Necesitas audit logs para inspecciones",
+  "Quieres integrar con JAAK OCR, Signa y biometría",
+  "Prefieres un editor visual sobre solo código",
+  "Necesitas human-in-the-loop para decisiones críticas",
 ];
 
 export default function ChronosComparacionPage() {
@@ -366,151 +158,54 @@ export default function ChronosComparacionPage() {
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#655DC6]/10 border border-[#655DC6]/20 rounded-full mb-6">
               <span className="w-2 h-2 bg-[#655DC6] rounded-full"></span>
-              <span className="text-[#655DC6] text-sm font-medium">Comparación Detallada 2026</span>
+              <span className="text-[#655DC6] text-sm font-medium">Plataforma enterprise</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-black text-white mb-6">
-              <span className="text-[#2DB6C1]">Chronos</span> vs{" "}
-              <span className="text-[#ff6b6b]">OpenClaw</span> vs{" "}
-              <span className="text-[#4ecdc4]">NemoClaw</span>
+              <span className="text-[#2DB6C1]">Chronos</span> para banca regulada
             </h1>
             <p className="text-xl text-white/70 max-w-3xl mx-auto">
-              Comparación técnica completa de las principales plataformas de orquestación de agentes IA.
-              <strong className="text-white"> Seguridad, compliance, integraciones y casos de uso.</strong>
+              Orquestación de agentes de IA con seguridad enterprise.
+              <strong className="text-white"> Multi-tenancy, cumplimiento regulatorio, integraciones y human-in-the-loop.</strong>
             </p>
           </div>
         </section>
 
-        {/* Quick Summary */}
+        {/* Highlights */}
         <section className="py-16 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid md:grid-cols-3 gap-8 mb-12">
-              {/* Chronos */}
-              <div className="bg-gradient-to-br from-[#655DC6]/5 to-[#2DB6C1]/5 border-2 border-[#655DC6] rounded-2xl p-6 relative">
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-[#655DC6] text-white text-xs font-bold px-3 py-1 rounded-full">
-                  RECOMENDADO ENTERPRISE
-                </div>
-                <div className="text-center mt-2">
-                  <h3 className="text-2xl font-black text-[#655DC6] mb-2">Chronos</h3>
-                  <p className="text-sm text-gray-500 mb-4">by JAAK</p>
-                  <p className="text-gray-600 text-sm">
-                    Plataforma enterprise con multi-tenancy real, cumplimiento regulatorio México,
-                    y 18+ integraciones incluyendo JAAK OCR/Signa.
-                  </p>
-                  <div className="mt-4 flex flex-wrap gap-2 justify-center">
-                    <span className="px-2 py-1 bg-[#655DC6]/10 text-[#655DC6] text-xs rounded-full">Multi-tenancy</span>
-                    <span className="px-2 py-1 bg-[#655DC6]/10 text-[#655DC6] text-xs rounded-full">CNBV/UIF</span>
-                    <span className="px-2 py-1 bg-[#655DC6]/10 text-[#655DC6] text-xs rounded-full">Visual Editor</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* OpenClaw */}
-              <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6">
-                <div className="text-center">
-                  <h3 className="text-2xl font-black text-[#ff6b6b] mb-2">OpenClaw</h3>
-                  <p className="text-sm text-gray-500 mb-4">Open Source</p>
-                  <p className="text-gray-600 text-sm">
-                    Framework open-source popular (más estrellas que React), simple pero
-                    sin seguridad enterprise ni multi-tenancy.
-                  </p>
-                  <div className="mt-4 flex flex-wrap gap-2 justify-center">
-                    <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">Gratis</span>
-                    <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">100+ Skills</span>
-                    <span className="px-2 py-1 bg-red-100 text-red-700 text-xs rounded-full">Sin seguridad</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* NemoClaw */}
-              <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6">
-                <div className="text-center">
-                  <h3 className="text-2xl font-black text-[#4ecdc4] mb-2">NemoClaw</h3>
-                  <p className="text-sm text-gray-500 mb-4">by NVIDIA</p>
-                  <p className="text-gray-600 text-sm">
-                    Versión enterprise de OpenClaw por NVIDIA. Añade sandbox y políticas
-                    de seguridad, pero sin cumplimiento regulatorio específico.
-                  </p>
-                  <div className="mt-4 flex flex-wrap gap-2 justify-center">
-                    <span className="px-2 py-1 bg-[#4ecdc4]/10 text-[#4ecdc4] text-xs rounded-full">Sandbox</span>
-                    <span className="px-2 py-1 bg-[#4ecdc4]/10 text-[#4ecdc4] text-xs rounded-full">NeMo/NIM</span>
-                    <span className="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs rounded-full">Nuevo (GTC 2026)</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Security Incidents */}
-        <section className="py-16 bg-red-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-black text-gray-900 mb-4">
-                ⚠️ Incidentes de Seguridad en OpenClaw
-              </h2>
-              <p className="text-xl text-gray-600">
-                Por qué empresas reguladas necesitan alternativas más seguras
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-6">
-              {securityIncidents.map((incident, i) => (
-                <div key={i} className="bg-white rounded-xl p-6 border border-red-200">
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="text-red-500 text-xl">🚨</span>
-                    <span className="text-red-600 font-bold">{incident.platform}</span>
-                    <span className="text-gray-400 text-sm ml-auto">{incident.date}</span>
-                  </div>
-                  <h3 className="font-bold text-gray-900 mb-2">{incident.incident}</h3>
-                  <p className="text-gray-600 text-sm">{incident.impact}</p>
+            <div className="grid md:grid-cols-3 gap-8">
+              {highlights.map((h) => (
+                <div
+                  key={h.title}
+                  className="bg-gradient-to-br from-[#655DC6]/5 to-[#2DB6C1]/5 border border-[#655DC6]/20 rounded-2xl p-6"
+                >
+                  <h3 className="text-xl font-bold text-[#655DC6] mb-2">{h.title}</h3>
+                  <p className="text-gray-600 text-sm">{h.desc}</p>
                 </div>
               ))}
             </div>
-
-            <div className="mt-8 text-center">
-              <p className="text-gray-600">
-                Fuentes:{" "}
-                <a
-                  href="https://techcrunch.com/2026/03/16/nvidias-version-of-openclaw-could-solve-its-biggest-problem-security/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[#655DC6] hover:underline"
-                >
-                  TechCrunch
-                </a>
-                {", "}
-                <a
-                  href="https://thenextweb.com/news/nvidia-nemoclaw-openclaw-enterprise-security"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[#655DC6] hover:underline"
-                >
-                  The Next Web
-                </a>
-              </p>
-            </div>
           </div>
         </section>
 
-        {/* Detailed Comparison Tables */}
-        <section className="py-16 bg-white">
+        {/* Capabilities by category */}
+        <section className="py-16 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-black text-gray-900 mb-4">
-                Comparación Detallada por Categoría
+                Capacidades por categoría
               </h2>
               <p className="text-xl text-gray-600">
-                Análisis técnico completo de características
+                Todo lo que Chronos incluye para operar agentes en entornos regulados
               </p>
             </div>
 
-            {detailedComparison.map((category, catIndex) => (
-              <div key={catIndex} className="mb-12">
+            {capabilities.map((cat, catIndex) => (
+              <div key={cat.category} className="mb-12">
                 <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
                   <span className="w-8 h-8 bg-[#655DC6] rounded-lg flex items-center justify-center text-white text-sm">
                     {catIndex + 1}
                   </span>
-                  {category.category}
+                  {cat.category}
                 </h3>
 
                 <div className="overflow-x-auto">
@@ -518,20 +213,15 @@ export default function ChronosComparacionPage() {
                     <thead>
                       <tr className="bg-gray-100">
                         <th className="px-6 py-4 text-left font-semibold text-gray-700">Característica</th>
-                        <th className="px-6 py-4 text-center text-[#ff6b6b] font-semibold">OpenClaw</th>
-                        <th className="px-6 py-4 text-center text-[#4ecdc4] font-semibold">NemoClaw</th>
-                        <th className="px-6 py-4 text-center bg-[#655DC6]/10 text-[#655DC6] font-bold">Chronos</th>
+                        <th className="px-6 py-4 text-left bg-[#655DC6]/10 text-[#655DC6] font-bold">Chronos</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {category.features.map((feature, i) => (
-                        <tr key={i} className={`border-b border-gray-100 ${i % 2 === 0 ? "bg-gray-50" : "bg-white"}`}>
-                          <td className="px-6 py-4 font-medium text-gray-900">{feature.name}</td>
-                          <td className="px-6 py-4 text-center text-sm text-gray-600">{feature.openclaw}</td>
-                          <td className="px-6 py-4 text-center text-sm text-gray-600">{feature.nemoclaw}</td>
-                          <td className={`px-6 py-4 text-center text-sm ${feature.winner === "chronos" ? "bg-[#655DC6]/5 font-semibold text-[#655DC6]" : "text-gray-600"}`}>
-                            {feature.chronos}
-                            {feature.winner === "chronos" && <span className="ml-1">✓</span>}
+                      {cat.items.map((item, i) => (
+                        <tr key={item.name} className={`border-b border-gray-100 ${i % 2 === 0 ? "bg-gray-50" : "bg-white"}`}>
+                          <td className="px-6 py-4 font-medium text-gray-900">{item.name}</td>
+                          <td className="px-6 py-4 text-sm text-[#655DC6] font-semibold bg-[#655DC6]/5">
+                            {item.value}
                           </td>
                         </tr>
                       ))}
@@ -543,78 +233,22 @@ export default function ChronosComparacionPage() {
           </div>
         </section>
 
-        {/* When to use each */}
-        <section className="py-16 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Chronos fit */}
+        <section className="py-16 bg-white">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-black text-gray-900 mb-4">
-                ¿Cuándo usar cada plataforma?
-              </h2>
+              <h2 className="text-3xl font-black text-gray-900 mb-4">Chronos es para ti si:</h2>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
-              {/* Chronos */}
-              <div className="bg-white rounded-2xl p-8 border-2 border-[#655DC6]">
-                <h3 className="text-xl font-bold text-[#655DC6] mb-4">Usa Chronos si:</h3>
-                <ul className="space-y-3">
-                  {[
-                    "Eres un banco, financiera o aseguradora regulada",
-                    "Necesitas cumplimiento CNBV, UIF, LFPIORPI",
-                    "Requieres multi-tenancy con aislamiento de datos",
-                    "Necesitas audit logs para inspecciones",
-                    "Quieres integrar con JAAK OCR, Signa, biometría",
-                    "Prefieres editor visual sobre código",
-                    "Necesitas human-in-the-loop para decisiones críticas",
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-2 text-gray-700">
-                      <span className="text-[#655DC6] mt-0.5">✓</span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* OpenClaw */}
-              <div className="bg-white rounded-2xl p-8 border border-gray-200">
-                <h3 className="text-xl font-bold text-[#ff6b6b] mb-4">Usa OpenClaw si:</h3>
-                <ul className="space-y-3">
-                  {[
-                    "Eres developer individual o startup temprana",
-                    "No tienes requisitos de compliance",
-                    "Quieres experimentar con agentes IA rápido",
-                    "No manejas datos sensibles",
-                    "Prefieres open-source y control total",
-                    "Tu caso de uso es personal o hobby",
-                    "No necesitas multi-tenancy",
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-2 text-gray-700">
-                      <span className="text-[#ff6b6b] mt-0.5">•</span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* NemoClaw */}
-              <div className="bg-white rounded-2xl p-8 border border-gray-200">
-                <h3 className="text-xl font-bold text-[#4ecdc4] mb-4">Usa NemoClaw si:</h3>
-                <ul className="space-y-3">
-                  {[
-                    "Ya usas infraestructura NVIDIA (GPUs, NeMo)",
-                    "Necesitas seguridad básica sobre OpenClaw",
-                    "No tienes requisitos regulatorios específicos",
-                    "Quieres sandbox pero no multi-tenancy real",
-                    "Tu equipo prefiere CLI sobre UI visual",
-                    "Estás en USA/Europa (no México/LATAM)",
-                    "Toleras un producto nuevo (GTC 2026)",
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-2 text-gray-700">
-                      <span className="text-[#4ecdc4] mt-0.5">•</span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+            <div className="bg-gray-50 rounded-2xl p-8 border-2 border-[#655DC6]">
+              <ul className="space-y-3">
+                {chronosFit.map((item) => (
+                  <li key={item} className="flex items-start gap-2 text-gray-700">
+                    <span className="text-[#655DC6] mt-0.5">✓</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </section>
@@ -626,7 +260,7 @@ export default function ChronosComparacionPage() {
               ¿Listo para probar Chronos?
             </h2>
             <p className="text-xl text-white/90 mb-8">
-              La única plataforma de agentes IA diseñada para instituciones financieras reguladas en México.
+              La plataforma de agentes IA diseñada para instituciones financieras reguladas en México.
             </p>
 
             <div className="flex flex-wrap gap-4 justify-center">

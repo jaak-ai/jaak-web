@@ -157,7 +157,6 @@ export default function CNBVSanciones2025() {
                 {[
                   { value: "$22 MDD", label: "Activos combinados de las 3 instituciones" },
                   { value: "$185 mdp", label: "Sanciones CNBV publicadas el 15/jul/2025" },
-                  { value: "52%", label: "De las 696 sanciones vinieron después del caso" },
                   { value: "4", label: "Carteles vinculados en la designación" },
                 ].map((stat) => (
                   <div

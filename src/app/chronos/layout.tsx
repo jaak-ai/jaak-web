@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Chronos - Plataforma de Agentes IA Enterprise | Alternativa a OpenClaw y NemoClaw",
-  description: "Orquestación de agentes de IA para empresas. Multi-LLM (Claude, GPT, Gemini), human-in-the-loop, cumplimiento CNBV/UIF. Alternativa segura a OpenClaw y NemoClaw con multi-tenancy real.",
+  title: "Chronos - Plataforma de Agentes IA Enterprise | JAAK",
+  description: "Orquestación de agentes de IA para empresas. Multi-LLM (Claude, GPT, Gemini), human-in-the-loop, cumplimiento CNBV/UIF y multi-tenancy real.",
   keywords: [
     // Primary keywords - AI Agent Orchestration
     "agentes de inteligencia artificial",
@@ -12,26 +12,9 @@ export const metadata: Metadata = {
     "automatización con IA",
     "workflow automation IA",
 
-    // Competitive keywords - OpenClaw/NemoClaw
-    "OpenClaw alternativa",
-    "NemoClaw alternativa",
-    "OpenClaw vs Chronos",
-    "NemoClaw vs Chronos",
-    "alternativa OpenClaw enterprise",
-    "alternativa NemoClaw México",
-    "OpenClaw seguro",
-    "NemoClaw compliance",
-    "mejor que OpenClaw",
-    "OpenClaw para empresas",
-
     // LLM-related keywords
     "multi-LLM platform",
     "Claude GPT Gemini",
-    "Anthropic Claude enterprise",
-    "OpenAI GPT enterprise",
-    "Google Gemini enterprise",
-    "AWS Bedrock agents",
-    "Azure OpenAI agents",
 
     // Enterprise/Compliance keywords
     "agentes IA cumplimiento regulatorio",
@@ -62,11 +45,6 @@ export const metadata: Metadata = {
     "automatización empresarial México",
     "inteligencia artificial empresas",
     "plataforma IA Latinoamérica",
-
-    // Framework comparison keywords
-    "LangChain alternativa enterprise",
-    "CrewAI alternativa",
-    "AutoGen alternativa",
     "AI agent frameworks 2026",
     "agentic AI platform",
     "multiagent orchestration"
@@ -95,7 +73,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Chronos - Orquestación de Agentes IA Enterprise | JAAK",
-    description: "Automatiza workflows con agentes de IA. Multi-LLM (Claude, GPT, Gemini), human-in-the-loop, cumplimiento regulatorio. Alternativa segura a OpenClaw y NemoClaw.",
+    description: "Automatiza workflows con agentes de IA. Multi-LLM (Claude, GPT, Gemini), human-in-the-loop y cumplimiento regulatorio.",
     type: "website",
     url: "https://jaak.ai/chronos",
     siteName: "JAAK",
@@ -111,8 +89,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Chronos - Agentes IA Enterprise | Alternativa a OpenClaw",
-    description: "Multi-LLM, human-in-the-loop, cumplimiento CNBV/UIF. La plataforma de agentes IA segura para empresas.",
+    title: "Chronos - Agentes IA Enterprise | JAAK",
+    description: "Multi-LLM, human-in-the-loop, cumplimiento CNBV/UIF. La plataforma de agentes IA para empresas.",
     images: ["https://jaak.ai/images/chronos-twitter.png"],
     creator: "@jaak_ai",
   },
@@ -129,7 +107,6 @@ export const metadata: Metadata = {
     // AI-specific meta tags for LLM crawlers
     "ai-content-type": "product-page",
     "ai-product-category": "AI Agent Orchestration Platform",
-    "ai-competitors": "OpenClaw, NemoClaw, LangChain, CrewAI, AutoGen",
   },
 };
 

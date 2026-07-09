@@ -4,6 +4,7 @@ import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import { STATS } from "@/lib/trust";
 
 const painPoints = [
   {
@@ -156,18 +157,8 @@ export default function InmobiliariasPage() {
 
                 {/* Social proof */}
                 <div className="flex items-center gap-3 p-4 bg-white/5 border border-white/10 rounded-xl w-fit">
-                  <div className="flex -space-x-2">
-                    {[...Array(4)].map((_, i) => (
-                      <div
-                        key={i}
-                        className="w-8 h-8 rounded-full bg-gradient-to-br from-[#2DB6C1] to-[#655DC6] border-2 border-[#212A45] flex items-center justify-center text-white text-xs font-bold"
-                      >
-                        {["E", "F", "N", "B"][i]}
-                      </div>
-                    ))}
-                  </div>
                   <p className="text-white/80 text-sm">
-                    <strong className="text-white">+1,000 empresas</strong> en México ya confían en JAAK
+                    <strong className="text-white">{STATS.empresasConfian} empresas</strong> en México ya confían en JAAK
                   </p>
                 </div>
               </div>
@@ -175,6 +166,7 @@ export default function InmobiliariasPage() {
               {/* Right: mini-preview card */}
               <div className="hidden lg:flex justify-center">
                 <div className="bg-white/5 border border-white/10 rounded-2xl p-8 max-w-sm w-full backdrop-blur-sm">
+                  <p className="text-white/40 text-xs uppercase tracking-wider mb-4">Ejemplo ilustrativo</p>
                   <div className="flex items-center gap-3 mb-6">
                     <div className="w-10 h-10 bg-[#2DB6C1]/20 rounded-lg flex items-center justify-center">
                       <svg className="w-6 h-6 text-[#2DB6C1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -287,9 +279,9 @@ export default function InmobiliariasPage() {
             {/* Stats */}
             <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6">
               {[
-                { value: "30s", label: "Tiempo de verificación" },
-                { value: "99.9%", label: "Precisión biométrica" },
-                { value: "+1,000", label: "Empresas en México" },
+                { value: STATS.procesoKyc, label: "Tiempo de verificación" },
+                { value: STATS.precisionBiometrica, label: "Precisión biométrica" },
+                { value: STATS.empresasConfian, label: "Empresas en México" },
                 { value: "100%", label: "Validez legal" },
               ].map((stat, i) => (
                 <div key={i} className="text-center p-6 bg-white rounded-xl shadow-sm">

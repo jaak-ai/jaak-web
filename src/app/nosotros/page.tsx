@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { STATS } from "@/lib/trust";
 
 export const metadata: Metadata = {
   title: "Nosotros | JAAK - Plataforma de Verificación de Identidad",
@@ -386,7 +387,7 @@ export default function NosotrosPage() {
                   <div className="grid grid-cols-2 gap-6">
                     <div className="bg-white rounded-2xl p-6 shadow-sm">
                       <div className="text-4xl font-bold text-[#0066ff] mb-2">
-                        +50M
+                        {STATS.verificacionesAcumuladas}
                       </div>
                       <div className="text-sm text-gray-600">
                         Verificaciones realizadas
@@ -394,7 +395,7 @@ export default function NosotrosPage() {
                     </div>
                     <div className="bg-white rounded-2xl p-6 shadow-sm">
                       <div className="text-4xl font-bold text-[#0066ff] mb-2">
-                        +200
+                        {STATS.clientesEmpresariales}
                       </div>
                       <div className="text-sm text-gray-600">
                         Clientes empresariales
@@ -402,15 +403,15 @@ export default function NosotrosPage() {
                     </div>
                     <div className="bg-white rounded-2xl p-6 shadow-sm">
                       <div className="text-4xl font-bold text-[#2DB6C1] mb-2">
-                        99.9%
+                        {STATS.disponibilidad}
                       </div>
                       <div className="text-sm text-gray-600">
-                        Uptime garantizado
+                        Disponibilidad
                       </div>
                     </div>
                     <div className="bg-white rounded-2xl p-6 shadow-sm">
                       <div className="text-4xl font-bold text-[#2DB6C1] mb-2">
-                        &lt;3s
+                        {STATS.verificacionBiometrica}
                       </div>
                       <div className="text-sm text-gray-600">
                         Tiempo de verificación

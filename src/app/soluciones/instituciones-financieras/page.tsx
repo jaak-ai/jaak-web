@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import Image from "next/image";
+import { STATS } from "@/lib/trust";
 
 export const metadata: Metadata = {
   title: "KYC para Instituciones Financieras | JAAK",
@@ -186,16 +187,16 @@ export default function InstitucionesFinancieras() {
               </div>
               <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
                 <div className="text-center">
-                  <div className="text-6xl font-black text-white mb-2">95%</div>
-                  <div className="text-white/60">de verificaciones automáticas</div>
+                  <div className="text-6xl font-black text-white mb-2">{STATS.precisionBiometrica}</div>
+                  <div className="text-white/60">de precisión biométrica</div>
                 </div>
                 <div className="grid grid-cols-2 gap-6 mt-8">
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-[#2DB6C1]">&lt;30s</div>
+                    <div className="text-3xl font-bold text-[#2DB6C1]">{STATS.procesoKyc}</div>
                     <div className="text-white/50 text-sm">tiempo promedio</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-[#2DB6C1]">99.9%</div>
+                    <div className="text-3xl font-bold text-[#2DB6C1]">{STATS.disponibilidad}</div>
                     <div className="text-white/50 text-sm">disponibilidad</div>
                   </div>
                 </div>

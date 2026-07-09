@@ -31,11 +31,11 @@ const PRODUCTS: Product[] = [
     name: "KYC · Verificación de Identidad",
     icon: "👤",
     color: "#2DB6C1",
-    desc: "Liveness iBeta Level 1 · Sin NOM-151",
+    desc: "Liveness iBeta Nivel 1 · Sin NOM-151",
     popular: "Plata",
     forWhom: "Empresas que necesitan verificar la identidad real de sus clientes o usuarios de forma digital, sin fricción y con alta seguridad antifraude.",
     benefits: [
-      "Prueba de vida iBeta Level 1 (antisuplantación)",
+      "Prueba de vida iBeta Nivel 1 (antisuplantación)",
       "OCR de identificación oficial (INE, pasaporte)",
       "Consulta en listas nominales INE / RENAPO",
       "Alertas OFAC · Interpol · listas negras SAT",

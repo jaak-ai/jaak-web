@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { STATS, NUM_CERTIFICACIONES } from "@/lib/trust";
 
 const navPills = [
   { label: "Autoservicio", href: "/autoservicio" },
@@ -361,7 +362,7 @@ export default function HomepageHero() {
                 <div className="pt-4 flex items-center justify-between" style={{ borderTop: "1px solid var(--hp-divider)" }}>
                   <div className="flex items-center gap-2">
                     <div className="w-1.5 h-1.5 rounded-full" style={{ background: "#2DB6C1" }} />
-                    <span className="text-xs font-mono" style={{ color: "var(--hp-text-faint)" }}>exp_0x9f2a…b37c</span>
+                    <span className="text-xs font-mono" style={{ color: "var(--hp-text-faint)" }}>Ejemplo ilustrativo</span>
                   </div>
                   <span className="text-xs" style={{ color: "var(--hp-text-faint)" }}>NOM-151 ✓</span>
                 </div>
@@ -390,10 +391,10 @@ export default function HomepageHero() {
           data-sr-grid
         >
           {[
-            { value: "+50", label: "Empresas reguladas" },
-            { value: "99%", label: "Precisión biométrica" },
-            { value: "5", label: "Certificaciones activas" },
-            { value: "< 5 s", label: "Tiempo de verificación" },
+            { value: STATS.empresasReguladas, label: "Empresas reguladas" },
+            { value: STATS.precisionBiometrica, label: "Precisión biométrica" },
+            { value: String(NUM_CERTIFICACIONES), label: "Certificaciones activas" },
+            { value: STATS.verificacionBiometrica, label: "Tiempo de verificación" },
           ].map((s, i) => (
             <div
               key={i}

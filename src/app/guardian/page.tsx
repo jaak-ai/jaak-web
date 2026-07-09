@@ -255,10 +255,10 @@ export default function GuardianPage() {
           <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-white/10">
             <div className="px-6 py-8 text-center">
               <div className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-[#0066ff] mb-2">
-                &lt;8ms
+                Tiempo real
               </div>
               <div className="text-sm sm:text-base text-white/60 uppercase tracking-wide">
-                Latencia 5G
+                Conectividad 5G
               </div>
             </div>
             <div className="px-6 py-8 text-center">

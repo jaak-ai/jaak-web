@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { productos, formatMXN } from "@/data/autoservicio-catalogo";
+import { IBETA } from "@/lib/trust";
 
 // Precio "desde" del autoservicio = paquete más económico del catálogo (fuente única).
 const minAutoPrecio = Math.min(...productos.flatMap((p) => p.paquetes.map((q) => q.precio)));
@@ -57,8 +58,8 @@ const PLANS = [
     name: "Crecimiento",
     badge: "Para operación continua",
     badgeColor: "#2a60d4",
-    price: "Desde $18 MXN",
-    priceSub: "por verificación · escala progresiva",
+    price: "Por volumen",
+    priceSub: "escala progresiva · descuentos por volumen",
     desc: "Optimiza costos conforme aumentas tu volumen de operación. Modelo por volumen mensual con descuentos progresivos.",
     features: [
       "Todos los módulos de KYC",
@@ -89,7 +90,7 @@ const PLANS = [
       "Personalización completa de flujos",
     ],
     forWhom: ["Bancos · Fintech reguladas", "Telco · Grandes corporativos", "Volumen ≥ 5,000 verif/mes"],
-    support: "Equipo dedicado + SLA garantizado",
+    support: "Equipo dedicado + SLA",
     cta: "Hablar con ventas",
     ctaLink: CONTACTO_URL,
     ctaExternal: false,
@@ -137,7 +138,7 @@ const faqItems = [
   },
   {
     question: "¿Cuánto cuesta la Firma Electrónica NOM-151?",
-    answer: "Firma Simple desde $49 MXN (10 firmas). Firma Digital NOM-151 desde $99 MXN (5 firmas) hasta $6,000 MXN (500 firmas). Firma Digital NOM-151+Bio desde $99 MXN hasta $12,500 MXN (500 firmas). Sin setup fee en Autoservicio.",
+    answer: "Firma Simple desde $49 MXN (10 firmas). Firma Digital NOM-151 desde $99 MXN (5 firmas) hasta $6,000 MXN (500 firmas). Firma Digital NOM-151+Bio desde $130 MXN hasta $12,500 MXN (500 firmas). Sin setup fee en Autoservicio.",
   },
   {
     question: "¿Qué pasa si supero mi volumen en Autoservicio?",
@@ -149,7 +150,7 @@ const faqItems = [
   },
   {
     question: "¿JAAK cumple con LFPIORPI, CNBV y UIF?",
-    answer: "Sí. LFPIORPI Art. 17, identificación remota CNBV, evidencia para UIF, NOM-151 con PSC certificado. Certificaciones: ISO 27001, ISO 9001, iBeta Liveness Nivel 2.",
+    answer: `Sí. LFPIORPI Art. 17, identificación remota CNBV, evidencia para UIF, NOM-151 con PSC certificado. Certificaciones: ISO 27001, ISO 9001, ${IBETA}.`,
   },
   {
     question: "¿Cómo funciona la facturación Enterprise?",
@@ -157,7 +158,7 @@ const faqItems = [
   },
 ];
 
-const trustBadges = ["ISO 27001", "ISO 9001", "iBeta Liveness Nivel 2", "NOM-151 + PSC", "CNBV / LFPIORPI / UIF", "NIST FRVT"];
+const trustBadges = ["ISO 27001", "ISO 9001", IBETA, "NOM-151 + PSC", "CNBV / LFPIORPI / UIF", "NIST FRVT"];
 
 // --- Component ---
 export default function PreciosClient() {

@@ -1,11 +1,11 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import { IBETA } from "@/lib/trust";
 
 export const metadata = {
   title: "Seguridad | JAAK",
-  description:
-    "Conoce las medidas de seguridad, certificaciones y estándares que JAAK implementa para proteger tu información. ISO 27001, ISO 9001, iBeta y NIST.",
+  description: `Conoce las medidas de seguridad, certificaciones y estándares que JAAK implementa para proteger tu información. ISO 27001, ISO 9001, ${IBETA} y NIST.`,
 };
 
 export default function SeguridadPage() {
@@ -35,7 +35,7 @@ export default function SeguridadPage() {
       ],
     },
     {
-      name: "iBeta",
+      name: IBETA,
       subtitle: "Prueba de Vida Certificada",
       description:
         "Certificación de detección de ataques de presentación (PAD) según el estándar ISO 30107-3. Nuestro sistema de prueba de vida ha sido evaluado por un laboratorio acreditado para resistir intentos de suplantación.",
@@ -99,7 +99,7 @@ export default function SeguridadPage() {
         </svg>
       ),
       measures: [
-        "Centros de datos Tier III+ certificados",
+        "Centros de datos de alta disponibilidad",
         "Redundancia geográfica de datos",
         "Firewalls de aplicación web (WAF)",
         "Protección DDoS en todas las capas",
@@ -204,7 +204,7 @@ export default function SeguridadPage() {
                   ISO 9001
                 </span>
                 <span className="px-4 py-2 bg-white/10 text-white rounded-lg text-sm font-medium">
-                  iBeta
+                  {IBETA}
                 </span>
                 <span className="px-4 py-2 bg-white/10 text-white rounded-lg text-sm font-medium">
                   NIST 800-63-3

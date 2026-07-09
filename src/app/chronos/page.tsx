@@ -318,7 +318,6 @@ const useCases = [
 
 const stats = [
   { value: "Minutos", label: "Onboarding KYC" },
-  { value: "60%", label: "Menos revisión manual" },
   { value: "100%", label: "Trazabilidad auditable" },
   { value: "<1 día", label: "Primer workflow en prod" },
 ];
@@ -566,7 +565,7 @@ export default function ChronosPage() {
             {/* Integration Categories */}
             <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
               <h3 className="text-white/60 text-xs font-medium uppercase tracking-wider mb-6 text-center">
-                14+ Integraciones por Categoría
+                11 Integraciones por Categoría
               </h3>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {integrationCategories.map((category, i) => (

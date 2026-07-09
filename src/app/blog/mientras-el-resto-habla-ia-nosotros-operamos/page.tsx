@@ -28,7 +28,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Article",
   headline: "Mientras el resto habla de IA, nosotros operamos: JAAK en producción",
-  description: "JAAK opera biometría e IA en producción con más de 70 millones de usuarios verificados. No es teoría: es infraestructura real funcionando hoy en México.",
+  description: "JAAK opera biometría e IA en producción. No es teoría: es infraestructura real funcionando hoy en México.",
   image: "https://jaak.ai/images/blog/jaak-operamos.jpg",
   datePublished: "2026-02-26",
   dateModified: "2026-02-26",
@@ -50,7 +50,7 @@ const jsonLd = {
     "@type": "WebPage",
     "@id": "https://jaak.ai/blog/mientras-el-resto-habla-ia-nosotros-operamos",
   },
-  keywords: "JAAK, IA en producción, biometría producción, KYC real, verificación identidad México, 70 millones usuarios",
+  keywords: "JAAK, IA en producción, biometría producción, KYC real, verificación identidad México",
   inLanguage: "es-MX",
 };
 
@@ -206,8 +206,8 @@ export default function MientrasElRestoHablaIA() {
                 Lo que esto significa para el fintech mexicano
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
-                En México hay aproximadamente 1,000 empresas fintech activas, con más de 70 millones
-                de usuarios finales en sus plataformas. La mayoría enfrenta el mismo reto: crecer sin
+                En México hay aproximadamente 1,000 empresas fintech activas, con una base amplia de
+                usuarios finales en sus plataformas. La mayoría enfrenta el mismo reto: crecer sin
                 escalar proporcionalmente el costo operativo.
               </p>
               <p className="text-gray-600 leading-relaxed mb-4">

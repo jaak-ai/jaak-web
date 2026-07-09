@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import { STATS } from "@/lib/trust";
 
 export const metadata = {
   title: "Onboarding Digital | JAAK",
@@ -16,10 +17,10 @@ export default function OnboardingDigital() {
   ];
 
   const metrics = [
-    { value: "< 30s", label: "Tiempo promedio de verificación" },
-    { value: "95%", label: "Tasa de aprobación automática" },
-    { value: "3x", label: "Aumento en conversión vs presencial" },
-    { value: "99.9%", label: "Disponibilidad del servicio" },
+    { value: STATS.procesoKyc, label: "Tiempo promedio del proceso" },
+    { value: STATS.verificacionBiometrica, label: "Respuesta biométrica" },
+    { value: STATS.precisionBiometrica, label: "Precisión biométrica" },
+    { value: STATS.disponibilidad, label: "Disponibilidad del servicio" },
   ];
 
   const channels = [
