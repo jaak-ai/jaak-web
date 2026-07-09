@@ -9,7 +9,6 @@ export default function Footer() {
         { name: "Verificación de identidad", href: "/plataforma/verificacion-identidad" },
         { name: "Firma electrónica", href: "/plataforma/firma-electronica" },
         { name: "Gestión de evidencia", href: "/plataforma/gestion-evidencia" },
-        { name: "Chronos (Agentes IA)", href: "/chronos" },
         { name: "API & SDKs", href: "/docs" },
         { name: "Precios", href: "/precios" },
       ],
