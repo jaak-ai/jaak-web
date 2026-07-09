@@ -79,7 +79,7 @@ const PLANS = [
     id: "enterprise",
     name: "Enterprise",
     badge: "Infraestructura crítica",
-    badgeColor: "#655dc6",
+    badgeColor: "#212A45",
     price: "Personalizado",
     priceSub: "contrato anual · volumen desde 5k/mes",
     desc: "Diseñado para operaciones reguladas con alto volumen y requerimientos específicos de cumplimiento.",
@@ -94,7 +94,7 @@ const PLANS = [
     cta: "Hablar con ventas",
     ctaLink: CONTACTO_URL,
     ctaExternal: false,
-    color: "#655dc6",
+    color: "#212A45",
     popular: false,
   },
   {
@@ -187,14 +187,14 @@ export default function PreciosClient() {
         {/* Orbs */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="orb-drift-1 absolute rounded-full opacity-20" style={{ width: 500, height: 500, top: "-10%", right: "-6%", background: "radial-gradient(circle,#2DB6C1 0%,transparent 70%)", filter: "blur(60px)" }} />
-          <div className="orb-drift-2 absolute rounded-full opacity-15" style={{ width: 420, height: 420, bottom: "-15%", left: "-8%", background: "radial-gradient(circle,#655dc6 0%,transparent 70%)", filter: "blur(60px)" }} />
+          <div className="orb-drift-2 absolute rounded-full opacity-15" style={{ width: 420, height: 420, bottom: "-15%", left: "-8%", background: "radial-gradient(circle,#2DB6C1 0%,transparent 70%)", filter: "blur(60px)" }} />
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className={`max-w-4xl mx-auto text-center ${reveal(heroReveal.isVisible)}`}>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight mb-6">
               Planes diseñados para{" "}
-              <span style={{ backgroundImage: "linear-gradient(90deg,#2DB6C1,#655dc6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+              <span style={{ color: "#2DB6C1" }}>
                 escalar con tu operación
               </span>
             </h1>
@@ -205,7 +205,7 @@ export default function PreciosClient() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <Link href="/autoservicio"
                 className="inline-flex items-center justify-center px-8 py-4 font-bold text-base text-white rounded-xl transition-all hover:scale-105"
-                style={{ background: "linear-gradient(135deg,#2DB6C1,#655dc6)", boxShadow: "0 8px 32px rgba(30,202,211,0.3)" }}
+                style={{ background: "#2DB6C1", boxShadow: "0 8px 32px rgba(30,202,211,0.3)" }}
               >
                 Empezar con autoservicio →
               </Link>
@@ -380,12 +380,12 @@ export default function PreciosClient() {
         style={{ background: "linear-gradient(135deg,#0D1833 0%,#12183F 60%,#1a1150 100%)" }}
       >
         <div className="absolute inset-0 pointer-events-none">
-          <div className="orb-drift-3 absolute rounded-full opacity-15" style={{ width: 400, height: 400, top: "50%", left: "50%", transform: "translate(-50%,-50%)", background: "radial-gradient(circle,#655dc6 0%,transparent 70%)", filter: "blur(50px)" }} />
+          <div className="orb-drift-3 absolute rounded-full opacity-15" style={{ width: 400, height: 400, top: "50%", left: "50%", transform: "translate(-50%,-50%)", background: "radial-gradient(circle,#2DB6C1 0%,transparent 70%)", filter: "blur(50px)" }} />
         </div>
         <div className={`max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 ${reveal(diffReveal.isVisible)}`}>
           <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
             No es solo validar identidad.{" "}
-            <span style={{ backgroundImage: "linear-gradient(90deg,#2DB6C1,#655dc6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+            <span style={{ color: "#2DB6C1" }}>
               Es poder demostrarlo.
             </span>
           </h2>
@@ -414,7 +414,7 @@ export default function PreciosClient() {
           </p>
           <Link href="/autoservicio"
             className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-white text-base transition-all hover:scale-105"
-            style={{ background: "linear-gradient(135deg,#2DB6C1,#655dc6)", boxShadow: "0 8px 24px rgba(30,202,211,0.3)" }}
+            style={{ background: "#2DB6C1", boxShadow: "0 8px 24px rgba(30,202,211,0.3)" }}
           >
             Empezar ahora →
           </Link>
@@ -462,12 +462,12 @@ export default function PreciosClient() {
       >
         <div className="absolute inset-0 pointer-events-none">
           <div className="orb-drift-1 absolute rounded-full opacity-20" style={{ width: 500, height: 500, top: "-20%", right: "-10%", background: "radial-gradient(circle,#2DB6C1 0%,transparent 70%)", filter: "blur(60px)" }} />
-          <div className="orb-drift-2 absolute rounded-full opacity-15" style={{ width: 400, height: 400, bottom: "-20%", left: "-10%", background: "radial-gradient(circle,#655dc6 0%,transparent 70%)", filter: "blur(60px)" }} />
+          <div className="orb-drift-2 absolute rounded-full opacity-15" style={{ width: 400, height: 400, bottom: "-20%", left: "-10%", background: "radial-gradient(circle,#2DB6C1 0%,transparent 70%)", filter: "blur(60px)" }} />
         </div>
         <div className={`max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 ${reveal(ctaReveal.isVisible)}`}>
           <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4 leading-tight">
             Activa tu operación{" "}
-            <span style={{ backgroundImage: "linear-gradient(90deg,#2DB6C1,#655dc6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+            <span style={{ color: "#2DB6C1" }}>
               en minutos
             </span>
           </h2>
@@ -477,7 +477,7 @@ export default function PreciosClient() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/autoservicio"
               className="inline-flex items-center justify-center px-8 py-4 font-bold text-base text-white rounded-xl transition-all hover:scale-105"
-              style={{ background: "linear-gradient(135deg,#2DB6C1,#655dc6)", boxShadow: "0 8px 32px rgba(30,202,211,0.3)" }}
+              style={{ background: "#2DB6C1", boxShadow: "0 8px 32px rgba(30,202,211,0.3)" }}
             >
               Empezar con autoservicio →
             </Link>

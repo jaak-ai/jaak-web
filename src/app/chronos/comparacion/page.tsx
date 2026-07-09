@@ -156,9 +156,9 @@ export default function ChronosComparacionPage() {
         {/* Hero */}
         <section className="pt-32 pb-16 bg-gradient-to-br from-[#0f0f23] via-[#1a1a3e] to-[#0f0f23]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#655DC6]/10 border border-[#655DC6]/20 rounded-full mb-6">
-              <span className="w-2 h-2 bg-[#655DC6] rounded-full"></span>
-              <span className="text-[#655DC6] text-sm font-medium">Plataforma enterprise</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#2DB6C1]/10 border border-[#2DB6C1]/20 rounded-full mb-6">
+              <span className="w-2 h-2 bg-[#2DB6C1] rounded-full"></span>
+              <span className="text-[#2DB6C1] text-sm font-medium">Plataforma enterprise</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-black text-white mb-6">
               <span className="text-[#2DB6C1]">Chronos</span> para banca regulada
@@ -177,9 +177,9 @@ export default function ChronosComparacionPage() {
               {highlights.map((h) => (
                 <div
                   key={h.title}
-                  className="bg-gradient-to-br from-[#655DC6]/5 to-[#2DB6C1]/5 border border-[#655DC6]/20 rounded-2xl p-6"
+                  className="bg-gradient-to-br from-[#212A45]/5 to-[#2DB6C1]/5 border border-[#212A45]/20 rounded-2xl p-6"
                 >
-                  <h3 className="text-xl font-bold text-[#655DC6] mb-2">{h.title}</h3>
+                  <h3 className="text-xl font-bold text-[#212A45] mb-2">{h.title}</h3>
                   <p className="text-gray-600 text-sm">{h.desc}</p>
                 </div>
               ))}
@@ -202,7 +202,7 @@ export default function ChronosComparacionPage() {
             {capabilities.map((cat, catIndex) => (
               <div key={cat.category} className="mb-12">
                 <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                  <span className="w-8 h-8 bg-[#655DC6] rounded-lg flex items-center justify-center text-white text-sm">
+                  <span className="w-8 h-8 bg-[#212A45] rounded-lg flex items-center justify-center text-white text-sm">
                     {catIndex + 1}
                   </span>
                   {cat.category}
@@ -213,14 +213,14 @@ export default function ChronosComparacionPage() {
                     <thead>
                       <tr className="bg-gray-100">
                         <th className="px-6 py-4 text-left font-semibold text-gray-700">Característica</th>
-                        <th className="px-6 py-4 text-left bg-[#655DC6]/10 text-[#655DC6] font-bold">Chronos</th>
+                        <th className="px-6 py-4 text-left bg-[#212A45]/10 text-[#212A45] font-bold">Chronos</th>
                       </tr>
                     </thead>
                     <tbody>
                       {cat.items.map((item, i) => (
                         <tr key={item.name} className={`border-b border-gray-100 ${i % 2 === 0 ? "bg-gray-50" : "bg-white"}`}>
                           <td className="px-6 py-4 font-medium text-gray-900">{item.name}</td>
-                          <td className="px-6 py-4 text-sm text-[#655DC6] font-semibold bg-[#655DC6]/5">
+                          <td className="px-6 py-4 text-sm text-[#212A45] font-semibold bg-[#212A45]/5">
                             {item.value}
                           </td>
                         </tr>
@@ -240,11 +240,11 @@ export default function ChronosComparacionPage() {
               <h2 className="text-3xl font-black text-gray-900 mb-4">Chronos es para ti si:</h2>
             </div>
 
-            <div className="bg-gray-50 rounded-2xl p-8 border-2 border-[#655DC6]">
+            <div className="bg-gray-50 rounded-2xl p-8 border-2 border-[#212A45]">
               <ul className="space-y-3">
                 {chronosFit.map((item) => (
                   <li key={item} className="flex items-start gap-2 text-gray-700">
-                    <span className="text-[#655DC6] mt-0.5">✓</span>
+                    <span className="text-[#212A45] mt-0.5">✓</span>
                     {item}
                   </li>
                 ))}
@@ -254,7 +254,7 @@ export default function ChronosComparacionPage() {
         </section>
 
         {/* CTA */}
-        <section className="py-16 bg-gradient-to-r from-[#655DC6] to-[#2DB6C1]">
+        <section className="py-16 bg-gradient-to-r from-[#212A45] to-[#2DB6C1]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl md:text-4xl font-black text-white mb-6">
               ¿Listo para probar Chronos?
@@ -266,13 +266,13 @@ export default function ChronosComparacionPage() {
             <div className="flex flex-wrap gap-4 justify-center">
               <Link
                 href="/chronos#contacto"
-                className="px-8 py-4 bg-white text-[#655DC6] font-bold rounded-lg hover:bg-gray-50 transition-all shadow-lg"
+                className="px-8 py-4 bg-white text-[#212A45] font-bold rounded-lg hover:bg-gray-50 transition-all shadow-lg"
               >
                 Solicitar Demo
               </Link>
               <Link
                 href="/chronos"
-                className="px-8 py-4 bg-transparent border-2 border-white text-white font-bold rounded-lg hover:bg-white hover:text-[#655DC6] transition-all"
+                className="px-8 py-4 bg-transparent border-2 border-white text-white font-bold rounded-lg hover:bg-white hover:text-[#212A45] transition-all"
               >
                 Ver Características
               </Link>

@@ -142,7 +142,7 @@ export default function AutoservicioFlujoTabs({ onStart }: { onStart?: () => voi
           onClick={() => switchTab("firma")}
           style={{
             background: active === "firma"
-              ? "linear-gradient(135deg, #2DB6C1, #655dc6)"
+              ? "#2DB6C1"
               : "transparent",
             border: active === "firma" ? "none" : "1.5px solid #d1d5db",
             color: active === "firma" ? "#fff" : "#374151",
@@ -156,7 +156,7 @@ export default function AutoservicioFlujoTabs({ onStart }: { onStart?: () => voi
           onClick={() => switchTab("kyc")}
           style={{
             background: active === "kyc"
-              ? "linear-gradient(135deg, #2DB6C1, #655dc6)"
+              ? "#2DB6C1"
               : "transparent",
             border: active === "kyc" ? "none" : "1.5px solid #d1d5db",
             color: active === "kyc" ? "#fff" : "#374151",
@@ -173,7 +173,7 @@ export default function AutoservicioFlujoTabs({ onStart }: { onStart?: () => voi
         {/* Vertical gradient line */}
         <div
           className="absolute left-8 top-8 bottom-8 w-0.5"
-          style={{ background: "linear-gradient(180deg, #2DB6C1 0%, #655dc6 100%)" }}
+          style={{ background: "#2DB6C1" }}
         />
 
         <div className="flex flex-col gap-6">
@@ -207,10 +207,10 @@ function StepCard({ step, delay, onStart }: { step: Step; delay: number; onStart
       badgeBg: "rgba(30,202,211,0.12)",
     },
     success: {
-      bg: "linear-gradient(135deg, rgba(30,202,211,0.08) 0%, rgba(101,93,198,0.08) 100%)",
-      border: "#655dc6",
+      bg: "linear-gradient(135deg, rgba(30,202,211,0.08) 0%, rgba(42,215,150,0.08) 100%)",
+      border: "#2AD796",
       badge: "¡Listo para operar!",
-      badgeBg: "rgba(101,93,198,0.1)",
+      badgeBg: "rgba(42,215,150,0.15)",
     },
   };
 
@@ -226,7 +226,7 @@ function StepCard({ step, delay, onStart }: { step: Step; delay: number; onStart
         <div
           className="w-16 h-16 rounded-full flex items-center justify-center font-bold text-lg text-white shadow-lg"
           style={{
-            background: "linear-gradient(135deg, #2DB6C1, #655dc6)",
+            background: "#2DB6C1",
             boxShadow: "0 4px 16px rgba(30,202,211,0.35)",
           }}
         >
@@ -248,7 +248,7 @@ function StepCard({ step, delay, onStart }: { step: Step; delay: number; onStart
             className="inline-block text-sm font-semibold px-2.5 py-1 rounded-full mb-2"
             style={{
               background: v.badgeBg,
-              color: step.variant === "warning" ? "#92400e" : step.variant === "verification" ? "#065f46" : step.variant === "advantage" ? "#0e7490" : "#4c1d95",
+              color: step.variant === "warning" ? "#92400e" : step.variant === "verification" ? "#065f46" : step.variant === "advantage" ? "#0e7490" : "#065f46",
             }}
           >
             {v.badge}
@@ -287,12 +287,12 @@ function StepCard({ step, delay, onStart }: { step: Step; delay: number; onStart
 
         {/* Success CTA */}
         {step.variant === "success" && (
-          <div className="mt-4 pt-4" style={{ borderTop: "1px solid rgba(101,93,198,0.15)" }}>
+          <div className="mt-4 pt-4" style={{ borderTop: "1px solid rgba(42,215,150,0.15)" }}>
             <button
               type="button"
               onClick={() => onStart?.()}
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-base text-white transition-all duration-200 hover:opacity-90"
-              style={{ background: "linear-gradient(135deg, #2DB6C1, #655dc6)" }}
+              style={{ background: "#2DB6C1" }}
             >
               Empezar ahora →
             </button>

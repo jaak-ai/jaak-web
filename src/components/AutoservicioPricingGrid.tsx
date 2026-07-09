@@ -280,7 +280,7 @@ export default function AutoservicioPricingGrid() {
       {/* Orbs de fondo */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-3xl">
         <div className="orb-drift-1 absolute rounded-full opacity-25" style={{ width: 420, height: 420, top: "-15%", right: "-8%", background: "radial-gradient(circle, #2DB6C1 0%, transparent 70%)", filter: "blur(55px)" }} />
-        <div className="orb-drift-2 absolute rounded-full opacity-20" style={{ width: 380, height: 380, bottom: "-20%", left: "-10%", background: "radial-gradient(circle, #655dc6 0%, transparent 70%)", filter: "blur(55px)" }} />
+        <div className="orb-drift-2 absolute rounded-full opacity-20" style={{ width: 380, height: 380, bottom: "-20%", left: "-10%", background: "radial-gradient(circle, #2DB6C1 0%, transparent 70%)", filter: "blur(55px)" }} />
         <div className="orb-drift-3 absolute rounded-full opacity-12" style={{ width: 280, height: 280, top: "40%", left: "38%", background: "radial-gradient(circle, #2a60d4 0%, transparent 70%)", filter: "blur(45px)" }} />
       </div>
       <div

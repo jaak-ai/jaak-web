@@ -81,7 +81,7 @@ const products = [
   {
     name: "Firma Digital NOM-151",
     description: "Firma electrónica con plena validez jurídica en México. Sellado de tiempo certificado.",
-    color: "#655DC6",
+    color: "#212A45",
   },
 ];
 
@@ -94,7 +94,7 @@ export default function InmobiliariasPage() {
         <section className="pt-32 pb-20 bg-[#212A45] relative overflow-hidden">
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <div className="absolute top-1/3 right-0 w-[500px] h-[500px] bg-[#2DB6C1]/10 rounded-full blur-[120px]" />
-            <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-[#655DC6]/10 rounded-full blur-[100px]" />
+            <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-[#2DB6C1]/10 rounded-full blur-[100px]" />
           </div>
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

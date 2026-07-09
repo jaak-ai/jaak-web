@@ -81,7 +81,7 @@ const products = [
   {
     name: "Facial Search",
     description: "Búsqueda biométrica de alto rendimiento. Infraestructura propia.",
-    color: "#655DC6",
+    color: "#212A45",
     tag: "Alta performance",
   },
   {
@@ -93,7 +93,7 @@ const products = [
   {
     name: "Bus Biométrico",
     description: "Hub central de operaciones biométricas. Reemplaza dependencias de proveedores externos de biometría.",
-    color: "#655DC6",
+    color: "#212A45",
     tag: "On-premise / Nube privada",
   },
 ];
@@ -114,7 +114,7 @@ export default function BancosPage() {
         <section className="pt-32 pb-20 bg-[#212A45] relative overflow-hidden">
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <div className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-[#2DB6C1]/8 rounded-full blur-[140px]" />
-            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#655DC6]/15 rounded-full blur-[100px]" />
+            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#2DB6C1]/15 rounded-full blur-[100px]" />
           </div>
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -171,9 +171,9 @@ export default function BancosPage() {
                   <div className="space-y-3">
                     {[
                       { label: "Bus Biométrico", color: "#2DB6C1", icon: "🏗️" },
-                      { label: "Liveness Engine", color: "#655DC6", icon: "👁️" },
+                      { label: "Liveness Engine", color: "#2DB6C1", icon: "👁️" },
                       { label: "Facial Search", color: "#2DB6C1", icon: "🔍" },
-                      { label: "KYC Core", color: "#655DC6", icon: "✅" },
+                      { label: "KYC Core", color: "#2DB6C1", icon: "✅" },
                     ].map((item, i) => (
                       <div
                         key={i}

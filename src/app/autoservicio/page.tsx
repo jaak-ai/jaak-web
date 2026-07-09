@@ -76,14 +76,7 @@ export default async function AutoservicioPage() {
               </span>
               <h1 className="mt-5 text-4xl font-bold leading-[1.08] tracking-tight text-white lg:text-5xl">
                 Compra y activa tus servicios{" "}
-                <span
-                  style={{
-                    backgroundImage: "linear-gradient(90deg, #2DB6C1, #655dc6)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                  }}
-                >
+                <span style={{ color: "#2DB6C1" }}>
                   en minutos
                 </span>
               </h1>

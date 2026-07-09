@@ -81,7 +81,7 @@ const products = [
   {
     name: "Liveness Detection",
     description: `Prueba de vida certificada ${IBETA}. Detecta ataques de presentación con IA.`,
-    color: "#655DC6",
+    color: "#212A45",
   },
   {
     name: "Firma Digital NOM-151",
@@ -105,16 +105,16 @@ export default function FinancierasPage() {
         {/* Hero */}
         <section className="pt-32 pb-20 bg-[#212A45] relative overflow-hidden">
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute top-1/3 right-0 w-[500px] h-[500px] bg-[#655DC6]/15 rounded-full blur-[120px]" />
+            <div className="absolute top-1/3 right-0 w-[500px] h-[500px] bg-[#2DB6C1]/15 rounded-full blur-[120px]" />
             <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-[#2DB6C1]/10 rounded-full blur-[100px]" />
           </div>
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#655DC6]/10 border border-[#655DC6]/30 rounded-full mb-6">
-                  <span className="w-2 h-2 bg-[#655DC6] rounded-full"></span>
-                  <span className="text-[#a99df0] text-sm font-medium">Para SOFOMES, fintechs y fondos de inversión</span>
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#2DB6C1]/10 border border-[#2DB6C1]/30 rounded-full mb-6">
+                  <span className="w-2 h-2 bg-[#2DB6C1] rounded-full"></span>
+                  <span className="text-[#2DB6C1] text-sm font-medium">Para SOFOMES, fintechs y fondos de inversión</span>
                 </div>
 
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
@@ -133,7 +133,7 @@ export default function FinancierasPage() {
                 <div className="flex flex-wrap gap-4 mb-10">
                   <a
                     href="#contacto"
-                    className="px-6 py-3 bg-[#655DC6] text-white font-bold rounded-lg hover:bg-[#5249b0] transition-all"
+                    className="px-6 py-3 bg-[#2DB6C1] text-[#212A45] font-bold rounded-lg hover:bg-[#2DB6C1]/90 transition-all"
                   >
                     Habla con un experto hoy
                   </a>
@@ -150,7 +150,7 @@ export default function FinancierasPage() {
                 <div className="flex flex-wrap gap-3">
                   {regulations.map((reg, i) => (
                     <div key={i} className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg">
-                      <span className="text-[#655DC6] font-bold text-sm">{reg.name}</span>
+                      <span className="text-[#2DB6C1] font-bold text-sm">{reg.name}</span>
                       <span className="text-white/50 text-xs ml-2">{reg.desc}</span>
                     </div>
                   ))}
@@ -165,7 +165,7 @@ export default function FinancierasPage() {
                   <div className="space-y-4">
                     {[
                       { label: "Verificaciones hoy", value: "1,234", color: "#2DB6C1" },
-                      { label: "Tasa de aprobación", value: "97.2%", color: "#655DC6" },
+                      { label: "Tasa de aprobación", value: "97.2%", color: "#2DB6C1" },
                       { label: "Fraudes detectados", value: "18", color: "#f59e0b" },
                       { label: "Tiempo promedio", value: "28s", color: "#2DB6C1" },
                     ].map((item, i) => (
@@ -175,8 +175,8 @@ export default function FinancierasPage() {
                       </div>
                     ))}
                   </div>
-                  <div className="mt-6 p-3 bg-[#655DC6]/20 rounded-lg">
-                    <p className="text-[#a99df0] text-xs text-center">✓ Evidencia lista para CNBV</p>
+                  <div className="mt-6 p-3 bg-[#2DB6C1]/20 rounded-lg">
+                    <p className="text-[#2DB6C1] text-xs text-center">✓ Evidencia lista para CNBV</p>
                   </div>
                 </div>
               </div>
@@ -201,9 +201,9 @@ export default function FinancierasPage() {
               {painPoints.map((point, i) => (
                 <div
                   key={i}
-                  className="bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:border-[#655DC6]/30 hover:shadow-lg transition-all"
+                  className="bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:border-[#2DB6C1]/30 hover:shadow-lg transition-all"
                 >
-                  <div className="w-14 h-14 bg-[#655DC6]/10 rounded-xl flex items-center justify-center text-[#655DC6] mb-5">
+                  <div className="w-14 h-14 bg-[#2DB6C1]/10 rounded-xl flex items-center justify-center text-[#2DB6C1] mb-5">
                     {point.icon}
                   </div>
                   <h3 className="text-xl font-bold text-[#212A45] mb-3">{point.title}</h3>
@@ -229,8 +229,8 @@ export default function FinancierasPage() {
             <div className="grid md:grid-cols-3 gap-8">
               {steps.map((step, i) => (
                 <div key={i} className="relative">
-                  <div className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-[#655DC6]/40 transition-all">
-                    <div className="text-5xl font-black text-[#655DC6]/25 mb-4">{step.number}</div>
+                  <div className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-[#2DB6C1]/40 transition-all">
+                    <div className="text-5xl font-black text-[#2DB6C1]/25 mb-4">{step.number}</div>
                     <h3 className="text-xl font-bold text-white mb-3">{step.title}</h3>
                     <p className="text-white/60">{step.description}</p>
                   </div>
@@ -276,7 +276,7 @@ export default function FinancierasPage() {
                 { value: IBETA, label: "Certificación Liveness" },
               ].map((stat, i) => (
                 <div key={i} className="text-center p-6 bg-white rounded-xl shadow-sm">
-                  <div className="text-3xl font-black text-[#655DC6] mb-1">{stat.value}</div>
+                  <div className="text-3xl font-black text-[#2DB6C1] mb-1">{stat.value}</div>
                   <div className="text-gray-600 text-sm">{stat.label}</div>
                 </div>
               ))}
@@ -307,7 +307,7 @@ export default function FinancierasPage() {
                     "Soporte de expertos en compliance financiero",
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-3">
-                      <div className="w-5 h-5 rounded-full bg-[#655DC6] flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <div className="w-5 h-5 rounded-full bg-[#2DB6C1] flex items-center justify-center flex-shrink-0 mt-0.5">
                         <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                         </svg>
@@ -317,8 +317,8 @@ export default function FinancierasPage() {
                   ))}
                 </div>
 
-                <div className="mt-10 p-6 bg-[#655DC6]/10 border border-[#655DC6]/20 rounded-xl">
-                  <p className="text-[#a99df0] font-bold text-lg mb-1">¿Urgente?</p>
+                <div className="mt-10 p-6 bg-[#2DB6C1]/10 border border-[#2DB6C1]/20 rounded-xl">
+                  <p className="text-[#2DB6C1] font-bold text-lg mb-1">¿Urgente?</p>
                   <a
                     href="https://meetings.hubspot.com/jose-andres-yllescas-lira"
                     target="_blank"
@@ -333,7 +333,7 @@ export default function FinancierasPage() {
               {/* Form */}
               <IndustryLeadForm
                 source="landing-financieras"
-                theme="purple"
+                theme="teal"
                 heading="Habla con un especialista"
                 subheading="Respuesta garantizada en menos de 24 horas."
                 empresaLabel="Empresa"

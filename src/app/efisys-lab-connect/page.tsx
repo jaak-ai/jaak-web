@@ -102,7 +102,7 @@ const useCases: UseCase[] = [
     sector: "Banca",
     description:
       "Cumplimiento regulatorio ante CNBV y UIF. Infraestructura biométrica propia sin dependencia de terceros.",
-    color: "#655DC6",
+    color: "#212A45",
   },
   {
     sector: "Inmobiliario",
@@ -120,7 +120,7 @@ const useCases: UseCase[] = [
     sector: "Plataformas digitales",
     description:
       "KYC integrado en tu producto. APIs y SDKs listos para implementar en días, no meses.",
-    color: "#655DC6",
+    color: "#212A45",
   },
 ];
 
@@ -278,7 +278,7 @@ export default function EfisysLabConnectPage() {
           {/* Luces de fondo */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <div className="absolute top-0 right-1/4 w-[700px] h-[700px] bg-[#2DB6C1]/6 rounded-full blur-[160px]" />
-            <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#655DC6]/10 rounded-full blur-[120px]" />
+            <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#2DB6C1]/10 rounded-full blur-[120px]" />
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-[#2AD796]/5 rounded-full blur-[80px]" />
             {/* Grid de nodos */}
             <div

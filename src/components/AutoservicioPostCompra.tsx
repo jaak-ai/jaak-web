@@ -46,7 +46,7 @@ function ProximosPasos() {
       num: "03",
       title: "Crea tu primer flujo",
       desc: "Configura tus procesos de firma o verificación en minutos.",
-      color: "#655dc6",
+      color: "#2DB6C1",
     },
   ];
 
@@ -171,12 +171,7 @@ function CapacitacionForm() {
         <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 leading-tight">
           ¿Quieres una sesión{" "}
           <span
-            style={{
-              backgroundImage: "linear-gradient(90deg, #2DB6C1, #655dc6)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-            }}
+            style={{ color: "#2DB6C1" }}
           >
             de capacitación?
           </span>
@@ -282,7 +277,7 @@ function CapacitacionForm() {
                   onClick={() => toggleTema(tema)}
                   className="text-sm px-3 py-1.5 rounded-full font-medium transition-all duration-150 cursor-pointer"
                   style={{
-                    background: active ? "linear-gradient(135deg, #2DB6C1, #655dc6)" : "#f3f4f6",
+                    background: active ? "#2DB6C1" : "#f3f4f6",
                     color: active ? "#fff" : "#374151",
                     border: active ? "none" : "1.5px solid #e5e7eb",
                   }}
@@ -339,7 +334,7 @@ function CapacitacionForm() {
           type="submit"
           disabled={loading}
           className="w-full py-3 rounded-xl font-bold text-white text-base transition-all duration-200 hover:opacity-90 disabled:opacity-60"
-          style={{ background: "linear-gradient(135deg, #2DB6C1, #655dc6)" }}
+          style={{ background: "#2DB6C1" }}
         >
           {loading ? "Enviando..." : "📅 Solicitar capacitación"}
         </button>

@@ -24,11 +24,11 @@ const THEMES: Record<
     linkText: "text-[#2DB6C1]",
   },
   purple: {
-    focusRing: "focus:ring-[#655DC6]",
-    submitBg: "bg-[#655DC6]",
-    submitHover: "hover:bg-[#5249b0]",
-    submitText: "text-white",
-    linkText: "text-[#655DC6]",
+    focusRing: "focus:ring-[#2DB6C1]",
+    submitBg: "bg-[#2DB6C1]",
+    submitHover: "hover:bg-[#25969f]",
+    submitText: "text-[#212A45]",
+    linkText: "text-[#2DB6C1]",
   },
 };
 
