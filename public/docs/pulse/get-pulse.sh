@@ -364,7 +364,32 @@ db_migrate_seed() {
   log "Migraciones + seed…"
   set -a; # shellcheck disable=SC1090
   source "$ENV_FILE"; set +a
-  "$BIN_DIR/jaak-pulse-api" migrate || die "migrate falló (¿ORACLE_DSN correcto/alcanzable?)."
+
+  # Capture migrate output to enforce that the DB supports the native VECTOR
+  # type. Pulse runs facial re-identification and blacklist match with Oracle's
+  # native VECTOR_DISTANCE (Oracle 23ai+). Older databases make the store fall
+  # back to storing embeddings as CLOB and computing cosine in the app — a
+  # degraded mode that does not scale. That is NOT a supported configuration:
+  # if the fallback triggers we abort so the operator provisions a proper DB.
+  local mlog; mlog="$(mktemp)"
+  "$BIN_DIR/jaak-pulse-api" migrate 2>&1 | tee "$mlog"
+  [[ "${PIPESTATUS[0]}" -eq 0 ]] || { rm -f "$mlog"; die "migrate falló (¿ORACLE_DSN correcto/alcanzable?)."; }
+
+  if grep -qiE "VECTOR (type )?not supported|CLOB fallback|created as CLOB|created without .*VECTOR column" "$mlog"; then
+    rm -f "$mlog"
+    log ""
+    log "  Tu Oracle Database NO soporta el tipo nativo VECTOR, requerido por Pulse"
+    log "  para la reidentificación facial y el match de blacklist (VECTOR_DISTANCE)."
+    log "  El esquema quedó parcialmente creado en modo CLOB (no soportado)."
+    log ""
+    log "  Requerido: Oracle 23ai (mínimo)  ·  Recomendado: Oracle 26ai."
+    log "  Provisiona el ADB en esa versión, apunta ORACLE_DSN a esa base (vacía)"
+    log "  y vuelve a ejecutar el instalador."
+    log ""
+    die "Oracle sin soporte VECTOR nativo — instalación abortada (requiere 23ai+, recomendado 26ai)."
+  fi
+  rm -f "$mlog"
+
   "$BIN_DIR/jaak-pulse-api" seed    || die "seed falló."
 }
 
