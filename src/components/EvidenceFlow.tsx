@@ -38,7 +38,7 @@ const flowSteps: FlowStep[] = [
     title: "Expediente auditable",
     description: "Concentra documento, eventos, metadatos y evidencias descargables.",
     icon: "🗂️",
-    color: "#10B981",
+    color: "#2AD796",
   },
 ];
 

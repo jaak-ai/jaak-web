@@ -40,7 +40,7 @@ export default function SubHero() {
         </div>
 
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-[#0a0f1c] mb-4">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-[#0E1133] mb-4">
             El problema no es verificar
           </h2>
           <p className="text-2xl md:text-3xl font-bold text-[#2DB6C1]">
@@ -55,14 +55,14 @@ export default function SubHero() {
               className="bg-[#f8fafc] rounded-2xl p-8 border border-[#e5e7eb] hover:border-red-200 transition-colors"
             >
               <span className="text-4xl mb-4 block">{problem.icon}</span>
-              <h3 className="text-xl font-bold text-[#0a0f1c] mb-2">{problem.title}</h3>
+              <h3 className="text-xl font-bold text-[#0E1133] mb-2">{problem.title}</h3>
               <p className="text-[#6b7280]">{problem.desc}</p>
             </div>
           ))}
         </div>
 
         {/* Solution callout */}
-        <div className="bg-[#0a0f1c] rounded-3xl p-10 md:p-12 text-center">
+        <div className="bg-[#0E1133] rounded-3xl p-10 md:p-12 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#2DB6C1]/20 rounded-full mb-6">
             <svg className="w-5 h-5 text-[#2DB6C1]" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />

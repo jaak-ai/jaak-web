@@ -82,7 +82,7 @@ export default function FirmaComparisonTable() {
       <div className="w-full overflow-x-auto rounded-2xl" style={{ border: `1px solid ${cl.border}` }}>
         <table className="w-full min-w-[900px]" style={{ borderCollapse: "collapse" }} aria-label="Comparación de tipos de firma electrónica">
           <thead>
-            <tr style={{ background: "rgba(30,202,211,0.06)", borderBottom: `1px solid ${cl.border}` }}>
+            <tr style={{ background: "rgba(45, 182, 193,0.06)", borderBottom: `1px solid ${cl.border}` }}>
               {[
                 "Tipo de Firma",
                 "Identidad del Firmante",
@@ -117,7 +117,7 @@ export default function FirmaComparisonTable() {
                       background: highlighted
                         ? level.color + "14"
                         : expandedRow === level.id
-                        ? "rgba(30,202,211,0.06)"
+                        ? "rgba(45, 182, 193,0.06)"
                         : hoveredRow === level.id
                         ? cl.cardBgActive
                         : index % 2 === 0
@@ -157,7 +157,7 @@ export default function FirmaComparisonTable() {
                     <td className="py-4 px-4">
                       <button
                         className="text-xs font-semibold flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all whitespace-nowrap"
-                        style={{ color: "#2DB6C1", background: expandedRow === level.id ? "rgba(30,202,211,0.15)" : "rgba(30,202,211,0.08)" }}
+                        style={{ color: "#2DB6C1", background: expandedRow === level.id ? "rgba(45, 182, 193,0.15)" : "rgba(45, 182, 193,0.08)" }}
                         onClick={(e) => {
                           e.stopPropagation();
                           toggleRow(level.id);
@@ -181,7 +181,7 @@ export default function FirmaComparisonTable() {
                   </tr>
                   {expandedRow === level.id && (
                     <tr>
-                      <td colSpan={9} style={{ background: "rgba(30,202,211,0.05)", borderBottom: `1px solid ${cl.borderFaint}`, padding: 0 }}>
+                      <td colSpan={9} style={{ background: "rgba(45, 182, 193,0.05)", borderBottom: `1px solid ${cl.borderFaint}`, padding: 0 }}>
                         <div className="px-5 py-6 flex flex-col sm:flex-row gap-6 items-start">
                           <div className="flex-1">
                             <p className="text-gray-400 text-sm leading-relaxed mb-4">{level.description}</p>
@@ -190,7 +190,7 @@ export default function FirmaComparisonTable() {
                                 <span
                                   key={item}
                                   className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full"
-                                  style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#A7F3F6" }}
+                                  style={{ background: "rgba(45, 182, 193,0.08)", border: "1px solid rgba(45, 182, 193,0.2)", color: "#A7F3F6" }}
                                 >
                                   <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" style={{ color: "#2DB6C1" }} aria-hidden="true">
                                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />

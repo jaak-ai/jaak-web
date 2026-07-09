@@ -167,8 +167,8 @@ export default function UIFPage() {
                 </svg>
                 Cumplimiento
               </Link>
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#0066ff]/10 border border-[#0066ff]/20 rounded-full mb-6">
-                <span className="text-[#0066ff] text-sm font-medium">UIF</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#212A45]/10 border border-[#212A45]/20 rounded-full mb-6">
+                <span className="text-[#212A45] text-sm font-medium">UIF</span>
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6">
                 Evidencia lista para la UIF
@@ -179,7 +179,7 @@ export default function UIFPage() {
               <div className="flex flex-wrap gap-4">
                 <Link
                   href="/contacto"
-                  className="px-6 py-3 bg-[#0066ff] text-white font-semibold rounded-lg hover:bg-[#0052cc] transition-all"
+                  className="px-6 py-3 bg-[#212A45] text-white font-semibold rounded-lg hover:bg-[#212A45] transition-all"
                 >
                   Solicitar evaluación
                 </Link>
@@ -207,7 +207,7 @@ export default function UIFPage() {
                   href="https://www.gob.mx/uif"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[#0066ff] hover:underline font-semibold"
+                  className="text-[#212A45] hover:underline font-semibold"
                 >
                   Unidad de Inteligencia Financiera (UIF)
                 </a>{" "}
@@ -216,10 +216,10 @@ export default function UIFPage() {
               <p className="text-gray-600 mb-6">
                 Las entidades obligadas deben proporcionar a la UIF información sobre sus clientes, operaciones y cualquier actividad sospechosa, manteniendo expedientes completos y auditables.
               </p>
-              <div className="p-6 bg-[#0066ff]/5 rounded-xl border border-[#0066ff]/20">
+              <div className="p-6 bg-[#212A45]/5 rounded-xl border border-[#212A45]/20">
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 bg-[#0066ff]/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <svg className="w-5 h-5 text-[#0066ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-10 h-10 bg-[#212A45]/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <svg className="w-5 h-5 text-[#212A45]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
@@ -251,7 +251,7 @@ export default function UIFPage() {
                   <ul className="space-y-2">
                     {type.items.map((item, idx) => (
                       <li key={idx} className="flex items-center gap-2 text-sm text-gray-600">
-                        <div className="w-1.5 h-1.5 bg-[#0066ff] rounded-full flex-shrink-0"></div>
+                        <div className="w-1.5 h-1.5 bg-[#212A45] rounded-full flex-shrink-0"></div>
                         {item}
                       </li>
                     ))}
@@ -277,15 +277,15 @@ export default function UIFPage() {
             <div className="grid md:grid-cols-2 gap-6">
               {reportTypes.map((report, index) => (
                 <div key={index} className="flex gap-6 p-6 bg-gray-50 rounded-xl">
-                  <div className="w-14 h-14 bg-[#0066ff]/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <svg className="w-6 h-6 text-[#0066ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-14 h-14 bg-[#212A45]/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <svg className="w-6 h-6 text-[#212A45]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center justify-between mb-2">
                       <h3 className="text-lg font-bold text-gray-900">{report.name}</h3>
-                      <span className="px-2 py-1 bg-[#0066ff]/10 text-[#0066ff] text-xs font-medium rounded">
+                      <span className="px-2 py-1 bg-[#212A45]/10 text-[#212A45] text-xs font-medium rounded">
                         {report.frequency}
                       </span>
                     </div>
@@ -381,7 +381,7 @@ export default function UIFPage() {
             <div className="flex flex-wrap justify-center gap-4">
               <Link
                 href="/contacto"
-                className="px-8 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
+                className="px-8 py-4 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-all"
               >
                 Solicitar evaluación gratuita
               </Link>

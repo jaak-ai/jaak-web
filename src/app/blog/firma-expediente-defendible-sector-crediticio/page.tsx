@@ -193,8 +193,8 @@ export default function ArticleFirmaExpediente() {
         <div
           className="rounded-xl p-6 border"
           style={{
-            background: "rgba(30,202,211,0.05)",
-            borderColor: "rgba(30,202,211,0.2)",
+            background: "rgba(45, 182, 193,0.05)",
+            borderColor: "rgba(45, 182, 193,0.2)",
           }}
         >
           <p className="text-xs font-bold tracking-widest uppercase mb-2" style={{ color: "#2DB6C1" }}>
@@ -209,8 +209,8 @@ export default function ArticleFirmaExpediente() {
         <div
           className="rounded-xl p-6 border"
           style={{
-            background: "rgba(30,202,211,0.05)",
-            borderColor: "rgba(30,202,211,0.2)",
+            background: "rgba(45, 182, 193,0.05)",
+            borderColor: "rgba(45, 182, 193,0.2)",
           }}
         >
           <p className="text-xs font-bold tracking-widest uppercase mb-2" style={{ color: "#2DB6C1" }}>
@@ -255,7 +255,7 @@ export default function ArticleFirmaExpediente() {
           <li key={i} className="flex items-start gap-3 text-gray-700">
             <span
               className="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center shrink-0 text-xs font-bold"
-              style={{ background: "rgba(30,202,211,0.15)", color: "#2DB6C1" }}
+              style={{ background: "rgba(45, 182, 193,0.15)", color: "#2DB6C1" }}
             >
               {i + 1}
             </span>
@@ -302,14 +302,14 @@ export default function ArticleFirmaExpediente() {
       <div
         className="rounded-xl p-6 mb-10 border"
         style={{
-          background: "rgba(30,202,211,0.06)",
-          borderColor: "rgba(30,202,211,0.2)",
+          background: "rgba(45, 182, 193,0.06)",
+          borderColor: "rgba(45, 182, 193,0.2)",
         }}
       >
         <div className="flex items-start gap-4">
           <div
             className="w-12 h-12 rounded-full shrink-0 flex items-center justify-center text-sm font-bold text-white"
-            style={{ background: "linear-gradient(135deg, #2DB6C1 0%, #0066ff 100%)" }}
+            style={{ background: "linear-gradient(135deg, #2DB6C1 0%, #212A45 100%)" }}
           >
             AQ
           </div>

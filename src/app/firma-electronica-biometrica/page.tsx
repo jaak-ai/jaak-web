@@ -72,7 +72,7 @@ export default function FirmaBiometricaPage() {
               Firma electrónica con{" "}
               <span
                 style={{
-                  background: "linear-gradient(135deg, #8B5CF6, #A78BFA)",
+                  background: "linear-gradient(135deg, #2DB6C1, #A78BFA)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
@@ -93,7 +93,7 @@ export default function FirmaBiometricaPage() {
               <Link
                 href="/autoservicio"
                 className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-bold text-white transition-all hover:opacity-90"
-                style={{ background: "#8B5CF6", boxShadow: "0 0 25px rgba(139,92,246,0.3)" }}
+                style={{ background: "#2DB6C1", boxShadow: "0 0 25px rgba(139,92,246,0.3)" }}
               >
                 Explorar solución
               </Link>
@@ -109,7 +109,7 @@ export default function FirmaBiometricaPage() {
         </section>
 
         {/* How biometrics work */}
-        <section className="py-20" style={{ background: "#070E1A" }} aria-labelledby="biometria-heading">
+        <section className="py-20" style={{ background: "#0E1133" }} aria-labelledby="biometria-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 id="biometria-heading" className="text-2xl font-black text-white mb-4 text-center">
               Cómo funciona la biometría en JAAK
@@ -124,7 +124,7 @@ export default function FirmaBiometricaPage() {
                   icon: "📷",
                   title: "Captura de selfie en vivo",
                   desc: "El firmante abre la cámara del dispositivo. El sistema captura múltiples fotogramas para análisis.",
-                  color: "#8B5CF6",
+                  color: "#2DB6C1",
                 },
                 {
                   step: "02",
@@ -227,7 +227,7 @@ export default function FirmaBiometricaPage() {
         </section>
 
         {/* Internal links + CTA */}
-        <section className="py-16" style={{ background: "#070E1A" }}>
+        <section className="py-16" style={{ background: "#0E1133" }}>
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p className="text-gray-500 text-sm mb-6">
               ¿Necesitas también validación de documentos de identidad y listas? Explora:
@@ -256,7 +256,7 @@ export default function FirmaBiometricaPage() {
             <Link
               href="/autoservicio"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold text-white text-base transition-all hover:opacity-90"
-              style={{ background: "#8B5CF6", boxShadow: "0 0 30px rgba(139,92,246,0.3)" }}
+              style={{ background: "#2DB6C1", boxShadow: "0 0 30px rgba(139,92,246,0.3)" }}
             >
               Explorar Firma Digital NOM-151 + Biometría →
             </Link>

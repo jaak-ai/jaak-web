@@ -124,7 +124,7 @@ export default function CNBVSanciones2025() {
                       ["2025**", "696", "$411.8 M", "+192%", "Caso FinCEN + récord histórico"],
                     ].map(([year, sanctions, amount, change, context], i) => (
                       <tr key={year} className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                        <td className="px-4 py-3 font-bold text-[#0066ff]">{year}</td>
+                        <td className="px-4 py-3 font-bold text-[#212A45]">{year}</td>
                         <td className="px-4 py-3 font-medium">{sanctions}</td>
                         <td className="px-4 py-3 text-gray-600">{amount}</td>
                         <td className="px-4 py-3 text-gray-600">{change}</td>
@@ -267,7 +267,7 @@ export default function CNBVSanciones2025() {
                       <tr key={type} className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
                         <td className="px-4 py-3 font-medium align-top">{type}</td>
                         <td className="px-4 py-3 text-center font-bold text-[#2DB6C1] align-top">{sanctions}</td>
-                        <td className="px-4 py-3 text-center font-bold text-[#0066ff] align-top whitespace-nowrap">{amount}</td>
+                        <td className="px-4 py-3 text-center font-bold text-[#212A45] align-top whitespace-nowrap">{amount}</td>
                         <td className="px-4 py-3 text-gray-600 align-top">{notes}</td>
                       </tr>
                     ))}
@@ -400,7 +400,7 @@ export default function CNBVSanciones2025() {
                   },
                   {
                     tag: "Umbral: 25% (antes 50%)",
-                    tagColor: "bg-[#0066ff] text-white",
+                    tagColor: "bg-[#212A45] text-white",
                     title: "Beneficiario Controlador",
                     body: "Cualquier persona física con más del 25% de participación o control efectivo debe ser identificada y registrada. El registro debe mantenerse actualizado. Incluye titularidad indirecta y control efectivo.",
                   },

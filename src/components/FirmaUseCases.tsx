@@ -29,7 +29,7 @@ const industries: Industry[] = [
         description:
           "Valida la identidad del cliente con KYC biométrico y obtén su firma electrónica en el mismo flujo. Cumple con CNBV y LFPIORPI desde el primer contacto.",
         signaType: "Firma Digital NOM-151 + KYC",
-        signaColor: "#10B981",
+        signaColor: "#2AD796",
         icon: "💳",
       },
       {
@@ -37,7 +37,7 @@ const industries: Industry[] = [
         description:
           "Formaliza créditos personales, automotrices e hipotecarios con firma NOM-151 y biometría. El expediente digital sustituye al papel con total validez legal.",
         signaType: "Firma Digital NOM-151 + Biometría",
-        signaColor: "#8B5CF6",
+        signaColor: "#2DB6C1",
         icon: "📑",
       },
       {
@@ -45,7 +45,7 @@ const industries: Industry[] = [
         description:
           "Automatiza el proceso de renovación de expedientes con una experiencia completamente digital. Notificaciones automáticas y firma desde cualquier dispositivo.",
         signaType: "Firma Digital NOM-151 + KYC",
-        signaColor: "#10B981",
+        signaColor: "#2AD796",
         icon: "🔄",
       },
     ],
@@ -76,7 +76,7 @@ const industries: Industry[] = [
         description:
           "Verifica la identidad del apoderado con biometría facial antes de ejecutar un poder. Genera evidencia de quién firmó y en qué condiciones.",
         signaType: "Firma Digital NOM-151 + Biometría",
-        signaColor: "#8B5CF6",
+        signaColor: "#2DB6C1",
         icon: "⚖️",
       },
     ],
@@ -91,7 +91,7 @@ const industries: Industry[] = [
         description:
           "Digitaliza el proceso de crédito automotriz: verificación de identidad, firma del contrato y pagaré en un solo flujo móvil desde el agencia.",
         signaType: "Firma Digital NOM-151 + KYC",
-        signaColor: "#10B981",
+        signaColor: "#2AD796",
         icon: "📋",
       },
       {
@@ -99,7 +99,7 @@ const industries: Industry[] = [
         description:
           "Firma contratos de arrendamiento puro o financiero con evidencia biométrica y NOM-151. Reducción del ciclo de venta de días a horas.",
         signaType: "Firma Digital NOM-151 + Biometría",
-        signaColor: "#8B5CF6",
+        signaColor: "#2DB6C1",
         icon: "📄",
       },
       {
@@ -122,7 +122,7 @@ const industries: Industry[] = [
         description:
           "Verifica la identidad del titular con KYC y biometría al momento del alta. Cumple con la regulación del IFT para portación y nuevas altas.",
         signaType: "Firma Digital NOM-151 + KYC",
-        signaColor: "#10B981",
+        signaColor: "#2AD796",
         icon: "📱",
       },
       {
@@ -178,7 +178,7 @@ export default function FirmaUseCases() {
               style={{
                 background: isActive ? "#2DB6C1" : "transparent",
                 color: isActive ? "#fff" : "#64748B",
-                boxShadow: isActive ? "0 0 20px rgba(30,202,211,0.3)" : "none",
+                boxShadow: isActive ? "0 0 20px rgba(45, 182, 193,0.3)" : "none",
               }}
             >
               <span aria-hidden="true">{industry.icon}</span>

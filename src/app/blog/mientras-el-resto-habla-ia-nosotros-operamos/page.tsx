@@ -172,7 +172,7 @@ export default function MientrasElRestoHablaIA() {
                   <thead>
                     <tr className="bg-[#0E1133]">
                       <th className="px-6 py-4 text-left text-white/60 font-semibold">El mercado actual</th>
-                      <th className="px-6 py-4 text-left text-[#0066ff] font-semibold">JAAK</th>
+                      <th className="px-6 py-4 text-left text-[#212A45] font-semibold">JAAK</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">

@@ -30,7 +30,7 @@ export const riskColors: Record<RiskLevel, string> = {
   Bajo: "#64748B",
   Medio: "#F59E0B",
   Alto: "#F97316",
-  Regulado: "#8B5CF6",
+  Regulado: "#2DB6C1",
 };
 
 export const signatureLevels: SignatureLevel[] = [
@@ -188,7 +188,7 @@ export const signatureLevels: SignatureLevel[] = [
     name: "Firma Digital NOM-151 + Biometría",
     shortName: "NOM-151 + Biometría",
     risk: "Alto",
-    color: "#8B5CF6",
+    color: "#2DB6C1",
     icon: "🧬",
     description:
       "Para operaciones donde no basta con firmar: necesitas comprobar que la persona estuvo presente y corresponde con su identidad.",
@@ -226,7 +226,7 @@ export const signatureLevels: SignatureLevel[] = [
     name: "Firma Digital NOM-151 + KYC",
     shortName: "NOM-151 + KYC",
     risk: "Regulado",
-    color: "#10B981",
+    color: "#2AD796",
     icon: "🛡️",
     description:
       "Para entidades reguladas o procesos de alto riesgo donde necesitas verificar identidad, validar listas y firmar en un solo flujo.",

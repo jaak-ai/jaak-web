@@ -4,7 +4,7 @@ export default function Solution() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto">
           {/* Section header */}
-          <h2 className="text-3xl md:text-4xl font-black text-[#0a0f1c] mb-8">
+          <h2 className="text-3xl md:text-4xl font-black text-[#0E1133] mb-8">
             Cómo JAAK lo resuelve
           </h2>
 
@@ -49,7 +49,7 @@ export default function Solution() {
           </ul>
 
           {/* Summary */}
-          <div className="bg-[#0a0f1c] rounded-xl p-6 text-white">
+          <div className="bg-[#0E1133] rounded-xl p-6 text-white">
             <p className="text-lg font-medium">
               Todo integrado. Todo medible. Todo defendible.
             </p>

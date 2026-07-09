@@ -54,8 +54,8 @@ function NavItemComponent({ item, level, pathname }: NavItemComponentProps) {
             flex w-full items-center justify-between py-1.5 text-sm font-medium transition-colors
             ${paddingLeft}
             ${isChildActive
-              ? 'text-[#0066ff]'
-              : 'text-gray-700 hover:text-[#0066ff]'
+              ? 'text-[#212A45]'
+              : 'text-gray-700 hover:text-[#212A45]'
             }
           `}
         >
@@ -91,8 +91,8 @@ function NavItemComponent({ item, level, pathname }: NavItemComponentProps) {
           block py-1.5 text-sm transition-colors
           ${paddingLeft}
           ${isActive
-            ? 'font-semibold text-[#0066ff]'
-            : 'text-gray-600 hover:text-[#0066ff]'
+            ? 'font-semibold text-[#212A45]'
+            : 'text-gray-600 hover:text-[#212A45]'
           }
         `}
       >

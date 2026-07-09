@@ -132,7 +132,7 @@ export default function SeguridadBiometrica() {
               <div className="space-y-6 my-8">
                 <div className="bg-gray-50 rounded-xl p-6">
                   <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
-                    <span className="w-8 h-8 bg-[#0066ff] rounded-full flex items-center justify-center text-white text-sm">1</span>
+                    <span className="w-8 h-8 bg-[#212A45] rounded-full flex items-center justify-center text-white text-sm">1</span>
                     Prueba de vida activa
                   </h3>
                   <p className="text-gray-600 mb-3">
@@ -153,7 +153,7 @@ export default function SeguridadBiometrica() {
 
                 <div className="bg-gray-50 rounded-xl p-6">
                   <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
-                    <span className="w-8 h-8 bg-[#0066ff] rounded-full flex items-center justify-center text-white text-sm">2</span>
+                    <span className="w-8 h-8 bg-[#212A45] rounded-full flex items-center justify-center text-white text-sm">2</span>
                     Prueba de vida pasiva
                   </h3>
                   <p className="text-gray-600 mb-3">
@@ -182,20 +182,20 @@ export default function SeguridadBiometrica() {
                 como el estándar de la industria.
               </p>
 
-              <div className="bg-[#0066ff]/5 rounded-xl p-8 my-8">
+              <div className="bg-[#212A45]/5 rounded-xl p-8 my-8">
                 <h3 className="text-xl font-bold text-gray-900 mb-4">
                   ¿Qué significa la certificación iBeta Level 1 y Level 2?
                 </h3>
                 <div className="space-y-4">
                   <div className="flex items-start gap-4">
-                    <span className="px-3 py-1 bg-[#0066ff] text-white text-sm font-bold rounded">Level 1</span>
+                    <span className="px-3 py-1 bg-[#212A45] text-white text-sm font-bold rounded">Level 1</span>
                     <div>
                       <p className="text-gray-700 font-medium">Pruebas con ataques 2D</p>
                       <p className="text-gray-600">Fotografías impresas y digitales, videos en pantalla</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
-                    <span className="px-3 py-1 bg-[#0066ff] text-white text-sm font-bold rounded">Level 2</span>
+                    <span className="px-3 py-1 bg-[#212A45] text-white text-sm font-bold rounded">Level 2</span>
                     <div>
                       <p className="text-gray-700 font-medium">Pruebas con ataques 3D</p>
                       <p className="text-gray-600">Máscaras de látex, silicona, modelos 3D impresos</p>
@@ -364,7 +364,7 @@ export default function SeguridadBiometrica() {
             <div className="mt-12 flex flex-wrap gap-4">
               <a
                 href="/contacto"
-                className="px-8 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
+                className="px-8 py-4 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-all"
               >
                 Solicitar demo
               </a>

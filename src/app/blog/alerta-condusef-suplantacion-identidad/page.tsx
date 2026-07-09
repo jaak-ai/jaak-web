@@ -255,7 +255,7 @@ export default function AlertaCondusefSuplantacion() {
                 </p>
                 <Link
                   href="/contacto"
-                  className="inline-flex items-center px-6 py-3 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
+                  className="inline-flex items-center px-6 py-3 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-all"
                 >
                   Conoce JAAK
                   <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

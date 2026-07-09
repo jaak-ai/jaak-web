@@ -61,7 +61,7 @@ export default function HomepageProductFlow() {
       {/* Ambient glow */}
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full blur-[120px] pointer-events-none"
-        style={{ background: "rgba(30,202,211,0.06)" }}
+        style={{ background: "rgba(45, 182, 193,0.06)" }}
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -71,8 +71,8 @@ export default function HomepageProductFlow() {
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
             style={{
               color: "#2DB6C1",
-              border: "1px solid rgba(30,202,211,0.22)",
-              background: "rgba(30,202,211,0.08)",
+              border: "1px solid rgba(45, 182, 193,0.22)",
+              background: "rgba(45, 182, 193,0.08)",
             }}
           >
             Cómo funciona
@@ -106,7 +106,7 @@ export default function HomepageProductFlow() {
             className="hidden lg:block absolute top-[52px] left-[12.5%] right-[12.5%] h-px"
             style={{
               background:
-                "linear-gradient(to right, transparent, rgba(30,202,211,0.25), rgba(42,215,150,0.25), transparent)",
+                "linear-gradient(to right, transparent, rgba(45, 182, 193,0.25), rgba(42,215,150,0.25), transparent)",
             }}
           />
 
@@ -117,10 +117,10 @@ export default function HomepageProductFlow() {
                 <div
                   className="relative w-24 h-24 rounded-3xl flex items-center justify-center mb-6 transition-all duration-300 group-hover:-translate-y-1"
                   style={{
-                    background: `linear-gradient(145deg, rgba(30,202,211,0.18), rgba(30,202,211,0.06))`,
-                    border: `1px solid rgba(30,202,211,0.22)`,
+                    background: `linear-gradient(145deg, rgba(45, 182, 193,0.18), rgba(45, 182, 193,0.06))`,
+                    border: `1px solid rgba(45, 182, 193,0.22)`,
                     backdropFilter: "blur(12px)",
-                    boxShadow: "0 8px 32px rgba(30,202,211,0.10)",
+                    boxShadow: "0 8px 32px rgba(45, 182, 193,0.10)",
                     color: s.color,
                   }}
                 >
@@ -151,8 +151,8 @@ export default function HomepageProductFlow() {
                           key={b}
                           className="text-xs px-2.5 py-1 rounded-full font-medium"
                           style={{
-                            background: "rgba(30,202,211,0.12)",
-                            border: "1px solid rgba(30,202,211,0.20)",
+                            background: "rgba(45, 182, 193,0.12)",
+                            border: "1px solid rgba(45, 182, 193,0.20)",
                             color: "#2DB6C1",
                           }}
                         >

@@ -242,7 +242,7 @@ export default function IAInfraestructuraConfianza() {
                   href="https://secihti.mx/ciencia-y-humanidades/principios-de-chapultepec-declaracion-de-etica-y-buenas-practicas-para-el-uso-y-desarrollo-de-la-inteligencia-artificial/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center text-[#0066ff] font-semibold hover:underline"
+                  className="inline-flex items-center text-[#212A45] font-semibold hover:underline"
                 >
                   Consultar documento oficial
                   <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -261,7 +261,7 @@ export default function IAInfraestructuraConfianza() {
                 </p>
                 <Link
                   href="/contacto"
-                  className="inline-flex items-center px-6 py-3 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
+                  className="inline-flex items-center px-6 py-3 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-all"
                 >
                   Conoce JAAK
                   <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

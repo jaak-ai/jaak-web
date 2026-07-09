@@ -96,7 +96,7 @@ export default async function DocPage({ params }: PageProps) {
                 {index === breadcrumbs.length - 1 ? (
                   <span className="text-gray-900 font-medium">{crumb.title}</span>
                 ) : (
-                  <Link href={crumb.href} className="hover:text-[#0066ff] transition-colors">
+                  <Link href={crumb.href} className="hover:text-[#212A45] transition-colors">
                     {crumb.title}
                   </Link>
                 )}
@@ -125,10 +125,10 @@ export default async function DocPage({ params }: PageProps) {
               href={prev.href || '#'}
               className="group flex flex-col items-start"
             >
-              <span className="mb-1 text-sm text-gray-500 group-hover:text-[#0066ff] transition-colors">
+              <span className="mb-1 text-sm text-gray-500 group-hover:text-[#212A45] transition-colors">
                 Anterior
               </span>
-              <span className="flex items-center gap-2 font-semibold text-gray-900 group-hover:text-[#0066ff] transition-colors">
+              <span className="flex items-center gap-2 font-semibold text-gray-900 group-hover:text-[#212A45] transition-colors">
                 <svg
                   className="h-4 w-4"
                   fill="none"
@@ -153,10 +153,10 @@ export default async function DocPage({ params }: PageProps) {
               href={next.href || '#'}
               className="group flex flex-col items-end"
             >
-              <span className="mb-1 text-sm text-gray-500 group-hover:text-[#0066ff] transition-colors">
+              <span className="mb-1 text-sm text-gray-500 group-hover:text-[#212A45] transition-colors">
                 Siguiente
               </span>
-              <span className="flex items-center gap-2 font-semibold text-gray-900 group-hover:text-[#0066ff] transition-colors">
+              <span className="flex items-center gap-2 font-semibold text-gray-900 group-hover:text-[#212A45] transition-colors">
                 {next.title}
                 <svg
                   className="h-4 w-4"

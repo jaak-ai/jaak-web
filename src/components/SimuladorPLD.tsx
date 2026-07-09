@@ -479,7 +479,7 @@ export default function SimuladorPLD() {
                 setValorIndividualJoya("");
                 setTipoFedatario("");
               }}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-[#0066ff] focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-[#212A45] focus:border-transparent"
             >
               <option value="">Seleccione una actividad del Art. 17</option>
               {actividades.map((a) => (
@@ -502,7 +502,7 @@ export default function SimuladorPLD() {
                 value={montoOperacion}
                 onChange={(e) => setMontoOperacion(e.target.value.replace(/[^0-9.,]/g, ""))}
                 placeholder="$0.00"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-[#0066ff] focus:border-transparent pr-16"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-[#212A45] focus:border-transparent pr-16"
               />
               <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm font-medium">MXN</span>
             </div>
@@ -520,7 +520,7 @@ export default function SimuladorPLD() {
               value={operacionesMensuales}
               onChange={(e) => setOperacionesMensuales(e.target.value)}
               placeholder="0"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-[#0066ff] focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-[#212A45] focus:border-transparent"
             />
             <p className="text-xs text-gray-500 mt-1">Cantidad de operaciones que procesa su organizacion al mes.</p>
           </div>
@@ -534,7 +534,7 @@ export default function SimuladorPLD() {
                   name="tipoCalculo"
                   checked={tipoCalculo === "individual"}
                   onChange={() => setTipoCalculo("individual")}
-                  className="w-4 h-4 text-[#0066ff] border-gray-300 focus:ring-[#0066ff]"
+                  className="w-4 h-4 text-[#212A45] border-gray-300 focus:ring-[#212A45]"
                 />
                 <span className="text-sm text-gray-700">Operacion individual</span>
               </label>
@@ -544,7 +544,7 @@ export default function SimuladorPLD() {
                   name="tipoCalculo"
                   checked={tipoCalculo === "acumulado"}
                   onChange={() => setTipoCalculo("acumulado")}
-                  className="w-4 h-4 text-[#0066ff] border-gray-300 focus:ring-[#0066ff]"
+                  className="w-4 h-4 text-[#212A45] border-gray-300 focus:ring-[#212A45]"
                 />
                 <span className="text-sm text-gray-700">Acumulado en 6 meses</span>
               </label>
@@ -562,11 +562,11 @@ export default function SimuladorPLD() {
               </label>
               <div className="flex gap-4">
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="radio" name="trasladoMonto" checked={trasladoPuedeDeterminarMonto === "si"} onChange={() => setTrasladoPuedeDeterminarMonto("si")} className="w-4 h-4 text-[#0066ff]" />
+                  <input type="radio" name="trasladoMonto" checked={trasladoPuedeDeterminarMonto === "si"} onChange={() => setTrasladoPuedeDeterminarMonto("si")} className="w-4 h-4 text-[#212A45]" />
                   <span className="text-sm text-gray-700">Si</span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="radio" name="trasladoMonto" checked={trasladoPuedeDeterminarMonto === "no"} onChange={() => setTrasladoPuedeDeterminarMonto("no")} className="w-4 h-4 text-[#0066ff]" />
+                  <input type="radio" name="trasladoMonto" checked={trasladoPuedeDeterminarMonto === "no"} onChange={() => setTrasladoPuedeDeterminarMonto("no")} className="w-4 h-4 text-[#212A45]" />
                   <span className="text-sm text-gray-700">No</span>
                 </label>
               </div>
@@ -582,11 +582,11 @@ export default function SimuladorPLD() {
               </label>
               <div className="flex gap-4 mb-2">
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="radio" name="avContraprestacion" checked={activosVirtualesContraprestacion === "si"} onChange={() => setActivosVirtualesContraprestacion("si")} className="w-4 h-4 text-[#0066ff]" />
+                  <input type="radio" name="avContraprestacion" checked={activosVirtualesContraprestacion === "si"} onChange={() => setActivosVirtualesContraprestacion("si")} className="w-4 h-4 text-[#212A45]" />
                   <span className="text-sm text-gray-700">Si</span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="radio" name="avContraprestacion" checked={activosVirtualesContraprestacion === "no"} onChange={() => setActivosVirtualesContraprestacion("no")} className="w-4 h-4 text-[#0066ff]" />
+                  <input type="radio" name="avContraprestacion" checked={activosVirtualesContraprestacion === "no"} onChange={() => setActivosVirtualesContraprestacion("no")} className="w-4 h-4 text-[#212A45]" />
                   <span className="text-sm text-gray-700">No</span>
                 </label>
               </div>
@@ -600,7 +600,7 @@ export default function SimuladorPLD() {
                       value={montoContraprestacion}
                       onChange={(e) => setMontoContraprestacion(e.target.value.replace(/[^0-9.,]/g, ""))}
                       placeholder="$0.00"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-[#0066ff] focus:border-transparent pr-16"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-[#212A45] focus:border-transparent pr-16"
                     />
                     <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm">MXN</span>
                   </div>
@@ -619,7 +619,7 @@ export default function SimuladorPLD() {
               <select
                 value={tipoFedatario}
                 onChange={(e) => setTipoFedatario(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-[#0066ff] focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 bg-white focus:ring-2 focus:ring-[#212A45] focus:border-transparent"
               >
                 <option value="">Seleccione el tipo de acto</option>
                 {tiposFedatario.map((f) => (
@@ -643,7 +643,7 @@ export default function SimuladorPLD() {
                   value={valorIndividualJoya}
                   onChange={(e) => setValorIndividualJoya(e.target.value.replace(/[^0-9.,]/g, ""))}
                   placeholder="$0.00"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-[#0066ff] focus:border-transparent pr-16"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-[#212A45] focus:border-transparent pr-16"
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm">MXN</span>
               </div>
@@ -653,7 +653,7 @@ export default function SimuladorPLD() {
 
           <button
             onClick={calcular}
-            className="w-full px-6 py-3.5 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all text-base"
+            className="w-full px-6 py-3.5 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-all text-base"
           >
             Evaluar obligacion
           </button>
@@ -754,7 +754,7 @@ export default function SimuladorPLD() {
                 <ul className="space-y-2">
                   {evidenciaPorGrupo[resultado.grupoEvidencia]?.map((item, i) => (
                     <li key={i} className="flex items-start gap-2.5">
-                      <svg className="w-4 h-4 text-[#0066ff] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 text-[#212A45] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4" />
                       </svg>
                       <span className="text-sm text-gray-700">{item}</span>
@@ -800,7 +800,7 @@ export default function SimuladorPLD() {
               <span className={`px-4 py-2 rounded-lg font-bold text-sm ${
                 resultado.modalidadJAAK === "Alianza Estrategica" ? "bg-[#2AD796] text-gray-900"
                 : resultado.modalidadJAAK === "Enterprise" ? "bg-[#2DB6C1] text-gray-900"
-                : "bg-[#0066ff] text-white"
+                : "bg-[#212A45] text-white"
               }`}>
                 {resultado.modalidadJAAK}
               </span>
@@ -843,7 +843,7 @@ export default function SimuladorPLD() {
           </div>
 
           {/* Block 7: CTA to form */}
-          <div className="bg-gradient-to-r from-[#0066ff] to-[#0052cc] rounded-xl p-6 text-white text-center">
+          <div className="bg-gradient-to-r from-[#212A45] to-[#212A45] rounded-xl p-6 text-white text-center">
             <h4 className="text-xl font-bold mb-2">¿Necesita implementar este expediente?</h4>
             <p className="text-white/80 text-sm mb-4">Agende una sesion estrategica con nuestro equipo de cumplimiento. En 15 minutos evaluamos como JAAK puede automatizar la integracion del expediente KYC para su actividad vulnerable.</p>
             <button
@@ -853,7 +853,7 @@ export default function SimuladorPLD() {
                   document.getElementById("agendar")?.scrollIntoView({ behavior: "smooth" });
                 }, 100);
               }}
-              className="px-6 py-3 bg-white text-[#0066ff] font-bold rounded-lg hover:bg-gray-100 transition-all"
+              className="px-6 py-3 bg-white text-[#212A45] font-bold rounded-lg hover:bg-gray-100 transition-all"
             >
               Agendar sesion estrategica
             </button>
@@ -884,7 +884,7 @@ export default function SimuladorPLD() {
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder="Ej. Maria Gonzalez Perez"
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0066ff] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400"
+                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#212A45] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400"
                       />
                     </div>
                     <div>
@@ -895,7 +895,7 @@ export default function SimuladorPLD() {
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         placeholder="nombre@empresa.com"
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0066ff] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400"
+                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#212A45] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400"
                       />
                     </div>
                   </div>
@@ -908,7 +908,7 @@ export default function SimuladorPLD() {
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         placeholder="+52 55 1234 5678"
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0066ff] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400"
+                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#212A45] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400"
                       />
                     </div>
                     <div>
@@ -919,7 +919,7 @@ export default function SimuladorPLD() {
                         value={formData.company}
                         onChange={(e) => setFormData({ ...formData, company: e.target.value })}
                         placeholder="Nombre de su empresa"
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0066ff] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400"
+                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#212A45] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400"
                       />
                     </div>
                   </div>
@@ -941,7 +941,7 @@ export default function SimuladorPLD() {
                   <button
                     type="submit"
                     disabled={formStatus === "loading" || !turnstileToken}
-                    className="w-full px-6 py-3.5 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full px-6 py-3.5 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {formStatus === "loading" ? "Enviando..." : "Agendar sesion estrategica"}
                   </button>

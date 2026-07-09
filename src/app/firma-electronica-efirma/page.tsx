@@ -134,7 +134,7 @@ export default function FirmaEfirmaPage() {
         </section>
 
         {/* Qué es la e.firma */}
-        <section className="py-20" style={{ background: "#070E1A" }} aria-labelledby="que-es-heading">
+        <section className="py-20" style={{ background: "#0E1133" }} aria-labelledby="que-es-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
               <div>
@@ -212,8 +212,8 @@ export default function FirmaEfirmaPage() {
               {[
                 { name: "e.firma", desc: "El firmante usa su certificado digital vigente del SAT como mecanismo de firma.", color: "#3B82F6" },
                 { name: "NOM-151", desc: "Fortalece la conservación e integridad del documento firmado en el tiempo.", color: "#2DB6C1" },
-                { name: "Biometría", desc: "Comprueba que la persona presente corresponde con su identidad facial.", color: "#8B5CF6" },
-                { name: "KYC", desc: "Verifica identidad documental, listas de riesgo y perfil del cliente.", color: "#10B981" },
+                { name: "Biometría", desc: "Comprueba que la persona presente corresponde con su identidad facial.", color: "#2DB6C1" },
+                { name: "KYC", desc: "Verifica identidad documental, listas de riesgo y perfil del cliente.", color: "#2AD796" },
               ].map((item) => (
                 <div key={item.name} className="rounded-2xl p-5" style={{ background: item.color + "0D", border: `1px solid ${item.color}33` }}>
                   <h3 className="text-sm font-bold mb-2" style={{ color: item.color }}>{item.name}</h3>
@@ -225,7 +225,7 @@ export default function FirmaEfirmaPage() {
         </section>
 
         {/* Evidencia + casos de uso */}
-        <section className="py-20" style={{ background: "#070E1A" }} aria-labelledby="usecases-heading">
+        <section className="py-20" style={{ background: "#0E1133" }} aria-labelledby="usecases-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 id="usecases-heading" className="text-2xl font-black text-white mb-8 text-center">
               Evidencia generada y casos de uso
@@ -280,7 +280,7 @@ export default function FirmaEfirmaPage() {
         </section>
 
         {/* Internal links + CTA */}
-        <section className="py-16" style={{ background: "#070E1A" }}>
+        <section className="py-16" style={{ background: "#0E1133" }}>
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p className="text-gray-500 text-sm mb-6">¿Necesitas otra capa de evidencia? Explora:</p>
             <div className="flex flex-wrap justify-center gap-3 mb-8">

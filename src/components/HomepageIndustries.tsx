@@ -62,7 +62,7 @@ export default function HomepageIndustries() {
       />
       <div
         className="absolute top-1/3 left-0 w-[350px] h-[350px] rounded-full blur-[110px] pointer-events-none"
-        style={{ background: "rgba(30,202,211,0.05)" }}
+        style={{ background: "rgba(45, 182, 193,0.05)" }}
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -110,7 +110,7 @@ export default function HomepageIndustries() {
               <div className="flex items-start justify-between mb-5">
                 <div
                   className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl"
-                  style={{ background: "rgba(30,202,211,0.12)" }}
+                  style={{ background: "rgba(45, 182, 193,0.12)" }}
                 >
                   {ind.icon}
                 </div>
