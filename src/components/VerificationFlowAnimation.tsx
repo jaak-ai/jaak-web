@@ -51,7 +51,7 @@ export default function VerificationFlowAnimation() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeStep, setActiveStep] = useState(0);
   const [isAnimating, setIsAnimating] = useState(true);
-  const timelineRef = useRef<NodeJS.Timeout>();
+  const timelineRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const animate = () => {
