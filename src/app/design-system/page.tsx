@@ -14,7 +14,7 @@ export default function DesignSystemPage() {
             Sistema de Diseño JAAK
           </h1>
           <p className="text-lg text-[#64748B] max-w-2xl">
-            Componentes, animaciones narrativas y patrones visuales alineados con benchmarks globales de IDV (VERIFF, SUMSUB, INCODE, PERSONA).
+            Componentes, animaciones narrativas y patrones visuales alineados con patrón visual data-driven.
           </p>
         </div>
 

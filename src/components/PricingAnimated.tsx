@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 /**
- * PricingAnimated — Mostrar adaptabilidad de precios (PERSONA pattern)
+ * PricingAnimated — Mostrar adaptabilidad de precios
  *
  * Inspiración VERIFF: muestra cómo los precios se ajustan dinámicamente
  * según volumen, flujo y características seleccionadas.

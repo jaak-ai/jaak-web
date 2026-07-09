@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ReactNode } from "react";
 
 /**
- * ProductLandingTemplate — Componente configurable reutilizable (PERSONA pattern)
+ * ProductLandingTemplate — Componente configurable reutilizable
  *
  * Permite crear landing pages de productos modulares sin duplicar código.
  * Se adapta a Signa, Guardian, Verificación KYC, etc.

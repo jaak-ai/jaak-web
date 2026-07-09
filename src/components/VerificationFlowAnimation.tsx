@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 /**
  * Animación narrativa del flujo de verificación 0→30 segundos
- * Inspirado en INCODE + VERIFF: explica visualmente la propuesta de valor
+ * Explica explica visualmente la propuesta de valor
  *
  * Fases:
  * 1. Captura (selfie + INE) → 5-8s

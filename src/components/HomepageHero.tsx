@@ -109,24 +109,15 @@ export default function HomepageHero() {
   }, [phase, step, inView, reduceMotion]);
 
   return (
-    <section ref={sectionRef} className="hp-section hp-bg-hero min-h-screen pt-28 relative overflow-hidden">
+    <section ref={sectionRef} className="hp-section min-h-screen pt-28 relative overflow-hidden" style={{ background: "#F3F4F8" }}>
       {/* Ambient glows */}
       <div
         className="absolute top-[-10%] left-[-5%] w-[700px] h-[700px] rounded-full blur-[140px] pointer-events-none"
-        style={{ background: "rgba(45,182,193,0.08)" }}
+        style={{ background: "rgba(45,182,193,0.04)" }}
       />
       <div
         className="absolute bottom-[-15%] right-[-8%] w-[500px] h-[500px] rounded-full blur-[120px] pointer-events-none"
-        style={{ background: "rgba(42,215,150,0.06)" }}
-      />
-      {/* Grid overlay */}
-      <div
-        className="absolute inset-0 opacity-[0.025] pointer-events-none"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)",
-          backgroundSize: "52px 52px",
-        }}
+        style={{ background: "rgba(42,215,150,0.03)" }}
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20 relative z-10">
@@ -168,23 +159,16 @@ export default function HomepageHero() {
             </div>
 
             {/* Headline */}
-            <h1 className="text-4xl md:text-5xl lg:text-[3.6rem] font-black text-white leading-[1.06] mb-6 tracking-tight">
+            <h1 className="text-4xl md:text-5xl lg:text-[3.6rem] font-black text-[#212A45] leading-[1.06] mb-6 tracking-tight">
               Verifica identidad.{" "}
               <br className="hidden sm:block" />
-              <span
-                style={{
-                  background: "linear-gradient(90deg, #2DB6C1, #2AD796)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}
-              >
+              <span style={{ color: "#212A45" }}>
                 Genera evidencia legal.
               </span>
             </h1>
 
             {/* Subheadline */}
-            <p className="text-lg md:text-xl mb-5 leading-relaxed max-w-lg" style={{ color: "var(--hp-text-md)" }}>
+            <p className="text-lg md:text-xl mb-5 leading-relaxed max-w-lg" style={{ color: "#64748B" }}>
               KYC biométrico y Firma Digital con Validez NOM-151, con expediente
               auditable. Diseñado para cumplir CNBV, UIF y LFPIORPI.
             </p>
@@ -206,7 +190,7 @@ export default function HomepageHero() {
             </div>
 
             {/* Urgency */}
-            <p className="text-sm font-medium mb-10 max-w-lg flex items-start gap-2" style={{ color: "var(--hp-orange-text)" }}>
+            <p className="text-sm font-medium mb-10 max-w-lg flex items-start gap-2" style={{ color: "#EA8C30" }}>
               <svg className="w-4 h-4 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
               </svg>
@@ -232,9 +216,9 @@ export default function HomepageHero() {
                 href="/contacto"
                 className="inline-flex items-center justify-center px-7 py-4 font-semibold text-base rounded-xl transition-colors duration-200"
                 style={{
-                  color: "var(--hp-ghost-btn-color)",
-                  background: "var(--hp-ghost-btn-bg)",
-                  border: "1px solid var(--hp-ghost-btn-border)",
+                  color: "#212A45",
+                  background: "rgba(255,255,255,0.6)",
+                  border: "1px solid rgba(33,42,69,0.12)",
                   backdropFilter: "blur(12px)",
                 }}
               >
@@ -242,7 +226,7 @@ export default function HomepageHero() {
               </Link>
             </div>
 
-            <p className="text-xs" style={{ color: "var(--hp-text-faint)" }}>
+            <p className="text-xs" style={{ color: "#94A3B8" }}>
               Para financieras, fintechs, inmobiliarias y organizaciones sujetas a cumplimiento regulatorio.
             </p>
           </div>
@@ -257,8 +241,8 @@ export default function HomepageHero() {
             <div className="relative z-10 w-full max-w-sm">
               {/* Main card */}
               <div
-                className="rounded-3xl p-6 hp-glass"
-                style={{ boxShadow: "0 32px 64px rgba(0,0,0,0.30), inset 0 1px 0 rgba(255,255,255,0.07)" }}
+                className="rounded-3xl p-6"
+                style={{ background: "rgba(255,255,255,0.75)", backdropFilter: "blur(12px)", boxShadow: "0 8px 32px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.5)" }}
               >
                 {/* Card header */}
                 <div className="flex items-center justify-between mb-5">
@@ -272,8 +256,8 @@ export default function HomepageHero() {
                       </svg>
                     </div>
                     <div>
-                      <div className="font-bold text-sm" style={{ color: "var(--hp-text-hi)" }}>Proceso KYC activo</div>
-                      <div className="text-xs" style={{ color: "var(--hp-text-faint)" }}>Evidencia siendo generada</div>
+                      <div className="font-bold text-sm" style={{ color: "#212A45" }}>Proceso KYC activo</div>
+                      <div className="text-xs" style={{ color: "#94A3B8" }}>Evidencia siendo generada</div>
                     </div>
                   </div>
                   <div className="flex items-center gap-1.5">
@@ -430,12 +414,12 @@ export default function HomepageHero() {
                 </div>
 
                 {/* Card footer */}
-                <div className="pt-4 flex items-center justify-between" style={{ borderTop: "1px solid var(--hp-divider)" }}>
+                <div className="pt-4 flex items-center justify-between" style={{ borderTop: "1px solid rgba(33,42,69,0.08)" }}>
                   <div className="flex items-center gap-2">
                     <div className="w-1.5 h-1.5 rounded-full" style={{ background: "#2DB6C1" }} />
-                    <span className="text-xs font-mono" style={{ color: "var(--hp-text-faint)" }}>Ejemplo ilustrativo</span>
+                    <span className="text-xs font-mono" style={{ color: "#94A3B8" }}>Ejemplo ilustrativo</span>
                   </div>
-                  <span className="text-xs" style={{ color: "var(--hp-text-faint)" }}>NOM-151 ✓</span>
+                  <span className="text-xs" style={{ color: "#94A3B8" }}>NOM-151 ✓</span>
                 </div>
               </div>
 
@@ -458,7 +442,8 @@ export default function HomepageHero() {
 
         {/* Stats bar */}
         <div
-          className="mt-20 grid grid-cols-2 md:grid-cols-4 rounded-2xl overflow-hidden hp-glass"
+          className="mt-20 grid grid-cols-2 md:grid-cols-4 rounded-2xl overflow-hidden"
+          style={{ background: "rgba(255,255,255,0.5)", backdropFilter: "blur(12px)", border: "1px solid rgba(33,42,69,0.08)" }}
           data-sr-grid
         >
           {[
@@ -470,7 +455,7 @@ export default function HomepageHero() {
             <div
               key={i}
               className="px-6 py-5 text-center"
-              style={{ borderRight: i < 3 ? "1px solid var(--hp-divider)" : "none" }}
+              style={{ borderRight: i < 3 ? "1px solid rgba(33,42,69,0.08)" : "none" }}
             >
               <div
                 className="text-2xl md:text-3xl font-black"
@@ -478,7 +463,7 @@ export default function HomepageHero() {
               >
                 {s.value}
               </div>
-              <div className="text-xs mt-1 font-medium" style={{ color: "var(--hp-text-lo)" }}>{s.label}</div>
+              <div className="text-xs mt-1 font-medium" style={{ color: "#94A3B8" }}>{s.label}</div>
             </div>
           ))}
         </div>

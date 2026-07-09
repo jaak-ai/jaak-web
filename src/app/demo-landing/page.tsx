@@ -1,11 +1,11 @@
 import ProductLandingTemplate, {
   type ProductLandingConfig,
 } from "@/components/ProductLandingTemplate";
-import ComparisonChartSUMSUB from "@/components/ComparisonChartSUMSUB";
+import ComparisonChart from "@/components/ComparisonChart";
 
 export const metadata = {
   title: "Demo: Landing Page Template — JAAK",
-  description: "Demostración de ProductLandingTemplate configurable (PERSONA pattern).",
+  description: "Demostración de ProductLandingTemplate configurable.",
 };
 
 export default function DemoLandingPage() {
@@ -112,7 +112,7 @@ export default function DemoLandingPage() {
       <ProductLandingTemplate config={signaConfig} />
 
       {/* Sección de comparación alternativa */}
-      <ComparisonChartSUMSUB
+      <ComparisonChart
         config={{
           title: "¿Por qué elegir Signa?",
           subtitle: "Comparación de capacidades de firma electrónica en México",
@@ -166,7 +166,7 @@ export default function DemoLandingPage() {
             <strong>Nota:</strong> Esta es una página de demostración del ProductLandingTemplate.
           </p>
           <p className="text-xs text-[#64748B]">
-            El template es configurable (PERSONA pattern) y puede adaptarse a Signa,
+            El template es configurable y puede adaptarse a Signa,
             Guardian, KYC, verificación de identidad, o cualquier producto JAAK.
           </p>
         </div>

@@ -1,10 +1,10 @@
 "use client";
 
 /**
- * ComparisonChartSUMSUB — Inspiración SUMSUB/SEON
+ * ComparisonChart — Tabla comparativa data-driven
  *
- * Tabla comparativa limpia, data-dense pero legible.
- * Para mostrar ventajas de JAAK vs competencia o variantes de producto.
+ * Tabla limpia, data-dense pero legible.
+ * Para mostrar ventajas de JAAK o variantes de producto.
  */
 
 export interface ComparisonRow {
@@ -22,7 +22,7 @@ export interface ComparisonChartConfig {
   highlightJaak?: boolean;
 }
 
-export default function ComparisonChartSUMSUB({
+export default function ComparisonChart({
   config,
 }: {
   config: ComparisonChartConfig;
