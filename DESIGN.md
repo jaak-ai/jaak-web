@@ -292,6 +292,65 @@ relleno de fondo genérico.
 - No uses negro puro ni blanco puro como texto sobre marino (usa blanco con alpha).
 - No dejes que el sistema visual tape la prueba de producto.
 - No hardcodees hex en CSS de página: lee las variables de `globals.css`.
+- No uses `border-l-4` (ni borde grueso de color en ningún lado de una card): es el
+  "side-tab", el tell más reconocible de UI generada por IA. Usa el patrón de callout.
+- No uses `gradient-text` (`bg-clip-text` + gradiente) fuera del H1 del hero.
+- No inventes datos: cifras, testimonios, logos, comparativas o certificaciones que no
+  se puedan verificar no van en el sitio. Ver §7.
+
+## 7. Veracidad del contenido y patrones anti-slop
+
+### Regla de veracidad (innegociable)
+
+JAAK vende confianza regulatoria; un dato falso detectado destruye la credibilidad del
+sitio y es riesgo legal (publicidad engañosa, art. 32 LFPC). Por eso:
+
+- **Nada inventado.** Toda cifra, testimonio, logo, comparativa o certificación debe ser
+  verificable. Lo que no se puede respaldar se **quita**, nunca se sustituye por otra
+  suposición.
+- **Fuente única de claims:** `src/lib/trust.ts` centraliza los datos reales y repetidos
+  (`IBETA`, `CERTIFICACIONES` [6], `STATS`, `RETENCION`). Si un número aparece en varias
+  páginas, impórtalo de ahí — nunca lo hardcodees, así no se contradice entre secciones.
+- **iBeta:** siempre "iBeta Nivel 1" (dato real). Prohibido el superlativo "el estándar
+  más exigente/alto" (falso: existe el Nivel 2).
+- **Competidores:** no se nombran (Jumio, Onfido, AWS Rekognition, Azure Face, Mifiel,
+  DocuSign, OpenClaw…). Se afirma el hecho propio: "motor biométrico propio, desarrollado
+  y operado en México".
+- **Ejemplos/mocks:** un dashboard o respuesta de API demostrativa debe llevar rótulo
+  "Ejemplo ilustrativo" y datos obviamente de muestra.
+- **Sin garantías absolutas** sin respaldo ("te devolvemos el dinero", "cumplimiento
+  garantizado", "elimina el fraude"): se suavizan a hechos defendibles ("reduce el fraude").
+
+### Patrón de callout (reemplaza al side-tab)
+
+Para alertas, citas y datos destacados en contenido editorial (blog, docs), en vez de
+`border-l-4`:
+
+- **Card plana + kicker:** contenedor `border border-[color:var(--primary)]/10` con fondo
+  suave (`#F3F4F8` / `#FAFAFA`) y un **kicker** encima —
+  `text-[11px] font-semibold tracking-wide uppercase text-[color:var(--accent)]`
+  (rojo `#b91c1c` solo para advertencias). El acento vive en la tipografía, no en un borde.
+- **Icon-chip:** icono SVG stroke (16–24px) o número en contenedor
+  `border border-[color:var(--accent)]/30 bg-[color:var(--accent)]/10`.
+- **Acento micro superior** (opcional): `before:h-px before:w-12 before:bg-[color:var(--accent)]`
+  — nunca un borde de ancho completo (mismo cliché rotado).
+- **Iconografía:** SVG stroke, nunca emojis como iconos de producto.
+
+### Taxonomía de CTA
+
+Dos verbos canónicos en todo el shell, sin variantes ("Comprar", "Solicitar demo",
+"Hablar con un experto"…):
+
+- **"Comenzar ahora"** → ruta de autoservicio (`/autoservicio`).
+- **"Agendar demo"** → ruta de contacto/ventas (`/contacto`), una sola ruta para la demo.
+- "Solicitar revisión regulatoria" queda solo como CTA contextual del mega-menú de
+  Cumplimiento.
+
+### Validación
+
+`npx impeccable detect src/` debe dar 0 hallazgos (side-tab, gradient-text,
+layout-transition, overused-font). Es puerta obligatoria antes de commit, junto con
+`npm run lint` y `npm run build`.
 
 ---
 
