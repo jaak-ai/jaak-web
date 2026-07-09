@@ -95,10 +95,10 @@ export default function GestionEvidencia() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
-                Evidencia que defiende tu operación
+                Evidencia que defiende su operación
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Cuando llegue una auditoría o requerimiento, tendrás todo documentado.
+                Cuando llegue una auditoría o requerimiento, tendrá todo documentado.
               </p>
             </div>
             <div className="grid md:grid-cols-2 gap-8">
@@ -205,7 +205,7 @@ export default function GestionEvidencia() {
         <section className="py-20 bg-white">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-6">
-              Prepárate para cualquier auditoría
+              Prepárese para cualquier auditoría
             </h2>
             <p className="text-xl text-gray-600 mb-8">
               Con JAAK, cada verificación deja un rastro auditable y defendible.

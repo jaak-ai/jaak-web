@@ -50,9 +50,9 @@ export default function TargetAudience() {
 
           <div className="bg-[#212A45] rounded-2xl p-8 text-white">
             <p className="text-xl md:text-2xl font-semibold">
-              Si tu negocio toca identidad y dinero,
+              Si su negocio toca identidad y dinero,
               <br />
-              <span className="text-[#2DB6C1]">esto es para ti.</span>
+              <span className="text-[#2DB6C1]">esto es para usted.</span>
             </p>
           </div>
         </div>

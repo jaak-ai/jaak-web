@@ -109,7 +109,7 @@ export const signaFAQSchema = {
       "name": "¿Cuánto cuesta Signa?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Signa maneja precios transparentes por firma, sin costos de setup ni mínimos mensuales. Consulta las tarifas vigentes en https://jaak.ai/precios."
+        "text": "Signa maneja precios transparentes por firma, sin costos de setup ni mínimos mensuales. Consulte las tarifas vigentes en https://jaak.ai/precios."
       }
     },
     {
@@ -125,7 +125,7 @@ export const signaFAQSchema = {
       "name": "¿Cómo es la migración a Signa?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "La migración es acompañada: te ayudamos a exportar tus documentos y a configurar tu cuenta desde tu plataforma actual."
+        "text": "La migración es acompañada: le ayudamos a exportar sus documentos y a configurar su cuenta desde su plataforma actual."
       }
     },
     {

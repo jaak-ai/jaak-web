@@ -117,7 +117,7 @@ export default function FirmaSimplePage() {
                 {
                   icon: "📧",
                   title: "Notificaciones automáticas",
-                  desc: "El firmante recibe el documento por email y tú recibes confirmación cuando firma.",
+                  desc: "El firmante recibe el documento por email y usted recibe confirmación cuando firma.",
                 },
                 {
                   icon: "📋",
@@ -132,12 +132,12 @@ export default function FirmaSimplePage() {
                 {
                   icon: "🔗",
                   title: "Múltiples firmantes",
-                  desc: "Envía a varios firmantes en orden o en paralelo. Gestiona todo desde tu panel.",
+                  desc: "Envíe a varios firmantes en orden o en paralelo. Gestione todo desde su panel.",
                 },
                 {
                   icon: "📂",
                   title: "Descarga del expediente",
-                  desc: "Descarga el PDF firmado con el log de firma incluido al finalizar.",
+                  desc: "Descargue el PDF firmado con el log de firma incluido al finalizar.",
                 },
               ].map((feature) => (
                 <div
@@ -206,7 +206,7 @@ export default function FirmaSimplePage() {
                   ))}
                 </ul>
                 <p className="text-xs text-gray-500 mt-4">
-                  Para estos casos, considera{" "}
+                  Para estos casos, considere{" "}
                   <Link href="/firma-electronica-nom-151" className="text-[#2DB6C1] hover:underline">
                     Firma Digital NOM-151
                   </Link>{" "}
@@ -225,7 +225,7 @@ export default function FirmaSimplePage() {
         <section className="py-16" style={{ background: "#070E1A" }}>
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p className="text-gray-500 text-sm mb-6">
-              ¿Necesitas más validez legal? Explora otras soluciones:
+              ¿Necesita más validez legal? Explore otras soluciones:
             </p>
             <div className="flex flex-wrap justify-center gap-3 mb-8">
               {[

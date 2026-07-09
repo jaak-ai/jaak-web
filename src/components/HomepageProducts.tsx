@@ -91,7 +91,7 @@ export default function HomepageProducts() {
             </span>
           </h2>
           <p className="text-lg max-w-xl mx-auto" style={{ color: "var(--hp-text-md)" }}>
-            Usa solo lo que necesitas. Escala cuando quieras. Todo disponible en autoservicio o con integración asistida.
+            Use solo lo que necesita. Escale cuando quiera. Todo disponible en autoservicio o con integración asistida.
           </p>
         </div>
 
@@ -272,7 +272,7 @@ export default function HomepageProducts() {
               </span>
             </div>
             <p className="text-sm" style={{ color: "var(--hp-text-md)" }}>
-              Tu logo, tus colores y mensajes personalizados. Tus clientes ven tu marca,
+              Su logo, sus colores y mensajes personalizados. Sus clientes ven su marca,
               no la de JAAK. Disponible para KYC, firma y expediente digital.
             </p>
           </div>

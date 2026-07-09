@@ -38,7 +38,7 @@ const PLANS = [
     badgeColor: "#2DB6C1",
     price: `Desde ${formatMXN(minAutoPrecio)} MXN`,
     priceSub: "por paquete · sin suscripción",
-    desc: "Arma tu paquete combinando KYC, firma, validaciones y OCR, y actívalo en minutos. Compra en línea, sin contratos ni volumen mínimo.",
+    desc: "Arme su paquete combinando KYC, firma, validaciones y OCR, y actívelo en minutos. Compre en línea, sin contratos ni volumen mínimo.",
     features: [
       "Firma electrónica (Simple y NOM-151)",
       "KYC con biometría",
@@ -60,7 +60,7 @@ const PLANS = [
     badgeColor: "#2a60d4",
     price: "Por volumen",
     priceSub: "escala progresiva · descuentos por volumen",
-    desc: "Optimiza costos conforme aumentas tu volumen de operación. Modelo por volumen mensual con descuentos progresivos.",
+    desc: "Optimice costos conforme aumenta su volumen de operación. Modelo por volumen mensual con descuentos progresivos.",
     features: [
       "Todos los módulos de KYC",
       "Firma electrónica incluida",
@@ -104,7 +104,7 @@ const PLANS = [
     badgeColor: "#d97706",
     price: "Revenue share",
     priceSub: "pricing especial por volumen",
-    desc: "Integra JAAK como parte de tu oferta y genera ingresos adicionales. Esquema comercial adaptado a tu modelo.",
+    desc: "Integre JAAK como parte de su oferta y genere ingresos adicionales. Esquema comercial adaptado a su modelo.",
     features: [
       "Acceso a toda la plataforma",
       "Marca compartida / white-label",
@@ -142,7 +142,7 @@ const faqItems = [
   },
   {
     question: "¿Qué pasa si supero mi volumen en Autoservicio?",
-    answer: "Bronce a Platino pueden comprar paquetes adicionales al 120% del precio unitario. Cobre se bloquea al superar el límite. Si superas 1,000 verif/mes consistentemente, la migración a Enterprise es obligatoria.",
+    answer: "Bronce a Platino pueden comprar paquetes adicionales al 120% del precio unitario. Cobre se bloquea al superar el límite. Si supera 1,000 verif/mes consistentemente, la migración a Enterprise es obligatoria.",
   },
   {
     question: "¿Los paquetes caducan o son reembolsables?",
@@ -195,11 +195,11 @@ export default function PreciosClient() {
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight mb-6">
               Planes diseñados para{" "}
               <span style={{ color: "#2DB6C1" }}>
-                escalar con tu operación
+                escalar con su operación
               </span>
             </h1>
             <p className="text-xl text-white/75 mb-10 max-w-3xl mx-auto leading-relaxed">
-              Desde autoservicio hasta integración enterprise. Elige el modelo que se adapta a tu volumen y nivel de operación.
+              Desde autoservicio hasta integración enterprise. Elija el modelo que se adapta a su volumen y nivel de operación.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
@@ -239,7 +239,7 @@ export default function PreciosClient() {
             <span className="inline-block text-xs font-bold uppercase tracking-widest mb-4 px-3 py-1 rounded-full" style={{ background: "rgba(30,202,211,0.1)", color: "#2DB6C1", border: "1px solid rgba(30,202,211,0.25)" }}>
               Modalidades
             </span>
-            <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4">Elige tu modelo</h2>
+            <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4">Elija su modelo</h2>
             <p className="text-white/60 max-w-xl mx-auto text-lg">Sin compromiso de inicio. Escala en cualquier momento.</p>
           </div>
 
@@ -331,7 +331,7 @@ export default function PreciosClient() {
             <span className="inline-block text-xs font-bold uppercase tracking-widest mb-4 px-3 py-1 rounded-full" style={{ background: "#f0fffe", color: "#0e7490", border: "1px solid #a7f3f0" }}>
               Comparativa
             </span>
-            <h2 className="text-4xl font-extrabold text-gray-900 mb-3">¿Qué modalidad es adecuada para ti?</h2>
+            <h2 className="text-4xl font-extrabold text-gray-900 mb-3">¿Qué modalidad es adecuada para usted?</h2>
           </div>
 
           {/* Desktop */}
@@ -408,9 +408,9 @@ export default function PreciosClient() {
       {/* ===== 5 · BLOQUE DE DECISIÓN ===== */}
       <section ref={decisionReveal.ref} className="py-20" style={{ background: "#fff" }}>
         <div className={`max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center ${reveal(decisionReveal.isVisible)}`}>
-          <h2 className="text-4xl font-extrabold text-gray-900 mb-4">¿No sabes qué plan elegir?</h2>
+          <h2 className="text-4xl font-extrabold text-gray-900 mb-4">¿No sabe qué plan elegir?</h2>
           <p className="text-gray-500 text-lg mb-8">
-            Empieza con autoservicio y escala conforme crece tu operación. Sin contratos ni compromisos de inicio.
+            Empiece con autoservicio y escale conforme crece su operación. Sin contratos ni compromisos de inicio.
           </p>
           <Link href="/autoservicio"
             className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-white text-base transition-all hover:scale-105"
@@ -466,13 +466,13 @@ export default function PreciosClient() {
         </div>
         <div className={`max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 ${reveal(ctaReveal.isVisible)}`}>
           <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4 leading-tight">
-            Activa tu operación{" "}
+            Active su operación{" "}
             <span style={{ color: "#2DB6C1" }}>
               en minutos
             </span>
           </h2>
           <p className="text-white/75 text-lg mb-10">
-            Sin integración si no la necesitas. Con toda la infraestructura si la requieres.
+            Sin integración si no la necesita. Con toda la infraestructura si la requiere.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/autoservicio"

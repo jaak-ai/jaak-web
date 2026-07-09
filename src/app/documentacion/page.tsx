@@ -89,37 +89,37 @@ export default function Documentacion() {
   const integrationGuides = [
     {
       title: "Inicio rápido",
-      description: "Configura tu primera verificación de identidad en menos de 10 minutos.",
+      description: "Configure su primera verificación de identidad en menos de 10 minutos.",
       time: "10 min",
       href: "/documentacion/guias/inicio-rapido",
     },
     {
       title: "Flujo de onboarding",
-      description: "Implementa un flujo completo de KYC con verificación de documentos y biometría.",
+      description: "Implemente un flujo completo de KYC con verificación de documentos y biometría.",
       time: "30 min",
       href: "/documentacion/guias/flujo-onboarding",
     },
     {
       title: "Firma electrónica",
-      description: "Agrega firma electrónica con validez legal a tus documentos.",
+      description: "Agregue firma electrónica con validez legal a sus documentos.",
       time: "20 min",
       href: "/documentacion/guias/firma-electronica",
     },
     {
       title: "Verificación empresarial",
-      description: "Implementa KYB para verificar personas morales y sus representantes.",
+      description: "Implemente KYB para verificar personas morales y sus representantes.",
       time: "25 min",
       href: "/documentacion/guias/verificacion-empresarial",
     },
     {
       title: "Consultas PLD/AML",
-      description: "Configura consultas automáticas a listas de personas bloqueadas.",
+      description: "Configure consultas automáticas a listas de personas bloqueadas.",
       time: "15 min",
       href: "/documentacion/guias/consultas-pld-aml",
     },
     {
       title: "Gestión de evidencia",
-      description: "Almacena y recupera expedientes digitales con trazabilidad completa.",
+      description: "Almacene y recupere expedientes digitales con trazabilidad completa.",
       time: "20 min",
       href: "/documentacion/guias/gestion-evidencia",
     },
@@ -150,7 +150,7 @@ export default function Documentacion() {
                 Documentacion tecnica
               </h1>
               <p className="text-xl text-white/60 mb-8">
-                Todo lo que necesitas para integrar JAAK en tu aplicacion: API Reference, SDKs nativos, guias de integracion y documentacion de webhooks.
+                Todo lo que necesita para integrar JAAK en su aplicacion: API Reference, SDKs nativos, guias de integracion y documentacion de webhooks.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <Link
@@ -195,7 +195,7 @@ export default function Documentacion() {
             <div className="bg-[#0E1133] rounded-2xl p-8 md:p-12">
               <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                 <div>
-                  <h3 className="text-2xl font-bold text-white mb-2">Explora la API completa</h3>
+                  <h3 className="text-2xl font-bold text-white mb-2">Explore la API completa</h3>
                   <p className="text-white/60">Documentacion interactiva con ejemplos en cURL, Python, Node.js y mas.</p>
                 </div>
                 <Link
@@ -266,7 +266,7 @@ export default function Documentacion() {
                 Guias de integracion
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Tutoriales paso a paso para implementar cada funcionalidad de JAAK en tu aplicacion.
+                Tutoriales paso a paso para implementar cada funcionalidad de JAAK en su aplicacion.
               </p>
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -301,7 +301,7 @@ export default function Documentacion() {
                   Webhooks
                 </h2>
                 <p className="text-xl text-white/60 mb-8">
-                  Recibe notificaciones en tiempo real sobre eventos importantes en tu integracion.
+                  Reciba notificaciones en tiempo real sobre eventos importantes en su integracion.
                 </p>
                 <div className="space-y-4 mb-8">
                   <div className="flex items-start gap-4">
@@ -334,7 +334,7 @@ export default function Documentacion() {
                     </div>
                     <div>
                       <h3 className="text-lg font-bold text-white">Reintentos automaticos</h3>
-                      <p className="text-white/60 text-sm">Reintentamos la entrega si tu endpoint no responde.</p>
+                      <p className="text-white/60 text-sm">Reintentamos la entrega si su endpoint no responde.</p>
                     </div>
                   </div>
                 </div>
@@ -409,10 +409,10 @@ export default function Documentacion() {
         <section className="py-20 bg-[#0E1133]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl md:text-4xl font-black text-white mb-6">
-              Necesitas ayuda tecnica?
+              Necesita ayuda tecnica?
             </h2>
             <p className="text-xl text-white/60 mb-8">
-              Nuestro equipo de ingenieria esta disponible para ayudarte con tu integracion.
+              Nuestro equipo de ingenieria esta disponible para ayudarle con su integracion.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link

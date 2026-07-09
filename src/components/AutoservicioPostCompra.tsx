@@ -32,20 +32,20 @@ function ProximosPasos() {
     {
       num: "01",
       title: "Compra confirmada",
-      desc: "Tu pago fue procesado y tu acceso está activo inmediatamente.",
+      desc: "Su pago fue procesado y su acceso está activo inmediatamente.",
       badge: { text: "Completado", color: "#2DB6C1" },
       color: "#2DB6C1",
     },
     {
       num: "02",
-      title: "Accede a tu espacio",
-      desc: "Ingresa a JAAK Autoservicio con tus credenciales de registro.",
+      title: "Acceda a su espacio",
+      desc: "Ingrese a JAAK Autoservicio con sus credenciales de registro.",
       color: "#2DB6C1",
     },
     {
       num: "03",
-      title: "Crea tu primer flujo",
-      desc: "Configura tus procesos de firma o verificación en minutos.",
+      title: "Cree su primer flujo",
+      desc: "Configure sus procesos de firma o verificación en minutos.",
       color: "#2DB6C1",
     },
   ];
@@ -135,7 +135,7 @@ function CapacitacionForm() {
       if (!res.ok) throw new Error("error");
       setSuccess(true);
     } catch {
-      setError("Hubo un problema al enviar. Intenta de nuevo o escríbenos a hola@jaak.ai");
+      setError("Hubo un problema al enviar. Intente de nuevo o escríbanos a hola@jaak.ai");
     } finally {
       setLoading(false);
     }
@@ -152,7 +152,7 @@ function CapacitacionForm() {
         </div>
         <h3 className="text-2xl font-bold text-gray-900 mb-2">¡Solicitud enviada!</h3>
         <p className="text-gray-500 max-w-sm mx-auto">
-          Nuestro equipo confirmará tu sesión por correo dentro de las próximas 24 horas hábiles.
+          Nuestro equipo confirmará su sesión por correo dentro de las próximas 24 horas hábiles.
         </p>
       </div>
     );
@@ -169,7 +169,7 @@ function CapacitacionForm() {
           🎁 Sesión de bienvenida incluida
         </span>
         <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 leading-tight">
-          ¿Quieres una sesión{" "}
+          ¿Quiere una sesión{" "}
           <span
             style={{ color: "#2DB6C1" }}
           >
@@ -177,15 +177,15 @@ function CapacitacionForm() {
           </span>
         </h2>
         <p className="text-gray-500 mb-6 text-base leading-relaxed">
-          Si deseas acompañamiento para comenzar, déjanos tus datos y elige el horario disponible que mejor te funcione.
-          Nuestro equipo te guiará en tus primeros pasos.
+          Si desea acompañamiento para comenzar, déjenos sus datos y elija el horario disponible que mejor le funcione.
+          Nuestro equipo le guiará en sus primeros pasos.
         </p>
         <ul className="space-y-3 text-base text-gray-600">
           {[
             "Sesión personalizada de 60 minutos",
             "Guía paso a paso de la plataforma",
             "Resolución de dudas en tiempo real",
-            "Sin costo adicional para tu empresa",
+            "Sin costo adicional para su empresa",
           ].map((item, i) => (
             <li key={i} className="flex items-center gap-2">
               <span style={{ color: "#2DB6C1" }}>✓</span>
@@ -197,7 +197,7 @@ function CapacitacionForm() {
           className="mt-6 rounded-xl p-4 text-base"
           style={{ background: "rgba(30,202,211,0.06)", border: "1px solid rgba(30,202,211,0.15)", color: "#374151" }}
         >
-          💬 Nuestro equipo confirmará tu sesión por correo dentro de las próximas <strong>24 horas hábiles</strong>.
+          💬 Nuestro equipo confirmará su sesión por correo dentro de las próximas <strong>24 horas hábiles</strong>.
         </div>
       </div>
 
@@ -214,7 +214,7 @@ function CapacitacionForm() {
               required
               value={form.nombre}
               onChange={(e) => setForm({ ...form, nombre: e.target.value })}
-              placeholder="Tu nombre completo"
+              placeholder="Su nombre completo"
               className="rounded-lg px-3 py-2.5 text-base text-gray-900 outline-none focus:ring-2 transition-all"
               style={{ border: "1.5px solid #e5e7eb", background: "#f9fafb" }}
             />
@@ -224,7 +224,7 @@ function CapacitacionForm() {
             <input
               value={form.empresa}
               onChange={(e) => setForm({ ...form, empresa: e.target.value })}
-              placeholder="Tu empresa"
+              placeholder="Su empresa"
               className="rounded-lg px-3 py-2.5 text-base text-gray-900 outline-none transition-all"
               style={{ border: "1.5px solid #e5e7eb", background: "#f9fafb" }}
             />
@@ -291,7 +291,7 @@ function CapacitacionForm() {
 
         {/* Horario */}
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Elige tu horario disponible</label>
+          <label className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Elija su horario disponible</label>
           <div className="grid grid-cols-2 gap-3">
             {HORARIOS.map((h) => {
               const active = form.horario === h.id;
@@ -322,7 +322,7 @@ function CapacitacionForm() {
             rows={2}
             value={form.comentarios}
             onChange={(e) => setForm({ ...form, comentarios: e.target.value })}
-            placeholder="¿Hay algo específico que quieras revisar?"
+            placeholder="¿Hay algo específico que quiera revisar?"
             className="rounded-lg px-3 py-2.5 text-base text-gray-900 outline-none resize-none transition-all"
             style={{ border: "1.5px solid #e5e7eb", background: "#f9fafb" }}
           />

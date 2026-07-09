@@ -25,7 +25,7 @@ const PRODUCTS: ProductCard[] = [
 export const metadata: Metadata = {
   title: "Cumplir ya no es suficiente: evidencia y LFPIORPI 2025 · JAAK",
   description:
-    "¿Qué cambió con la reforma LFPIORPI de julio 2025? Aprende la diferencia entre tener documentos y tener evidencia defendible. Sesión ejecutiva con el Dr. David Merino y Arianna Quezada.",
+    "¿Qué cambió con la reforma LFPIORPI de julio 2025? Aprenda la diferencia entre tener documentos y tener evidencia defendible. Sesión ejecutiva con el Dr. David Merino y Arianna Quezada.",
   keywords: [
     "reforma LFPIORPI 2025",
     "evidencia defendible auditoría",
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "VideoObject",
-  name: "Cumplir ya no es suficiente: cómo demostrar que tu empresa está protegida",
+  name: "Cumplir ya no es suficiente: cómo demostrar que su empresa está protegida",
   description:
     "Sesión ejecutiva de 60 minutos sobre la reforma LFPIORPI julio 2025, evidencia defendible y responsabilidad del objeto obligado.",
   thumbnailUrl: "https://jaak.ai/og-image.png",
@@ -70,8 +70,8 @@ const TIMESTAMPS = [
   { time: "20:00", topic: "De la obligación a la operación: por qué el proceso de la mayoría no genera evidencia" },
   { time: "28:00", topic: "Escenario 1: el cliente firmó y ahora lo niega" },
   { time: "35:00", topic: "Escenario 2: la autoridad pide reconstruir una operación de hace 3 años" },
-  { time: "41:00", topic: "Escenario 3: tienes documentos pero no evidencia defendible" },
-  { time: "47:00", topic: "Checklist ejecutivo: 7 preguntas para evaluar tu operación ahora mismo" },
+  { time: "41:00", topic: "Escenario 3: tiene documentos pero no evidencia defendible" },
+  { time: "47:00", topic: "Checklist ejecutivo: 7 preguntas para evaluar su operación ahora mismo" },
   { time: "55:00", topic: "Cierre y preguntas" },
 ];
 
@@ -124,7 +124,7 @@ export default function CumplirYaNoPage() {
       <Header />
       <WebinarLayout
         eyebrow="Sesión ejecutiva · Todos los sectores"
-        title="Cumplir ya no es suficiente: cómo demostrar que tu empresa está protegida"
+        title="Cumplir ya no es suficiente: cómo demostrar que su empresa está protegida"
         subtitle="Hay una diferencia enorme entre tener buenas intenciones, tener documentos y tener evidencia. La ley ahora exige las tres cosas."
         presenters="Dr. David Merino · Arianna Quezada, CEO de JAAK"
         duration="60 minutos"
@@ -133,7 +133,7 @@ export default function CumplirYaNoPage() {
         timestamps={TIMESTAMPS}
         davidBio="Doctor en Derecho. Fundador de Top Compliance. Consultor de la UIF, el SAT y la FGR. Participó en la quinta ronda de evaluación GAFI de México. Asesor del Congreso Federal en materia de digitalización. Experto técnico del Panel Científico Independiente en IA de la ONU."
         ariannaBio="CEO de JAAK. Empresa 100% mexicana especializada en identidad digital, verificación biométrica, firma electrónica y expedientes auditables."
-        ctaQuestion="¿Podrías demostrar hoy lo que hiciste hace tres años?"
+        ctaQuestion="¿Podría demostrar hoy lo que hizo hace tres años?"
         ctaBody="Si hay alguna respuesta de 'no sé' en esa pregunta, el riesgo ya existe. JAAK construye la evidencia desde el proceso, no después del problema."
         products={PRODUCTS}
         related={[

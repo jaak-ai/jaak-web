@@ -32,7 +32,7 @@ export default function HomepageFinalCTA() {
           </div>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight max-w-3xl mx-auto">
             El cumplimiento regulatorio no puede esperar.{" "}
-            <span style={{ color: "#2DB6C1" }}>Empieza hoy.</span>
+            <span style={{ color: "#2DB6C1" }}>Empiece hoy.</span>
           </h2>
         </div>
 
@@ -67,14 +67,14 @@ export default function HomepageFinalCTA() {
               Autoservicio
             </div>
             <h3 className="text-xl font-black text-white mb-3">
-              Prueba el producto en minutos
+              Pruebe el producto en minutos
             </h3>
             <p
               className="text-sm leading-relaxed mb-6 flex-1"
               style={{ color: "var(--hp-text-md)" }}
             >
-              Sin vendedor, sin esperas, sin compromiso. Configura tu primer flujo
-              de verificación y genera tu primer expediente hoy mismo.
+              Sin vendedor, sin esperas, sin compromiso. Configure su primer flujo
+              de verificación y genere su primer expediente hoy mismo.
             </p>
 
             <div className="space-y-2 mb-6">
@@ -161,20 +161,20 @@ export default function HomepageFinalCTA() {
               Demo personalizada
             </div>
             <h3 className="text-xl font-black text-white mb-3">
-              Revisión de tu caso con un experto
+              Revisión de su caso con un experto
             </h3>
             <p
               className="text-sm leading-relaxed mb-6 flex-1"
               style={{ color: "var(--hp-text-md)" }}
             >
-              Un especialista regulatorio analiza tu marco de cumplimiento y
-              te muestra exactamente cómo JAAK resuelve tu caso específico.
+              Un especialista regulatorio analiza su marco de cumplimiento y
+              le muestra exactamente cómo JAAK resuelve su caso específico.
             </p>
 
             <div className="space-y-2 mb-6">
               {[
-                "Revisión de tu marco regulatorio",
-                "Demo con tu industria y casos reales",
+                "Revisión de su marco regulatorio",
+                "Demo con su industria y casos reales",
                 "Propuesta técnica sin costo",
               ].map((item, i) => (
                 <div
