@@ -106,13 +106,13 @@ export default function SignaHome() {
                 <div className="flex flex-wrap gap-4">
                   <Link
                     href="/signa/calculadora"
-                    className="px-6 py-3 bg-[#2DB6C1] text-black font-bold rounded-lg hover:bg-[#00c499] transition-all"
+                    className="px-6 py-3 bg-[#2DB6C1] text-black font-bold rounded-lg hover:bg-[#00c499] transition-colors"
                   >
                     Calcular mi ahorro
                   </Link>
                   <Link
                     href="/precios"
-                    className="px-6 py-3 bg-white/10 text-white font-semibold rounded-lg hover:bg-white/20 transition-all border border-white/20"
+                    className="px-6 py-3 bg-white/10 text-white font-semibold rounded-lg hover:bg-white/20 transition-colors border border-white/20"
                   >
                     Ver precios transparentes
                   </Link>
@@ -153,7 +153,7 @@ export default function SignaHome() {
                   </ul>
                   <Link
                     href="/signa/calculadora"
-                    className="block w-full text-center px-6 py-3 bg-[#2DB6C1] text-black font-bold rounded-lg hover:bg-[#00c499] transition-all"
+                    className="block w-full text-center px-6 py-3 bg-[#2DB6C1] text-black font-bold rounded-lg hover:bg-[#00c499] transition-colors"
                   >
                     Calcular mi ahorro
                   </Link>
@@ -210,7 +210,7 @@ export default function SignaHome() {
         <ClientLogos />
 
         {/* CTA */}
-        <section className="py-20 bg-gradient-to-r from-[#2DB6C1] to-[#0066ff]">
+        <section className="py-20 bg-gradient-to-r from-[#2DB6C1] to-[#212A45]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl md:text-4xl font-black text-white mb-6">
               Firma con validez legal desde hoy
@@ -223,13 +223,13 @@ export default function SignaHome() {
             <div className="flex flex-wrap gap-4 justify-center">
               <Link
                 href="/signa/calculadora"
-                className="px-8 py-4 bg-white text-[#0066ff] font-bold rounded-lg hover:bg-gray-50 transition-all shadow-lg"
+                className="px-8 py-4 bg-white text-[#212A45] font-bold rounded-lg hover:bg-gray-50 transition-colors shadow-lg"
               >
                 Calcular mi ahorro
               </Link>
               <Link
                 href="/contacto"
-                className="px-8 py-4 bg-transparent border-2 border-white text-white font-bold rounded-lg hover:bg-white hover:text-[#0066ff] transition-all"
+                className="px-8 py-4 bg-transparent border-2 border-white text-white font-bold rounded-lg hover:bg-white hover:text-[#212A45] transition-colors"
               >
                 Agendar demo
               </Link>

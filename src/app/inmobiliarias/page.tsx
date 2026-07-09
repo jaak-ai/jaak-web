@@ -8,7 +8,7 @@ import { STATS } from "@/lib/trust";
 export const metadata: Metadata = {
   title: "KYC y firma electrónica para inmobiliarias",
   description:
-    "Verifica la identidad de tus clientes en 30 segundos y firma contratos con validez legal NOM-151. KYC biométrico y firma electrónica para operaciones inmobiliarias, sin papel y sin fraude.",
+    "Verifique la identidad de sus clientes en 30 segundos y firme contratos con validez legal NOM-151. KYC biométrico y firma electrónica para operaciones inmobiliarias, sin papel y sin fraude.",
   alternates: { canonical: "/inmobiliarias" },
   openGraph: {
     type: "website",
@@ -30,7 +30,7 @@ const painPoints = [
     ),
     title: "Compradores que no son quienes dicen ser",
     description:
-      "La suplantación de identidad en operaciones inmobiliarias invalida contratos y expone a tu empresa a fraudes millonarios.",
+      "La suplantación de identidad en operaciones inmobiliarias invalida contratos y expone a su empresa a fraudes millonarios.",
   },
   {
     icon: (
@@ -106,7 +106,7 @@ export default function InmobiliariasPage() {
                 </div>
 
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
-                  Verifica a tus clientes en{" "}
+                  Verifique a sus clientes en{" "}
                   <span className="text-[#2DB6C1]">
                     30 segundos.
                   </span>{" "}
@@ -177,10 +177,10 @@ export default function InmobiliariasPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14">
               <h2 className="text-3xl md:text-4xl font-black text-[#212A45] mb-4">
-                Los riesgos que tu operación no puede ignorar
+                Los riesgos que su operación no puede ignorar
               </h2>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                Sin verificación de identidad digital, tu empresa está expuesta a fraudes que pueden
+                Sin verificación de identidad digital, su empresa está expuesta a fraudes que pueden
                 costar contratos, reputación y dinero.
               </p>
             </div>
@@ -279,18 +279,18 @@ export default function InmobiliariasPage() {
               {/* Left */}
               <div>
                 <h2 className="text-3xl md:text-4xl font-black text-white mb-6">
-                  Agenda tu demo gratuita hoy
+                  Agende su demo gratuita hoy
                 </h2>
                 <p className="text-xl text-white/70 mb-10">
-                  Un especialista de JAAK te mostrará cómo integrar KYC y firma electrónica
-                  en tu proceso de ventas en menos de una semana.
+                  Un especialista de JAAK le mostrará cómo integrar KYC y firma electrónica
+                  en su proceso de ventas en menos de una semana.
                 </p>
 
                 <div className="space-y-5">
                   {[
                     "Verificación de identidad en 30 segundos",
                     "Firma electrónica NOM-151 con evidencia legal",
-                    "Integración sin fricción con tus sistemas actuales",
+                    "Integración sin fricción con sus sistemas actuales",
                     "Soporte técnico dedicado desde el día uno",
                     "+1,000 empresas en México ya lo usan",
                   ].map((item, i) => (
@@ -323,13 +323,13 @@ export default function InmobiliariasPage() {
                 source="landing-inmobiliarias"
                 theme="teal"
                 heading="Solicita información"
-                subheading="Te respondemos en menos de 24 horas."
+                subheading="Le respondemos en menos de 24 horas."
                 empresaLabel="Empresa"
                 empresaPlaceholder="Inmobiliaria / Notaría"
-                mensajeLabel="¿Qué necesitas resolver?"
-                mensajePlaceholder="Cuéntanos tu caso..."
+                mensajeLabel="¿Qué necesita resolver?"
+                mensajePlaceholder="Cuéntenos su caso..."
                 submitLabel="Quiero una demo gratuita"
-                successMessage="✓ Solicitud enviada. Te contactamos en menos de 24h."
+                successMessage="✓ Solicitud enviada. Le contactamos en menos de 24h."
               />
             </div>
           </div>

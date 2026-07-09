@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Inicio Rápido - Guía de Integración | JAAK",
-  description: "Configura tu primera verificación de identidad con JAAK en menos de 10 minutos. Guía paso a paso con ejemplos de código.",
+  description: "Configure su primera verificación de identidad con JAAK en menos de 10 minutos. Guía paso a paso con ejemplos de código.",
 };
 
 export default function InicioRapido() {
@@ -23,14 +23,14 @@ export default function InicioRapido() {
               Volver a documentación
             </Link>
             <div className="flex items-center gap-3 mb-4">
-              <span className="px-3 py-1 bg-[#0066ff]/20 text-[#0066ff] text-sm font-medium rounded-full">Guía</span>
+              <span className="px-3 py-1 bg-[#212A45]/20 text-[#212A45] text-sm font-medium rounded-full">Guía</span>
               <span className="text-white/40">10 min</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-black text-white mb-6">
               Inicio rápido
             </h1>
             <p className="text-xl text-white/60">
-              Configura tu primera verificación de identidad con JAAK en menos de 10 minutos.
+              Configure su primera verificación de identidad con JAAK en menos de 10 minutos.
             </p>
           </div>
         </section>
@@ -43,21 +43,21 @@ export default function InicioRapido() {
               {/* Step 1 */}
               <div className="mb-12">
                 <div className="flex items-center gap-4 mb-4">
-                  <span className="w-10 h-10 bg-[#0066ff] text-white rounded-full flex items-center justify-center font-bold">1</span>
-                  <h2 className="text-2xl font-bold text-gray-900 m-0">Obtén tus credenciales de API</h2>
+                  <span className="w-10 h-10 bg-[#212A45] text-white rounded-full flex items-center justify-center font-bold">1</span>
+                  <h2 className="text-2xl font-bold text-gray-900 m-0">Obtenga sus credenciales de API</h2>
                 </div>
                 <p className="text-gray-600 mb-4">
-                  Primero, necesitas crear una cuenta en JAAK y obtener tus credenciales de API.
+                  Primero, necesita crear una cuenta en JAAK y obtener sus credenciales de API.
                 </p>
                 <ol className="list-decimal pl-6 text-gray-600 space-y-2 mb-4">
-                  <li>Regístrate en <a href="https://platform.jaak.ai/#/signup" className="text-[#0066ff] hover:underline">platform.jaak.ai</a></li>
-                  <li>Ve a <strong>Configuración → API Keys</strong></li>
-                  <li>Genera un nuevo API Key para tu ambiente (sandbox o producción)</li>
-                  <li>Guarda tu <code className="bg-gray-100 px-2 py-1 rounded text-sm">API_KEY</code> y <code className="bg-gray-100 px-2 py-1 rounded text-sm">API_SECRET</code></li>
+                  <li>Regístrese en <a href="https://platform.jaak.ai/#/signup" className="text-[#212A45] hover:underline">platform.jaak.ai</a></li>
+                  <li>Vaya a <strong>Configuración → API Keys</strong></li>
+                  <li>Genere un nuevo API Key para su ambiente (sandbox o producción)</li>
+                  <li>Guarde su <code className="bg-gray-100 px-2 py-1 rounded text-sm">API_KEY</code> y <code className="bg-gray-100 px-2 py-1 rounded text-sm">API_SECRET</code></li>
                 </ol>
                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
                   <p className="text-yellow-800 text-sm m-0">
-                    <strong>Importante:</strong> Nunca expongas tu API_SECRET en código del lado del cliente. Úsalo solo en tu backend.
+                    <strong>Importante:</strong> Nunca exponga su API_SECRET en código del lado del cliente. Úselo solo en su backend.
                   </p>
                 </div>
               </div>
@@ -65,11 +65,11 @@ export default function InicioRapido() {
               {/* Step 2 */}
               <div className="mb-12">
                 <div className="flex items-center gap-4 mb-4">
-                  <span className="w-10 h-10 bg-[#0066ff] text-white rounded-full flex items-center justify-center font-bold">2</span>
-                  <h2 className="text-2xl font-bold text-gray-900 m-0">Instala el SDK</h2>
+                  <span className="w-10 h-10 bg-[#212A45] text-white rounded-full flex items-center justify-center font-bold">2</span>
+                  <h2 className="text-2xl font-bold text-gray-900 m-0">Instale el SDK</h2>
                 </div>
                 <p className="text-gray-600 mb-4">
-                  Instala el SDK de JAAK en tu proyecto:
+                  Instale el SDK de JAAK en su proyecto:
                 </p>
 
                 <div className="bg-[#0E1133] rounded-lg overflow-hidden mb-4">
@@ -94,11 +94,11 @@ export default function InicioRapido() {
               {/* Step 3 */}
               <div className="mb-12">
                 <div className="flex items-center gap-4 mb-4">
-                  <span className="w-10 h-10 bg-[#0066ff] text-white rounded-full flex items-center justify-center font-bold">3</span>
-                  <h2 className="text-2xl font-bold text-gray-900 m-0">Configura el cliente</h2>
+                  <span className="w-10 h-10 bg-[#212A45] text-white rounded-full flex items-center justify-center font-bold">3</span>
+                  <h2 className="text-2xl font-bold text-gray-900 m-0">Configure el cliente</h2>
                 </div>
                 <p className="text-gray-600 mb-4">
-                  Inicializa el cliente de JAAK con tus credenciales:
+                  Inicialice el cliente de JAAK con sus credenciales:
                 </p>
 
                 <div className="bg-[#0E1133] rounded-lg overflow-hidden mb-4">
@@ -120,11 +120,11 @@ const jaak = new JaakClient({
               {/* Step 4 */}
               <div className="mb-12">
                 <div className="flex items-center gap-4 mb-4">
-                  <span className="w-10 h-10 bg-[#0066ff] text-white rounded-full flex items-center justify-center font-bold">4</span>
-                  <h2 className="text-2xl font-bold text-gray-900 m-0">Crea tu primera verificación</h2>
+                  <span className="w-10 h-10 bg-[#212A45] text-white rounded-full flex items-center justify-center font-bold">4</span>
+                  <h2 className="text-2xl font-bold text-gray-900 m-0">Cree su primera verificación</h2>
                 </div>
                 <p className="text-gray-600 mb-4">
-                  Crea una sesión de verificación y obtén el enlace para el usuario:
+                  Cree una sesión de verificación y obtenga el enlace para el usuario:
                 </p>
 
                 <div className="bg-[#0E1133] rounded-lg overflow-hidden mb-4">
@@ -158,11 +158,11 @@ console.log(session.verificationUrl);
               {/* Step 5 */}
               <div className="mb-12">
                 <div className="flex items-center gap-4 mb-4">
-                  <span className="w-10 h-10 bg-[#0066ff] text-white rounded-full flex items-center justify-center font-bold">5</span>
-                  <h2 className="text-2xl font-bold text-gray-900 m-0">Recibe el resultado</h2>
+                  <span className="w-10 h-10 bg-[#212A45] text-white rounded-full flex items-center justify-center font-bold">5</span>
+                  <h2 className="text-2xl font-bold text-gray-900 m-0">Reciba el resultado</h2>
                 </div>
                 <p className="text-gray-600 mb-4">
-                  Configura un webhook para recibir el resultado de la verificación:
+                  Configure un webhook para recibir el resultado de la verificación:
                 </p>
 
                 <div className="bg-[#0E1133] rounded-lg overflow-hidden mb-4">
@@ -210,7 +210,7 @@ console.log(session.verificationUrl);
                   ¡Listo!
                 </h3>
                 <p className="text-gray-700 m-0">
-                  Ya tienes una integración básica funcionando. El usuario será redirigido a JAAK para completar su verificación, y recibirás el resultado vía webhook.
+                  Ya tiene una integración básica funcionando. El usuario será redirigido a JAAK para completar su verificación, y recibirá el resultado vía webhook.
                 </p>
               </div>
 
@@ -220,11 +220,11 @@ console.log(session.verificationUrl);
                 <div className="grid md:grid-cols-2 gap-4">
                   <Link href="/documentacion/guias/flujo-onboarding" className="block p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                     <h4 className="font-semibold text-gray-900 mb-1">Flujo de onboarding completo</h4>
-                    <p className="text-sm text-gray-600">Implementa verificación de documentos + biometría</p>
+                    <p className="text-sm text-gray-600">Implemente verificación de documentos + biometría</p>
                   </Link>
                   <Link href="/documentacion/guias/firma-electronica" className="block p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                     <h4 className="font-semibold text-gray-900 mb-1">Firma electrónica</h4>
-                    <p className="text-sm text-gray-600">Agrega firma con validez legal</p>
+                    <p className="text-sm text-gray-600">Agregue firma con validez legal</p>
                   </Link>
                 </div>
               </div>

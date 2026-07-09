@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Mejores prácticas de compliance para empresas reguladas en México | JAAK",
-  description: "Desde LFPIORPI hasta las disposiciones de la UIF, esta guía te ayuda a implementar un programa de cumplimiento robusto y auditable para empresas reguladas en México.",
+  description: "Desde LFPIORPI hasta las disposiciones de la UIF, esta guía le ayuda a implementar un programa de cumplimiento robusto y auditable para empresas reguladas en México.",
   keywords: ["compliance México", "LFPIORPI", "UIF", "cumplimiento regulatorio", "PLD", "prevención lavado de dinero", "empresas reguladas"],
   openGraph: {
     title: "Mejores prácticas de compliance para empresas reguladas en México",
@@ -48,7 +48,7 @@ export default function MejoresPracticasCompliance() {
   return (
     <ArticleLayout
       title="Mejores prácticas de compliance para empresas reguladas en México"
-      subtitle="Desde LFPIORPI hasta las disposiciones de la UIF, navegar el ecosistema regulatorio mexicano puede ser complejo. Esta guía te ayuda a implementar un programa de cumplimiento robusto y auditable."
+      subtitle="Desde LFPIORPI hasta las disposiciones de la UIF, navegar el ecosistema regulatorio mexicano puede ser complejo. Esta guía le ayuda a implementar un programa de cumplimiento robusto y auditable."
       category="Compliance"
       date="10 de diciembre, 2025"
       readTime="12 min"
@@ -159,7 +159,7 @@ export default function MejoresPracticasCompliance() {
                     Evaluación y gestión de riesgos
                   </h3>
                   <p className="text-gray-600 mb-4">
-                    Identificar, medir y mitigar los riesgos específicos de tu organización.
+                    Identificar, medir y mitigar los riesgos específicos de su organización.
                   </p>
                   <ul className="space-y-2 text-gray-600 ml-10">
                     <li>• Matriz de riesgos actualizada periódicamente</li>
@@ -242,7 +242,7 @@ export default function MejoresPracticasCompliance() {
                 Debida diligencia según nivel de riesgo
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
-                No todos los clientes requieren el mismo nivel de escrutinio. Implementa un
+                No todos los clientes requieren el mismo nivel de escrutinio. Implemente un
                 enfoque basado en riesgo:
               </p>
 
@@ -326,7 +326,7 @@ export default function MejoresPracticasCompliance() {
                 Conservación de documentos
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
-                La documentación es tu defensa ante autoridades y auditorías:
+                La documentación es su defensa ante autoridades y auditorías:
               </p>
               <ul className="list-disc pl-6 mb-6 space-y-2 text-gray-600">
                 <li><strong>Tiempo mínimo:</strong> 10 años después de terminada la relación comercial</li>
@@ -473,7 +473,7 @@ export default function MejoresPracticasCompliance() {
                 Checklist de cumplimiento
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
-                Usa esta lista para evaluar el estado de tu programa:
+                Use esta lista para evaluar el estado de su programa:
               </p>
 
               <div className="bg-gray-50 rounded-xl p-6 my-8">
@@ -504,7 +504,7 @@ export default function MejoresPracticasCompliance() {
                 </h3>
                 <p className="text-white/80">
                   Un programa de compliance efectivo no es un gasto, es una inversión que
-                  protege tu negocio, fortalece la confianza de tus clientes y te posiciona
+                  protege su negocio, fortalece la confianza de sus clientes y lo posiciona
                   favorablemente ante reguladores. En un entorno cada vez más vigilado, las
                   empresas con cultura de cumplimiento sólida serán las que prosperen.
                 </p>

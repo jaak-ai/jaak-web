@@ -110,13 +110,13 @@ export default function FirmaRiskChecklist() {
                       background: isChecked
                         ? item.severity === "high"
                           ? "#EF4444"
-                          : "#F59E0B"
+                          : "#212A45"
                         : cl.inputBg,
                       border: `2px solid ${
                         isChecked
                           ? item.severity === "high"
                             ? "#EF4444"
-                            : "#F59E0B"
+                            : "#212A45"
                           : cl.inputBorder
                       }`,
                     }}
@@ -228,8 +228,8 @@ export default function FirmaRiskChecklist() {
               </h4>
               <p className="text-sm text-gray-400 leading-relaxed mb-4">
                 {highRiskChecked >= 2
-                  ? "Tu firma actual presenta vulnerabilidades legales serias. En una auditoría regulatoria o proceso judicial, podrías no poder acreditar la validez de tus contratos."
-                  : "Tu firma presenta áreas de mejora. Para cumplimiento regulatorio completo (CNBV, LFPIORPI), necesitas evidencia más sólida."}
+                  ? "Su firma actual presenta vulnerabilidades legales serias. En una auditoría regulatoria o proceso judicial, podría no poder acreditar la validez de sus contratos."
+                  : "Su firma presenta áreas de mejora. Para cumplimiento regulatorio completo (CNBV, LFPIORPI), necesita evidencia más sólida."}
               </p>
               <div className="flex flex-col sm:flex-row gap-3">
                 <Link
@@ -237,7 +237,7 @@ export default function FirmaRiskChecklist() {
                   className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white transition-all hover:opacity-90"
                   style={{
                     background:
-                      highRiskChecked >= 2 ? "#EF4444" : "#F59E0B",
+                      highRiskChecked >= 2 ? "#EF4444" : "#212A45",
                   }}
                 >
                   Ver solución completa
@@ -264,7 +264,7 @@ export default function FirmaRiskChecklist() {
 
       {checkedCount === 0 && (
         <p className="mt-4 text-center text-sm text-gray-600">
-          Selecciona las situaciones que aplican a tu empresa para evaluar el riesgo de tu firma actual.
+          Seleccione las situaciones que aplican a su empresa para evaluar el riesgo de su firma actual.
         </p>
       )}
     </div>

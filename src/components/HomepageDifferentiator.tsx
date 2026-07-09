@@ -63,7 +63,7 @@ export default function HomepageDifferentiator() {
       />
       <div
         className="absolute bottom-0 left-1/4 w-[350px] h-[350px] rounded-full blur-[110px] pointer-events-none"
-        style={{ background: "rgba(30,202,211,0.06)" }}
+        style={{ background: "rgba(45,182,193,0.06)" }}
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -142,8 +142,8 @@ export default function HomepageDifferentiator() {
                 className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full"
                 style={{
                   color: "#2DB6C1",
-                  background: "rgba(30,202,211,0.12)",
-                  border: "1px solid rgba(30,202,211,0.20)",
+                  background: "rgba(45,182,193,0.12)",
+                  border: "1px solid rgba(45,182,193,0.20)",
                 }}
               >
                 Con JAAK
@@ -181,7 +181,7 @@ export default function HomepageDifferentiator() {
             <div key={i} className="hp-glass rounded-2xl p-5">
               <div
                 className="w-9 h-9 rounded-xl flex items-center justify-center mb-3"
-                style={{ background: "rgba(30,202,211,0.14)", color: "#2DB6C1" }}
+                style={{ background: "rgba(45,182,193,0.14)", color: "#2DB6C1" }}
               >
                 {d.icon}
               </div>

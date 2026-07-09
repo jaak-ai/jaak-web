@@ -41,7 +41,7 @@ export default function EpisodeLayout({
           padding: 14px 28px; border-radius: 10px; font-size: 0.95rem;
           transition: box-shadow 0.2s, transform 0.2s; text-decoration: none;
         }
-        .cta-btn:hover { box-shadow: 0 8px 28px rgba(30,202,211,0.30); transform: translateY(-2px); }
+        .cta-btn:hover { box-shadow: 0 8px 28px rgba(45,182,193,0.30); transform: translateY(-2px); }
         .prose-p { color: rgba(255,255,255,0.65); font-size: 1rem; line-height: 1.85; margin-bottom: 1.25rem; }
         .nav-ep {
           background: rgba(255,255,255,0.04);
@@ -52,7 +52,7 @@ export default function EpisodeLayout({
           transition: border-color 0.2s, background 0.2s;
           flex: 1;
         }
-        .nav-ep:hover { border-color: rgba(30,202,211,0.35); background: rgba(30,202,211,0.05); }
+        .nav-ep:hover { border-color: rgba(45,182,193,0.35); background: rgba(45,182,193,0.05); }
       `}</style>
 
       {/* Breadcrumb */}
@@ -69,7 +69,7 @@ export default function EpisodeLayout({
       </div>
 
       {/* Header */}
-      <section style={{ padding: "56px 0 40px", background: "radial-gradient(ellipse 70% 40% at 50% 0%, rgba(30,202,211,0.09) 0%, transparent 65%)" }}>
+      <section style={{ padding: "56px 0 40px", background: "radial-gradient(ellipse 70% 40% at 50% 0%, rgba(45,182,193,0.09) 0%, transparent 65%)" }}>
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Progress */}
           <div className="flex items-center gap-3 mb-6">
@@ -122,7 +122,7 @@ export default function EpisodeLayout({
             {learnings.map((item, i) => (
               <li key={i} className="flex items-start gap-4">
                 <span className="shrink-0 w-6 h-6 rounded-full flex items-center justify-center mt-0.5 text-xs font-black"
-                  style={{ background: "rgba(30,202,211,0.15)", color: "#2DB6C1" }}>
+                  style={{ background: "rgba(45,182,193,0.15)", color: "#2DB6C1" }}>
                   {i + 1}
                 </span>
                 <span style={{ color: "rgba(255,255,255,0.70)", lineHeight: "1.65", fontSize: "0.95rem" }}>{item}</span>
@@ -136,7 +136,7 @@ export default function EpisodeLayout({
       <section style={{ padding: "48px 0", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="p-6 rounded-xl flex flex-col sm:flex-row items-center gap-5"
-            style={{ background: "rgba(30,202,211,0.06)", border: "1px solid rgba(30,202,211,0.22)" }}>
+            style={{ background: "rgba(45,182,193,0.06)", border: "1px solid rgba(45,182,193,0.22)" }}>
             <div className="text-3xl shrink-0">📄</div>
             <div className="flex-1">
               <h3 className="font-bold text-white mb-1" style={{ fontSize: "1rem" }}>Descarga la guía completa de la serie</h3>
@@ -183,7 +183,7 @@ export default function EpisodeLayout({
       </section>
 
       {/* CTA */}
-      <section style={{ padding: "72px 0", background: "radial-gradient(ellipse 60% 80% at 50% 50%, rgba(30,202,211,0.09) 0%, transparent 70%)" }}>
+      <section style={{ padding: "72px 0", background: "radial-gradient(ellipse 60% 80% at 50% 50%, rgba(45,182,193,0.09) 0%, transparent 70%)" }}>
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl sm:text-3xl font-black text-white mb-4" style={{ letterSpacing: "-0.8px" }}>
             ¿Quieres ver cómo JAAK implementa esto en tu operación?

@@ -54,23 +54,23 @@ const NEXT_STEPS = [
     color: "#2AD796",
     bg: "rgba(42,215,150,0.15)",
     title: "Compra confirmada",
-    desc: "Tu pago fue procesado y tu acceso está activo inmediatamente.",
+    desc: "Su pago fue procesado y su acceso está activo inmediatamente.",
     done: true,
   },
   {
     num: "02",
     color: "#2DB6C1",
     bg: "rgba(45,182,193,0.15)",
-    title: "Accede a tu espacio",
-    desc: "Ingresa a JAAK Autoservicio con tus credenciales de registro.",
+    title: "Acceda a su espacio",
+    desc: "Ingrese a JAAK Autoservicio con sus credenciales de registro.",
     done: false,
   },
   {
     num: "03",
     color: "#212A45",
     bg: "rgba(33,42,69,0.15)",
-    title: "Crea tu primer flujo",
-    desc: "Configura un proceso de verificación en minutos.",
+    title: "Cree su primer flujo",
+    desc: "Configure un proceso de verificación en minutos.",
     done: false,
   },
 ];
@@ -182,7 +182,7 @@ const EXPLORE_CARDS = [
   },
   {
     title: "Hablar con ventas",
-    desc: "Un especialista puede acompañarte en tu proceso",
+    desc: "Un especialista puede acompañarle en su proceso",
     href: "/contacto",
     cta: "Contactar",
     accent: "#2AD796",
@@ -225,11 +225,11 @@ export default function GraciasPage() {
 
   const validate = (): FormErrors => {
     const e: FormErrors = {};
-    if (!form.name.trim()) e.name = "Ingresa tu nombre completo";
+    if (!form.name.trim()) e.name = "Ingrese su nombre completo";
     if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
-      e.email = "Ingresa un correo electrónico válido";
-    if (!form.phone.trim()) e.phone = "Ingresa tu teléfono o WhatsApp";
-    if (!form.slot) e.slot = "Selecciona un horario disponible";
+      e.email = "Ingrese un correo electrónico válido";
+    if (!form.phone.trim()) e.phone = "Ingrese su teléfono o WhatsApp";
+    if (!form.slot) e.slot = "Seleccione un horario disponible";
     return e;
   };
 
@@ -501,7 +501,7 @@ export default function GraciasPage() {
                   backgroundClip: "text",
                 }}
               >
-                tu compra!
+                su compra!
               </span>
             </h1>
 
@@ -514,7 +514,7 @@ export default function GraciasPage() {
                 margin: "0 auto 2.5rem",
               }}
             >
-              Tu pago fue procesado correctamente. Ya puedes comenzar con tu experiencia en{" "}
+              Su pago fue procesado correctamente. Ya puede comenzar con su experiencia en{" "}
               <strong className="text-white font-semibold">JAAK Autoservicio</strong>{" "}
               y operar de forma más segura, simple y rápida.
             </p>
@@ -538,7 +538,7 @@ export default function GraciasPage() {
                   <rect x="1.5" y="2.5" width="12" height="10.5" rx="1.5" />
                   <path d="M10.5 1v3M4.5 1v3M1.5 7h12" />
                 </svg>
-                Agenda tu capacitación
+                Agende su capacitación
               </button>
             </div>
 
@@ -660,7 +660,7 @@ export default function GraciasPage() {
                   className="font-bold leading-tight mb-4"
                   style={{ fontSize: "clamp(1.75rem, 4vw, 2.4rem)", color: "#212A45" }}
                 >
-                  ¿Quieres una sesión{" "}
+                  ¿Quiere una sesión{" "}
                   <span
                     style={{
                       background: "linear-gradient(90deg, #2DB6C1, #2AD796)",
@@ -674,8 +674,8 @@ export default function GraciasPage() {
                 </h2>
 
                 <p className="text-lg mb-8 leading-relaxed" style={{ color: "#4A5568" }}>
-                  Si deseas acompañamiento para comenzar, déjanos tus datos y elige el horario
-                  disponible que mejor te funcione. Nuestro equipo te guiará en tus primeros pasos.
+                  Si desea acompañamiento para comenzar, déjenos sus datos y elija el horario
+                  disponible que mejor le funcione. Nuestro equipo le guiará en sus primeros pasos.
                 </p>
 
                 <div className="space-y-3.5">
@@ -683,7 +683,7 @@ export default function GraciasPage() {
                     "Sesión personalizada de 60 minutos",
                     "Guía paso a paso de la plataforma",
                     "Resolución de dudas en tiempo real",
-                    "Sin costo adicional para tu empresa",
+                    "Sin costo adicional para su empresa",
                   ].map((b) => (
                     <div key={b} className="flex items-center gap-3">
                       <div
@@ -714,7 +714,7 @@ export default function GraciasPage() {
                     </svg>
                   </div>
                   <p className="text-sm leading-relaxed" style={{ color: "#64748B" }}>
-                    Nuestro equipo confirmará tu sesión por correo dentro de las próximas
+                    Nuestro equipo confirmará su sesión por correo dentro de las próximas
                     24 horas hábiles.
                   </p>
                 </div>
@@ -746,8 +746,8 @@ export default function GraciasPage() {
                       ¡Solicitud enviada!
                     </h3>
                     <p className="leading-relaxed mb-6" style={{ color: "#4A5568" }}>
-                      Hemos recibido tu solicitud. Nuestro equipo dará seguimiento para confirmar
-                      tu sesión de capacitación en las próximas 24 horas hábiles.
+                      Hemos recibido su solicitud. Nuestro equipo dará seguimiento para confirmar
+                      su sesión de capacitación en las próximas 24 horas hábiles.
                     </p>
                     <a
                       href="https://autoservicio.jaak.ai"
@@ -784,7 +784,7 @@ export default function GraciasPage() {
                       <input
                         type="text"
                         className={`g-input${errors.name ? " err" : ""}`}
-                        placeholder="Tu nombre completo"
+                        placeholder="Su nombre completo"
                         value={form.name}
                         onChange={(e) => setField("name", e.target.value)}
                       />
@@ -802,7 +802,7 @@ export default function GraciasPage() {
                       <input
                         type="text"
                         className="g-input"
-                        placeholder="Nombre de tu empresa"
+                        placeholder="Nombre de su empresa"
                         value={form.company}
                         onChange={(e) => setField("company", e.target.value)}
                       />
@@ -860,8 +860,8 @@ export default function GraciasPage() {
                     {/* Topics */}
                     <div className="mb-5">
                       <label className="block text-sm font-semibold mb-2.5" style={{ color: "#212A45" }}>
-                        ¿Qué te gustaría revisar?{" "}
-                        <span className="font-normal text-xs" style={{ color: "#9CA3AF" }}>(elige los que apliquen)</span>
+                        ¿Qué le gustaría revisar?{" "}
+                        <span className="font-normal text-xs" style={{ color: "#9CA3AF" }}>(elija los que apliquen)</span>
                       </label>
                       <div className="flex flex-wrap gap-2">
                         {SESSION_TOPICS.map((t) => (
@@ -880,7 +880,7 @@ export default function GraciasPage() {
                     {/* Horario */}
                     <div className="mb-5">
                       <label className="block text-sm font-semibold mb-2.5" style={{ color: "#212A45" }}>
-                        Elige tu horario disponible{" "}
+                        Elija su horario disponible{" "}
                         <span style={{ color: "#EF4444" }}>*</span>
                       </label>
                       <div className="grid grid-cols-2 gap-3">
@@ -948,7 +948,7 @@ export default function GraciasPage() {
                       <textarea
                         className="g-input"
                         rows={3}
-                        placeholder="¿Hay algo específico que quieras revisar?"
+                        placeholder="¿Hay algo específico que quiera revisar?"
                         value={form.comments}
                         onChange={(e) => setField("comments", e.target.value)}
                         style={{ resize: "vertical" }}
@@ -1009,7 +1009,7 @@ export default function GraciasPage() {
                         className="mt-3 px-4 py-3 rounded-lg text-sm text-center"
                         style={{ background: "rgba(239,68,68,0.07)", border: "1px solid rgba(239,68,68,0.2)", color: "#DC2626" }}
                       >
-                        Ocurrió un error. Por favor intenta de nuevo o escríbenos a{" "}
+                        Ocurrió un error. Por favor intente de nuevo o escríbanos a{" "}
                         <a href="mailto:soporte@jaak.ai" style={{ fontWeight: 600 }}>soporte@jaak.ai</a>
                       </div>
                     )}
@@ -1095,13 +1095,13 @@ export default function GraciasPage() {
                 className="text-sm font-bold uppercase tracking-widest mb-3"
                 style={{ color: "#2DB6C1", letterSpacing: "0.12em" }}
               >
-                Explora más
+                Explore más
               </p>
               <h2
                 className="font-bold mb-4"
                 style={{ fontSize: "clamp(1.75rem, 4vw, 2.5rem)", color: "#212A45" }}
               >
-                Conoce más soluciones de JAAK
+                Conozca más soluciones de JAAK
               </h2>
               <p className="text-lg" style={{ color: "#4A5568" }}>
                 Herramientas diseñadas para simplificar la validación, firma y trazabilidad
@@ -1192,7 +1192,7 @@ export default function GraciasPage() {
             </h2>
 
             <p className="text-lg mb-10" style={{ color: "rgba(255,255,255,0.62)" }}>
-              Accede directamente a la plataforma o solicita acompañamiento para comenzar
+              Acceda directamente a la plataforma o solicite acompañamiento para comenzar
               con confianza y sin complicaciones.
             </p>
 

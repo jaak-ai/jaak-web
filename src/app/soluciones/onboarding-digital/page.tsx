@@ -52,7 +52,7 @@ export default function OnboardingDigital() {
                 <Link
                   href="https://platform.jaak.ai/#/signup"
                   target="_blank"
-                  className="px-6 py-3 bg-[#0066ff] text-white font-semibold rounded-lg hover:bg-[#0052cc] transition-all"
+                  className="px-6 py-3 bg-[#212A45] text-white font-semibold rounded-lg hover:bg-[#212A45] transition-all"
                 >
                   Probar ahora
                 </Link>
@@ -78,7 +78,7 @@ export default function OnboardingDigital() {
             <div className="grid md:grid-cols-4 gap-8">
               {steps.map((item, index) => (
                 <div key={index} className="text-center">
-                  <div className="w-16 h-16 bg-[#0066ff] rounded-full flex items-center justify-center text-white text-2xl font-black mx-auto mb-4">
+                  <div className="w-16 h-16 bg-[#212A45] rounded-full flex items-center justify-center text-white text-2xl font-black mx-auto mb-4">
                     {item.step}
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2">{item.title}</h3>
@@ -141,7 +141,7 @@ export default function OnboardingDigital() {
               <Link
                 href="https://platform.jaak.ai/#/signup"
                 target="_blank"
-                className="inline-flex px-8 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
+                className="inline-flex px-8 py-4 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-all"
               >
                 Crear cuenta gratis
               </Link>

@@ -74,7 +74,7 @@ export default function Header() {
 
       <header
         ref={headerRef}
-        className={`fixed top-[42px] left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-[42px] left-0 right-0 z-50 transition-colors duration-300 ${
           scrolled
             ? "bg-white/95 backdrop-blur-xl border-b border-gray-200 shadow-sm"
             : "bg-white border-b border-gray-100"
@@ -219,13 +219,13 @@ export default function Header() {
               </Link>
               <Link
                 href="/contacto"
-                className="hidden md:block px-4 py-2.5 font-semibold text-[15px] rounded-lg border border-gray-300 text-[#212A45] hover:border-[#212A45] transition-all"
+                className="hidden md:block px-4 py-2.5 font-semibold text-[15px] rounded-lg border border-gray-300 text-[#212A45] hover:border-[#212A45] transition-colors"
               >
                 Agendar demo
               </Link>
               <Link
                 href="/autoservicio"
-                className="px-5 py-2.5 bg-[#2DB6C1] text-white font-semibold text-[15px] rounded-lg hover:bg-[#25969f] transition-all"
+                className="px-5 py-2.5 bg-[#2DB6C1] text-white font-semibold text-[15px] rounded-lg hover:bg-[#25969f] transition-colors"
               >
                 Comenzar ahora
               </Link>
@@ -385,7 +385,7 @@ export default function Header() {
       {/* Mega Menu Dropdowns - Full Width */}
       <div
         ref={megaMenuRef}
-        className={`fixed top-[114px] left-0 right-0 z-40 transition-all duration-200 ${
+        className={`fixed top-[114px] left-0 right-0 z-40 transition-opacity duration-200 ${
           activeDropdown ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
         }`}
         onMouseEnter={() => {
@@ -522,7 +522,7 @@ export default function Header() {
                 <p className="text-sm text-gray-500 mb-4">En 15 minutos te decimos si JAAK cumple lo que tu regulación exige.</p>
                 <Link
                   href="/contacto"
-                  className="inline-flex items-center justify-center w-full px-4 py-2.5 bg-[#212A45] text-white font-semibold text-sm rounded-lg hover:bg-[#0E1133] transition-all"
+                  className="inline-flex items-center justify-center w-full px-4 py-2.5 bg-[#212A45] text-white font-semibold text-sm rounded-lg hover:bg-[#0E1133] transition-colors"
                 >
                   Agendar demo
                 </Link>
@@ -666,7 +666,7 @@ export default function Header() {
                 <p className="text-sm text-gray-500 mb-4">Diseñado para organizaciones sujetas a supervisión regulatoria.</p>
                 <Link
                   href="/contacto"
-                  className="inline-flex items-center justify-center w-full px-4 py-2.5 bg-[#212A45] text-white font-semibold text-sm rounded-lg hover:bg-[#0E1133] transition-all"
+                  className="inline-flex items-center justify-center w-full px-4 py-2.5 bg-[#212A45] text-white font-semibold text-sm rounded-lg hover:bg-[#0E1133] transition-colors"
                 >
                   Agendar demo
                 </Link>
@@ -799,7 +799,7 @@ export default function Header() {
                 <p className="text-sm text-gray-500 mb-4">En 15 minutos te decimos si JAAK cumple lo que tu regulación exige.</p>
                 <Link
                   href="/contacto"
-                  className="inline-flex items-center justify-center w-full px-4 py-2.5 bg-[#212A45] text-white font-semibold text-sm rounded-lg hover:bg-[#0E1133] transition-all"
+                  className="inline-flex items-center justify-center w-full px-4 py-2.5 bg-[#212A45] text-white font-semibold text-sm rounded-lg hover:bg-[#0E1133] transition-colors"
                 >
                   Solicitar revisión regulatoria
                 </Link>
@@ -889,7 +889,7 @@ export default function Header() {
                 <p className="text-sm text-gray-500 mb-4">Nuestro equipo está listo para ayudarte con tu proyecto de identidad.</p>
                 <Link
                   href="/contacto"
-                  className="inline-flex items-center justify-center w-full px-4 py-2.5 bg-[#2DB6C1] text-white font-semibold text-sm rounded-lg hover:bg-[#25969f] transition-all"
+                  className="inline-flex items-center justify-center w-full px-4 py-2.5 bg-[#2DB6C1] text-white font-semibold text-sm rounded-lg hover:bg-[#25969f] transition-colors"
                 >
                   Contactar equipo
                 </Link>

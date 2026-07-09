@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Tendencias KYC 2026: Lo que toda institución financiera debe saber | JAAK",
-  description: "Descubre las principales tendencias en Know Your Customer para 2026: IA generativa, verificación biométrica avanzada, regulación actualizada y más. Prepara tu organización para el futuro del KYC.",
+  description: "Descubra las principales tendencias en Know Your Customer para 2026: IA generativa, verificación biométrica avanzada, regulación actualizada y más. Prepare su organización para el futuro del KYC.",
   keywords: ["KYC 2026", "tendencias KYC", "verificación de identidad", "inteligencia artificial KYC", "biometría", "regulación financiera México"],
   openGraph: {
     title: "Tendencias KYC 2026: Lo que toda institución financiera debe saber",
@@ -48,7 +48,7 @@ export default function TendenciasKYC2026() {
   return (
     <ArticleLayout
       title="Tendencias KYC 2026: Lo que toda institución financiera debe saber"
-      subtitle="El panorama de Know Your Customer está evolucionando rápidamente. Descubre las principales tendencias que están transformando la verificación de identidad en México y cómo preparar tu organización para los nuevos requerimientos regulatorios."
+      subtitle="El panorama de Know Your Customer está evolucionando rápidamente. Descubra las principales tendencias que están transformando la verificación de identidad en México y cómo preparar su organización para los nuevos requerimientos regulatorios."
       category="KYC"
       date="8 de enero, 2026"
       readTime="6 min"
@@ -174,7 +174,7 @@ export default function TendenciasKYC2026() {
                 6. KYC perpetuo y monitoreo continuo
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
-                El concepto de "conoce a tu cliente" está evolucionando de un evento único a un
+                El concepto de "conoce a su cliente" está evolucionando de un evento único a un
                 proceso continuo. El KYC perpetuo implica:
               </p>
               <ul className="list-disc pl-6 mb-6 space-y-2 text-gray-600">
@@ -195,7 +195,7 @@ export default function TendenciasKYC2026() {
               </p>
 
               <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-6">
-                Preparando tu organización para 2026
+                Preparando su organización para 2026
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
                 Para estar preparado ante estas tendencias, las instituciones financieras deben:

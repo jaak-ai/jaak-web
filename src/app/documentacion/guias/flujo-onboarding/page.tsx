@@ -23,7 +23,7 @@ export default function FlujoOnboarding() {
               Volver a documentación
             </Link>
             <div className="flex items-center gap-3 mb-4">
-              <span className="px-3 py-1 bg-[#0066ff]/20 text-[#0066ff] text-sm font-medium rounded-full">Guía</span>
+              <span className="px-3 py-1 bg-[#212A45]/20 text-[#212A45] text-sm font-medium rounded-full">Guía</span>
               <span className="text-white/40">30 min</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-black text-white mb-6">
@@ -48,19 +48,19 @@ export default function FlujoOnboarding() {
                 </p>
                 <div className="grid md:grid-cols-4 gap-4 mb-6">
                   <div className="text-center p-4 bg-gray-50 rounded-lg">
-                    <div className="w-10 h-10 bg-[#0066ff] text-white rounded-full flex items-center justify-center font-bold mx-auto mb-2">1</div>
+                    <div className="w-10 h-10 bg-[#212A45] text-white rounded-full flex items-center justify-center font-bold mx-auto mb-2">1</div>
                     <span className="text-sm font-medium text-gray-900">Captura de documento</span>
                   </div>
                   <div className="text-center p-4 bg-gray-50 rounded-lg">
-                    <div className="w-10 h-10 bg-[#0066ff] text-white rounded-full flex items-center justify-center font-bold mx-auto mb-2">2</div>
+                    <div className="w-10 h-10 bg-[#212A45] text-white rounded-full flex items-center justify-center font-bold mx-auto mb-2">2</div>
                     <span className="text-sm font-medium text-gray-900">Validación OCR</span>
                   </div>
                   <div className="text-center p-4 bg-gray-50 rounded-lg">
-                    <div className="w-10 h-10 bg-[#0066ff] text-white rounded-full flex items-center justify-center font-bold mx-auto mb-2">3</div>
+                    <div className="w-10 h-10 bg-[#212A45] text-white rounded-full flex items-center justify-center font-bold mx-auto mb-2">3</div>
                     <span className="text-sm font-medium text-gray-900">Prueba de vida</span>
                   </div>
                   <div className="text-center p-4 bg-gray-50 rounded-lg">
-                    <div className="w-10 h-10 bg-[#0066ff] text-white rounded-full flex items-center justify-center font-bold mx-auto mb-2">4</div>
+                    <div className="w-10 h-10 bg-[#212A45] text-white rounded-full flex items-center justify-center font-bold mx-auto mb-2">4</div>
                     <span className="text-sm font-medium text-gray-900">Comparación facial</span>
                   </div>
                 </div>

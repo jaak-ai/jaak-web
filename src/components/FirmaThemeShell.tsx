@@ -17,7 +17,7 @@ export default function FirmaThemeShell() {
   const [isDark, setIsDark] = useState(true);
 
   const t = {
-    bgA: isDark ? "#070E1A" : "#FFFFFF",
+    bgA: isDark ? "#0E1133" : "#FFFFFF",
     bgB: isDark ? "#0A1628" : "#F8FAFC",
     heading: isDark ? "#FFFFFF" : "#0A0F1A",
     body: isDark ? "#94A3B8" : "#1E293B",
@@ -44,7 +44,7 @@ export default function FirmaThemeShell() {
             }}
           />
           <div className="absolute top-20 right-1/4 w-96 h-96 rounded-full opacity-10 blur-3xl pointer-events-none" aria-hidden="true" style={{ background: "#2DB6C1" }} />
-          <div className="absolute bottom-10 left-1/4 w-64 h-64 rounded-full opacity-5 blur-3xl pointer-events-none" aria-hidden="true" style={{ background: "#8B5CF6" }} />
+          <div className="absolute bottom-10 left-1/4 w-64 h-64 rounded-full opacity-5 blur-3xl pointer-events-none" aria-hidden="true" style={{ background: "#2DB6C1" }} />
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -52,7 +52,7 @@ export default function FirmaThemeShell() {
               <div>
                 <div
                   className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full mb-6 text-xs font-semibold"
-                  style={{ background: "rgba(30,202,211,0.1)", border: "1px solid rgba(30,202,211,0.25)", color: "#2DB6C1" }}
+                  style={{ background: "rgba(45,182,193,0.1)", border: "1px solid rgba(45,182,193,0.25)", color: "#2DB6C1" }}
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-[#2DB6C1] animate-pulse" aria-hidden="true" />
                   NOM-151 · Biometría · KYC · White-label
@@ -65,7 +65,7 @@ export default function FirmaThemeShell() {
                   con validez legal y biometría
                 </h1>
                 <p className="text-lg text-gray-400 leading-relaxed mb-8 max-w-lg">
-                  No solo firmas. Generas{" "}
+                  No solo firma. Genera{" "}
                   <strong className="text-gray-200">evidencia legal irrebatible</strong>. Sello de tiempo NOM-151, verificación biométrica y expediente auditable en segundos.
                 </p>
                 <div className="flex flex-wrap gap-4 mb-8">
@@ -84,7 +84,7 @@ export default function FirmaThemeShell() {
                   <Link
                     href="/autoservicio"
                     className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-bold text-white text-base transition-all hover:opacity-90 hover:scale-105"
-                    style={{ background: "linear-gradient(135deg, #2DB6C1, #25969f)", boxShadow: "0 0 30px rgba(30,202,211,0.35)" }}
+                    style={{ background: "linear-gradient(135deg, #2DB6C1, #25969f)", boxShadow: "0 0 30px rgba(45,182,193,0.35)" }}
                   >
                     Probar autoservicio
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -93,7 +93,7 @@ export default function FirmaThemeShell() {
                   </Link>
                   <Link
                     href="/contacto"
-                    className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-bold text-base transition-all hover:bg-white/10"
+                    className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-bold text-base transition-colors hover:bg-white/10"
                     style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)", color: "#E2E8F0" }}
                   >
                     Ver demo
@@ -114,7 +114,7 @@ export default function FirmaThemeShell() {
                     width={720}
                     height={480}
                     className="w-full h-auto rounded-2xl"
-                    style={{ boxShadow: "0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(30,202,211,0.12)" }}
+                    style={{ boxShadow: "0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(45,182,193,0.12)" }}
                     priority
                   />
                   <div className="absolute -bottom-8 inset-x-16 h-16 blur-2xl opacity-25 rounded-full pointer-events-none" aria-hidden="true" style={{ background: "#2DB6C1" }} />
@@ -125,17 +125,17 @@ export default function FirmaThemeShell() {
                   >
                     <div
                       className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 text-base"
-                      style={{ background: "rgba(30,202,211,0.12)", border: "1px solid rgba(30,202,211,0.2)" }}
+                      style={{ background: "rgba(45,182,193,0.12)", border: "1px solid rgba(45,182,193,0.2)" }}
                       aria-hidden="true"
                     >
                       🎨
                     </div>
                     <div>
                       <p className="text-sm font-semibold text-white leading-tight">
-                        Personalizable con tu logo y marca
+                        Personalizable con su logo y marca
                       </p>
                       <p className="text-xs text-gray-500 mt-0.5">
-                        Tus clientes ven tu identidad, no la nuestra.
+                        Sus clientes ven su identidad, no la nuestra.
                       </p>
                     </div>
                   </div>
@@ -145,12 +145,12 @@ export default function FirmaThemeShell() {
                     {/* Autoservicio */}
                     <div
                       className="flex flex-col gap-2.5 p-4 rounded-xl"
-                      style={{ background: "rgba(30,202,211,0.06)", border: "1px solid rgba(30,202,211,0.2)" }}
+                      style={{ background: "rgba(45,182,193,0.06)", border: "1px solid rgba(45,182,193,0.2)" }}
                     >
                       <div className="flex items-center gap-2">
                         <div
                           className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 text-sm"
-                          style={{ background: "rgba(30,202,211,0.15)" }}
+                          style={{ background: "rgba(45,182,193,0.15)" }}
                           aria-hidden="true"
                         >
                           🖥️
@@ -160,7 +160,7 @@ export default function FirmaThemeShell() {
                         </span>
                       </div>
                       <p className="text-xs text-gray-400 leading-relaxed">
-                        Usa la plataforma web desde el día uno. Sin integración técnica ni costos adicionales.
+                        Use la plataforma web desde el día uno. Sin integración técnica ni costos adicionales.
                       </p>
                       <Link
                         href="/autoservicio"
@@ -177,27 +177,27 @@ export default function FirmaThemeShell() {
                     {/* Enterprise / Alianzas */}
                     <div
                       className="flex flex-col gap-2.5 p-4 rounded-xl"
-                      style={{ background: "rgba(139,92,246,0.06)", border: "1px solid rgba(139,92,246,0.2)" }}
+                      style={{ background: "rgba(45,182,193,0.06)", border: "1px solid rgba(45,182,193,0.2)" }}
                     >
                       <div className="flex items-center gap-2">
                         <div
                           className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 text-sm"
-                          style={{ background: "rgba(139,92,246,0.15)" }}
+                          style={{ background: "rgba(45,182,193,0.15)" }}
                           aria-hidden="true"
                         >
                           🔗
                         </div>
-                        <span className="text-xs font-bold uppercase tracking-wider" style={{ color: "#A78BFA" }}>
+                        <span className="text-xs font-bold uppercase tracking-wider" style={{ color: "#2DB6C1" }}>
                           Enterprise
                         </span>
                       </div>
                       <p className="text-xs text-gray-400 leading-relaxed">
-                        Intégrate con tu plataforma actual. Equipo técnico especializado te acompaña en cada paso.
+                        Intégrese con su plataforma actual. Equipo técnico especializado le acompaña en cada paso.
                       </p>
                       <Link
                         href="/contacto"
                         className="text-xs font-bold flex items-center gap-1 transition-opacity hover:opacity-80"
-                        style={{ color: "#A78BFA" }}
+                        style={{ color: "#2DB6C1" }}
                       >
                         Hablar con alianzas
                         <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -221,14 +221,14 @@ export default function FirmaThemeShell() {
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#2DB6C1" }}>
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(45,182,193,0.08)", border: "1px solid rgba(45,182,193,0.2)", color: "#2DB6C1" }}>
                 Soluciones
               </div>
               <h2 id="soluciones-heading" className="text-3xl sm:text-4xl font-black mb-4" style={{ color: t.heading, transition: t.tr }}>
                 4 niveles de firma para cada necesidad
               </h2>
               <p className="max-w-2xl mx-auto text-base" style={{ color: t.body, transition: t.tr }}>
-                Desde la firma más simple hasta el cumplimiento regulatorio más completo. Haz clic para expandir cada solución.
+                Desde la firma más simple hasta el cumplimiento regulatorio más completo. Haga clic para expandir cada solución.
               </p>
             </div>
             <FirmaProductCards />
@@ -244,14 +244,14 @@ export default function FirmaThemeShell() {
         >
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#2DB6C1" }}>
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(45,182,193,0.08)", border: "1px solid rgba(45,182,193,0.2)", color: "#2DB6C1" }}>
                 Flujo de firma
               </div>
               <h2 id="flujo-heading" className="text-3xl sm:text-4xl font-black mb-4" style={{ color: t.heading, transition: t.tr }}>
                 Cómo funciona
               </h2>
               <p className="max-w-2xl mx-auto text-base" style={{ color: t.body, transition: t.tr }}>
-                5 pasos desde que subes el documento hasta tener el expediente digital completo y auditable.
+                5 pasos desde que sube el documento hasta tener el expediente digital completo y auditable.
               </p>
             </div>
             <FirmaHowItWorks />
@@ -267,14 +267,14 @@ export default function FirmaThemeShell() {
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#2DB6C1" }}>
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(45,182,193,0.08)", border: "1px solid rgba(45,182,193,0.2)", color: "#2DB6C1" }}>
                 Comparativa
               </div>
               <h2 id="comparacion-heading" className="text-3xl sm:text-4xl font-black mb-4" style={{ color: t.heading, transition: t.tr }}>
                 ¿Cuál es la firma que necesitas?
               </h2>
               <p className="max-w-2xl mx-auto text-base" style={{ color: t.body, transition: t.tr }}>
-                Haz clic en cualquier fila para ver los detalles, beneficios y el caso de uso exacto de cada tipo.
+                Haga clic en cualquier fila para ver los detalles, beneficios y el caso de uso exacto de cada tipo.
               </p>
             </div>
             <FirmaComparisonTable />
@@ -290,17 +290,17 @@ export default function FirmaThemeShell() {
         >
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#2DB6C1" }}>
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(45,182,193,0.08)", border: "1px solid rgba(45,182,193,0.2)", color: "#2DB6C1" }}>
                 Diferenciación
               </div>
               <h2 id="diferenciacion-heading" className="text-3xl sm:text-4xl font-black mb-4" style={{ color: t.heading, transition: t.tr }}>
-                No solo firmas.{" "}
+                No solo firma.{" "}
                 <span style={{ background: "linear-gradient(135deg, #2DB6C1, #2AD796)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-                  Generas evidencia legal.
+                  Genera evidencia legal.
                 </span>
               </h2>
               <p className="max-w-2xl mx-auto text-base" style={{ color: t.body, transition: t.tr }}>
-                Haz clic en cada punto para explorar el detalle. Pasa el cursor sobre los términos subrayados para ver definiciones.
+                Haga clic en cada punto para explorar el detalle. Pase el cursor sobre los términos subrayados para ver definiciones.
               </p>
             </div>
             <FirmaDifferentiation />
@@ -320,11 +320,11 @@ export default function FirmaThemeShell() {
                 Evaluación de riesgo
               </div>
               <h2 id="riesgo-heading" className="text-3xl sm:text-4xl font-black mb-4" style={{ color: t.heading, transition: t.tr }}>
-                ¿Tu firma es defendible{" "}
+                ¿Su firma es defendible{" "}
                 <span style={{ color: "#FCA5A5" }}>en auditoría</span>?
               </h2>
               <p className="max-w-2xl mx-auto text-base" style={{ color: t.body, transition: t.tr }}>
-                Selecciona las situaciones que aplican a tu empresa para evaluar la solidez legal de tu proceso actual.
+                Seleccione las situaciones que aplican a su empresa para evaluar la solidez legal de su proceso actual.
               </p>
             </div>
             <FirmaRiskChecklist />
@@ -340,14 +340,14 @@ export default function FirmaThemeShell() {
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#2DB6C1" }}>
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(45,182,193,0.08)", border: "1px solid rgba(45,182,193,0.2)", color: "#2DB6C1" }}>
                 Casos de uso
               </div>
               <h2 id="casos-heading" className="text-3xl sm:text-4xl font-black mb-4" style={{ color: t.heading, transition: t.tr }}>
                 Firma en cada industria
               </h2>
               <p className="max-w-2xl mx-auto text-base" style={{ color: t.body, transition: t.tr }}>
-                Selecciona tu industria para ver los casos de uso más relevantes y el tipo de firma recomendado.
+                Seleccione su industria para ver los casos de uso más relevantes y el tipo de firma recomendado.
               </p>
             </div>
             <FirmaUseCases />
@@ -363,14 +363,14 @@ export default function FirmaThemeShell() {
         >
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#2DB6C1" }}>
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(45,182,193,0.08)", border: "1px solid rgba(45,182,193,0.2)", color: "#2DB6C1" }}>
                 Preguntas frecuentes
               </div>
               <h2 id="faq-heading" className="text-3xl sm:text-4xl font-black mb-4" style={{ color: t.heading, transition: t.tr }}>
                 Todo sobre firma electrónica en México
               </h2>
               <p className="max-w-2xl mx-auto text-base" style={{ color: t.body, transition: t.tr }}>
-                Resuelve tus dudas sobre validez legal, NOM-151, biometría y cumplimiento regulatorio.
+                Resuelva sus dudas sobre validez legal, NOM-151, biometría y cumplimiento regulatorio.
               </p>
             </div>
             <FirmaFAQ />
@@ -384,8 +384,8 @@ export default function FirmaThemeShell() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-sm font-semibold px-4 py-3 rounded-xl text-center transition-all"
-                  style={{ background: "rgba(30,202,211,0.06)", border: "1px solid rgba(30,202,211,0.15)", color: "#2DB6C1" }}
+                  className="text-sm font-semibold px-4 py-3 rounded-xl text-center transition-colors"
+                  style={{ background: "rgba(45,182,193,0.06)", border: "1px solid rgba(45,182,193,0.15)", color: "#2DB6C1" }}
                 >
                   {link.label}
                 </Link>
@@ -404,22 +404,22 @@ export default function FirmaThemeShell() {
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div
               className="dark-zone rounded-3xl p-8 md:p-12 overflow-hidden relative"
-              style={{ background: "linear-gradient(135deg, #0D1F3C, #071020)", border: "1px solid rgba(30,202,211,0.15)", boxShadow: "0 0 80px rgba(30,202,211,0.07)" }}
+              style={{ background: "linear-gradient(135deg, #0D1F3C, #071020)", border: "1px solid rgba(45,182,193,0.15)", boxShadow: "0 0 80px rgba(45,182,193,0.07)" }}
             >
               <div className="absolute top-0 right-0 w-64 h-64 rounded-full opacity-10 blur-3xl pointer-events-none" aria-hidden="true" style={{ background: "#2DB6C1" }} />
               <h2 id="cta-heading" className="text-3xl sm:text-4xl font-black text-white mb-4 text-center">
-                Empieza hoy mismo
+                Empiece hoy mismo
               </h2>
               <p className="text-gray-400 text-center max-w-xl mx-auto mb-10">
-                Elige cómo quieres comenzar con JAAK Firma Electrónica.
+                Elija cómo quiere comenzar con JAAK Firma Electrónica.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="rounded-2xl p-6 flex flex-col gap-5" style={{ background: "rgba(30,202,211,0.06)", border: "1px solid rgba(30,202,211,0.2)" }}>
+                <div className="rounded-2xl p-6 flex flex-col gap-5" style={{ background: "rgba(45,182,193,0.06)", border: "1px solid rgba(45,182,193,0.2)" }}>
                   <div>
                     <div className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#2DB6C1" }}>Autoservicio</div>
-                    <h3 className="text-xl font-black text-white mb-2">Empieza en minutos</h3>
+                    <h3 className="text-xl font-black text-white mb-2">Empiece en minutos</h3>
                     <p className="text-sm text-gray-400 leading-relaxed">
-                      Crea tu cuenta, sube tu primer documento y obtén una firma con NOM-151 sin hablar con nadie.
+                      Cree su cuenta, suba su primer documento y obtenga una firma con NOM-151 sin hablar con nadie.
                     </p>
                   </div>
                   <ul className="space-y-2">
@@ -441,23 +441,23 @@ export default function FirmaThemeShell() {
                 </div>
                 <div className="rounded-2xl p-6 flex flex-col gap-5" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)" }}>
                   <div>
-                    <div className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#8B5CF6" }}>Enterprise</div>
+                    <div className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#2DB6C1" }}>Enterprise</div>
                     <h3 className="text-xl font-black text-white mb-2">Solución a la medida</h3>
                     <p className="text-sm text-gray-400 leading-relaxed">
-                      Integración a tu plataforma, onboarding técnico y soporte dedicado. Para volumen alto y cumplimiento regulatorio total.
+                      Integración a su plataforma, onboarding técnico y soporte dedicado. Para volumen alto y cumplimiento regulatorio total.
                     </p>
                   </div>
                   <ul className="space-y-2">
-                    {["Integración a tu plataforma en días", "Soporte técnico dedicado", "SLA garantizado"].map((item) => (
+                    {["Integración a su plataforma en días", "Soporte técnico dedicado", "SLA garantizado"].map((item) => (
                       <li key={item} className="flex items-center gap-2 text-sm text-gray-300">
-                        <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" style={{ color: "#8B5CF6" }} aria-hidden="true">
+                        <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" style={{ color: "#2DB6C1" }} aria-hidden="true">
                           <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                         </svg>
                         {item}
                       </li>
                     ))}
                   </ul>
-                  <Link href="/contacto" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all hover:bg-white/10" style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)", color: "#E2E8F0" }}>
+                  <Link href="/contacto" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-colors hover:bg-white/10" style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)", color: "#E2E8F0" }}>
                     Hablar con ventas
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -479,7 +479,7 @@ export default function FirmaThemeShell() {
         className="fixed bottom-6 right-6 z-50 flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-bold shadow-xl transition-all duration-300 hover:scale-105"
         style={{
           background: isDark ? "rgba(15,23,42,0.85)" : "#0A1628",
-          border: `1px solid ${isDark ? "rgba(30,202,211,0.35)" : "rgba(30,202,211,0.5)"}`,
+          border: `1px solid ${isDark ? "rgba(45,182,193,0.35)" : "rgba(45,182,193,0.5)"}`,
           color: "#2DB6C1",
           backdropFilter: "blur(16px)",
           boxShadow: "0 4px 24px rgba(0,0,0,0.4)",

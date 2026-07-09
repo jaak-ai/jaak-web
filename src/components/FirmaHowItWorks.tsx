@@ -59,7 +59,7 @@ const steps: Step[] = [
     detail:
       "El enlace incluye autenticación de un solo uso. Puedes configurar expiración, recordatorios automáticos y personalizar el correo con tu marca. Sin instalaciones.",
     icon: <IconLink />,
-    color: "#8B5CF6",
+    color: "#2DB6C1",
   },
   {
     number: 3,
@@ -68,7 +68,7 @@ const steps: Step[] = [
     detail:
       "Flujo 100% móvil optimizado. Según el nivel configurado: firma simple, validación biométrica o KYC completo. El proceso tarda menos de 3 minutos.",
     icon: <IconPen />,
-    color: "#F59E0B",
+    color: "#212A45",
   },
   {
     number: 4,
@@ -77,7 +77,7 @@ const steps: Step[] = [
     detail:
       "El sello de tiempo es emitido por una Entidad Autorizada (PSC) conforme a la NOM-151-SCFI-2016. Incluye hash del documento, timestamp y cadena de custodia.",
     icon: <IconStamp />,
-    color: "#10B981",
+    color: "#2AD796",
   },
   {
     number: 5,

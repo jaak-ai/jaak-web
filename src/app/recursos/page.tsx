@@ -53,7 +53,7 @@ const WEBINARS = [
   },
   {
     badge: "Inmobiliario · Automotriz",
-    badgeColor: "#F59E0B",
+    badgeColor: "#212A45",
     title: "LFPIORPI en el sector inmobiliario y automotriz: lo que la ley realmente te exige",
     desc: "¿En qué punto de una venta entra la identidad del cliente? ¿Desde qué montos aplica la ley? ¿Qué tiene que contener tu expediente y por qué se conserva 10 años?",
     duration: "50 min",
@@ -171,13 +171,13 @@ export default function RecursosPage() {
           .recursos-hero-d { animation: fadeInUp 0.55s 0.32s ease both; }
           .webinar-card {
             background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(30,202,211,0.18);
+            border: 1px solid rgba(45,182,193,0.18);
             border-radius: 16px;
             transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
           }
           .webinar-card:hover {
-            border-color: rgba(30,202,211,0.42);
-            box-shadow: 0 8px 32px rgba(30,202,211,0.10);
+            border-color: rgba(45,182,193,0.42);
+            box-shadow: 0 8px 32px rgba(45,182,193,0.10);
             transform: translateY(-3px);
           }
           .ep-card {
@@ -187,19 +187,19 @@ export default function RecursosPage() {
             transition: border-color 0.2s, background 0.2s;
           }
           .ep-card:hover {
-            background: rgba(30,202,211,0.06);
-            border-color: rgba(30,202,211,0.30);
+            background: rgba(45,182,193,0.06);
+            border-color: rgba(45,182,193,0.30);
           }
           .tag-chip {
-            background: rgba(30,202,211,0.08);
-            border: 1px solid rgba(30,202,211,0.20);
+            background: rgba(45,182,193,0.08);
+            border: 1px solid rgba(45,182,193,0.20);
             border-radius: 999px;
             color: rgba(255,255,255,0.72);
             font-size: 0.75rem;
             padding: 4px 14px;
             transition: background 0.15s;
           }
-          .tag-chip:hover { background: rgba(30,202,211,0.18); }
+          .tag-chip:hover { background: rgba(45,182,193,0.18); }
           .cta-btn {
             display: inline-flex;
             align-items: center;
@@ -214,7 +214,7 @@ export default function RecursosPage() {
             text-decoration: none;
           }
           .cta-btn:hover {
-            box-shadow: 0 8px 28px rgba(30,202,211,0.30);
+            box-shadow: 0 8px 28px rgba(45,182,193,0.30);
             transform: translateY(-2px);
           }
           .cta-btn-ghost {
@@ -226,21 +226,21 @@ export default function RecursosPage() {
             font-weight: 700;
             padding: 14px 28px;
             border-radius: 10px;
-            border: 1.5px solid rgba(30,202,211,0.40);
+            border: 1.5px solid rgba(45,182,193,0.40);
             font-size: 0.95rem;
             transition: border-color 0.2s, background 0.2s;
             text-decoration: none;
           }
           .cta-btn-ghost:hover {
             border-color: #2DB6C1;
-            background: rgba(30,202,211,0.06);
+            background: rgba(45,182,193,0.06);
           }
         `}</style>
 
         {/* HERO */}
         <section
           style={{
-            background: "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(30,202,211,0.13) 0%, transparent 70%), #212A45",
+            background: "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(45,182,193,0.13) 0%, transparent 70%), #212A45",
             padding: "120px 0 80px",
           }}
         >
@@ -358,7 +358,7 @@ export default function RecursosPage() {
             <div className="mb-12 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
               <div>
                 <span className="inline-block text-xs font-bold tracking-widest uppercase px-3 py-1 rounded-full mb-4"
-                  style={{ background: "rgba(30,202,211,0.10)", color: "#2DB6C1", border: "1px solid rgba(30,202,211,0.25)" }}>
+                  style={{ background: "rgba(45,182,193,0.10)", color: "#2DB6C1", border: "1px solid rgba(45,182,193,0.25)" }}>
                   5 episodios · Serie completa · PDF descargable
                 </span>
                 <h2 className="text-3xl font-black text-white mb-3" style={{ fontFamily: FONT, letterSpacing: "-0.8px" }}>
@@ -377,7 +377,7 @@ export default function RecursosPage() {
             <div className="flex flex-col gap-3">
               {SERIES.map((ep) => (
                 <Link key={ep.href} href={ep.href} className="ep-card p-5 flex items-center gap-5 no-underline">
-                  <span className="text-3xl font-black shrink-0" style={{ color: "rgba(30,202,211,0.30)", fontFamily: FONT, lineHeight: 1 }}>
+                  <span className="text-3xl font-black shrink-0" style={{ color: "rgba(45,182,193,0.30)", fontFamily: FONT, lineHeight: 1 }}>
                     {ep.ep}
                   </span>
                   <div className="flex-1 min-w-0">
@@ -410,7 +410,7 @@ export default function RecursosPage() {
         </section>
 
         {/* CTA BANNER */}
-        <section style={{ padding: "80px 0", background: "radial-gradient(ellipse 70% 80% at 50% 50%, rgba(30,202,211,0.10) 0%, transparent 70%)", borderTop: "1px solid rgba(30,202,211,0.12)" }}>
+        <section style={{ padding: "80px 0", background: "radial-gradient(ellipse 70% 80% at 50% 50%, rgba(45,182,193,0.10) 0%, transparent 70%)", borderTop: "1px solid rgba(45,182,193,0.12)" }}>
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl sm:text-4xl font-black text-white mb-4" style={{ fontFamily: FONT, letterSpacing: "-1px" }}>
               ¿Tu operación genera evidencia —{" "}

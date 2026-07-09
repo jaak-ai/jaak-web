@@ -2,9 +2,9 @@ import ArticleLayout from "../ArticleLayout";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Firma Simple vs Firma Digital con Validez NOM-151: ¿Cuál necesita tu empresa? | JAAK",
+  title: "Firma Simple vs Firma Digital con Validez NOM-151: ¿Cuál necesita su empresa? | JAAK",
   description:
-    "Descubre la diferencia entre firma electrónica simple y firma digital con validez NOM-151 en México. No son lo mismo, y elegir mal puede costarle muy caro a tu empresa.",
+    "Descubra la diferencia entre firma electrónica simple y firma digital con validez NOM-151 en México. No son lo mismo, y elegir mal puede costarle muy caro a su empresa.",
   keywords: [
     "firma electrónica simple",
     "firma digital NOM-151",
@@ -15,9 +15,9 @@ export const metadata: Metadata = {
     "firma con validez legal México",
   ],
   openGraph: {
-    title: "Firma Simple vs Firma Digital con Validez NOM-151: ¿Cuál necesita tu empresa?",
+    title: "Firma Simple vs Firma Digital con Validez NOM-151: ¿Cuál necesita su empresa?",
     description:
-      "No todas las firmas electrónicas tienen el mismo peso legal. Conoce la diferencia y elige la que protege de verdad a tu empresa.",
+      "No todas las firmas electrónicas tienen el mismo peso legal. Conozca la diferencia y elija la que protege de verdad a su empresa.",
     type: "article",
     publishedTime: "2026-04-11",
     authors: ["JAAK"],
@@ -28,9 +28,9 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Article",
   headline:
-    "Firma Simple vs Firma Digital con Validez NOM-151: ¿Cuál necesita tu empresa?",
+    "Firma Simple vs Firma Digital con Validez NOM-151: ¿Cuál necesita su empresa?",
   description:
-    "Descubre la diferencia entre firma electrónica simple y firma digital con validez NOM-151 en México. No son lo mismo, y elegir mal puede costarle muy caro a tu empresa.",
+    "Descubra la diferencia entre firma electrónica simple y firma digital con validez NOM-151 en México. No son lo mismo, y elegir mal puede costarle muy caro a su empresa.",
   image: "https://jaak.ai/images/blog/firma-simple-vs-avanzada.jpg",
   datePublished: "2026-04-11",
   dateModified: "2026-04-11",
@@ -60,8 +60,8 @@ const jsonLd = {
 export default function FirmaElectronicaSimpleVsAvanzada() {
   return (
     <ArticleLayout
-      title="Firma Simple vs Firma Digital con Validez NOM-151: ¿Cuál necesita tu empresa?"
-      subtitle="No todas las firmas electrónicas tienen el mismo peso legal en México. Usar la que no corresponde puede dejarte sin respaldo si un contrato se disputa. Aquí te explicamos la diferencia de forma clara."
+      title="Firma Simple vs Firma Digital con Validez NOM-151: ¿Cuál necesita su empresa?"
+      subtitle="No todas las firmas electrónicas tienen el mismo peso legal en México. Usar la que no corresponde puede dejarle sin respaldo si un contrato se disputa. Aquí le explicamos la diferencia de forma clara."
       category="Firma Electrónica"
       date="11 de abril, 2026"
       readTime="9 min"
@@ -297,7 +297,7 @@ export default function FirmaElectronicaSimpleVsAvanzada() {
               </div>
 
               <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-6">
-                Lo que puede pasar si eliges mal
+                Lo que puede pasar si elige mal
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
                 Una empresa del sector financiero usa firma simple para contratos de crédito.
@@ -330,20 +330,20 @@ export default function FirmaElectronicaSimpleVsAvanzada() {
                 ¿Cómo empezar sin complicaciones?
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
-                Con JAAK no necesitas hacer una integración técnica ni contratar un equipo de
-                desarrollo para empezar. Tienes dos caminos:
+                Con JAAK no necesita hacer una integración técnica ni contratar un equipo de
+                desarrollo para empezar. Tiene dos caminos:
               </p>
               <ul className="list-disc pl-6 mb-6 space-y-3 text-gray-600">
                 <li>
-                  <strong>Autoservicio:</strong> Entra a la plataforma web hoy mismo, sube tu
-                  documento, indica quién debe firmarlo y listo. En minutos tienes la firma
+                  <strong>Autoservicio:</strong> Entre a la plataforma web hoy mismo, suba su
+                  documento, indique quién debe firmarlo y listo. En minutos tiene la firma
                   certificada con NOM-151 y el expediente generado. Sin código, sin contratos,
                   sin complicaciones.
                 </li>
                 <li>
-                  <strong>Integración con tu plataforma:</strong> Si ya tienes un sistema o
-                  aplicación propia, un equipo técnico especializado de JAAK te ayuda a conectar
-                  la firma directamente a tu flujo existente. Tus clientes firman dentro de tu
+                  <strong>Integración con su plataforma:</strong> Si ya tiene un sistema o
+                  aplicación propia, un equipo técnico especializado de JAAK le ayuda a conectar
+                  la firma directamente a su flujo existente. Sus clientes firman dentro de su
                   propia experiencia, con toda la validez legal respaldada.
                 </li>
               </ul>
@@ -354,8 +354,8 @@ export default function FirmaElectronicaSimpleVsAvanzada() {
                 </h3>
                 <p className="text-gray-600">
                   Si el contrato puede generar una disputa — por dinero, por servicios, por
-                  incumplimiento — necesitas Firma Digital con Validez NOM-151. Si encima no
-                  conoces al firmante y necesitas saber quién es antes de que firme, necesitas
+                  incumplimiento — necesita Firma Digital con Validez NOM-151. Si encima no
+                  conoce al firmante y necesita saber quién es antes de que firme, necesita
                   la versión biométrica. La firma simple solo es adecuada cuando las consecuencias
                   de una disputa son mínimas.
                 </p>

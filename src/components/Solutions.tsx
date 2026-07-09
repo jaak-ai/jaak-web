@@ -23,13 +23,13 @@ export default function Solutions() {
   ];
 
   return (
-    <section className="section-padding bg-[#FAFAFA]" id="productos">
+    <section className="section-padding bg-[#F3F4F8]" id="productos">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#000000] mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#212A45] mb-4">
             Superando los desafíos con precisión
           </h2>
-          <p className="text-xl text-[#53535B] max-w-3xl mx-auto">
+          <p className="text-xl text-[#64748B] max-w-3xl mx-auto">
             La autenticación de identidad precisa es nuestra misión: Confianza y seguridad en cada paso del camino.
           </p>
         </div>
@@ -54,10 +54,10 @@ export default function Solutions() {
                   className="object-cover w-full h-full"
                 />
               </div>
-              <h3 className="text-xl font-bold text-[#000000] mb-3">
+              <h3 className="text-xl font-bold text-[#212A45] mb-3">
                 {solution.title}
               </h3>
-              <p className="text-[#53535B]">
+              <p className="text-[#64748B]">
                 {solution.description}
               </p>
             </div>

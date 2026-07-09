@@ -88,7 +88,7 @@ const AUTHORS = [
     name: "Arianna Quezada",
     role: "CEO · JAAK",
     initials: "AQ",
-    gradient: "linear-gradient(135deg, #2DB6C1 0%, #0066ff 100%)",
+    gradient: "linear-gradient(135deg, #2DB6C1 0%, #212A45 100%)",
     bio: "Liderazgo en infraestructura de confianza digital, regulación financiera y transformación del sector fintech en Latinoamérica.",
     topics: ["Compliance", "Regulación", "Firma Digital", "Transformación Digital", "Fintech"],
     count: blogPosts.filter((p) =>
@@ -99,7 +99,7 @@ const AUTHORS = [
     name: "Javier Moya",
     role: "CTO · JAAK",
     initials: "JM",
-    gradient: "linear-gradient(135deg, #0066ff 0%, #2DB6C1 100%)",
+    gradient: "linear-gradient(135deg, #212A45 0%, #2DB6C1 100%)",
     bio: "Arquitectura de sistemas de identidad digital, inteligencia artificial aplicada y biometría de alta seguridad.",
     topics: ["Inteligencia Artificial", "Arquitectura", "Identidad Digital", "Biometría", "Infraestructura"],
     count: blogPosts.filter((p) =>
@@ -149,7 +149,7 @@ export default function BlogPage() {
             background: rgba(255,255,255,0.04);
           }
           .blog-card-hover:hover {
-            border-color: rgba(30,202,211,0.30);
+            border-color: rgba(45,182,193,0.30);
             background: rgba(255,255,255,0.065);
           }
           .topic-card {
@@ -158,15 +158,15 @@ export default function BlogPage() {
             background: rgba(255,255,255,0.03);
           }
           .topic-card:hover {
-            border-color: rgba(30,202,211,0.25);
-            background: rgba(30,202,211,0.04);
+            border-color: rgba(45,182,193,0.25);
+            background: rgba(45,182,193,0.04);
           }
           .topic-card:hover .topic-name { color: #2DB6C1; }
           .cta-btn-primary {
             transition: box-shadow 0.25s, transform 0.15s;
           }
           .cta-btn-primary:hover {
-            box-shadow: 0 8px 28px rgba(30,202,211,0.28);
+            box-shadow: 0 8px 28px rgba(45,182,193,0.28);
             transform: translateY(-2px);
           }
           .cta-btn-secondary {
@@ -175,7 +175,7 @@ export default function BlogPage() {
             color: rgba(255,255,255,0.78);
           }
           .cta-btn-secondary:hover {
-            border-color: rgba(30,202,211,0.40);
+            border-color: rgba(45,182,193,0.40);
             color: #2DB6C1;
             transform: translateY(-2px);
           }
@@ -183,7 +183,7 @@ export default function BlogPage() {
             transition: box-shadow 0.3s;
           }
           .featured-hero-card:hover {
-            box-shadow: 0 0 48px rgba(30,202,211,0.10), 0 28px 56px rgba(0,0,0,0.35);
+            box-shadow: 0 0 48px rgba(45,182,193,0.10), 0 28px 56px rgba(0,0,0,0.35);
           }
           .author-link-hover {
             transition: gap 0.2s;
@@ -201,7 +201,7 @@ export default function BlogPage() {
             className="absolute inset-0 pointer-events-none"
             style={{
               background:
-                "radial-gradient(ellipse 80% 55% at 50% 0%, rgba(30,202,211,0.10) 0%, transparent 65%), radial-gradient(ellipse 40% 40% at 80% 30%, rgba(0,102,255,0.08) 0%, transparent 60%), #212A45",
+                "radial-gradient(ellipse 80% 55% at 50% 0%, rgba(45,182,193,0.10) 0%, transparent 65%), radial-gradient(ellipse 40% 40% at 80% 30%, rgba(0,102,255,0.08) 0%, transparent 60%), #212A45",
             }}
           />
 
@@ -222,10 +222,10 @@ export default function BlogPage() {
                 ["820", "120", "1000", "190", "#2DB6C1", "0.8s"],
                 ["1000", "190", "1180", "80", "#2DB6C1", "2.0s"],
                 ["1180", "80", "1320", "170", "#2DB6C1", "0.3s"],
-                ["280", "160", "380", "310", "#0066ff", "1.2s"],
-                ["640", "200", "560", "350", "#0066ff", "0.7s"],
-                ["820", "120", "900", "280", "#0066ff", "1.8s"],
-                ["1000", "190", "1080", "330", "#0066ff", "0.4s"],
+                ["280", "160", "380", "310", "#212A45", "1.2s"],
+                ["640", "200", "560", "350", "#212A45", "0.7s"],
+                ["820", "120", "900", "280", "#212A45", "1.8s"],
+                ["1000", "190", "1080", "330", "#212A45", "0.4s"],
                 ["60", "300", "280", "160", "#2DB6C1", "2.5s"],
                 ["1320", "170", "1380", "310", "#2DB6C1", "1.1s"],
                 ["480", "90", "380", "310", "#2DB6C1", "3.0s"],
@@ -271,8 +271,8 @@ export default function BlogPage() {
                 [900, 280, 0.5], [1080, 330, 1.3], [1380, 310, 0.7],
               ].map(([cx, cy, d]) => (
                 <g key={`n2-${cx}`} className="blog-node" style={{ animationDelay: `${d}s`, transformOrigin: `${cx}px ${cy}px` }}>
-                  <circle cx={cx} cy={cy} r="3.5" fill="#0066ff" opacity="0.65" />
-                  <circle cx={cx} cy={cy} r="7" fill="none" stroke="#0066ff" strokeWidth="0.8" opacity="0.22" />
+                  <circle cx={cx} cy={cy} r="3.5" fill="#212A45" opacity="0.65" />
+                  <circle cx={cx} cy={cy} r="7" fill="none" stroke="#212A45" strokeWidth="0.8" opacity="0.22" />
                 </g>
               ))}
             </svg>
@@ -287,8 +287,8 @@ export default function BlogPage() {
                 <div
                   className="hero-a inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase mb-6 border"
                   style={{
-                    background: "rgba(30,202,211,0.10)",
-                    borderColor: "rgba(30,202,211,0.25)",
+                    background: "rgba(45,182,193,0.10)",
+                    borderColor: "rgba(45,182,193,0.25)",
                     color: "#2DB6C1",
                     fontFamily: FONT,
                   }}
@@ -346,14 +346,14 @@ export default function BlogPage() {
                   className="absolute -inset-6 rounded-3xl pointer-events-none"
                   style={{
                     background:
-                      "radial-gradient(ellipse 70% 70% at 50% 50%, rgba(30,202,211,0.07) 0%, transparent 70%)",
+                      "radial-gradient(ellipse 70% 70% at 50% 50%, rgba(45,182,193,0.07) 0%, transparent 70%)",
                   }}
                 />
                 <Link href={`/blog/${featuredPost.slug}`} className="group block relative featured-hero-card rounded-2xl overflow-hidden border"
                   style={{
-                    borderColor: "rgba(30,202,211,0.22)",
+                    borderColor: "rgba(45,182,193,0.22)",
                     background: "rgba(255,255,255,0.05)",
-                    boxShadow: "0 0 40px rgba(30,202,211,0.06), 0 24px 48px rgba(0,0,0,0.28)",
+                    boxShadow: "0 0 40px rgba(45,182,193,0.06), 0 24px 48px rgba(0,0,0,0.28)",
                   }}
                 >
                   {featuredPost.image && (
@@ -374,8 +374,8 @@ export default function BlogPage() {
                       <div
                         className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wide uppercase border"
                         style={{
-                          background: "rgba(30,202,211,0.18)",
-                          borderColor: "rgba(30,202,211,0.35)",
+                          background: "rgba(45,182,193,0.18)",
+                          borderColor: "rgba(45,182,193,0.35)",
                           color: "#2DB6C1",
                           fontFamily: FONT,
                         }}
@@ -511,9 +511,9 @@ export default function BlogPage() {
                     <span
                       className="shrink-0 px-2.5 py-1 rounded-full text-xs font-bold"
                       style={{
-                        background: "rgba(30,202,211,0.10)",
+                        background: "rgba(45,182,193,0.10)",
                         color: "#2DB6C1",
-                        border: "1px solid rgba(30,202,211,0.20)",
+                        border: "1px solid rgba(45,182,193,0.20)",
                         fontFamily: FONT,
                       }}
                     >
@@ -597,8 +597,8 @@ export default function BlogPage() {
                     <div
                       className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 border"
                       style={{
-                        background: "rgba(30,202,211,0.10)",
-                        borderColor: "rgba(30,202,211,0.15)",
+                        background: "rgba(45,182,193,0.10)",
+                        borderColor: "rgba(45,182,193,0.15)",
                         color: "#2DB6C1",
                       }}
                     >
@@ -616,7 +616,7 @@ export default function BlogPage() {
                           <span
                             className="text-[10px] font-bold px-1.5 py-0.5 rounded-full"
                             style={{
-                              background: "rgba(30,202,211,0.10)",
+                              background: "rgba(45,182,193,0.10)",
                               color: "#2DB6C1",
                               fontFamily: FONT,
                             }}
@@ -648,8 +648,8 @@ export default function BlogPage() {
             <div
               className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-6 border"
               style={{
-                background: "rgba(30,202,211,0.10)",
-                borderColor: "rgba(30,202,211,0.20)",
+                background: "rgba(45,182,193,0.10)",
+                borderColor: "rgba(45,182,193,0.20)",
               }}
             >
               <svg
@@ -711,8 +711,8 @@ export default function BlogPage() {
           className="py-16"
           style={{
             background:
-              "linear-gradient(135deg, rgba(30,202,211,0.07) 0%, rgba(0,102,255,0.05) 100%)",
-            borderTop: "1px solid rgba(30,202,211,0.10)",
+              "linear-gradient(135deg, rgba(45,182,193,0.07) 0%, rgba(0,102,255,0.05) 100%)",
+            borderTop: "1px solid rgba(45,182,193,0.10)",
           }}
         >
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

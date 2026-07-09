@@ -458,13 +458,13 @@ export default function ChronosPage() {
                 <div className="flex flex-wrap gap-4 mb-10">
                   <a
                     href="#contacto"
-                    className="px-6 py-3 bg-gradient-to-r from-[#2DB6C1] to-[#25969f] text-white font-bold rounded-lg hover:opacity-90 transition-all"
+                    className="px-6 py-3 bg-gradient-to-r from-[#2DB6C1] to-[#25969f] text-white font-bold rounded-lg hover:opacity-90 transition-opacity"
                   >
                     Ver demo →
                   </a>
                   <a
                     href="#seguridad"
-                    className="px-6 py-3 bg-white/10 border border-white/20 text-white font-semibold rounded-lg hover:bg-white/20 transition-all"
+                    className="px-6 py-3 bg-white/10 border border-white/20 text-white font-semibold rounded-lg hover:bg-white/20 transition-colors"
                   >
                     Ver seguridad y cumplimiento
                   </a>
@@ -491,7 +491,7 @@ export default function ChronosPage() {
                     {llmProviders.map((provider, i) => (
                       <div
                         key={i}
-                        className="flex items-center gap-3 p-3 bg-white/5 rounded-lg border border-white/10 hover:border-[#2DB6C1]/30 transition-all"
+                        className="flex items-center gap-3 p-3 bg-white/5 rounded-lg border border-white/10 hover:border-[#2DB6C1]/30 transition-colors"
                       >
                         <span className="w-9 h-9 rounded-lg bg-white/10 border border-white/10 flex items-center justify-center text-white/80 font-semibold text-sm flex-shrink-0">
                           {provider.name.charAt(0)}
@@ -528,7 +528,7 @@ export default function ChronosPage() {
             </div>
 
             <div className="grid md:grid-cols-3 gap-8 mb-12">
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-[#2DB6C1]/40 transition-all">
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-[#2DB6C1]/40 transition-colors">
                 <div className="w-16 h-16 bg-[#2DB6C1]/20 rounded-xl flex items-center justify-center text-[#2DB6C1] mb-6">
                   <Icon name="document" className="w-7 h-7" />
                 </div>
@@ -539,7 +539,7 @@ export default function ChronosPage() {
                 </p>
               </div>
 
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-[#2DB6C1]/40 transition-all">
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-[#2DB6C1]/40 transition-colors">
                 <div className="w-16 h-16 bg-[#2DB6C1]/20 rounded-xl flex items-center justify-center text-[#2DB6C1] mb-6">
                   <Icon name="pencil" className="w-7 h-7" />
                 </div>
@@ -550,7 +550,7 @@ export default function ChronosPage() {
                 </p>
               </div>
 
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-[#2DB6C1]/40 transition-all">
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-[#2DB6C1]/40 transition-colors">
                 <div className="w-16 h-16 bg-[#2DB6C1]/20 rounded-xl flex items-center justify-center text-[#2DB6C1] mb-6">
                   <Icon name="user" className="w-7 h-7" />
                 </div>
@@ -601,7 +601,7 @@ export default function ChronosPage() {
                 {pluginSources.map((plugin, i) => (
                   <div
                     key={i}
-                    className="flex flex-col items-center gap-2 p-4 bg-white/5 rounded-xl border border-white/10 hover:border-[#2DB6C1]/40 transition-all"
+                    className="flex flex-col items-center gap-2 p-4 bg-white/5 rounded-xl border border-white/10 hover:border-[#2DB6C1]/40 transition-colors"
                   >
                     <Icon name={plugin.icon} className="w-7 h-7 text-[#2DB6C1]" />
                     <div className="text-white font-medium text-sm text-center">{plugin.name}</div>
@@ -650,7 +650,7 @@ export default function ChronosPage() {
               {agentTemplates.map((template, i) => (
                 <div
                   key={i}
-                  className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-[#2DB6C1]/40 transition-all group"
+                  className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-[#2DB6C1]/40 transition-colors group"
                 >
                   <div className="flex items-start gap-4">
                     <div className="w-12 h-12 bg-[#2DB6C1]/20 rounded-xl flex items-center justify-center text-[#2DB6C1] flex-shrink-0 group-hover:bg-[#2DB6C1]/30 transition-colors">
@@ -693,7 +693,7 @@ export default function ChronosPage() {
               {useCases.map((useCase, i) => (
                 <div
                   key={i}
-                  className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all border border-gray-100"
+                  className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-shadow border border-gray-100"
                 >
                   <div className="flex items-start gap-4">
                     <div
@@ -893,7 +893,7 @@ export default function ChronosPage() {
                   <button
                     type="submit"
                     disabled={status === "loading"}
-                    className="w-full px-6 py-4 bg-gradient-to-r from-[#2DB6C1] to-[#25969f] text-white font-bold rounded-lg hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-lg"
+                    className="w-full px-6 py-4 bg-gradient-to-r from-[#2DB6C1] to-[#25969f] text-white font-bold rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed text-lg"
                   >
                     {status === "loading" ? "Enviando..." : "Solicitar Demo"}
                   </button>

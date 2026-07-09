@@ -40,11 +40,11 @@ export default function FinalCTA() {
           </div>
 
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white mb-6 leading-tight">
-            ¿Tu proceso actual resistiría una auditoría hoy?
+            ¿Su proceso actual resistiría una auditoría hoy?
           </h2>
 
           <p className="text-xl mb-10 max-w-xl mx-auto" style={{ color: "rgba(255,255,255,0.52)" }}>
-            En 15 minutos te decimos si JAAK cumple lo que tu regulación exige.
+            En 15 minutos le decimos si JAAK cumple lo que su regulación exige.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

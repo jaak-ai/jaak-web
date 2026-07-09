@@ -85,11 +85,11 @@ export default function OnboardingForm() {
                 Onboarding autoservicio
               </div>
               <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
-                ¿Ya realizaste tu compra?
+                ¿Ya realizó su compra?
               </h2>
               <p className="text-white/60 text-sm leading-relaxed">
-                Si ya activaste tu paquete, completa tu registro para acceder a
-                tu sesión de onboarding y comenzar a utilizar la plataforma
+                Si ya activó su paquete, complete su registro para acceder a
+                su sesión de onboarding y comenzar a utilizar la plataforma
                 correctamente.
               </p>
             </div>
@@ -196,7 +196,7 @@ export default function OnboardingForm() {
                   className={`${inputBase} appearance-none`}
                 >
                   <option value="" disabled className="bg-[#0D1B3E] text-white/50">
-                    Selecciona tu paquete
+                    Seleccione su paquete
                   </option>
                   <option value="Paquete de prueba" className="bg-[#0D1B3E] text-white">
                     Paquete de prueba
@@ -284,9 +284,9 @@ export default function OnboardingForm() {
               ¡Registro completado!
             </h2>
             <p className="text-white/60 text-sm leading-relaxed max-w-md mx-auto mb-6">
-              Gracias por registrarte, {form.nombre.split(" ")[0]}. Nuestro
-              equipo revisará tu información y se pondrá en contacto contigo en
-              breve para coordinar tu sesión de onboarding.
+              Gracias por registrarse, {form.nombre.split(" ")[0]}. Nuestro
+              equipo revisará su información y se pondrá en contacto con usted en
+              breve para coordinar su sesión de onboarding.
             </p>
 
             <div className="bg-white/5 border border-white/10 rounded-2xl p-5 text-left max-w-sm mx-auto">
@@ -295,9 +295,9 @@ export default function OnboardingForm() {
               </p>
               <ul className="space-y-2.5">
                 {[
-                  "Recibirás un correo de confirmación",
-                  "Un asesor revisará tu registro",
-                  "Te invitaremos a la sesión de onboarding grupal",
+                  "Recibirá un correo de confirmación",
+                  "Un asesor revisará su registro",
+                  "Le invitaremos a la sesión de onboarding grupal",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2.5 text-sm text-white/70">
                     <span className="text-[#2DB6C1] mt-0.5 flex-shrink-0">✓</span>

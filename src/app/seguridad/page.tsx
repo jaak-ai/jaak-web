@@ -233,9 +233,9 @@ export default function SeguridadPage() {
                   className="bg-gray-50 rounded-2xl p-8 border border-gray-100"
                 >
                   <div className="flex items-center gap-4 mb-4">
-                    <div className="w-14 h-14 bg-[#0066ff]/10 rounded-xl flex items-center justify-center">
+                    <div className="w-14 h-14 bg-[#212A45]/10 rounded-xl flex items-center justify-center">
                       <svg
-                        className="w-7 h-7 text-[#0066ff]"
+                        className="w-7 h-7 text-[#212A45]"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -252,7 +252,7 @@ export default function SeguridadPage() {
                       <h3 className="text-xl font-bold text-gray-900">
                         {cert.name}
                       </h3>
-                      <p className="text-[#0066ff] font-medium text-sm">
+                      <p className="text-[#212A45] font-medium text-sm">
                         {cert.subtitle}
                       </p>
                     </div>
@@ -310,7 +310,7 @@ export default function SeguridadPage() {
                   key={index}
                   className="bg-white rounded-xl p-6 shadow-sm"
                 >
-                  <div className="w-12 h-12 bg-[#0066ff]/10 rounded-xl flex items-center justify-center mb-4 text-[#0066ff]">
+                  <div className="w-12 h-12 bg-[#212A45]/10 rounded-xl flex items-center justify-center mb-4 text-[#212A45]">
                     {category.icon}
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 mb-4">
@@ -323,7 +323,7 @@ export default function SeguridadPage() {
                         className="flex items-start gap-2 text-sm text-gray-600"
                       >
                         <svg
-                          className="w-4 h-4 text-[#0066ff] flex-shrink-0 mt-0.5"
+                          className="w-4 h-4 text-[#212A45] flex-shrink-0 mt-0.5"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -361,7 +361,7 @@ export default function SeguridadPage() {
               {dataProtection.map((item, index) => (
                 <div
                   key={index}
-                  className="border border-gray-200 rounded-xl p-6 hover:border-[#0066ff]/30 transition-colors"
+                  className="border border-gray-200 rounded-xl p-6 hover:border-[#212A45]/30 transition-colors"
                 >
                   <h3 className="text-lg font-bold text-gray-900 mb-3">
                     {item.title}
@@ -387,7 +387,7 @@ export default function SeguridadPage() {
 
             <div className="grid md:grid-cols-4 gap-6 max-w-5xl mx-auto">
               <div className="text-center">
-                <div className="w-16 h-16 bg-[#0066ff] rounded-2xl flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
+                <div className="w-16 h-16 bg-[#212A45] rounded-2xl flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
                   1
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2">
@@ -398,7 +398,7 @@ export default function SeguridadPage() {
                 </p>
               </div>
               <div className="text-center">
-                <div className="w-16 h-16 bg-[#0066ff] rounded-2xl flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
+                <div className="w-16 h-16 bg-[#212A45] rounded-2xl flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
                   2
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2">
@@ -409,7 +409,7 @@ export default function SeguridadPage() {
                 </p>
               </div>
               <div className="text-center">
-                <div className="w-16 h-16 bg-[#0066ff] rounded-2xl flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
+                <div className="w-16 h-16 bg-[#212A45] rounded-2xl flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
                   3
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2">
@@ -420,7 +420,7 @@ export default function SeguridadPage() {
                 </p>
               </div>
               <div className="text-center">
-                <div className="w-16 h-16 bg-[#0066ff] rounded-2xl flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
+                <div className="w-16 h-16 bg-[#212A45] rounded-2xl flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
                   4
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2">
@@ -479,7 +479,7 @@ export default function SeguridadPage() {
                 </p>
                 <a
                   href="mailto:security@jaak.ai"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-[#0066ff] text-white font-semibold rounded-lg hover:bg-[#0052cc] transition-all"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-[#212A45] text-white font-semibold rounded-lg hover:bg-[#212A45] transition-all"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -500,9 +500,9 @@ export default function SeguridadPage() {
             <div className="grid md:grid-cols-3 gap-6">
               <Link
                 href="/privacidad"
-                className="bg-white rounded-xl p-6 border border-gray-200 hover:border-[#0066ff] transition-colors group"
+                className="bg-white rounded-xl p-6 border border-gray-200 hover:border-[#212A45] transition-colors group"
               >
-                <h3 className="text-lg font-bold text-gray-900 group-hover:text-[#0066ff] mb-2">
+                <h3 className="text-lg font-bold text-gray-900 group-hover:text-[#212A45] mb-2">
                   Aviso de Privacidad
                 </h3>
                 <p className="text-gray-600 text-sm">
@@ -511,9 +511,9 @@ export default function SeguridadPage() {
               </Link>
               <Link
                 href="/terminos"
-                className="bg-white rounded-xl p-6 border border-gray-200 hover:border-[#0066ff] transition-colors group"
+                className="bg-white rounded-xl p-6 border border-gray-200 hover:border-[#212A45] transition-colors group"
               >
-                <h3 className="text-lg font-bold text-gray-900 group-hover:text-[#0066ff] mb-2">
+                <h3 className="text-lg font-bold text-gray-900 group-hover:text-[#212A45] mb-2">
                   Términos y Condiciones
                 </h3>
                 <p className="text-gray-600 text-sm">
@@ -522,9 +522,9 @@ export default function SeguridadPage() {
               </Link>
               <Link
                 href="/cumplimiento"
-                className="bg-white rounded-xl p-6 border border-gray-200 hover:border-[#0066ff] transition-colors group"
+                className="bg-white rounded-xl p-6 border border-gray-200 hover:border-[#212A45] transition-colors group"
               >
-                <h3 className="text-lg font-bold text-gray-900 group-hover:text-[#0066ff] mb-2">
+                <h3 className="text-lg font-bold text-gray-900 group-hover:text-[#212A45] mb-2">
                   Cumplimiento
                 </h3>
                 <p className="text-gray-600 text-sm">

@@ -289,8 +289,8 @@ export default function LFPIORPIPage() {
                 </svg>
                 Cumplimiento
               </Link>
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#0066ff]/10 border border-[#0066ff]/20 rounded-full mb-6">
-                <span className="text-[#0066ff] text-sm font-medium">LFPIORPI</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#212A45]/10 border border-[#212A45]/20 rounded-full mb-6">
+                <span className="text-[#212A45] text-sm font-medium">LFPIORPI</span>
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6">
                 Cumplimiento LFPIORPI y Actividades Vulnerables
@@ -301,7 +301,7 @@ export default function LFPIORPIPage() {
               <div className="flex flex-wrap gap-4">
                 <Link
                   href="/contacto"
-                  className="px-6 py-3 bg-[#0066ff] text-white font-semibold rounded-lg hover:bg-[#0052cc] transition-all"
+                  className="px-6 py-3 bg-[#212A45] text-white font-semibold rounded-lg hover:bg-[#212A45] transition-all"
                 >
                   Solicitar evaluación
                 </Link>
@@ -331,15 +331,15 @@ export default function LFPIORPIPage() {
               </p>
               <div className="grid md:grid-cols-3 gap-6 mt-8">
                 <div className="p-6 bg-gray-50 rounded-xl">
-                  <div className="text-3xl font-black text-[#0066ff] mb-2">5 años</div>
+                  <div className="text-3xl font-black text-[#212A45] mb-2">5 años</div>
                   <div className="text-gray-600">Conservación mínima de expedientes</div>
                 </div>
                 <div className="p-6 bg-gray-50 rounded-xl">
-                  <div className="text-3xl font-black text-[#0066ff] mb-2">17</div>
+                  <div className="text-3xl font-black text-[#212A45] mb-2">17</div>
                   <div className="text-gray-600">Artículo que define actividades vulnerables</div>
                 </div>
                 <div className="p-6 bg-gray-50 rounded-xl">
-                  <div className="text-3xl font-black text-[#0066ff] mb-2">UIF</div>
+                  <div className="text-3xl font-black text-[#212A45] mb-2">UIF</div>
                   <div className="text-gray-600">Autoridad receptora de avisos</div>
                 </div>
               </div>
@@ -351,8 +351,8 @@ export default function LFPIORPIPage() {
         <section id="pagos-efectivo" className="py-20 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#0066ff]/10 rounded-full mb-4">
-                <span className="text-[#0066ff] text-sm font-medium">Artículo 32</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#212A45]/10 rounded-full mb-4">
+                <span className="text-[#212A45] text-sm font-medium">Artículo 32</span>
               </div>
               <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
                 Umbrales de Pagos en Efectivo
@@ -366,7 +366,7 @@ export default function LFPIORPIPage() {
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="bg-[#0066ff] text-white">
+                    <tr className="bg-[#212A45] text-white">
                       <th className="px-4 py-3 text-left text-sm font-semibold">Fracción</th>
                       <th className="px-4 py-3 text-left text-sm font-semibold">Actividad</th>
                       <th className="px-4 py-3 text-right text-sm font-semibold">Umbral Pagos en Efectivo</th>
@@ -398,8 +398,8 @@ export default function LFPIORPIPage() {
         <section id="actividades" className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#0066ff]/10 rounded-full mb-4">
-                <span className="text-[#0066ff] text-sm font-medium">Artículo 17</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#212A45]/10 rounded-full mb-4">
+                <span className="text-[#212A45] text-sm font-medium">Artículo 17</span>
               </div>
               <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
                 Umbrales de Actividades Vulnerables
@@ -413,7 +413,7 @@ export default function LFPIORPIPage() {
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="bg-[#0066ff] text-white">
+                    <tr className="bg-[#212A45] text-white">
                       <th className="px-3 py-3 text-left text-sm font-semibold">Fracción</th>
                       <th className="px-3 py-3 text-left text-sm font-semibold">Actividad Vulnerable</th>
                       <th className="px-3 py-3 text-right text-sm font-semibold">Identificación</th>
@@ -447,7 +447,7 @@ export default function LFPIORPIPage() {
               <p className="text-gray-700 text-center mb-3">
                 <strong>En todos los casos, el principio es el mismo:</strong> identificar correctamente, conservar evidencia y poder demostrar cumplimiento ante la autoridad.
               </p>
-              <p className="text-[#0066ff] font-medium text-center">
+              <p className="text-[#212A45] font-medium text-center">
                 Este estándar de identificación y evidencia es el mismo que exigen instituciones financieras reguladas.
               </p>
             </div>
@@ -469,7 +469,7 @@ export default function LFPIORPIPage() {
             <div className="grid md:grid-cols-2 gap-8">
               {requirements.map((req, index) => (
                 <div key={index} className="flex gap-6 p-6 bg-gray-50 rounded-xl">
-                  <div className="w-14 h-14 bg-[#0066ff]/10 rounded-xl flex items-center justify-center flex-shrink-0 text-[#0066ff]">
+                  <div className="w-14 h-14 bg-[#212A45]/10 rounded-xl flex items-center justify-center flex-shrink-0 text-[#212A45]">
                     {req.icon}
                   </div>
                   <div>
@@ -569,7 +569,7 @@ export default function LFPIORPIPage() {
             <div className="flex flex-wrap justify-center gap-4">
               <Link
                 href="/contacto"
-                className="px-8 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
+                className="px-8 py-4 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-all"
               >
                 Solicitar evaluación gratuita
               </Link>

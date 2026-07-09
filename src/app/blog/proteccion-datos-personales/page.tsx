@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "La protección de datos personales: un compromiso que va más allá del cumplimiento | JAAK",
-  description: "La protección de datos ya no es solo un requisito legal, es un pilar de confianza, reputación y continuidad operativa. Descubre cómo fortalecer tu estrategia de protección desde la verificación de identidad.",
+  description: "La protección de datos ya no es solo un requisito legal, es un pilar de confianza, reputación y continuidad operativa. Descubra cómo fortalecer su estrategia de protección desde la verificación de identidad.",
   keywords: ["protección de datos", "datos personales", "privacidad", "cumplimiento normativo", "verificación de identidad", "seguridad de datos", "JAAK"],
   openGraph: {
     title: "La protección de datos personales: un compromiso que va más allá del cumplimiento",
@@ -140,16 +140,16 @@ export default function ProteccionDatosPersonales() {
               </ul>
 
               <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-6">
-                ¿Cómo saber si tu organización está gestionando correctamente los datos personales?
+                ¿Cómo saber si su organización está gestionando correctamente los datos personales?
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
-                Si respondes "sí" a más de dos de estas preguntas, es probable que exista un riesgo operativo o de cumplimiento:
+                Si responde "sí" a más de dos de estas preguntas, es probable que exista un riesgo operativo o de cumplimiento:
               </p>
               <ul className="list-disc pl-6 mb-6 space-y-3 text-gray-600">
-                <li>¿Tus procesos de verificación dependen en gran medida de revisiones manuales?</li>
-                <li>¿No tienes visibilidad clara de cómo se almacenan y validan los datos personales?</li>
-                <li>¿Cumples con la regulación, pero a costa de fricción y tiempos largos para el usuario?</li>
-                <li>¿Has tenido dudas sobre si tus procesos actuales resistirían una auditoría?</li>
+                <li>¿Sus procesos de verificación dependen en gran medida de revisiones manuales?</li>
+                <li>¿No tiene visibilidad clara de cómo se almacenan y validan los datos personales?</li>
+                <li>¿Cumple con la regulación, pero a costa de fricción y tiempos largos para el usuario?</li>
+                <li>¿Ha tenido dudas sobre si sus procesos actuales resistirían una auditoría?</li>
                 <li>¿La experiencia de verificación afecta la conversión o el onboarding de clientes?</li>
               </ul>
 
@@ -229,16 +229,16 @@ export default function ProteccionDatosPersonales() {
 
               <div className="bg-gray-50 rounded-xl p-8 my-12">
                 <h3 className="text-xl font-bold text-gray-900 mb-4">
-                  ¿Quieres saber si tus procesos actuales están protegiendo realmente los datos de tus usuarios?
+                  ¿Quiere saber si sus procesos actuales están protegiendo realmente los datos de sus usuarios?
                 </h3>
                 <p className="text-gray-600 mb-6">
-                  Descubre cómo JAAK puede ayudarte a fortalecer tu estrategia de protección de datos desde la verificación de identidad.
+                  Descubra cómo JAAK puede ayudarle a fortalecer su estrategia de protección de datos desde la verificación de identidad.
                 </p>
                 <Link
                   href="/contacto"
                   className="inline-flex items-center px-6 py-3 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
                 >
-                  Conoce JAAK
+                  Conozca JAAK
                   <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>

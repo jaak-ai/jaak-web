@@ -81,9 +81,9 @@ export default function InstitucionesFinancieras() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#0066ff]/10 border border-[#0066ff]/20 rounded-full mb-6">
-                  <span className="w-2 h-2 bg-[#0066ff] rounded-full"></span>
-                  <span className="text-[#0066ff] text-sm font-medium">Soluciones por industria</span>
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#212A45]/10 border border-[#212A45]/20 rounded-full mb-6">
+                  <span className="w-2 h-2 bg-[#212A45] rounded-full"></span>
+                  <span className="text-[#212A45] text-sm font-medium">Soluciones por industria</span>
                 </div>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6">
                   Instituciones financieras
@@ -94,7 +94,7 @@ export default function InstitucionesFinancieras() {
                 <div className="flex flex-wrap gap-4">
                   <Link
                     href="/contacto"
-                    className="px-6 py-3 bg-[#0066ff] text-white font-semibold rounded-lg hover:bg-[#0052cc] transition-all"
+                    className="px-6 py-3 bg-[#212A45] text-white font-semibold rounded-lg hover:bg-[#212A45] transition-all"
                   >
                     Hablar con ventas
                   </Link>
@@ -134,7 +134,7 @@ export default function InstitucionesFinancieras() {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {regulations.map((reg, index) => (
                 <div key={index} className="bg-gray-50 rounded-xl p-6 text-center">
-                  <div className="text-2xl font-black text-[#0066ff] mb-3">{reg.name}</div>
+                  <div className="text-2xl font-black text-[#212A45] mb-3">{reg.name}</div>
                   <p className="text-gray-600 text-sm">{reg.description}</p>
                 </div>
               ))}
@@ -153,7 +153,7 @@ export default function InstitucionesFinancieras() {
             <div className="grid md:grid-cols-2 gap-8">
               {useCases.map((useCase, index) => (
                 <div key={index} className="bg-white rounded-xl p-8 shadow-sm hover:shadow-lg transition-shadow">
-                  <div className="w-16 h-16 bg-[#0066ff]/10 rounded-xl flex items-center justify-center text-[#0066ff] mb-6">
+                  <div className="w-16 h-16 bg-[#212A45]/10 rounded-xl flex items-center justify-center text-[#212A45] mb-6">
                     {useCase.icon}
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3">{useCase.title}</h3>
@@ -216,7 +216,7 @@ export default function InstitucionesFinancieras() {
             </p>
             <Link
               href="/contacto"
-              className="inline-flex px-8 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
+              className="inline-flex px-8 py-4 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-all"
             >
               Solicitar demo
             </Link>

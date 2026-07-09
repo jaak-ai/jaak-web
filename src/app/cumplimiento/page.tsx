@@ -118,9 +118,9 @@ export default function CumplimientoPage() {
         <section className="pt-32 pb-20 bg-[#0E1133]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#0066ff]/10 border border-[#0066ff]/20 rounded-full mb-6">
-                <span className="w-2 h-2 bg-[#0066ff] rounded-full"></span>
-                <span className="text-[#0066ff] text-sm font-medium">Cumplimiento Regulatorio</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#212A45]/10 border border-[#212A45]/20 rounded-full mb-6">
+                <span className="w-2 h-2 bg-[#212A45] rounded-full"></span>
+                <span className="text-[#212A45] text-sm font-medium">Cumplimiento Regulatorio</span>
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6">
                 Verificación de identidad que cumple con la regulación mexicana
@@ -131,7 +131,7 @@ export default function CumplimientoPage() {
               <div className="flex flex-wrap gap-4">
                 <Link
                   href="/contacto"
-                  className="px-6 py-3 bg-[#0066ff] text-white font-semibold rounded-lg hover:bg-[#0052cc] transition-all"
+                  className="px-6 py-3 bg-[#212A45] text-white font-semibold rounded-lg hover:bg-[#212A45] transition-all"
                 >
                   Solicitar revisión regulatoria
                 </Link>
@@ -181,18 +181,18 @@ export default function CumplimientoPage() {
                 <Link
                   key={index}
                   href={reg.href}
-                  className="group bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all border border-gray-100 hover:border-[#0066ff]/20"
+                  className="group bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all border border-gray-100 hover:border-[#212A45]/20"
                 >
                   <div className="flex items-start gap-6">
-                    <div className="w-14 h-14 bg-[#0066ff]/10 rounded-xl flex items-center justify-center flex-shrink-0 text-[#0066ff] group-hover:bg-[#0066ff] group-hover:text-white transition-colors">
+                    <div className="w-14 h-14 bg-[#212A45]/10 rounded-xl flex items-center justify-center flex-shrink-0 text-[#212A45] group-hover:bg-[#212A45] group-hover:text-white transition-colors">
                       {reg.icon}
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
-                        <span className="text-2xl font-black text-gray-900 group-hover:text-[#0066ff] transition-colors">
+                        <span className="text-2xl font-black text-gray-900 group-hover:text-[#212A45] transition-colors">
                           {reg.acronym}
                         </span>
-                        <svg className="w-5 h-5 text-gray-400 group-hover:text-[#0066ff] group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-5 h-5 text-gray-400 group-hover:text-[#212A45] group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                         </svg>
                       </div>
@@ -287,8 +287,8 @@ export default function CumplimientoPage() {
                 },
               ].map((cap, index) => (
                 <div key={index} className="bg-white/5 rounded-xl p-6 border border-white/10">
-                  <div className="w-12 h-12 bg-[#0066ff]/20 rounded-xl flex items-center justify-center mb-4">
-                    <svg className="w-6 h-6 text-[#0066ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-12 h-12 bg-[#212A45]/20 rounded-xl flex items-center justify-center mb-4">
+                    <svg className="w-6 h-6 text-[#212A45]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={cap.icon} />
                     </svg>
                   </div>
@@ -312,7 +312,7 @@ export default function CumplimientoPage() {
             <div className="flex flex-wrap justify-center gap-4">
               <Link
                 href="/contacto"
-                className="px-8 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
+                className="px-8 py-4 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-all"
               >
                 Solicitar revisión regulatoria
               </Link>

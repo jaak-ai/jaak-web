@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Prevención de fraude en el onboarding digital: Mejores prácticas | JAAK",
-  description: "El fraude por suplantación de identidad representa pérdidas millonarias. Conoce las estrategias más efectivas para detectar y prevenir intentos de fraude durante la verificación de clientes.",
+  description: "El fraude por suplantación de identidad representa pérdidas millonarias. Conozca las estrategias más efectivas para detectar y prevenir intentos de fraude durante la verificación de clientes.",
   keywords: ["prevención de fraude", "onboarding digital", "suplantación de identidad", "fraude financiero", "KYC", "verificación de identidad"],
   openGraph: {
     title: "Prevención de fraude en el onboarding digital: Mejores prácticas",
@@ -48,7 +48,7 @@ export default function PrevencionFraude() {
   return (
     <ArticleLayout
       title="Prevención de fraude en el onboarding digital: Mejores prácticas"
-      subtitle="El fraude por suplantación de identidad representa pérdidas millonarias cada año. Te compartimos las estrategias más efectivas para detectar y prevenir intentos de fraude durante la verificación de clientes."
+      subtitle="El fraude por suplantación de identidad representa pérdidas millonarias cada año. Le compartimos las estrategias más efectivas para detectar y prevenir intentos de fraude durante la verificación de clientes."
       category="Fraude"
       date="20 de diciembre, 2025"
       readTime="9 min"
@@ -66,7 +66,7 @@ export default function PrevencionFraude() {
                 El onboarding digital ha revolucionado la forma en que las empresas adquieren
                 clientes, pero también ha abierto nuevas oportunidades para los defraudadores.
                 Entender los vectores de ataque y cómo defenderse es fundamental para proteger
-                tu negocio y tus clientes.
+                su negocio y sus clientes.
               </p>
 
               <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-6">
@@ -230,7 +230,7 @@ export default function PrevencionFraude() {
                 Señales de alerta (Red Flags)
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
-                Tu sistema debe estar configurado para detectar estas señales de advertencia:
+                Su sistema debe estar configurado para detectar estas señales de advertencia:
               </p>
 
               <div className="overflow-x-auto my-8">
@@ -300,7 +300,7 @@ export default function PrevencionFraude() {
                   </div>
                   <div>
                     <h4 className="font-bold text-gray-900">Verificación en tiempo real</h4>
-                    <p className="text-gray-600">Valida documentos e identidades contra bases de datos oficiales en el momento, no después.</p>
+                    <p className="text-gray-600">Valide documentos e identidades contra bases de datos oficiales en el momento, no después.</p>
                   </div>
                 </div>
 
@@ -312,7 +312,7 @@ export default function PrevencionFraude() {
                   </div>
                   <div>
                     <h4 className="font-bold text-gray-900">Autenticación multifactor</h4>
-                    <p className="text-gray-600">Combina algo que el usuario tiene (teléfono), sabe (OTP) y es (biometría).</p>
+                    <p className="text-gray-600">Combine algo que el usuario tiene (teléfono), sabe (OTP) y es (biometría).</p>
                   </div>
                 </div>
 
@@ -324,7 +324,7 @@ export default function PrevencionFraude() {
                   </div>
                   <div>
                     <h4 className="font-bold text-gray-900">Scoring de riesgo dinámico</h4>
-                    <p className="text-gray-600">Asigna puntuaciones de riesgo basadas en múltiples señales y ajusta los controles según el nivel.</p>
+                    <p className="text-gray-600">Asigne puntuaciones de riesgo basadas en múltiples señales y ajuste los controles según el nivel.</p>
                   </div>
                 </div>
 
@@ -336,7 +336,7 @@ export default function PrevencionFraude() {
                   </div>
                   <div>
                     <h4 className="font-bold text-gray-900">Monitoreo continuo</h4>
-                    <p className="text-gray-600">No te detengas en el onboarding. Monitorea transacciones y comportamiento post-registro.</p>
+                    <p className="text-gray-600">No se detenga en el onboarding. Monitoree transacciones y comportamiento post-registro.</p>
                   </div>
                 </div>
               </div>
@@ -349,10 +349,10 @@ export default function PrevencionFraude() {
                 para usuarios legítimos. Algunas estrategias:
               </p>
               <ul className="list-disc pl-6 mb-6 space-y-2 text-gray-600">
-                <li><strong>Fricción adaptativa:</strong> Aumenta los controles solo cuando se detectan señales de riesgo</li>
-                <li><strong>Verificación pasiva:</strong> Usa tecnologías que no requieran acciones adicionales del usuario</li>
-                <li><strong>Feedback claro:</strong> Cuando algo falla, explica al usuario cómo resolverlo</li>
-                <li><strong>Múltiples intentos:</strong> Permite reintentos con guía mejorada antes de rechazar</li>
+                <li><strong>Fricción adaptativa:</strong> Aumente los controles solo cuando se detectan señales de riesgo</li>
+                <li><strong>Verificación pasiva:</strong> Use tecnologías que no requieran acciones adicionales del usuario</li>
+                <li><strong>Feedback claro:</strong> Cuando algo falla, explique al usuario cómo resolverlo</li>
+                <li><strong>Múltiples intentos:</strong> Permita reintentos con guía mejorada antes de rechazar</li>
               </ul>
 
               <div className="bg-gray-50 rounded-xl p-8 my-8">
@@ -383,14 +383,14 @@ export default function PrevencionFraude() {
                 Cumplimiento y documentación
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
-                Más allá de prevenir el fraude, debes poder demostrar tu debida diligencia:
+                Más allá de prevenir el fraude, debe poder demostrar su debida diligencia:
               </p>
               <ul className="list-disc pl-6 mb-6 space-y-2 text-gray-600">
-                <li>Conserva evidencia de cada verificación realizada (imágenes, resultados, timestamps)</li>
-                <li>Documenta las decisiones de aprobación o rechazo</li>
-                <li>Mantén logs auditables de todo el proceso</li>
-                <li>Implementa políticas claras de escalamiento para casos sospechosos</li>
-                <li>Realiza auditorías periódicas de efectividad de controles</li>
+                <li>Conserve evidencia de cada verificación realizada (imágenes, resultados, timestamps)</li>
+                <li>Documente las decisiones de aprobación o rechazo</li>
+                <li>Mantenga logs auditables de todo el proceso</li>
+                <li>Implemente políticas claras de escalamiento para casos sospechosos</li>
+                <li>Realice auditorías periódicas de efectividad de controles</li>
               </ul>
 
               <div className="bg-[#0E1133] rounded-xl p-8 my-12">
@@ -400,7 +400,7 @@ export default function PrevencionFraude() {
                 <p className="text-white/80">
                   La prevención del fraude en el onboarding digital no es un proyecto de una
                   sola vez, sino un proceso continuo de mejora. Los defraudadores evolucionan
-                  constantemente sus técnicas, y tu defensa debe evolucionar con ellos.
+                  constantemente sus técnicas, y su defensa debe evolucionar con ellos.
                   Invertir en tecnología robusta de verificación de identidad es la mejor
                   protección contra pérdidas financieras y daño reputacional.
                 </p>
