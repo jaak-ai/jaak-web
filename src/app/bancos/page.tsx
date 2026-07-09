@@ -1,10 +1,24 @@
-"use client";
-
-import { useState } from "react";
+import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import Link from "next/link";
+import IndustryLeadForm from "@/components/IndustryLeadForm";
 import { IBETA, STATS } from "@/lib/trust";
+
+export const metadata: Metadata = {
+  title: "Biometría bancaria 100% propia",
+  description:
+    "Liveness Detection, Facial Search, KYC y Bus Biométrico. Infraestructura biométrica bancaria diseñada y operada en México, sin dependencia de proveedores externos.",
+  alternates: { canonical: "/bancos" },
+  openGraph: {
+    type: "website",
+    locale: "es_MX",
+    url: "/bancos",
+    siteName: "JAAK",
+    title: "Biometría bancaria 100% propia | JAAK",
+    description:
+      "Liveness, Facial Search, KYC y Bus Biométrico para bancos, cajas de ahorro y Afores. Infraestructura biométrica operada en México.",
+  },
+};
 
 const painPoints = [
   {
@@ -92,42 +106,6 @@ const stats = [
 ];
 
 export default function BancosPage() {
-  const [formData, setFormData] = useState({
-    name: "",
-    empresa: "",
-    email: "",
-    telefono: "",
-    mensaje: "",
-  });
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus("loading");
-    setErrorMessage("");
-
-    try {
-      const res = await fetch("/api/landing", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, source: "landing-bancos" }),
-      });
-
-      if (res.ok) {
-        setStatus("success");
-        setFormData({ name: "", empresa: "", email: "", telefono: "", mensaje: "" });
-      } else {
-        const data = await res.json().catch(() => ({}));
-        setStatus("error");
-        setErrorMessage(data.error || "Error al enviar. Intenta de nuevo.");
-      }
-    } catch {
-      setStatus("error");
-      setErrorMessage("Error de conexión. Intenta de nuevo.");
-    }
-  };
-
   return (
     <>
       <Header />
@@ -361,117 +339,20 @@ export default function BancosPage() {
               </div>
 
               {/* Form */}
-              <div className="bg-white rounded-2xl p-8 shadow-2xl">
-                <h3 className="text-2xl font-bold text-[#212A45] mb-2">
-                  Agenda tu demo técnica
-                </h3>
-                <p className="text-gray-500 mb-8">
-                  Un arquitecto de soluciones te contacta en menos de 24 horas.
-                </p>
-
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  <div className="grid md:grid-cols-2 gap-5">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-800 mb-1.5">
-                        Nombre completo *
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#2DB6C1] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400"
-                        placeholder="Tu nombre"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-800 mb-1.5">
-                        Institución *
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        value={formData.empresa}
-                        onChange={(e) => setFormData({ ...formData, empresa: e.target.value })}
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#2DB6C1] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400"
-                        placeholder="Banco / Caja de Ahorro / Afore"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid md:grid-cols-2 gap-5">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-800 mb-1.5">
-                        Correo electrónico *
-                      </label>
-                      <input
-                        type="email"
-                        required
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#2DB6C1] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400"
-                        placeholder="tu@banco.com"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-800 mb-1.5">
-                        Teléfono *
-                      </label>
-                      <input
-                        type="tel"
-                        required
-                        value={formData.telefono}
-                        onChange={(e) => setFormData({ ...formData, telefono: e.target.value })}
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#2DB6C1] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400"
-                        placeholder="+52 55 1234 5678"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-800 mb-1.5">
-                      ¿Qué solución te interesa evaluar?
-                    </label>
-                    <textarea
-                      rows={3}
-                      value={formData.mensaje}
-                      onChange={(e) => setFormData({ ...formData, mensaje: e.target.value })}
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#2DB6C1] focus:border-transparent outline-none resize-none text-gray-900 placeholder:text-gray-400"
-                      placeholder="Ej: Queremos reemplazar a nuestro proveedor externo de Liveness. Tenemos 500k verificaciones/mes..."
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={status === "loading"}
-                    className="w-full px-6 py-4 bg-[#2DB6C1] text-[#212A45] font-bold rounded-lg hover:bg-[#17b5bd] transition-all disabled:opacity-50 disabled:cursor-not-allowed text-lg"
-                  >
-                    {status === "loading" ? "Enviando..." : "Agendar demo técnica"}
-                  </button>
-
-                  {status === "success" && (
-                    <div className="p-4 bg-green-50 border border-green-200 rounded-lg text-center">
-                      <p className="text-green-700 font-medium">
-                        ✓ Solicitud enviada. Un arquitecto de soluciones te contacta pronto.
-                      </p>
-                    </div>
-                  )}
-
-                  {status === "error" && (
-                    <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-center">
-                      <p className="text-red-700 font-medium">{errorMessage}</p>
-                    </div>
-                  )}
-
-                  <p className="text-xs text-gray-400 text-center">
-                    Al enviar aceptas nuestra{" "}
-                    <Link href="/privacidad" className="text-[#2DB6C1] hover:underline">
-                      Política de Privacidad
-                    </Link>
-                    .
-                  </p>
-                </form>
-              </div>
+              <IndustryLeadForm
+                source="landing-bancos"
+                theme="teal"
+                heading="Agenda tu demo técnica"
+                subheading="Un arquitecto de soluciones te contacta en menos de 24 horas."
+                empresaLabel="Institución *"
+                empresaRequired
+                empresaPlaceholder="Banco / Caja de Ahorro / Afore"
+                emailPlaceholder="tu@banco.com"
+                mensajeLabel="¿Qué solución te interesa evaluar?"
+                mensajePlaceholder="Ej: Queremos reemplazar a nuestro proveedor externo de Liveness. Tenemos 500k verificaciones/mes..."
+                submitLabel="Agendar demo técnica"
+                successMessage="✓ Solicitud enviada. Un arquitecto de soluciones te contacta pronto."
+              />
             </div>
           </div>
         </section>

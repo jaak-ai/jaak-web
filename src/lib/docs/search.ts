@@ -1,7 +1,12 @@
-'use client'
-
 import { Index } from 'flexsearch'
-import { allDocs, type Doc } from 'contentlayer2/generated'
+
+export interface SearchDoc {
+  title: string
+  description: string
+  url: string
+  category: string
+  text: string
+}
 
 export interface SearchResult {
   title: string
@@ -11,9 +16,9 @@ export interface SearchResult {
 }
 
 let searchIndex: Index | null = null
-let docsCache: Doc[] = []
+let docsCache: SearchDoc[] = []
 
-export function initSearchIndex(): void {
+export function initSearchIndex(docs: SearchDoc[]): void {
   if (searchIndex) return
 
   searchIndex = new Index({
@@ -21,17 +26,16 @@ export function initSearchIndex(): void {
     cache: true,
   })
 
-  docsCache = allDocs.filter((doc) => !doc.unlisted)
+  docsCache = docs
   docsCache.forEach((doc, id) => {
-    searchIndex!.add(id, `${doc.title} ${doc.description} ${doc.body.raw}`)
+    searchIndex!.add(id, `${doc.title} ${doc.description} ${doc.text}`)
   })
 }
 
 export function search(query: string): SearchResult[] {
-  if (!searchIndex) initSearchIndex()
-  if (!query || query.length < 2) return []
+  if (!searchIndex || !query || query.length < 2) return []
 
-  const results = searchIndex!.search(query, { limit: 10 })
+  const results = searchIndex.search(query, { limit: 10 })
 
   return results.map((id) => {
     const doc = docsCache[id as number]

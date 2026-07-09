@@ -1,11 +1,16 @@
 import { isValidElement, type ReactElement } from 'react'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 import type { MDXComponents } from 'mdx/types'
 import { Callout } from './Callout'
 import { CodeBlock } from './CodeBlock'
-import { Mermaid } from './Mermaid'
 import { Tabs, CodeTabs } from './Tabs'
 import { Endpoint, ParamsTable, ResponseSchema, HttpMethod } from './api'
+
+const Mermaid = dynamic(() => import('./Mermaid').then((m) => m.Mermaid), {
+  ssr: false,
+  loading: () => <div className="min-h-[320px]" />,
+})
 
 function extractCodeText(node: unknown): string {
   if (typeof node === 'string') return node

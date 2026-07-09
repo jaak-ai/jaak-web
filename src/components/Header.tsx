@@ -221,13 +221,13 @@ export default function Header() {
                 href="/contacto"
                 className="hidden md:block px-4 py-2.5 font-semibold text-[15px] rounded-lg border border-gray-300 text-[#212A45] hover:border-[#212A45] transition-all"
               >
-                Solicitar revisión
+                Agendar demo
               </Link>
               <Link
                 href="/autoservicio"
                 className="px-5 py-2.5 bg-[#2DB6C1] text-white font-semibold text-[15px] rounded-lg hover:bg-[#25969f] transition-all"
               >
-                Comprar
+                Comenzar ahora
               </Link>
 
               {/* Mobile menu button */}
@@ -350,7 +350,7 @@ export default function Header() {
               {/* Autoservicio */}
               <div>
                 <Link href="/autoservicio" className="block w-full text-center px-5 py-3 bg-[#2DB6C1] text-white font-semibold rounded-lg hover:bg-[#25969f]" onClick={() => setMobileMenuOpen(false)}>
-                  Comprar
+                  Comenzar ahora
                 </Link>
               </div>
 
@@ -374,7 +374,7 @@ export default function Header() {
                   className="block w-full text-center px-5 py-3 bg-[#212A45] text-white font-semibold rounded-lg hover:bg-[#0E1133]"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  Solicitar revisión regulatoria
+                  Agendar demo
                 </Link>
               </div>
             </div>
@@ -524,7 +524,7 @@ export default function Header() {
                   href="/contacto"
                   className="inline-flex items-center justify-center w-full px-4 py-2.5 bg-[#212A45] text-white font-semibold text-sm rounded-lg hover:bg-[#0E1133] transition-all"
                 >
-                  Solicitar revisión regulatoria
+                  Agendar demo
                 </Link>
               </div>
             </div>
@@ -668,7 +668,7 @@ export default function Header() {
                   href="/contacto"
                   className="inline-flex items-center justify-center w-full px-4 py-2.5 bg-[#212A45] text-white font-semibold text-sm rounded-lg hover:bg-[#0E1133] transition-all"
                 >
-                  Solicitar revisión regulatoria
+                  Agendar demo
                 </Link>
               </div>
             </div>

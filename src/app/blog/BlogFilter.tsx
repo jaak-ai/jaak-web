@@ -73,7 +73,7 @@ function FeaturedCard({ post, hero = false }: { post: (typeof blogPosts)[0]; her
         >
           {post.image ? (
             <div className="relative h-52 overflow-hidden">
-              <Image src={post.image} alt={post.title} fill className="object-cover object-top transition-transform duration-500 group-hover:scale-105" />
+              <Image src={post.image} alt={post.title} fill sizes="(max-width:1024px) 100vw, 50vw" className="object-cover object-top transition-transform duration-500 group-hover:scale-105" />
               <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 40%, rgba(32,41,69,0.95) 100%)" }} />
             </div>
           ) : (
@@ -125,7 +125,7 @@ function FeaturedCard({ post, hero = false }: { post: (typeof blogPosts)[0]; her
       >
         {post.image ? (
           <div className="relative h-40 overflow-hidden shrink-0">
-            <Image src={post.image} alt={post.title} fill className="object-cover object-top transition-transform duration-500 group-hover:scale-105" />
+            <Image src={post.image} alt={post.title} fill sizes="(max-width:768px) 100vw, 33vw" className="object-cover object-top transition-transform duration-500 group-hover:scale-105" />
             <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 50%, rgba(32,41,69,0.95) 100%)" }} />
           </div>
         ) : (
@@ -198,7 +198,7 @@ function SearchResultCard({ post, query }: { post: (typeof blogPosts)[0]; query:
       >
         {post.image && (
           <div className="relative w-20 h-14 rounded-lg overflow-hidden shrink-0 hidden sm:block">
-            <Image src={post.image} alt={post.title} fill className="object-cover object-top" />
+            <Image src={post.image} alt={post.title} fill sizes="80px" className="object-cover object-top" />
           </div>
         )}
         <div className="flex-1 min-w-0">

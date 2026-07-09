@@ -1,10 +1,25 @@
-"use client";
-
-import { useState } from "react";
+import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import IndustryLeadForm from "@/components/IndustryLeadForm";
 import { IBETA, STATS } from "@/lib/trust";
+
+export const metadata: Metadata = {
+  title: "KYC y cumplimiento AML/LAFT para financieras",
+  description:
+    "Verificación de identidad biométrica, Liveness y Firma Digital NOM-151 para SOFOMES, fintechs y entidades financieras reguladas. Cumple CNBV, UIF y LFPIORPI e intégralo en horas.",
+  alternates: { canonical: "/financieras" },
+  openGraph: {
+    type: "website",
+    locale: "es_MX",
+    url: "/financieras",
+    siteName: "JAAK",
+    title: "KYC y cumplimiento AML/LAFT para financieras | JAAK",
+    description:
+      "KYC biométrico, Liveness y Firma Digital NOM-151 para SOFOMES y fintechs. Cumplimiento CNBV, UIF y LFPIORPI sin fricción.",
+  },
+};
 
 const painPoints = [
   {
@@ -83,42 +98,6 @@ const regulations = [
 ];
 
 export default function FinancierasPage() {
-  const [formData, setFormData] = useState({
-    name: "",
-    empresa: "",
-    email: "",
-    telefono: "",
-    mensaje: "",
-  });
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus("loading");
-    setErrorMessage("");
-
-    try {
-      const res = await fetch("/api/landing", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, source: "landing-financieras" }),
-      });
-
-      if (res.ok) {
-        setStatus("success");
-        setFormData({ name: "", empresa: "", email: "", telefono: "", mensaje: "" });
-      } else {
-        const data = await res.json().catch(() => ({}));
-        setStatus("error");
-        setErrorMessage(data.error || "Error al enviar. Intenta de nuevo.");
-      }
-    } catch {
-      setStatus("error");
-      setErrorMessage("Error de conexión. Intenta de nuevo.");
-    }
-  };
-
   return (
     <>
       <Header />
@@ -352,116 +331,18 @@ export default function FinancierasPage() {
               </div>
 
               {/* Form */}
-              <div className="bg-white rounded-2xl p-8 shadow-2xl">
-                <h3 className="text-2xl font-bold text-[#212A45] mb-2">
-                  Habla con un especialista
-                </h3>
-                <p className="text-gray-500 mb-8">
-                  Respuesta garantizada en menos de 24 horas.
-                </p>
-
-                <form onSubmit={handleSubmit} className="space-y-5">
-                  <div className="grid md:grid-cols-2 gap-5">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-800 mb-1.5">
-                        Nombre completo *
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#655DC6] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400"
-                        placeholder="Tu nombre"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-800 mb-1.5">
-                        Empresa
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.empresa}
-                        onChange={(e) => setFormData({ ...formData, empresa: e.target.value })}
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#655DC6] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400"
-                        placeholder="SOFOM / Fintech / Fondo"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid md:grid-cols-2 gap-5">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-800 mb-1.5">
-                        Correo electrónico *
-                      </label>
-                      <input
-                        type="email"
-                        required
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#655DC6] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400"
-                        placeholder="tu@empresa.com"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-800 mb-1.5">
-                        Teléfono *
-                      </label>
-                      <input
-                        type="tel"
-                        required
-                        value={formData.telefono}
-                        onChange={(e) => setFormData({ ...formData, telefono: e.target.value })}
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#655DC6] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400"
-                        placeholder="+52 55 1234 5678"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-800 mb-1.5">
-                      ¿Qué necesitas resolver?
-                    </label>
-                    <textarea
-                      rows={3}
-                      value={formData.mensaje}
-                      onChange={(e) => setFormData({ ...formData, mensaje: e.target.value })}
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#655DC6] focus:border-transparent outline-none resize-none text-gray-900 placeholder:text-gray-400"
-                      placeholder="Ej: Necesito KYC para onboarding de créditos, cumplir CNBV..."
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={status === "loading"}
-                    className="w-full px-6 py-4 bg-[#655DC6] text-white font-bold rounded-lg hover:bg-[#5249b0] transition-all disabled:opacity-50 disabled:cursor-not-allowed text-lg"
-                  >
-                    {status === "loading" ? "Enviando..." : "Habla con un experto hoy"}
-                  </button>
-
-                  {status === "success" && (
-                    <div className="p-4 bg-green-50 border border-green-200 rounded-lg text-center">
-                      <p className="text-green-700 font-medium">
-                        ✓ Solicitud enviada. Un especialista te contacta en menos de 24h.
-                      </p>
-                    </div>
-                  )}
-
-                  {status === "error" && (
-                    <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-center">
-                      <p className="text-red-700 font-medium">{errorMessage}</p>
-                    </div>
-                  )}
-
-                  <p className="text-xs text-gray-400 text-center">
-                    Al enviar aceptas nuestra{" "}
-                    <Link href="/privacidad" className="text-[#655DC6] hover:underline">
-                      Política de Privacidad
-                    </Link>
-                    .
-                  </p>
-                </form>
-              </div>
+              <IndustryLeadForm
+                source="landing-financieras"
+                theme="purple"
+                heading="Habla con un especialista"
+                subheading="Respuesta garantizada en menos de 24 horas."
+                empresaLabel="Empresa"
+                empresaPlaceholder="SOFOM / Fintech / Fondo"
+                mensajeLabel="¿Qué necesitas resolver?"
+                mensajePlaceholder="Ej: Necesito KYC para onboarding de créditos, cumplir CNBV..."
+                submitLabel="Habla con un experto hoy"
+                successMessage="✓ Solicitud enviada. Un especialista te contacta en menos de 24h."
+              />
             </div>
           </div>
         </section>

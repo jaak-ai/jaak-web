@@ -192,6 +192,11 @@ export default function RootLayout({
   return (
     <html lang="es" className={montserrat.variable}>
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.classList.add('sr-ready')",
+          }}
+        />
         <GoogleTagManagerHead />
         <script
           type="application/ld+json"

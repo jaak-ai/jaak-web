@@ -225,7 +225,7 @@ body {
 
 /* Section backgrounds */
 .hp-bg-1   { background: #0E1133; }
-.hp-bg-2   { background: #141a3a; }
+.hp-bg-2   { background: #1a2249; }
 .hp-bg-hero { background: linear-gradient(160deg, #0A1628 0%, #0E1133 45%, #0A1628 100%); }
 .hp-bg-cta  { background: linear-gradient(160deg, #0A1628 0%, #0E1133 60%, #0A1628 100%); }
 .hp-bg-logos { background: #141a3a; --hp-logos-fade: #141a3a; }
@@ -249,6 +249,17 @@ body {
 [data-hp-theme="light"] .hp-section p.text-white,
 [data-hp-theme="light"] .hp-section li.text-white {
   color: #0A1628 !important;
+}
+
+/* Persistent navy panels keep white text in light mode */
+[data-hp-theme="light"] .hp-section .hp-navy-panel h1,
+[data-hp-theme="light"] .hp-section .hp-navy-panel h2,
+[data-hp-theme="light"] .hp-section .hp-navy-panel h3,
+[data-hp-theme="light"] .hp-section .hp-navy-panel div.text-white,
+[data-hp-theme="light"] .hp-section .hp-navy-panel span.text-white,
+[data-hp-theme="light"] .hp-section .hp-navy-panel p.text-white,
+[data-hp-theme="light"] .hp-section .hp-navy-panel li.text-white {
+  color: #fff !important;
 }
 
 /* KYC scanner beam animation — uses translateY for cross-browser reliability */
@@ -432,6 +443,42 @@ body {
   border-color: rgba(30,202,211,0.28);
 }
 
+/* ── Scroll reveal ──
+   El estado oculto solo aplica con html.sr-ready, clase que fija el script
+   inline de layout antes del primer paint. Así existe desde el primer render
+   (sin doble parpadeo) y quienes navegan sin JS conservan el contenido visible. */
+html.sr-ready [data-sr] {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+html.sr-ready [data-sr="left"]  { transform: translateX(-36px); }
+html.sr-ready [data-sr="right"] { transform: translateX(36px); }
+html.sr-ready [data-sr="scale"] { transform: scale(0.93) translateY(16px); }
+
+html.sr-ready [data-sr].sr-in {
+  opacity: 1;
+  transform: none;
+}
+
+html.sr-ready [data-sr-grid] > * {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+html.sr-ready [data-sr-grid].sr-in > *:nth-child(1) { transition-delay: 0ms; }
+html.sr-ready [data-sr-grid].sr-in > *:nth-child(2) { transition-delay: 80ms; }
+html.sr-ready [data-sr-grid].sr-in > *:nth-child(3) { transition-delay: 160ms; }
+html.sr-ready [data-sr-grid].sr-in > *:nth-child(4) { transition-delay: 240ms; }
+html.sr-ready [data-sr-grid].sr-in > *:nth-child(5) { transition-delay: 320ms; }
+html.sr-ready [data-sr-grid].sr-in > *:nth-child(6) { transition-delay: 400ms; }
+html.sr-ready [data-sr-grid].sr-in > * {
+  opacity: 1;
+  transform: none;
+}
+
 /* ── Accesibilidad: movimiento reducido ── */
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -443,5 +490,11 @@ body {
   .orb-drift-2,
   .orb-drift-3 {
     animation: none;
+  }
+  html.sr-ready [data-sr],
+  html.sr-ready [data-sr-grid] > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
 }

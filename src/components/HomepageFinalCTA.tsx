@@ -208,7 +208,7 @@ export default function HomepageFinalCTA() {
                 border: "1px solid var(--hp-ghost-btn-border)",
               }}
             >
-              Hablar con un experto
+              Agendar demo
             </Link>
           </div>
         </div>

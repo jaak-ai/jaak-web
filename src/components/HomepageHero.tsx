@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, type ReactNode } from "react";
 import { STATS, NUM_CERTIFICACIONES } from "@/lib/trust";
 
 const navPills = [
@@ -12,21 +12,85 @@ const navPills = [
 ];
 
 const kycSteps = [
-  { label: "Prueba de vida anti-spoofing", icon: "👁️" },
-  { label: "Biometría facial 1:1", icon: "🤳" },
-  { label: "OCR documental", icon: "📄" },
-  { label: "Geolocalización", icon: "📍" },
-  { label: "Listas nominales (INE/RENAPO)", icon: "🗂️" },
-  { label: "Listas negras (OFAC/SAT)", icon: "🚫" },
+  { label: "Prueba de vida anti-spoofing", icon: "eye" },
+  { label: "Biometría facial 1:1", icon: "biometric" },
+  { label: "OCR documental", icon: "document" },
+  { label: "Geolocalización", icon: "location" },
+  { label: "Listas nominales (INE/RENAPO)", icon: "list" },
+  { label: "Listas negras (OFAC/SAT)", icon: "ban" },
 ];
+
+const stepIcons: Record<string, ReactNode> = {
+  eye: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+    </svg>
+  ),
+  biometric: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M7.864 4.243A7.5 7.5 0 0119.5 10.5c0 2.92-.556 5.709-1.568 8.268M5.742 6.364A7.465 7.465 0 004.5 10.5a7.464 7.464 0 01-1.15 3.993m1.989 3.559A11.209 11.209 0 008.25 10.5a3.75 3.75 0 117.5 0c0 .527-.021 1.049-.064 1.565M12 10.5a14.94 14.94 0 01-3.6 9.75m6.633-4.596a18.666 18.666 0 01-2.485 5.33" />
+    </svg>
+  ),
+  document: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+    </svg>
+  ),
+  location: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+    </svg>
+  ),
+  list: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+    </svg>
+  ),
+  ban: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+    </svg>
+  ),
+};
 
 type KYCPhase = "scanning" | "processing" | "done";
 
 export default function HomepageHero() {
+  const sectionRef = useRef<HTMLElement>(null);
   const [phase, setPhase] = useState<KYCPhase>("scanning");
   const [step, setStep] = useState(-1);
+  const [inView, setInView] = useState(true);
+  const [reduceMotion, setReduceMotion] = useState(false);
 
   useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const apply = () => setReduceMotion(mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0.2 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!reduceMotion) return;
+    setPhase("done");
+    setStep(kycSteps.length - 1);
+  }, [reduceMotion]);
+
+  useEffect(() => {
+    if (reduceMotion || !inView) return;
     if (phase === "scanning") {
       const t = setTimeout(() => { setPhase("processing"); setStep(0); }, 2800);
       return () => clearTimeout(t);
@@ -42,10 +106,10 @@ export default function HomepageHero() {
       const t = setTimeout(() => { setPhase("scanning"); setStep(-1); }, 2200);
       return () => clearTimeout(t);
     }
-  }, [phase, step]);
+  }, [phase, step, inView, reduceMotion]);
 
   return (
-    <section className="hp-section hp-bg-hero min-h-screen pt-28 relative overflow-hidden">
+    <section ref={sectionRef} className="hp-section hp-bg-hero min-h-screen pt-28 relative overflow-hidden">
       {/* Ambient glows */}
       <div
         className="absolute top-[-10%] left-[-5%] w-[700px] h-[700px] rounded-full blur-[140px] pointer-events-none"
@@ -313,7 +377,14 @@ export default function HomepageHero() {
                             }}
                           >
                             <div className="flex items-center gap-2.5">
-                              <span className="text-sm">{s.icon}</span>
+                              <span
+                                className="flex-shrink-0"
+                                style={{
+                                  color: done ? "var(--hp-text-hi)" : active ? "var(--hp-text-md)" : "var(--hp-text-faint)",
+                                }}
+                              >
+                                {stepIcons[s.icon]}
+                              </span>
                               <span
                                 className="text-xs font-medium"
                                 style={{
