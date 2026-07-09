@@ -27,7 +27,7 @@ const breadcrumbSchema = {
   "@type": "BreadcrumbList",
   itemListElement: [
     { "@type": "ListItem", position: 1, name: "Inicio", item: "https://jaak.ai" },
-    { "@type": "ListItem", position: 2, name: "Firma Electrónica", item: "https://jaak.ai/plataforma/firma-electronica" },
+    { "@type": "ListItem", position: 2, name: "Firma Electrónica", item: "https://jaak.ai/firma-electronica" },
     { "@type": "ListItem", position: 3, name: "Firma Simple", item: "https://jaak.ai/firma-electronica-simple" },
   ],
 };
@@ -50,7 +50,7 @@ export default function FirmaSimplePage() {
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Breadcrumb */}
             <nav className="flex items-center gap-2 text-xs text-gray-600 mb-8" aria-label="Navegación">
-              <Link href="/plataforma/firma-electronica" className="hover:text-[#2DB6C1] transition-colors">
+              <Link href="/firma-electronica" className="hover:text-[#2DB6C1] transition-colors">
                 Firma Electrónica
               </Link>
               <span aria-hidden="true">›</span>
@@ -88,7 +88,7 @@ export default function FirmaSimplePage() {
                 Empezar gratis
               </Link>
               <Link
-                href="/plataforma/firma-electronica"
+                href="/firma-electronica"
                 className="inline-flex items-center justify-center px-7 py-3.5 rounded-xl font-semibold text-gray-400 transition-all hover:text-white"
                 style={{
                   background: "rgba(255,255,255,0.04)",
@@ -232,7 +232,7 @@ export default function FirmaSimplePage() {
                 { href: "/firma-electronica-nom-151", label: "Firma Digital NOM-151" },
                 { href: "/firma-electronica-biometrica", label: "Firma Digital NOM-151 + Biometría" },
                 { href: "/firma-electronica-kyc", label: "Firma Digital NOM-151 + KYC" },
-                { href: "/plataforma/firma-electronica", label: "← Hub principal" },
+                { href: "/firma-electronica", label: "← Hub principal" },
               ].map((link) => (
                 <Link
                   key={link.href}

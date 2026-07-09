@@ -4,8 +4,8 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "🧮 Calculadora: ¿Cuánto Ahorras con Signa vs Mifiel? | Ahorro Real México",
-  description: "🏆 Calculadora gratuita: Descubre tu ahorro exacto cambiando de Mifiel a Signa. Promedio: $26,000 MXN anuales. 50% menos por firma electrónica.",
+  title: "Calculadora: ¿Cuánto Ahorras con Signa vs Mifiel? | Ahorro Real México",
+  description: "Calculadora gratuita: Descubre tu ahorro exacto cambiando de Mifiel a Signa. Promedio: $26,000 MXN anuales. 50% menos por firma electrónica.",
   keywords: [
     // Primary calculator keywords
     "calculadora ahorro mifiel",
@@ -31,8 +31,8 @@ export const metadata: Metadata = {
     canonical: "https://jaak.ai/signa/calculadora"
   },
   openGraph: {
-    title: "🧮 Calculadora Signa vs Mifiel - ¿Cuánto Ahorras?",
-    description: "🏆 Calcula tu ahorro exacto. Promedio: $26,000 MXN anuales ahorrando 50% por firma.",
+    title: "Calculadora Signa vs Mifiel - ¿Cuánto Ahorras?",
+    description: "Calcula tu ahorro exacto. Promedio: $26,000 MXN anuales ahorrando 50% por firma.",
     type: "website", 
     url: "https://jaak.ai/signa/calculadora",
     images: [
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "🧮 Calculadora: Ahorro Signa vs Mifiel",
+    title: "Calculadora: Ahorro Signa vs Mifiel",
     description: "Calcula cuánto ahorras. Promedio: $26,000 MXN/año",
     images: ["https://jaak.ai/signa-calculadora-twitter.jpg"]
   },

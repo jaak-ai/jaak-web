@@ -1,48 +1,23 @@
 import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ClientLogos from "@/components/ClientLogos";
 import Link from "next/link";
 import { signaOrganizationSchema, signaServiceSchema, signaFAQSchema, signaBreadcrumbSchema } from "./schema";
 
 export const metadata: Metadata = {
-  title: "Signa - Firma Electrónica México | 50% Más Barata que Mifiel | NOM-151",
-  description: "🏆 Firma electrónica profesional México. $15 vs $29.90 Mifiel (50% ahorro). NOM-151 certificado, soporte 24/7, migración gratis. Tecnología 2026.",
-  keywords: [
-    // Primary keywords
-    "firma electrónica méxico",
-    "mifiel alternativa", 
-    "firma digital barata méxico",
-    "signa firma electrónica",
-    "NOM-151 firma",
-    // Long tail keywords
-    "firma electrónica más barata que mifiel",
-    "alternativa mifiel méxico",
-    "firma digital profesional méxico",
-    "documento electrónico méxico",
-    "signatura digital méxico",
-    "firma online méxico",
-    "e-signature méxico",
-    "firma legal méxico",
-    // Competitive keywords
-    "mifiel vs signa",
-    "precio mifiel alternativa",
-    "migrar de mifiel",
-    "cambiar mifiel por signa",
-    // Industry keywords
-    "firma electrónica empresas",
-    "firma digital pymes",
-    "contratos digitales méxico",
-    "documentos legales online"
-  ],
-  authors: [{ name: "Signa México", url: "https://jaak.ai/signa" }],
-  creator: "Signa",
-  publisher: "Signa México", 
+  title: "Signa by JAAK — Firma electrónica con validez legal NOM-151 en México",
+  description:
+    "Firma electrónica con validez legal NOM-151 para México. Expediente probatorio completo, sellos de tiempo y precios transparentes por firma. Signa by JAAK.",
+  authors: [{ name: "Signa by JAAK", url: "https://jaak.ai/signa" }],
+  creator: "JAAK",
+  publisher: "Signa by JAAK",
   alternates: {
     canonical: "https://jaak.ai/signa",
     languages: {
-      'es-MX': 'https://jaak.ai/signa',
-      'es': 'https://jaak.ai/signa'
-    }
+      "es-MX": "https://jaak.ai/signa",
+      es: "https://jaak.ai/signa",
+    },
   },
   robots: {
     index: true,
@@ -51,45 +26,45 @@ export const metadata: Metadata = {
       index: true,
       follow: true,
       noimageindex: false,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
   },
   openGraph: {
-    title: "Signa - Firma Electrónica México | 50% Más Barata que Mifiel",
-    description: "🏆 Firma electrónica profesional México. $15 vs $29.90 Mifiel (50% ahorro). NOM-151 certificado, migración gratis.",
+    title: "Signa by JAAK — Firma electrónica con validez legal NOM-151",
+    description:
+      "Firma electrónica con validez legal NOM-151 para México. Expediente probatorio completo y precios transparentes por firma.",
     type: "website",
     url: "https://jaak.ai/signa",
-    siteName: "Signa - Firma Electrónica México",
+    siteName: "Signa by JAAK",
     locale: "es_MX",
     images: [
       {
         url: "https://jaak.ai/signa-og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Signa - Firma Electrónica 50% Más Barata que Mifiel"
-      }
-    ]
+        alt: "Signa by JAAK — Firma electrónica NOM-151",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Signa - Firma Electrónica México | 50% Más Barata que Mifiel",
-    description: "🏆 $15 vs $29.90 Mifiel (50% ahorro). NOM-151 certificado, migración gratis.",
+    title: "Signa by JAAK — Firma electrónica con validez legal NOM-151",
+    description:
+      "Firma electrónica con validez legal NOM-151 para México. Expediente probatorio completo y precios transparentes.",
     images: ["https://jaak.ai/signa-twitter-image.jpg"],
-    creator: "@SignaMexico"
   },
   category: "Technology",
   classification: "Firma Electrónica, Tecnología, Software Empresarial",
   other: {
-    'geo.region': 'MX',
-    'geo.country': 'México', 
-    'geo.placename': 'México',
-    'language': 'Spanish',
-    'target-audience': 'Empresas, PyMEs, Profesionales',
-    'distribution': 'global',
-    'revisit-after': '7 days'
-  }
+    "geo.region": "MX",
+    "geo.country": "México",
+    "geo.placename": "México",
+    language: "Spanish",
+    "target-audience": "Empresas, PyMEs, Profesionales",
+    distribution: "global",
+  },
 };
 
 export default function SignaHome() {
@@ -101,346 +76,168 @@ export default function SignaHome() {
         dangerouslySetInnerHTML={{
           __html: JSON.stringify([
             signaOrganizationSchema,
-            signaServiceSchema, 
+            signaServiceSchema,
             signaFAQSchema,
-            signaBreadcrumbSchema
-          ])
+            signaBreadcrumbSchema,
+          ]),
         }}
       />
-      
+
       <Header />
       <main>
-        {/* Hero Section - Optimized for "firma electrónica méxico" */}
+        {/* Hero */}
         <section className="pt-32 pb-20 bg-gradient-to-br from-[#0E1133] via-[#0E1133] to-[#1a1a1a]" role="banner">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <header>
                 <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#2DB6C1]/10 border border-[#2DB6C1]/20 rounded-full mb-6">
                   <span className="w-2 h-2 bg-[#2DB6C1] rounded-full"></span>
-                  <span className="text-[#2DB6C1] text-sm font-medium">Tecnología 2026</span>
+                  <span className="text-[#2DB6C1] text-sm font-medium uppercase tracking-[0.18em]">Firma electrónica NOM-151</span>
                 </div>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6">
-                  <span className="text-[#0066ff]">Firma Electrónica México</span>
+                  Firma electrónica con validez legal en México
                 </h1>
-                <p className="text-xl text-white/70 mb-8" role="text">
-                  <strong className="text-white">Firma electrónica profesional para México</strong> con tecnología 2026. 
-                  Certificado <strong className="text-[#2DB6C1]">NOM-151</strong>, soporte 24/7. 
-                  <strong className="text-white">50% más barata que Mifiel</strong> - Solo $15 por documento.
+                <p className="text-xl text-white/70 mb-8">
+                  Firma tus documentos con <strong className="text-white">validez legal NOM-151</strong> y{" "}
+                  <strong className="text-[#2DB6C1]">expediente probatorio completo</strong>. Precios transparentes por firma,
+                  migración acompañada y soporte 24/7 en español.
                 </p>
-                
-                {/* Price Comparison */}
-                <div className="flex flex-wrap gap-4 mb-8">
-                  <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 flex-1 min-w-[140px]">
-                    <div className="text-red-400 text-sm font-medium">Competencia</div>
-                    <div className="text-red-300 text-2xl font-bold">$29.90</div>
-                    <div className="text-red-400/70 text-sm">por firma</div>
-                  </div>
-                  <div className="flex items-center text-white/50 text-2xl font-bold px-2">VS</div>
-                  <div className="bg-[#2DB6C1]/10 border border-[#2DB6C1]/30 rounded-lg p-4 flex-1 min-w-[140px] relative">
-                    <div className="absolute -top-2 -right-2 bg-[#2DB6C1] text-black text-xs font-bold px-2 py-1 rounded-full">50% MENOS</div>
-                    <div className="text-[#2DB6C1] text-sm font-medium">Signa</div>
-                    <div className="text-[#2DB6C1] text-2xl font-bold">$15.00</div>
-                    <div className="text-[#2DB6C1]/70 text-sm">por firma</div>
-                  </div>
-                </div>
 
                 <div className="flex flex-wrap gap-4">
                   <Link
                     href="/signa/calculadora"
                     className="px-6 py-3 bg-[#2DB6C1] text-black font-bold rounded-lg hover:bg-[#00c499] transition-all"
                   >
-                    📊 Calcular Mi Ahorro
+                    Calcular mi ahorro
                   </Link>
                   <Link
-                    href="/signa/comparacion"
+                    href="/precios"
                     className="px-6 py-3 bg-white/10 text-white font-semibold rounded-lg hover:bg-white/20 transition-all border border-white/20"
                   >
-                    ⚖️ Ver Comparación
+                    Ver precios transparentes
                   </Link>
                 </div>
 
-                <div className="mt-8 flex flex-col gap-2 text-sm">
-                  <div className="flex items-center gap-2 text-[#2DB6C1]">
-                    <span>✅</span> Migración gratis desde cualquier plataforma
+                <div className="mt-8 flex flex-col gap-3 text-sm">
+                  <div className="flex items-center gap-2 text-white/80">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#2DB6C1]"></span> Validez legal NOM-151 en cada firma
                   </div>
-                  <div className="flex items-center gap-2 text-[#2DB6C1]">
-                    <span>⚡</span> Deploy en 24 horas vs semanas de otros
+                  <div className="flex items-center gap-2 text-white/80">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#2DB6C1]"></span> Expediente probatorio con sellos de tiempo
                   </div>
-                  <div className="flex items-center gap-2 text-[#2DB6C1]">
-                    <span>🏛️</span> NOM-151 certificado, validez legal completa
+                  <div className="flex items-center gap-2 text-white/80">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#2DB6C1]"></span> Migración acompañada desde tu plataforma actual
                   </div>
-                  <div className="flex items-center gap-2 text-[#2DB6C1]">
-                    <span>🛡️</span> Garantía 30 días - Si no ahorras, te devolvemos tu dinero
+                  <div className="flex items-center gap-2 text-white/80">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#2DB6C1]"></span> Precios transparentes, sin costos de setup
                   </div>
                 </div>
               </header>
 
               <div className="relative">
-                {/* Interactive Savings Calculator */}
                 <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8">
-                  <h3 className="text-2xl font-bold text-white mb-6">📊 Calcula Tu Ahorro Real</h3>
-                  
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-white/80 text-sm font-medium mb-2">
-                        ¿Cuántos documentos firmas al mes?
-                      </label>
-                      <input 
-                        type="number" 
-                        id="monthly-docs" 
-                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:border-[#2DB6C1] focus:outline-none"
-                        placeholder="ej: 100"
-                        min="1"
-                      />
-                    </div>
-                    
-                    <button 
-                      id="calculate-savings"
-                      className="w-full px-6 py-3 bg-[#2DB6C1] text-black font-bold rounded-lg hover:bg-[#00c499] transition-all"
-                    >
-                      🧮 Calcular Ahorro
-                    </button>
-                    
-                    <div id="savings-result" className="hidden bg-[#2DB6C1]/10 border border-[#2DB6C1]/30 rounded-lg p-4">
-                      <div className="text-[#2DB6C1] font-bold text-lg" id="savings-amount">
-                        {/* Resultado aparecerá aquí */}
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="mt-6 pt-6 border-t border-white/10">
-                    <p className="text-white/60 text-sm text-center">
-                      🛡️ <strong className="text-white">Garantía 30 días:</strong> Si no ahorras como prometemos, te devolvemos 100% sin preguntas.
-                    </p>
-                  </div>
+                  <h2 className="text-2xl font-bold text-white mb-4">Calcula tu ahorro</h2>
+                  <p className="text-white/70 text-sm mb-6">
+                    Estima cuánto puedes ahorrar según tu volumen mensual de firmas, sobre precios publicados y transparentes.
+                  </p>
+                  <ul className="space-y-3 mb-8">
+                    <li className="flex items-start gap-3 text-white/80 text-sm">
+                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#2DB6C1] flex-shrink-0"></span> Tarifa por firma clara, sin mínimos mensuales
+                    </li>
+                    <li className="flex items-start gap-3 text-white/80 text-sm">
+                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#2DB6C1] flex-shrink-0"></span> Validez legal NOM-151 incluida
+                    </li>
+                    <li className="flex items-start gap-3 text-white/80 text-sm">
+                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#2DB6C1] flex-shrink-0"></span> Expediente probatorio en cada documento
+                    </li>
+                  </ul>
+                  <Link
+                    href="/signa/calculadora"
+                    className="block w-full text-center px-6 py-3 bg-[#2DB6C1] text-black font-bold rounded-lg hover:bg-[#00c499] transition-all"
+                  >
+                    Calcular mi ahorro
+                  </Link>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Comparison Grid - SEO Optimized for "mejor firma electrónica méxico" */}
+        {/* Value proposition */}
         <section className="py-20 bg-white" role="region" aria-labelledby="why-choose-signa">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
+              <p className="text-xs font-semibold uppercase tracking-[0.20em] text-[#2DB6C1] mb-3">Por qué Signa</p>
               <h2 id="why-choose-signa" className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
-                🏆 ¿Por Qué <span className="text-[#2DB6C1]">Signa</span> es la 
-                <span className="text-[#0066ff]"> Mejor Firma Electrónica México</span>?
+                Firma con respaldo legal, no solo con un clic
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                <strong>Más de 1,000 empresas ya migraron</strong> de Mifiel a Signa. 
-                Descubre por qué es la <strong>mejor alternativa a Mifiel</strong> en México: 
-                50% más barata, tecnología 2026, y validez legal NOM-151.
+                Signa está construida para el mercado mexicano: validez legal NOM-151, expediente probatorio completo
+                y precios transparentes.
               </p>
             </div>
 
             <div className="grid md:grid-cols-3 gap-8">
-              <div className="bg-gray-50 rounded-xl p-8 text-center">
-                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <span className="text-2xl">💸</span>
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Competencia Actual</h3>
-                <div className="space-y-2 text-sm text-gray-600">
-                  <div>❌ $29.90 por firma</div>
-                  <div>❌ Setup fee: $2,500 MXN</div>
-                  <div>❌ Cuota mensual mínima</div>
-                  <div>❌ Soporte horario oficina</div>
-                  <div>❌ Interfaz desactualizada</div>
-                  <div>❌ API limitada</div>
-                </div>
+              <div className="rounded-xl p-8 border border-gray-200 bg-white">
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Validez legal NOM-151</h3>
+                <p className="text-gray-600 text-sm">
+                  Cada firma cumple la NOM-151-SCFI-2016. Tus contratos y documentos tienen plena validez legal en México.
+                </p>
               </div>
 
-              <div className="bg-gradient-to-br from-[#2DB6C1]/5 to-[#0066ff]/5 border-2 border-[#2DB6C1] rounded-xl p-8 text-center relative">
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-[#2DB6C1] text-black text-xs font-bold px-3 py-1 rounded-full">
-                  RECOMENDADO
-                </div>
-                <div className="w-16 h-16 bg-[#2DB6C1]/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <span className="text-2xl">✍️</span>
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Signa (Nosotros)</h3>
-                <div className="space-y-2 text-sm text-gray-800">
-                  <div className="text-[#2DB6C1] font-semibold">✅ $15.00 por firma (50% menos)</div>
-                  <div className="text-[#2DB6C1] font-semibold">✅ Setup GRATIS</div>
-                  <div className="text-[#2DB6C1] font-semibold">✅ Pay per use (sin mínimos)</div>
-                  <div className="text-[#2DB6C1] font-semibold">✅ Soporte 24/7</div>
-                  <div className="text-[#2DB6C1] font-semibold">✅ Interfaz 2026</div>
-                  <div className="text-[#2DB6C1] font-semibold">✅ API moderna GraphQL + REST</div>
-                </div>
+              <div className="rounded-xl p-8 border border-[#2DB6C1] bg-[#2DB6C1]/5">
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Expediente probatorio completo</h3>
+                <p className="text-gray-600 text-sm">
+                  Constancia de conservación, sellos de tiempo y evidencia de integridad para respaldar cada documento
+                  ante terceros.
+                </p>
               </div>
 
-              <div className="bg-gray-50 rounded-xl p-8 text-center">
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <span className="text-2xl">🏢</span>
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Otros Proveedores</h3>
-                <div className="space-y-2 text-sm text-gray-600">
-                  <div>⚠️ $25-35 por firma</div>
-                  <div>⚠️ Contratos anuales</div>
-                  <div>⚠️ Implementación 2-6 meses</div>
-                  <div>⚠️ Soporte en inglés</div>
-                  <div>⚠️ No especializado México</div>
-                  <div>⚠️ Compliance complejo</div>
-                </div>
+              <div className="rounded-xl p-8 border border-gray-200 bg-white">
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Precios transparentes</h3>
+                <p className="text-gray-600 text-sm mb-4">
+                  Tarifa por firma clara y publicada, sin costos de setup ni mínimos mensuales.
+                </p>
+                <Link href="/precios" className="text-[#2DB6C1] font-semibold text-sm hover:underline">
+                  Ver precios transparentes
+                </Link>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Success Stories */}
-        <section className="py-20 bg-[#0E1133]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
-                Lo Que Dicen Nuestros Clientes
-              </h2>
-              <p className="text-xl text-white/60">
-                Empresas que ya migraron y están ahorrando miles de pesos mensuales.
-              </p>
-            </div>
+        {/* Client logos */}
+        <ClientLogos />
 
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="bg-white/5 border border-white/10 rounded-xl p-6">
-                <div className="flex items-start mb-4">
-                  <div className="flex-shrink-0">
-                    <div className="w-12 h-12 bg-[#2DB6C1] rounded-full flex items-center justify-center">
-                      <span className="text-black font-bold">CM</span>
-                    </div>
-                  </div>
-                  <div className="ml-4">
-                    <div className="text-white font-semibold">Carlos Mendoza</div>
-                    <div className="text-white/60 text-sm">Director, Inmobiliaria Premium</div>
-                  </div>
-                </div>
-                <p className="text-white/80 text-sm mb-4">
-                  "Migramos en 24 horas y ahorramos $85,320 anuales. La API es 2.5x más rápida que la anterior. Nuestros clientes notan la diferencia."
-                </p>
-                <div className="flex gap-4 text-xs">
-                  <span className="bg-[#2DB6C1]/20 text-[#2DB6C1] px-2 py-1 rounded">450 docs/mes</span>
-                  <span className="bg-[#2DB6C1]/20 text-[#2DB6C1] px-2 py-1 rounded">$85K ahorro/año</span>
-                </div>
-              </div>
-
-              <div className="bg-white/5 border border-white/10 rounded-xl p-6">
-                <div className="flex items-start mb-4">
-                  <div className="flex-shrink-0">
-                    <div className="w-12 h-12 bg-[#0066ff] rounded-full flex items-center justify-center">
-                      <span className="text-white font-bold">AL</span>
-                    </div>
-                  </div>
-                  <div className="ml-4">
-                    <div className="text-white font-semibold">Ana López</div>
-                    <div className="text-white/60 text-sm">Socia, Bufete López & Asociados</div>
-                  </div>
-                </div>
-                <p className="text-white/80 text-sm mb-4">
-                  "El soporte 24/7 es increíble. Antes esperábamos días, ahora obtenemos respuestas en minutos. El ahorro anual es de $44,700."
-                </p>
-                <div className="flex gap-4 text-xs">
-                  <span className="bg-[#0066ff]/20 text-[#0066ff] px-2 py-1 rounded">250 docs/mes</span>
-                  <span className="bg-[#0066ff]/20 text-[#0066ff] px-2 py-1 rounded">$44K ahorro/año</span>
-                </div>
-              </div>
-
-              <div className="bg-white/5 border border-white/10 rounded-xl p-6">
-                <div className="flex items-start mb-4">
-                  <div className="flex-shrink-0">
-                    <div className="w-12 h-12 bg-[#ff6b35] rounded-full flex items-center justify-center">
-                      <span className="text-white font-bold">RS</span>
-                    </div>
-                  </div>
-                  <div className="ml-4">
-                    <div className="text-white font-semibold">Roberto Silva</div>
-                    <div className="text-white/60 text-sm">CEO, Consultoría Silva</div>
-                  </div>
-                </div>
-                <p className="text-white/80 text-sm mb-4">
-                  "La interfaz moderna convenció a nuestros clientes inmediatamente. ROI positivo desde el primer mes. Ahorro del 52%."
-                </p>
-                <div className="flex gap-4 text-xs">
-                  <span className="bg-[#ff6b35]/20 text-[#ff6b35] px-2 py-1 rounded">180 docs/mes</span>
-                  <span className="bg-[#ff6b35]/20 text-[#ff6b35] px-2 py-1 rounded">$32K ahorro/año</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
+        {/* CTA */}
         <section className="py-20 bg-gradient-to-r from-[#2DB6C1] to-[#0066ff]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl md:text-4xl font-black text-white mb-6">
-              ¿Listo para Ahorrar 50% en Firma Electrónica?
+              Firma con validez legal desde hoy
             </h2>
             <p className="text-xl text-white/90 mb-8">
-              Migración gratis, setup en 24 horas, soporte 24/7. 
-              <strong> Garantía 30 días o te devolvemos tu dinero.</strong>
+              Validez legal NOM-151, expediente probatorio completo y precios transparentes. Migración acompañada y
+              soporte 24/7 en español.
             </p>
-            
-            <div className="flex flex-wrap gap-4 justify-center mb-8">
+
+            <div className="flex flex-wrap gap-4 justify-center">
               <Link
                 href="/signa/calculadora"
                 className="px-8 py-4 bg-white text-[#0066ff] font-bold rounded-lg hover:bg-gray-50 transition-all shadow-lg"
               >
-                💰 Ver Mi Ahorro Exacto
+                Calcular mi ahorro
               </Link>
               <Link
                 href="/contacto"
                 className="px-8 py-4 bg-transparent border-2 border-white text-white font-bold rounded-lg hover:bg-white hover:text-[#0066ff] transition-all"
               >
-                📞 Hablar con Experto
+                Agendar demo
               </Link>
-            </div>
-
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 inline-block">
-              <p className="text-white text-sm">
-                🛡️ <strong>Garantía 30 días:</strong> Si no ahorras dinero como prometemos, te devolvemos el 100% sin hacer preguntas.
-              </p>
             </div>
           </div>
         </section>
       </main>
-      
-      {/* Add JavaScript for calculator */}
-      <script dangerouslySetInnerHTML={{
-        __html: `
-          document.addEventListener('DOMContentLoaded', function() {
-            const calculateBtn = document.getElementById('calculate-savings');
-            const monthlyDocsInput = document.getElementById('monthly-docs');
-            const resultDiv = document.getElementById('savings-result');
-            const savingsAmount = document.getElementById('savings-amount');
-            
-            calculateBtn?.addEventListener('click', function() {
-              const monthlyDocs = parseInt(monthlyDocsInput.value) || 0;
-              
-              if (monthlyDocs < 1) {
-                alert('Por favor ingresa un número válido de documentos.');
-                return;
-              }
-              
-              const competitorCost = monthlyDocs * 29.90;
-              const signaCost = monthlyDocs * 15.00;
-              const monthlySavings = competitorCost - signaCost;
-              const annualSavings = monthlySavings * 12;
-              const percentage = ((monthlySavings / competitorCost) * 100).toFixed(0);
-              
-              savingsAmount.innerHTML = \`
-                <div class="text-center">
-                  <div class="text-2xl font-bold mb-2">💰 Tu Ahorro Calculado</div>
-                  <div class="text-lg mb-1">Mensual: <span class="text-[#2DB6C1]">$\${monthlySavings.toLocaleString('es-MX', {minimumFractionDigits: 2})} MXN</span></div>
-                  <div class="text-xl font-bold mb-1">Anual: <span class="text-[#2DB6C1]">$\${annualSavings.toLocaleString('es-MX', {minimumFractionDigits: 2})} MXN</span></div>
-                  <div class="text-sm">Ahorro: <span class="text-[#2DB6C1] font-bold">\${percentage}%</span></div>
-                  <a href="/signa/calculadora" class="inline-block mt-4 px-4 py-2 bg-[#2DB6C1] text-black rounded-lg text-sm font-semibold hover:bg-[#00c499]">
-                    Ver Detalles Completos →
-                  </a>
-                </div>
-              \`;
-              
-              resultDiv.classList.remove('hidden');
-            });
-          });
-        `
-      }} />
-      
+
       <Footer />
     </>
   );

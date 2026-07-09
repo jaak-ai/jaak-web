@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -19,8 +18,8 @@ interface Comment {
   text: string;
 }
 
-/* ── Simulated live comments ─────────────────────────────────────────── */
-const LIVE_COMMENTS: Comment[] = [
+/* ── Featured webinar questions (curated, static) ────────────────────── */
+const FEATURED_QUESTIONS: Comment[] = [
   { id:  1, initials: "MR", name: "Miguel Rodríguez",   color: "#2DB6C1", text: "Excelente punto sobre la convergencia regulatoria entre banca y fintech 👏" },
   { id:  2, initials: "LC", name: "Laura Castillo",     color: "#5A9EDB", text: "¿El modelo de neobanco aplica también para SOFOMES reguladas?" },
   { id:  3, initials: "JH", name: "Jorge Hernández",    color: "#7C6EDB", text: "El tema de PLD y liveness detection es muy relevante para nuestro equipo de cumplimiento" },
@@ -203,14 +202,6 @@ const products = [
 const heroTags = ["KYC / PLD-FT", "Firma electrónica", "Onboarding digital", "NOM-151", "Ley Fintech", "CNBV"];
 const certs = ["ISO 27001", "ISO 9001", "iBeta Level 1 & 2", "NOM-151", "Fundada 2017"];
 
-/* ── Helpers ─────────────────────────────────────────────────────────── */
-function getInitials(name: string): string {
-  const parts = name.trim().split(" ").filter(Boolean);
-  if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
-  if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
-  return "TÚ";
-}
-
 /* ── Accordion ───────────────────────────────────────────────────────── */
 function Accordion({
   highlights,
@@ -296,16 +287,9 @@ export default function WebinarPage() {
   const [formData, setFormData] = useState({ nombre: "", apellido: "", email: "", empresa: "", tipo: "", necesidad: "", telefono: "" });
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
-  /* Video & live state */
+  /* Video & registration state */
   const [registered, setRegistered] = useState(false);
   const [registeredUser, setRegisteredUser] = useState({ name: "", email: "", telefono: "" });
-  const [visibleComments, setVisibleComments] = useState<Comment[]>([]);
-  const [viewers, setViewers] = useState(143);
-  const commentIndexRef = useRef(4);
-  const commentsEndRef = useRef<HTMLDivElement>(null);
-
-  /* User comment input */
-  const [commentText, setCommentText] = useState("");
 
   /* Follow-up form */
   const [followUp, setFollowUp] = useState({ email: "", sector: "", cargo: "", proyecto: "", expectativas: "" });
@@ -324,35 +308,6 @@ export default function WebinarPage() {
       } catch {}
     }
   }, []);
-
-  /* Stream simulated comments after registration */
-  useEffect(() => {
-    if (!registered) return;
-    setVisibleComments(LIVE_COMMENTS.slice(0, 4));
-    commentIndexRef.current = 4;
-    const id = setInterval(() => {
-      const i = commentIndexRef.current;
-      if (i >= LIVE_COMMENTS.length) { clearInterval(id); return; }
-      setVisibleComments((prev) => {
-        const next = [...prev, LIVE_COMMENTS[i]];
-        return next.length > 15 ? next.slice(-15) : next;
-      });
-      commentIndexRef.current = i + 1;
-    }, 5800);
-    return () => clearInterval(id);
-  }, [registered]);
-
-  /* Auto-scroll comments */
-  useEffect(() => {
-    commentsEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [visibleComments]);
-
-  /* Increment viewer count */
-  useEffect(() => {
-    if (!registered) return;
-    const id = setInterval(() => setViewers((v) => v + Math.floor(Math.random() * 3) + 1), 11000);
-    return () => clearInterval(id);
-  }, [registered]);
 
   const set = (field: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setFormData((prev) => ({ ...prev, [field]: e.target.value }));
@@ -390,25 +345,6 @@ export default function WebinarPage() {
     } catch {
       setStatus("error");
     }
-  };
-
-  /* User comment submit */
-  const handleCommentSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!commentText.trim()) return;
-    const name = registeredUser.name || "Anónimo";
-    const newComment: Comment = {
-      id: Date.now(),
-      initials: getInitials(name),
-      name,
-      color: "#2DB6C1",
-      text: commentText.trim(),
-    };
-    setVisibleComments((prev) => {
-      const next = [...prev, newComment];
-      return next.length > 15 ? next.slice(-15) : next;
-    });
-    setCommentText("");
   };
 
   /* Follow-up form submit */
@@ -511,7 +447,7 @@ export default function WebinarPage() {
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L19 7" stroke="#2DB6C1" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
                 </div>
                 <h3 className="text-lg font-black text-[#212A45] mb-2" style={{ fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}>¡Tu acceso está listo!</h3>
-                <p className="text-sm text-gray-500 leading-relaxed mb-5">Desplázate hacia abajo para ver el webinar completo con chat en vivo.</p>
+                <p className="text-sm text-gray-500 leading-relaxed mb-5">Desplázate hacia abajo para ver la grabación completa del webinar.</p>
                 <a href="#video-webinar" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-black text-sm" style={{ background: "#2DB6C1", color: "#0E1133", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}>
                   Ver el webinar ahora →
                 </a>
@@ -592,20 +528,17 @@ export default function WebinarPage() {
       <section id="video-webinar" style={{ borderTop: "1px solid var(--hp-divider)" }}>
         {registered ? (
           <div>
-            {/* Live bar */}
+            {/* Recording bar */}
             <div className="bg-[#080d1e] px-4 sm:px-6 py-2.5 flex items-center justify-between gap-4 flex-wrap">
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                  <span className="text-[11px] font-black text-white tracking-widest uppercase">En vivo</span>
+                  <svg viewBox="0 0 14 14" fill="none" className="w-3 h-3 text-[#2DB6C1]"><circle cx="7" cy="7" r="6" stroke="currentColor" strokeWidth="1.4" /><path d="M5.5 4.5v5l4-2.5-4-2.5z" fill="currentColor" /></svg>
+                  <span className="text-[11px] font-black text-white tracking-widest uppercase">Grabación del webinar</span>
                 </div>
                 <span className="text-white/20 text-sm hidden sm:inline">·</span>
                 <span className="text-[11px] text-white/50 hidden sm:inline">Tres modelos financieros. Un solo punto de quiebre.</span>
               </div>
-              <div className="flex items-center gap-1.5">
-                <svg viewBox="0 0 12 12" fill="currentColor" className="w-2.5 h-2.5 text-white/30"><circle cx="6" cy="6" r="5" /></svg>
-                <span className="text-[11px] text-white/45">{viewers.toLocaleString("es-MX")} viendo ahora</span>
-              </div>
+              <span className="text-[11px] text-white/45">1h 20min</span>
             </div>
 
             {/* Video + comments */}
@@ -621,21 +554,18 @@ export default function WebinarPage() {
                 />
               </div>
 
-              {/* Comments panel */}
+              {/* Featured questions panel */}
               <div className="flex flex-col bg-[#0D1128]" style={{ borderLeft: "1px solid rgba(255,255,255,.07)", minHeight: "320px" }}>
                 {/* Header */}
-                <div className="px-4 py-3 flex items-center justify-between shrink-0" style={{ borderBottom: "1px solid rgba(255,255,255,.07)" }}>
-                  <div className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-[#2DB6C1] animate-pulse" />
-                    <span className="text-[11px] font-bold text-white/80">Chat en vivo</span>
-                  </div>
-                  <span className="text-[10px] text-white/25">{visibleComments.length} mensajes</span>
+                <div className="px-4 py-3 shrink-0" style={{ borderBottom: "1px solid rgba(255,255,255,.07)" }}>
+                  <span className="text-[11px] font-bold text-white/80">Preguntas destacadas del webinar</span>
+                  <p className="text-[10px] text-white/25 mt-0.5">Selección de comentarios de la audiencia durante la sesión</p>
                 </div>
 
-                {/* Messages */}
-                <div className="flex-1 overflow-y-auto p-4 space-y-4" style={{ maxHeight: "360px", scrollbarWidth: "thin", scrollbarColor: "rgba(255,255,255,.1) transparent" }}>
-                  {visibleComments.map((c) => (
-                    <div key={c.id} className="flex gap-2.5 animate-fade-in-up">
+                {/* List */}
+                <div className="flex-1 overflow-y-auto p-4 space-y-4" style={{ maxHeight: "460px", scrollbarWidth: "thin", scrollbarColor: "rgba(255,255,255,.1) transparent" }}>
+                  {FEATURED_QUESTIONS.map((c) => (
+                    <div key={c.id} className="flex gap-2.5">
                       <div
                         className="w-7 h-7 rounded-full shrink-0 flex items-center justify-center text-[9px] font-black"
                         style={{ background: c.color, color: c.color === "#2DB6C1" || c.color === "#4FC89A" ? "#0E1133" : "#fff" }}
@@ -648,33 +578,7 @@ export default function WebinarPage() {
                       </div>
                     </div>
                   ))}
-                  <div ref={commentsEndRef} />
                 </div>
-
-                {/* Comment input */}
-                <form onSubmit={handleCommentSubmit} className="p-3 shrink-0" style={{ borderTop: "1px solid rgba(255,255,255,.07)" }}>
-                  <div className="flex gap-2 items-center">
-                    <input
-                      type="text"
-                      value={commentText}
-                      onChange={(e) => setCommentText(e.target.value)}
-                      placeholder="Escribe un mensaje…"
-                      maxLength={200}
-                      className="flex-1 px-3 py-2 rounded-lg text-xs text-white placeholder:text-white/30 outline-none"
-                      style={{ background: "rgba(255,255,255,.06)", border: "1px solid rgba(255,255,255,.1)" }}
-                    />
-                    <button
-                      type="submit"
-                      disabled={!commentText.trim()}
-                      className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-all disabled:opacity-30"
-                      style={{ background: "#2DB6C1" }}
-                    >
-                      <svg viewBox="0 0 16 16" fill="none" className="w-4 h-4">
-                        <path d="M14 8H2M14 8l-4-4M14 8l-4 4" stroke="#0E1133" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </button>
-                  </div>
-                </form>
               </div>
             </div>
 
@@ -834,7 +738,7 @@ export default function WebinarPage() {
                     </div>
                     <div>
                       <p className="text-white font-bold text-sm mb-1" style={{ fontFamily: "var(--font-montserrat)" }}>Contenido exclusivo para registrados</p>
-                      <p className="text-white/40 text-xs">1h 20min · Acceso inmediato · Chat en vivo</p>
+                      <p className="text-white/40 text-xs">1h 20min · Acceso inmediato · Preguntas destacadas</p>
                     </div>
                   </div>
                 </div>
@@ -842,11 +746,11 @@ export default function WebinarPage() {
                   {["MR","LC","JH","AP","CV"].map((l, i) => (
                     <div key={l} className="w-6 h-6 rounded-full text-[8px] font-black flex items-center justify-center border-2 border-[#0E1133]" style={{ background: ["#2DB6C1","#5A9EDB","#7C6EDB","#4FC89A","#E8956B"][i], color: i === 0 || i === 3 ? "#0E1133" : "#fff", marginLeft: i > 0 ? "-6px" : "0", zIndex: 5 - i }}>{l}</div>
                   ))}
-                  <span className="text-white/35 text-xs ml-1">+{viewers} comentando en vivo</span>
+                  <span className="text-white/35 text-xs ml-1">Preguntas destacadas de la audiencia</span>
                 </div>
               </div>
               <h2 className="font-black text-2xl text-white mb-3 leading-tight" style={{ fontFamily: "var(--font-montserrat)", letterSpacing: "-0.5px" }}>Regístrate para ver el webinar completo</h2>
-              <p className="text-white/50 text-sm mb-6 max-w-sm mx-auto leading-relaxed">Acceso gratuito e inmediato. Incluye chat en vivo con otros participantes.</p>
+              <p className="text-white/50 text-sm mb-6 max-w-sm mx-auto leading-relaxed">Acceso gratuito e inmediato. Incluye las preguntas destacadas de la audiencia.</p>
               <a href="#registro" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-black text-sm tracking-wide transition-all hover:-translate-y-0.5" style={{ background: "#2DB6C1", color: "#0E1133", fontFamily: "var(--font-montserrat)" }}>
                 Registrarme y ver el webinar →
               </a>

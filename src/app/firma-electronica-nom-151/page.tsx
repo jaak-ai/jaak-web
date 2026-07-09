@@ -27,7 +27,7 @@ const breadcrumbSchema = {
   "@type": "BreadcrumbList",
   itemListElement: [
     { "@type": "ListItem", position: 1, name: "Inicio", item: "https://jaak.ai" },
-    { "@type": "ListItem", position: 2, name: "Firma Electrónica", item: "https://jaak.ai/plataforma/firma-electronica" },
+    { "@type": "ListItem", position: 2, name: "Firma Electrónica", item: "https://jaak.ai/firma-electronica" },
     { "@type": "ListItem", position: 3, name: "Firma Digital NOM-151", item: "https://jaak.ai/firma-electronica-nom-151" },
   ],
 };
@@ -50,7 +50,7 @@ export default function FirmaNom151Page() {
         >
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <nav className="flex items-center gap-2 text-xs text-gray-600 mb-8" aria-label="Navegación">
-              <Link href="/plataforma/firma-electronica" className="hover:text-[#2DB6C1] transition-colors">
+              <Link href="/firma-electronica" className="hover:text-[#2DB6C1] transition-colors">
                 Firma Electrónica
               </Link>
               <span aria-hidden="true">›</span>
@@ -235,7 +235,7 @@ export default function FirmaNom151Page() {
                 { href: "/firma-electronica-biometrica", label: "Firma Digital NOM-151 + Biometría" },
                 { href: "/firma-electronica-kyc", label: "Firma Digital NOM-151 + KYC" },
                 { href: "/firma-electronica-simple", label: "Firma Simple" },
-                { href: "/plataforma/firma-electronica", label: "← Hub principal" },
+                { href: "/firma-electronica", label: "← Hub principal" },
               ].map((link) => (
                 <Link
                   key={link.href}
