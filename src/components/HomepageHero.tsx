@@ -130,9 +130,9 @@ export default function HomepageHero() {
               href={p.href}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium transition-colors duration-200"
               style={{
-                color: "var(--hp-neutral-pill-text)",
-                border: "1px solid var(--hp-neutral-pill-border)",
-                background: "var(--hp-neutral-pill-bg)",
+                color: "#212A45",
+                border: "1px solid rgba(33,42,69,0.15)",
+                background: "rgba(255,255,255,0.6)",
                 backdropFilter: "blur(12px)",
               }}
             >
