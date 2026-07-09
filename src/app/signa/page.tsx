@@ -106,13 +106,13 @@ export default function SignaHome() {
                 <div className="flex flex-wrap gap-4">
                   <Link
                     href="/signa/calculadora"
-                    className="px-6 py-3 bg-[#2DB6C1] text-black font-bold rounded-lg hover:bg-[#00c499] transition-all"
+                    className="px-6 py-3 bg-[#2DB6C1] text-black font-bold rounded-lg hover:bg-[#00c499] transition-colors"
                   >
                     Calcular mi ahorro
                   </Link>
                   <Link
                     href="/precios"
-                    className="px-6 py-3 bg-white/10 text-white font-semibold rounded-lg hover:bg-white/20 transition-all border border-white/20"
+                    className="px-6 py-3 bg-white/10 text-white font-semibold rounded-lg hover:bg-white/20 transition-colors border border-white/20"
                   >
                     Ver precios transparentes
                   </Link>
@@ -153,7 +153,7 @@ export default function SignaHome() {
                   </ul>
                   <Link
                     href="/signa/calculadora"
-                    className="block w-full text-center px-6 py-3 bg-[#2DB6C1] text-black font-bold rounded-lg hover:bg-[#00c499] transition-all"
+                    className="block w-full text-center px-6 py-3 bg-[#2DB6C1] text-black font-bold rounded-lg hover:bg-[#00c499] transition-colors"
                   >
                     Calcular mi ahorro
                   </Link>
@@ -223,13 +223,13 @@ export default function SignaHome() {
             <div className="flex flex-wrap gap-4 justify-center">
               <Link
                 href="/signa/calculadora"
-                className="px-8 py-4 bg-white text-[#212A45] font-bold rounded-lg hover:bg-gray-50 transition-all shadow-lg"
+                className="px-8 py-4 bg-white text-[#212A45] font-bold rounded-lg hover:bg-gray-50 transition-colors shadow-lg"
               >
                 Calcular mi ahorro
               </Link>
               <Link
                 href="/contacto"
-                className="px-8 py-4 bg-transparent border-2 border-white text-white font-bold rounded-lg hover:bg-white hover:text-[#212A45] transition-all"
+                className="px-8 py-4 bg-transparent border-2 border-white text-white font-bold rounded-lg hover:bg-white hover:text-[#212A45] transition-colors"
               >
                 Agendar demo
               </Link>

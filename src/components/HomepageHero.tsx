@@ -137,7 +137,7 @@ export default function HomepageHero() {
             <Link
               key={p.label}
               href={p.href}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium transition-all duration-200"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium transition-colors duration-200"
               style={{
                 color: "var(--hp-neutral-pill-text)",
                 border: "1px solid var(--hp-neutral-pill-border)",
@@ -217,7 +217,7 @@ export default function HomepageHero() {
             <div className="flex flex-col sm:flex-row gap-3 mb-8">
               <Link
                 href="/autoservicio"
-                className="inline-flex items-center justify-center px-7 py-4 text-white font-bold text-base rounded-xl transition-all duration-200 group"
+                className="inline-flex items-center justify-center px-7 py-4 text-white font-bold text-base rounded-xl transition-all will-change-transform duration-200 group"
                 style={{
                   background: "linear-gradient(135deg, #2DB6C1, #25969f)",
                   boxShadow: "0 8px 28px rgba(45,182,193,0.28)",
@@ -230,7 +230,7 @@ export default function HomepageHero() {
               </Link>
               <Link
                 href="/contacto"
-                className="inline-flex items-center justify-center px-7 py-4 font-semibold text-base rounded-xl transition-all duration-200"
+                className="inline-flex items-center justify-center px-7 py-4 font-semibold text-base rounded-xl transition-colors duration-200"
                 style={{
                   color: "var(--hp-ghost-btn-color)",
                   background: "var(--hp-ghost-btn-bg)",
@@ -362,7 +362,7 @@ export default function HomepageHero() {
                         return (
                           <div
                             key={s.label}
-                            className="flex items-center justify-between px-3.5 py-2 rounded-xl transition-all duration-500"
+                            className="flex items-center justify-between px-3.5 py-2 rounded-xl transition-colors duration-500"
                             style={{
                               background: done
                                 ? "linear-gradient(90deg, rgba(45,182,193,0.12), rgba(42,215,150,0.06))"

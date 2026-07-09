@@ -35,7 +35,7 @@ export default function Hero() {
           <div className="mb-4">
             <Link
               href="#contacto"
-              className="inline-flex items-center justify-center px-8 py-4 bg-[#0E1133] text-white font-bold text-lg rounded-lg hover:bg-[#1a2744] transition-all hover:scale-105 shadow-lg"
+              className="inline-flex items-center justify-center px-8 py-4 bg-[#0E1133] text-white font-bold text-lg rounded-lg hover:bg-[#1a2744] transition-all will-change-transform hover:scale-105 shadow-lg"
             >
               Agende una demo de 15 minutos
               <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

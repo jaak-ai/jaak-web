@@ -278,7 +278,7 @@ export default function HomepageProducts() {
           </div>
           <Link
             href="/contacto"
-            className="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-bold text-white transition-all flex-shrink-0"
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-bold text-white transition-colors flex-shrink-0"
             style={{ background: "linear-gradient(135deg, #2DB6C1, #25969f)", boxShadow: "0 4px 16px rgba(45,182,193,0.25)" }}
           >
             Hablar sobre marca blanca
