@@ -435,8 +435,7 @@ export default function VerificacionIdentidad() {
               ].map((c, i) => (
                 <div
                   key={i}
-                  className="rounded-2xl p-6 flex flex-col"
-                  style={{ border: "1px solid #EEEEEE", borderLeft: `3px solid ${c.color}` }}
+                  className="rounded-2xl p-6 flex flex-col border border-[#212A45]/10 transition-colors hover:border-[#2DB6C1]/50"
                 >
                   <div
                     className="text-xs font-bold px-2.5 py-1 rounded-full self-start mb-4"

@@ -243,7 +243,7 @@ export default function ChronosPage() {
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
                   KYC en 1 minuto.
                   <br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2DB6C1] to-[#655DC6]">
+                  <span className="text-[#2DB6C1]">
                     Crédito en minutos.
                   </span>
                   <br />

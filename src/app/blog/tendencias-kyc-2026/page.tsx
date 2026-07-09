@@ -83,8 +83,8 @@ export default function TendenciasKYC2026() {
                 temporal en videos. Estos sistemas pueden identificar manipulaciones que serían
                 imperceptibles para el ojo humano.
               </p>
-              <div className="bg-[#0066ff]/5 border-l-4 border-[#0066ff] p-6 my-8">
-                <p className="text-gray-700 font-medium mb-2">Dato clave:</p>
+              <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
+                <p className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-2">Dato clave</p>
                 <p className="text-gray-600">
                   Se estima que los intentos de fraude con deepfakes aumentaron un 300% en 2025.
                   Las instituciones que no actualicen sus sistemas de detección enfrentarán

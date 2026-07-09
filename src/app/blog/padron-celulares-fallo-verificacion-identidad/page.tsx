@@ -62,9 +62,9 @@ export default function PadronCelularesFalloVerificacion() {
         { title: "Tendencias KYC 2026", slug: "tendencias-kyc-2026", category: "KYC" },
       ]}
     >
-              <div className="bg-red-50 border-l-4 border-red-500 p-6 my-8">
-                <p className="text-red-800 font-medium mb-2">Alerta crítica</p>
-                <p className="text-red-700">
+              <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
+                <p className="text-[11px] font-semibold tracking-wide uppercase text-[#b91c1c] mb-2">Alerta crítica</p>
+                <p className="text-gray-600">
                   A solo días de iniciar el registro obligatorio de líneas telefónicas, comenzaron a circular
                   pruebas contundentes de una falla crítica: cualquiera puede registrar una línea usando
                   los datos de otra persona.
@@ -93,7 +93,7 @@ export default function PadronCelularesFalloVerificacion() {
                 También se reportó el uso de datos de figuras públicas como AMLO y Claudia Sheinbaum.
               </p>
 
-              <div className="bg-[#0066ff]/5 border-l-4 border-[#0066ff] p-6 my-8">
+              <div className="relative bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8 before:absolute before:left-6 before:top-0 before:h-px before:w-12 before:bg-[#2DB6C1]">
                 <p className="text-gray-700 font-bold text-lg">
                   El mensaje es devastador: si pueden hacerlo con ellos, pueden hacerlo contigo.
                 </p>
@@ -186,8 +186,9 @@ export default function PadronCelularesFalloVerificacion() {
                 <li>Riesgo legal para ciudadanos inocentes</li>
               </ul>
 
-              <div className="bg-red-50 border-l-4 border-red-500 p-6 my-8">
-                <p className="text-red-800 font-bold">
+              <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
+                <p className="text-[11px] font-semibold tracking-wide uppercase text-[#b91c1c] mb-2">Riesgo real</p>
+                <p className="text-gray-700 font-bold">
                   No reduce el crimen. Redistribuye el riesgo hacia la población.
                 </p>
               </div>

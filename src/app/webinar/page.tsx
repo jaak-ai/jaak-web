@@ -919,7 +919,7 @@ export default function WebinarPage() {
             <p className="text-base leading-[1.75] mb-6" style={{ color: "var(--hp-text-md)" }}>
               Somos la infraestructura de confianza digital que permite a bancos, fintech y neobancos identificar, verificar, firmar, conservar y auditar — todo en un solo stack tecnológico.
             </p>
-            <div className="rounded-r-xl p-4 mb-6" style={{ borderLeft: "3px solid #2DB6C1", background: "rgba(45,182,193,.06)" }}>
+            <div className="rounded-xl p-4 mb-6" style={{ border: "1px solid rgba(45,182,193,.25)", background: "rgba(45,182,193,.06)" }}>
               <p className="text-sm italic leading-[1.7]" style={{ color: "var(--hp-text-md)" }}>
                 "El mismo problema existe en banca, fintech y actividades vulnerables: identificar, integrar evidencia y conservar trazabilidad. JAAK lo resuelve de extremo a extremo."
               </p>

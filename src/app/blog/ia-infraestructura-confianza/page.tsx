@@ -83,8 +83,10 @@ export default function IAInfraestructuraConfianza() {
                 infraestructura sólida de procesos, controles y evidencia.
               </p>
 
-              <div className="bg-indigo-500/5 border-l-4 border-indigo-500 p-6 my-8">
-                <p className="text-gray-700 font-medium mb-2">En este artículo encontrarás:</p>
+              <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
+                <p className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-2">
+                  En este artículo
+                </p>
                 <p className="text-gray-600">
                   Un análisis sobre cómo los Principios de Chapultepec redefinen la gobernanza de la IA
                   en México, por qué el liderazgo tecnológico va más allá del código, y cómo JAAK
@@ -143,7 +145,10 @@ export default function IAInfraestructuraConfianza() {
                 liderazgo: la tecnología debe poder entenderse, cuestionarse y validarse.
               </p>
 
-              <div className="bg-indigo-500/5 border-l-4 border-indigo-500 p-6 my-8">
+              <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
+                <p className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-2">
+                  Idea clave
+                </p>
                 <p className="text-gray-700">
                   En JAAK, la verificación de identidad, la biometría facial, el OCR y la gestión de datos
                   funcionan como parte de sistemas explicables, documentados y trazables. La tecnología debe

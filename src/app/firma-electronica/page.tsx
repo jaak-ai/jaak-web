@@ -254,16 +254,7 @@ export default function FirmaElectronicaPage() {
               </div>
               <h2 id="diferenciacion-heading" className="text-3xl sm:text-4xl font-black text-white mb-4">
                 Firma no es lo mismo que{" "}
-                <span
-                  style={{
-                    background: "linear-gradient(135deg, #2DB6C1, #2AD796)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                  }}
-                >
-                  evidencia
-                </span>
+                <span style={{ color: "#2DB6C1" }}>evidencia</span>
               </h2>
               <p className="text-gray-400 max-w-2xl mx-auto text-base">
                 Una firma puede capturar consentimiento. Pero cuando el documento importa, también necesitas probar

@@ -380,15 +380,6 @@ export default function HomepageHero() {
               >
                 iBeta PAD
               </div>
-              <div className="absolute -right-10 top-1/3 hidden xl:flex flex-col items-center px-4 py-3 rounded-2xl hp-glass">
-                <div
-                  className="text-2xl font-black"
-                  style={{ background: "linear-gradient(90deg, #2DB6C1, #2AD796)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}
-                >
-                  99%
-                </div>
-                <div className="text-xs mt-0.5" style={{ color: "var(--hp-text-faint)" }}>Precisión</div>
-              </div>
             </div>
           </div>
         </div>
@@ -411,7 +402,7 @@ export default function HomepageHero() {
             >
               <div
                 className="text-2xl md:text-3xl font-black"
-                style={{ background: "linear-gradient(90deg, #2DB6C1, #2AD796)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}
+                style={{ color: "#2DB6C1" }}
               >
                 {s.value}
               </div>

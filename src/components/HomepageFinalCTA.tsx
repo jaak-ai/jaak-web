@@ -31,16 +31,7 @@ export default function HomepageFinalCTA() {
           </div>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight max-w-3xl mx-auto">
             El cumplimiento regulatorio no puede esperar.{" "}
-            <span
-              style={{
-                background: "linear-gradient(90deg, #2DB6C1, #2AD796)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}
-            >
-              Empieza hoy.
-            </span>
+            <span style={{ color: "#2DB6C1" }}>Empieza hoy.</span>
           </h2>
         </div>
 

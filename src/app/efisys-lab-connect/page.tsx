@@ -306,7 +306,14 @@ export default function EfisysLabConnectPage() {
                 {/* Título */}
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-3 leading-tight">
                   EFISYS{" "}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2DB6C1] to-[#2AD796]">
+                  <span
+                    style={{
+                      background: "linear-gradient(90deg, #2DB6C1, #2AD796)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text",
+                    }}
+                  >
                     Lab Connect
                   </span>
                 </h1>
@@ -497,7 +504,7 @@ export default function EfisysLabConnectPage() {
 
                 <h2 className="text-3xl md:text-4xl font-black text-white mb-5 leading-tight">
                   Asegura tu lugar en{" "}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2DB6C1] to-[#2AD796]">
+                  <span className="text-[#2DB6C1]">
                     EFISYS Lab Connect
                   </span>
                 </h2>
@@ -756,10 +763,7 @@ export default function EfisysLabConnectPage() {
                 </div>
 
                 <h2 className="text-3xl md:text-4xl font-black text-[#212A45] mb-6 leading-tight">
-                  ¿Por qué JAAK participa en{" "}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2DB6C1] to-[#2AD796]">
-                    EFISYS Lab Connect?
-                  </span>
+                  ¿Por qué JAAK participa en EFISYS Lab Connect?
                 </h2>
 
                 <p className="text-gray-600 text-lg mb-5 leading-relaxed">
@@ -1002,7 +1006,7 @@ export default function EfisysLabConnectPage() {
 
             <h2 className="text-3xl md:text-5xl font-black text-white mb-5 leading-tight">
               Sé parte de{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2DB6C1] to-[#2AD796]">
+              <span className="text-[#2DB6C1]">
                 EFISYS Lab Connect
               </span>
             </h2>

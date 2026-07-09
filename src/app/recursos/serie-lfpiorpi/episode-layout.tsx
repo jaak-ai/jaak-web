@@ -78,8 +78,8 @@ export default function EpisodeLayout({
             </span>
             <div className="flex-1 h-1 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.08)", maxWidth: "120px" }}>
               <div
-                className="h-full rounded-full"
-                style={{ background: "#2DB6C1", width: `${(epNum / totalEps) * 100}%`, transition: "width 0.5s" }}
+                className="h-full w-full rounded-full"
+                style={{ background: "#2DB6C1", transform: `scaleX(${epNum / totalEps})`, transformOrigin: "left", transition: "transform 0.5s" }}
               />
             </div>
           </div>

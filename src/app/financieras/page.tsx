@@ -139,7 +139,7 @@ export default function FinancierasPage() {
 
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
                   Cumplimiento{" "}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#655DC6] to-[#2DB6C1]">
+                  <span className="text-[#2DB6C1]">
                     AML/LAFT
                   </span>{" "}
                   sin fricción. KYC que se integra en horas.

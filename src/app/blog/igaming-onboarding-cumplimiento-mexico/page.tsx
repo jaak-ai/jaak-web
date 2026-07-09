@@ -118,8 +118,10 @@ export default function IGamingOnboardingCumplimiento() {
         registro. No basta con pedir una identificación. No basta con reducir fricción.
       </p>
 
-      <div className="bg-indigo-500/5 border-l-4 border-indigo-500 p-6 my-8">
-        <p className="text-gray-700 font-medium mb-2">En este artículo encontrarás:</p>
+      <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
+        <p className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-2">
+          En este artículo
+        </p>
         <p className="text-gray-600">
           Un análisis sobre por qué el onboarding en iGaming es el primer filtro de riesgo, qué
           exige la regulación mexicana, cómo escalar con control ante picos de tráfico, y por qué
@@ -532,7 +534,10 @@ export default function IGamingOnboardingCumplimiento() {
         de reconstrucciones manuales.
       </p>
 
-      <div className="bg-indigo-500/5 border-l-4 border-indigo-500 p-6 my-8">
+      <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
+        <p className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-2">
+          Idea clave
+        </p>
         <p className="text-gray-700">
           La evidencia no debería ser un trámite posterior. Debería ser parte natural de la
           experiencia. Y también permite que las áreas comerciales, tecnológicas y de cumplimiento

@@ -76,8 +76,8 @@ export default function ProteccionDatosPersonales() {
                 operativa para cualquier empresa que gestione identidades, transacciones o información personal.
               </p>
 
-              <div className="bg-[#2DB6C1]/5 border-l-4 border-[#2DB6C1] p-6 my-8">
-                <p className="text-gray-700 font-medium mb-2">En este artículo encontrarás:</p>
+              <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
+                <p className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-2">En este artículo</p>
                 <p className="text-gray-600">
                   Una guía informativa para entender por qué la protección de datos personales se ha convertido
                   en un tema crítico para las organizaciones, cuáles son los riesgos de gestionarla sin estructura
@@ -153,8 +153,8 @@ export default function ProteccionDatosPersonales() {
                 <li>¿La experiencia de verificación afecta la conversión o el onboarding de clientes?</li>
               </ul>
 
-              <div className="bg-[#2DB6C1]/5 border-l-4 border-[#2DB6C1] p-6 my-8">
-                <p className="text-gray-700">
+              <div className="relative bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8 before:absolute before:left-6 before:top-0 before:h-px before:w-12 before:bg-[#2DB6C1]">
+                <p className="text-gray-700 font-medium">
                   Estas señales indican que proteger datos no es solo cuestión de intención, sino de contar con la tecnología adecuada.
                 </p>
               </div>

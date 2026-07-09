@@ -28,7 +28,7 @@ export default function Differentiator() {
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white mb-4">
             No es solo compliance
           </h2>
-          <p className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-[#2DB6C1] to-[#2AD796] bg-clip-text text-transparent">
+          <p className="text-2xl md:text-3xl font-bold text-[#2DB6C1]">
             Es compliance operable
           </p>
         </div>

@@ -85,8 +85,8 @@ export default function SeguridadBiometrica() {
                 <li>Modelos de silicona o látex</li>
               </ul>
 
-              <div className="bg-[#2DB6C1]/5 border-l-4 border-[#2DB6C1] p-6 my-8">
-                <p className="text-gray-700 font-medium mb-2">Dato importante:</p>
+              <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
+                <p className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-2">Dato importante</p>
                 <p className="text-gray-600">
                   Sin prueba de vida, un sistema de reconocimiento facial puede ser engañado
                   simplemente mostrando una foto del titular legítimo. Esto hace que la tecnología

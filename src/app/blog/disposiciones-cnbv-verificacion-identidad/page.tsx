@@ -181,8 +181,10 @@ export default function DisposicionesCNBV() {
                 requisitos específicos de seguridad:
               </p>
 
-              <div className="bg-[#0066ff]/5 border-l-4 border-[#0066ff] p-6 my-8">
-                <p className="text-gray-700 font-medium mb-2">Requisitos para verificación remota:</p>
+              <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
+                <p className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-3">
+                  Requisitos para verificación remota
+                </p>
                 <ul className="space-y-2 text-gray-600">
                   <li>• Captura de documento de identidad con tecnología que verifique autenticidad</li>
                   <li>• Comparación biométrica facial contra el documento</li>
@@ -267,7 +269,10 @@ export default function DisposicionesCNBV() {
               <p className="text-gray-600 leading-relaxed mb-4">
                 El incumplimiento de las disposiciones puede resultar en:
               </p>
-              <div className="bg-red-50 border-l-4 border-red-500 p-6 my-8">
+              <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
+                <p className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-3">
+                  Importante
+                </p>
                 <ul className="space-y-2 text-gray-700">
                   <li>• <strong>Multas administrativas</strong> de hasta 100,000 UMAs</li>
                   <li>• <strong>Suspensión de operaciones</strong> para actividades específicas</li>

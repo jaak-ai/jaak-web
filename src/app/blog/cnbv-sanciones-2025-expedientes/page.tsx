@@ -358,8 +358,8 @@ export default function CNBVSanciones2025() {
                         <p className="text-gray-600 text-sm leading-relaxed mb-3">
                           {item.body}
                         </p>
-                        <div className="bg-[#0066ff]/5 border-l-4 border-[#0066ff] p-3 rounded-r-lg">
-                          <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">
+                        <div className="bg-[#F3F4F8] border border-[#212A45]/10 p-3 rounded-lg">
+                          <p className="text-[11px] text-[#2DB6C1] font-semibold uppercase tracking-wide mb-1">
                             Caso documentado
                           </p>
                           <p className="text-sm text-gray-700 italic">

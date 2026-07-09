@@ -114,8 +114,8 @@ export default function QueEsKYCMexico() {
                 desea realizar.
               </p>
 
-              <div className="bg-[#0066ff]/5 border-l-4 border-[#0066ff] p-6 my-8">
-                <p className="text-gray-700 font-medium mb-2">Concepto clave:</p>
+              <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
+                <p className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-2">Concepto clave</p>
                 <p className="text-gray-600">
                   KYC no es un trámite administrativo. Es la primera barrera
                   contra el lavado de dinero, el financiamiento al terrorismo
@@ -346,9 +346,9 @@ export default function QueEsKYCMexico() {
                 </li>
               </ul>
 
-              <div className="bg-amber-50 border-l-4 border-amber-400 p-6 my-8">
-                <p className="text-amber-800 font-medium mb-2">Advertencia regulatoria:</p>
-                <p className="text-amber-700">
+              <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
+                <p className="text-[11px] font-semibold tracking-wide uppercase text-[#b91c1c] mb-2">Advertencia regulatoria</p>
+                <p className="text-gray-600">
                   Las multas por incumplimiento de la LFPIORPI pueden llegar
                   hasta 65,000 veces el salario mínimo diario. Para las
                   entidades financieras reguladas por la CNBV, las sanciones

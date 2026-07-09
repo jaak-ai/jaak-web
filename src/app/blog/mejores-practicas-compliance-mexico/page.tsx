@@ -225,8 +225,10 @@ export default function MejoresPracticasCompliance() {
                 El KYC es la base de cualquier programa de cumplimiento. Debe incluir:
               </p>
 
-              <div className="bg-[#0066ff]/5 border-l-4 border-[#0066ff] p-6 my-8">
-                <h3 className="font-bold text-gray-900 mb-3">Proceso de KYC robusto:</h3>
+              <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
+                <h3 className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-3">
+                  Proceso de KYC robusto
+                </h3>
                 <ol className="list-decimal pl-4 space-y-2 text-gray-600">
                   <li><strong>Identificación:</strong> Obtener datos y documentos que acrediten la identidad</li>
                   <li><strong>Verificación:</strong> Confirmar que la información es auténtica y válida</li>
@@ -397,8 +399,10 @@ export default function MejoresPracticasCompliance() {
                 Las consecuencias de no cumplir pueden ser severas:
               </p>
 
-              <div className="bg-red-50 border-l-4 border-red-500 p-6 my-8">
-                <h3 className="font-bold text-gray-900 mb-3">Posibles sanciones:</h3>
+              <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
+                <h3 className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-3">
+                  Posibles sanciones
+                </h3>
                 <ul className="space-y-2 text-gray-700">
                   <li>• <strong>Multas:</strong> Hasta 65,000 UMAs por infracción (~$7.6 millones MXN)</li>
                   <li>• <strong>Suspensión:</strong> De actividades o de ciertas operaciones</li>
