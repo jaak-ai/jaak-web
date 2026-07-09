@@ -55,8 +55,7 @@ export default function ProductLandingTemplate({
   const colorMap = {
     teal: { bg: "#2DB6C110", border: "#2DB6C130", text: "#2DB6C1" },
     green: { bg: "#2AD79610", border: "#2AD79630", text: "#2AD796" },
-    navy: { bg: "#21
-2A4510", border: "#212A4530", text: "#212A45" },
+    navy: { bg: "#212A4510", border: "#212A4530", text: "#212A45" },
   };
 
   const color = colorMap[config.color];
