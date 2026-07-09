@@ -506,7 +506,7 @@ export default function WebinarPage() {
             <p className="text-xs text-gray-500 leading-snug mb-5">Déjanos tus datos y recibe el webinar + guía de cumplimiento KYC para tu institución.</p>
 
             {status === "success" ? (
-              <div className="text-center py-6">
+              <div aria-live="polite" className="text-center py-6">
                 <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: "#E6F8F6", border: "1.5px solid rgba(45,182,193,.3)" }}>
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L19 7" stroke="#2DB6C1" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
                 </div>
@@ -562,10 +562,10 @@ export default function WebinarPage() {
                 </div>
                 <div>
                   <label className="block text-[10px] font-bold tracking-wider uppercase text-gray-500 mb-1.5" style={{ fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}>Teléfono</label>
-                  <input type="tel" placeholder="+52 55 0000 0000" value={formData.telefono} onChange={set("telefono")} className={inputBase} />
+                  <input type="tel" placeholder="+52 55 0000 0000" required value={formData.telefono} onChange={set("telefono")} className={inputBase} />
                 </div>
                 {status === "error" && (
-                  <p className="text-xs text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+                  <p role="alert" className="text-xs text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
                     Ocurrió un error. Intenta de nuevo o escríbenos a{" "}
                     <a href="mailto:hello@jaak.ai" className="underline">hello@jaak.ai</a>.
                   </p>
@@ -696,7 +696,7 @@ export default function WebinarPage() {
                 </div>
 
                 {followUpStatus === "success" ? (
-                  <div className="text-center py-10 rounded-2xl" style={{ border: "1px solid rgba(45,182,193,.2)", background: "rgba(45,182,193,.05)" }}>
+                  <div aria-live="polite" className="text-center py-10 rounded-2xl" style={{ border: "1px solid rgba(45,182,193,.2)", background: "rgba(45,182,193,.05)" }}>
                     <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: "rgba(45,182,193,.15)", border: "1.5px solid rgba(45,182,193,.3)" }}>
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L19 7" stroke="#2DB6C1" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
                     </div>
@@ -796,7 +796,7 @@ export default function WebinarPage() {
                     </div>
 
                     {followUpStatus === "error" && (
-                      <p className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">
+                      <p role="alert" className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">
                         Ocurrió un error. Intenta de nuevo o escríbenos a <a href="mailto:hello@jaak.ai" className="underline">hello@jaak.ai</a>.
                       </p>
                     )}

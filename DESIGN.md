@@ -39,7 +39,7 @@ colors:
   # Estado
   danger: "#b91c1c"            # error sobre claro
   danger-dark: "#ff8a8a"       # error sobre marino
-  warning: "#78504b"           # aviso sobre claro (aprox)
+  warning: "rgba(120,55,0,0.90)"  # aviso sobre claro (--hp-orange-text modo claro)
 
 typography:
   # Familia única: Montserrat. La jerarquía se construye con peso y tamaño,
@@ -106,14 +106,6 @@ components:
     borderColor: "{colors.navy}"
     rounded: "{rounded.sm}"
     padding: "14px 32px"
-  button-blue:         # .btn-blue
-    backgroundColor: "{colors.navy}"
-    textColor: "#ffffff"
-    rounded: "{rounded.sm}"
-  button-green:        # .btn-green
-    backgroundColor: "{colors.green}"
-    textColor: "#ffffff"
-    rounded: "{rounded.sm}"
   card:
     backgroundColor: "#ffffff"
     borderColor: "{colors.border-light}"
@@ -168,13 +160,12 @@ producto. El verde marca lo verificado.
 
 ### Marino (marca / autoridad)
 
-- **Navy** (`#212A45`): titulares sobre claro, botón `.btn-blue`, borde de
-  `.btn-secondary`.
+- **Navy** (`#212A45`): titulares sobre claro, borde de `.btn-secondary`.
 - **Navy Deep** (`#0E1133`): superficie oscura y `--primary-dark`.
 
 ### Verde (estado)
 
-- **Verde** (`#2AD796`): éxito, verificación, `.btn-green`. Tiene significado —
+- **Verde** (`#2AD796`): éxito, verificación. Tiene significado —
   no es un tercer color decorativo.
 
 ### Texto
@@ -247,8 +238,8 @@ El sistema es mayormente plano. La profundidad viene del contraste de superficie
 pero el blur decorativo no es la base del sistema. En superficies claras el
 contenido descansa sobre color sólido, no glass.
 
-**Gradientes de Marca.** `.gradient-bg` (marino) y `.gradient-text` (teal→verde)
-son momentos de marca, no relleno de fondo genérico.
+**Gradientes de Marca.** `.gradient-bg` (marino) es un momento de marca, no
+relleno de fondo genérico.
 
 ## 5. Componentes
 
@@ -256,9 +247,7 @@ son momentos de marca, no relleno de fondo genérico.
 
 - **Primario (`.btn-primary` / `.btn-cyan`):** relleno teal, texto blanco, radio
   8px. `.btn-cyan` es la variante grande (padding 16×40, peso 700).
-- **Azul (`.btn-blue`):** relleno navy. Para CTA de autoridad sobre claro.
 - **Secundario (`.btn-secondary`):** transparente, borde navy, texto navy.
-- **Verde (`.btn-green`):** relleno verde. Reservado para acción de éxito/registro.
 - **Hover:** ligero `translateY(-1px/-2px)`, oscurecer el relleno, sombra suave. Sin bounce.
 - **Foco:** anillo teal de 2px con 2px de offset (`:focus-visible`).
 
@@ -303,3 +292,7 @@ son momentos de marca, no relleno de fondo genérico.
 - No uses negro puro ni blanco puro como texto sobre marino (usa blanco con alpha).
 - No dejes que el sistema visual tape la prueba de producto.
 - No hardcodees hex en CSS de página: lee las variables de `globals.css`.
+
+---
+
+Última sincronización: 2026-07-08

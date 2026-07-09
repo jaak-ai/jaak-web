@@ -1,8 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap");
 @import "tailwindcss";
 
 :root {
-  --font-montserrat: "Montserrat", sans-serif;
   --primary: #212A45;
   --primary-dark: #0E1133;
   --accent: #2DB6C1;
@@ -25,7 +23,13 @@
   --color-primary: var(--primary);
   --color-primary-dark: var(--primary-dark);
   --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
   --color-accent-green: var(--accent-green);
+  --color-text-body: var(--text-body);
+  --color-text-muted: var(--text-muted);
+  --color-section-alt: var(--section-alt);
+  --color-section-light: var(--section-light);
+  --color-border-light: var(--border-light);
   --font-sans: var(--font-montserrat);
 }
 
@@ -40,11 +44,7 @@ body {
 }
 
 .gradient-bg {
-  background: linear-gradient(135deg, #212A45 0%, #0E1133 50%, #212A45 100%);
-}
-
-.gradient-bg-light {
-  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f8fafc 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 50%, var(--primary) 100%);
 }
 
 .btn-primary {
@@ -53,7 +53,7 @@ body {
   padding: 14px 32px;
   border-radius: 8px;
   font-weight: 600;
-  transition: all 0.2s ease;
+  transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease, border-color .2s ease, color .2s ease;
   display: inline-block;
   text-align: center;
 }
@@ -70,7 +70,7 @@ body {
   border-radius: 8px;
   border: 2px solid var(--primary);
   font-weight: 600;
-  transition: all 0.2s ease;
+  transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease, border-color .2s ease, color .2s ease;
   display: inline-block;
   text-align: center;
 }
@@ -80,22 +80,6 @@ body {
   color: white;
 }
 
-.btn-green {
-  background: var(--accent-green);
-  color: white;
-  padding: 14px 32px;
-  border-radius: 8px;
-  font-weight: 600;
-  transition: all 0.2s ease;
-  display: inline-block;
-  text-align: center;
-}
-
-.btn-green:hover {
-  background: #22b07d;
-  transform: translateY(-1px);
-}
-
 .btn-cyan {
   background: var(--accent);
   color: white;
@@ -103,7 +87,7 @@ body {
   border-radius: 8px;
   font-weight: 700;
   font-size: 1.125rem;
-  transition: all 0.2s ease;
+  transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease, border-color .2s ease, color .2s ease;
   display: inline-block;
   text-align: center;
 }
@@ -112,24 +96,6 @@ body {
   background: var(--accent-hover);
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(45, 182, 193, 0.3);
-}
-
-.btn-blue {
-  background: var(--primary);
-  color: white;
-  padding: 16px 40px;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 1.125rem;
-  transition: all 0.2s ease;
-  display: inline-block;
-  text-align: center;
-}
-
-.btn-blue:hover {
-  background: var(--primary-dark);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(33, 42, 69, 0.3);
 }
 
 .section-padding {
@@ -156,7 +122,7 @@ body {
   border-radius: 16px;
   padding: 32px;
   border: 1px solid var(--border-light);
-  transition: all 0.3s ease;
+  transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease, border-color .2s ease, color .2s ease;
 }
 
 .card:hover {
@@ -364,7 +330,7 @@ body {
   justify-content: center;
   cursor: pointer;
   border: none;
-  transition: all 0.25s ease;
+  transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease, border-color .2s ease, color .2s ease;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
@@ -389,21 +355,13 @@ body {
   border: 1px solid rgba(255,255,255,0.10);
 }
 
-.glass-light {
-  background: linear-gradient(145deg, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.70) 100%);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,0.60);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.06);
-}
-
 .glass-card {
   background: linear-gradient(145deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255,255,255,0.10);
   border-radius: 20px;
-  transition: all 0.3s ease;
+  transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease, border-color .2s ease, color .2s ease;
 }
 
 .glass-card:hover {
@@ -411,46 +369,6 @@ body {
   background: linear-gradient(145deg, rgba(255,255,255,0.08) 0%, rgba(45,182,193,0.04) 100%);
   box-shadow: 0 16px 48px rgba(45,182,193,0.10), 0 0 0 1px rgba(45,182,193,0.12);
   transform: translateY(-2px);
-}
-
-.gradient-text {
-  background: linear-gradient(90deg, #2DB6C1, #2AD796);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* dark-section base — JAAK navy, not pure black */
-.section-dark {
-  background: #0E1133;
-  position: relative;
-  overflow: hidden;
-}
-
-.section-dark-mid {
-  background: #141a3a;
-  position: relative;
-  overflow: hidden;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-}
-
-.animate-float {
-  animation: float 4s ease-in-out infinite;
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
-}
-
-.animate-shimmer {
-  background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.05) 75%);
-  background-size: 200% auto;
-  animation: shimmer 3s linear infinite;
 }
 
 /* ── Autoservicio landing ── */
@@ -500,7 +418,7 @@ body {
    Solo aplica con :focus-visible (teclado), no en clics de ratón. El outline
    sigue el border-radius existente del elemento en navegadores modernos. */
 :focus-visible {
-  outline: 2px solid #2DB6C1;
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
@@ -512,4 +430,18 @@ body {
 .related-post-card:hover {
   background: rgba(255,255,255,0.06);
   border-color: rgba(30,202,211,0.28);
+}
+
+/* ── Accesibilidad: movimiento reducido ── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .hp-marquee-track,
+  .hp-scan-beam,
+  .orb-drift-1,
+  .orb-drift-2,
+  .orb-drift-3 {
+    animation: none;
+  }
 }

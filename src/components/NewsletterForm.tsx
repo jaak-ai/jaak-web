@@ -67,7 +67,7 @@ export default function NewsletterForm() {
       } else {
         const errorData = await response.json().catch(() => ({}));
         setStatus("error");
-        setMessage(errorData.message || "Hubo un error. Por favor intenta de nuevo.");
+        setMessage(errorData.error || errorData.message || "Hubo un error. Por favor intenta de nuevo.");
       }
     } catch {
       setStatus("error");
@@ -84,12 +84,12 @@ export default function NewsletterForm() {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="tu@email.com"
           disabled={status === "loading" || status === "success"}
-          className="flex-grow px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-[#0066ff] transition-colors disabled:opacity-50"
+          className="flex-grow px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/40 focus:outline-none focus:border-[#2DB6C1] transition-colors disabled:opacity-50"
         />
         <button
           type="submit"
           disabled={status === "loading" || status === "success" || !turnstileToken}
-          className="px-6 py-3 bg-[#0066ff] text-white font-semibold rounded-lg hover:bg-[#0052cc] transition-all whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-6 py-3 bg-[#2DB6C1] text-white font-semibold rounded-lg hover:bg-[#25969f] transition-all whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {status === "loading" ? "Enviando..." : status === "success" ? "¡Suscrito!" : "Suscribirse"}
         </button>
@@ -105,7 +105,11 @@ export default function NewsletterForm() {
       </div>
 
       {message && (
-        <p className={`text-sm ${status === "success" ? "text-green-400" : "text-red-400"}`}>
+        <p
+          role={status === "error" ? "alert" : undefined}
+          aria-live={status === "error" ? undefined : "polite"}
+          className={`text-sm ${status === "success" ? "text-green-400" : "text-red-400"}`}
+        >
           {message}
         </p>
       )}
