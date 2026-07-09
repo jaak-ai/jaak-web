@@ -60,7 +60,7 @@ export default function PrevencionFraude() {
               <div className="flex flex-wrap gap-4">
                 <Link
                   href="/contacto"
-                  className="px-6 py-3 bg-[#212A45] text-white font-semibold rounded-lg hover:bg-[#212A45] transition-all"
+                  className="px-6 py-3 bg-[#212A45] text-white font-semibold rounded-lg hover:bg-[#212A45] transition-colors"
                 >
                   Hablar con ventas
                 </Link>
@@ -186,7 +186,7 @@ export default function PrevencionFraude() {
             </p>
             <Link
               href="/contacto"
-              className="inline-flex px-8 py-4 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-all"
+              className="inline-flex px-8 py-4 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-colors"
             >
               Solicitar demo
             </Link>

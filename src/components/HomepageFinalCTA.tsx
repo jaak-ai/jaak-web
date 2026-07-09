@@ -107,7 +107,7 @@ export default function HomepageFinalCTA() {
 
             <Link
               href="/autoservicio"
-              className="inline-flex items-center justify-center px-7 py-4 text-white font-bold text-base rounded-xl transition-all duration-200 group"
+              className="inline-flex items-center justify-center px-7 py-4 text-white font-bold text-base rounded-xl transition-colors duration-200 group"
               style={{
                 background: "linear-gradient(135deg, #2DB6C1, #25969f)",
                 boxShadow: "0 8px 28px rgba(45,182,193,0.28)",
@@ -201,7 +201,7 @@ export default function HomepageFinalCTA() {
 
             <Link
               href="/contacto"
-              className="inline-flex items-center justify-center px-7 py-4 font-bold text-base rounded-xl transition-all duration-200"
+              className="inline-flex items-center justify-center px-7 py-4 font-bold text-base rounded-xl transition-colors duration-200"
               style={{
                 color: "var(--hp-ghost-btn-color)",
                 background: "var(--hp-ghost-btn-bg)",

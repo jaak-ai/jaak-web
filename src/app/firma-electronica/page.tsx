@@ -185,7 +185,7 @@ export default function FirmaElectronicaPage() {
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link
                 href="/autoservicio"
-                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-bold text-white text-base transition-all hover:opacity-90 hover:scale-105"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-bold text-white text-base transition-all will-change-transform hover:opacity-90 hover:scale-105"
                 style={{ background: "linear-gradient(135deg, #2DB6C1, #25969f)", boxShadow: "0 0 30px rgba(45,182,193,0.35)" }}
               >
                 Probar autoservicio
@@ -195,7 +195,7 @@ export default function FirmaElectronicaPage() {
               </Link>
               <Link
                 href="/contacto"
-                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-bold text-base transition-all hover:bg-white/10"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-bold text-base transition-colors hover:bg-white/10"
                 style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)", color: "#E2E8F0" }}
               >
                 Hablar con un experto
@@ -318,7 +318,7 @@ export default function FirmaElectronicaPage() {
             <div className="text-center mt-8">
               <Link
                 href="/firma-electronica-efirma"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all hover:opacity-90 hover:scale-105"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all will-change-transform hover:opacity-90 hover:scale-105"
                 style={{ background: "#3B82F6" }}
               >
                 Conocer firma con e.firma
@@ -354,7 +354,7 @@ export default function FirmaElectronicaPage() {
               </p>
               <Link
                 href="/firma-certificada-sello-tiempo"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all hover:opacity-90 hover:scale-105"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all will-change-transform hover:opacity-90 hover:scale-105"
                 style={{ background: "#212A45" }}
               >
                 Conocer firma certificada
@@ -471,7 +471,7 @@ export default function FirmaElectronicaPage() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-sm font-semibold px-4 py-3 rounded-xl text-center transition-all hover:bg-white/10"
+                  className="text-sm font-semibold px-4 py-3 rounded-xl text-center transition-colors hover:bg-white/10"
                   style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "#2DB6C1" }}
                 >
                   {link.label}
@@ -519,7 +519,7 @@ export default function FirmaElectronicaPage() {
                   </ul>
                   <Link
                     href="/autoservicio"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all hover:opacity-90 hover:scale-105"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all will-change-transform hover:opacity-90 hover:scale-105"
                     style={{ background: "#2DB6C1" }}
                   >
                     Probar gratis
@@ -550,7 +550,7 @@ export default function FirmaElectronicaPage() {
                   </ul>
                   <Link
                     href="/contacto"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all hover:bg-white/10"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-colors hover:bg-white/10"
                     style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)", color: "#E2E8F0" }}
                   >
                     Hablar con ventas

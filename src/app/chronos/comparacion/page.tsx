@@ -266,13 +266,13 @@ export default function ChronosComparacionPage() {
             <div className="flex flex-wrap gap-4 justify-center">
               <Link
                 href="/chronos#contacto"
-                className="px-8 py-4 bg-white text-[#212A45] font-bold rounded-lg hover:bg-gray-50 transition-all shadow-lg"
+                className="px-8 py-4 bg-white text-[#212A45] font-bold rounded-lg hover:bg-gray-50 transition-colors shadow-lg"
               >
                 Solicitar Demo
               </Link>
               <Link
                 href="/chronos"
-                className="px-8 py-4 bg-transparent border-2 border-white text-white font-bold rounded-lg hover:bg-white hover:text-[#212A45] transition-all"
+                className="px-8 py-4 bg-transparent border-2 border-white text-white font-bold rounded-lg hover:bg-white hover:text-[#212A45] transition-colors"
               >
                 Ver Características
               </Link>

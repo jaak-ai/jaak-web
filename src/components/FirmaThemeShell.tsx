@@ -93,7 +93,7 @@ export default function FirmaThemeShell() {
                   </Link>
                   <Link
                     href="/contacto"
-                    className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-bold text-base transition-all hover:bg-white/10"
+                    className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-bold text-base transition-colors hover:bg-white/10"
                     style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)", color: "#E2E8F0" }}
                   >
                     Ver demo
@@ -384,7 +384,7 @@ export default function FirmaThemeShell() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-sm font-semibold px-4 py-3 rounded-xl text-center transition-all"
+                  className="text-sm font-semibold px-4 py-3 rounded-xl text-center transition-colors"
                   style={{ background: "rgba(45,182,193,0.06)", border: "1px solid rgba(45,182,193,0.15)", color: "#2DB6C1" }}
                 >
                   {link.label}
@@ -457,7 +457,7 @@ export default function FirmaThemeShell() {
                       </li>
                     ))}
                   </ul>
-                  <Link href="/contacto" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all hover:bg-white/10" style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)", color: "#E2E8F0" }}>
+                  <Link href="/contacto" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-colors hover:bg-white/10" style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)", color: "#E2E8F0" }}>
                     Hablar con ventas
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />

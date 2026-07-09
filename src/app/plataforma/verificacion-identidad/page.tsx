@@ -371,7 +371,7 @@ export default function VerificacionIdentidad() {
               </div>
               <Link
                 href="/contacto"
-                className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-5 py-2.5 font-bold text-sm rounded-xl transition-all"
+                className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-5 py-2.5 font-bold text-sm rounded-xl transition-all will-change-transform"
                 style={{ background: "linear-gradient(135deg, #2DB6C1, #25969f)", color: "#fff", boxShadow: "0 4px 16px rgba(45,182,193,0.25)" }}
               >
                 Ver demo en vivo
@@ -978,7 +978,7 @@ export default function VerificacionIdentidad() {
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
                 <Link
                   href="/contacto"
-                  className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 text-white font-bold text-base sm:text-lg rounded-xl transition-all duration-200 group"
+                  className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 text-white font-bold text-base sm:text-lg rounded-xl transition-all will-change-transform duration-200 group"
                   style={{
                     background: "linear-gradient(135deg, #2DB6C1, #25969f)",
                     boxShadow: "0 8px 32px rgba(45,182,193,0.30)",
@@ -991,7 +991,7 @@ export default function VerificacionIdentidad() {
                 </Link>
                 <Link
                   href="/precios"
-                  className="inline-flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-4 font-semibold text-base sm:text-lg rounded-xl transition-all duration-200"
+                  className="inline-flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-4 font-semibold text-base sm:text-lg rounded-xl transition-colors duration-200"
                   style={{
                     color: "rgba(255,255,255,0.78)",
                     background: "rgba(255,255,255,0.06)",
