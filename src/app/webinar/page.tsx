@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { IBETA } from "@/lib/trust";
 
 /* ── Video URL ───────────────────────────────────────────────────────── */
 const VIDEO_URL =
@@ -19,35 +19,35 @@ interface Comment {
   text: string;
 }
 
-/* ── Simulated live comments ─────────────────────────────────────────── */
-const LIVE_COMMENTS: Comment[] = [
-  { id:  1, initials: "MR", name: "Miguel Rodríguez",   color: "#2DB6C1", text: "Excelente punto sobre la convergencia regulatoria entre banca y fintech 👏" },
-  { id:  2, initials: "LC", name: "Laura Castillo",     color: "#5A9EDB", text: "¿El modelo de neobanco aplica también para SOFOMES reguladas?" },
-  { id:  3, initials: "JH", name: "Jorge Hernández",    color: "#7C6EDB", text: "El tema de PLD y liveness detection es muy relevante para nuestro equipo de cumplimiento" },
-  { id:  4, initials: "AP", name: "Ana Pérez",          color: "#4FC89A", text: "Muy claro el punto de quiebre que explica Arianna 🙌" },
-  { id:  5, initials: "CV", name: "Carlos Vega",        color: "#E8956B", text: "¿Cuánto tarda en promedio la integración con un core bancario legacy?" },
-  { id:  6, initials: "SM", name: "Sofía Morales",      color: "#2DB6C1", text: "Perfecto el enfoque sobre NOM-151, gracias por cubrirlo 🙏" },
-  { id:  7, initials: "ER", name: "Eduardo Ríos",       color: "#5A9EDB", text: "La identidad sintética es el mayor reto que enfrentamos actualmente 🔥" },
-  { id:  8, initials: "PL", name: "Patricia López",     color: "#7C6EDB", text: "¿Tienen datos sobre reducción de fraude post-implementación KYC biométrico?" },
-  { id:  9, initials: "DG", name: "Daniel García",      color: "#4FC89A", text: "El Dr. Merino explica perfecto el marco GAFI aplicado a México 💡" },
-  { id: 10, initials: "IG", name: "Itzel González",     color: "#E8956B", text: "¿La NOM-151 es requisito obligatorio para contratos de AFORE también?" },
-  { id: 11, initials: "RV", name: "Roberto Vargas",     color: "#2DB6C1", text: "Ya compartí este webinar con todo mi equipo de compliance 🔗" },
-  { id: 12, initials: "FT", name: "Fernanda Torres",    color: "#5A9EDB", text: "El onboarding sin fricción es el reto más grande en nuestra SOFIPO" },
-  { id: 13, initials: "AM", name: "Alejandro Martínez", color: "#7C6EDB", text: "¿Aplica el mismo estándar de liveness para entidades IFPE?" },
-  { id: 14, initials: "VR", name: "Valeria Ramírez",    color: "#4FC89A", text: "Exactamente lo que necesitábamos para presentar al board 👍" },
-  { id: 15, initials: "HG", name: "Hugo Guerrero",      color: "#E8956B", text: "Bien diferenciados los tres modelos: banca, fintech y neobanco 💡" },
-  { id: 16, initials: "NF", name: "Nadia Fuentes",      color: "#2DB6C1", text: "¿Tienen caso de éxito en SOFOM con volúmenes altos de originación?" },
-  { id: 17, initials: "GO", name: "Gabriela Ochoa",     color: "#5A9EDB", text: "El punto de la firma electrónica en procesos de crédito es clave 🔑" },
-  { id: 18, initials: "LS", name: "Luis Sánchez",       color: "#7C6EDB", text: "Muy completo el webinar, recomendado para cualquier equipo de compliance" },
+/* ── Featured webinar questions (curated, static) ────────────────────── */
+const FEATURED_QUESTIONS: Comment[] = [
+  { id:  1, initials: "M", name: "Miguel",    color: "#2DB6C1", text: "Excelente punto sobre la convergencia regulatoria entre banca y fintech." },
+  { id:  2, initials: "L", name: "Laura",     color: "#5A9EDB", text: "¿El modelo de neobanco aplica también para SOFOMES reguladas?" },
+  { id:  3, initials: "J", name: "Jorge",     color: "#7C6EDB", text: "El tema de PLD y liveness detection es muy relevante para nuestro equipo de cumplimiento." },
+  { id:  4, initials: "A", name: "Ana",       color: "#4FC89A", text: "Muy claro el punto de quiebre que explica Arianna." },
+  { id:  5, initials: "C", name: "Carlos",    color: "#E8956B", text: "¿Cuánto tarda en promedio la integración con un core bancario legacy?" },
+  { id:  6, initials: "S", name: "Sofía",     color: "#2DB6C1", text: "Perfecto el enfoque sobre NOM-151, gracias por cubrirlo." },
+  { id:  7, initials: "E", name: "Eduardo",   color: "#5A9EDB", text: "La identidad sintética es el mayor reto que enfrentamos actualmente." },
+  { id:  8, initials: "P", name: "Patricia",  color: "#7C6EDB", text: "¿Tienen datos sobre reducción de fraude tras implementar KYC biométrico?" },
+  { id:  9, initials: "D", name: "Daniel",    color: "#4FC89A", text: "El Dr. Merino explica muy bien el marco GAFI aplicado a México." },
+  { id: 10, initials: "I", name: "Itzel",     color: "#E8956B", text: "¿La NOM-151 es requisito obligatorio para contratos de AFORE también?" },
+  { id: 11, initials: "R", name: "Roberto",   color: "#2DB6C1", text: "Ya compartí este webinar con todo mi equipo de compliance." },
+  { id: 12, initials: "F", name: "Fernanda",  color: "#5A9EDB", text: "El onboarding sin fricción es el reto más grande en nuestra SOFIPO." },
+  { id: 13, initials: "A", name: "Alejandro", color: "#7C6EDB", text: "¿Aplica el mismo estándar de liveness para entidades IFPE?" },
+  { id: 14, initials: "V", name: "Valeria",   color: "#4FC89A", text: "Exactamente lo que necesitábamos para presentar al consejo." },
+  { id: 15, initials: "H", name: "Hugo",      color: "#E8956B", text: "Bien diferenciados los tres modelos: banca, fintech y neobanco." },
+  { id: 16, initials: "N", name: "Nadia",     color: "#2DB6C1", text: "¿Tienen caso de éxito en SOFOM con volúmenes altos de originación?" },
+  { id: 17, initials: "G", name: "Gabriela",  color: "#5A9EDB", text: "El punto de la firma electrónica en procesos de crédito es clave." },
+  { id: 18, initials: "L", name: "Luis",      color: "#7C6EDB", text: "Muy completo el webinar, recomendado para cualquier equipo de compliance." },
 ];
 
 /* ── Speaker data ────────────────────────────────────────────────────── */
 const ariannaHighlights = [
   {
-    title: "Fundadora de la empresa líder en KYC en México",
+    title: "Cofundadora y CEO de JAAK",
     content: (
       <>
-        Escaló JAAK desde cero convirtiéndola en referencia mexicana en{" "}
+        Ha impulsado el desarrollo de JAAK en{" "}
         <strong>biometría facial, liveness detection y verificación de identidad digital</strong>{" "}
         para instituciones financieras y sectores regulados en México y LATAM.
       </>
@@ -90,10 +90,8 @@ const davidHighlights = [
     title: "Consultor de CNBV, UIF, SAT, FGR y Congreso Federal",
     content: (
       <>
-        Capacitador y consultor de las principales autoridades regulatorias de México. Entrenamiento
-        especializado por{" "}
-        <strong>ONU, GAFI, BID, FBI y el Departamento de Seguridad Nacional de EUA</strong>. Experto
-        técnico del Panel de IA de la ONU.
+        Capacitador y consultor de las principales autoridades regulatorias de México en materia de{" "}
+        <strong>PLD, protección de datos y regulación digital</strong>.
       </>
     ),
   },
@@ -189,7 +187,7 @@ const products = [
   },
   {
     name: "Prevención de Fraude",
-    desc: "Tecnología biométrica certificada iBeta Level 1 & 2 para detección de deepfakes, identidad sintética y spoofing. Validación en listas negras, PEP y alertas AML.",
+    desc: `Tecnología biométrica certificada ${IBETA} para detección de deepfakes, identidad sintética y spoofing. Validación en listas negras, PEP y alertas AML.`,
     tags: ["iBeta certificado", "Listas negras", "PEP / AML"],
     icon: (
       <svg viewBox="0 0 22 22" fill="none" className="w-5 h-5">
@@ -201,15 +199,7 @@ const products = [
 ];
 
 const heroTags = ["KYC / PLD-FT", "Firma electrónica", "Onboarding digital", "NOM-151", "Ley Fintech", "CNBV"];
-const certs = ["ISO 27001", "ISO 9001", "iBeta Level 1 & 2", "NOM-151", "Fundada 2017"];
-
-/* ── Helpers ─────────────────────────────────────────────────────────── */
-function getInitials(name: string): string {
-  const parts = name.trim().split(" ").filter(Boolean);
-  if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
-  if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
-  return "TÚ";
-}
+const certs = ["ISO 27001", "ISO 9001", IBETA, "NOM-151", "Fundada 2017"];
 
 /* ── Accordion ───────────────────────────────────────────────────────── */
 function Accordion({
@@ -296,16 +286,9 @@ export default function WebinarPage() {
   const [formData, setFormData] = useState({ nombre: "", apellido: "", email: "", empresa: "", tipo: "", necesidad: "", telefono: "" });
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
-  /* Video & live state */
+  /* Video & registration state */
   const [registered, setRegistered] = useState(false);
   const [registeredUser, setRegisteredUser] = useState({ name: "", email: "", telefono: "" });
-  const [visibleComments, setVisibleComments] = useState<Comment[]>([]);
-  const [viewers, setViewers] = useState(143);
-  const commentIndexRef = useRef(4);
-  const commentsEndRef = useRef<HTMLDivElement>(null);
-
-  /* User comment input */
-  const [commentText, setCommentText] = useState("");
 
   /* Follow-up form */
   const [followUp, setFollowUp] = useState({ email: "", sector: "", cargo: "", proyecto: "", expectativas: "" });
@@ -324,35 +307,6 @@ export default function WebinarPage() {
       } catch {}
     }
   }, []);
-
-  /* Stream simulated comments after registration */
-  useEffect(() => {
-    if (!registered) return;
-    setVisibleComments(LIVE_COMMENTS.slice(0, 4));
-    commentIndexRef.current = 4;
-    const id = setInterval(() => {
-      const i = commentIndexRef.current;
-      if (i >= LIVE_COMMENTS.length) { clearInterval(id); return; }
-      setVisibleComments((prev) => {
-        const next = [...prev, LIVE_COMMENTS[i]];
-        return next.length > 15 ? next.slice(-15) : next;
-      });
-      commentIndexRef.current = i + 1;
-    }, 5800);
-    return () => clearInterval(id);
-  }, [registered]);
-
-  /* Auto-scroll comments */
-  useEffect(() => {
-    commentsEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [visibleComments]);
-
-  /* Increment viewer count */
-  useEffect(() => {
-    if (!registered) return;
-    const id = setInterval(() => setViewers((v) => v + Math.floor(Math.random() * 3) + 1), 11000);
-    return () => clearInterval(id);
-  }, [registered]);
 
   const set = (field: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setFormData((prev) => ({ ...prev, [field]: e.target.value }));
@@ -390,25 +344,6 @@ export default function WebinarPage() {
     } catch {
       setStatus("error");
     }
-  };
-
-  /* User comment submit */
-  const handleCommentSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!commentText.trim()) return;
-    const name = registeredUser.name || "Anónimo";
-    const newComment: Comment = {
-      id: Date.now(),
-      initials: getInitials(name),
-      name,
-      color: "#2DB6C1",
-      text: commentText.trim(),
-    };
-    setVisibleComments((prev) => {
-      const next = [...prev, newComment];
-      return next.length > 15 ? next.slice(-15) : next;
-    });
-    setCommentText("");
   };
 
   /* Follow-up form submit */
@@ -506,12 +441,12 @@ export default function WebinarPage() {
             <p className="text-xs text-gray-500 leading-snug mb-5">Déjanos tus datos y recibe el webinar + guía de cumplimiento KYC para tu institución.</p>
 
             {status === "success" ? (
-              <div className="text-center py-6">
+              <div aria-live="polite" className="text-center py-6">
                 <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: "#E6F8F6", border: "1.5px solid rgba(45,182,193,.3)" }}>
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L19 7" stroke="#2DB6C1" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
                 </div>
                 <h3 className="text-lg font-black text-[#212A45] mb-2" style={{ fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}>¡Tu acceso está listo!</h3>
-                <p className="text-sm text-gray-500 leading-relaxed mb-5">Desplázate hacia abajo para ver el webinar completo con chat en vivo.</p>
+                <p className="text-sm text-gray-500 leading-relaxed mb-5">Desplázate hacia abajo para ver la grabación completa del webinar.</p>
                 <a href="#video-webinar" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-black text-sm" style={{ background: "#2DB6C1", color: "#0E1133", fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}>
                   Ver el webinar ahora →
                 </a>
@@ -562,10 +497,10 @@ export default function WebinarPage() {
                 </div>
                 <div>
                   <label className="block text-[10px] font-bold tracking-wider uppercase text-gray-500 mb-1.5" style={{ fontFamily: "var(--font-montserrat), Montserrat, sans-serif" }}>Teléfono</label>
-                  <input type="tel" placeholder="+52 55 0000 0000" value={formData.telefono} onChange={set("telefono")} className={inputBase} />
+                  <input type="tel" placeholder="+52 55 0000 0000" required value={formData.telefono} onChange={set("telefono")} className={inputBase} />
                 </div>
                 {status === "error" && (
-                  <p className="text-xs text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+                  <p role="alert" className="text-xs text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
                     Ocurrió un error. Intenta de nuevo o escríbenos a{" "}
                     <a href="mailto:hello@jaak.ai" className="underline">hello@jaak.ai</a>.
                   </p>
@@ -574,14 +509,6 @@ export default function WebinarPage() {
                   {status === "loading" ? "Enviando…" : "Ver el webinar gratis →"}
                 </button>
                 <p className="text-[10.5px] text-gray-400 text-center leading-relaxed">Sin spam · Datos protegidos conforme a LFPDPPP</p>
-                <div className="flex items-center gap-2.5 pt-3 border-t border-gray-100">
-                  <div className="flex">
-                    {["M", "R", "A"].map((l, i) => (
-                      <span key={l} className="w-6 h-6 rounded-full border-2 border-white flex items-center justify-center text-[8px] font-black -ml-1.5 first:ml-0" style={{ background: i === 0 ? "#2DB6C1" : i === 1 ? "#5A9EDB" : "#7EC8C2", color: i === 0 ? "#0E1133" : "#fff", zIndex: 3 - i }}>{l}</span>
-                    ))}
-                  </div>
-                  <p className="text-[11px] text-gray-500 leading-snug"><strong className="text-[#212A45]">+200 profesionales</strong> ya accedieron</p>
-                </div>
               </form>
             )}
           </div>
@@ -592,20 +519,17 @@ export default function WebinarPage() {
       <section id="video-webinar" style={{ borderTop: "1px solid var(--hp-divider)" }}>
         {registered ? (
           <div>
-            {/* Live bar */}
+            {/* Recording bar */}
             <div className="bg-[#080d1e] px-4 sm:px-6 py-2.5 flex items-center justify-between gap-4 flex-wrap">
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                  <span className="text-[11px] font-black text-white tracking-widest uppercase">En vivo</span>
+                  <svg viewBox="0 0 14 14" fill="none" className="w-3 h-3 text-[#2DB6C1]"><circle cx="7" cy="7" r="6" stroke="currentColor" strokeWidth="1.4" /><path d="M5.5 4.5v5l4-2.5-4-2.5z" fill="currentColor" /></svg>
+                  <span className="text-[11px] font-black text-white tracking-widest uppercase">Grabación del webinar</span>
                 </div>
                 <span className="text-white/20 text-sm hidden sm:inline">·</span>
                 <span className="text-[11px] text-white/50 hidden sm:inline">Tres modelos financieros. Un solo punto de quiebre.</span>
               </div>
-              <div className="flex items-center gap-1.5">
-                <svg viewBox="0 0 12 12" fill="currentColor" className="w-2.5 h-2.5 text-white/30"><circle cx="6" cy="6" r="5" /></svg>
-                <span className="text-[11px] text-white/45">{viewers.toLocaleString("es-MX")} viendo ahora</span>
-              </div>
+              <span className="text-[11px] text-white/45">1h 20min</span>
             </div>
 
             {/* Video + comments */}
@@ -621,21 +545,18 @@ export default function WebinarPage() {
                 />
               </div>
 
-              {/* Comments panel */}
+              {/* Featured questions panel */}
               <div className="flex flex-col bg-[#0D1128]" style={{ borderLeft: "1px solid rgba(255,255,255,.07)", minHeight: "320px" }}>
                 {/* Header */}
-                <div className="px-4 py-3 flex items-center justify-between shrink-0" style={{ borderBottom: "1px solid rgba(255,255,255,.07)" }}>
-                  <div className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-[#2DB6C1] animate-pulse" />
-                    <span className="text-[11px] font-bold text-white/80">Chat en vivo</span>
-                  </div>
-                  <span className="text-[10px] text-white/25">{visibleComments.length} mensajes</span>
+                <div className="px-4 py-3 shrink-0" style={{ borderBottom: "1px solid rgba(255,255,255,.07)" }}>
+                  <span className="text-[11px] font-bold text-white/80">Preguntas destacadas del webinar</span>
+                  <p className="text-[10px] text-white/25 mt-0.5">Selección de comentarios de la audiencia durante la sesión</p>
                 </div>
 
-                {/* Messages */}
-                <div className="flex-1 overflow-y-auto p-4 space-y-4" style={{ maxHeight: "360px", scrollbarWidth: "thin", scrollbarColor: "rgba(255,255,255,.1) transparent" }}>
-                  {visibleComments.map((c) => (
-                    <div key={c.id} className="flex gap-2.5 animate-fade-in-up">
+                {/* List */}
+                <div className="flex-1 overflow-y-auto p-4 space-y-4" style={{ maxHeight: "460px", scrollbarWidth: "thin", scrollbarColor: "rgba(255,255,255,.1) transparent" }}>
+                  {FEATURED_QUESTIONS.map((c) => (
+                    <div key={c.id} className="flex gap-2.5">
                       <div
                         className="w-7 h-7 rounded-full shrink-0 flex items-center justify-center text-[9px] font-black"
                         style={{ background: c.color, color: c.color === "#2DB6C1" || c.color === "#4FC89A" ? "#0E1133" : "#fff" }}
@@ -648,33 +569,7 @@ export default function WebinarPage() {
                       </div>
                     </div>
                   ))}
-                  <div ref={commentsEndRef} />
                 </div>
-
-                {/* Comment input */}
-                <form onSubmit={handleCommentSubmit} className="p-3 shrink-0" style={{ borderTop: "1px solid rgba(255,255,255,.07)" }}>
-                  <div className="flex gap-2 items-center">
-                    <input
-                      type="text"
-                      value={commentText}
-                      onChange={(e) => setCommentText(e.target.value)}
-                      placeholder="Escribe un mensaje…"
-                      maxLength={200}
-                      className="flex-1 px-3 py-2 rounded-lg text-xs text-white placeholder:text-white/30 outline-none"
-                      style={{ background: "rgba(255,255,255,.06)", border: "1px solid rgba(255,255,255,.1)" }}
-                    />
-                    <button
-                      type="submit"
-                      disabled={!commentText.trim()}
-                      className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-all disabled:opacity-30"
-                      style={{ background: "#2DB6C1" }}
-                    >
-                      <svg viewBox="0 0 16 16" fill="none" className="w-4 h-4">
-                        <path d="M14 8H2M14 8l-4-4M14 8l-4 4" stroke="#0E1133" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </button>
-                  </div>
-                </form>
               </div>
             </div>
 
@@ -696,7 +591,7 @@ export default function WebinarPage() {
                 </div>
 
                 {followUpStatus === "success" ? (
-                  <div className="text-center py-10 rounded-2xl" style={{ border: "1px solid rgba(45,182,193,.2)", background: "rgba(45,182,193,.05)" }}>
+                  <div aria-live="polite" className="text-center py-10 rounded-2xl" style={{ border: "1px solid rgba(45,182,193,.2)", background: "rgba(45,182,193,.05)" }}>
                     <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: "rgba(45,182,193,.15)", border: "1.5px solid rgba(45,182,193,.3)" }}>
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L19 7" stroke="#2DB6C1" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
                     </div>
@@ -796,7 +691,7 @@ export default function WebinarPage() {
                     </div>
 
                     {followUpStatus === "error" && (
-                      <p className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">
+                      <p role="alert" className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">
                         Ocurrió un error. Intenta de nuevo o escríbenos a <a href="mailto:hello@jaak.ai" className="underline">hello@jaak.ai</a>.
                       </p>
                     )}
@@ -834,7 +729,7 @@ export default function WebinarPage() {
                     </div>
                     <div>
                       <p className="text-white font-bold text-sm mb-1" style={{ fontFamily: "var(--font-montserrat)" }}>Contenido exclusivo para registrados</p>
-                      <p className="text-white/40 text-xs">1h 20min · Acceso inmediato · Chat en vivo</p>
+                      <p className="text-white/40 text-xs">1h 20min · Acceso inmediato · Preguntas destacadas</p>
                     </div>
                   </div>
                 </div>
@@ -842,16 +737,16 @@ export default function WebinarPage() {
                   {["MR","LC","JH","AP","CV"].map((l, i) => (
                     <div key={l} className="w-6 h-6 rounded-full text-[8px] font-black flex items-center justify-center border-2 border-[#0E1133]" style={{ background: ["#2DB6C1","#5A9EDB","#7C6EDB","#4FC89A","#E8956B"][i], color: i === 0 || i === 3 ? "#0E1133" : "#fff", marginLeft: i > 0 ? "-6px" : "0", zIndex: 5 - i }}>{l}</div>
                   ))}
-                  <span className="text-white/35 text-xs ml-1">+{viewers} comentando en vivo</span>
+                  <span className="text-white/35 text-xs ml-1">Preguntas destacadas de la audiencia</span>
                 </div>
               </div>
               <h2 className="font-black text-2xl text-white mb-3 leading-tight" style={{ fontFamily: "var(--font-montserrat)", letterSpacing: "-0.5px" }}>Regístrate para ver el webinar completo</h2>
-              <p className="text-white/50 text-sm mb-6 max-w-sm mx-auto leading-relaxed">Acceso gratuito e inmediato. Incluye chat en vivo con otros participantes.</p>
+              <p className="text-white/50 text-sm mb-6 max-w-sm mx-auto leading-relaxed">Acceso gratuito e inmediato. Incluye las preguntas destacadas de la audiencia.</p>
               <a href="#registro" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-black text-sm tracking-wide transition-all hover:-translate-y-0.5" style={{ background: "#2DB6C1", color: "#0E1133", fontFamily: "var(--font-montserrat)" }}>
                 Registrarme y ver el webinar →
               </a>
               <div className="mt-10 flex flex-wrap gap-8 justify-center">
-                {[{ icon: "🎬", label: "1h 20min de contenido" }, { icon: "👥", label: "+200 profesionales registrados" }, { icon: "📋", label: "Guía de cumplimiento incluida" }].map((s) => (
+                {[{ icon: "🎬", label: "1h 20min de contenido" }, { icon: "📋", label: "Guía de cumplimiento incluida" }].map((s) => (
                   <div key={s.label} className="flex items-center gap-2">
                     <span className="text-base">{s.icon}</span>
                     <span className="text-xs text-white/45">{s.label}</span>
@@ -878,8 +773,8 @@ export default function WebinarPage() {
           </p>
           <div className="grid md:grid-cols-2 gap-7">
             {[
-              { name: "Arianna Quezada", role: "CEO & Cofundadora · JAAK IT S.A.P.I. de C.V.", badge: "8 años liderando JAAK", src: "/images/webinar/arianna-quezada.jpg", fallback: "AQ", gradient: "linear-gradient(135deg,#25969f,#2DB6C1)", highlights: ariannaHighlights, open: openA, onToggle: (i: number) => setOpenA(openA === i ? null : i) },
-              { name: "Dr. David Merino", role: "Especialista en Compliance · Contrainteligencia Empresarial", badge: "Entrenado por ONU · GAFI · FBI", src: "/images/webinar/david-merino.jpg", fallback: "DM", gradient: "linear-gradient(135deg,#142654,#1E3A7A)", highlights: davidHighlights, open: openD, onToggle: (i: number) => setOpenD(openD === i ? null : i) },
+              { name: "Arianna Quezada", role: "CEO & Cofundadora · JAAK IT S.A.P.I. de C.V.", badge: "9 años liderando JAAK", src: "/images/webinar/arianna-quezada.jpg", fallback: "AQ", gradient: "linear-gradient(135deg,#25969f,#2DB6C1)", highlights: ariannaHighlights, open: openA, onToggle: (i: number) => setOpenA(openA === i ? null : i) },
+              { name: "Dr. David Merino", role: "Especialista en Compliance · Contrainteligencia Empresarial", badge: "Consultor en PLD y compliance", src: "/images/webinar/david-merino.jpg", fallback: "DM", gradient: "linear-gradient(135deg,#142654,#1E3A7A)", highlights: davidHighlights, open: openD, onToggle: (i: number) => setOpenD(openD === i ? null : i) },
             ].map((speaker) => (
               <div key={speaker.name} className="rounded-2xl overflow-hidden" style={{ border: "1px solid var(--hp-card-border)" }}>
                 <div className="hp-bg-hero relative overflow-hidden p-6 pb-5">
@@ -919,7 +814,7 @@ export default function WebinarPage() {
             <p className="text-base leading-[1.75] mb-6" style={{ color: "var(--hp-text-md)" }}>
               Somos la infraestructura de confianza digital que permite a bancos, fintech y neobancos identificar, verificar, firmar, conservar y auditar — todo en un solo stack tecnológico.
             </p>
-            <div className="rounded-r-xl p-4 mb-6" style={{ borderLeft: "3px solid #2DB6C1", background: "rgba(45,182,193,.06)" }}>
+            <div className="rounded-xl p-4 mb-6" style={{ border: "1px solid rgba(45,182,193,.25)", background: "rgba(45,182,193,.06)" }}>
               <p className="text-sm italic leading-[1.7]" style={{ color: "var(--hp-text-md)" }}>
                 "El mismo problema existe en banca, fintech y actividades vulnerables: identificar, integrar evidencia y conservar trazabilidad. JAAK lo resuelve de extremo a extremo."
               </p>

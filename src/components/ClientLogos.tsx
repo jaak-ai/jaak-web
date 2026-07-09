@@ -1,17 +1,17 @@
 import Image from "next/image";
 
 const clients = [
+  { name: "OLR Leasing", logo: "/images/clients/olr-leasing.jpg" },
+  { name: "SharedFi", logo: "/images/clients/sharedfi.jpg" },
+  { name: "Préstamos con Suerte", logo: "/images/clients/prestamos-con-suerte.jpg" },
+  { name: "Grupo Bafar", logo: "/images/clients/grupo-bafar.jpg" },
   { name: "Círculo de Beneficios", logo: "/images/clients/circulo-de-beneficios.jpg" },
   { name: "Colectivo Moda", logo: "/images/clients/colectivo-moda.jpg" },
   { name: "Creamigas", logo: "/images/clients/creamigas.jpg" },
   { name: "Fital", logo: "/images/clients/fital.jpg" },
-  { name: "Grupo Bafar", logo: "/images/clients/grupo-bafar.jpg" },
   { name: "Grupo La Campana", logo: "/images/clients/grupo-la-campana.jpg" },
   { name: "IESISA", logo: "/images/clients/iesisa.jpg" },
   { name: "Lerco", logo: "/images/clients/lerco.jpg" },
-  { name: "OLR Leasing", logo: "/images/clients/olr-leasing.jpg" },
-  { name: "Préstamos con Suerte", logo: "/images/clients/prestamos-con-suerte.jpg" },
-  { name: "SharedFi", logo: "/images/clients/sharedfi.jpg" },
   { name: "Vextor", logo: "/images/clients/vextor.jpg" },
 ];
 
@@ -22,7 +22,7 @@ export default function ClientLogos() {
         className="text-center text-xs font-semibold uppercase tracking-[0.20em] mb-8"
         style={{ color: "var(--hp-text-lo)" }}
       >
-        Empresas que confían en JAAK
+        Financieras, arrendadoras y empresas reguladas que operan con JAAK
       </p>
 
       {/* Marquee container */}

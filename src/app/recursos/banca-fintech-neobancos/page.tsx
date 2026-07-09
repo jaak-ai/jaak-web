@@ -10,7 +10,7 @@ const PRODUCTS: ProductCard[] = [
     title: "Verificación de identidad con biometría facial",
     desc: "Valida la identidad de tus clientes en segundos con biometría, liveness detection y cruce contra INE/RENAPO. El expediente queda sellado con NOM-151 desde el primer paso.",
     href: "/plataforma/verificacion-identidad",
-    color: "#1ECAD3",
+    color: "#2DB6C1",
   },
   {
     icon: "✍️",
@@ -136,7 +136,7 @@ export default function BancaFintechPage() {
         description={<Description />}
         learnings={LEARNINGS}
         timestamps={TIMESTAMPS}
-        davidBio="Doctor en Derecho. Fundador de Top Compliance. Vicepresidente de World Compliance Association México. Consultor de la UIF, el SAT y la FGR. Participó en la quinta ronda de evaluación GAFI de México. Asesor del Congreso Federal en materia de digitalización. Entrenado por el FBI y el Departamento de Seguridad Nacional de EE.UU. en evidencia digital."
+        davidBio="Doctor en Derecho. Fundador de Top Compliance. Vicepresidente de World Compliance Association México. Consultor de la UIF, el SAT y la FGR. Participó en la quinta ronda de evaluación GAFI de México. Asesor del Congreso Federal en materia de digitalización."
         ariannaBio="CEO de JAAK. Empresa 100% mexicana especializada en identidad digital, verificación biométrica, firma electrónica y expedientes auditables. Con presencia en fintech, inmobiliario, automotriz, crédito y recursos humanos."
         ctaQuestion="¿Tu proceso de onboarding genera evidencia — o solo completa el alta?"
         ctaBody="La diferencia entre cumplir y poder demostrarlo empieza en el primer paso del proceso. JAAK construye el expediente digital desde el momento del onboarding."

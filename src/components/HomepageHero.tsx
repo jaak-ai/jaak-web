@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, type ReactNode } from "react";
+import { STATS, NUM_CERTIFICACIONES } from "@/lib/trust";
 
 const navPills = [
   { label: "Autoservicio", href: "/autoservicio" },
@@ -11,21 +12,85 @@ const navPills = [
 ];
 
 const kycSteps = [
-  { label: "Prueba de vida anti-spoofing", icon: "👁️" },
-  { label: "Biometría facial 1:1", icon: "🤳" },
-  { label: "OCR documental", icon: "📄" },
-  { label: "Geolocalización", icon: "📍" },
-  { label: "Listas nominales (INE/RENAPO)", icon: "🗂️" },
-  { label: "Listas negras (OFAC/SAT)", icon: "🚫" },
+  { label: "Prueba de vida anti-spoofing", icon: "eye" },
+  { label: "Biometría facial 1:1", icon: "biometric" },
+  { label: "OCR documental", icon: "document" },
+  { label: "Geolocalización", icon: "location" },
+  { label: "Listas nominales (INE/RENAPO)", icon: "list" },
+  { label: "Listas negras (OFAC/SAT)", icon: "ban" },
 ];
+
+const stepIcons: Record<string, ReactNode> = {
+  eye: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+    </svg>
+  ),
+  biometric: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M7.864 4.243A7.5 7.5 0 0119.5 10.5c0 2.92-.556 5.709-1.568 8.268M5.742 6.364A7.465 7.465 0 004.5 10.5a7.464 7.464 0 01-1.15 3.993m1.989 3.559A11.209 11.209 0 008.25 10.5a3.75 3.75 0 117.5 0c0 .527-.021 1.049-.064 1.565M12 10.5a14.94 14.94 0 01-3.6 9.75m6.633-4.596a18.666 18.666 0 01-2.485 5.33" />
+    </svg>
+  ),
+  document: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+    </svg>
+  ),
+  location: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+    </svg>
+  ),
+  list: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+    </svg>
+  ),
+  ban: (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+    </svg>
+  ),
+};
 
 type KYCPhase = "scanning" | "processing" | "done";
 
 export default function HomepageHero() {
+  const sectionRef = useRef<HTMLElement>(null);
   const [phase, setPhase] = useState<KYCPhase>("scanning");
   const [step, setStep] = useState(-1);
+  const [inView, setInView] = useState(true);
+  const [reduceMotion, setReduceMotion] = useState(false);
 
   useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const apply = () => setReduceMotion(mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0.2 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!reduceMotion) return;
+    setPhase("done");
+    setStep(kycSteps.length - 1);
+  }, [reduceMotion]);
+
+  useEffect(() => {
+    if (reduceMotion || !inView) return;
     if (phase === "scanning") {
       const t = setTimeout(() => { setPhase("processing"); setStep(0); }, 2800);
       return () => clearTimeout(t);
@@ -41,10 +106,10 @@ export default function HomepageHero() {
       const t = setTimeout(() => { setPhase("scanning"); setStep(-1); }, 2200);
       return () => clearTimeout(t);
     }
-  }, [phase, step]);
+  }, [phase, step, inView, reduceMotion]);
 
   return (
-    <section className="hp-section hp-bg-hero min-h-screen pt-28 relative overflow-hidden">
+    <section ref={sectionRef} className="hp-section hp-bg-hero min-h-screen pt-28 relative overflow-hidden">
       {/* Ambient glows */}
       <div
         className="absolute top-[-10%] left-[-5%] w-[700px] h-[700px] rounded-full blur-[140px] pointer-events-none"
@@ -96,8 +161,8 @@ export default function HomepageHero() {
                 border: "1px solid rgba(30,202,211,0.20)",
               }}
             >
-              <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: "#1ECAD3" }} />
-              <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: "#1ECAD3" }}>
+              <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: "#2DB6C1" }} />
+              <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: "#2DB6C1" }}>
                 Plataforma para entornos regulados
               </span>
             </div>
@@ -108,7 +173,7 @@ export default function HomepageHero() {
               <br className="hidden sm:block" />
               <span
                 style={{
-                  background: "linear-gradient(90deg, #1ECAD3, #2AD796)",
+                  background: "linear-gradient(90deg, #2DB6C1, #2AD796)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
@@ -154,7 +219,7 @@ export default function HomepageHero() {
                 href="/autoservicio"
                 className="inline-flex items-center justify-center px-7 py-4 text-white font-bold text-base rounded-xl transition-all duration-200 group"
                 style={{
-                  background: "linear-gradient(135deg, #1ECAD3, #17a8b0)",
+                  background: "linear-gradient(135deg, #2DB6C1, #25969f)",
                   boxShadow: "0 8px 28px rgba(30,202,211,0.28)",
                 }}
               >
@@ -200,7 +265,7 @@ export default function HomepageHero() {
                   <div className="flex items-center gap-3">
                     <div
                       className="w-10 h-10 rounded-2xl flex items-center justify-center"
-                      style={{ background: "linear-gradient(135deg, #1ECAD3, #2AD796)", boxShadow: "0 4px 16px rgba(30,202,211,0.35)" }}
+                      style={{ background: "linear-gradient(135deg, #2DB6C1, #2AD796)", boxShadow: "0 4px 16px rgba(30,202,211,0.35)" }}
                     >
                       <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -243,23 +308,23 @@ export default function HomepageHero() {
                       />
 
                       {/* Corner brackets */}
-                      <div className="absolute top-4 left-4 w-7 h-7" style={{ borderTop: "2px solid #1ECAD3", borderLeft: "2px solid #1ECAD3", boxShadow: "0 0 8px rgba(30,202,211,0.6)" }} />
-                      <div className="absolute top-4 right-4 w-7 h-7" style={{ borderTop: "2px solid #1ECAD3", borderRight: "2px solid #1ECAD3", boxShadow: "0 0 8px rgba(30,202,211,0.6)" }} />
-                      <div className="absolute bottom-10 left-4 w-7 h-7" style={{ borderBottom: "2px solid #1ECAD3", borderLeft: "2px solid #1ECAD3", boxShadow: "0 0 8px rgba(30,202,211,0.6)" }} />
-                      <div className="absolute bottom-10 right-4 w-7 h-7" style={{ borderBottom: "2px solid #1ECAD3", borderRight: "2px solid #1ECAD3", boxShadow: "0 0 8px rgba(30,202,211,0.6)" }} />
+                      <div className="absolute top-4 left-4 w-7 h-7" style={{ borderTop: "2px solid #2DB6C1", borderLeft: "2px solid #2DB6C1", boxShadow: "0 0 8px rgba(30,202,211,0.6)" }} />
+                      <div className="absolute top-4 right-4 w-7 h-7" style={{ borderTop: "2px solid #2DB6C1", borderRight: "2px solid #2DB6C1", boxShadow: "0 0 8px rgba(30,202,211,0.6)" }} />
+                      <div className="absolute bottom-10 left-4 w-7 h-7" style={{ borderBottom: "2px solid #2DB6C1", borderLeft: "2px solid #2DB6C1", boxShadow: "0 0 8px rgba(30,202,211,0.6)" }} />
+                      <div className="absolute bottom-10 right-4 w-7 h-7" style={{ borderBottom: "2px solid #2DB6C1", borderRight: "2px solid #2DB6C1", boxShadow: "0 0 8px rgba(30,202,211,0.6)" }} />
 
                       {/* Face outline */}
                       <div className="absolute inset-0 flex items-center justify-center" style={{ paddingBottom: "32px" }}>
                         <svg width="90" height="100" viewBox="0 0 80 90" fill="none" style={{ opacity: 0.55 }}>
-                          <ellipse cx="40" cy="34" rx="24" ry="30" stroke="#1ECAD3" strokeWidth="1.5"/>
-                          <path d="M18 72 Q40 62 62 72" stroke="#1ECAD3" strokeWidth="1.5" fill="none"/>
-                          <circle cx="30" cy="29" r="4" stroke="#1ECAD3" strokeWidth="1.5"/>
-                          <circle cx="50" cy="29" r="4" stroke="#1ECAD3" strokeWidth="1.5"/>
-                          <path d="M33 44 Q40 48 47 44" stroke="#1ECAD3" strokeWidth="1.5" fill="none"/>
-                          <circle cx="30" cy="29" r="1.5" fill="#1ECAD3" opacity="0.8"/>
-                          <circle cx="50" cy="29" r="1.5" fill="#1ECAD3" opacity="0.8"/>
+                          <ellipse cx="40" cy="34" rx="24" ry="30" stroke="#2DB6C1" strokeWidth="1.5"/>
+                          <path d="M18 72 Q40 62 62 72" stroke="#2DB6C1" strokeWidth="1.5" fill="none"/>
+                          <circle cx="30" cy="29" r="4" stroke="#2DB6C1" strokeWidth="1.5"/>
+                          <circle cx="50" cy="29" r="4" stroke="#2DB6C1" strokeWidth="1.5"/>
+                          <path d="M33 44 Q40 48 47 44" stroke="#2DB6C1" strokeWidth="1.5" fill="none"/>
+                          <circle cx="30" cy="29" r="1.5" fill="#2DB6C1" opacity="0.8"/>
+                          <circle cx="50" cy="29" r="1.5" fill="#2DB6C1" opacity="0.8"/>
                           {/* Nose bridge */}
-                          <path d="M40 36 L38 42 L42 42" stroke="#1ECAD3" strokeWidth="1" fill="none" opacity="0.6"/>
+                          <path d="M40 36 L38 42 L42 42" stroke="#2DB6C1" strokeWidth="1" fill="none" opacity="0.6"/>
                         </svg>
                       </div>
 
@@ -277,8 +342,8 @@ export default function HomepageHero() {
                         className="absolute bottom-0 left-0 right-0 px-4 py-2.5 flex items-center gap-2"
                         style={{ background: "rgba(30,202,211,0.12)", borderTop: "1px solid rgba(30,202,211,0.25)" }}
                       >
-                        <div className="w-2 h-2 rounded-full animate-pulse" style={{ background: "#1ECAD3" }} />
-                        <span className="text-xs font-semibold" style={{ color: "#1ECAD3" }}>
+                        <div className="w-2 h-2 rounded-full animate-pulse" style={{ background: "#2DB6C1" }} />
+                        <span className="text-xs font-semibold" style={{ color: "#2DB6C1" }}>
                           Escaneando biometría facial…
                         </span>
                       </div>
@@ -312,7 +377,14 @@ export default function HomepageHero() {
                             }}
                           >
                             <div className="flex items-center gap-2.5">
-                              <span className="text-sm">{s.icon}</span>
+                              <span
+                                className="flex-shrink-0"
+                                style={{
+                                  color: done ? "var(--hp-text-hi)" : active ? "var(--hp-text-md)" : "var(--hp-text-faint)",
+                                }}
+                              >
+                                {stepIcons[s.icon]}
+                              </span>
                               <span
                                 className="text-xs font-medium"
                                 style={{
@@ -329,7 +401,7 @@ export default function HomepageHero() {
                             ) : active ? (
                               <div
                                 className="w-3.5 h-3.5 rounded-full border-2 animate-spin flex-shrink-0"
-                                style={{ borderColor: "var(--hp-spinner-track)", borderTopColor: "#1ECAD3" }}
+                                style={{ borderColor: "var(--hp-spinner-track)", borderTopColor: "#2DB6C1" }}
                               />
                             ) : null}
                           </div>
@@ -360,8 +432,8 @@ export default function HomepageHero() {
                 {/* Card footer */}
                 <div className="pt-4 flex items-center justify-between" style={{ borderTop: "1px solid var(--hp-divider)" }}>
                   <div className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full" style={{ background: "#1ECAD3" }} />
-                    <span className="text-xs font-mono" style={{ color: "var(--hp-text-faint)" }}>exp_0x9f2a…b37c</span>
+                    <div className="w-1.5 h-1.5 rounded-full" style={{ background: "#2DB6C1" }} />
+                    <span className="text-xs font-mono" style={{ color: "var(--hp-text-faint)" }}>Ejemplo ilustrativo</span>
                   </div>
                   <span className="text-xs" style={{ color: "var(--hp-text-faint)" }}>NOM-151 ✓</span>
                 </div>
@@ -370,24 +442,15 @@ export default function HomepageHero() {
               {/* Floating badges — keep white text with inline style (colored bg, always dark) */}
               <div
                 className="absolute -top-4 -right-3 px-3 py-1.5 rounded-full text-xs font-bold shadow-lg"
-                style={{ background: "linear-gradient(135deg, #1ECAD3, #17a8b0)", boxShadow: "0 4px 16px rgba(30,202,211,0.40)", color: "white" }}
+                style={{ background: "linear-gradient(135deg, #2DB6C1, #25969f)", boxShadow: "0 4px 16px rgba(30,202,211,0.40)", color: "white" }}
               >
                 ISO 27001
               </div>
               <div
                 className="absolute -bottom-4 -left-3 px-3 py-1.5 rounded-full text-xs font-bold shadow-lg"
-                style={{ background: "linear-gradient(135deg, #0E1133, #1ECAD3)", boxShadow: "0 4px 16px rgba(14,17,51,0.50)", color: "white" }}
+                style={{ background: "linear-gradient(135deg, #0E1133, #2DB6C1)", boxShadow: "0 4px 16px rgba(14,17,51,0.50)", color: "white" }}
               >
                 iBeta PAD
-              </div>
-              <div className="absolute -right-10 top-1/3 hidden xl:flex flex-col items-center px-4 py-3 rounded-2xl hp-glass">
-                <div
-                  className="text-2xl font-black"
-                  style={{ background: "linear-gradient(90deg, #1ECAD3, #2AD796)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}
-                >
-                  99%
-                </div>
-                <div className="text-xs mt-0.5" style={{ color: "var(--hp-text-faint)" }}>Precisión</div>
               </div>
             </div>
           </div>
@@ -399,10 +462,10 @@ export default function HomepageHero() {
           data-sr-grid
         >
           {[
-            { value: "+50", label: "Empresas reguladas" },
-            { value: "99%", label: "Precisión biométrica" },
-            { value: "5", label: "Certificaciones activas" },
-            { value: "< 5 s", label: "Tiempo de verificación" },
+            { value: STATS.empresasReguladas, label: "Empresas reguladas" },
+            { value: STATS.precisionBiometrica, label: "Precisión biométrica" },
+            { value: String(NUM_CERTIFICACIONES), label: "Certificaciones activas" },
+            { value: STATS.verificacionBiometrica, label: "Tiempo de verificación" },
           ].map((s, i) => (
             <div
               key={i}
@@ -411,7 +474,7 @@ export default function HomepageHero() {
             >
               <div
                 className="text-2xl md:text-3xl font-black"
-                style={{ background: "linear-gradient(90deg, #1ECAD3, #2AD796)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}
+                style={{ color: "#2DB6C1" }}
               >
                 {s.value}
               </div>

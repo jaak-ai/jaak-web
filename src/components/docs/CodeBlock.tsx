@@ -43,7 +43,7 @@ export function CodeBlock({ children, language, title, showLineNumbers = false }
   const displayLines = hasTrailingNewline ? lines.slice(0, -1) : lines
 
   return (
-    <div className="my-4 overflow-hidden rounded-lg bg-[#0a0a0a]">
+    <div className="my-4 overflow-hidden rounded-lg bg-[#0E1133]">
       {title && (
         <div className="flex items-center justify-between border-b border-gray-800 px-4 py-2">
           <span className="text-sm text-gray-400 font-mono">{title}</span>

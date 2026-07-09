@@ -60,7 +60,7 @@ const industries: Industry[] = [
         description:
           "Firma arrendamientos residenciales y comerciales con validez legal completa. Incluid identificación de propietario e inquilino con NOM-151.",
         signaType: "Firma Digital NOM-151",
-        signaColor: "#1ECAD3",
+        signaColor: "#2DB6C1",
         icon: "🔑",
       },
       {
@@ -68,7 +68,7 @@ const industries: Industry[] = [
         description:
           "Formaliza promesas y contratos de compraventa con firma avanzada y sello de tiempo certificado. Protege a compradores y vendedores desde el primer acuerdo.",
         signaType: "Firma Digital NOM-151",
-        signaColor: "#1ECAD3",
+        signaColor: "#2DB6C1",
         icon: "🤝",
       },
       {
@@ -130,7 +130,7 @@ const industries: Industry[] = [
         description:
           "Firma contratos de telefonía fija, internet y datos con múltiples firmantes. Gestiona renovaciones y modificaciones de servicio sin papel.",
         signaType: "Firma Digital NOM-151",
-        signaColor: "#1ECAD3",
+        signaColor: "#2DB6C1",
         icon: "🖊️",
       },
       {
@@ -176,7 +176,7 @@ export default function FirmaUseCases() {
               id={`tab-${industry.id}`}
               className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 flex-1 justify-center sm:flex-none"
               style={{
-                background: isActive ? "#1ECAD3" : "transparent",
+                background: isActive ? "#2DB6C1" : "transparent",
                 color: isActive ? "#fff" : "#64748B",
                 boxShadow: isActive ? "0 0 20px rgba(30,202,211,0.3)" : "none",
               }}

@@ -83,8 +83,10 @@ export default function FirmaElectronicaSimpleVsAvanzada() {
                 sostiene o se cae frente a un juez.
               </p>
 
-              <div className="bg-amber-50 border-l-4 border-amber-400 p-6 my-8">
-                <p className="text-gray-800 font-semibold mb-1">Aclaración importante:</p>
+              <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
+                <p className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-2">
+                  Aclaración importante
+                </p>
                 <p className="text-gray-700">
                   La <strong>Firma Digital con Validez NOM-151</strong> que describimos en este
                   artículo <strong>no es la e.firma del SAT</strong>. La e.firma (antes llamada FIEL)
@@ -139,8 +141,10 @@ export default function FirmaElectronicaSimpleVsAvanzada() {
                   evidencia del proceso, disponible si algún día se necesita presentar en un juicio.
                 </li>
               </ol>
-              <div className="bg-[#0066ff]/5 border-l-4 border-[#0066ff] p-6 my-8">
-                <p className="text-gray-700 font-semibold mb-2">En términos simples:</p>
+              <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
+                <p className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-2">
+                  En términos simples
+                </p>
                 <p className="text-gray-600">
                   Con la firma NOM-151, si alguien intenta decir "yo nunca firmé eso" o
                   "ese documento fue alterado", la empresa tiene evidencia sólida para demostrarlo
@@ -180,7 +184,7 @@ export default function FirmaElectronicaSimpleVsAvanzada() {
                   <p className="font-bold text-white text-lg">Firma Simple</p>
                   <p className="text-white/80 text-sm mt-1">Clic / imagen / OTP</p>
                 </div>
-                <div className="bg-[#1ECAD3] p-5">
+                <div className="bg-[#2DB6C1] p-5">
                   <p className="font-bold text-white text-lg">Firma Digital NOM-151</p>
                   <p className="text-white/80 text-sm mt-1">Certificada con sello de tiempo</p>
                 </div>
@@ -272,7 +276,7 @@ export default function FirmaElectronicaSimpleVsAvanzada() {
                     <li>Procesos donde una disputa es muy poco probable o de consecuencias mínimas</li>
                   </ul>
                 </div>
-                <div className="bg-[#1ECAD3]/5 rounded-xl p-6">
+                <div className="bg-[#2DB6C1]/5 rounded-xl p-6">
                   <p className="font-bold text-gray-900 mb-2">Firma Digital con Validez NOM-151 — para contratos que deben sostenerse</p>
                   <ul className="list-disc pl-5 space-y-1 text-gray-600">
                     <li>Contratos de arrendamiento residencial o comercial</li>
@@ -311,8 +315,10 @@ export default function FirmaElectronicaSimpleVsAvanzada() {
                 y un expediente que puede presentar directamente ante el juez. Impugnar
                 exitosamente ese contrato se vuelve prácticamente imposible.
               </p>
-              <div className="bg-[#0066ff]/5 border-l-4 border-[#0066ff] p-6 my-8">
-                <p className="text-gray-700 font-semibold mb-2">El costo real de postergar este cambio:</p>
+              <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
+                <p className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-2">
+                  El costo real de postergar este cambio
+                </p>
                 <p className="text-gray-600">
                   Implementar firma NOM-151 cuesta una fracción de lo que puede costar un solo
                   litigio perdido. La mayoría de las empresas que cambian lo hacen después de

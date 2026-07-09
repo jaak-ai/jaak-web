@@ -72,7 +72,7 @@ export default function FirmaSelloTiempoPage() {
         >
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <nav className="flex items-center gap-2 text-xs text-gray-600 mb-8" aria-label="Navegación">
-              <Link href="/firma-electronica" className="hover:text-[#1ECAD3] transition-colors">
+              <Link href="/firma-electronica" className="hover:text-[#2DB6C1] transition-colors">
                 Firma Electrónica
               </Link>
               <span aria-hidden="true">›</span>
@@ -90,7 +90,7 @@ export default function FirmaSelloTiempoPage() {
               Firma certificada con{" "}
               <span
                 style={{
-                  background: "linear-gradient(135deg, #F59E0B, #1ECAD3)",
+                  background: "linear-gradient(135deg, #F59E0B, #2DB6C1)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
@@ -266,7 +266,7 @@ export default function FirmaSelloTiempoPage() {
                   key={link.href}
                   href={link.href}
                   className="text-sm font-semibold px-4 py-2.5 rounded-xl transition-all hover:bg-white/10"
-                  style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "#1ECAD3" }}
+                  style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "#2DB6C1" }}
                 >
                   {link.label}
                 </Link>

@@ -32,7 +32,7 @@ export default function EmpresasReguladas() {
     },
     {
       problem: "Alto riesgo de suplantación",
-      solution: "Biometría certificada con prueba de vida que elimina el fraude",
+      solution: "Biometría certificada con prueba de vida que reduce el fraude",
     },
   ];
 
@@ -41,7 +41,7 @@ export default function EmpresasReguladas() {
       <Header />
       <main>
         {/* Hero */}
-        <section className="pt-32 pb-20 bg-[#0a0a0a]">
+        <section className="pt-32 pb-20 bg-[#0E1133]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl">
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#0066ff]/10 border border-[#0066ff]/20 rounded-full mb-6">
@@ -108,7 +108,7 @@ export default function EmpresasReguladas() {
                       <p className="text-gray-900 text-lg">{item.problem}</p>
                     </div>
                     <div>
-                      <div className="flex items-center gap-3 text-[#00d4aa] mb-2">
+                      <div className="flex items-center gap-3 text-[#2DB6C1] mb-2">
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
@@ -124,7 +124,7 @@ export default function EmpresasReguladas() {
         </section>
 
         {/* CTA */}
-        <section className="py-20 bg-[#0a0a0a]">
+        <section className="py-20 bg-[#0E1133]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl md:text-4xl font-black text-white mb-6">
               Cumple con tu regulación sin complicaciones

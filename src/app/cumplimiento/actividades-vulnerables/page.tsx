@@ -76,7 +76,7 @@ export default function ActividadesVulnerablesPage() {
       <Header />
       <main>
         {/* SECTION 1: Compact Hero */}
-        <section className="pt-32 pb-16 bg-[#0a0a0a]">
+        <section className="pt-32 pb-16 bg-[#0E1133]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl">
               <Link
@@ -122,9 +122,9 @@ export default function ActividadesVulnerablesPage() {
         <section id="simulador" className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#00d4aa]/10 border border-[#00d4aa]/20 rounded-full mb-4">
-                <span className="w-2 h-2 bg-[#00d4aa] rounded-full"></span>
-                <span className="text-[#00d4aa] text-sm font-medium">Herramienta gratuita</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#2DB6C1]/10 border border-[#2DB6C1]/20 rounded-full mb-4">
+                <span className="w-2 h-2 bg-[#2DB6C1] rounded-full"></span>
+                <span className="text-[#2DB6C1] text-sm font-medium">Herramienta gratuita</span>
               </div>
               <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
                 Simulador de obligaciones PLD / AML

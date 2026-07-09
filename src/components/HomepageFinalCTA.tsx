@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { IBETA } from "@/lib/trust";
 
 export default function HomepageFinalCTA() {
   return (
@@ -31,16 +32,7 @@ export default function HomepageFinalCTA() {
           </div>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight max-w-3xl mx-auto">
             El cumplimiento regulatorio no puede esperar.{" "}
-            <span
-              style={{
-                background: "linear-gradient(90deg, #1ECAD3, #2AD796)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}
-            >
-              Empieza hoy.
-            </span>
+            <span style={{ color: "#2DB6C1" }}>Empieza hoy.</span>
           </h2>
         </div>
 
@@ -54,7 +46,7 @@ export default function HomepageFinalCTA() {
             >
               <svg
                 className="w-5 h-5"
-                style={{ color: "#1ECAD3" }}
+                style={{ color: "#2DB6C1" }}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -70,7 +62,7 @@ export default function HomepageFinalCTA() {
 
             <div
               className="text-xs font-bold uppercase tracking-widest mb-2"
-              style={{ color: "#1ECAD3" }}
+              style={{ color: "#2DB6C1" }}
             >
               Autoservicio
             </div>
@@ -117,7 +109,7 @@ export default function HomepageFinalCTA() {
               href="/autoservicio"
               className="inline-flex items-center justify-center px-7 py-4 text-white font-bold text-base rounded-xl transition-all duration-200 group"
               style={{
-                background: "linear-gradient(135deg, #1ECAD3, #17a8b0)",
+                background: "linear-gradient(135deg, #2DB6C1, #25969f)",
                 boxShadow: "0 8px 28px rgba(30,202,211,0.28)",
               }}
             >
@@ -143,7 +135,7 @@ export default function HomepageFinalCTA() {
             <div
               className="w-11 h-11 rounded-2xl flex items-center justify-center mb-5"
               style={{
-                background: "linear-gradient(135deg, #1ECAD3, #2AD796)",
+                background: "linear-gradient(135deg, #2DB6C1, #2AD796)",
                 boxShadow: "0 4px 16px rgba(30,202,211,0.30)",
               }}
             >
@@ -216,7 +208,7 @@ export default function HomepageFinalCTA() {
                 border: "1px solid var(--hp-ghost-btn-border)",
               }}
             >
-              Hablar con un experto
+              Agendar demo
             </Link>
           </div>
         </div>
@@ -228,7 +220,7 @@ export default function HomepageFinalCTA() {
         >
           {[
             "Sin compromiso de contratación",
-            "ISO 27001 · iBeta PAD certificado",
+            `ISO 27001 · ${IBETA}`,
             "Tecnología 100% mexicana",
             "Soporte técnico en español",
           ].map((t) => (

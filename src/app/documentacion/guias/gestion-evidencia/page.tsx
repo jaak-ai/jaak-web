@@ -14,7 +14,7 @@ export default function GestionEvidencia() {
       <Header />
       <main>
         {/* Hero */}
-        <section className="pt-32 pb-12 bg-[#0a0a0a]">
+        <section className="pt-32 pb-12 bg-[#0E1133]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <Link href="/documentacion" className="inline-flex items-center gap-2 text-white/60 hover:text-white mb-6 transition-colors">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -93,7 +93,7 @@ export default function GestionEvidencia() {
                   Recupera el expediente completo de una verificación:
                 </p>
 
-                <div className="bg-[#0a0a0a] rounded-lg overflow-hidden mb-4">
+                <div className="bg-[#0E1133] rounded-lg overflow-hidden mb-4">
                   <div className="px-4 py-2 bg-white/5 border-b border-white/10">
                     <span className="text-white/60 text-sm">GET /v1/evidence/{`{verificationId}`}</span>
                   </div>
@@ -151,7 +151,7 @@ console.log(evidence);
               <div className="mb-12">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">2. Descargar archivos</h2>
 
-                <div className="bg-[#0a0a0a] rounded-lg overflow-hidden mb-4">
+                <div className="bg-[#0E1133] rounded-lg overflow-hidden mb-4">
                   <pre className="p-4 text-sm overflow-x-auto">
                     <code className="text-white">{`// Descargar imagen individual
 const imageBuffer = await jaak.evidence.downloadFile(
@@ -183,7 +183,7 @@ fs.writeFileSync('./reporte_auditoria.pdf', pdfBuffer);`}</code>
                   Busca expedientes por diferentes criterios:
                 </p>
 
-                <div className="bg-[#0a0a0a] rounded-lg overflow-hidden mb-4">
+                <div className="bg-[#0E1133] rounded-lg overflow-hidden mb-4">
                   <pre className="p-4 text-sm overflow-x-auto">
                     <code className="text-white">{`// Buscar por nombre o documento
 const results = await jaak.evidence.search({
@@ -226,7 +226,7 @@ const allRecords = await jaak.evidence.list({
                   Consulta el registro de todos los eventos y accesos:
                 </p>
 
-                <div className="bg-[#0a0a0a] rounded-lg overflow-hidden mb-4">
+                <div className="bg-[#0E1133] rounded-lg overflow-hidden mb-4">
                   <pre className="p-4 text-sm overflow-x-auto">
                     <code className="text-white">{`const auditLog = await jaak.evidence.getAuditLog('ver_abc123');
 
@@ -264,7 +264,7 @@ const allRecords = await jaak.evidence.list({
               <div className="mb-12">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">5. Retención y eliminación</h2>
 
-                <div className="bg-[#0a0a0a] rounded-lg overflow-hidden mb-4">
+                <div className="bg-[#0E1133] rounded-lg overflow-hidden mb-4">
                   <pre className="p-4 text-sm overflow-x-auto">
                     <code className="text-white">{`// Configurar política de retención por tipo
 await jaak.evidence.setRetentionPolicy({

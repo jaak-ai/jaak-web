@@ -65,7 +65,7 @@ export default function WebinarLayout({
   const [openTs, setOpenTs] = useState<number | null>(null);
 
   return (
-    <main style={{ background: "#202945", fontFamily: FONT, minHeight: "100vh" }}>
+    <main style={{ background: "#212A45", fontFamily: FONT, minHeight: "100vh" }}>
       <style>{`
         @keyframes fadeInUp {
           from { opacity: 0; transform: translateY(20px); }
@@ -76,7 +76,7 @@ export default function WebinarLayout({
         .wl-c { animation: fadeInUp 0.5s 0.18s ease both; }
         .cta-btn {
           display: inline-flex; align-items: center; gap: 6px;
-          background: #1ECAD3; color: #202945; font-weight: 800;
+          background: #2DB6C1; color: #212A45; font-weight: 800;
           padding: 14px 28px; border-radius: 10px; font-size: 0.95rem;
           transition: box-shadow 0.2s, transform 0.2s; text-decoration: none;
         }
@@ -130,7 +130,7 @@ export default function WebinarLayout({
       {/* Header */}
       <section style={{ padding: "64px 0 48px", background: "radial-gradient(ellipse 70% 50% at 50% 0%, rgba(30,202,211,0.10) 0%, transparent 65%)" }}>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="wl-a text-xs font-bold tracking-widest uppercase mb-4" style={{ color: "#1ECAD3" }}>
+          <p className="wl-a text-xs font-bold tracking-widest uppercase mb-4" style={{ color: "#2DB6C1" }}>
             {eyebrow}
           </p>
           <h1 className="wl-b text-3xl sm:text-4xl font-black text-white mb-5 leading-tight"
@@ -215,7 +215,7 @@ export default function WebinarLayout({
           {/* Product cross-sell */}
           {products.length > 0 && (
             <section style={{ padding: "48px 0", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-              <p className="text-xs font-bold tracking-widest uppercase mb-2" style={{ color: "#1ECAD3" }}>
+              <p className="text-xs font-bold tracking-widest uppercase mb-2" style={{ color: "#2DB6C1" }}>
                 Soluciones JAAK para este tema
               </p>
               <h2 className="text-xl font-black text-white mb-6" style={{ letterSpacing: "-0.3px" }}>
@@ -249,7 +249,7 @@ export default function WebinarLayout({
               {learnings.map((item, i) => (
                 <li key={i} className="flex items-start gap-4">
                   <span className="shrink-0 w-6 h-6 rounded-full flex items-center justify-center mt-0.5 text-xs font-black"
-                    style={{ background: "rgba(30,202,211,0.15)", color: "#1ECAD3" }}>
+                    style={{ background: "rgba(30,202,211,0.15)", color: "#2DB6C1" }}>
                     {i + 1}
                   </span>
                   <span style={{ color: "rgba(255,255,255,0.70)", lineHeight: "1.65", fontSize: "0.96rem" }}>{item}</span>
@@ -274,7 +274,7 @@ export default function WebinarLayout({
                   onClick={() => setOpenTs(openTs === i ? null : i)}
                   style={{ textAlign: "left", background: "transparent", border: openTs === i ? "1px solid rgba(30,202,211,0.25)" : "1px solid transparent", width: "100%", cursor: "pointer" }}
                 >
-                  <span className="shrink-0 font-mono text-sm font-bold" style={{ color: "#1ECAD3", minWidth: "52px" }}>
+                  <span className="shrink-0 font-mono text-sm font-bold" style={{ color: "#2DB6C1", minWidth: "52px" }}>
                     {ts.time}
                   </span>
                   <span style={{ color: "rgba(255,255,255,0.75)", fontSize: "0.92rem", lineHeight: "1.5", flex: 1 }}>{ts.topic}</span>
@@ -299,7 +299,7 @@ export default function WebinarLayout({
                 <div key={p.name} className="p-6 rounded-xl" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
                   <div className="flex items-center gap-4 mb-4">
                     <div className="w-12 h-12 rounded-full flex items-center justify-center text-sm font-black shrink-0"
-                      style={{ background: "rgba(30,202,211,0.15)", color: "#1ECAD3" }}>
+                      style={{ background: "rgba(30,202,211,0.15)", color: "#2DB6C1" }}>
                       {p.initials}
                     </div>
                     <h3 className="font-bold text-white" style={{ fontSize: "1rem" }}>{p.name}</h3>
@@ -335,7 +335,7 @@ export default function WebinarLayout({
                     className="flex-1 p-5 rounded-xl no-underline transition-all"
                     style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(30,202,211,0.18)", color: "rgba(255,255,255,0.75)" }}>
                     <span style={{ fontSize: "0.90rem", lineHeight: "1.5", display: "block", marginBottom: "8px" }}>{r.title}</span>
-                    <span style={{ color: "#1ECAD3", fontSize: "0.85rem", fontWeight: 700 }}>Ver sesión →</span>
+                    <span style={{ color: "#2DB6C1", fontSize: "0.85rem", fontWeight: 700 }}>Ver sesión →</span>
                   </Link>
                 ))}
               </div>
@@ -346,7 +346,7 @@ export default function WebinarLayout({
         {/* Sticky sidebar — desktop only */}
         <div className="sidebar-col" style={{ width: "280px", flexShrink: 0, paddingTop: "48px" }}>
           <div className="sticky-cta">
-            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: "#1ECAD3" }}>
+            <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: "#2DB6C1" }}>
               ¿Listo para implementarlo?
             </p>
             <h3 className="font-black text-white mb-3 leading-snug" style={{ fontSize: "1rem", letterSpacing: "-0.2px" }}>
@@ -364,7 +364,7 @@ export default function WebinarLayout({
                 <Link key={r.href} href={r.href}
                   className="block mb-2 text-xs no-underline transition-colors"
                   style={{ color: "rgba(255,255,255,0.50)" }}
-                  onMouseEnter={e => (e.currentTarget.style.color = "#1ECAD3")}
+                  onMouseEnter={e => (e.currentTarget.style.color = "#2DB6C1")}
                   onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.50)")}>
                   → {r.title}
                 </Link>

@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import Image from "next/image";
+import { NUM_CERTIFICACIONES, RETENCION, IBETA } from "@/lib/trust";
 
 export const metadata: Metadata = {
   title: "Cumplimiento Regulatorio | JAAK",
@@ -98,7 +99,7 @@ export default function CumplimientoPage() {
       image: "/images/certifications/iso-9001.png",
     },
     {
-      name: "iBeta",
+      name: IBETA,
       description: "Prueba de Vida Certificada",
       image: "/images/certifications/ibeta.png",
     },
@@ -114,7 +115,7 @@ export default function CumplimientoPage() {
       <Header />
       <main>
         {/* Hero Section */}
-        <section className="pt-32 pb-20 bg-[#0a0a0a]">
+        <section className="pt-32 pb-20 bg-[#0E1133]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl">
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#0066ff]/10 border border-[#0066ff]/20 rounded-full mb-6">
@@ -148,15 +149,15 @@ export default function CumplimientoPage() {
                 <div className="text-gray-600">Regulaciones cubiertas</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-black text-gray-900 mb-2">4</div>
+                <div className="text-3xl md:text-4xl font-black text-gray-900 mb-2">{NUM_CERTIFICACIONES}</div>
                 <div className="text-gray-600">Certificaciones activas</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-black text-gray-900 mb-2">100%</div>
-                <div className="text-gray-600">Evidencia auditable</div>
+                <div className="text-3xl md:text-4xl font-black text-gray-900 mb-2">Evidencia</div>
+                <div className="text-gray-600">auditable</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-black text-gray-900 mb-2">5 años</div>
+                <div className="text-3xl md:text-4xl font-black text-gray-900 mb-2">{RETENCION.general}</div>
                 <div className="text-gray-600">Retención de expedientes</div>
               </div>
             </div>
@@ -237,12 +238,12 @@ export default function CumplimientoPage() {
         </section>
 
         {/* Evidence Capabilities */}
-        <section className="py-20 bg-[#0a0a0a]">
+        <section className="py-20 bg-[#0E1133]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#00d4aa]/10 border border-[#00d4aa]/20 rounded-full mb-6">
-                <span className="w-2 h-2 bg-[#00d4aa] rounded-full"></span>
-                <span className="text-[#00d4aa] text-sm font-medium">Evidencia Auditable</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#2DB6C1]/10 border border-[#2DB6C1]/20 rounded-full mb-6">
+                <span className="w-2 h-2 bg-[#2DB6C1] rounded-full"></span>
+                <span className="text-[#2DB6C1] text-sm font-medium">Evidencia Auditable</span>
               </div>
               <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
                 Cada verificación genera evidencia

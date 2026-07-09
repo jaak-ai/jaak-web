@@ -97,6 +97,7 @@ export async function POST(request: Request) {
     }
 
     // Send email notification via Resend (optional — only if key is set)
+    let emailSent = false;
     const RESEND_API_KEY = process.env.RESEND_API_KEY;
     if (RESEND_API_KEY) {
       try {
@@ -108,7 +109,7 @@ export async function POST(request: Request) {
         };
         const label = sourceLabel[source] || source || "Landing";
 
-        await fetch("https://api.resend.com/emails", {
+        const emailRes = await fetch("https://api.resend.com/emails", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -131,13 +132,21 @@ export async function POST(request: Request) {
             `,
           }),
         });
+        emailSent = emailRes.ok;
+        if (!emailRes.ok) {
+          console.error("Resend error:", await emailRes.text());
+        }
       } catch (e) {
         console.error("Resend error:", e);
       }
     }
 
-    if (!crmSuccess && !RESEND_API_KEY) {
-      console.warn("Lead not captured — CRM failed and Resend not configured");
+    if (!crmSuccess && !emailSent) {
+      console.warn("Lead not captured — CRM failed and email notification failed");
+      return NextResponse.json(
+        { error: "No se pudo registrar la solicitud. Intente de nuevo o escriba a sales@jaak.ai" },
+        { status: 500 }
+      );
     }
 
     return NextResponse.json({ success: true });

@@ -10,7 +10,7 @@ const PRODUCTS: ProductCard[] = [
     title: "Firma avanzada que resiste una controversia",
     desc: "Cada pagaré firmado con JAAK genera cadena de custodia digital: identidad del firmante, consentimiento documentado, integridad del documento y sello de tiempo NOM-151.",
     href: "/plataforma/firma-electronica",
-    color: "#1ECAD3",
+    color: "#2DB6C1",
   },
   {
     icon: "🖊️",

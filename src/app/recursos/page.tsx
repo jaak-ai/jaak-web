@@ -33,7 +33,7 @@ const FONT = "var(--font-montserrat), Montserrat, sans-serif";
 const WEBINARS = [
   {
     badge: "Sector Financiero",
-    badgeColor: "#1ECAD3",
+    badgeColor: "#2DB6C1",
     title: "Banca, Fintech y Neobancos: la nueva confianza financiera",
     desc: "¿Qué diferencia realmente a los tres modelos financieros? ¿Por qué el onboarding se volvió el momento más crítico? David Merino y Arianna Quezada exploran la convergencia regulatoria.",
     duration: "60 min",
@@ -159,7 +159,7 @@ export default function RecursosPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Header />
-      <main style={{ background: "#202945", fontFamily: FONT, minHeight: "100vh" }}>
+      <main style={{ background: "#212A45", fontFamily: FONT, minHeight: "100vh" }}>
         <style>{`
           @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(24px); }
@@ -204,8 +204,8 @@ export default function RecursosPage() {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background: #1ECAD3;
-            color: #202945;
+            background: #2DB6C1;
+            color: #212A45;
             font-weight: 800;
             padding: 14px 28px;
             border-radius: 10px;
@@ -222,7 +222,7 @@ export default function RecursosPage() {
             align-items: center;
             gap: 6px;
             background: transparent;
-            color: #1ECAD3;
+            color: #2DB6C1;
             font-weight: 700;
             padding: 14px 28px;
             border-radius: 10px;
@@ -232,7 +232,7 @@ export default function RecursosPage() {
             text-decoration: none;
           }
           .cta-btn-ghost:hover {
-            border-color: #1ECAD3;
+            border-color: #2DB6C1;
             background: rgba(30,202,211,0.06);
           }
         `}</style>
@@ -240,14 +240,14 @@ export default function RecursosPage() {
         {/* HERO */}
         <section
           style={{
-            background: "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(30,202,211,0.13) 0%, transparent 70%), #202945",
+            background: "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(30,202,211,0.13) 0%, transparent 70%), #212A45",
             padding: "120px 0 80px",
           }}
         >
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p
               className="recursos-hero-a text-xs font-bold tracking-widest uppercase mb-4"
-              style={{ color: "#1ECAD3", fontFamily: FONT }}
+              style={{ color: "#2DB6C1", fontFamily: FONT }}
             >
               JAAK · Centro educativo
             </p>
@@ -256,7 +256,7 @@ export default function RecursosPage() {
               style={{ fontFamily: FONT, letterSpacing: "-1.5px" }}
             >
               Lo que tu empresa necesita entender sobre{" "}
-              <span style={{ color: "#1ECAD3" }}>cumplimiento digital</span> en México.
+              <span style={{ color: "#2DB6C1" }}>cumplimiento digital</span> en México.
             </h1>
             <p
               className="recursos-hero-c text-lg mb-10"
@@ -296,7 +296,7 @@ export default function RecursosPage() {
         <section id="webinars" style={{ padding: "72px 0", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-12">
-              <p className="text-xs font-bold tracking-widest uppercase mb-3" style={{ color: "#1ECAD3", fontFamily: FONT }}>
+              <p className="text-xs font-bold tracking-widest uppercase mb-3" style={{ color: "#2DB6C1", fontFamily: FONT }}>
                 Sesiones ejecutivas con expertos
               </p>
               <h2 className="text-3xl font-black text-white mb-3" style={{ fontFamily: FONT, letterSpacing: "-0.8px" }}>
@@ -338,7 +338,7 @@ export default function RecursosPage() {
                       <Link
                         href={w.href}
                         className="text-sm font-bold transition-colors"
-                        style={{ color: "#1ECAD3" }}
+                        style={{ color: "#2DB6C1" }}
                       >
                         Ver sesión →
                       </Link>
@@ -358,7 +358,7 @@ export default function RecursosPage() {
             <div className="mb-12 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
               <div>
                 <span className="inline-block text-xs font-bold tracking-widest uppercase px-3 py-1 rounded-full mb-4"
-                  style={{ background: "rgba(30,202,211,0.10)", color: "#1ECAD3", border: "1px solid rgba(30,202,211,0.25)" }}>
+                  style={{ background: "rgba(30,202,211,0.10)", color: "#2DB6C1", border: "1px solid rgba(30,202,211,0.25)" }}>
                   5 episodios · Serie completa · PDF descargable
                 </span>
                 <h2 className="text-3xl font-black text-white mb-3" style={{ fontFamily: FONT, letterSpacing: "-0.8px" }}>
@@ -386,7 +386,7 @@ export default function RecursosPage() {
                     </h3>
                     <p style={{ color: "rgba(255,255,255,0.48)", fontSize: "0.83rem" }}>{ep.desc}</p>
                   </div>
-                  <span style={{ color: "#1ECAD3", fontSize: "1.1rem", flexShrink: 0 }}>→</span>
+                  <span style={{ color: "#2DB6C1", fontSize: "1.1rem", flexShrink: 0 }}>→</span>
                 </Link>
               ))}
             </div>
@@ -396,7 +396,7 @@ export default function RecursosPage() {
         {/* TAGS SEO */}
         <section style={{ padding: "60px 0", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <p className="text-xs font-bold tracking-widest uppercase mb-6" style={{ color: "#1ECAD3", fontFamily: FONT }}>
+            <p className="text-xs font-bold tracking-widest uppercase mb-6" style={{ color: "#2DB6C1", fontFamily: FONT }}>
               Temas que cubrimos
             </p>
             <div className="flex flex-wrap gap-3">
@@ -414,7 +414,7 @@ export default function RecursosPage() {
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl sm:text-4xl font-black text-white mb-4" style={{ fontFamily: FONT, letterSpacing: "-1px" }}>
               ¿Tu operación genera evidencia —{" "}
-              <span style={{ color: "#1ECAD3" }}>o solo archivos?</span>
+              <span style={{ color: "#2DB6C1" }}>o solo archivos?</span>
             </h2>
             <p className="mb-10" style={{ color: "rgba(255,255,255,0.60)", fontSize: "1.05rem", lineHeight: "1.75" }}>
               Hay una diferencia entre guardar documentos y construir evidencia que resista una auditoría.

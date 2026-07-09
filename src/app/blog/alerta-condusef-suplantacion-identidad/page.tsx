@@ -78,8 +78,11 @@ export default function AlertaCondusefSuplantacion() {
                 Pero la pregunta inevitable es otra:
               </p>
 
-              <div className="bg-amber-50 border-l-4 border-amber-500 p-6 my-8">
-                <p className="text-amber-800 font-bold text-lg">
+              <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
+                <p className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-2">
+                  Pregunta clave
+                </p>
+                <p className="text-gray-900 font-bold text-lg">
                   ¿Por qué, si las recomendaciones son conocidas y se repiten año con año,
                   la suplantación sigue funcionando?
                 </p>
@@ -141,9 +144,12 @@ export default function AlertaCondusefSuplantacion() {
                 de una institución legítima.
               </p>
 
-              <div className="bg-amber-50 border-l-4 border-amber-500 p-6 my-8">
-                <p className="text-amber-800 font-medium">
-                  La pregunta clave es: ¿por qué el sistema permite que una operación financiera se
+              <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
+                <p className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-2">
+                  Pregunta clave
+                </p>
+                <p className="text-gray-700 font-medium">
+                  ¿Por qué el sistema permite que una operación financiera se
                   inicie sin identidad verificable del solicitante?
                 </p>
               </div>
@@ -195,7 +201,7 @@ export default function AlertaCondusefSuplantacion() {
                 el riesgo se multiplica.
               </p>
 
-              <div className="bg-[#0a0a0a] rounded-xl p-8 my-8">
+              <div className="bg-[#0E1133] rounded-xl p-8 my-8">
                 <p className="text-white text-xl font-medium italic text-center">
                   &quot;Sin identidad digital verificable y sin gobernanza tecnológica, el riesgo se multiplica.&quot;
                 </p>
@@ -225,8 +231,11 @@ export default function AlertaCondusefSuplantacion() {
                 como una estrategia consciente para alinear tecnología, regulación y operación real.
               </p>
 
-              <div className="bg-amber-50 border-l-4 border-amber-500 p-6 my-8">
-                <p className="text-amber-800 font-bold text-lg">
+              <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
+                <p className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-2">
+                  Idea clave
+                </p>
+                <p className="text-gray-900 font-bold text-lg">
                   Porque en un contexto donde el fraude evoluciona y la suplantación se sofistica,
                   la confianza no se promete: se diseña, se prueba y se sostiene con responsabilidad.
                 </p>

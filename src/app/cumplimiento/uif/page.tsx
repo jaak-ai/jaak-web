@@ -155,7 +155,7 @@ export default function UIFPage() {
       <Header />
       <main>
         {/* Hero Section */}
-        <section className="pt-32 pb-20 bg-[#0a0a0a]">
+        <section className="pt-32 pb-20 bg-[#0E1133]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl">
               <Link
@@ -298,13 +298,13 @@ export default function UIFPage() {
         </section>
 
         {/* Benefits */}
-        <section className="py-20 bg-[#0a0a0a]">
+        <section className="py-20 bg-[#0E1133]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#00d4aa]/10 border border-[#00d4aa]/20 rounded-full mb-6">
-                  <span className="w-2 h-2 bg-[#00d4aa] rounded-full"></span>
-                  <span className="text-[#00d4aa] text-sm font-medium">Beneficios</span>
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#2DB6C1]/10 border border-[#2DB6C1]/20 rounded-full mb-6">
+                  <span className="w-2 h-2 bg-[#2DB6C1] rounded-full"></span>
+                  <span className="text-[#2DB6C1] text-sm font-medium">Beneficios</span>
                 </div>
                 <h2 className="text-3xl md:text-4xl font-black text-white mb-6">
                   Responde más rápido a la UIF
@@ -322,7 +322,7 @@ export default function UIFPage() {
                     "API para integración con sistemas de cumplimiento",
                   ].map((item, index) => (
                     <li key={index} className="flex items-center gap-3">
-                      <svg className="w-5 h-5 text-[#00d4aa] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-5 h-5 text-[#2DB6C1] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
                       <span className="text-white/80">{item}</span>
@@ -354,10 +354,10 @@ export default function UIFPage() {
                   <div>
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-white/60">Con JAAK</span>
-                      <span className="text-[#00d4aa] font-bold">Minutos</span>
+                      <span className="text-[#2DB6C1] font-bold">Minutos</span>
                     </div>
                     <div className="w-full bg-white/10 rounded-full h-3">
-                      <div className="bg-[#00d4aa] h-3 rounded-full" style={{ width: "5%" }}></div>
+                      <div className="bg-[#2DB6C1] h-3 rounded-full" style={{ width: "5%" }}></div>
                     </div>
                   </div>
                 </div>

@@ -88,7 +88,7 @@ export default function CookiesPage() {
       <Header />
       <main>
         {/* Hero Section */}
-        <section className="pt-32 pb-16 bg-[#0a0a0a]">
+        <section className="pt-32 pb-16 bg-[#0E1133]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <h1 className="text-4xl md:text-5xl font-black text-white mb-6">
               Politica de Cookies
@@ -178,7 +178,7 @@ export default function CookiesPage() {
                               className="flex items-center gap-2 text-sm text-gray-600"
                             >
                               <svg
-                                className="w-4 h-4 text-[#00d4aa] flex-shrink-0"
+                                className="w-4 h-4 text-[#2DB6C1] flex-shrink-0"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -217,7 +217,7 @@ export default function CookiesPage() {
                       Se eliminan automaticamente cuando cierra su navegador. Son temporales y no permanecen en su dispositivo despues de cerrar la sesion.
                     </p>
                   </div>
-                  <div className="bg-[#00d4aa]/5 border border-[#00d4aa]/20 rounded-xl p-6">
+                  <div className="bg-[#2DB6C1]/5 border border-[#2DB6C1]/20 rounded-xl p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">
                       Cookies persistentes
                     </h3>
@@ -397,7 +397,7 @@ export default function CookiesPage() {
               </div>
 
               {/* Contacto */}
-              <div className="bg-[#0a0a0a] rounded-2xl p-8">
+              <div className="bg-[#0E1133] rounded-2xl p-8">
                 <h2 className="text-2xl font-bold text-white mb-4">
                   Contacto
                 </h2>

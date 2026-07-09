@@ -10,7 +10,7 @@ const industries = [
       "KYC biométrico completo + consulta de listas + firma NOM-151 + expediente auditable desde la primera solicitud.",
     regulation: "CNBV · UIF · Ley Fintech · LFPIORPI",
     href: "/bancos",
-    accent: "#1ECAD3",
+    accent: "#2DB6C1",
   },
   {
     title: "Sector inmobiliario",
@@ -32,7 +32,7 @@ const industries = [
       "KYC en punto de venta + firma digital en tablet + expediente vinculado a la operación comercial.",
     regulation: "CONDUSEF · SAT · contratos mercantiles",
     href: "/contacto",
-    accent: "#1ECAD3",
+    accent: "#2DB6C1",
   },
   {
     title: "RH y servicios legales",
@@ -82,7 +82,7 @@ export default function HomepageIndustries() {
             Soluciones para cada{" "}
             <span
               style={{
-                background: "linear-gradient(90deg, #1ECAD3, #2AD796)",
+                background: "linear-gradient(90deg, #2DB6C1, #2AD796)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",

@@ -10,7 +10,7 @@ const PRODUCTS: ProductCard[] = [
     title: "Identidad verificada, listas cruzadas, expediente sellado",
     desc: "Valida vigencia, autenticidad y cruza PEP, SAT y OFAC en un solo flujo. El resultado queda en un expediente con integridad demostrable — listo para conservar 10 años.",
     href: "/plataforma/verificacion-identidad",
-    color: "#1ECAD3",
+    color: "#2DB6C1",
   },
   {
     icon: "🗂️",

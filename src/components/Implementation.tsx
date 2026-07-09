@@ -41,9 +41,14 @@ export default function Implementation() {
           </div>
 
           {/* Summary */}
-          <p className="text-lg text-[#4b5563] border-l-4 border-[#2DB6C1] pl-4">
-            Sin proyectos eternos. Sin dependencias absurdas.
-          </p>
+          <div>
+            <p className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-2">
+              Compromiso
+            </p>
+            <p className="text-lg text-[#4b5563]">
+              Sin proyectos eternos. Sin dependencias absurdas.
+            </p>
+          </div>
         </div>
       </div>
     </section>

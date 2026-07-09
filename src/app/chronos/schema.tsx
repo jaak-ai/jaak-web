@@ -33,7 +33,7 @@ export const chronosSoftwareSchema = {
   applicationCategory: "BusinessApplication",
   applicationSubCategory: "AI Agent Orchestration",
   operatingSystem: "Web, Kubernetes, Cloud",
-  description: "Plataforma enterprise de orquestación de agentes de IA. Alternativa segura a OpenClaw y NemoClaw con multi-tenancy, RBAC, audit logs y cumplimiento regulatorio mexicano (CNBV, UIF, LFPIORPI).",
+  description: "Plataforma enterprise de orquestación de agentes de IA con multi-tenancy, RBAC, audit logs y cumplimiento regulatorio mexicano (CNBV, UIF, LFPIORPI).",
   provider: { "@id": "https://jaak.ai/chronos#organization" },
   offers: {
     "@type": "Offer",
@@ -50,7 +50,7 @@ export const chronosSoftwareSchema = {
     "Audit logs y trazabilidad completa",
     "Policy engine con reglas CEL",
     "Integración con JAAK OCR, Signa y verificación biométrica",
-    "18+ integraciones pre-construidas (Slack, GitHub, SAT, Buró de Crédito)",
+    "11 integraciones pre-construidas (Slack, SAT, Buró de Crédito)",
     "Visual workflow editor (drag-and-drop)",
     "Kubernetes-native con autoscaling",
     "Cumplimiento CNBV, UIF, LFPIORPI, AML"
@@ -64,39 +64,14 @@ export const chronosComparisonSchema = {
   "@context": "https://schema.org",
   "@type": "WebPage",
   "@id": "https://jaak.ai/chronos/comparacion",
-  name: "Chronos vs OpenClaw vs NemoClaw - Comparación de Plataformas de Agentes IA 2026",
-  description: "Comparación detallada entre Chronos, OpenClaw y NemoClaw. Seguridad enterprise, multi-tenancy, cumplimiento regulatorio y orquestación de agentes IA.",
+  name: "Chronos - Orquestación de agentes de IA para instituciones financieras reguladas",
+  description: "Capacidades de Chronos: multi-tenancy, RBAC, audit logs, cumplimiento regulatorio mexicano (CNBV, UIF, LFPIORPI) e integración nativa con JAAK OCR, Signa y biometría.",
   mainEntity: {
-    "@type": "ItemList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        item: {
-          "@type": "SoftwareApplication",
-          name: "Chronos",
-          description: "Plataforma enterprise de JAAK con seguridad, multi-tenancy y cumplimiento regulatorio mexicano"
-        }
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        item: {
-          "@type": "SoftwareApplication",
-          name: "OpenClaw",
-          description: "Framework open-source de agentes IA, simple pero con limitaciones de seguridad enterprise"
-        }
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
-        item: {
-          "@type": "SoftwareApplication",
-          name: "NemoClaw",
-          description: "Versión enterprise de OpenClaw por NVIDIA con sandbox y políticas de seguridad"
-        }
-      }
-    ]
+    "@type": "SoftwareApplication",
+    name: "Chronos",
+    applicationCategory: "BusinessApplication",
+    description: "Plataforma enterprise de JAAK para orquestación de agentes de IA con seguridad, multi-tenancy y cumplimiento regulatorio mexicano.",
+    provider: { "@id": "https://jaak.ai/chronos#organization" }
   }
 };
 
@@ -106,18 +81,18 @@ export const chronosFAQSchema = {
   mainEntity: [
     {
       "@type": "Question",
-      name: "¿Qué es Chronos y cómo se diferencia de OpenClaw?",
+      name: "¿Qué es Chronos?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Chronos es una plataforma enterprise de orquestación de agentes de IA desarrollada por JAAK. A diferencia de OpenClaw que es un framework open-source simple sin seguridad enterprise, Chronos ofrece multi-tenancy con aislamiento completo de datos, RBAC, audit logs, cumplimiento regulatorio mexicano (CNBV, UIF, LFPIORPI) y human-in-the-loop obligatorio para decisiones críticas. Mientras OpenClaw usa archivos Markdown en disco y no tiene vector databases, Chronos usa MongoDB, Redis Streams y arquitectura de microservicios en Kubernetes."
+        text: "Chronos es una plataforma enterprise de orquestación de agentes de IA desarrollada por JAAK. Ofrece multi-tenancy con aislamiento completo de datos, RBAC, audit logs, cumplimiento regulatorio mexicano (CNBV, UIF, LFPIORPI) y human-in-the-loop obligatorio para decisiones críticas. Está construida sobre MongoDB, Redis Streams y arquitectura de microservicios en Kubernetes."
       }
     },
     {
       "@type": "Question",
-      name: "¿Cuál es la diferencia entre Chronos y NemoClaw de NVIDIA?",
+      name: "¿Qué hace a Chronos adecuado para instituciones financieras reguladas?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "NemoClaw es la versión enterprise de OpenClaw desarrollada por NVIDIA que añade sandbox y políticas de seguridad. Chronos va más allá: ofrece multi-tenancy real con aislamiento de datos por empresa, 18+ integraciones pre-construidas (incluyendo sistemas mexicanos como SAT y Buró de Crédito), visual workflow editor, integración nativa con JAAK OCR/Signa/biometría, y cumplimiento regulatorio específico para México (CNBV, UIF, LFPIORPI, AML). Chronos está diseñado para instituciones financieras reguladas en Latinoamérica."
+        text: "Chronos ofrece multi-tenancy real con aislamiento de datos por empresa, 11 integraciones pre-construidas (incluyendo sistemas mexicanos como SAT y Buró de Crédito), visual workflow editor, integración nativa con JAAK OCR/Signa/biometría, y cumplimiento regulatorio específico para México (CNBV, UIF, LFPIORPI, AML). Está diseñado para instituciones financieras reguladas en Latinoamérica."
       }
     },
     {
@@ -154,18 +129,18 @@ export const chronosFAQSchema = {
     },
     {
       "@type": "Question",
-      name: "¿Chronos es más seguro que OpenClaw para empresas?",
+      name: "¿Qué medidas de seguridad ofrece Chronos para empresas?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Sí, significativamente. OpenClaw ha tenido restricciones de seguridad (China prohibió su uso en gobierno, Meta lo bloqueó en dispositivos corporativos) y es susceptible a prompt injection. Chronos ofrece: multi-tenancy con aislamiento de datos por empresa, RBAC en cuatro niveles, audit logs inmutables, credenciales en vault seguro (OCI Vault), sandbox para ejecución de agentes, y políticas configurables para controlar comportamiento de agentes."
+        text: "Chronos ofrece: multi-tenancy con aislamiento de datos por empresa, RBAC en cuatro niveles, audit logs inmutables, credenciales en vault seguro (OCI Vault), sandbox para ejecución de agentes, y políticas configurables para controlar el comportamiento de los agentes."
       }
     },
     {
       "@type": "Question",
-      name: "¿Cuánto cuesta Chronos comparado con otras plataformas de agentes IA?",
+      name: "¿Cómo es el modelo de precios de Chronos?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Chronos tiene modelo de licencia enterprise por tenant más consumo variable (tokens LLM, integraciones). A diferencia de plataformas como ServiceNow o Microsoft Azure AI Foundry que cobran por seat, Chronos permite escalar agentes sin costo adicional por usuario. El pricing incluye: multi-tenancy, todas las integraciones pre-construidas, y soporte 24/7 en español. Contacta a ventas para cotización personalizada."
+        text: "Chronos tiene modelo de licencia enterprise por tenant más consumo variable (tokens LLM, integraciones). Permite escalar agentes sin costo adicional por usuario. El pricing incluye: multi-tenancy, todas las integraciones pre-construidas, y soporte 24/7 en español. Contacta a ventas para cotización personalizada."
       }
     }
   ]

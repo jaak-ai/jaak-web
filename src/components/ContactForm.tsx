@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import Link from "next/link";
 import { gtmEvent } from "./GoogleTagManager";
 import { TurnstileWidget, getUtmParams } from "./CloudflareTurnstile";
 
@@ -34,6 +35,7 @@ export default function ContactForm() {
 
   const handleTurnstileError = useCallback(() => {
     setErrorMessage("Error de verificación. Por favor, recarga la página.");
+    setStatus("error");
   }, []);
 
   const handleTurnstileExpire = useCallback(() => {
@@ -83,7 +85,7 @@ export default function ContactForm() {
       } else {
         const errorData = await response.json().catch(() => ({}));
         setStatus("error");
-        setErrorMessage(errorData.message || "Hubo un error al enviar el formulario. Por favor, intenta de nuevo.");
+        setErrorMessage(errorData.error || errorData.message || "Hubo un error al enviar el formulario. Por favor, intenta de nuevo.");
         setTurnstileToken("");
         setTurnstileKey((k) => k + 1);
       }
@@ -102,18 +104,18 @@ export default function ContactForm() {
           {/* Left side - Info */}
           <div>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 mb-4">
-              Contáctanos
+              Agende una demo de 15 minutos
             </h2>
-            <p className="text-xl text-[#0066ff] font-semibold mb-4">
+            <p className="text-xl text-[#2DB6C1] font-semibold mb-4">
               Lleva la seguridad de tu empresa al siguiente nivel
             </p>
             <p className="text-gray-600 mb-8">
-              Con JAAK, la seguridad no es una opción, es una garantía. Completa el formulario y accede a una demostración personalizada que te mostrará cómo nuestras soluciones integradas pueden transformar tu operación.
+              Con JAAK, la seguridad de tu empresa es una prioridad. Completa el formulario y accede a una demostración personalizada que te mostrará cómo nuestras soluciones integradas pueden transformar tu operación.
             </p>
             <div className="space-y-4">
               {benefits.map((benefit, index) => (
                 <div key={index} className="flex items-center gap-3">
-                  <div className="w-6 h-6 bg-gradient-to-br from-[#0066ff] to-[#00d4aa] rounded-full flex items-center justify-center flex-shrink-0">
+                  <div className="w-6 h-6 bg-[#2DB6C1] rounded-full flex items-center justify-center flex-shrink-0">
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                     </svg>
@@ -138,7 +140,7 @@ export default function ContactForm() {
                     required
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0066ff] focus:border-transparent outline-none transition-all text-gray-900 placeholder:text-gray-400"
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#2DB6C1] focus:border-transparent outline-none transition-all text-gray-900 placeholder:text-gray-400"
                     placeholder="Tu nombre"
                   />
                 </div>
@@ -152,7 +154,7 @@ export default function ContactForm() {
                     required
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0066ff] focus:border-transparent outline-none transition-all text-gray-900 placeholder:text-gray-400"
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#2DB6C1] focus:border-transparent outline-none transition-all text-gray-900 placeholder:text-gray-400"
                     placeholder="tu@email.com"
                   />
                 </div>
@@ -167,7 +169,7 @@ export default function ContactForm() {
                     id="company"
                     value={formData.company}
                     onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0066ff] focus:border-transparent outline-none transition-all text-gray-900 placeholder:text-gray-400"
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#2DB6C1] focus:border-transparent outline-none transition-all text-gray-900 placeholder:text-gray-400"
                     placeholder="Tu empresa"
                   />
                 </div>
@@ -181,7 +183,7 @@ export default function ContactForm() {
                     required
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0066ff] focus:border-transparent outline-none transition-all text-gray-900 placeholder:text-gray-400"
+                    className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#2DB6C1] focus:border-transparent outline-none transition-all text-gray-900 placeholder:text-gray-400"
                     placeholder="+52 55 1234 5678"
                   />
                 </div>
@@ -195,7 +197,7 @@ export default function ContactForm() {
                   required
                   value={formData.role}
                   onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0066ff] focus:border-transparent outline-none transition-all text-gray-900"
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#2DB6C1] focus:border-transparent outline-none transition-all text-gray-900"
                 >
                   <option value="">Selecciona una opción</option>
                   <option value="Director/CEO">Director/CEO</option>
@@ -216,7 +218,7 @@ export default function ContactForm() {
                   rows={4}
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0066ff] focus:border-transparent outline-none transition-all resize-none text-gray-900 placeholder:text-gray-400"
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#2DB6C1] focus:border-transparent outline-none transition-all resize-none text-gray-900 placeholder:text-gray-400"
                   placeholder="¿Cómo podemos ayudarte?"
                 />
               </div>
@@ -234,15 +236,22 @@ export default function ContactForm() {
               <button
                 type="submit"
                 disabled={status === "loading" || !turnstileToken}
-                className="w-full px-6 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full px-6 py-4 bg-[#2DB6C1] text-white font-bold rounded-lg hover:bg-[#25969f] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {status === "loading" ? "Enviando..." : "Enviar mensaje"}
+                {status === "loading" ? "Enviando..." : "Solicitar demo"}
               </button>
+              <p className="text-xs text-gray-500 text-center">
+                Sus datos se tratan conforme a nuestro{" "}
+                <Link href="/privacidad" className="text-[#2DB6C1] hover:underline">
+                  Aviso de Privacidad
+                </Link>
+                .
+              </p>
               {status === "success" && (
-                <p className="text-green-600 text-center">¡Mensaje enviado con éxito! Nos pondremos en contacto contigo pronto.</p>
+                <p aria-live="polite" className="text-green-600 text-center">¡Solicitud enviada con éxito! Le contactaremos en menos de 24 horas hábiles.</p>
               )}
               {status === "error" && (
-                <p className="text-red-600 text-center">{errorMessage}</p>
+                <p role="alert" className="text-red-600 text-center">{errorMessage}</p>
               )}
             </form>
           </div>

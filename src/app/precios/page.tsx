@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { IBETA } from "@/lib/trust";
 import PreciosClient from "./PreciosClient";
 
 export const metadata: Metadata = {
   title: "Precios – KYC Biométrico y Firma Digital NOM-151 | JAAK",
   description:
-    "KYC biométrico desde $99 MXN/año. Firma Digital NOM-151 desde $49 MXN/año. Sin setup fee. Para empresas reguladas en México. ISO 27001 · iBeta Nivel 2.",
+    `KYC biométrico desde $99 MXN/año. Firma Digital NOM-151 desde $99 MXN/año. Sin setup fee. Para empresas reguladas en México. ISO 27001 · ${IBETA}.`,
   keywords: [
     "precios KYC México",
     "KYC biométrico precio",
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Precios – KYC Biométrico y Firma Digital NOM-151 | JAAK",
     description:
-      "KYC biométrico desde $99 MXN/año. Firma Digital NOM-151 desde $49 MXN/año. Sin setup fee. Autoservicio, Enterprise y Alianzas para empresas reguladas en México.",
+      "KYC biométrico desde $99 MXN/año. Firma Digital NOM-151 desde $99 MXN/año. Sin setup fee. Autoservicio, Enterprise y Alianzas para empresas reguladas en México.",
     url: "https://jaak.ai/precios",
   },
   alternates: {
@@ -48,7 +49,7 @@ const faqSchema = {
       name: "¿Cuánto cuesta la Firma Electrónica NOM-151?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Firma Simple desde $49 MXN (10 firmas). Firma Digital NOM-151 desde $99 MXN (5 firmas) hasta $6,000 MXN (500 firmas). Firma Digital NOM-151+Bio desde $99 MXN hasta $12,500 MXN (500 firmas). Sin setup fee en Autoservicio.",
+        text: "Firma Simple desde $49 MXN (10 firmas). Firma Digital NOM-151 desde $99 MXN (5 firmas) hasta $6,000 MXN (500 firmas). Firma Digital NOM-151+Bio desde $130 MXN hasta $12,500 MXN (500 firmas). Sin setup fee en Autoservicio.",
       },
     },
     {
@@ -72,7 +73,7 @@ const faqSchema = {
       name: "¿JAAK cumple con LFPIORPI, CNBV y UIF?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Sí. LFPIORPI Art. 17, identificación remota CNBV, evidencia para UIF, NOM-151 con PSC certificado. Certificaciones: ISO 27001, ISO 9001, iBeta Liveness Nivel 2.",
+        text: `Sí. LFPIORPI Art. 17, identificación remota CNBV, evidencia para UIF, NOM-151 con PSC certificado. Certificaciones: ISO 27001, ISO 9001, ${IBETA}.`,
       },
     },
     {
@@ -146,7 +147,7 @@ const PRODUCTS: ProductDefinition[] = [
     id: "kyc",
     name: "KYC Biométrico – Verificación de Identidad",
     description:
-      "Verificación de identidad con prueba de vida iBeta Nivel 2, OCR de identificación oficial, consulta INE/RENAPO y validación contra listas negras (OFAC, Interpol, SAT). Diseñado para empresas reguladas en México: CNBV, LFPIORPI, UIF.",
+      "Verificación de identidad con prueba de vida iBeta Nivel 1, OCR de identificación oficial, consulta INE/RENAPO y validación contra listas negras (OFAC, Interpol, SAT). Diseñado para empresas reguladas en México: CNBV, LFPIORPI, UIF.",
     category: "Software de Verificación de Identidad / KYC",
     applicationCategory: "SecurityApplication",
     image: IMG_IDENTIDAD,

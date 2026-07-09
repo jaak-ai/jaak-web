@@ -59,7 +59,7 @@ export default function GestionEvidencia() {
       <Header />
       <main>
         {/* Hero */}
-        <section className="pt-32 pb-20 bg-[#0a0a0a]">
+        <section className="pt-32 pb-20 bg-[#0E1133]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl">
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#0066ff]/10 border border-[#0066ff]/20 rounded-full mb-6">
@@ -133,7 +133,7 @@ export default function GestionEvidencia() {
                   <ul className="space-y-3">
                     {evidence.items.map((item, itemIndex) => (
                       <li key={itemIndex} className="flex items-start gap-2 text-sm text-gray-600">
-                        <svg className="w-4 h-4 text-[#00d4aa] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4 text-[#2DB6C1] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
                         {item}
@@ -147,7 +147,7 @@ export default function GestionEvidencia() {
         </section>
 
         {/* Compliance */}
-        <section className="py-20 bg-[#0a0a0a]">
+        <section className="py-20 bg-[#0E1133]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
@@ -181,19 +181,19 @@ export default function GestionEvidencia() {
                 <div className="space-y-4">
                   <div className="flex justify-between items-center py-3 border-b border-white/10">
                     <span className="text-white/80">Expedientes KYC</span>
-                    <span className="text-[#00d4aa] font-semibold">10 años</span>
+                    <span className="text-[#2DB6C1] font-semibold">10 años</span>
                   </div>
                   <div className="flex justify-between items-center py-3 border-b border-white/10">
                     <span className="text-white/80">Contratos firmados</span>
-                    <span className="text-[#00d4aa] font-semibold">10 años</span>
+                    <span className="text-[#2DB6C1] font-semibold">10 años</span>
                   </div>
                   <div className="flex justify-between items-center py-3 border-b border-white/10">
                     <span className="text-white/80">Logs de transacciones</span>
-                    <span className="text-[#00d4aa] font-semibold">5 años</span>
+                    <span className="text-[#2DB6C1] font-semibold">5 años</span>
                   </div>
                   <div className="flex justify-between items-center py-3">
                     <span className="text-white/80">Consentimientos</span>
-                    <span className="text-[#00d4aa] font-semibold">Vigencia + 5 años</span>
+                    <span className="text-[#2DB6C1] font-semibold">Vigencia + 5 años</span>
                   </div>
                 </div>
               </div>

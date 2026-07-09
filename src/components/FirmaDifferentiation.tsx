@@ -38,7 +38,7 @@ const diffItems: DiffItem[] = [
           "Prestador de Servicios de Certificación. Entidad autorizada por la SE (Secretaría de Economía) para emitir certificados digitales y sellos de tiempo con valor legal.",
       },
     ],
-    color: "#1ECAD3",
+    color: "#2DB6C1",
   },
   {
     id: "biometria",
@@ -138,7 +138,7 @@ function TooltipWord({
     <span className="relative inline-block">
       <span
         className="underline decoration-dotted cursor-help"
-        style={{ textDecorationColor: "#1ECAD3", color: "#A7F3F6" }}
+        style={{ textDecorationColor: "#2DB6C1", color: "#A7F3F6" }}
         onMouseEnter={show}
         onMouseLeave={hide}
         onFocus={show}
@@ -159,15 +159,15 @@ function TooltipWord({
           }}
           role="tooltip"
         >
-          <span className="font-bold text-[#1ECAD3]">{term}:</span>{" "}
+          <span className="font-bold text-[#2DB6C1]">{term}:</span>{" "}
           {explanation}
           {/* Arrow */}
           <span
-            className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0"
+            className="absolute top-full left-1/2 -translate-x-1/2 -mt-[5px] h-2.5 w-2.5 rotate-45"
             style={{
-              borderLeft: "6px solid transparent",
-              borderRight: "6px solid transparent",
-              borderTop: "6px solid rgba(30,202,211,0.3)",
+              background: "#0D1F3C",
+              borderRight: "1px solid rgba(30,202,211,0.3)",
+              borderBottom: "1px solid rgba(30,202,211,0.3)",
             }}
             aria-hidden="true"
           />

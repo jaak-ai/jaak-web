@@ -1,11 +1,16 @@
 import { isValidElement, type ReactElement } from 'react'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 import type { MDXComponents } from 'mdx/types'
 import { Callout } from './Callout'
 import { CodeBlock } from './CodeBlock'
-import { Mermaid } from './Mermaid'
 import { Tabs, CodeTabs } from './Tabs'
 import { Endpoint, ParamsTable, ResponseSchema, HttpMethod } from './api'
+
+const Mermaid = dynamic(() => import('./Mermaid').then((m) => m.Mermaid), {
+  ssr: false,
+  loading: () => <div className="min-h-[320px]" />,
+})
 
 function extractCodeText(node: unknown): string {
   if (typeof node === 'string') return node
@@ -83,13 +88,13 @@ export const mdxComponents: MDXComponents = {
       }
     }
     return (
-      <pre className="mb-4 overflow-x-auto rounded-lg bg-[#0a0a0a] p-4 text-sm text-gray-100">
+      <pre className="mb-4 overflow-x-auto rounded-lg bg-[#0E1133] p-4 text-sm text-gray-100">
         {children}
       </pre>
     )
   },
   blockquote: ({ children }) => (
-    <blockquote className="mb-4 border-l-4 border-[#0066ff] pl-4 italic text-gray-600">
+    <blockquote className="relative mb-4 rounded-md border border-[#212A45]/10 bg-[#FAFAFA] px-5 py-4 italic text-gray-600 before:absolute before:left-6 before:top-0 before:h-px before:w-12 before:bg-[#2DB6C1] [&>p:last-child]:mb-0">
       {children}
     </blockquote>
   ),

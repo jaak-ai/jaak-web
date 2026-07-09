@@ -139,13 +139,13 @@ export default function PrevencionFraude() {
                 </div>
               </div>
 
-              <div className="bg-red-500/5 border-l-4 border-red-500 p-6 my-8">
-                <p className="text-gray-700 font-medium mb-2">Impacto económico:</p>
+              <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
+                <p className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-2">Impacto económico</p>
                 <p className="text-gray-600">
                   Según la Condusef, las quejas por posible robo de identidad en México
-                  han aumentado más del 50% en los últimos años. El costo promedio por
-                  incidente de fraude puede superar los $50,000 pesos, sin contar el daño
-                  reputacional y los costos operativos de investigación.
+                  han aumentado más del 50% en los últimos años. El costo por incidente de
+                  fraude puede ser significativo, sin contar el daño reputacional y los
+                  costos operativos de investigación.
                 </p>
               </div>
 
@@ -236,7 +236,7 @@ export default function PrevencionFraude() {
               <div className="overflow-x-auto my-8">
                 <table className="w-full border-collapse">
                   <thead>
-                    <tr className="bg-[#0a0a0a] text-white">
+                    <tr className="bg-[#0E1133] text-white">
                       <th className="px-4 py-3 text-left">Categoría</th>
                       <th className="px-4 py-3 text-left">Señal de alerta</th>
                       <th className="px-4 py-3 text-left">Nivel de riesgo</th>
@@ -393,7 +393,7 @@ export default function PrevencionFraude() {
                 <li>Realiza auditorías periódicas de efectividad de controles</li>
               </ul>
 
-              <div className="bg-[#0a0a0a] rounded-xl p-8 my-12">
+              <div className="bg-[#0E1133] rounded-xl p-8 my-12">
                 <h3 className="text-xl font-bold text-white mb-4">
                   Conclusión
                 </h3>

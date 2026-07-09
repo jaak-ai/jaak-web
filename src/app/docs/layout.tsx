@@ -2,9 +2,21 @@ import { Sidebar } from '@/components/docs/Sidebar'
 import { SearchModal } from '@/components/docs/SearchModal'
 import { SearchButton } from '@/components/docs/SearchButton'
 import { docsConfig } from '@/lib/docs/config'
+import type { SearchDoc } from '@/lib/docs/search'
+import { allDocs } from 'contentlayer2/generated'
 import Link from 'next/link'
 import Image from 'next/image'
 import type { Metadata } from 'next'
+
+const searchDocs: SearchDoc[] = allDocs
+  .filter((doc) => !doc.unlisted)
+  .map((doc) => ({
+    title: doc.title,
+    description: doc.description,
+    url: doc.url,
+    category: doc.category,
+    text: doc.body.raw.replace(/\s+/g, ' ').trim().slice(0, 300),
+  }))
 
 export const metadata: Metadata = {
   title: {
@@ -77,7 +89,7 @@ export default function DocsLayout({
       </div>
 
       {/* Search modal */}
-      <SearchModal />
+      <SearchModal searchDocs={searchDocs} />
     </div>
   )
 }

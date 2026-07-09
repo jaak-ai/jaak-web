@@ -48,9 +48,14 @@ export default function Problem() {
           </div>
 
           {/* Insight */}
-          <p className="text-xl font-semibold text-[#0a0f1c] border-l-4 border-[#2DB6C1] pl-4">
-            Esto no es un problema técnico. Es un problema de negocio.
-          </p>
+          <div>
+            <p className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-2">
+              Conclusión
+            </p>
+            <p className="text-xl font-semibold text-[#0a0f1c]">
+              Esto no es un problema técnico. Es un problema de negocio.
+            </p>
+          </div>
         </div>
       </div>
     </section>

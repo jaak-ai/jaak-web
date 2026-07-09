@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import { STATS } from "@/lib/trust";
 
 export const metadata = {
   title: "Onboarding Digital | JAAK",
@@ -16,10 +17,10 @@ export default function OnboardingDigital() {
   ];
 
   const metrics = [
-    { value: "< 30s", label: "Tiempo promedio de verificación" },
-    { value: "95%", label: "Tasa de aprobación automática" },
-    { value: "3x", label: "Aumento en conversión vs presencial" },
-    { value: "99.9%", label: "Disponibilidad del servicio" },
+    { value: STATS.procesoKyc, label: "Tiempo promedio del proceso" },
+    { value: STATS.verificacionBiometrica, label: "Respuesta biométrica" },
+    { value: STATS.precisionBiometrica, label: "Precisión biométrica" },
+    { value: STATS.disponibilidad, label: "Disponibilidad del servicio" },
   ];
 
   const channels = [
@@ -34,12 +35,12 @@ export default function OnboardingDigital() {
       <Header />
       <main>
         {/* Hero */}
-        <section className="pt-32 pb-20 bg-[#0a0a0a]">
+        <section className="pt-32 pb-20 bg-[#0E1133]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#00d4aa]/10 border border-[#00d4aa]/20 rounded-full mb-6">
-                <span className="w-2 h-2 bg-[#00d4aa] rounded-full"></span>
-                <span className="text-[#00d4aa] text-sm font-medium">Caso de uso</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#2DB6C1]/10 border border-[#2DB6C1]/20 rounded-full mb-6">
+                <span className="w-2 h-2 bg-[#2DB6C1] rounded-full"></span>
+                <span className="text-[#2DB6C1] text-sm font-medium">Caso de uso</span>
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6">
                 Onboarding digital
@@ -49,7 +50,7 @@ export default function OnboardingDigital() {
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link
-                  href="https://platform.dev.jaak.ai/#/signup"
+                  href="https://platform.jaak.ai/#/signup"
                   target="_blank"
                   className="px-6 py-3 bg-[#0066ff] text-white font-semibold rounded-lg hover:bg-[#0052cc] transition-all"
                 >
@@ -92,7 +93,7 @@ export default function OnboardingDigital() {
         </section>
 
         {/* Metrics */}
-        <section className="py-20 bg-[#0a0a0a]">
+        <section className="py-20 bg-[#0E1133]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-4 gap-8">
               {metrics.map((metric, index) => (
@@ -138,7 +139,7 @@ export default function OnboardingDigital() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                href="https://platform.dev.jaak.ai/#/signup"
+                href="https://platform.jaak.ai/#/signup"
                 target="_blank"
                 className="inline-flex px-8 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
               >

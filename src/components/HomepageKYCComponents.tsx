@@ -1,3 +1,5 @@
+import { IBETA, STATS } from "@/lib/trust";
+
 const components = [
   {
     title: "Prueba de vida pasiva",
@@ -9,7 +11,7 @@ const components = [
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
       </svg>
     ),
-    tag: "Anti-spoofing iBeta Nivel 2",
+    tag: `Anti-spoofing ${IBETA}`,
   },
   {
     title: "Validación biométrica 1:1",
@@ -20,7 +22,7 @@ const components = [
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" />
       </svg>
     ),
-    tag: "99% precisión · NIST FRVT",
+    tag: `${STATS.precisionBiometrica} precisión · NIST FRVT`,
   },
   {
     title: "OCR documental",
@@ -86,13 +88,13 @@ export default function HomepageKYCComponents() {
         <div className="max-w-3xl mb-14" data-sr>
           <div
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
-            style={{ color: "#1ECAD3", border: "1px solid rgba(30,202,211,0.22)", background: "rgba(30,202,211,0.08)" }}
+            style={{ color: "#2DB6C1", border: "1px solid rgba(30,202,211,0.22)", background: "rgba(30,202,211,0.08)" }}
           >
             Verificación de identidad
           </div>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight mb-4">
             Seis capas de verificación.{" "}
-            <span style={{ background: "linear-gradient(90deg, #1ECAD3, #2AD796)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+            <span style={{ background: "linear-gradient(90deg, #2DB6C1, #2AD796)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
               Un solo expediente.
             </span>
           </h2>
@@ -114,7 +116,7 @@ export default function HomepageKYCComponents() {
               <div className="flex items-start justify-between mb-4">
                 <div
                   className="w-11 h-11 rounded-xl flex items-center justify-center"
-                  style={{ background: "rgba(30,202,211,0.14)", color: "#1ECAD3" }}
+                  style={{ background: "rgba(30,202,211,0.14)", color: "#2DB6C1" }}
                 >
                   {c.icon}
                 </div>
@@ -133,7 +135,7 @@ export default function HomepageKYCComponents() {
               </p>
 
               <div className="flex items-start gap-2 pt-3" style={{ borderTop: "1px solid var(--hp-divider)" }}>
-                <svg className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" style={{ color: "#1ECAD3" }} fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" style={{ color: "#2DB6C1" }} fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                 </svg>
                 <p className="text-xs leading-relaxed" style={{ color: "var(--hp-text-lo)" }}>{c.useCase}</p>

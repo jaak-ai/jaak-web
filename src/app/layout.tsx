@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Montserrat } from "next/font/google";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -6,6 +7,13 @@ import { GoogleTagManagerHead, GoogleTagManagerBody } from "@/components/GoogleT
 import { TurnstileScript } from "@/components/CloudflareTurnstile";
 import { KairosSalesChat } from "@/components/KairosSalesChat";
 import "./globals.css";
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+  variable: "--font-montserrat",
+});
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -182,8 +190,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
+    <html lang="es" className={montserrat.variable}>
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.classList.add('sr-ready')",
+          }}
+        />
         <GoogleTagManagerHead />
         <script
           type="application/ld+json"

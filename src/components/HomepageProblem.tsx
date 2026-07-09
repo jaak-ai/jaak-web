@@ -216,7 +216,7 @@ export default function HomepageProblem() {
               >
                 <svg
                   className="w-4 h-4"
-                  style={{ color: "#1ECAD3" }}
+                  style={{ color: "#2DB6C1" }}
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >
@@ -230,7 +230,7 @@ export default function HomepageProblem() {
               <div>
                 <div
                   className="text-sm font-bold uppercase tracking-wider"
-                  style={{ color: "#1ECAD3" }}
+                  style={{ color: "#2DB6C1" }}
                 >
                   Con JAAK
                 </div>

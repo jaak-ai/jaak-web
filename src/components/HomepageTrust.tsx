@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { IBETA } from "@/lib/trust";
 
 const regulations = [
   {
@@ -45,8 +46,8 @@ const certifications = [
     image: "/images/certifications/iso-9001.png",
   },
   {
-    name: "iBeta PAD",
-    description: "Prueba de vida anti-spoofing",
+    name: IBETA,
+    description: "Prueba de vida anti-spoofing (PAD)",
     image: "/images/certifications/ibeta.png",
   },
   {
@@ -67,7 +68,7 @@ const certifications = [
 ];
 
 const trustPoints = [
-  "Biometría propia sin dependencias de AWS Rekognition o Azure Face",
+  "Motor biométrico propio, desarrollado y operado en México",
   "Datos biométricos nunca salen de la infraestructura del cliente",
   "LFPDPPP — cumplimiento con protección de datos personales",
   "Servidores en México para soberanía de datos regulados",
@@ -94,7 +95,7 @@ export default function HomepageTrust() {
           <div
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
             style={{
-              color: "#1ECAD3",
+              color: "#2DB6C1",
               border: "1px solid rgba(30,202,211,0.22)",
               background: "rgba(30,202,211,0.08)",
             }}
@@ -105,7 +106,7 @@ export default function HomepageTrust() {
             Diseñado bajo los marcos{" "}
             <span
               style={{
-                background: "linear-gradient(90deg, #1ECAD3, #2AD796)",
+                background: "linear-gradient(90deg, #2DB6C1, #2AD796)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
@@ -145,7 +146,7 @@ export default function HomepageTrust() {
                 >
                   <div
                     className="text-sm font-black mb-1"
-                    style={{ color: "#1ECAD3" }}
+                    style={{ color: "#2DB6C1" }}
                   >
                     {r.name}
                   </div>
@@ -204,9 +205,9 @@ export default function HomepageTrust() {
                 className="text-xs leading-relaxed"
                 style={{ color: "var(--hp-text-md)" }}
               >
-                El único proveedor de KYC + firma con motor biométrico propio,
-                desarrollado y operado en México. Sin intermediarios extranjeros
-                en el flujo de datos biométricos sensibles.
+                Motor biométrico propio de KYC + firma, desarrollado y operado
+                en México. Sin intermediarios extranjeros en el flujo de datos
+                biométricos sensibles.
               </p>
             </div>
           </div>

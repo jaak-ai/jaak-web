@@ -114,7 +114,7 @@ export const signatureLevels: SignatureLevel[] = [
     name: "Firma Digital NOM-151",
     shortName: "Firma Digital NOM-151",
     risk: "Alto",
-    color: "#1ECAD3",
+    color: "#2DB6C1",
     icon: "🔐",
     description:
       "Para contratos y documentos donde necesitas conservar evidencia de integridad conforme al marco mexicano.",

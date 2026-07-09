@@ -5,11 +5,11 @@ import Footer from "@/components/Footer";
 export const metadata: Metadata = {
   title: "JAAK Guardian Protocol | Robot de Vigilancia Autónomo con IA",
   description:
-    "El primer robot de vigilancia autónomo con inteligencia de identidad. Conectividad 5G nativa, visión por computadora y verificación biométrica en tiempo real.",
+    "Robot de patrullaje autónomo que verifica identidades en tiempo real. 5G nativo, visión por computadora y biometría para bancos, corporativos e infraestructura crítica.",
   openGraph: {
     title: "JAAK Guardian Protocol | Robot de Vigilancia Autónomo con IA",
     description:
-      "El primer robot de vigilancia autónomo con inteligencia de identidad. Conectividad 5G nativa, visión por computadora y verificación biométrica en tiempo real.",
+      "Robot de patrullaje autónomo que verifica identidades en tiempo real. 5G nativo, visión por computadora y biometría para bancos, corporativos e infraestructura crítica.",
     type: "website",
   },
 };
@@ -129,7 +129,7 @@ function ExclamationTriangleIcon() {
 
 export default function GuardianPage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen bg-[#0E1133] text-white">
       <Header />
 
       {/* Hero Section */}
@@ -144,11 +144,6 @@ export default function GuardianPage() {
         />
 
         <div className="relative z-10 max-w-5xl mx-auto text-center">
-          {/* Tag */}
-          <span className="inline-block px-4 py-1.5 mb-8 text-sm font-medium tracking-wide text-white/80 border border-white/20 rounded-lg">
-            Nuevo · Serie A 2025
-          </span>
-
           {/* H1 con glow */}
           <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6">
             <span className="relative">
@@ -167,25 +162,26 @@ export default function GuardianPage() {
 
           {/* Tagline */}
           <p className="text-xl sm:text-2xl md:text-3xl font-medium text-white/90 mb-4 tracking-tight">
-            El primer robot de vigilancia autónomo con inteligencia de identidad
+            Vigilancia autónoma que verifica identidades, no solo las graba
           </p>
 
           {/* Subtítulo */}
           <p className="text-lg sm:text-xl text-white/60 mb-12 max-w-3xl mx-auto">
-            Conectividad 5G nativa, visión por computadora y verificación
-            biométrica en tiempo real
+            Robot de patrullaje con 5G nativo, visión por computadora y biometría
+            en tiempo real para bancos, corporativos e infraestructura crítica.
+            Desplegado y operado por JAAK.
           </p>
 
           {/* Stat chips */}
           <div className="flex flex-wrap justify-center gap-4 mb-12">
             <span className="px-5 py-2.5 text-sm font-medium text-white/90 bg-white/5 border border-white/10 rounded-lg">
-              &lt;8ms latencia 5G
+              5G nativo de baja latencia
             </span>
             <span className="px-5 py-2.5 text-sm font-medium text-white/90 bg-white/5 border border-white/10 rounded-lg">
-              99.4% precisión IA
+              Biometría en tiempo real
             </span>
             <span className="px-5 py-2.5 text-sm font-medium text-white/90 bg-white/5 border border-white/10 rounded-lg">
-              24/7 operación
+              Operación autónoma 24/7
             </span>
           </div>
 
@@ -198,10 +194,10 @@ export default function GuardianPage() {
               Solicitar reunión
             </a>
             <a
-              href="/nosotros"
+              href="#como-funciona"
               className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-white/90 border border-white/20 hover:border-white/40 hover:bg-white/5 transition-colors rounded-lg"
             >
-              Ver el mercado
+              Ver cómo funciona
             </a>
           </div>
         </div>
@@ -255,22 +251,14 @@ export default function GuardianPage() {
 
       {/* Stats impact */}
       <section className="py-32 px-6 border-t border-b border-white/10">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-white/10">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-white/10">
             <div className="px-6 py-8 text-center">
               <div className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-[#0066ff] mb-2">
-                &lt;8ms
+                Tiempo real
               </div>
               <div className="text-sm sm:text-base text-white/60 uppercase tracking-wide">
-                Latencia 5G
-              </div>
-            </div>
-            <div className="px-6 py-8 text-center">
-              <div className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white mb-2">
-                99.4%
-              </div>
-              <div className="text-sm sm:text-base text-white/60 uppercase tracking-wide">
-                Precisión IA
+                Conectividad 5G
               </div>
             </div>
             <div className="px-6 py-8 text-center">
@@ -278,15 +266,15 @@ export default function GuardianPage() {
                 24/7
               </div>
               <div className="text-sm sm:text-base text-white/60 uppercase tracking-wide">
-                Operación
+                Operación autónoma
               </div>
             </div>
             <div className="px-6 py-8 text-center">
               <div className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-[#0066ff] mb-2">
-                $4.2B
+                3
               </div>
               <div className="text-sm sm:text-base text-white/60 uppercase tracking-wide">
-                TAM LATAM 2028
+                Capas de inteligencia
               </div>
             </div>
           </div>
@@ -294,7 +282,7 @@ export default function GuardianPage() {
       </section>
 
       {/* Tecnología */}
-      <section className="py-32 px-6">
+      <section id="como-funciona" className="py-32 px-6">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-center mb-6">
             Tres capas de inteligencia
@@ -341,24 +329,6 @@ export default function GuardianPage() {
               </p>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Mercado */}
-      <section className="py-32 px-6 border-t border-white/10">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="text-6xl sm:text-7xl md:text-8xl font-bold tracking-tight mb-4">
-            <span className="text-[#0066ff]">$4.2B</span> TAM
-          </div>
-          <p className="text-2xl sm:text-3xl text-white/90 mb-4">LATAM 2028</p>
-          <div className="inline-block px-6 py-3 mb-12 text-lg font-semibold text-[#0066ff] border border-[#0066ff]/30 rounded-lg">
-            0 competidores locales
-          </div>
-          <p className="text-xl text-white/60 max-w-2xl mx-auto leading-relaxed">
-            El mercado de seguridad inteligente en Latinoamérica está dominado
-            por soluciones importadas sin adaptación local. Guardian Protocol es
-            el primer sistema diseñado desde cero para la región.
-          </p>
         </div>
       </section>
 

@@ -24,7 +24,7 @@ export default function ReadingProgress() {
     >
       <div
         className="h-full transition-all duration-75"
-        style={{ width: `${progress}%`, background: "#1ECAD3" }}
+        style={{ width: `${progress}%`, background: "#2DB6C1" }}
       />
     </div>
   );
