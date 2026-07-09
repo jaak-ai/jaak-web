@@ -159,10 +159,10 @@ export default function HomepageHero() {
             </div>
 
             {/* Headline */}
-            <h1 className="text-4xl md:text-5xl lg:text-[3.6rem] font-black text-[#212A45] leading-[1.06] mb-6 tracking-tight">
+            <h1 className="text-4xl md:text-5xl lg:text-[3.6rem] font-black leading-[1.06] mb-6 tracking-tight" style={{ color: "#212A45" }}>
               Verifica identidad.{" "}
               <br className="hidden sm:block" />
-              <span style={{ color: "#212A45" }}>
+              <span>
                 Genera evidencia legal.
               </span>
             </h1>
