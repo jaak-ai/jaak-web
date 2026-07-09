@@ -525,7 +525,12 @@ start_and_verify() {
   log "Arrancando servicios…"
   systemctl daemon-reload
   systemctl enable --now jaak-pulse-api.service
-  systemctl enable --now nginx
+  # nginx may already be running (pre-installed by apt); `enable --now` is a
+  # no-op on an active unit and would leave the freshly written site config
+  # unapplied, so /healthz would hit the stale/default config and 404.
+  # Enable, then reload to load our site (restart if it wasn't running yet).
+  systemctl enable nginx
+  systemctl reload nginx || systemctl restart nginx
   systemctl enable --now jaak-pulse-updater.timer
 
   sleep 10
