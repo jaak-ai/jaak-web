@@ -56,7 +56,7 @@ const productCards: ProductCard[] = [
   {
     id: "nom151", name: "Firma Digital NOM-151", icon: <IconClock />, tagline: "Sello de tiempo certificado",
     description: "Agrega un sello de tiempo certificado bajo la Norma Oficial Mexicana NOM-151-SCFI-2016, garantizando integridad y fecha exacta del documento firmado.",
-    color: "#2DB6C1", glowColor: "rgba(30,202,211,0.2)",
+    color: "#2DB6C1", glowColor: "rgba(45, 182, 193,0.2)",
     steps: ["Firma el documento", "Sello NOM-151 automático", "Expediente generado"],
     features: ["Sello de tiempo NOM-151 certificado", "Integridad criptográfica garantizada", "Validez ante CNBV, SAT y tribunales", "Expediente digital con evidencias"],
     cta: "Explorar Firma Digital NOM-151", href: "/firma-electronica-nom-151", anchor: "nom151",
@@ -64,7 +64,7 @@ const productCards: ProductCard[] = [
   {
     id: "biometrica", name: "Firma Digital NOM-151 + Biometría", icon: <IconFace />, tagline: "Identidad verificada en tiempo real",
     description: "Combina la firma electrónica con reconocimiento facial biométrico y detección de vida, generando evidencia irrefutable de quién firmó.",
-    color: "#8B5CF6", glowColor: "rgba(139,92,246,0.2)",
+    color: "#2DB6C1", glowColor: "rgba(139,92,246,0.2)",
     steps: ["Sube selfie en vivo", "Verificación facial", "Firma con identidad confirmada"],
     features: ["Reconocimiento facial con liveness", "Anti-spoofing (foto de foto)", "NOM-151 + evidencia biométrica", "Expediente con video y capturas"],
     cta: "Explorar Firma Digital NOM-151 + Biometría", href: "/firma-electronica-biometrica", anchor: "biometria",
@@ -72,7 +72,7 @@ const productCards: ProductCard[] = [
   {
     id: "kyc", name: "Firma Digital NOM-151 + KYC", icon: <IconShield />, tagline: "Cumplimiento total para reguladas",
     description: "La solución más robusta: validación de identidad completa (INE/pasaporte, CURP, biometría, listas PLD/OFAC) integrada con la firma, generando un expediente 100% auditable.",
-    color: "#10B981", glowColor: "rgba(16,185,129,0.2)",
+    color: "#2AD796", glowColor: "rgba(16,185,129,0.2)",
     steps: ["KYC completo", "Validación en listas", "Firma + expediente auditable"],
     features: ["OCR de INE/Pasaporte", "Consulta CURP en Renapo", "Biometría + liveness", "Listas PLD, OFAC, SAT 69-B", "Expediente auditable 100%", "Cumplimiento CNBV y LFPIORPI"],
     cta: "Explorar Firma Digital NOM-151 + KYC", href: "/firma-electronica-kyc", anchor: "kyc",

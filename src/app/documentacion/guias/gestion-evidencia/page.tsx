@@ -23,7 +23,7 @@ export default function GestionEvidencia() {
               Volver a documentación
             </Link>
             <div className="flex items-center gap-3 mb-4">
-              <span className="px-3 py-1 bg-[#0066ff]/20 text-[#0066ff] text-sm font-medium rounded-full">Guía</span>
+              <span className="px-3 py-1 bg-[#212A45]/20 text-[#212A45] text-sm font-medium rounded-full">Guía</span>
               <span className="text-white/40">20 min</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-black text-white mb-6">

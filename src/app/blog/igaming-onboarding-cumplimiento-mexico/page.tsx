@@ -165,15 +165,15 @@ export default function IGamingOnboardingCumplimiento() {
 
       <ul className="list-none pl-0 mb-6 space-y-3">
         <li className="flex items-start gap-3 text-gray-700">
-          <span className="mt-1 w-2 h-2 rounded-full bg-[#0066ff] flex-shrink-0"></span>
+          <span className="mt-1 w-2 h-2 rounded-full bg-[#212A45] flex-shrink-0"></span>
           El onboarding es el primer filtro de riesgo.
         </li>
         <li className="flex items-start gap-3 text-gray-700">
-          <span className="mt-1 w-2 h-2 rounded-full bg-[#0066ff] flex-shrink-0"></span>
+          <span className="mt-1 w-2 h-2 rounded-full bg-[#212A45] flex-shrink-0"></span>
           Es el primer punto de control.
         </li>
         <li className="flex items-start gap-3 text-gray-700">
-          <span className="mt-1 w-2 h-2 rounded-full bg-[#0066ff] flex-shrink-0"></span>
+          <span className="mt-1 w-2 h-2 rounded-full bg-[#212A45] flex-shrink-0"></span>
           Es el momento en el que una plataforma decide si conoce realmente a la persona que está
           dejando entrar a su operación.
         </li>
@@ -299,7 +299,7 @@ export default function IGamingOnboardingCumplimiento() {
       </p>
 
       <div className="space-y-6 my-8">
-        <div className="bg-[#0066ff]/5 border border-[#0066ff]/20 rounded-xl p-6">
+        <div className="bg-[#212A45]/5 border border-[#212A45]/20 rounded-xl p-6">
           <h3 className="text-lg font-bold text-gray-900 mb-3">
             1. Identificación del jugador
           </h3>
@@ -309,7 +309,7 @@ export default function IGamingOnboardingCumplimiento() {
               href="https://www.diputados.gob.mx/LeyesBiblio/regley/Reg_LFJyS.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#0066ff] hover:underline"
+              className="text-[#212A45] hover:underline"
             >
               Reglamento de la Ley Federal de Juegos y Sorteos
             </a>{" "}
@@ -320,7 +320,7 @@ export default function IGamingOnboardingCumplimiento() {
           </p>
         </div>
 
-        <div className="bg-[#0066ff]/5 border border-[#0066ff]/20 rounded-xl p-6">
+        <div className="bg-[#212A45]/5 border border-[#212A45]/20 rounded-xl p-6">
           <h3 className="text-lg font-bold text-gray-900 mb-3">
             2. Prevención de operaciones con recursos de procedencia ilícita
           </h3>
@@ -330,7 +330,7 @@ export default function IGamingOnboardingCumplimiento() {
               href="https://www.diputados.gob.mx/LeyesBiblio/pdf/LFPIORPI.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#0066ff] hover:underline"
+              className="text-[#212A45] hover:underline"
             >
               LFPIORPI
             </a>{" "}
@@ -341,7 +341,7 @@ export default function IGamingOnboardingCumplimiento() {
           </p>
         </div>
 
-        <div className="bg-[#0066ff]/5 border border-[#0066ff]/20 rounded-xl p-6">
+        <div className="bg-[#212A45]/5 border border-[#212A45]/20 rounded-xl p-6">
           <h3 className="text-lg font-bold text-gray-900 mb-3">
             3. Conservación y trazabilidad
           </h3>
@@ -354,7 +354,7 @@ export default function IGamingOnboardingCumplimiento() {
               href="https://www.diputados.gob.mx/LeyesBiblio/pdf/LFPIORPI.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#0066ff] hover:underline"
+              className="text-[#212A45] hover:underline"
             >
               LFPIORPI
             </a>{" "}
@@ -611,7 +611,7 @@ export default function IGamingOnboardingCumplimiento() {
               href="https://www.diputados.gob.mx/LeyesBiblio/regley/Reg_LFJyS.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#0066ff] font-semibold hover:underline flex items-start gap-2"
+              className="text-[#212A45] font-semibold hover:underline flex items-start gap-2"
             >
               <svg className="w-4 h-4 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -627,7 +627,7 @@ export default function IGamingOnboardingCumplimiento() {
               href="https://www.diputados.gob.mx/LeyesBiblio/pdf/LFPIORPI.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#0066ff] font-semibold hover:underline flex items-start gap-2"
+              className="text-[#212A45] font-semibold hover:underline flex items-start gap-2"
             >
               <svg className="w-4 h-4 mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -651,7 +651,7 @@ export default function IGamingOnboardingCumplimiento() {
         </p>
         <Link
           href="/contacto"
-          className="inline-flex items-center px-6 py-3 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
+          className="inline-flex items-center px-6 py-3 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-all"
         >
           Agenda una demo
           <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

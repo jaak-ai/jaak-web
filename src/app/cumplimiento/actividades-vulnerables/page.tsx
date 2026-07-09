@@ -88,8 +88,8 @@ export default function ActividadesVulnerablesPage() {
                 </svg>
                 Cumplimiento
               </Link>
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#0066ff]/10 border border-[#0066ff]/20 rounded-full mb-6">
-                <span className="text-[#0066ff] text-sm font-medium">UMA 2026: $117.31 MXN · Umbrales vigentes Art. 17 LFPIORPI</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#212A45]/10 border border-[#212A45]/20 rounded-full mb-6">
+                <span className="text-[#212A45] text-sm font-medium">UMA 2026: $117.31 MXN · Umbrales vigentes Art. 17 LFPIORPI</span>
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-[3.5rem] font-black text-white mb-6 leading-tight">
                 ¿Su operacion activa obligaciones de la LFPIORPI?
@@ -100,7 +100,7 @@ export default function ActividadesVulnerablesPage() {
               <div className="flex flex-wrap gap-4">
                 <Link
                   href="#simulador"
-                  className="px-6 py-3 bg-[#0066ff] text-white font-semibold rounded-lg hover:bg-[#0052cc] transition-all"
+                  className="px-6 py-3 bg-[#212A45] text-white font-semibold rounded-lg hover:bg-[#212A45] transition-all"
                 >
                   Calcular ahora
                 </Link>
@@ -144,8 +144,8 @@ export default function ActividadesVulnerablesPage() {
         <section className="py-20 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#0066ff]/10 rounded-full mb-4">
-                <span className="text-[#0066ff] text-sm font-medium">Expediente KYC</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#212A45]/10 rounded-full mb-4">
+                <span className="text-[#212A45] text-sm font-medium">Expediente KYC</span>
               </div>
               <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
                 ¿Que debe contener un expediente KYC segun la LFPIORPI?
@@ -157,8 +157,8 @@ export default function ActividadesVulnerablesPage() {
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
-                <div className="w-12 h-12 bg-[#0066ff]/10 rounded-xl flex items-center justify-center mb-4">
-                  <svg className="w-6 h-6 text-[#0066ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-12 h-12 bg-[#212A45]/10 rounded-xl flex items-center justify-center mb-4">
+                  <svg className="w-6 h-6 text-[#212A45]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
                   </svg>
                 </div>
@@ -169,8 +169,8 @@ export default function ActividadesVulnerablesPage() {
               </div>
 
               <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
-                <div className="w-12 h-12 bg-[#0066ff]/10 rounded-xl flex items-center justify-center mb-4">
-                  <svg className="w-6 h-6 text-[#0066ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-12 h-12 bg-[#212A45]/10 rounded-xl flex items-center justify-center mb-4">
+                  <svg className="w-6 h-6 text-[#212A45]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                   </svg>
                 </div>
@@ -181,8 +181,8 @@ export default function ActividadesVulnerablesPage() {
               </div>
 
               <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
-                <div className="w-12 h-12 bg-[#0066ff]/10 rounded-xl flex items-center justify-center mb-4">
-                  <svg className="w-6 h-6 text-[#0066ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-12 h-12 bg-[#212A45]/10 rounded-xl flex items-center justify-center mb-4">
+                  <svg className="w-6 h-6 text-[#212A45]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                   </svg>
                 </div>
@@ -193,8 +193,8 @@ export default function ActividadesVulnerablesPage() {
               </div>
 
               <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
-                <div className="w-12 h-12 bg-[#0066ff]/10 rounded-xl flex items-center justify-center mb-4">
-                  <svg className="w-6 h-6 text-[#0066ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-12 h-12 bg-[#212A45]/10 rounded-xl flex items-center justify-center mb-4">
+                  <svg className="w-6 h-6 text-[#212A45]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
                   </svg>
                 </div>
@@ -205,8 +205,8 @@ export default function ActividadesVulnerablesPage() {
               </div>
 
               <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
-                <div className="w-12 h-12 bg-[#0066ff]/10 rounded-xl flex items-center justify-center mb-4">
-                  <svg className="w-6 h-6 text-[#0066ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-12 h-12 bg-[#212A45]/10 rounded-xl flex items-center justify-center mb-4">
+                  <svg className="w-6 h-6 text-[#212A45]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                   </svg>
                 </div>
@@ -217,8 +217,8 @@ export default function ActividadesVulnerablesPage() {
               </div>
 
               <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
-                <div className="w-12 h-12 bg-[#0066ff]/10 rounded-xl flex items-center justify-center mb-4">
-                  <svg className="w-6 h-6 text-[#0066ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-12 h-12 bg-[#212A45]/10 rounded-xl flex items-center justify-center mb-4">
+                  <svg className="w-6 h-6 text-[#212A45]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                 </div>
@@ -245,8 +245,8 @@ export default function ActividadesVulnerablesPage() {
 
             <div className="grid md:grid-cols-3 gap-6">
               <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
-                <div className="inline-flex items-center px-3 py-1 bg-[#0066ff]/10 rounded-full mb-4">
-                  <span className="text-[#0066ff] text-xs font-semibold">Hasta 999 verif/mes</span>
+                <div className="inline-flex items-center px-3 py-1 bg-[#212A45]/10 rounded-full mb-4">
+                  <span className="text-[#212A45] text-xs font-semibold">Hasta 999 verif/mes</span>
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-4">Autoservicio</h3>
                 <ul className="space-y-3 mb-6">
@@ -259,7 +259,7 @@ export default function ActividadesVulnerablesPage() {
                     "Sin integracion tecnica requerida",
                   ].map((item, i) => (
                     <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
-                      <svg className="w-4 h-4 text-[#0066ff] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 text-[#212A45] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
                       {item}
@@ -386,7 +386,7 @@ export default function ActividadesVulnerablesPage() {
             <div className="flex flex-wrap justify-center gap-4">
               <Link
                 href="/contacto"
-                className="px-8 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
+                className="px-8 py-4 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-all"
               >
                 Agendar sesion estrategica
               </Link>

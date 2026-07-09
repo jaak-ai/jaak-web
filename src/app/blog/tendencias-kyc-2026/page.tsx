@@ -240,7 +240,7 @@ export default function TendenciasKYC2026() {
             <div className="mt-12 flex flex-wrap gap-4">
               <a
                 href="/contacto"
-                className="px-8 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
+                className="px-8 py-4 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-all"
               >
                 Solicitar demo
               </a>

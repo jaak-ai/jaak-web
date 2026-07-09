@@ -174,7 +174,7 @@ export function SearchModal({ searchDocs }: { searchDocs: SearchDoc[] }) {
                     onMouseEnter={() => setSelectedIndex(index)}
                     className={`flex w-full items-start gap-3 px-4 py-3 text-left transition-colors ${
                       selectedIndex === index
-                        ? 'bg-[#0066ff]/5'
+                        ? 'bg-[#212A45]/5'
                         : 'hover:bg-gray-50'
                     }`}
                   >
@@ -182,7 +182,7 @@ export function SearchModal({ searchDocs }: { searchDocs: SearchDoc[] }) {
                     <svg
                       className={`mt-0.5 h-5 w-5 flex-shrink-0 ${
                         selectedIndex === index
-                          ? 'text-[#0066ff]'
+                          ? 'text-[#212A45]'
                           : 'text-gray-400'
                       }`}
                       fill="none"
@@ -202,7 +202,7 @@ export function SearchModal({ searchDocs }: { searchDocs: SearchDoc[] }) {
                         <span
                           className={`text-sm font-medium ${
                             selectedIndex === index
-                              ? 'text-[#0066ff]'
+                              ? 'text-[#212A45]'
                               : 'text-gray-900'
                           }`}
                         >
@@ -225,7 +225,7 @@ export function SearchModal({ searchDocs }: { searchDocs: SearchDoc[] }) {
                     {/* Arrow indicator for selected */}
                     {selectedIndex === index && (
                       <svg
-                        className="mt-0.5 h-5 w-5 flex-shrink-0 text-[#0066ff]"
+                        className="mt-0.5 h-5 w-5 flex-shrink-0 text-[#212A45]"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"

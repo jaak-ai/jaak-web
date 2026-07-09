@@ -58,7 +58,7 @@ export default function FirmaContratos() {
                 <Link
                   href="https://platform.jaak.ai/#/signup"
                   target="_blank"
-                  className="px-6 py-3 bg-[#0066ff] text-white font-semibold rounded-lg hover:bg-[#0052cc] transition-all"
+                  className="px-6 py-3 bg-[#212A45] text-white font-semibold rounded-lg hover:bg-[#212A45] transition-all"
                 >
                   Probar ahora
                 </Link>
@@ -106,7 +106,7 @@ export default function FirmaContratos() {
             <div className="grid md:grid-cols-4 gap-8">
               {features.map((feature, index) => (
                 <div key={index} className="text-center">
-                  <div className="w-12 h-12 bg-[#0066ff] rounded-xl flex items-center justify-center text-white mx-auto mb-4">
+                  <div className="w-12 h-12 bg-[#212A45] rounded-xl flex items-center justify-center text-white mx-auto mb-4">
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
@@ -131,7 +131,7 @@ export default function FirmaContratos() {
             <Link
               href="https://platform.jaak.ai/#/signup"
               target="_blank"
-              className="inline-flex px-8 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
+              className="inline-flex px-8 py-4 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-all"
             >
               Empezar gratis
             </Link>

@@ -52,12 +52,12 @@ export const mdxComponents: MDXComponents = {
     const isExternal = href?.startsWith('http')
     if (isExternal) {
       return (
-        <a href={href} target="_blank" rel="noopener noreferrer" className="text-[#0066ff] hover:underline">
+        <a href={href} target="_blank" rel="noopener noreferrer" className="text-[#212A45] hover:underline">
           {children}
         </a>
       )
     }
-    return <Link href={href || '#'} className="text-[#0066ff] hover:underline">{children}</Link>
+    return <Link href={href || '#'} className="text-[#212A45] hover:underline">{children}</Link>
   },
   ul: ({ children }) => (
     <ul className="mb-4 list-disc pl-6 text-gray-600 space-y-2">{children}</ul>

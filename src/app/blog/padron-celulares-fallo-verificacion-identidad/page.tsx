@@ -224,7 +224,7 @@ export default function PadronCelularesFalloVerificacion() {
                 </p>
               </div>
 
-              <div className="bg-[#0066ff]/10 rounded-xl p-8 my-8">
+              <div className="bg-[#212A45]/10 rounded-xl p-8 my-8">
                 <h3 className="text-xl font-bold text-gray-900 mb-4">
                   2. Identidad como proceso, no como trámite
                 </h3>
@@ -241,7 +241,7 @@ export default function PadronCelularesFalloVerificacion() {
                   <li>Historial</li>
                   <li>Coherencia biométrica</li>
                 </ul>
-                <p className="text-[#0066ff] font-bold mt-4">
+                <p className="text-[#212A45] font-bold mt-4">
                   La identidad se construye, no se asume.
                 </p>
               </div>
@@ -305,7 +305,7 @@ export default function PadronCelularesFalloVerificacion() {
             <div className="flex flex-wrap justify-center gap-4">
               <a
                 href="/contacto"
-                className="px-8 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
+                className="px-8 py-4 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-all"
               >
                 Solicitar demo
               </a>

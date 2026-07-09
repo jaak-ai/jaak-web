@@ -4,7 +4,7 @@ export default function Problem() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto">
           {/* Section header */}
-          <h2 className="text-3xl md:text-4xl font-black text-[#0a0f1c] mb-8">
+          <h2 className="text-3xl md:text-4xl font-black text-[#0E1133] mb-8">
             El problema real
           </h2>
 
@@ -52,7 +52,7 @@ export default function Problem() {
             <p className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-2">
               Conclusión
             </p>
-            <p className="text-xl font-semibold text-[#0a0f1c]">
+            <p className="text-xl font-semibold text-[#0E1133]">
               Esto no es un problema técnico. Es un problema de negocio.
             </p>
           </div>

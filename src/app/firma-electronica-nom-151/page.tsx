@@ -60,8 +60,8 @@ export default function FirmaNom151Page() {
             <div
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-6"
               style={{
-                background: "rgba(30,202,211,0.1)",
-                border: "1px solid rgba(30,202,211,0.25)",
+                background: "rgba(45, 182, 193,0.1)",
+                border: "1px solid rgba(45, 182, 193,0.25)",
                 color: "#2DB6C1",
               }}
             >
@@ -92,7 +92,7 @@ export default function FirmaNom151Page() {
               <Link
                 href="/autoservicio"
                 className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-bold text-white transition-all hover:opacity-90"
-                style={{ background: "#2DB6C1", boxShadow: "0 0 25px rgba(30,202,211,0.3)" }}
+                style={{ background: "#2DB6C1", boxShadow: "0 0 25px rgba(45, 182, 193,0.3)" }}
               >
                 Activar NOM-151
               </Link>
@@ -108,7 +108,7 @@ export default function FirmaNom151Page() {
         </section>
 
         {/* What is NOM-151 */}
-        <section className="py-20" style={{ background: "#070E1A" }} aria-labelledby="nom-heading">
+        <section className="py-20" style={{ background: "#0E1133" }} aria-labelledby="nom-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
               <div>
@@ -157,7 +157,7 @@ export default function FirmaNom151Page() {
                   <div
                     key={item.title}
                     className="flex gap-4 p-4 rounded-xl"
-                    style={{ background: "rgba(30,202,211,0.04)", border: "1px solid rgba(30,202,211,0.12)" }}
+                    style={{ background: "rgba(45, 182, 193,0.04)", border: "1px solid rgba(45, 182, 193,0.12)" }}
                   >
                     <span className="text-xl flex-shrink-0" aria-hidden="true">{item.icon}</span>
                     <div>
@@ -225,7 +225,7 @@ export default function FirmaNom151Page() {
         </section>
 
         {/* Internal links + CTA */}
-        <section className="py-16" style={{ background: "#070E1A" }}>
+        <section className="py-16" style={{ background: "#0E1133" }}>
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p className="text-gray-500 text-sm mb-6">
               ¿Necesitas también verificación de identidad? Explora:
@@ -254,7 +254,7 @@ export default function FirmaNom151Page() {
             <Link
               href="/autoservicio"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold text-white text-base transition-all hover:opacity-90"
-              style={{ background: "#2DB6C1", boxShadow: "0 0 30px rgba(30,202,211,0.3)" }}
+              style={{ background: "#2DB6C1", boxShadow: "0 0 30px rgba(45, 182, 193,0.3)" }}
             >
               Activar Firma Digital NOM-151 →
             </Link>

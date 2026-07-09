@@ -88,7 +88,7 @@ export default function HomepageKYCComponents() {
         <div className="max-w-3xl mb-14" data-sr>
           <div
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
-            style={{ color: "#2DB6C1", border: "1px solid rgba(30,202,211,0.22)", background: "rgba(30,202,211,0.08)" }}
+            style={{ color: "#2DB6C1", border: "1px solid rgba(45, 182, 193,0.22)", background: "rgba(45, 182, 193,0.08)" }}
           >
             Verificación de identidad
           </div>
@@ -116,7 +116,7 @@ export default function HomepageKYCComponents() {
               <div className="flex items-start justify-between mb-4">
                 <div
                   className="w-11 h-11 rounded-xl flex items-center justify-center"
-                  style={{ background: "rgba(30,202,211,0.14)", color: "#2DB6C1" }}
+                  style={{ background: "rgba(45, 182, 193,0.14)", color: "#2DB6C1" }}
                 >
                   {c.icon}
                 </div>

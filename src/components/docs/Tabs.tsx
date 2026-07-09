@@ -33,7 +33,7 @@ export function Tabs({ tabs, defaultIndex = 0 }: TabsProps) {
             onClick={() => handleTabClick(index)}
             className={`px-4 py-2.5 text-sm font-medium transition-colors ${
               activeIndex === index
-                ? 'border-b-2 border-[#0066ff] text-[#0066ff] bg-white -mb-px'
+                ? 'border-b-2 border-[#212A45] text-[#212A45] bg-white -mb-px'
                 : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
             }`}
             aria-selected={activeIndex === index}

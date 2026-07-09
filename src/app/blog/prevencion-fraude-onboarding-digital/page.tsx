@@ -160,7 +160,7 @@ export default function PrevencionFraude() {
               <div className="space-y-6 my-8">
                 <div className="bg-gray-50 rounded-xl p-6">
                   <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
-                    <span className="w-8 h-8 bg-[#0066ff] rounded-full flex items-center justify-center text-white text-sm font-bold">1</span>
+                    <span className="w-8 h-8 bg-[#212A45] rounded-full flex items-center justify-center text-white text-sm font-bold">1</span>
                     Verificación de documentos
                   </h3>
                   <p className="text-gray-600 mb-4">
@@ -177,7 +177,7 @@ export default function PrevencionFraude() {
 
                 <div className="bg-gray-50 rounded-xl p-6">
                   <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
-                    <span className="w-8 h-8 bg-[#0066ff] rounded-full flex items-center justify-center text-white text-sm font-bold">2</span>
+                    <span className="w-8 h-8 bg-[#212A45] rounded-full flex items-center justify-center text-white text-sm font-bold">2</span>
                     Verificación biométrica
                   </h3>
                   <p className="text-gray-600 mb-4">
@@ -193,7 +193,7 @@ export default function PrevencionFraude() {
 
                 <div className="bg-gray-50 rounded-xl p-6">
                   <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
-                    <span className="w-8 h-8 bg-[#0066ff] rounded-full flex items-center justify-center text-white text-sm font-bold">3</span>
+                    <span className="w-8 h-8 bg-[#212A45] rounded-full flex items-center justify-center text-white text-sm font-bold">3</span>
                     Validación de datos
                   </h3>
                   <p className="text-gray-600 mb-4">
@@ -210,7 +210,7 @@ export default function PrevencionFraude() {
 
                 <div className="bg-gray-50 rounded-xl p-6">
                   <h3 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
-                    <span className="w-8 h-8 bg-[#0066ff] rounded-full flex items-center justify-center text-white text-sm font-bold">4</span>
+                    <span className="w-8 h-8 bg-[#212A45] rounded-full flex items-center justify-center text-white text-sm font-bold">4</span>
                     Análisis de comportamiento
                   </h3>
                   <p className="text-gray-600 mb-4">
@@ -409,7 +409,7 @@ export default function PrevencionFraude() {
             <div className="mt-12 flex flex-wrap gap-4">
               <a
                 href="/contacto"
-                className="px-8 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
+                className="px-8 py-4 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-all"
               >
                 Solicitar demo
               </a>

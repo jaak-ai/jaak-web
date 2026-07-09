@@ -523,7 +523,7 @@ export default function QueEsKYCMexico() {
             <div className="mt-12 flex flex-wrap gap-4">
               <Link
                 href="/contacto"
-                className="px-6 py-3 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
+                className="px-6 py-3 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-all"
               >
                 Hablar con un experto
               </Link>

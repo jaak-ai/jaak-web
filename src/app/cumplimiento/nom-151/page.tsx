@@ -100,8 +100,8 @@ export default function NOM151Page() {
                 </svg>
                 Cumplimiento
               </Link>
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#0066ff]/10 border border-[#0066ff]/20 rounded-full mb-6">
-                <span className="text-[#0066ff] text-sm font-medium">NOM-151</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#212A45]/10 border border-[#212A45]/20 rounded-full mb-6">
+                <span className="text-[#212A45] text-sm font-medium">NOM-151</span>
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6">
                 Firma Electrónica con Validez Legal
@@ -112,7 +112,7 @@ export default function NOM151Page() {
               <div className="flex flex-wrap gap-4">
                 <Link
                   href="/contacto"
-                  className="px-6 py-3 bg-[#0066ff] text-white font-semibold rounded-lg hover:bg-[#0052cc] transition-all"
+                  className="px-6 py-3 bg-[#212A45] text-white font-semibold rounded-lg hover:bg-[#212A45] transition-all"
                 >
                   Solicitar demo
                 </Link>
@@ -180,7 +180,7 @@ export default function NOM151Page() {
               {requirements.map((req, index) => (
                 <div key={index} className="bg-white rounded-xl p-8 shadow-sm">
                   <div className="flex items-center gap-4 mb-4">
-                    <div className="w-10 h-10 bg-[#0066ff] rounded-lg flex items-center justify-center text-white font-bold">
+                    <div className="w-10 h-10 bg-[#212A45] rounded-lg flex items-center justify-center text-white font-bold">
                       {index + 1}
                     </div>
                     <h3 className="text-xl font-bold text-gray-900">{req.title}</h3>
@@ -213,8 +213,8 @@ export default function NOM151Page() {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {benefits.map((benefit, index) => (
                 <div key={index} className="p-6 bg-gray-50 rounded-xl">
-                  <div className="w-12 h-12 bg-[#0066ff]/10 rounded-xl flex items-center justify-center mb-4">
-                    <svg className="w-6 h-6 text-[#0066ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-12 h-12 bg-[#212A45]/10 rounded-xl flex items-center justify-center mb-4">
+                    <svg className="w-6 h-6 text-[#212A45]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={benefit.icon} />
                     </svg>
                   </div>
@@ -263,7 +263,7 @@ export default function NOM151Page() {
                     { step: "5", title: "Generación de evidencia", desc: "Expediente completo" },
                   ].map((item, index) => (
                     <div key={index} className="flex items-start gap-4">
-                      <div className="w-8 h-8 bg-[#0066ff] rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
+                      <div className="w-8 h-8 bg-[#212A45] rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
                         {item.step}
                       </div>
                       <div>
@@ -290,7 +290,7 @@ export default function NOM151Page() {
             <div className="flex flex-wrap justify-center gap-4">
               <Link
                 href="/contacto"
-                className="px-8 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
+                className="px-8 py-4 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-all"
               >
                 Solicitar demo gratuita
               </Link>

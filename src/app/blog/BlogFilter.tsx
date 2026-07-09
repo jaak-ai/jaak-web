@@ -63,7 +63,7 @@ function FeaturedCard({ post, hero = false }: { post: (typeof blogPosts)[0]; her
           className="relative overflow-hidden rounded-2xl border transition-all duration-300 h-full"
           style={{ background: "rgba(255,255,255,0.04)", borderColor: "rgba(255,255,255,0.08)" }}
           onMouseEnter={e => {
-            (e.currentTarget as HTMLElement).style.borderColor = "rgba(30,202,211,0.35)";
+            (e.currentTarget as HTMLElement).style.borderColor = "rgba(45, 182, 193,0.35)";
             (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.06)";
           }}
           onMouseLeave={e => {
@@ -77,8 +77,8 @@ function FeaturedCard({ post, hero = false }: { post: (typeof blogPosts)[0]; her
               <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 40%, rgba(32,41,69,0.95) 100%)" }} />
             </div>
           ) : (
-            <div className="relative h-52 overflow-hidden flex items-center justify-center" style={{ background: "linear-gradient(135deg, rgba(30,202,211,0.12) 0%, rgba(32,41,69,0.8) 100%)" }}>
-              <div className="w-16 h-16 rounded-2xl flex items-center justify-center border" style={{ background: "rgba(30,202,211,0.1)", borderColor: "rgba(30,202,211,0.2)" }}>
+            <div className="relative h-52 overflow-hidden flex items-center justify-center" style={{ background: "linear-gradient(135deg, rgba(45, 182, 193,0.12) 0%, rgba(32,41,69,0.8) 100%)" }}>
+              <div className="w-16 h-16 rounded-2xl flex items-center justify-center border" style={{ background: "rgba(45, 182, 193,0.1)", borderColor: "rgba(45, 182, 193,0.2)" }}>
                 <svg className="w-8 h-8" style={{ color: "#2DB6C1" }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
@@ -115,7 +115,7 @@ function FeaturedCard({ post, hero = false }: { post: (typeof blogPosts)[0]; her
         className="relative overflow-hidden rounded-2xl border transition-all duration-300 h-full flex flex-col"
         style={{ background: "rgba(255,255,255,0.04)", borderColor: "rgba(255,255,255,0.08)" }}
         onMouseEnter={e => {
-          (e.currentTarget as HTMLElement).style.borderColor = "rgba(30,202,211,0.35)";
+          (e.currentTarget as HTMLElement).style.borderColor = "rgba(45, 182, 193,0.35)";
           (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.06)";
         }}
         onMouseLeave={e => {
@@ -129,8 +129,8 @@ function FeaturedCard({ post, hero = false }: { post: (typeof blogPosts)[0]; her
             <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 50%, rgba(32,41,69,0.95) 100%)" }} />
           </div>
         ) : (
-          <div className="relative h-40 shrink-0 flex items-center justify-center" style={{ background: "linear-gradient(135deg, rgba(30,202,211,0.08) 0%, rgba(32,41,69,0.8) 100%)" }}>
-            <div className="w-12 h-12 rounded-xl flex items-center justify-center border" style={{ background: "rgba(30,202,211,0.1)", borderColor: "rgba(30,202,211,0.2)" }}>
+          <div className="relative h-40 shrink-0 flex items-center justify-center" style={{ background: "linear-gradient(135deg, rgba(45, 182, 193,0.08) 0%, rgba(32,41,69,0.8) 100%)" }}>
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center border" style={{ background: "rgba(45, 182, 193,0.1)", borderColor: "rgba(45, 182, 193,0.2)" }}>
               <svg className="w-6 h-6" style={{ color: "#2DB6C1" }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
@@ -172,7 +172,7 @@ function HighlightMatch({ text, query }: { text: string; query: string }) {
   return (
     <>
       {text.slice(0, idx)}
-      <mark style={{ background: "rgba(30,202,211,0.25)", color: "#2DB6C1", borderRadius: "2px", padding: "0 2px" }}>
+      <mark style={{ background: "rgba(45, 182, 193,0.25)", color: "#2DB6C1", borderRadius: "2px", padding: "0 2px" }}>
         {text.slice(idx, idx + nq.length)}
       </mark>
       {text.slice(idx + nq.length)}
@@ -188,7 +188,7 @@ function SearchResultCard({ post, query }: { post: (typeof blogPosts)[0]; query:
         className="flex gap-4 p-4 rounded-xl border transition-all duration-200"
         style={{ background: "rgba(255,255,255,0.03)", borderColor: "rgba(255,255,255,0.07)" }}
         onMouseEnter={e => {
-          (e.currentTarget as HTMLElement).style.borderColor = "rgba(30,202,211,0.28)";
+          (e.currentTarget as HTMLElement).style.borderColor = "rgba(45, 182, 193,0.28)";
           (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.055)";
         }}
         onMouseLeave={e => {
@@ -302,8 +302,8 @@ export default function BlogFilter() {
                 placeholder="Buscar artículos…"
                 className="w-full pl-8 pr-8 py-1.5 rounded-full text-xs font-medium outline-none transition-all duration-200"
                 style={{
-                  background: searchFocused ? "rgba(30,202,211,0.08)" : "rgba(255,255,255,0.06)",
-                  border: `1px solid ${searchFocused ? "rgba(30,202,211,0.40)" : "rgba(255,255,255,0.10)"}`,
+                  background: searchFocused ? "rgba(45, 182, 193,0.08)" : "rgba(255,255,255,0.06)",
+                  border: `1px solid ${searchFocused ? "rgba(45, 182, 193,0.40)" : "rgba(255,255,255,0.10)"}`,
                   color: "rgba(255,255,255,0.85)",
                   fontFamily: FONT,
                 }}
@@ -489,7 +489,7 @@ export default function BlogFilter() {
       {/* ── EMPTY STATE (category filter, no results) ── */}
       {!isSearching && filtered.length === 0 && (
         <section className="py-24 text-center" style={{ background: "#212A45" }}>
-          <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 border" style={{ background: "rgba(30,202,211,0.08)", borderColor: "rgba(30,202,211,0.15)" }}>
+          <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 border" style={{ background: "rgba(45, 182, 193,0.08)", borderColor: "rgba(45, 182, 193,0.15)" }}>
             <svg className="w-8 h-8" style={{ color: "#2DB6C1" }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
