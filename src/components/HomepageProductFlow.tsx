@@ -8,7 +8,7 @@ const flowSteps = [
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
       </svg>
     ),
-    color: "#1ECAD3",
+    color: "#2DB6C1",
   },
   {
     number: "02",
@@ -31,7 +31,7 @@ const flowSteps = [
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
       </svg>
     ),
-    color: "#1ECAD3",
+    color: "#2DB6C1",
   },
   {
     number: "04",
@@ -70,7 +70,7 @@ export default function HomepageProductFlow() {
           <div
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
             style={{
-              color: "#1ECAD3",
+              color: "#2DB6C1",
               border: "1px solid rgba(30,202,211,0.22)",
               background: "rgba(30,202,211,0.08)",
             }}
@@ -81,7 +81,7 @@ export default function HomepageProductFlow() {
             De la solicitud al expediente{" "}
             <span
               style={{
-                background: "linear-gradient(90deg, #1ECAD3, #2AD796)",
+                background: "linear-gradient(90deg, #2DB6C1, #2AD796)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
@@ -127,7 +127,7 @@ export default function HomepageProductFlow() {
                   {s.icon}
                   <div
                     className="absolute -top-2.5 -right-2.5 w-7 h-7 rounded-full flex items-center justify-center text-xs font-black"
-                    style={{ background: "linear-gradient(135deg, #1ECAD3, #2AD796)", color: "white" }}
+                    style={{ background: "linear-gradient(135deg, #2DB6C1, #2AD796)", color: "white" }}
                   >
                     {s.number.replace("0", "")}
                   </div>
@@ -153,7 +153,7 @@ export default function HomepageProductFlow() {
                           style={{
                             background: "rgba(30,202,211,0.12)",
                             border: "1px solid rgba(30,202,211,0.20)",
-                            color: "#1ECAD3",
+                            color: "#2DB6C1",
                           }}
                         >
                           {b}
@@ -171,7 +171,7 @@ export default function HomepageProductFlow() {
         <div className="hp-glass-teal mt-12 rounded-2xl px-8 py-5 text-center">
           <p className="text-sm font-medium" style={{ color: "var(--hp-text-md)" }}>
             Cada expediente incluye:{" "}
-            <span style={{ color: "#1ECAD3" }}>
+            <span style={{ color: "#2DB6C1" }}>
               sello de tiempo · hash de integridad · registros biométricos · consentimiento informado · firma electrónica
             </span>
           </p>

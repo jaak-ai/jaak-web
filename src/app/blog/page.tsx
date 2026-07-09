@@ -88,7 +88,7 @@ const AUTHORS = [
     name: "Arianna Quezada",
     role: "CEO · JAAK",
     initials: "AQ",
-    gradient: "linear-gradient(135deg, #1ECAD3 0%, #0066ff 100%)",
+    gradient: "linear-gradient(135deg, #2DB6C1 0%, #0066ff 100%)",
     bio: "Liderazgo en infraestructura de confianza digital, regulación financiera y transformación del sector fintech en Latinoamérica.",
     topics: ["Compliance", "Regulación", "Firma Digital", "Transformación Digital", "Fintech"],
     count: blogPosts.filter((p) =>
@@ -99,7 +99,7 @@ const AUTHORS = [
     name: "Javier Moya",
     role: "CTO · JAAK",
     initials: "JM",
-    gradient: "linear-gradient(135deg, #0066ff 0%, #1ECAD3 100%)",
+    gradient: "linear-gradient(135deg, #0066ff 0%, #2DB6C1 100%)",
     bio: "Arquitectura de sistemas de identidad digital, inteligencia artificial aplicada y biometría de alta seguridad.",
     topics: ["Inteligencia Artificial", "Arquitectura", "Identidad Digital", "Biometría", "Infraestructura"],
     count: blogPosts.filter((p) =>
@@ -114,7 +114,7 @@ export default function BlogPage() {
   return (
     <>
       <Header />
-      <main style={{ background: "#202945", fontFamily: FONT, minHeight: "100vh" }}>
+      <main style={{ background: "#212A45", fontFamily: FONT, minHeight: "100vh" }}>
 
         {/* ── Animations & hover CSS ─────────────────────────── */}
         <style>{`
@@ -161,7 +161,7 @@ export default function BlogPage() {
             border-color: rgba(30,202,211,0.25);
             background: rgba(30,202,211,0.04);
           }
-          .topic-card:hover .topic-name { color: #1ECAD3; }
+          .topic-card:hover .topic-name { color: #2DB6C1; }
           .cta-btn-primary {
             transition: box-shadow 0.25s, transform 0.15s;
           }
@@ -176,7 +176,7 @@ export default function BlogPage() {
           }
           .cta-btn-secondary:hover {
             border-color: rgba(30,202,211,0.40);
-            color: #1ECAD3;
+            color: #2DB6C1;
             transform: translateY(-2px);
           }
           .featured-hero-card {
@@ -201,7 +201,7 @@ export default function BlogPage() {
             className="absolute inset-0 pointer-events-none"
             style={{
               background:
-                "radial-gradient(ellipse 80% 55% at 50% 0%, rgba(30,202,211,0.10) 0%, transparent 65%), radial-gradient(ellipse 40% 40% at 80% 30%, rgba(0,102,255,0.08) 0%, transparent 60%), #202945",
+                "radial-gradient(ellipse 80% 55% at 50% 0%, rgba(30,202,211,0.10) 0%, transparent 65%), radial-gradient(ellipse 40% 40% at 80% 30%, rgba(0,102,255,0.08) 0%, transparent 60%), #212A45",
             }}
           />
 
@@ -215,21 +215,21 @@ export default function BlogPage() {
             >
               {/* Lines */}
               {[
-                ["120", "80", "280", "160", "#1ECAD3", "0s"],
-                ["280", "160", "480", "90", "#1ECAD3", "0.5s"],
-                ["480", "90", "640", "200", "#1ECAD3", "1.0s"],
-                ["640", "200", "820", "120", "#1ECAD3", "1.5s"],
-                ["820", "120", "1000", "190", "#1ECAD3", "0.8s"],
-                ["1000", "190", "1180", "80", "#1ECAD3", "2.0s"],
-                ["1180", "80", "1320", "170", "#1ECAD3", "0.3s"],
+                ["120", "80", "280", "160", "#2DB6C1", "0s"],
+                ["280", "160", "480", "90", "#2DB6C1", "0.5s"],
+                ["480", "90", "640", "200", "#2DB6C1", "1.0s"],
+                ["640", "200", "820", "120", "#2DB6C1", "1.5s"],
+                ["820", "120", "1000", "190", "#2DB6C1", "0.8s"],
+                ["1000", "190", "1180", "80", "#2DB6C1", "2.0s"],
+                ["1180", "80", "1320", "170", "#2DB6C1", "0.3s"],
                 ["280", "160", "380", "310", "#0066ff", "1.2s"],
                 ["640", "200", "560", "350", "#0066ff", "0.7s"],
                 ["820", "120", "900", "280", "#0066ff", "1.8s"],
                 ["1000", "190", "1080", "330", "#0066ff", "0.4s"],
-                ["60", "300", "280", "160", "#1ECAD3", "2.5s"],
-                ["1320", "170", "1380", "310", "#1ECAD3", "1.1s"],
-                ["480", "90", "380", "310", "#1ECAD3", "3.0s"],
-                ["560", "350", "900", "280", "#1ECAD3", "1.6s"],
+                ["60", "300", "280", "160", "#2DB6C1", "2.5s"],
+                ["1320", "170", "1380", "310", "#2DB6C1", "1.1s"],
+                ["480", "90", "380", "310", "#2DB6C1", "3.0s"],
+                ["560", "350", "900", "280", "#2DB6C1", "1.6s"],
               ].map(([x1, y1, x2, y2, color, delay], i) => (
                 <line
                   key={i}
@@ -247,7 +247,7 @@ export default function BlogPage() {
                   <circle
                     key={`glow-${cx}`}
                     cx={cx} cy={cy} r="16"
-                    fill="#1ECAD3"
+                    fill="#2DB6C1"
                     className="blog-glow"
                     style={{ animationDelay: `${d}s`, transformOrigin: `${cx}px ${cy}px` }}
                   />
@@ -260,8 +260,8 @@ export default function BlogPage() {
                 [820, 120, 0.6], [1000, 190, 1.0], [1180, 80, 0.2], [1320, 170, 1.4],
               ].map(([cx, cy, d]) => (
                 <g key={`n-${cx}`} className="blog-node" style={{ animationDelay: `${d}s`, transformOrigin: `${cx}px ${cy}px` }}>
-                  <circle cx={cx} cy={cy} r="5" fill="#1ECAD3" opacity="0.85" />
-                  <circle cx={cx} cy={cy} r="9" fill="none" stroke="#1ECAD3" strokeWidth="1" opacity="0.28" />
+                  <circle cx={cx} cy={cy} r="5" fill="#2DB6C1" opacity="0.85" />
+                  <circle cx={cx} cy={cy} r="9" fill="none" stroke="#2DB6C1" strokeWidth="1" opacity="0.28" />
                 </g>
               ))}
 
@@ -289,11 +289,11 @@ export default function BlogPage() {
                   style={{
                     background: "rgba(30,202,211,0.10)",
                     borderColor: "rgba(30,202,211,0.25)",
-                    color: "#1ECAD3",
+                    color: "#2DB6C1",
                     fontFamily: FONT,
                   }}
                 >
-                  <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: "#1ECAD3" }} />
+                  <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: "#2DB6C1" }} />
                   Infraestructura de Confianza Digital
                 </div>
 
@@ -302,7 +302,7 @@ export default function BlogPage() {
                   style={{ fontFamily: FONT, fontSize: "clamp(42px,5vw,72px)", letterSpacing: "-2.5px" }}
                 >
                   Blog{" "}
-                  <span style={{ color: "#1ECAD3" }}>JAAK</span>
+                  <span style={{ color: "#2DB6C1" }}>JAAK</span>
                 </h1>
 
                 <p
@@ -375,7 +375,7 @@ export default function BlogPage() {
                         style={{
                           background: "rgba(30,202,211,0.18)",
                           borderColor: "rgba(30,202,211,0.35)",
-                          color: "#1ECAD3",
+                          color: "#2DB6C1",
                           fontFamily: FONT,
                         }}
                       >
@@ -398,7 +398,7 @@ export default function BlogPage() {
                       </span>
                       <span
                         className="flex items-center gap-1 text-xs font-semibold"
-                        style={{ color: "#1ECAD3", fontFamily: FONT }}
+                        style={{ color: "#2DB6C1", fontFamily: FONT }}
                       >
                         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -408,7 +408,7 @@ export default function BlogPage() {
                     </div>
 
                     <h2
-                      className="font-black text-white leading-snug mb-2 group-hover:text-[#1ECAD3] transition-colors duration-200"
+                      className="font-black text-white leading-snug mb-2 group-hover:text-[#2DB6C1] transition-colors duration-200"
                       style={{ fontFamily: FONT, fontSize: "1.05rem", letterSpacing: "-0.3px" }}
                     >
                       {featuredPost.title}
@@ -430,7 +430,7 @@ export default function BlogPage() {
                       </span>
                       <span
                         className="flex items-center gap-1.5 text-xs font-bold"
-                        style={{ color: "#1ECAD3", fontFamily: FONT }}
+                        style={{ color: "#2DB6C1", fontFamily: FONT }}
                       >
                         Leer ahora
                         <svg
@@ -462,13 +462,13 @@ export default function BlogPage() {
         {/* ── AUTHOR SPOTLIGHT ──────────────────────────────── */}
         <section
           className="py-20"
-          style={{ background: "#202945", borderTop: "1px solid rgba(255,255,255,0.05)" }}
+          style={{ background: "#212A45", borderTop: "1px solid rgba(255,255,255,0.05)" }}
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-12">
               <p
                 className="text-xs font-bold tracking-widest uppercase mb-2"
-                style={{ color: "#1ECAD3", fontFamily: FONT }}
+                style={{ color: "#2DB6C1", fontFamily: FONT }}
               >
                 Equipo editorial
               </p>
@@ -502,7 +502,7 @@ export default function BlogPage() {
                       </div>
                       <div
                         className="text-xs font-bold tracking-wide mt-0.5"
-                        style={{ color: "#1ECAD3", fontFamily: FONT }}
+                        style={{ color: "#2DB6C1", fontFamily: FONT }}
                       >
                         {author.role}
                       </div>
@@ -511,7 +511,7 @@ export default function BlogPage() {
                       className="shrink-0 px-2.5 py-1 rounded-full text-xs font-bold"
                       style={{
                         background: "rgba(30,202,211,0.10)",
-                        color: "#1ECAD3",
+                        color: "#2DB6C1",
                         border: "1px solid rgba(30,202,211,0.20)",
                         fontFamily: FONT,
                       }}
@@ -551,7 +551,7 @@ export default function BlogPage() {
                     <Link
                       href="/blog"
                       className="author-link-hover text-xs font-bold"
-                      style={{ color: "#1ECAD3", fontFamily: FONT }}
+                      style={{ color: "#2DB6C1", fontFamily: FONT }}
                     >
                       Ver todos los artículos
                       <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -577,7 +577,7 @@ export default function BlogPage() {
             <div className="mb-12">
               <p
                 className="text-xs font-bold tracking-widest uppercase mb-2"
-                style={{ color: "#1ECAD3", fontFamily: FONT }}
+                style={{ color: "#2DB6C1", fontFamily: FONT }}
               >
                 Explorar por tema
               </p>
@@ -598,7 +598,7 @@ export default function BlogPage() {
                       style={{
                         background: "rgba(30,202,211,0.10)",
                         borderColor: "rgba(30,202,211,0.15)",
-                        color: "#1ECAD3",
+                        color: "#2DB6C1",
                       }}
                     >
                       {topic.icon}
@@ -616,7 +616,7 @@ export default function BlogPage() {
                             className="text-[10px] font-bold px-1.5 py-0.5 rounded-full"
                             style={{
                               background: "rgba(30,202,211,0.10)",
-                              color: "#1ECAD3",
+                              color: "#2DB6C1",
                               fontFamily: FONT,
                             }}
                           >
@@ -641,7 +641,7 @@ export default function BlogPage() {
         {/* ── NEWSLETTER ────────────────────────────────────── */}
         <section
           className="py-24"
-          style={{ background: "#202945", borderTop: "1px solid rgba(255,255,255,0.05)" }}
+          style={{ background: "#212A45", borderTop: "1px solid rgba(255,255,255,0.05)" }}
         >
           <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div
@@ -653,7 +653,7 @@ export default function BlogPage() {
             >
               <svg
                 className="w-7 h-7"
-                style={{ color: "#1ECAD3" }}
+                style={{ color: "#2DB6C1" }}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -676,7 +676,7 @@ export default function BlogPage() {
               }}
             >
               Recibe nuevas perspectivas sobre{" "}
-              <span style={{ color: "#1ECAD3" }}>confianza digital.</span>
+              <span style={{ color: "#2DB6C1" }}>confianza digital.</span>
             </h2>
 
             <p
@@ -696,7 +696,7 @@ export default function BlogPage() {
               Al suscribirte aceptas nuestra{" "}
               <Link
                 href="/privacidad"
-                className="underline hover:text-[#1ECAD3] transition-colors"
+                className="underline hover:text-[#2DB6C1] transition-colors"
               >
                 política de privacidad
               </Link>
@@ -717,7 +717,7 @@ export default function BlogPage() {
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p
               className="text-xs font-bold tracking-widest uppercase mb-3"
-              style={{ color: "#1ECAD3", fontFamily: FONT }}
+              style={{ color: "#2DB6C1", fontFamily: FONT }}
             >
               ¿Listo para operar con confianza?
             </p>
@@ -736,8 +736,8 @@ export default function BlogPage() {
                 href="/contacto"
                 className="cta-btn-primary px-7 py-3.5 rounded-xl font-black text-sm"
                 style={{
-                  background: "#1ECAD3",
-                  color: "#202945",
+                  background: "#2DB6C1",
+                  color: "#212A45",
                   fontFamily: FONT,
                 }}
               >

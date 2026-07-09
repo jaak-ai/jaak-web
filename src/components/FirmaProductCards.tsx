@@ -56,7 +56,7 @@ const productCards: ProductCard[] = [
   {
     id: "nom151", name: "Firma Digital NOM-151", icon: <IconClock />, tagline: "Sello de tiempo certificado",
     description: "Agrega un sello de tiempo certificado bajo la Norma Oficial Mexicana NOM-151-SCFI-2016, garantizando integridad y fecha exacta del documento firmado.",
-    color: "#1ECAD3", glowColor: "rgba(30,202,211,0.2)",
+    color: "#2DB6C1", glowColor: "rgba(30,202,211,0.2)",
     steps: ["Firma el documento", "Sello NOM-151 automático", "Expediente generado"],
     features: ["Sello de tiempo NOM-151 certificado", "Integridad criptográfica garantizada", "Validez ante CNBV, SAT y tribunales", "Expediente digital con evidencias"],
     cta: "Explorar Firma Digital NOM-151", href: "/firma-electronica-nom-151", anchor: "nom151",

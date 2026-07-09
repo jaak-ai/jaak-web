@@ -50,7 +50,7 @@ export default function FirmaBiometricaPage() {
         >
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <nav className="flex items-center gap-2 text-xs text-gray-600 mb-8" aria-label="Navegación">
-              <Link href="/plataforma/firma-electronica" className="hover:text-[#1ECAD3] transition-colors">
+              <Link href="/plataforma/firma-electronica" className="hover:text-[#2DB6C1] transition-colors">
                 Firma Electrónica
               </Link>
               <span aria-hidden="true">›</span>
@@ -138,7 +138,7 @@ export default function FirmaBiometricaPage() {
                   icon: "🔗",
                   title: "Vinculación a la firma",
                   desc: "El vector biométrico se vincula al documento y se almacena cifrado en el expediente digital.",
-                  color: "#1ECAD3",
+                  color: "#2DB6C1",
                 },
               ].map((item) => (
                 <div
@@ -246,7 +246,7 @@ export default function FirmaBiometricaPage() {
                   style={{
                     background: "rgba(255,255,255,0.04)",
                     border: "1px solid rgba(255,255,255,0.08)",
-                    color: "#1ECAD3",
+                    color: "#2DB6C1",
                   }}
                 >
                   {link.label}

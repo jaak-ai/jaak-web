@@ -60,7 +60,7 @@ const products = [
   {
     name: "Liveness Detection",
     description: "Prueba de vida certificada iBeta Level 1. Detecta deepfakes y ataques de presentación en tiempo real.",
-    color: "#1ECAD3",
+    color: "#2DB6C1",
     tag: "Certificado iBeta",
   },
   {
@@ -72,7 +72,7 @@ const products = [
   {
     name: "KYC Digital",
     description: "Verificación de identidad con INE, CURP y biometría facial. Cumplimiento regulatorio completo.",
-    color: "#1ECAD3",
+    color: "#2DB6C1",
     tag: "Cumplimiento CNBV",
   },
   {
@@ -132,23 +132,23 @@ export default function BancosPage() {
       <Header />
       <main>
         {/* Hero */}
-        <section className="pt-32 pb-20 bg-[#202945] relative overflow-hidden">
+        <section className="pt-32 pb-20 bg-[#212A45] relative overflow-hidden">
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-[#1ECAD3]/8 rounded-full blur-[140px]" />
+            <div className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-[#2DB6C1]/8 rounded-full blur-[140px]" />
             <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#655DC6]/15 rounded-full blur-[100px]" />
           </div>
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#1ECAD3]/10 border border-[#1ECAD3]/30 rounded-full mb-6">
-                  <span className="w-2 h-2 bg-[#1ECAD3] rounded-full animate-pulse"></span>
-                  <span className="text-[#1ECAD3] text-sm font-medium">Para bancos, cajas de ahorro y Afores</span>
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#2DB6C1]/10 border border-[#2DB6C1]/30 rounded-full mb-6">
+                  <span className="w-2 h-2 bg-[#2DB6C1] rounded-full animate-pulse"></span>
+                  <span className="text-[#2DB6C1] text-sm font-medium">Para bancos, cajas de ahorro y Afores</span>
                 </div>
 
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
                   Biometría bancaria{" "}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1ECAD3] to-[#655DC6]">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2DB6C1] to-[#655DC6]">
                     100% propia.
                   </span>{" "}
                   Sin dependencia de terceros.
@@ -162,7 +162,7 @@ export default function BancosPage() {
                 <div className="flex flex-wrap gap-4 mb-10">
                   <a
                     href="#contacto"
-                    className="px-6 py-3 bg-[#1ECAD3] text-[#202945] font-bold rounded-lg hover:bg-[#17b5bd] transition-all"
+                    className="px-6 py-3 bg-[#2DB6C1] text-[#212A45] font-bold rounded-lg hover:bg-[#17b5bd] transition-all"
                   >
                     Agenda una demo técnica
                   </a>
@@ -178,7 +178,7 @@ export default function BancosPage() {
                 <div className="grid grid-cols-2 gap-4">
                   {stats.map((stat, i) => (
                     <div key={i} className="p-4 bg-white/5 border border-white/10 rounded-xl">
-                      <div className="text-2xl font-black text-[#1ECAD3]">{stat.value}</div>
+                      <div className="text-2xl font-black text-[#2DB6C1]">{stat.value}</div>
                       <div className="text-white/50 text-sm mt-1">{stat.label}</div>
                     </div>
                   ))}
@@ -191,9 +191,9 @@ export default function BancosPage() {
                   <h3 className="text-white/60 text-xs font-medium uppercase tracking-wider mb-6">Arquitectura JAAK</h3>
                   <div className="space-y-3">
                     {[
-                      { label: "Bus Biométrico", color: "#1ECAD3", icon: "🏗️" },
+                      { label: "Bus Biométrico", color: "#2DB6C1", icon: "🏗️" },
                       { label: "Liveness Engine", color: "#655DC6", icon: "👁️" },
-                      { label: "Facial Search", color: "#1ECAD3", icon: "🔍" },
+                      { label: "Facial Search", color: "#2DB6C1", icon: "🔍" },
                       { label: "KYC Core", color: "#655DC6", icon: "✅" },
                     ].map((item, i) => (
                       <div
@@ -207,8 +207,8 @@ export default function BancosPage() {
                       </div>
                     ))}
                   </div>
-                  <div className="mt-6 p-3 bg-[#1ECAD3]/10 rounded-lg">
-                    <p className="text-[#1ECAD3] text-xs text-center font-medium">
+                  <div className="mt-6 p-3 bg-[#2DB6C1]/10 rounded-lg">
+                    <p className="text-[#2DB6C1] text-xs text-center font-medium">
                       ↑ Todo operado por JAAK en México
                     </p>
                   </div>
@@ -222,7 +222,7 @@ export default function BancosPage() {
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14">
-              <h2 className="text-3xl md:text-4xl font-black text-[#202945] mb-4">
+              <h2 className="text-3xl md:text-4xl font-black text-[#212A45] mb-4">
                 El costo oculto de depender de terceros
               </h2>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto">
@@ -235,12 +235,12 @@ export default function BancosPage() {
               {painPoints.map((point, i) => (
                 <div
                   key={i}
-                  className="bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:border-[#1ECAD3]/30 hover:shadow-lg transition-all"
+                  className="bg-gray-50 rounded-2xl p-8 border border-gray-100 hover:border-[#2DB6C1]/30 hover:shadow-lg transition-all"
                 >
-                  <div className="w-14 h-14 bg-[#202945]/5 rounded-xl flex items-center justify-center text-[#202945] mb-5">
+                  <div className="w-14 h-14 bg-[#212A45]/5 rounded-xl flex items-center justify-center text-[#212A45] mb-5">
                     {point.icon}
                   </div>
-                  <h3 className="text-xl font-bold text-[#202945] mb-3">{point.title}</h3>
+                  <h3 className="text-xl font-bold text-[#212A45] mb-3">{point.title}</h3>
                   <p className="text-gray-600">{point.description}</p>
                 </div>
               ))}
@@ -249,7 +249,7 @@ export default function BancosPage() {
         </section>
 
         {/* How it works */}
-        <section className="py-20 bg-[#202945]">
+        <section className="py-20 bg-[#212A45]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14">
               <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
@@ -262,8 +262,8 @@ export default function BancosPage() {
 
             <div className="grid md:grid-cols-3 gap-8">
               {steps.map((step, i) => (
-                <div key={i} className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-[#1ECAD3]/40 transition-all">
-                  <div className="text-5xl font-black text-[#1ECAD3]/20 mb-4">{step.number}</div>
+                <div key={i} className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-[#2DB6C1]/40 transition-all">
+                  <div className="text-5xl font-black text-[#2DB6C1]/20 mb-4">{step.number}</div>
                   <h3 className="text-xl font-bold text-white mb-3">{step.title}</h3>
                   <p className="text-white/60">{step.description}</p>
                 </div>
@@ -276,7 +276,7 @@ export default function BancosPage() {
         <section className="py-20 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14">
-              <h2 className="text-3xl md:text-4xl font-black text-[#202945] mb-4">
+              <h2 className="text-3xl md:text-4xl font-black text-[#212A45] mb-4">
                 Suite biométrica bancaria completa
               </h2>
               <p className="text-xl text-gray-600">
@@ -305,7 +305,7 @@ export default function BancosPage() {
                       {product.tag}
                     </span>
                   </div>
-                  <h3 className="text-2xl font-black text-[#202945] mb-3">{product.name}</h3>
+                  <h3 className="text-2xl font-black text-[#212A45] mb-3">{product.name}</h3>
                   <p className="text-gray-600">{product.description}</p>
                 </div>
               ))}
@@ -314,7 +314,7 @@ export default function BancosPage() {
         </section>
 
         {/* CTA + Form */}
-        <section id="contacto" className="py-20 bg-[#202945]">
+        <section id="contacto" className="py-20 bg-[#212A45]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-16 items-start">
               {/* Left */}
@@ -336,8 +336,8 @@ export default function BancosPage() {
                     "Propuesta de arquitectura personalizada para tu institución",
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-3">
-                      <div className="w-5 h-5 rounded-full bg-[#1ECAD3] flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <svg className="w-3 h-3 text-[#202945]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div className="w-5 h-5 rounded-full bg-[#2DB6C1] flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <svg className="w-3 h-3 text-[#212A45]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                         </svg>
                       </div>
@@ -346,8 +346,8 @@ export default function BancosPage() {
                   ))}
                 </div>
 
-                <div className="mt-10 p-6 bg-[#1ECAD3]/10 border border-[#1ECAD3]/20 rounded-xl">
-                  <p className="text-[#1ECAD3] font-bold text-lg mb-1">Agenda directo</p>
+                <div className="mt-10 p-6 bg-[#2DB6C1]/10 border border-[#2DB6C1]/20 rounded-xl">
+                  <p className="text-[#2DB6C1] font-bold text-lg mb-1">Agenda directo</p>
                   <a
                     href="https://meetings.hubspot.com/jose-andres-yllescas-lira"
                     target="_blank"
@@ -361,7 +361,7 @@ export default function BancosPage() {
 
               {/* Form */}
               <div className="bg-white rounded-2xl p-8 shadow-2xl">
-                <h3 className="text-2xl font-bold text-[#202945] mb-2">
+                <h3 className="text-2xl font-bold text-[#212A45] mb-2">
                   Agenda tu demo técnica
                 </h3>
                 <p className="text-gray-500 mb-8">
@@ -379,7 +379,7 @@ export default function BancosPage() {
                         required
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#1ECAD3] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400"
+                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#2DB6C1] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400"
                         placeholder="Tu nombre"
                       />
                     </div>
@@ -392,7 +392,7 @@ export default function BancosPage() {
                         required
                         value={formData.empresa}
                         onChange={(e) => setFormData({ ...formData, empresa: e.target.value })}
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#1ECAD3] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400"
+                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#2DB6C1] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400"
                         placeholder="Banco / Caja de Ahorro / Afore"
                       />
                     </div>
@@ -408,7 +408,7 @@ export default function BancosPage() {
                         required
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#1ECAD3] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400"
+                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#2DB6C1] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400"
                         placeholder="tu@banco.com"
                       />
                     </div>
@@ -421,7 +421,7 @@ export default function BancosPage() {
                         required
                         value={formData.telefono}
                         onChange={(e) => setFormData({ ...formData, telefono: e.target.value })}
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#1ECAD3] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400"
+                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#2DB6C1] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400"
                         placeholder="+52 55 1234 5678"
                       />
                     </div>
@@ -435,7 +435,7 @@ export default function BancosPage() {
                       rows={3}
                       value={formData.mensaje}
                       onChange={(e) => setFormData({ ...formData, mensaje: e.target.value })}
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#1ECAD3] focus:border-transparent outline-none resize-none text-gray-900 placeholder:text-gray-400"
+                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#2DB6C1] focus:border-transparent outline-none resize-none text-gray-900 placeholder:text-gray-400"
                       placeholder="Ej: Queremos reemplazar a Jumio para Liveness. Tenemos 500k verificaciones/mes..."
                     />
                   </div>
@@ -443,7 +443,7 @@ export default function BancosPage() {
                   <button
                     type="submit"
                     disabled={status === "loading"}
-                    className="w-full px-6 py-4 bg-[#1ECAD3] text-[#202945] font-bold rounded-lg hover:bg-[#17b5bd] transition-all disabled:opacity-50 disabled:cursor-not-allowed text-lg"
+                    className="w-full px-6 py-4 bg-[#2DB6C1] text-[#212A45] font-bold rounded-lg hover:bg-[#17b5bd] transition-all disabled:opacity-50 disabled:cursor-not-allowed text-lg"
                   >
                     {status === "loading" ? "Enviando..." : "Agendar demo técnica"}
                   </button>
@@ -464,7 +464,7 @@ export default function BancosPage() {
 
                   <p className="text-xs text-gray-400 text-center">
                     Al enviar aceptas nuestra{" "}
-                    <Link href="/privacidad" className="text-[#1ECAD3] hover:underline">
+                    <Link href="/privacidad" className="text-[#2DB6C1] hover:underline">
                       Política de Privacidad
                     </Link>
                     .

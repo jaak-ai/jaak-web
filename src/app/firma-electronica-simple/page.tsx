@@ -50,7 +50,7 @@ export default function FirmaSimplePage() {
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Breadcrumb */}
             <nav className="flex items-center gap-2 text-xs text-gray-600 mb-8" aria-label="Navegación">
-              <Link href="/plataforma/firma-electronica" className="hover:text-[#1ECAD3] transition-colors">
+              <Link href="/plataforma/firma-electronica" className="hover:text-[#2DB6C1] transition-colors">
                 Firma Electrónica
               </Link>
               <span aria-hidden="true">›</span>
@@ -83,7 +83,7 @@ export default function FirmaSimplePage() {
               <Link
                 href="/autoservicio"
                 className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-bold text-white transition-all hover:opacity-90"
-                style={{ background: "#1ECAD3" }}
+                style={{ background: "#2DB6C1" }}
               >
                 Empezar gratis
               </Link>
@@ -175,7 +175,7 @@ export default function FirmaSimplePage() {
                     "Cualquier documento de bajo riesgo",
                   ].map((item) => (
                     <li key={item} className="flex items-center gap-3 text-sm text-gray-300">
-                      <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" style={{ color: "#1ECAD3" }} aria-hidden="true">
+                      <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" style={{ color: "#2DB6C1" }} aria-hidden="true">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                       </svg>
                       {item}
@@ -207,11 +207,11 @@ export default function FirmaSimplePage() {
                 </ul>
                 <p className="text-xs text-gray-500 mt-4">
                   Para estos casos, considera{" "}
-                  <Link href="/firma-electronica-nom-151" className="text-[#1ECAD3] hover:underline">
+                  <Link href="/firma-electronica-nom-151" className="text-[#2DB6C1] hover:underline">
                     Firma Digital NOM-151
                   </Link>{" "}
                   o{" "}
-                  <Link href="/firma-electronica-kyc" className="text-[#1ECAD3] hover:underline">
+                  <Link href="/firma-electronica-kyc" className="text-[#2DB6C1] hover:underline">
                     Firma Digital NOM-151 + KYC
                   </Link>
                   .
@@ -241,7 +241,7 @@ export default function FirmaSimplePage() {
                   style={{
                     background: "rgba(255,255,255,0.04)",
                     border: "1px solid rgba(255,255,255,0.08)",
-                    color: "#1ECAD3",
+                    color: "#2DB6C1",
                   }}
                 >
                   {link.label}
@@ -251,7 +251,7 @@ export default function FirmaSimplePage() {
             <Link
               href="/autoservicio"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold text-white text-base transition-all hover:opacity-90 hover:scale-105"
-              style={{ background: "#1ECAD3", boxShadow: "0 0 30px rgba(30,202,211,0.3)" }}
+              style={{ background: "#2DB6C1", boxShadow: "0 0 30px rgba(30,202,211,0.3)" }}
             >
               Probar Firma Simple gratis →
             </Link>

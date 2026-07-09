@@ -164,7 +164,7 @@ export default function MientrasElRestoHablaIA() {
               <div className="overflow-hidden rounded-xl border border-gray-200 mb-8">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="bg-[#0a0a0a]">
+                    <tr className="bg-[#0E1133]">
                       <th className="px-6 py-4 text-left text-white/60 font-semibold">El mercado actual</th>
                       <th className="px-6 py-4 text-left text-[#0066ff] font-semibold">JAAK</th>
                     </tr>
@@ -238,7 +238,7 @@ export default function MientrasElRestoHablaIA() {
                 La pregunta es: <strong>¿vas a hacerlo solo, o con alguien que ya sabe cómo se hace?</strong>
               </p>
 
-              <div className="bg-[#0a0a0a] rounded-xl p-8 my-12">
+              <div className="bg-[#0E1133] rounded-xl p-8 my-12">
                 <h3 className="text-xl font-bold text-white mb-4">
                   Conclusión
                 </h3>

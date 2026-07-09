@@ -59,9 +59,9 @@ export default function FirmaComparisonTable() {
               aria-pressed={isActive}
               className="text-xs font-semibold px-3.5 py-2 rounded-full transition-all"
               style={{
-                background: isActive ? "#1ECAD3" : cl.cardBg,
+                background: isActive ? "#2DB6C1" : cl.cardBg,
                 color: isActive ? "#fff" : cl.textMuted,
-                border: `1px solid ${isActive ? "#1ECAD3" : cl.border}`,
+                border: `1px solid ${isActive ? "#2DB6C1" : cl.border}`,
               }}
             >
               {filter.label}
@@ -93,7 +93,7 @@ export default function FirmaComparisonTable() {
                 "Nivel de Evidencia",
                 "Casos de Uso",
               ].map((header) => (
-                <th key={header} className="text-left py-4 px-4 text-xs font-semibold uppercase tracking-wider whitespace-nowrap" style={{ color: "#1ECAD3" }} scope="col">
+                <th key={header} className="text-left py-4 px-4 text-xs font-semibold uppercase tracking-wider whitespace-nowrap" style={{ color: "#2DB6C1" }} scope="col">
                   {header}
                 </th>
               ))}
@@ -157,7 +157,7 @@ export default function FirmaComparisonTable() {
                     <td className="py-4 px-4">
                       <button
                         className="text-xs font-semibold flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all whitespace-nowrap"
-                        style={{ color: "#1ECAD3", background: expandedRow === level.id ? "rgba(30,202,211,0.15)" : "rgba(30,202,211,0.08)" }}
+                        style={{ color: "#2DB6C1", background: expandedRow === level.id ? "rgba(30,202,211,0.15)" : "rgba(30,202,211,0.08)" }}
                         onClick={(e) => {
                           e.stopPropagation();
                           toggleRow(level.id);
@@ -192,7 +192,7 @@ export default function FirmaComparisonTable() {
                                   className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full"
                                   style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#A7F3F6" }}
                                 >
-                                  <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" style={{ color: "#1ECAD3" }} aria-hidden="true">
+                                  <svg className="w-3 h-3 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" style={{ color: "#2DB6C1" }} aria-hidden="true">
                                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                                   </svg>
                                   {item}

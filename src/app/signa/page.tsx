@@ -111,20 +111,20 @@ export default function SignaHome() {
       <Header />
       <main>
         {/* Hero Section - Optimized for "firma electrónica méxico" */}
-        <section className="pt-32 pb-20 bg-gradient-to-br from-[#0a0a0a] via-[#0a0a0a] to-[#1a1a1a]" role="banner">
+        <section className="pt-32 pb-20 bg-gradient-to-br from-[#0E1133] via-[#0E1133] to-[#1a1a1a]" role="banner">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <header>
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#00d4aa]/10 border border-[#00d4aa]/20 rounded-full mb-6">
-                  <span className="w-2 h-2 bg-[#00d4aa] rounded-full"></span>
-                  <span className="text-[#00d4aa] text-sm font-medium">Tecnología 2026</span>
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#2DB6C1]/10 border border-[#2DB6C1]/20 rounded-full mb-6">
+                  <span className="w-2 h-2 bg-[#2DB6C1] rounded-full"></span>
+                  <span className="text-[#2DB6C1] text-sm font-medium">Tecnología 2026</span>
                 </div>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6">
                   <span className="text-[#0066ff]">Firma Electrónica México</span>
                 </h1>
                 <p className="text-xl text-white/70 mb-8" role="text">
                   <strong className="text-white">Firma electrónica profesional para México</strong> con tecnología 2026. 
-                  Certificado <strong className="text-[#00d4aa]">NOM-151</strong>, soporte 24/7. 
+                  Certificado <strong className="text-[#2DB6C1]">NOM-151</strong>, soporte 24/7. 
                   <strong className="text-white">50% más barata que Mifiel</strong> - Solo $15 por documento.
                 </p>
                 
@@ -136,18 +136,18 @@ export default function SignaHome() {
                     <div className="text-red-400/70 text-sm">por firma</div>
                   </div>
                   <div className="flex items-center text-white/50 text-2xl font-bold px-2">VS</div>
-                  <div className="bg-[#00d4aa]/10 border border-[#00d4aa]/30 rounded-lg p-4 flex-1 min-w-[140px] relative">
-                    <div className="absolute -top-2 -right-2 bg-[#00d4aa] text-black text-xs font-bold px-2 py-1 rounded-full">50% MENOS</div>
-                    <div className="text-[#00d4aa] text-sm font-medium">Signa</div>
-                    <div className="text-[#00d4aa] text-2xl font-bold">$15.00</div>
-                    <div className="text-[#00d4aa]/70 text-sm">por firma</div>
+                  <div className="bg-[#2DB6C1]/10 border border-[#2DB6C1]/30 rounded-lg p-4 flex-1 min-w-[140px] relative">
+                    <div className="absolute -top-2 -right-2 bg-[#2DB6C1] text-black text-xs font-bold px-2 py-1 rounded-full">50% MENOS</div>
+                    <div className="text-[#2DB6C1] text-sm font-medium">Signa</div>
+                    <div className="text-[#2DB6C1] text-2xl font-bold">$15.00</div>
+                    <div className="text-[#2DB6C1]/70 text-sm">por firma</div>
                   </div>
                 </div>
 
                 <div className="flex flex-wrap gap-4">
                   <Link
                     href="/signa/calculadora"
-                    className="px-6 py-3 bg-[#00d4aa] text-black font-bold rounded-lg hover:bg-[#00c499] transition-all"
+                    className="px-6 py-3 bg-[#2DB6C1] text-black font-bold rounded-lg hover:bg-[#00c499] transition-all"
                   >
                     📊 Calcular Mi Ahorro
                   </Link>
@@ -160,16 +160,16 @@ export default function SignaHome() {
                 </div>
 
                 <div className="mt-8 flex flex-col gap-2 text-sm">
-                  <div className="flex items-center gap-2 text-[#00d4aa]">
+                  <div className="flex items-center gap-2 text-[#2DB6C1]">
                     <span>✅</span> Migración gratis desde cualquier plataforma
                   </div>
-                  <div className="flex items-center gap-2 text-[#00d4aa]">
+                  <div className="flex items-center gap-2 text-[#2DB6C1]">
                     <span>⚡</span> Deploy en 24 horas vs semanas de otros
                   </div>
-                  <div className="flex items-center gap-2 text-[#00d4aa]">
+                  <div className="flex items-center gap-2 text-[#2DB6C1]">
                     <span>🏛️</span> NOM-151 certificado, validez legal completa
                   </div>
-                  <div className="flex items-center gap-2 text-[#00d4aa]">
+                  <div className="flex items-center gap-2 text-[#2DB6C1]">
                     <span>🛡️</span> Garantía 30 días - Si no ahorras, te devolvemos tu dinero
                   </div>
                 </div>
@@ -188,7 +188,7 @@ export default function SignaHome() {
                       <input 
                         type="number" 
                         id="monthly-docs" 
-                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:border-[#00d4aa] focus:outline-none"
+                        className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:border-[#2DB6C1] focus:outline-none"
                         placeholder="ej: 100"
                         min="1"
                       />
@@ -196,13 +196,13 @@ export default function SignaHome() {
                     
                     <button 
                       id="calculate-savings"
-                      className="w-full px-6 py-3 bg-[#00d4aa] text-black font-bold rounded-lg hover:bg-[#00c499] transition-all"
+                      className="w-full px-6 py-3 bg-[#2DB6C1] text-black font-bold rounded-lg hover:bg-[#00c499] transition-all"
                     >
                       🧮 Calcular Ahorro
                     </button>
                     
-                    <div id="savings-result" className="hidden bg-[#00d4aa]/10 border border-[#00d4aa]/30 rounded-lg p-4">
-                      <div className="text-[#00d4aa] font-bold text-lg" id="savings-amount">
+                    <div id="savings-result" className="hidden bg-[#2DB6C1]/10 border border-[#2DB6C1]/30 rounded-lg p-4">
+                      <div className="text-[#2DB6C1] font-bold text-lg" id="savings-amount">
                         {/* Resultado aparecerá aquí */}
                       </div>
                     </div>
@@ -224,7 +224,7 @@ export default function SignaHome() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 id="why-choose-signa" className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
-                🏆 ¿Por Qué <span className="text-[#00d4aa]">Signa</span> es la 
+                🏆 ¿Por Qué <span className="text-[#2DB6C1]">Signa</span> es la 
                 <span className="text-[#0066ff]"> Mejor Firma Electrónica México</span>?
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -250,21 +250,21 @@ export default function SignaHome() {
                 </div>
               </div>
 
-              <div className="bg-gradient-to-br from-[#00d4aa]/5 to-[#0066ff]/5 border-2 border-[#00d4aa] rounded-xl p-8 text-center relative">
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-[#00d4aa] text-black text-xs font-bold px-3 py-1 rounded-full">
+              <div className="bg-gradient-to-br from-[#2DB6C1]/5 to-[#0066ff]/5 border-2 border-[#2DB6C1] rounded-xl p-8 text-center relative">
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-[#2DB6C1] text-black text-xs font-bold px-3 py-1 rounded-full">
                   RECOMENDADO
                 </div>
-                <div className="w-16 h-16 bg-[#00d4aa]/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <div className="w-16 h-16 bg-[#2DB6C1]/20 rounded-full flex items-center justify-center mx-auto mb-6">
                   <span className="text-2xl">✍️</span>
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-4">Signa (Nosotros)</h3>
                 <div className="space-y-2 text-sm text-gray-800">
-                  <div className="text-[#00d4aa] font-semibold">✅ $15.00 por firma (50% menos)</div>
-                  <div className="text-[#00d4aa] font-semibold">✅ Setup GRATIS</div>
-                  <div className="text-[#00d4aa] font-semibold">✅ Pay per use (sin mínimos)</div>
-                  <div className="text-[#00d4aa] font-semibold">✅ Soporte 24/7</div>
-                  <div className="text-[#00d4aa] font-semibold">✅ Interfaz 2026</div>
-                  <div className="text-[#00d4aa] font-semibold">✅ API moderna GraphQL + REST</div>
+                  <div className="text-[#2DB6C1] font-semibold">✅ $15.00 por firma (50% menos)</div>
+                  <div className="text-[#2DB6C1] font-semibold">✅ Setup GRATIS</div>
+                  <div className="text-[#2DB6C1] font-semibold">✅ Pay per use (sin mínimos)</div>
+                  <div className="text-[#2DB6C1] font-semibold">✅ Soporte 24/7</div>
+                  <div className="text-[#2DB6C1] font-semibold">✅ Interfaz 2026</div>
+                  <div className="text-[#2DB6C1] font-semibold">✅ API moderna GraphQL + REST</div>
                 </div>
               </div>
 
@@ -287,7 +287,7 @@ export default function SignaHome() {
         </section>
 
         {/* Success Stories */}
-        <section className="py-20 bg-[#0a0a0a]">
+        <section className="py-20 bg-[#0E1133]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
@@ -302,7 +302,7 @@ export default function SignaHome() {
               <div className="bg-white/5 border border-white/10 rounded-xl p-6">
                 <div className="flex items-start mb-4">
                   <div className="flex-shrink-0">
-                    <div className="w-12 h-12 bg-[#00d4aa] rounded-full flex items-center justify-center">
+                    <div className="w-12 h-12 bg-[#2DB6C1] rounded-full flex items-center justify-center">
                       <span className="text-black font-bold">CM</span>
                     </div>
                   </div>
@@ -315,8 +315,8 @@ export default function SignaHome() {
                   "Migramos en 24 horas y ahorramos $85,320 anuales. La API es 2.5x más rápida que la anterior. Nuestros clientes notan la diferencia."
                 </p>
                 <div className="flex gap-4 text-xs">
-                  <span className="bg-[#00d4aa]/20 text-[#00d4aa] px-2 py-1 rounded">450 docs/mes</span>
-                  <span className="bg-[#00d4aa]/20 text-[#00d4aa] px-2 py-1 rounded">$85K ahorro/año</span>
+                  <span className="bg-[#2DB6C1]/20 text-[#2DB6C1] px-2 py-1 rounded">450 docs/mes</span>
+                  <span className="bg-[#2DB6C1]/20 text-[#2DB6C1] px-2 py-1 rounded">$85K ahorro/año</span>
                 </div>
               </div>
 
@@ -366,7 +366,7 @@ export default function SignaHome() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 bg-gradient-to-r from-[#00d4aa] to-[#0066ff]">
+        <section className="py-20 bg-gradient-to-r from-[#2DB6C1] to-[#0066ff]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl md:text-4xl font-black text-white mb-6">
               ¿Listo para Ahorrar 50% en Firma Electrónica?
@@ -426,10 +426,10 @@ export default function SignaHome() {
               savingsAmount.innerHTML = \`
                 <div class="text-center">
                   <div class="text-2xl font-bold mb-2">💰 Tu Ahorro Calculado</div>
-                  <div class="text-lg mb-1">Mensual: <span class="text-[#00d4aa]">$\${monthlySavings.toLocaleString('es-MX', {minimumFractionDigits: 2})} MXN</span></div>
-                  <div class="text-xl font-bold mb-1">Anual: <span class="text-[#00d4aa]">$\${annualSavings.toLocaleString('es-MX', {minimumFractionDigits: 2})} MXN</span></div>
-                  <div class="text-sm">Ahorro: <span class="text-[#00d4aa] font-bold">\${percentage}%</span></div>
-                  <a href="/signa/calculadora" class="inline-block mt-4 px-4 py-2 bg-[#00d4aa] text-black rounded-lg text-sm font-semibold hover:bg-[#00c499]">
+                  <div class="text-lg mb-1">Mensual: <span class="text-[#2DB6C1]">$\${monthlySavings.toLocaleString('es-MX', {minimumFractionDigits: 2})} MXN</span></div>
+                  <div class="text-xl font-bold mb-1">Anual: <span class="text-[#2DB6C1]">$\${annualSavings.toLocaleString('es-MX', {minimumFractionDigits: 2})} MXN</span></div>
+                  <div class="text-sm">Ahorro: <span class="text-[#2DB6C1] font-bold">\${percentage}%</span></div>
+                  <a href="/signa/calculadora" class="inline-block mt-4 px-4 py-2 bg-[#2DB6C1] text-black rounded-lg text-sm font-semibold hover:bg-[#00c499]">
                     Ver Detalles Completos →
                   </a>
                 </div>

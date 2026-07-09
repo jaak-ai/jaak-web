@@ -33,14 +33,14 @@ function ProximosPasos() {
       num: "01",
       title: "Compra confirmada",
       desc: "Tu pago fue procesado y tu acceso está activo inmediatamente.",
-      badge: { text: "Completado", color: "#1ecad3" },
-      color: "#1ecad3",
+      badge: { text: "Completado", color: "#2DB6C1" },
+      color: "#2DB6C1",
     },
     {
       num: "02",
       title: "Accede a tu espacio",
       desc: "Ingresa a JAAK Autoservicio con tus credenciales de registro.",
-      color: "#1ecad3",
+      color: "#2DB6C1",
     },
     {
       num: "03",
@@ -172,7 +172,7 @@ function CapacitacionForm() {
           ¿Quieres una sesión{" "}
           <span
             style={{
-              backgroundImage: "linear-gradient(90deg, #1ecad3, #655dc6)",
+              backgroundImage: "linear-gradient(90deg, #2DB6C1, #655dc6)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
@@ -193,7 +193,7 @@ function CapacitacionForm() {
             "Sin costo adicional para tu empresa",
           ].map((item, i) => (
             <li key={i} className="flex items-center gap-2">
-              <span style={{ color: "#1ecad3" }}>✓</span>
+              <span style={{ color: "#2DB6C1" }}>✓</span>
               {item}
             </li>
           ))}
@@ -282,7 +282,7 @@ function CapacitacionForm() {
                   onClick={() => toggleTema(tema)}
                   className="text-sm px-3 py-1.5 rounded-full font-medium transition-all duration-150 cursor-pointer"
                   style={{
-                    background: active ? "linear-gradient(135deg, #1ecad3, #655dc6)" : "#f3f4f6",
+                    background: active ? "linear-gradient(135deg, #2DB6C1, #655dc6)" : "#f3f4f6",
                     color: active ? "#fff" : "#374151",
                     border: active ? "none" : "1.5px solid #e5e7eb",
                   }}
@@ -307,12 +307,12 @@ function CapacitacionForm() {
                   onClick={() => setForm({ ...form, horario: h.id })}
                   className="rounded-xl p-3 text-left transition-all duration-150 cursor-pointer"
                   style={{
-                    border: active ? "2px solid #1ecad3" : "1.5px solid #e5e7eb",
+                    border: active ? "2px solid #2DB6C1" : "1.5px solid #e5e7eb",
                     background: active ? "rgba(30,202,211,0.06)" : "#f9fafb",
                   }}
                 >
                   <div className="text-sm font-bold text-gray-700 mb-0.5">📅 {h.label}</div>
-                  <div className="text-sm font-semibold" style={{ color: "#1ecad3" }}>{h.sub}</div>
+                  <div className="text-sm font-semibold" style={{ color: "#2DB6C1" }}>{h.sub}</div>
                   <div className="text-sm text-gray-400 mt-1">{h.note}</div>
                 </button>
               );
@@ -339,7 +339,7 @@ function CapacitacionForm() {
           type="submit"
           disabled={loading}
           className="w-full py-3 rounded-xl font-bold text-white text-base transition-all duration-200 hover:opacity-90 disabled:opacity-60"
-          style={{ background: "linear-gradient(135deg, #1ecad3, #655dc6)" }}
+          style={{ background: "linear-gradient(135deg, #2DB6C1, #655dc6)" }}
         >
           {loading ? "Enviando..." : "📅 Solicitar capacitación"}
         </button>

@@ -114,7 +114,7 @@ export default function CumplimientoPage() {
       <Header />
       <main>
         {/* Hero Section */}
-        <section className="pt-32 pb-20 bg-[#0a0a0a]">
+        <section className="pt-32 pb-20 bg-[#0E1133]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl">
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#0066ff]/10 border border-[#0066ff]/20 rounded-full mb-6">
@@ -237,12 +237,12 @@ export default function CumplimientoPage() {
         </section>
 
         {/* Evidence Capabilities */}
-        <section className="py-20 bg-[#0a0a0a]">
+        <section className="py-20 bg-[#0E1133]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#00d4aa]/10 border border-[#00d4aa]/20 rounded-full mb-6">
-                <span className="w-2 h-2 bg-[#00d4aa] rounded-full"></span>
-                <span className="text-[#00d4aa] text-sm font-medium">Evidencia Auditable</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#2DB6C1]/10 border border-[#2DB6C1]/20 rounded-full mb-6">
+                <span className="w-2 h-2 bg-[#2DB6C1] rounded-full"></span>
+                <span className="text-[#2DB6C1] text-sm font-medium">Evidencia Auditable</span>
               </div>
               <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
                 Cada verificación genera evidencia

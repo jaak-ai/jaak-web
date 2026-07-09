@@ -369,7 +369,7 @@ export default function ChronosComparacionPage() {
               <span className="text-[#655DC6] text-sm font-medium">Comparación Detallada 2026</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-black text-white mb-6">
-              <span className="text-[#1ECAD3]">Chronos</span> vs{" "}
+              <span className="text-[#2DB6C1]">Chronos</span> vs{" "}
               <span className="text-[#ff6b6b]">OpenClaw</span> vs{" "}
               <span className="text-[#4ecdc4]">NemoClaw</span>
             </h1>
@@ -385,7 +385,7 @@ export default function ChronosComparacionPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-3 gap-8 mb-12">
               {/* Chronos */}
-              <div className="bg-gradient-to-br from-[#655DC6]/5 to-[#1ECAD3]/5 border-2 border-[#655DC6] rounded-2xl p-6 relative">
+              <div className="bg-gradient-to-br from-[#655DC6]/5 to-[#2DB6C1]/5 border-2 border-[#655DC6] rounded-2xl p-6 relative">
                 <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-[#655DC6] text-white text-xs font-bold px-3 py-1 rounded-full">
                   RECOMENDADO ENTERPRISE
                 </div>
@@ -620,7 +620,7 @@ export default function ChronosComparacionPage() {
         </section>
 
         {/* CTA */}
-        <section className="py-16 bg-gradient-to-r from-[#655DC6] to-[#1ECAD3]">
+        <section className="py-16 bg-gradient-to-r from-[#655DC6] to-[#2DB6C1]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl md:text-4xl font-black text-white mb-6">
               ¿Listo para probar Chronos?

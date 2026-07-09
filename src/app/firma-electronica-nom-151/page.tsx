@@ -50,7 +50,7 @@ export default function FirmaNom151Page() {
         >
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <nav className="flex items-center gap-2 text-xs text-gray-600 mb-8" aria-label="Navegación">
-              <Link href="/plataforma/firma-electronica" className="hover:text-[#1ECAD3] transition-colors">
+              <Link href="/plataforma/firma-electronica" className="hover:text-[#2DB6C1] transition-colors">
                 Firma Electrónica
               </Link>
               <span aria-hidden="true">›</span>
@@ -62,7 +62,7 @@ export default function FirmaNom151Page() {
               style={{
                 background: "rgba(30,202,211,0.1)",
                 border: "1px solid rgba(30,202,211,0.25)",
-                color: "#1ECAD3",
+                color: "#2DB6C1",
               }}
             >
               Nivel certificado · NOM-151-SCFI-2016
@@ -72,7 +72,7 @@ export default function FirmaNom151Page() {
               Firma electrónica con{" "}
               <span
                 style={{
-                  background: "linear-gradient(135deg, #1ECAD3, #2AD796)",
+                  background: "linear-gradient(135deg, #2DB6C1, #2AD796)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
@@ -92,7 +92,7 @@ export default function FirmaNom151Page() {
               <Link
                 href="/autoservicio"
                 className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-bold text-white transition-all hover:opacity-90"
-                style={{ background: "#1ECAD3", boxShadow: "0 0 25px rgba(30,202,211,0.3)" }}
+                style={{ background: "#2DB6C1", boxShadow: "0 0 25px rgba(30,202,211,0.3)" }}
               >
                 Activar NOM-151
               </Link>
@@ -244,7 +244,7 @@ export default function FirmaNom151Page() {
                   style={{
                     background: "rgba(255,255,255,0.04)",
                     border: "1px solid rgba(255,255,255,0.08)",
-                    color: "#1ECAD3",
+                    color: "#2DB6C1",
                   }}
                 >
                   {link.label}
@@ -254,7 +254,7 @@ export default function FirmaNom151Page() {
             <Link
               href="/autoservicio"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold text-white text-base transition-all hover:opacity-90"
-              style={{ background: "#1ECAD3", boxShadow: "0 0 30px rgba(30,202,211,0.3)" }}
+              style={{ background: "#2DB6C1", boxShadow: "0 0 30px rgba(30,202,211,0.3)" }}
             >
               Activar Firma Digital NOM-151 →
             </Link>

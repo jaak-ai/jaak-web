@@ -14,7 +14,7 @@ export default function InicioRapido() {
       <Header />
       <main>
         {/* Hero */}
-        <section className="pt-32 pb-12 bg-[#0a0a0a]">
+        <section className="pt-32 pb-12 bg-[#0E1133]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <Link href="/documentacion" className="inline-flex items-center gap-2 text-white/60 hover:text-white mb-6 transition-colors">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -50,7 +50,7 @@ export default function InicioRapido() {
                   Primero, necesitas crear una cuenta en JAAK y obtener tus credenciales de API.
                 </p>
                 <ol className="list-decimal pl-6 text-gray-600 space-y-2 mb-4">
-                  <li>Regístrate en <a href="https://platform.dev.jaak.ai/#/signup" className="text-[#0066ff] hover:underline">platform.jaak.ai</a></li>
+                  <li>Regístrate en <a href="https://platform.jaak.ai/#/signup" className="text-[#0066ff] hover:underline">platform.jaak.ai</a></li>
                   <li>Ve a <strong>Configuración → API Keys</strong></li>
                   <li>Genera un nuevo API Key para tu ambiente (sandbox o producción)</li>
                   <li>Guarda tu <code className="bg-gray-100 px-2 py-1 rounded text-sm">API_KEY</code> y <code className="bg-gray-100 px-2 py-1 rounded text-sm">API_SECRET</code></li>
@@ -72,7 +72,7 @@ export default function InicioRapido() {
                   Instala el SDK de JAAK en tu proyecto:
                 </p>
 
-                <div className="bg-[#0a0a0a] rounded-lg overflow-hidden mb-4">
+                <div className="bg-[#0E1133] rounded-lg overflow-hidden mb-4">
                   <div className="px-4 py-2 bg-white/5 border-b border-white/10">
                     <span className="text-white/60 text-sm">npm</span>
                   </div>
@@ -81,7 +81,7 @@ export default function InicioRapido() {
                   </pre>
                 </div>
 
-                <div className="bg-[#0a0a0a] rounded-lg overflow-hidden mb-4">
+                <div className="bg-[#0E1133] rounded-lg overflow-hidden mb-4">
                   <div className="px-4 py-2 bg-white/5 border-b border-white/10">
                     <span className="text-white/60 text-sm">yarn</span>
                   </div>
@@ -101,7 +101,7 @@ export default function InicioRapido() {
                   Inicializa el cliente de JAAK con tus credenciales:
                 </p>
 
-                <div className="bg-[#0a0a0a] rounded-lg overflow-hidden mb-4">
+                <div className="bg-[#0E1133] rounded-lg overflow-hidden mb-4">
                   <div className="px-4 py-2 bg-white/5 border-b border-white/10">
                     <span className="text-white/60 text-sm">JavaScript / TypeScript</span>
                   </div>
@@ -127,7 +127,7 @@ const jaak = new JaakClient({
                   Crea una sesión de verificación y obtén el enlace para el usuario:
                 </p>
 
-                <div className="bg-[#0a0a0a] rounded-lg overflow-hidden mb-4">
+                <div className="bg-[#0E1133] rounded-lg overflow-hidden mb-4">
                   <div className="px-4 py-2 bg-white/5 border-b border-white/10">
                     <span className="text-white/60 text-sm">JavaScript / TypeScript</span>
                   </div>
@@ -165,7 +165,7 @@ console.log(session.verificationUrl);
                   Configura un webhook para recibir el resultado de la verificación:
                 </p>
 
-                <div className="bg-[#0a0a0a] rounded-lg overflow-hidden mb-4">
+                <div className="bg-[#0E1133] rounded-lg overflow-hidden mb-4">
                   <div className="px-4 py-2 bg-white/5 border-b border-white/10">
                     <span className="text-white/60 text-sm">Express.js ejemplo</span>
                   </div>
@@ -202,9 +202,9 @@ console.log(session.verificationUrl);
               </div>
 
               {/* Resultado */}
-              <div className="bg-[#00d4aa]/10 border border-[#00d4aa]/20 rounded-xl p-6 mb-12">
+              <div className="bg-[#2DB6C1]/10 border border-[#2DB6C1]/20 rounded-xl p-6 mb-12">
                 <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
-                  <svg className="w-6 h-6 text-[#00d4aa]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-6 h-6 text-[#2DB6C1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   ¡Listo!

@@ -78,7 +78,7 @@ export default async function AutoservicioPage() {
                 Compra y activa tus servicios{" "}
                 <span
                   style={{
-                    backgroundImage: "linear-gradient(90deg, #1ecad3, #655dc6)",
+                    backgroundImage: "linear-gradient(90deg, #2DB6C1, #655dc6)",
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
                     backgroundClip: "text",

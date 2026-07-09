@@ -10,7 +10,7 @@ const PRODUCTS: ProductCard[] = [
     title: "Verificación de identidad con biometría facial",
     desc: "Valida la identidad de tus clientes en segundos con biometría, liveness detection y cruce contra INE/RENAPO. El expediente queda sellado con NOM-151 desde el primer paso.",
     href: "/plataforma/verificacion-identidad",
-    color: "#1ECAD3",
+    color: "#2DB6C1",
   },
   {
     icon: "✍️",

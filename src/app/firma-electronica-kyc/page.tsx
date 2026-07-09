@@ -55,7 +55,7 @@ export default function FirmaKYCPage() {
           />
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             <nav className="flex items-center gap-2 text-xs text-gray-600 mb-8" aria-label="Navegación">
-              <Link href="/plataforma/firma-electronica" className="hover:text-[#1ECAD3] transition-colors">
+              <Link href="/plataforma/firma-electronica" className="hover:text-[#2DB6C1] transition-colors">
                 Firma Electrónica
               </Link>
               <span aria-hidden="true">›</span>
@@ -153,7 +153,7 @@ export default function FirmaKYCPage() {
                   title: "Consulta en Renapo (CURP)",
                   desc: "Se valida el CURP extraído directamente contra la base de datos de Renapo en tiempo real. Confirma que la persona existe y sus datos coinciden.",
                   icon: "🏛",
-                  color: "#1ECAD3",
+                  color: "#2DB6C1",
                 },
                 {
                   step: "03",
@@ -296,7 +296,7 @@ export default function FirmaKYCPage() {
                   style={{
                     background: "rgba(255,255,255,0.04)",
                     border: "1px solid rgba(255,255,255,0.08)",
-                    color: "#1ECAD3",
+                    color: "#2DB6C1",
                   }}
                 >
                   {link.label}

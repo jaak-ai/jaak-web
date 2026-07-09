@@ -39,11 +39,11 @@ export default function FirmaThemeShell() {
             className="absolute inset-0 opacity-[0.03] pointer-events-none"
             aria-hidden="true"
             style={{
-              backgroundImage: "linear-gradient(#1ECAD3 1px, transparent 1px), linear-gradient(90deg, #1ECAD3 1px, transparent 1px)",
+              backgroundImage: "linear-gradient(#2DB6C1 1px, transparent 1px), linear-gradient(90deg, #2DB6C1 1px, transparent 1px)",
               backgroundSize: "60px 60px",
             }}
           />
-          <div className="absolute top-20 right-1/4 w-96 h-96 rounded-full opacity-10 blur-3xl pointer-events-none" aria-hidden="true" style={{ background: "#1ECAD3" }} />
+          <div className="absolute top-20 right-1/4 w-96 h-96 rounded-full opacity-10 blur-3xl pointer-events-none" aria-hidden="true" style={{ background: "#2DB6C1" }} />
           <div className="absolute bottom-10 left-1/4 w-64 h-64 rounded-full opacity-5 blur-3xl pointer-events-none" aria-hidden="true" style={{ background: "#8B5CF6" }} />
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
@@ -52,14 +52,14 @@ export default function FirmaThemeShell() {
               <div>
                 <div
                   className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full mb-6 text-xs font-semibold"
-                  style={{ background: "rgba(30,202,211,0.1)", border: "1px solid rgba(30,202,211,0.25)", color: "#1ECAD3" }}
+                  style={{ background: "rgba(30,202,211,0.1)", border: "1px solid rgba(30,202,211,0.25)", color: "#2DB6C1" }}
                 >
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#1ECAD3] animate-pulse" aria-hidden="true" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#2DB6C1] animate-pulse" aria-hidden="true" />
                   NOM-151 · Biometría · KYC · White-label
                 </div>
                 <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-[1.1] mb-6">
                   Firma electrónica en{" "}
-                  <span style={{ background: "linear-gradient(135deg, #1ECAD3, #2AD796)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+                  <span style={{ background: "linear-gradient(135deg, #2DB6C1, #2AD796)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
                     México
                   </span>{" "}
                   con validez legal y biometría
@@ -84,7 +84,7 @@ export default function FirmaThemeShell() {
                   <Link
                     href="/autoservicio"
                     className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-bold text-white text-base transition-all hover:opacity-90 hover:scale-105"
-                    style={{ background: "linear-gradient(135deg, #1ECAD3, #17A8B0)", boxShadow: "0 0 30px rgba(30,202,211,0.35)" }}
+                    style={{ background: "linear-gradient(135deg, #2DB6C1, #25969f)", boxShadow: "0 0 30px rgba(30,202,211,0.35)" }}
                   >
                     Probar autoservicio
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -117,7 +117,7 @@ export default function FirmaThemeShell() {
                     style={{ boxShadow: "0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(30,202,211,0.12)" }}
                     priority
                   />
-                  <div className="absolute -bottom-8 inset-x-16 h-16 blur-2xl opacity-25 rounded-full pointer-events-none" aria-hidden="true" style={{ background: "#1ECAD3" }} />
+                  <div className="absolute -bottom-8 inset-x-16 h-16 blur-2xl opacity-25 rounded-full pointer-events-none" aria-hidden="true" style={{ background: "#2DB6C1" }} />
                   {/* Branding callout */}
                   <div
                     className="mt-4 flex items-center gap-3 px-4 py-3 rounded-xl"
@@ -155,7 +155,7 @@ export default function FirmaThemeShell() {
                         >
                           🖥️
                         </div>
-                        <span className="text-xs font-bold uppercase tracking-wider" style={{ color: "#1ECAD3" }}>
+                        <span className="text-xs font-bold uppercase tracking-wider" style={{ color: "#2DB6C1" }}>
                           Autoservicio
                         </span>
                       </div>
@@ -165,7 +165,7 @@ export default function FirmaThemeShell() {
                       <Link
                         href="/autoservicio"
                         className="text-xs font-bold flex items-center gap-1 transition-opacity hover:opacity-80"
-                        style={{ color: "#1ECAD3" }}
+                        style={{ color: "#2DB6C1" }}
                       >
                         Probar ahora
                         <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -221,7 +221,7 @@ export default function FirmaThemeShell() {
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#1ECAD3" }}>
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#2DB6C1" }}>
                 Soluciones
               </div>
               <h2 id="soluciones-heading" className="text-3xl sm:text-4xl font-black mb-4" style={{ color: t.heading, transition: t.tr }}>
@@ -244,7 +244,7 @@ export default function FirmaThemeShell() {
         >
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#1ECAD3" }}>
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#2DB6C1" }}>
                 Flujo de firma
               </div>
               <h2 id="flujo-heading" className="text-3xl sm:text-4xl font-black mb-4" style={{ color: t.heading, transition: t.tr }}>
@@ -267,7 +267,7 @@ export default function FirmaThemeShell() {
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#1ECAD3" }}>
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#2DB6C1" }}>
                 Comparativa
               </div>
               <h2 id="comparacion-heading" className="text-3xl sm:text-4xl font-black mb-4" style={{ color: t.heading, transition: t.tr }}>
@@ -290,12 +290,12 @@ export default function FirmaThemeShell() {
         >
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#1ECAD3" }}>
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#2DB6C1" }}>
                 Diferenciación
               </div>
               <h2 id="diferenciacion-heading" className="text-3xl sm:text-4xl font-black mb-4" style={{ color: t.heading, transition: t.tr }}>
                 No solo firmas.{" "}
-                <span style={{ background: "linear-gradient(135deg, #1ECAD3, #2AD796)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+                <span style={{ background: "linear-gradient(135deg, #2DB6C1, #2AD796)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
                   Generas evidencia legal.
                 </span>
               </h2>
@@ -340,7 +340,7 @@ export default function FirmaThemeShell() {
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#1ECAD3" }}>
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#2DB6C1" }}>
                 Casos de uso
               </div>
               <h2 id="casos-heading" className="text-3xl sm:text-4xl font-black mb-4" style={{ color: t.heading, transition: t.tr }}>
@@ -363,7 +363,7 @@ export default function FirmaThemeShell() {
         >
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#1ECAD3" }}>
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#2DB6C1" }}>
                 Preguntas frecuentes
               </div>
               <h2 id="faq-heading" className="text-3xl sm:text-4xl font-black mb-4" style={{ color: t.heading, transition: t.tr }}>
@@ -385,7 +385,7 @@ export default function FirmaThemeShell() {
                   key={link.href}
                   href={link.href}
                   className="text-sm font-semibold px-4 py-3 rounded-xl text-center transition-all"
-                  style={{ background: "rgba(30,202,211,0.06)", border: "1px solid rgba(30,202,211,0.15)", color: "#1ECAD3" }}
+                  style={{ background: "rgba(30,202,211,0.06)", border: "1px solid rgba(30,202,211,0.15)", color: "#2DB6C1" }}
                 >
                   {link.label}
                 </Link>
@@ -406,7 +406,7 @@ export default function FirmaThemeShell() {
               className="dark-zone rounded-3xl p-8 md:p-12 overflow-hidden relative"
               style={{ background: "linear-gradient(135deg, #0D1F3C, #071020)", border: "1px solid rgba(30,202,211,0.15)", boxShadow: "0 0 80px rgba(30,202,211,0.07)" }}
             >
-              <div className="absolute top-0 right-0 w-64 h-64 rounded-full opacity-10 blur-3xl pointer-events-none" aria-hidden="true" style={{ background: "#1ECAD3" }} />
+              <div className="absolute top-0 right-0 w-64 h-64 rounded-full opacity-10 blur-3xl pointer-events-none" aria-hidden="true" style={{ background: "#2DB6C1" }} />
               <h2 id="cta-heading" className="text-3xl sm:text-4xl font-black text-white mb-4 text-center">
                 Empieza hoy mismo
               </h2>
@@ -416,7 +416,7 @@ export default function FirmaThemeShell() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="rounded-2xl p-6 flex flex-col gap-5" style={{ background: "rgba(30,202,211,0.06)", border: "1px solid rgba(30,202,211,0.2)" }}>
                   <div>
-                    <div className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#1ECAD3" }}>Autoservicio</div>
+                    <div className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#2DB6C1" }}>Autoservicio</div>
                     <h3 className="text-xl font-black text-white mb-2">Empieza en minutos</h3>
                     <p className="text-sm text-gray-400 leading-relaxed">
                       Crea tu cuenta, sube tu primer documento y obtén una firma con NOM-151 sin hablar con nadie.
@@ -425,14 +425,14 @@ export default function FirmaThemeShell() {
                   <ul className="space-y-2">
                     {["Sin contrato ni permanencia", "Pago por uso", "Soporte por chat"].map((item) => (
                       <li key={item} className="flex items-center gap-2 text-sm text-gray-300">
-                        <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" style={{ color: "#1ECAD3" }} aria-hidden="true">
+                        <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" style={{ color: "#2DB6C1" }} aria-hidden="true">
                           <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                         </svg>
                         {item}
                       </li>
                     ))}
                   </ul>
-                  <Link href="/autoservicio" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all hover:opacity-90 hover:scale-105" style={{ background: "#1ECAD3" }}>
+                  <Link href="/autoservicio" className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all hover:opacity-90 hover:scale-105" style={{ background: "#2DB6C1" }}>
                     Probar gratis
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -480,7 +480,7 @@ export default function FirmaThemeShell() {
         style={{
           background: isDark ? "rgba(15,23,42,0.85)" : "#0A1628",
           border: `1px solid ${isDark ? "rgba(30,202,211,0.35)" : "rgba(30,202,211,0.5)"}`,
-          color: "#1ECAD3",
+          color: "#2DB6C1",
           backdropFilter: "blur(16px)",
           boxShadow: "0 4px 24px rgba(0,0,0,0.4)",
         }}

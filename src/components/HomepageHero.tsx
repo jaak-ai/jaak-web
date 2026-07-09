@@ -96,8 +96,8 @@ export default function HomepageHero() {
                 border: "1px solid rgba(30,202,211,0.20)",
               }}
             >
-              <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: "#1ECAD3" }} />
-              <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: "#1ECAD3" }}>
+              <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: "#2DB6C1" }} />
+              <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: "#2DB6C1" }}>
                 Plataforma para entornos regulados
               </span>
             </div>
@@ -108,7 +108,7 @@ export default function HomepageHero() {
               <br className="hidden sm:block" />
               <span
                 style={{
-                  background: "linear-gradient(90deg, #1ECAD3, #2AD796)",
+                  background: "linear-gradient(90deg, #2DB6C1, #2AD796)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
@@ -154,7 +154,7 @@ export default function HomepageHero() {
                 href="/autoservicio"
                 className="inline-flex items-center justify-center px-7 py-4 text-white font-bold text-base rounded-xl transition-all duration-200 group"
                 style={{
-                  background: "linear-gradient(135deg, #1ECAD3, #17a8b0)",
+                  background: "linear-gradient(135deg, #2DB6C1, #25969f)",
                   boxShadow: "0 8px 28px rgba(30,202,211,0.28)",
                 }}
               >
@@ -200,7 +200,7 @@ export default function HomepageHero() {
                   <div className="flex items-center gap-3">
                     <div
                       className="w-10 h-10 rounded-2xl flex items-center justify-center"
-                      style={{ background: "linear-gradient(135deg, #1ECAD3, #2AD796)", boxShadow: "0 4px 16px rgba(30,202,211,0.35)" }}
+                      style={{ background: "linear-gradient(135deg, #2DB6C1, #2AD796)", boxShadow: "0 4px 16px rgba(30,202,211,0.35)" }}
                     >
                       <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -243,23 +243,23 @@ export default function HomepageHero() {
                       />
 
                       {/* Corner brackets */}
-                      <div className="absolute top-4 left-4 w-7 h-7" style={{ borderTop: "2px solid #1ECAD3", borderLeft: "2px solid #1ECAD3", boxShadow: "0 0 8px rgba(30,202,211,0.6)" }} />
-                      <div className="absolute top-4 right-4 w-7 h-7" style={{ borderTop: "2px solid #1ECAD3", borderRight: "2px solid #1ECAD3", boxShadow: "0 0 8px rgba(30,202,211,0.6)" }} />
-                      <div className="absolute bottom-10 left-4 w-7 h-7" style={{ borderBottom: "2px solid #1ECAD3", borderLeft: "2px solid #1ECAD3", boxShadow: "0 0 8px rgba(30,202,211,0.6)" }} />
-                      <div className="absolute bottom-10 right-4 w-7 h-7" style={{ borderBottom: "2px solid #1ECAD3", borderRight: "2px solid #1ECAD3", boxShadow: "0 0 8px rgba(30,202,211,0.6)" }} />
+                      <div className="absolute top-4 left-4 w-7 h-7" style={{ borderTop: "2px solid #2DB6C1", borderLeft: "2px solid #2DB6C1", boxShadow: "0 0 8px rgba(30,202,211,0.6)" }} />
+                      <div className="absolute top-4 right-4 w-7 h-7" style={{ borderTop: "2px solid #2DB6C1", borderRight: "2px solid #2DB6C1", boxShadow: "0 0 8px rgba(30,202,211,0.6)" }} />
+                      <div className="absolute bottom-10 left-4 w-7 h-7" style={{ borderBottom: "2px solid #2DB6C1", borderLeft: "2px solid #2DB6C1", boxShadow: "0 0 8px rgba(30,202,211,0.6)" }} />
+                      <div className="absolute bottom-10 right-4 w-7 h-7" style={{ borderBottom: "2px solid #2DB6C1", borderRight: "2px solid #2DB6C1", boxShadow: "0 0 8px rgba(30,202,211,0.6)" }} />
 
                       {/* Face outline */}
                       <div className="absolute inset-0 flex items-center justify-center" style={{ paddingBottom: "32px" }}>
                         <svg width="90" height="100" viewBox="0 0 80 90" fill="none" style={{ opacity: 0.55 }}>
-                          <ellipse cx="40" cy="34" rx="24" ry="30" stroke="#1ECAD3" strokeWidth="1.5"/>
-                          <path d="M18 72 Q40 62 62 72" stroke="#1ECAD3" strokeWidth="1.5" fill="none"/>
-                          <circle cx="30" cy="29" r="4" stroke="#1ECAD3" strokeWidth="1.5"/>
-                          <circle cx="50" cy="29" r="4" stroke="#1ECAD3" strokeWidth="1.5"/>
-                          <path d="M33 44 Q40 48 47 44" stroke="#1ECAD3" strokeWidth="1.5" fill="none"/>
-                          <circle cx="30" cy="29" r="1.5" fill="#1ECAD3" opacity="0.8"/>
-                          <circle cx="50" cy="29" r="1.5" fill="#1ECAD3" opacity="0.8"/>
+                          <ellipse cx="40" cy="34" rx="24" ry="30" stroke="#2DB6C1" strokeWidth="1.5"/>
+                          <path d="M18 72 Q40 62 62 72" stroke="#2DB6C1" strokeWidth="1.5" fill="none"/>
+                          <circle cx="30" cy="29" r="4" stroke="#2DB6C1" strokeWidth="1.5"/>
+                          <circle cx="50" cy="29" r="4" stroke="#2DB6C1" strokeWidth="1.5"/>
+                          <path d="M33 44 Q40 48 47 44" stroke="#2DB6C1" strokeWidth="1.5" fill="none"/>
+                          <circle cx="30" cy="29" r="1.5" fill="#2DB6C1" opacity="0.8"/>
+                          <circle cx="50" cy="29" r="1.5" fill="#2DB6C1" opacity="0.8"/>
                           {/* Nose bridge */}
-                          <path d="M40 36 L38 42 L42 42" stroke="#1ECAD3" strokeWidth="1" fill="none" opacity="0.6"/>
+                          <path d="M40 36 L38 42 L42 42" stroke="#2DB6C1" strokeWidth="1" fill="none" opacity="0.6"/>
                         </svg>
                       </div>
 
@@ -277,8 +277,8 @@ export default function HomepageHero() {
                         className="absolute bottom-0 left-0 right-0 px-4 py-2.5 flex items-center gap-2"
                         style={{ background: "rgba(30,202,211,0.12)", borderTop: "1px solid rgba(30,202,211,0.25)" }}
                       >
-                        <div className="w-2 h-2 rounded-full animate-pulse" style={{ background: "#1ECAD3" }} />
-                        <span className="text-xs font-semibold" style={{ color: "#1ECAD3" }}>
+                        <div className="w-2 h-2 rounded-full animate-pulse" style={{ background: "#2DB6C1" }} />
+                        <span className="text-xs font-semibold" style={{ color: "#2DB6C1" }}>
                           Escaneando biometría facial…
                         </span>
                       </div>
@@ -329,7 +329,7 @@ export default function HomepageHero() {
                             ) : active ? (
                               <div
                                 className="w-3.5 h-3.5 rounded-full border-2 animate-spin flex-shrink-0"
-                                style={{ borderColor: "var(--hp-spinner-track)", borderTopColor: "#1ECAD3" }}
+                                style={{ borderColor: "var(--hp-spinner-track)", borderTopColor: "#2DB6C1" }}
                               />
                             ) : null}
                           </div>
@@ -360,7 +360,7 @@ export default function HomepageHero() {
                 {/* Card footer */}
                 <div className="pt-4 flex items-center justify-between" style={{ borderTop: "1px solid var(--hp-divider)" }}>
                   <div className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full" style={{ background: "#1ECAD3" }} />
+                    <div className="w-1.5 h-1.5 rounded-full" style={{ background: "#2DB6C1" }} />
                     <span className="text-xs font-mono" style={{ color: "var(--hp-text-faint)" }}>exp_0x9f2a…b37c</span>
                   </div>
                   <span className="text-xs" style={{ color: "var(--hp-text-faint)" }}>NOM-151 ✓</span>
@@ -370,20 +370,20 @@ export default function HomepageHero() {
               {/* Floating badges — keep white text with inline style (colored bg, always dark) */}
               <div
                 className="absolute -top-4 -right-3 px-3 py-1.5 rounded-full text-xs font-bold shadow-lg"
-                style={{ background: "linear-gradient(135deg, #1ECAD3, #17a8b0)", boxShadow: "0 4px 16px rgba(30,202,211,0.40)", color: "white" }}
+                style={{ background: "linear-gradient(135deg, #2DB6C1, #25969f)", boxShadow: "0 4px 16px rgba(30,202,211,0.40)", color: "white" }}
               >
                 ISO 27001
               </div>
               <div
                 className="absolute -bottom-4 -left-3 px-3 py-1.5 rounded-full text-xs font-bold shadow-lg"
-                style={{ background: "linear-gradient(135deg, #0E1133, #1ECAD3)", boxShadow: "0 4px 16px rgba(14,17,51,0.50)", color: "white" }}
+                style={{ background: "linear-gradient(135deg, #0E1133, #2DB6C1)", boxShadow: "0 4px 16px rgba(14,17,51,0.50)", color: "white" }}
               >
                 iBeta PAD
               </div>
               <div className="absolute -right-10 top-1/3 hidden xl:flex flex-col items-center px-4 py-3 rounded-2xl hp-glass">
                 <div
                   className="text-2xl font-black"
-                  style={{ background: "linear-gradient(90deg, #1ECAD3, #2AD796)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}
+                  style={{ background: "linear-gradient(90deg, #2DB6C1, #2AD796)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}
                 >
                   99%
                 </div>
@@ -411,7 +411,7 @@ export default function HomepageHero() {
             >
               <div
                 className="text-2xl md:text-3xl font-black"
-                style={{ background: "linear-gradient(90deg, #1ECAD3, #2AD796)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}
+                style={{ background: "linear-gradient(90deg, #2DB6C1, #2AD796)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}
               >
                 {s.value}
               </div>

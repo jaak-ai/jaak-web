@@ -88,7 +88,7 @@ export default function NOM151Page() {
       <Header />
       <main>
         {/* Hero Section */}
-        <section className="pt-32 pb-20 bg-[#0a0a0a]">
+        <section className="pt-32 pb-20 bg-[#0E1133]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl">
               <Link
@@ -186,8 +186,8 @@ export default function NOM151Page() {
                     <h3 className="text-xl font-bold text-gray-900">{req.title}</h3>
                   </div>
                   <p className="text-gray-600 mb-4">{req.description}</p>
-                  <div className="flex items-start gap-3 p-4 bg-[#00d4aa]/5 rounded-lg border border-[#00d4aa]/20">
-                    <svg className="w-5 h-5 text-[#00d4aa] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="flex items-start gap-3 p-4 bg-[#2DB6C1]/5 rounded-lg border border-[#2DB6C1]/20">
+                    <svg className="w-5 h-5 text-[#2DB6C1] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     <p className="text-sm text-gray-700"><strong>JAAK:</strong> {req.solution}</p>
@@ -227,13 +227,13 @@ export default function NOM151Page() {
         </section>
 
         {/* Use Cases */}
-        <section className="py-20 bg-[#0a0a0a]">
+        <section className="py-20 bg-[#0E1133]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#00d4aa]/10 border border-[#00d4aa]/20 rounded-full mb-6">
-                  <span className="w-2 h-2 bg-[#00d4aa] rounded-full"></span>
-                  <span className="text-[#00d4aa] text-sm font-medium">Casos de uso</span>
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#2DB6C1]/10 border border-[#2DB6C1]/20 rounded-full mb-6">
+                  <span className="w-2 h-2 bg-[#2DB6C1] rounded-full"></span>
+                  <span className="text-[#2DB6C1] text-sm font-medium">Casos de uso</span>
                 </div>
                 <h2 className="text-3xl md:text-4xl font-black text-white mb-6">
                   Documentos que puedes firmar
@@ -244,7 +244,7 @@ export default function NOM151Page() {
                 <div className="grid grid-cols-2 gap-4">
                   {useCases.map((useCase, index) => (
                     <div key={index} className="flex items-center gap-3">
-                      <svg className="w-5 h-5 text-[#00d4aa] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-5 h-5 text-[#2DB6C1] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
                       <span className="text-white/80 text-sm">{useCase}</span>

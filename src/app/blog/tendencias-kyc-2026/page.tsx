@@ -223,7 +223,7 @@ export default function TendenciasKYC2026() {
                 </li>
               </ol>
 
-              <div className="bg-[#0a0a0a] rounded-xl p-8 my-12">
+              <div className="bg-[#0E1133] rounded-xl p-8 my-12">
                 <h3 className="text-xl font-bold text-white mb-4">
                   Conclusión
                 </h3>

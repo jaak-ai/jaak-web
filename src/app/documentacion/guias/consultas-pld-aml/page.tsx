@@ -14,7 +14,7 @@ export default function ConsultasPldAml() {
       <Header />
       <main>
         {/* Hero */}
-        <section className="pt-32 pb-12 bg-[#0a0a0a]">
+        <section className="pt-32 pb-12 bg-[#0E1133]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <Link href="/documentacion" className="inline-flex items-center gap-2 text-white/60 hover:text-white mb-6 transition-colors">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -78,7 +78,7 @@ export default function ConsultasPldAml() {
                   Consulta una persona o empresa contra todas las listas de control:
                 </p>
 
-                <div className="bg-[#0a0a0a] rounded-lg overflow-hidden mb-4">
+                <div className="bg-[#0E1133] rounded-lg overflow-hidden mb-4">
                   <div className="px-4 py-2 bg-white/5 border-b border-white/10">
                     <span className="text-white/60 text-sm">POST /v1/aml/screen</span>
                   </div>
@@ -109,7 +109,7 @@ console.log(result);
                   </pre>
                 </div>
 
-                <div className="bg-[#0a0a0a] rounded-lg overflow-hidden mb-4">
+                <div className="bg-[#0E1133] rounded-lg overflow-hidden mb-4">
                   <div className="px-4 py-2 bg-white/5 border-b border-white/10">
                     <span className="text-white/60 text-sm">Consulta de persona moral</span>
                   </div>
@@ -135,7 +135,7 @@ const result = await jaak.aml.screen({
                   Cuando hay coincidencias potenciales, la respuesta incluye detalles:
                 </p>
 
-                <div className="bg-[#0a0a0a] rounded-lg overflow-hidden mb-4">
+                <div className="bg-[#0E1133] rounded-lg overflow-hidden mb-4">
                   <pre className="p-4 text-sm overflow-x-auto">
                     <code className="text-white">{`{
   "screeningId": "scr_xyz789",
@@ -178,7 +178,7 @@ const result = await jaak.aml.screen({
                   Para verificar múltiples registros de una vez:
                 </p>
 
-                <div className="bg-[#0a0a0a] rounded-lg overflow-hidden mb-4">
+                <div className="bg-[#0E1133] rounded-lg overflow-hidden mb-4">
                   <pre className="p-4 text-sm overflow-x-auto">
                     <code className="text-white">{`const batchResult = await jaak.aml.screenBatch({
   records: [
@@ -212,7 +212,7 @@ console.log(batchResult.estimatedTime); // "~5 minutes"`}</code>
                   Configura monitoreo automático para recibir alertas cuando tus clientes aparezcan en listas:
                 </p>
 
-                <div className="bg-[#0a0a0a] rounded-lg overflow-hidden mb-4">
+                <div className="bg-[#0E1133] rounded-lg overflow-hidden mb-4">
                   <pre className="p-4 text-sm overflow-x-auto">
                     <code className="text-white">{`// Agregar persona al monitoreo continuo
 await jaak.aml.monitor.add({
@@ -242,7 +242,7 @@ await jaak.aml.monitor.remove('customer_001');`}</code>
                   </pre>
                 </div>
 
-                <div className="bg-[#0a0a0a] rounded-lg overflow-hidden mb-4">
+                <div className="bg-[#0E1133] rounded-lg overflow-hidden mb-4">
                   <div className="px-4 py-2 bg-white/5 border-b border-white/10">
                     <span className="text-white/60 text-sm">Webhook: aml.alert</span>
                   </div>

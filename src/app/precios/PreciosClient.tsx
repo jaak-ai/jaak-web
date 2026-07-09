@@ -34,7 +34,7 @@ const PLANS = [
     id: "autoservicio",
     name: "Autoservicio",
     badge: "Empieza en minutos",
-    badgeColor: "#1ecad3",
+    badgeColor: "#2DB6C1",
     price: `Desde ${formatMXN(minAutoPrecio)} MXN`,
     priceSub: "por paquete · sin suscripción",
     desc: "Arma tu paquete combinando KYC, firma, validaciones y OCR, y actívalo en minutos. Compra en línea, sin contratos ni volumen mínimo.",
@@ -49,7 +49,7 @@ const PLANS = [
     cta: "Empezar ahora",
     ctaLink: "/autoservicio",
     ctaExternal: false,
-    color: "#1ecad3",
+    color: "#2DB6C1",
     popular: true,
   },
   {
@@ -185,7 +185,7 @@ export default function PreciosClient() {
         <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,1) 1px,transparent 1px)", backgroundSize: "32px 32px" }} />
         {/* Orbs */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="orb-drift-1 absolute rounded-full opacity-20" style={{ width: 500, height: 500, top: "-10%", right: "-6%", background: "radial-gradient(circle,#1ecad3 0%,transparent 70%)", filter: "blur(60px)" }} />
+          <div className="orb-drift-1 absolute rounded-full opacity-20" style={{ width: 500, height: 500, top: "-10%", right: "-6%", background: "radial-gradient(circle,#2DB6C1 0%,transparent 70%)", filter: "blur(60px)" }} />
           <div className="orb-drift-2 absolute rounded-full opacity-15" style={{ width: 420, height: 420, bottom: "-15%", left: "-8%", background: "radial-gradient(circle,#655dc6 0%,transparent 70%)", filter: "blur(60px)" }} />
         </div>
 
@@ -193,7 +193,7 @@ export default function PreciosClient() {
           <div className={`max-w-4xl mx-auto text-center ${reveal(heroReveal.isVisible)}`}>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight mb-6">
               Planes diseñados para{" "}
-              <span style={{ backgroundImage: "linear-gradient(90deg,#1ecad3,#655dc6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+              <span style={{ backgroundImage: "linear-gradient(90deg,#2DB6C1,#655dc6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
                 escalar con tu operación
               </span>
             </h1>
@@ -204,7 +204,7 @@ export default function PreciosClient() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <Link href="/autoservicio"
                 className="inline-flex items-center justify-center px-8 py-4 font-bold text-base text-white rounded-xl transition-all hover:scale-105"
-                style={{ background: "linear-gradient(135deg,#1ecad3,#655dc6)", boxShadow: "0 8px 32px rgba(30,202,211,0.3)" }}
+                style={{ background: "linear-gradient(135deg,#2DB6C1,#655dc6)", boxShadow: "0 8px 32px rgba(30,202,211,0.3)" }}
               >
                 Empezar con autoservicio →
               </Link>
@@ -219,7 +219,7 @@ export default function PreciosClient() {
             <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm" style={{ color: "rgba(255,255,255,0.5)" }}>
               {trustBadges.map((b) => (
                 <span key={b} className="flex items-center gap-1.5">
-                  <span style={{ color: "#1ecad3" }}>✓</span>{b}
+                  <span style={{ color: "#2DB6C1" }}>✓</span>{b}
                 </span>
               ))}
             </div>
@@ -235,7 +235,7 @@ export default function PreciosClient() {
       >
         <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${reveal(plansReveal.isVisible)}`}>
           <div className="text-center mb-14">
-            <span className="inline-block text-xs font-bold uppercase tracking-widest mb-4 px-3 py-1 rounded-full" style={{ background: "rgba(30,202,211,0.1)", color: "#1ecad3", border: "1px solid rgba(30,202,211,0.25)" }}>
+            <span className="inline-block text-xs font-bold uppercase tracking-widest mb-4 px-3 py-1 rounded-full" style={{ background: "rgba(30,202,211,0.1)", color: "#2DB6C1", border: "1px solid rgba(30,202,211,0.25)" }}>
               Modalidades
             </span>
             <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4">Elige tu modelo</h2>
@@ -259,7 +259,7 @@ export default function PreciosClient() {
               >
                 {plan.popular && (
                   <div className="absolute -top-4 left-1/2 -translate-x-1/2 text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full whitespace-nowrap text-white"
-                    style={{ background: `linear-gradient(90deg,${plan.color},#00d4aa)`, boxShadow: `0 4px 16px ${plan.color}60` }}>
+                    style={{ background: `linear-gradient(90deg,${plan.color},#2DB6C1)`, boxShadow: `0 4px 16px ${plan.color}60` }}>
                     Más popular
                   </div>
                 )}
@@ -306,7 +306,7 @@ export default function PreciosClient() {
                   href={plan.ctaLink}
                   className="block w-full text-center font-bold text-base py-3 rounded-xl transition-all duration-150 hover:opacity-90 active:scale-95"
                   style={plan.popular ? {
-                    background: `linear-gradient(90deg,${plan.color},#00d4aa)`,
+                    background: `linear-gradient(90deg,${plan.color},#2DB6C1)`,
                     color: "#fff",
                     boxShadow: `0 4px 20px ${plan.color}50`,
                   } : {
@@ -345,7 +345,7 @@ export default function PreciosClient() {
               <div key={row.feature} className={`grid grid-cols-5 ${i < COMPARISON.length - 1 ? "border-b" : ""}`} style={{ borderColor: "#f3f4f6", background: i % 2 === 0 ? "#fff" : "#fafafa" }}>
                 <div className="px-6 py-4 font-semibold text-gray-800 text-sm">{row.feature}</div>
                 {[row.auto, row.growth, row.enterprise, row.alliance].map((val, j) => (
-                  <div key={j} className="px-4 py-4 text-center text-sm" style={{ color: val === "✔️" ? "#1ecad3" : val === "❌" ? "#ef4444" : "#374151" }}>
+                  <div key={j} className="px-4 py-4 text-center text-sm" style={{ color: val === "✔️" ? "#2DB6C1" : val === "❌" ? "#ef4444" : "#374151" }}>
                     {val}
                   </div>
                 ))}
@@ -362,7 +362,7 @@ export default function PreciosClient() {
                   {[{l:"Autoservicio",v:row.auto},{l:"Crecimiento",v:row.growth},{l:"Enterprise",v:row.enterprise},{l:"Alianzas",v:row.alliance}].map(({l,v}) => (
                     <div key={l}>
                       <p className="text-gray-400 text-xs mb-0.5">{l}</p>
-                      <p style={{ color: v === "✔️" ? "#1ecad3" : v === "❌" ? "#ef4444" : "#374151" }}>{v}</p>
+                      <p style={{ color: v === "✔️" ? "#2DB6C1" : v === "❌" ? "#ef4444" : "#374151" }}>{v}</p>
                     </div>
                   ))}
                 </div>
@@ -384,7 +384,7 @@ export default function PreciosClient() {
         <div className={`max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 ${reveal(diffReveal.isVisible)}`}>
           <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
             No es solo validar identidad.{" "}
-            <span style={{ backgroundImage: "linear-gradient(90deg,#1ecad3,#655dc6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+            <span style={{ backgroundImage: "linear-gradient(90deg,#2DB6C1,#655dc6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
               Es poder demostrarlo.
             </span>
           </h2>
@@ -413,7 +413,7 @@ export default function PreciosClient() {
           </p>
           <Link href="/autoservicio"
             className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-white text-base transition-all hover:scale-105"
-            style={{ background: "linear-gradient(135deg,#1ecad3,#655dc6)", boxShadow: "0 8px 24px rgba(30,202,211,0.3)" }}
+            style={{ background: "linear-gradient(135deg,#2DB6C1,#655dc6)", boxShadow: "0 8px 24px rgba(30,202,211,0.3)" }}
           >
             Empezar ahora →
           </Link>
@@ -460,13 +460,13 @@ export default function PreciosClient() {
         style={{ background: "linear-gradient(135deg,#0D1833 0%,#12183F 60%,#1a1150 100%)" }}
       >
         <div className="absolute inset-0 pointer-events-none">
-          <div className="orb-drift-1 absolute rounded-full opacity-20" style={{ width: 500, height: 500, top: "-20%", right: "-10%", background: "radial-gradient(circle,#1ecad3 0%,transparent 70%)", filter: "blur(60px)" }} />
+          <div className="orb-drift-1 absolute rounded-full opacity-20" style={{ width: 500, height: 500, top: "-20%", right: "-10%", background: "radial-gradient(circle,#2DB6C1 0%,transparent 70%)", filter: "blur(60px)" }} />
           <div className="orb-drift-2 absolute rounded-full opacity-15" style={{ width: 400, height: 400, bottom: "-20%", left: "-10%", background: "radial-gradient(circle,#655dc6 0%,transparent 70%)", filter: "blur(60px)" }} />
         </div>
         <div className={`max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 ${reveal(ctaReveal.isVisible)}`}>
           <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4 leading-tight">
             Activa tu operación{" "}
-            <span style={{ backgroundImage: "linear-gradient(90deg,#1ecad3,#655dc6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+            <span style={{ backgroundImage: "linear-gradient(90deg,#2DB6C1,#655dc6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
               en minutos
             </span>
           </h2>
@@ -476,7 +476,7 @@ export default function PreciosClient() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/autoservicio"
               className="inline-flex items-center justify-center px-8 py-4 font-bold text-base text-white rounded-xl transition-all hover:scale-105"
-              style={{ background: "linear-gradient(135deg,#1ecad3,#655dc6)", boxShadow: "0 8px 32px rgba(30,202,211,0.3)" }}
+              style={{ background: "linear-gradient(135deg,#2DB6C1,#655dc6)", boxShadow: "0 8px 32px rgba(30,202,211,0.3)" }}
             >
               Empezar con autoservicio →
             </Link>

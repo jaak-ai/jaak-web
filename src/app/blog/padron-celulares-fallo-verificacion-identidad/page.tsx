@@ -203,7 +203,7 @@ export default function PadronCelularesFalloVerificacion() {
                 En JAAK abordamos el problema desde otro ángulo:
               </p>
 
-              <div className="bg-[#00d4aa]/10 rounded-xl p-8 my-8">
+              <div className="bg-[#2DB6C1]/10 rounded-xl p-8 my-8">
                 <h3 className="text-xl font-bold text-gray-900 mb-4">
                   1. Prueba de vida activa y en tiempo real
                 </h3>
@@ -218,7 +218,7 @@ export default function PadronCelularesFalloVerificacion() {
                   <li>Responde a estímulos en tiempo real</li>
                   <li>Detecta deepfakes y replay attacks</li>
                 </ul>
-                <p className="text-[#00d4aa] font-bold mt-4">
+                <p className="text-[#2DB6C1] font-bold mt-4">
                   Sin vida real, no hay identidad.
                 </p>
               </div>
@@ -288,7 +288,7 @@ export default function PadronCelularesFalloVerificacion() {
                 Entonces <strong>no es un padrón, es una fábrica de problemas legales y reputacionales</strong>.
               </p>
 
-              <div className="bg-[#0a0a0a] rounded-xl p-8 my-12">
+              <div className="bg-[#0E1133] rounded-xl p-8 my-12">
                 <h3 className="text-xl font-bold text-white mb-4">
                   Conclusión
                 </h3>

@@ -83,7 +83,7 @@ export const mdxComponents: MDXComponents = {
       }
     }
     return (
-      <pre className="mb-4 overflow-x-auto rounded-lg bg-[#0a0a0a] p-4 text-sm text-gray-100">
+      <pre className="mb-4 overflow-x-auto rounded-lg bg-[#0E1133] p-4 text-sm text-gray-100">
         {children}
       </pre>
     )

@@ -83,7 +83,7 @@ export default function HomepageDifferentiator() {
             No solo verificas identidad.{" "}
             <span
               style={{
-                background: "linear-gradient(90deg, #1ECAD3, #2AD796)",
+                background: "linear-gradient(90deg, #2DB6C1, #2AD796)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
@@ -141,7 +141,7 @@ export default function HomepageDifferentiator() {
               <span
                 className="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full"
                 style={{
-                  color: "#1ECAD3",
+                  color: "#2DB6C1",
                   background: "rgba(30,202,211,0.12)",
                   border: "1px solid rgba(30,202,211,0.20)",
                 }}
@@ -181,7 +181,7 @@ export default function HomepageDifferentiator() {
             <div key={i} className="hp-glass rounded-2xl p-5">
               <div
                 className="w-9 h-9 rounded-xl flex items-center justify-center mb-3"
-                style={{ background: "rgba(30,202,211,0.14)", color: "#1ECAD3" }}
+                style={{ background: "rgba(30,202,211,0.14)", color: "#2DB6C1" }}
               >
                 {d.icon}
               </div>

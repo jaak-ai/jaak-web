@@ -794,7 +794,7 @@ export default function SimuladorPLD() {
           </div>
 
           {/* Block 5: Recommended Modality */}
-          <div className="bg-[#0a0a0a] rounded-xl p-6 text-white">
+          <div className="bg-[#0E1133] rounded-xl p-6 text-white">
             <h4 className="text-xs font-bold text-white/50 uppercase tracking-wider mb-4">Modalidad JAAK recomendada</h4>
             <div className="flex items-center gap-3 mb-4">
               <span className={`px-4 py-2 rounded-lg font-bold text-sm ${

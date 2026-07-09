@@ -117,18 +117,18 @@ export default function ContactoPage() {
       <Header />
       <main>
         {/* Hero Section */}
-        <section className="pt-32 pb-20 bg-[#0a0a0a] relative overflow-hidden">
+        <section className="pt-32 pb-20 bg-[#0E1133] relative overflow-hidden">
           {/* Background gradient effects */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-[#0066ff]/10 rounded-full blur-[120px]" />
-            <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-[#00d4aa]/10 rounded-full blur-[100px]" />
+            <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-[#2DB6C1]/10 rounded-full blur-[100px]" />
           </div>
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="text-center max-w-3xl mx-auto mb-16">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6">
                 Hablemos de tu{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0066ff] to-[#00d4aa]">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0066ff] to-[#2DB6C1]">
                   proyecto
                 </span>
               </h1>
@@ -148,7 +148,7 @@ export default function ContactoPage() {
                 <div className="space-y-6">
                   {benefits.map((benefit, index) => (
                     <div key={index} className="flex gap-4">
-                      <div className="w-10 h-10 bg-gradient-to-br from-[#0066ff] to-[#00d4aa] rounded-lg flex items-center justify-center flex-shrink-0">
+                      <div className="w-10 h-10 bg-gradient-to-br from-[#0066ff] to-[#2DB6C1] rounded-lg flex items-center justify-center flex-shrink-0">
                         <svg
                           className="w-5 h-5 text-white"
                           fill="none"
@@ -372,7 +372,7 @@ export default function ContactoPage() {
         </section>
 
         {/* Additional Info Section */}
-        <section className="py-20 bg-[#0a0a0a] border-t border-white/10">
+        <section className="py-20 bg-[#0E1133] border-t border-white/10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-3 gap-8">
               {/* Email */}

@@ -247,7 +247,7 @@ export default function MejoresPracticasCompliance() {
               <div className="overflow-x-auto my-8">
                 <table className="w-full border-collapse">
                   <thead>
-                    <tr className="bg-[#0a0a0a] text-white">
+                    <tr className="bg-[#0E1133] text-white">
                       <th className="px-4 py-3 text-left">Nivel de riesgo</th>
                       <th className="px-4 py-3 text-left">Características</th>
                       <th className="px-4 py-3 text-left">Debida diligencia</th>
@@ -494,7 +494,7 @@ export default function MejoresPracticasCompliance() {
                 </div>
               </div>
 
-              <div className="bg-[#0a0a0a] rounded-xl p-8 my-12">
+              <div className="bg-[#0E1133] rounded-xl p-8 my-12">
                 <h3 className="text-xl font-bold text-white mb-4">
                   Conclusión
                 </h3>

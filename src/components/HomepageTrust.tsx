@@ -94,7 +94,7 @@ export default function HomepageTrust() {
           <div
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
             style={{
-              color: "#1ECAD3",
+              color: "#2DB6C1",
               border: "1px solid rgba(30,202,211,0.22)",
               background: "rgba(30,202,211,0.08)",
             }}
@@ -105,7 +105,7 @@ export default function HomepageTrust() {
             Diseñado bajo los marcos{" "}
             <span
               style={{
-                background: "linear-gradient(90deg, #1ECAD3, #2AD796)",
+                background: "linear-gradient(90deg, #2DB6C1, #2AD796)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
@@ -145,7 +145,7 @@ export default function HomepageTrust() {
                 >
                   <div
                     className="text-sm font-black mb-1"
-                    style={{ color: "#1ECAD3" }}
+                    style={{ color: "#2DB6C1" }}
                   >
                     {r.name}
                   </div>

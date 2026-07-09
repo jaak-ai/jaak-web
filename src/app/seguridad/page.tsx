@@ -181,12 +181,12 @@ export default function SeguridadPage() {
       <Header />
       <main>
         {/* Hero Section */}
-        <section className="pt-32 pb-20 bg-[#0a0a0a]">
+        <section className="pt-32 pb-20 bg-[#0E1133]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#00d4aa]/10 border border-[#00d4aa]/20 rounded-full mb-6">
-                <span className="w-2 h-2 bg-[#00d4aa] rounded-full"></span>
-                <span className="text-[#00d4aa] text-sm font-medium">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#2DB6C1]/10 border border-[#2DB6C1]/20 rounded-full mb-6">
+                <span className="w-2 h-2 bg-[#2DB6C1] rounded-full"></span>
+                <span className="text-[#2DB6C1] text-sm font-medium">
                   Seguridad Empresarial
                 </span>
               </div>
@@ -269,7 +269,7 @@ export default function SeguridadPage() {
                           className="flex items-center gap-2 text-gray-700"
                         >
                           <svg
-                            className="w-5 h-5 text-[#00d4aa] flex-shrink-0"
+                            className="w-5 h-5 text-[#2DB6C1] flex-shrink-0"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -437,7 +437,7 @@ export default function SeguridadPage() {
         {/* Vulnerability Disclosure */}
         <section className="py-20 bg-white">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="bg-[#0a0a0a] rounded-2xl p-8 md:p-12">
+            <div className="bg-[#0E1133] rounded-2xl p-8 md:p-12">
               <div className="text-center mb-8">
                 <h2 className="text-3xl font-black text-white mb-4">
                   Divulgación responsable de vulnerabilidades
@@ -453,19 +453,19 @@ export default function SeguridadPage() {
                 </h3>
                 <ul className="space-y-2 text-white/70">
                   <li className="flex items-center gap-2">
-                    <svg className="w-5 h-5 text-[#00d4aa]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-[#2DB6C1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     Aplicaciones web en *.jaak.ai
                   </li>
                   <li className="flex items-center gap-2">
-                    <svg className="w-5 h-5 text-[#00d4aa]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-[#2DB6C1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     APIs públicas documentadas
                   </li>
                   <li className="flex items-center gap-2">
-                    <svg className="w-5 h-5 text-[#00d4aa]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-[#2DB6C1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     SDKs oficiales de JAAK

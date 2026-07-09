@@ -76,7 +76,7 @@ export default function InstitucionesFinancieras() {
       <Header />
       <main>
         {/* Hero */}
-        <section className="pt-32 pb-20 bg-[#0a0a0a]">
+        <section className="pt-32 pb-20 bg-[#0E1133]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
@@ -98,7 +98,7 @@ export default function InstitucionesFinancieras() {
                     Hablar con ventas
                   </Link>
                   <Link
-                    href="https://platform.dev.jaak.ai/#/signup"
+                    href="https://platform.jaak.ai/#/signup"
                     target="_blank"
                     className="px-6 py-3 bg-white/10 text-white font-semibold rounded-lg hover:bg-white/20 transition-all"
                   >
@@ -164,7 +164,7 @@ export default function InstitucionesFinancieras() {
         </section>
 
         {/* Benefits */}
-        <section className="py-20 bg-[#0a0a0a]">
+        <section className="py-20 bg-[#0E1133]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
@@ -174,7 +174,7 @@ export default function InstitucionesFinancieras() {
                 <div className="space-y-4">
                   {benefits.map((benefit, index) => (
                     <div key={index} className="flex items-center gap-4">
-                      <div className="w-6 h-6 bg-[#00d4aa] rounded-full flex items-center justify-center flex-shrink-0">
+                      <div className="w-6 h-6 bg-[#2DB6C1] rounded-full flex items-center justify-center flex-shrink-0">
                         <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                         </svg>
@@ -191,11 +191,11 @@ export default function InstitucionesFinancieras() {
                 </div>
                 <div className="grid grid-cols-2 gap-6 mt-8">
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-[#00d4aa]">&lt;30s</div>
+                    <div className="text-3xl font-bold text-[#2DB6C1]">&lt;30s</div>
                     <div className="text-white/50 text-sm">tiempo promedio</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-[#00d4aa]">99.9%</div>
+                    <div className="text-3xl font-bold text-[#2DB6C1]">99.9%</div>
                     <div className="text-white/50 text-sm">disponibilidad</div>
                   </div>
                 </div>

@@ -142,7 +142,7 @@ export default function AutoservicioFlujoTabs({ onStart }: { onStart?: () => voi
           onClick={() => switchTab("firma")}
           style={{
             background: active === "firma"
-              ? "linear-gradient(135deg, #1ecad3, #655dc6)"
+              ? "linear-gradient(135deg, #2DB6C1, #655dc6)"
               : "transparent",
             border: active === "firma" ? "none" : "1.5px solid #d1d5db",
             color: active === "firma" ? "#fff" : "#374151",
@@ -156,7 +156,7 @@ export default function AutoservicioFlujoTabs({ onStart }: { onStart?: () => voi
           onClick={() => switchTab("kyc")}
           style={{
             background: active === "kyc"
-              ? "linear-gradient(135deg, #1ecad3, #655dc6)"
+              ? "linear-gradient(135deg, #2DB6C1, #655dc6)"
               : "transparent",
             border: active === "kyc" ? "none" : "1.5px solid #d1d5db",
             color: active === "kyc" ? "#fff" : "#374151",
@@ -173,7 +173,7 @@ export default function AutoservicioFlujoTabs({ onStart }: { onStart?: () => voi
         {/* Vertical gradient line */}
         <div
           className="absolute left-8 top-8 bottom-8 w-0.5"
-          style={{ background: "linear-gradient(180deg, #1ecad3 0%, #655dc6 100%)" }}
+          style={{ background: "linear-gradient(180deg, #2DB6C1 0%, #655dc6 100%)" }}
         />
 
         <div className="flex flex-col gap-6">
@@ -202,7 +202,7 @@ function StepCard({ step, delay, onStart }: { step: Step; delay: number; onStart
     },
     advantage: {
       bg: "rgba(240,253,250,0.8)",
-      border: "#1ecad3",
+      border: "#2DB6C1",
       badge: "Ventaja JAAK",
       badgeBg: "rgba(30,202,211,0.12)",
     },
@@ -226,7 +226,7 @@ function StepCard({ step, delay, onStart }: { step: Step; delay: number; onStart
         <div
           className="w-16 h-16 rounded-full flex items-center justify-center font-bold text-lg text-white shadow-lg"
           style={{
-            background: "linear-gradient(135deg, #1ecad3, #655dc6)",
+            background: "linear-gradient(135deg, #2DB6C1, #655dc6)",
             boxShadow: "0 4px 16px rgba(30,202,211,0.35)",
           }}
         >
@@ -292,7 +292,7 @@ function StepCard({ step, delay, onStart }: { step: Step; delay: number; onStart
               type="button"
               onClick={() => onStart?.()}
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-base text-white transition-all duration-200 hover:opacity-90"
-              style={{ background: "linear-gradient(135deg, #1ecad3, #655dc6)" }}
+              style={{ background: "linear-gradient(135deg, #2DB6C1, #655dc6)" }}
             >
               Empezar ahora →
             </button>

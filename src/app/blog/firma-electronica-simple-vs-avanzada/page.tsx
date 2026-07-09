@@ -180,7 +180,7 @@ export default function FirmaElectronicaSimpleVsAvanzada() {
                   <p className="font-bold text-white text-lg">Firma Simple</p>
                   <p className="text-white/80 text-sm mt-1">Clic / imagen / OTP</p>
                 </div>
-                <div className="bg-[#1ECAD3] p-5">
+                <div className="bg-[#2DB6C1] p-5">
                   <p className="font-bold text-white text-lg">Firma Digital NOM-151</p>
                   <p className="text-white/80 text-sm mt-1">Certificada con sello de tiempo</p>
                 </div>
@@ -272,7 +272,7 @@ export default function FirmaElectronicaSimpleVsAvanzada() {
                     <li>Procesos donde una disputa es muy poco probable o de consecuencias mínimas</li>
                   </ul>
                 </div>
-                <div className="bg-[#1ECAD3]/5 rounded-xl p-6">
+                <div className="bg-[#2DB6C1]/5 rounded-xl p-6">
                   <p className="font-bold text-gray-900 mb-2">Firma Digital con Validez NOM-151 — para contratos que deben sostenerse</p>
                   <ul className="list-disc pl-5 space-y-1 text-gray-600">
                     <li>Contratos de arrendamiento residencial o comercial</li>

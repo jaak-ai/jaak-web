@@ -63,19 +63,19 @@ export default function SignaCalculadora() {
       <Header />
       <main>
         {/* Hero */}
-        <section className="pt-32 pb-12 bg-gradient-to-br from-[#0a0a0a] to-[#1a1a1a]">
+        <section className="pt-32 pb-12 bg-gradient-to-br from-[#0E1133] to-[#1a1a1a]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#00d4aa]/10 border border-[#00d4aa]/20 rounded-full mb-6">
-              <span className="w-2 h-2 bg-[#00d4aa] rounded-full"></span>
-              <span className="text-[#00d4aa] text-sm font-medium">Calculadora Inteligente</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#2DB6C1]/10 border border-[#2DB6C1]/20 rounded-full mb-6">
+              <span className="w-2 h-2 bg-[#2DB6C1] rounded-full"></span>
+              <span className="text-[#2DB6C1] text-sm font-medium">Calculadora Inteligente</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-black text-white mb-6">
-              🧮 <span className="text-[#00d4aa]">Calculadora</span> Signa vs Mifiel - 
+              🧮 <span className="text-[#2DB6C1]">Calculadora</span> Signa vs Mifiel - 
               <span className="text-white">¿Cuánto Ahorras?</span>
             </h1>
             <p className="text-xl text-white/70 max-w-2xl mx-auto">
               <strong className="text-white">Calcula tu ahorro exacto</strong> cambiando de Mifiel a Signa. 
-              <strong className="text-[#00d4aa]">Promedio: $26,000+ MXN anuales</strong> con 50% menos por firma electrónica.
+              <strong className="text-[#2DB6C1]">Promedio: $26,000+ MXN anuales</strong> con 50% menos por firma electrónica.
             </p>
           </div>
         </section>
@@ -97,7 +97,7 @@ export default function SignaCalculadora() {
                     <input 
                       type="number" 
                       id="monthly-volume" 
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-[#00d4aa] focus:outline-none"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-[#2DB6C1] focus:outline-none"
                       placeholder="ej: 150"
                       min="1"
                     />
@@ -108,7 +108,7 @@ export default function SignaCalculadora() {
                     <label className="block text-gray-800 text-sm font-semibold mb-2">
                       ¿Cuánto pagas actualmente por firma?
                     </label>
-                    <select id="current-price" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-[#00d4aa] focus:outline-none">
+                    <select id="current-price" className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-[#2DB6C1] focus:outline-none">
                       <option value="29.90">Mifiel ($29.90 MXN)</option>
                       <option value="25.00">DocuSign (~$25.00 USD ≈ $450 MXN)</option>
                       <option value="35.00">Otro proveedor ($35.00 MXN)</option>
@@ -117,7 +117,7 @@ export default function SignaCalculadora() {
                     <input 
                       type="number" 
                       id="custom-price" 
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-[#00d4aa] focus:outline-none mt-2 hidden"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-[#2DB6C1] focus:outline-none mt-2 hidden"
                       placeholder="Ingresa tu precio por firma"
                       step="0.01"
                     />
@@ -130,7 +130,7 @@ export default function SignaCalculadora() {
                     <input 
                       type="number" 
                       id="additional-costs" 
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-[#00d4aa] focus:outline-none"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-[#2DB6C1] focus:outline-none"
                       placeholder="ej: 500"
                       min="0"
                     />
@@ -144,7 +144,7 @@ export default function SignaCalculadora() {
                     <input 
                       type="number" 
                       id="team-size" 
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-[#00d4aa] focus:outline-none"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-[#2DB6C1] focus:outline-none"
                       placeholder="ej: 5"
                       min="1"
                       defaultValue="3"
@@ -154,7 +154,7 @@ export default function SignaCalculadora() {
 
                   <button 
                     id="calculate-btn"
-                    className="w-full px-6 py-4 bg-[#00d4aa] text-black font-bold text-lg rounded-lg hover:bg-[#00c499] transition-all"
+                    className="w-full px-6 py-4 bg-[#2DB6C1] text-black font-bold text-lg rounded-lg hover:bg-[#00c499] transition-all"
                   >
                     🧮 Calcular Mi Ahorro
                   </button>
@@ -162,7 +162,7 @@ export default function SignaCalculadora() {
               </div>
 
               {/* Results Panel */}
-              <div id="results-panel" className="bg-gradient-to-br from-[#00d4aa]/5 to-[#0066ff]/5 border-2 border-[#00d4aa]/20 rounded-2xl p-8 opacity-0 transform translate-x-4 transition-all duration-500">
+              <div id="results-panel" className="bg-gradient-to-br from-[#2DB6C1]/5 to-[#0066ff]/5 border-2 border-[#2DB6C1]/20 rounded-2xl p-8 opacity-0 transform translate-x-4 transition-all duration-500">
                 <h2 className="text-2xl font-bold text-gray-900 mb-8">💸 Tu Ahorro Potencial</h2>
                 
                 {/* Savings Summary */}
@@ -171,9 +171,9 @@ export default function SignaCalculadora() {
                     <h3 className="text-sm text-gray-600 font-medium mb-2">Ahorro Mensual</h3>
                     <span id="monthly-savings" className="text-3xl font-black text-[#0066ff]">$0</span>
                   </div>
-                  <div className="bg-[#00d4aa]/10 border border-[#00d4aa]/30 rounded-xl p-6 text-center">
+                  <div className="bg-[#2DB6C1]/10 border border-[#2DB6C1]/30 rounded-xl p-6 text-center">
                     <h3 className="text-sm text-gray-600 font-medium mb-2">Ahorro Anual</h3>
-                    <span id="annual-savings" className="text-3xl font-black text-[#00d4aa]">$0</span>
+                    <span id="annual-savings" className="text-3xl font-black text-[#2DB6C1]">$0</span>
                   </div>
                 </div>
 
@@ -188,7 +188,7 @@ export default function SignaCalculadora() {
                     </div>
                     <div className="flex justify-between items-center py-2 border-b border-gray-200">
                       <span className="text-sm text-gray-600">Costo por firma con Signa</span>
-                      <span className="font-semibold text-[#00d4aa]">$15.00</span>
+                      <span className="font-semibold text-[#2DB6C1]">$15.00</span>
                     </div>
                     <div className="flex justify-between items-center py-2 border-b border-gray-200">
                       <span className="text-sm text-gray-600">Volumen mensual</span>
@@ -200,7 +200,7 @@ export default function SignaCalculadora() {
                     </div>
                     <div className="flex justify-between items-center py-2 border-b border-gray-200">
                       <span className="text-sm text-gray-600">Total mensual con Signa</span>
-                      <span id="our-monthly-total" className="font-semibold text-[#00d4aa]">$1,500</span>
+                      <span id="our-monthly-total" className="font-semibold text-[#2DB6C1]">$1,500</span>
                     </div>
                     <div className="flex justify-between items-center py-3 bg-red-50 rounded-lg px-4">
                       <span className="text-sm font-bold text-gray-900">Diferencia mensual</span>
@@ -213,23 +213,23 @@ export default function SignaCalculadora() {
                 <div className="grid grid-cols-3 gap-4 mb-8">
                   <div className="text-center p-4 bg-white/50 rounded-lg">
                     <div className="text-xs text-gray-500 mb-1">Tiempo ROI</div>
-                    <div className="text-lg font-bold text-[#00d4aa]">Inmediato</div>
+                    <div className="text-lg font-bold text-[#2DB6C1]">Inmediato</div>
                     <div className="text-xs text-gray-500">Desde día 1</div>
                   </div>
                   <div className="text-center p-4 bg-white/50 rounded-lg">
                     <div className="text-xs text-gray-500 mb-1">% Ahorro</div>
-                    <div id="savings-percentage" className="text-lg font-bold text-[#00d4aa]">50%</div>
+                    <div id="savings-percentage" className="text-lg font-bold text-[#2DB6C1]">50%</div>
                     <div className="text-xs text-gray-500">Reducción costos</div>
                   </div>
                   <div className="text-center p-4 bg-white/50 rounded-lg">
                     <div className="text-xs text-gray-500 mb-1">Migración</div>
-                    <div className="text-lg font-bold text-[#00d4aa]">Gratis</div>
+                    <div className="text-lg font-bold text-[#2DB6C1]">Gratis</div>
                     <div className="text-xs text-gray-500">Sin costo</div>
                   </div>
                 </div>
 
                 {/* CTA */}
-                <div className="bg-gradient-to-r from-[#00d4aa] to-[#0066ff] rounded-xl p-6 text-center text-white">
+                <div className="bg-gradient-to-r from-[#2DB6C1] to-[#0066ff] rounded-xl p-6 text-center text-white">
                   <h3 className="text-lg font-bold mb-2">🚀 ¿Listo para Ahorrar?</h3>
                   <p className="text-sm mb-4 opacity-90">Con estos ahorros, la migración se paga sola desde el primer día.</p>
                   <div className="flex flex-wrap gap-2 justify-center">
@@ -267,7 +267,7 @@ export default function SignaCalculadora() {
                   <h3 className="text-xl font-bold text-gray-900 mb-4">Inmobiliaria</h3>
                   <div className="bg-gray-50 rounded-lg p-4 mb-4">
                     <div className="text-sm text-gray-600 mb-1">500 docs/mes</div>
-                    <div className="text-2xl font-bold text-[#00d4aa]">$89,400/año</div>
+                    <div className="text-2xl font-bold text-[#2DB6C1]">$89,400/año</div>
                     <div className="text-sm text-gray-500">de ahorro</div>
                   </div>
                   <p className="text-sm text-gray-600">Contratos de compraventa, arrendamiento y poderes notariales</p>
@@ -280,7 +280,7 @@ export default function SignaCalculadora() {
                   <h3 className="text-xl font-bold text-gray-900 mb-4">Bufete Legal</h3>
                   <div className="bg-gray-50 rounded-lg p-4 mb-4">
                     <div className="text-sm text-gray-600 mb-1">300 docs/mes</div>
-                    <div className="text-2xl font-bold text-[#00d4aa]">$53,640/año</div>
+                    <div className="text-2xl font-bold text-[#2DB6C1]">$53,640/año</div>
                     <div className="text-sm text-gray-500">de ahorro</div>
                   </div>
                   <p className="text-sm text-gray-600">Contratos, demandas, documentos notariales y poderes</p>
@@ -293,7 +293,7 @@ export default function SignaCalculadora() {
                   <h3 className="text-xl font-bold text-gray-900 mb-4">Empresa</h3>
                   <div className="bg-gray-50 rounded-lg p-4 mb-4">
                     <div className="text-sm text-gray-600 mb-1">200 docs/mes</div>
-                    <div className="text-2xl font-bold text-[#00d4aa]">$35,760/año</div>
+                    <div className="text-2xl font-bold text-[#2DB6C1]">$35,760/año</div>
                     <div className="text-sm text-gray-500">de ahorro</div>
                   </div>
                   <p className="text-sm text-gray-600">Contratos laborales, proveedores y documentos internos</p>

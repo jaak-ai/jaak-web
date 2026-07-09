@@ -60,7 +60,7 @@ const products = [
   {
     name: "KYC Digital",
     description: "Verificación de identidad con INE, CURP y validación biométrica. Cumplimiento AML/LAFT.",
-    color: "#1ECAD3",
+    color: "#2DB6C1",
   },
   {
     name: "Liveness Detection",
@@ -70,7 +70,7 @@ const products = [
   {
     name: "Firma Digital NOM-151",
     description: "Firma electrónica con sellado de tiempo certificado. Válida para contratos financieros.",
-    color: "#1ECAD3",
+    color: "#2DB6C1",
   },
 ];
 
@@ -123,10 +123,10 @@ export default function FinancierasPage() {
       <Header />
       <main>
         {/* Hero */}
-        <section className="pt-32 pb-20 bg-[#202945] relative overflow-hidden">
+        <section className="pt-32 pb-20 bg-[#212A45] relative overflow-hidden">
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <div className="absolute top-1/3 right-0 w-[500px] h-[500px] bg-[#655DC6]/15 rounded-full blur-[120px]" />
-            <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-[#1ECAD3]/10 rounded-full blur-[100px]" />
+            <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-[#2DB6C1]/10 rounded-full blur-[100px]" />
           </div>
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -139,7 +139,7 @@ export default function FinancierasPage() {
 
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
                   Cumplimiento{" "}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#655DC6] to-[#1ECAD3]">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#655DC6] to-[#2DB6C1]">
                     AML/LAFT
                   </span>{" "}
                   sin fricción. KYC que se integra en horas.
@@ -158,7 +158,7 @@ export default function FinancierasPage() {
                     Habla con un experto hoy
                   </a>
                   <Link
-                    href="https://platform.dev.jaak.ai/#/signup"
+                    href="https://platform.jaak.ai/#/signup"
                     target="_blank"
                     className="px-6 py-3 bg-white/10 border border-white/20 text-white font-semibold rounded-lg hover:bg-white/20 transition-all"
                   >
@@ -183,10 +183,10 @@ export default function FinancierasPage() {
                   <h3 className="text-white font-bold text-lg mb-6">Panel de cumplimiento</h3>
                   <div className="space-y-4">
                     {[
-                      { label: "Verificaciones hoy", value: "1,234", color: "#1ECAD3" },
+                      { label: "Verificaciones hoy", value: "1,234", color: "#2DB6C1" },
                       { label: "Tasa de aprobación", value: "97.2%", color: "#655DC6" },
                       { label: "Fraudes detectados", value: "18", color: "#f59e0b" },
-                      { label: "Tiempo promedio", value: "28s", color: "#1ECAD3" },
+                      { label: "Tiempo promedio", value: "28s", color: "#2DB6C1" },
                     ].map((item, i) => (
                       <div key={i} className="flex justify-between items-center p-3 bg-white/5 rounded-lg">
                         <span className="text-white/60 text-sm">{item.label}</span>
@@ -207,7 +207,7 @@ export default function FinancierasPage() {
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14">
-              <h2 className="text-3xl md:text-4xl font-black text-[#202945] mb-4">
+              <h2 className="text-3xl md:text-4xl font-black text-[#212A45] mb-4">
                 Los problemas que cuestan más de lo que crees
               </h2>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto">
@@ -225,7 +225,7 @@ export default function FinancierasPage() {
                   <div className="w-14 h-14 bg-[#655DC6]/10 rounded-xl flex items-center justify-center text-[#655DC6] mb-5">
                     {point.icon}
                   </div>
-                  <h3 className="text-xl font-bold text-[#202945] mb-3">{point.title}</h3>
+                  <h3 className="text-xl font-bold text-[#212A45] mb-3">{point.title}</h3>
                   <p className="text-gray-600">{point.description}</p>
                 </div>
               ))}
@@ -234,7 +234,7 @@ export default function FinancierasPage() {
         </section>
 
         {/* How it works */}
-        <section className="py-20 bg-[#202945]">
+        <section className="py-20 bg-[#212A45]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14">
               <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
@@ -263,7 +263,7 @@ export default function FinancierasPage() {
         <section className="py-20 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14">
-              <h2 className="text-3xl md:text-4xl font-black text-[#202945] mb-4">
+              <h2 className="text-3xl md:text-4xl font-black text-[#212A45] mb-4">
                 Stack completo de cumplimiento
               </h2>
               <p className="text-xl text-gray-600">
@@ -281,7 +281,7 @@ export default function FinancierasPage() {
                     className="w-3 h-3 rounded-full mb-5"
                     style={{ backgroundColor: product.color }}
                   />
-                  <h3 className="text-2xl font-black text-[#202945] mb-3">{product.name}</h3>
+                  <h3 className="text-2xl font-black text-[#212A45] mb-3">{product.name}</h3>
                   <p className="text-gray-600">{product.description}</p>
                 </div>
               ))}
@@ -304,7 +304,7 @@ export default function FinancierasPage() {
         </section>
 
         {/* CTA + Form */}
-        <section id="contacto" className="py-20 bg-[#202945]">
+        <section id="contacto" className="py-20 bg-[#212A45]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-16 items-start">
               {/* Left */}
@@ -351,7 +351,7 @@ export default function FinancierasPage() {
 
               {/* Form */}
               <div className="bg-white rounded-2xl p-8 shadow-2xl">
-                <h3 className="text-2xl font-bold text-[#202945] mb-2">
+                <h3 className="text-2xl font-bold text-[#212A45] mb-2">
                   Habla con un especialista
                 </h3>
                 <p className="text-gray-500 mb-8">

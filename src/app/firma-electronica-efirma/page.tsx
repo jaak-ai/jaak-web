@@ -79,7 +79,7 @@ export default function FirmaEfirmaPage() {
         >
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <nav className="flex items-center gap-2 text-xs text-gray-600 mb-8" aria-label="Navegación">
-              <Link href="/firma-electronica" className="hover:text-[#1ECAD3] transition-colors">
+              <Link href="/firma-electronica" className="hover:text-[#2DB6C1] transition-colors">
                 Firma Electrónica
               </Link>
               <span aria-hidden="true">›</span>
@@ -97,7 +97,7 @@ export default function FirmaEfirmaPage() {
               Firma con{" "}
               <span
                 style={{
-                  background: "linear-gradient(135deg, #3B82F6, #1ECAD3)",
+                  background: "linear-gradient(135deg, #3B82F6, #2DB6C1)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
@@ -211,7 +211,7 @@ export default function FirmaEfirmaPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {[
                 { name: "e.firma", desc: "El firmante usa su certificado digital vigente del SAT como mecanismo de firma.", color: "#3B82F6" },
-                { name: "NOM-151", desc: "Fortalece la conservación e integridad del documento firmado en el tiempo.", color: "#1ECAD3" },
+                { name: "NOM-151", desc: "Fortalece la conservación e integridad del documento firmado en el tiempo.", color: "#2DB6C1" },
                 { name: "Biometría", desc: "Comprueba que la persona presente corresponde con su identidad facial.", color: "#8B5CF6" },
                 { name: "KYC", desc: "Verifica identidad documental, listas de riesgo y perfil del cliente.", color: "#10B981" },
               ].map((item) => (
@@ -295,7 +295,7 @@ export default function FirmaEfirmaPage() {
                   key={link.href}
                   href={link.href}
                   className="text-sm font-semibold px-4 py-2.5 rounded-xl transition-all hover:bg-white/10"
-                  style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "#1ECAD3" }}
+                  style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "#2DB6C1" }}
                 >
                   {link.label}
                 </Link>

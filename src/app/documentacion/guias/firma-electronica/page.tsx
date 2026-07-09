@@ -14,7 +14,7 @@ export default function FirmaElectronicaGuia() {
       <Header />
       <main>
         {/* Hero */}
-        <section className="pt-32 pb-12 bg-[#0a0a0a]">
+        <section className="pt-32 pb-12 bg-[#0E1133]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <Link href="/documentacion" className="inline-flex items-center gap-2 text-white/60 hover:text-white mb-6 transition-colors">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -55,7 +55,7 @@ export default function FirmaElectronicaGuia() {
                   Primero, sube el documento que deseas que sea firmado:
                 </p>
 
-                <div className="bg-[#0a0a0a] rounded-lg overflow-hidden mb-4">
+                <div className="bg-[#0E1133] rounded-lg overflow-hidden mb-4">
                   <div className="px-4 py-2 bg-white/5 border-b border-white/10">
                     <span className="text-white/60 text-sm">POST /v1/documents</span>
                   </div>
@@ -84,7 +84,7 @@ console.log(document.id); // doc_abc123`}</code>
                   Crea una sesión de firma con los firmantes y configuración:
                 </p>
 
-                <div className="bg-[#0a0a0a] rounded-lg overflow-hidden mb-4">
+                <div className="bg-[#0E1133] rounded-lg overflow-hidden mb-4">
                   <div className="px-4 py-2 bg-white/5 border-b border-white/10">
                     <span className="text-white/60 text-sm">POST /v1/signatures</span>
                   </div>
@@ -159,7 +159,7 @@ signature.signers.forEach(signer => {
                   Puedes enviar las invitaciones automáticamente o manualmente:
                 </p>
 
-                <div className="bg-[#0a0a0a] rounded-lg overflow-hidden mb-4">
+                <div className="bg-[#0E1133] rounded-lg overflow-hidden mb-4">
                   <pre className="p-4 text-sm overflow-x-auto">
                     <code className="text-white">{`// Opción 1: Envío automático por JAAK
 await jaak.signatures.sendInvitations(signature.id, {
@@ -184,7 +184,7 @@ signers.forEach(signer => {
                   Recibe el webhook cuando todos los firmantes hayan firmado:
                 </p>
 
-                <div className="bg-[#0a0a0a] rounded-lg overflow-hidden mb-4">
+                <div className="bg-[#0E1133] rounded-lg overflow-hidden mb-4">
                   <div className="px-4 py-2 bg-white/5 border-b border-white/10">
                     <span className="text-white/60 text-sm">Webhook: signature.completed</span>
                   </div>
@@ -238,7 +238,7 @@ signers.forEach(signer => {
               <div className="mb-12">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">5. Descargar documentos firmados</h2>
 
-                <div className="bg-[#0a0a0a] rounded-lg overflow-hidden mb-4">
+                <div className="bg-[#0E1133] rounded-lg overflow-hidden mb-4">
                   <pre className="p-4 text-sm overflow-x-auto">
                     <code className="text-white">{`// Obtener el documento firmado
 const signedDoc = await jaak.signatures.getSignedDocument(signature.id);
@@ -266,31 +266,31 @@ fs.writeFileSync('./evidencia.zip', evidenceBuffer);`}</code>
                 </p>
                 <ul className="space-y-2">
                   <li className="flex items-center gap-3">
-                    <svg className="w-5 h-5 text-[#00d4aa]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-[#2DB6C1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     <span className="text-gray-700">Documento original con hash SHA-256</span>
                   </li>
                   <li className="flex items-center gap-3">
-                    <svg className="w-5 h-5 text-[#00d4aa]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-[#2DB6C1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     <span className="text-gray-700">Documento firmado con sellos de tiempo</span>
                   </li>
                   <li className="flex items-center gap-3">
-                    <svg className="w-5 h-5 text-[#00d4aa]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-[#2DB6C1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     <span className="text-gray-700">Constancia NOM-151 de conservación</span>
                   </li>
                   <li className="flex items-center gap-3">
-                    <svg className="w-5 h-5 text-[#00d4aa]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-[#2DB6C1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     <span className="text-gray-700">Expediente de verificación de identidad de cada firmante</span>
                   </li>
                   <li className="flex items-center gap-3">
-                    <svg className="w-5 h-5 text-[#00d4aa]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-[#2DB6C1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     <span className="text-gray-700">Registro de auditoría con IPs y geolocalización</span>

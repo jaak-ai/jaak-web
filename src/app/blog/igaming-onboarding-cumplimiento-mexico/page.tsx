@@ -362,7 +362,7 @@ export default function IGamingOnboardingCumplimiento() {
         </div>
       </div>
 
-      <div className="bg-[#0a0a0a] rounded-xl p-8 my-8">
+      <div className="bg-[#0E1133] rounded-xl p-8 my-8">
         <p className="text-white text-xl font-medium italic text-center">
           En JAAK, vemos estos tres puntos como parte de una misma conversación: Identidad,
           Riesgo y Evidencia. Separarlos puede generar fricción operativa. Integrarlos puede

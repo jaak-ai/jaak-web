@@ -280,7 +280,7 @@ export default function QueEsNOM151ContratosDigitales() {
                   <div className="font-bold text-gray-900 text-sm uppercase tracking-wide">
                     Criterio
                   </div>
-                  <div className="font-bold text-[#1ECAD3] text-sm uppercase tracking-wide text-center">
+                  <div className="font-bold text-[#2DB6C1] text-sm uppercase tracking-wide text-center">
                     Con NOM-151
                   </div>
                   <div className="font-bold text-gray-400 text-sm uppercase tracking-wide text-center">

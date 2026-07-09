@@ -129,7 +129,7 @@ function ExclamationTriangleIcon() {
 
 export default function GuardianPage() {
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen bg-[#0E1133] text-white">
       <Header />
 
       {/* Hero Section */}

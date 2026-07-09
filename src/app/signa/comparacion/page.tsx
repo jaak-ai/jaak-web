@@ -68,14 +68,14 @@ export default function SignaComparacion() {
       <Header />
       <main>
         {/* Hero */}
-        <section className="pt-32 pb-16 bg-gradient-to-br from-[#0a0a0a] to-[#1a1a1a]">
+        <section className="pt-32 pb-16 bg-gradient-to-br from-[#0E1133] to-[#1a1a1a]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#0066ff]/10 border border-[#0066ff]/20 rounded-full mb-6">
               <span className="w-2 h-2 bg-[#0066ff] rounded-full"></span>
               <span className="text-[#0066ff] text-sm font-medium">Comparación Detallada</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-black text-white mb-6">
-              ⚖️ <span className="text-[#00d4aa]">Signa</span> vs <span className="text-red-400">Competencia</span>
+              ⚖️ <span className="text-[#2DB6C1]">Signa</span> vs <span className="text-red-400">Competencia</span>
             </h1>
             <p className="text-xl text-white/70 max-w-3xl mx-auto">
               Comparación lado a lado de características, precios y beneficios. 
@@ -112,15 +112,15 @@ export default function SignaComparacion() {
                     <div className="text-lg font-bold text-blue-700">$25.00</div>
                     <div className="text-xs text-blue-600">USD</div>
                   </div>
-                  <div className="bg-[#00d4aa]/10 border-2 border-[#00d4aa] rounded-lg p-3 relative">
-                    <div className="absolute -top-2 -right-2 bg-[#00d4aa] text-black text-xs font-bold px-2 py-1 rounded-full">MEJOR</div>
-                    <div className="text-xs text-[#00d4aa] font-medium">Signa</div>
-                    <div className="text-lg font-bold text-[#00d4aa]">$15.00</div>
-                    <div className="text-xs text-[#00d4aa]">MXN</div>
+                  <div className="bg-[#2DB6C1]/10 border-2 border-[#2DB6C1] rounded-lg p-3 relative">
+                    <div className="absolute -top-2 -right-2 bg-[#2DB6C1] text-black text-xs font-bold px-2 py-1 rounded-full">MEJOR</div>
+                    <div className="text-xs text-[#2DB6C1] font-medium">Signa</div>
+                    <div className="text-lg font-bold text-[#2DB6C1]">$15.00</div>
+                    <div className="text-xs text-[#2DB6C1]">MXN</div>
                   </div>
                 </div>
-                <div className="text-center mt-4 p-3 bg-[#00d4aa]/10 rounded-lg">
-                  <div className="text-[#00d4aa] font-bold">50% más económico que Mifiel</div>
+                <div className="text-center mt-4 p-3 bg-[#2DB6C1]/10 rounded-lg">
+                  <div className="text-[#2DB6C1] font-bold">50% más económico que Mifiel</div>
                 </div>
               </div>
             </div>
@@ -143,13 +143,13 @@ export default function SignaComparacion() {
                         <div className="text-xs opacity-75">Internacional</div>
                       </div>
                     </th>
-                    <th className="px-6 py-4 text-center bg-[#00d4aa]/20 relative">
-                      <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 bg-[#00d4aa] text-black text-xs font-bold px-3 py-1 rounded-b-lg">
+                    <th className="px-6 py-4 text-center bg-[#2DB6C1]/20 relative">
+                      <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 bg-[#2DB6C1] text-black text-xs font-bold px-3 py-1 rounded-b-lg">
                         RECOMENDADO
                       </div>
                       <div className="flex flex-col items-center mt-2">
-                        <div className="text-[#00d4aa] font-bold">✍️ Signa</div>
-                        <div className="text-xs text-[#00d4aa]/80">Nosotros</div>
+                        <div className="text-[#2DB6C1] font-bold">✍️ Signa</div>
+                        <div className="text-xs text-[#2DB6C1]/80">Nosotros</div>
                       </div>
                     </th>
                   </tr>
@@ -169,12 +169,12 @@ export default function SignaComparacion() {
                       <div className="text-2xl font-black text-blue-600">$25.00</div>
                       <div className="text-sm text-blue-500">USD ≈ $450 MXN</div>
                     </td>
-                    <td className="px-6 py-6 text-center bg-[#00d4aa]/10 relative">
-                      <div className="absolute top-2 right-2 bg-[#00d4aa] text-black text-xs font-bold px-2 py-1 rounded-full">
+                    <td className="px-6 py-6 text-center bg-[#2DB6C1]/10 relative">
+                      <div className="absolute top-2 right-2 bg-[#2DB6C1] text-black text-xs font-bold px-2 py-1 rounded-full">
                         50% MENOS
                       </div>
-                      <div className="text-2xl font-black text-[#00d4aa]">$15.00</div>
-                      <div className="text-sm text-[#00d4aa]">MXN</div>
+                      <div className="text-2xl font-black text-[#2DB6C1]">$15.00</div>
+                      <div className="text-sm text-[#2DB6C1]">MXN</div>
                     </td>
                   </tr>
 
@@ -186,9 +186,9 @@ export default function SignaComparacion() {
                     </td>
                     <td className="px-6 py-4 text-center text-red-600 font-semibold">$2,500 MXN</td>
                     <td className="px-6 py-4 text-center text-blue-600 font-semibold">$200 USD</td>
-                    <td className="px-6 py-4 text-center bg-[#00d4aa]/5">
-                      <span className="text-[#00d4aa] font-bold">GRATIS</span>
-                      <div className="text-xs text-[#00d4aa]">$2,500 ahorro</div>
+                    <td className="px-6 py-4 text-center bg-[#2DB6C1]/5">
+                      <span className="text-[#2DB6C1] font-bold">GRATIS</span>
+                      <div className="text-xs text-[#2DB6C1]">$2,500 ahorro</div>
                     </td>
                   </tr>
 
@@ -200,9 +200,9 @@ export default function SignaComparacion() {
                     </td>
                     <td className="px-6 py-4 text-center text-red-600 font-semibold">$500 MXN</td>
                     <td className="px-6 py-4 text-center text-blue-600 font-semibold">$25 USD/mes</td>
-                    <td className="px-6 py-4 text-center bg-[#00d4aa]/5">
-                      <span className="text-[#00d4aa] font-bold">$0 MXN</span>
-                      <div className="text-xs text-[#00d4aa]">Pay per use</div>
+                    <td className="px-6 py-4 text-center bg-[#2DB6C1]/5">
+                      <span className="text-[#2DB6C1] font-bold">$0 MXN</span>
+                      <div className="text-xs text-[#2DB6C1]">Pay per use</div>
                     </td>
                   </tr>
 
@@ -214,9 +214,9 @@ export default function SignaComparacion() {
                     </td>
                     <td className="px-6 py-4 text-center text-gray-600">3-5 segundos</td>
                     <td className="px-6 py-4 text-center text-gray-600">2-4 segundos</td>
-                    <td className="px-6 py-4 text-center bg-[#00d4aa]/5">
-                      <span className="text-[#00d4aa] font-bold">1-2 segundos</span>
-                      <div className="text-xs text-[#00d4aa]">2.5x más rápido</div>
+                    <td className="px-6 py-4 text-center bg-[#2DB6C1]/5">
+                      <span className="text-[#2DB6C1] font-bold">1-2 segundos</span>
+                      <div className="text-xs text-[#2DB6C1]">2.5x más rápido</div>
                     </td>
                   </tr>
 
@@ -234,9 +234,9 @@ export default function SignaComparacion() {
                       <div className="text-gray-600">REST avanzado</div>
                       <div className="text-xs text-gray-500">2020</div>
                     </td>
-                    <td className="px-6 py-4 text-center bg-[#00d4aa]/5">
-                      <span className="text-[#00d4aa] font-bold">GraphQL + REST</span>
-                      <div className="text-xs text-[#00d4aa]">2026</div>
+                    <td className="px-6 py-4 text-center bg-[#2DB6C1]/5">
+                      <span className="text-[#2DB6C1] font-bold">GraphQL + REST</span>
+                      <div className="text-xs text-[#2DB6C1]">2026</div>
                     </td>
                   </tr>
 
@@ -248,9 +248,9 @@ export default function SignaComparacion() {
                     </td>
                     <td className="px-6 py-4 text-center text-gray-600">Lun-Vie 9-18h</td>
                     <td className="px-6 py-4 text-center text-gray-600">24/5 (Inglés)</td>
-                    <td className="px-6 py-4 text-center bg-[#00d4aa]/5">
-                      <span className="text-[#00d4aa] font-bold">24/7/365</span>
-                      <div className="text-xs text-[#00d4aa]">En español</div>
+                    <td className="px-6 py-4 text-center bg-[#2DB6C1]/5">
+                      <span className="text-[#2DB6C1] font-bold">24/7/365</span>
+                      <div className="text-xs text-[#2DB6C1]">En español</div>
                     </td>
                   </tr>
 
@@ -266,9 +266,9 @@ export default function SignaComparacion() {
                     <td className="px-6 py-4 text-center">
                       <span className="text-green-600 font-semibold">✅ NOM-151</span>
                     </td>
-                    <td className="px-6 py-4 text-center bg-[#00d4aa]/5">
+                    <td className="px-6 py-4 text-center bg-[#2DB6C1]/5">
                       <span className="text-green-600 font-semibold">✅ NOM-151</span>
-                      <div className="text-xs text-[#00d4aa]">+ Biometría</div>
+                      <div className="text-xs text-[#2DB6C1]">+ Biometría</div>
                     </td>
                   </tr>
 
@@ -280,9 +280,9 @@ export default function SignaComparacion() {
                     </td>
                     <td className="px-6 py-4 text-center text-gray-500">No disponible</td>
                     <td className="px-6 py-4 text-center text-blue-600">Limitada</td>
-                    <td className="px-6 py-4 text-center bg-[#00d4aa]/5">
-                      <span className="text-[#00d4aa] font-bold">Gratis + 24h</span>
-                      <div className="text-xs text-[#00d4aa]">Servicio completo</div>
+                    <td className="px-6 py-4 text-center bg-[#2DB6C1]/5">
+                      <span className="text-[#2DB6C1] font-bold">Gratis + 24h</span>
+                      <div className="text-xs text-[#2DB6C1]">Servicio completo</div>
                     </td>
                   </tr>
                 </tbody>
@@ -312,11 +312,11 @@ export default function SignaComparacion() {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Con Signa:</span>
-                      <span className="text-[#00d4aa] font-semibold">$750/mes</span>
+                      <span className="text-[#2DB6C1] font-semibold">$750/mes</span>
                     </div>
                     <div className="pt-3 border-t border-gray-200">
                       <div className="text-center">
-                        <div className="text-2xl font-black text-[#00d4aa]">$14,940</div>
+                        <div className="text-2xl font-black text-[#2DB6C1]">$14,940</div>
                         <div className="text-sm text-gray-500">ahorro anual</div>
                       </div>
                     </div>
@@ -328,13 +328,13 @@ export default function SignaComparacion() {
                 </div>
               </div>
 
-              <div className="bg-gradient-to-br from-[#00d4aa]/5 to-[#0066ff]/5 border-2 border-[#00d4aa] rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow relative">
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-[#00d4aa] text-black text-xs font-bold px-3 py-1 rounded-full">
+              <div className="bg-gradient-to-br from-[#2DB6C1]/5 to-[#0066ff]/5 border-2 border-[#2DB6C1] rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow relative">
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-[#2DB6C1] text-black text-xs font-bold px-3 py-1 rounded-full">
                   MÁS POPULAR
                 </div>
                 <div className="text-center">
                   <h3 className="text-lg font-bold text-gray-900 mb-2">Uso Medio</h3>
-                  <div className="text-[#00d4aa] text-xl font-bold mb-4">200 docs/mes</div>
+                  <div className="text-[#2DB6C1] text-xl font-bold mb-4">200 docs/mes</div>
                   
                   <div className="space-y-3 mb-6">
                     <div className="flex justify-between">
@@ -343,17 +343,17 @@ export default function SignaComparacion() {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Con Signa:</span>
-                      <span className="text-[#00d4aa] font-semibold">$3,000/mes</span>
+                      <span className="text-[#2DB6C1] font-semibold">$3,000/mes</span>
                     </div>
                     <div className="pt-3 border-t border-gray-200">
                       <div className="text-center">
-                        <div className="text-2xl font-black text-[#00d4aa]">$41,760</div>
+                        <div className="text-2xl font-black text-[#2DB6C1]">$41,760</div>
                         <div className="text-sm text-gray-500">ahorro anual</div>
                       </div>
                     </div>
                   </div>
 
-                  <button className="w-full px-4 py-2 bg-[#00d4aa] text-black font-bold rounded-lg hover:bg-[#00c499] transition-all">
+                  <button className="w-full px-4 py-2 bg-[#2DB6C1] text-black font-bold rounded-lg hover:bg-[#00c499] transition-all">
                     Calcular Mi Caso
                   </button>
                 </div>
@@ -371,11 +371,11 @@ export default function SignaComparacion() {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Con Signa:</span>
-                      <span className="text-[#00d4aa] font-semibold">$7,500/mes</span>
+                      <span className="text-[#2DB6C1] font-semibold">$7,500/mes</span>
                     </div>
                     <div className="pt-3 border-t border-gray-200">
                       <div className="text-center">
-                        <div className="text-2xl font-black text-[#00d4aa]">$95,400</div>
+                        <div className="text-2xl font-black text-[#2DB6C1]">$95,400</div>
                         <div className="text-sm text-gray-500">ahorro anual</div>
                       </div>
                     </div>
@@ -391,7 +391,7 @@ export default function SignaComparacion() {
             <div className="text-center mt-12">
               <Link
                 href="/signa/calculadora"
-                className="inline-flex px-8 py-4 bg-[#00d4aa] text-black font-bold rounded-lg hover:bg-[#00c499] transition-all"
+                className="inline-flex px-8 py-4 bg-[#2DB6C1] text-black font-bold rounded-lg hover:bg-[#00c499] transition-all"
               >
                 🧮 Calcular Mi Ahorro Exacto
               </Link>
@@ -400,7 +400,7 @@ export default function SignaComparacion() {
         </section>
 
         {/* Why Switch Section */}
-        <section className="py-16 bg-[#0a0a0a]">
+        <section className="py-16 bg-[#0E1133]">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-white mb-4">
@@ -413,7 +413,7 @@ export default function SignaComparacion() {
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               <div className="bg-white/5 border border-white/10 rounded-xl p-8 text-center hover:bg-white/10 transition-all">
-                <div className="w-16 h-16 bg-[#00d4aa] rounded-full flex items-center justify-center mx-auto mb-6">
+                <div className="w-16 h-16 bg-[#2DB6C1] rounded-full flex items-center justify-center mx-auto mb-6">
                   <span className="text-2xl">💰</span>
                 </div>
                 <h3 className="text-xl font-bold text-white mb-4">Ahorro Inmediato</h3>
@@ -464,7 +464,7 @@ export default function SignaComparacion() {
         </section>
 
         {/* Final CTA */}
-        <section className="py-16 bg-gradient-to-r from-[#00d4aa] to-[#0066ff]">
+        <section className="py-16 bg-gradient-to-r from-[#2DB6C1] to-[#0066ff]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl md:text-4xl font-black text-white mb-6">
               🚀 ¿Listo para Unirte a los 1,000+ que ya Ahorran?

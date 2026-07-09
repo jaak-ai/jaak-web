@@ -195,7 +195,7 @@ export default function AlertaCondusefSuplantacion() {
                 el riesgo se multiplica.
               </p>
 
-              <div className="bg-[#0a0a0a] rounded-xl p-8 my-8">
+              <div className="bg-[#0E1133] rounded-xl p-8 my-8">
                 <p className="text-white text-xl font-medium italic text-center">
                   &quot;Sin identidad digital verificable y sin gobernanza tecnológica, el riesgo se multiplica.&quot;
                 </p>

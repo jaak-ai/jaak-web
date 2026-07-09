@@ -10,7 +10,7 @@ const PRODUCTS: ProductCard[] = [
     title: "Expediente digital auditable con NOM-151",
     desc: "Construye evidencia que resiste una auditoría: identidad verificada, integridad documental, sello de tiempo y conservación a 10 años. No archivos — evidencia real.",
     href: "/plataforma/gestion-evidencia",
-    color: "#1ECAD3",
+    color: "#2DB6C1",
   },
   {
     icon: "🪪",

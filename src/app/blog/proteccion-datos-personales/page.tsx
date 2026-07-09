@@ -76,7 +76,7 @@ export default function ProteccionDatosPersonales() {
                 operativa para cualquier empresa que gestione identidades, transacciones o información personal.
               </p>
 
-              <div className="bg-[#00d4aa]/5 border-l-4 border-[#00d4aa] p-6 my-8">
+              <div className="bg-[#2DB6C1]/5 border-l-4 border-[#2DB6C1] p-6 my-8">
                 <p className="text-gray-700 font-medium mb-2">En este artículo encontrarás:</p>
                 <p className="text-gray-600">
                   Una guía informativa para entender por qué la protección de datos personales se ha convertido
@@ -153,7 +153,7 @@ export default function ProteccionDatosPersonales() {
                 <li>¿La experiencia de verificación afecta la conversión o el onboarding de clientes?</li>
               </ul>
 
-              <div className="bg-[#00d4aa]/5 border-l-4 border-[#00d4aa] p-6 my-8">
+              <div className="bg-[#2DB6C1]/5 border-l-4 border-[#2DB6C1] p-6 my-8">
                 <p className="text-gray-700">
                   Estas señales indican que proteger datos no es solo cuestión de intención, sino de contar con la tecnología adecuada.
                 </p>
@@ -206,7 +206,7 @@ export default function ProteccionDatosPersonales() {
                 <li>Capacidad de escalar operaciones sin comprometer el cumplimiento.</li>
               </ul>
 
-              <div className="bg-[#0a0a0a] rounded-xl p-8 my-8">
+              <div className="bg-[#0E1133] rounded-xl p-8 my-8">
                 <p className="text-white text-xl font-medium italic text-center">
                   "Proteger los datos personales ya no es solo cumplir una norma, es proteger la confianza del negocio."
                 </p>

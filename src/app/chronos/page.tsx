@@ -55,7 +55,7 @@ const useCases = [
     title: "Atención al Cliente 24/7",
     description: "Agentes IA que resuelven consultas de cuentas, pólizas y movimientos sin intervención humana.",
     icon: "🎧",
-    color: "#1ECAD3",
+    color: "#2DB6C1",
   },
   {
     title: "Scoring Crediticio Asistido",
@@ -67,7 +67,7 @@ const useCases = [
     title: "KYC/Onboarding Automatizado",
     description: "Verificación de identidad con JAAK OCR + biometría + firma electrónica en un solo workflow.",
     icon: "✅",
-    color: "#1ECAD3",
+    color: "#2DB6C1",
   },
   {
     title: "Detección de Fraude",
@@ -229,7 +229,7 @@ export default function ChronosPage() {
         <section className="pt-32 pb-20 bg-gradient-to-br from-[#0f0f23] via-[#1a1a3e] to-[#0f0f23] relative overflow-hidden">
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <div className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-[#655DC6]/10 rounded-full blur-[140px]" />
-            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#1ECAD3]/10 rounded-full blur-[100px]" />
+            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#2DB6C1]/10 rounded-full blur-[100px]" />
           </div>
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -243,7 +243,7 @@ export default function ChronosPage() {
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
                   KYC en 1 minuto.
                   <br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1ECAD3] to-[#655DC6]">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2DB6C1] to-[#655DC6]">
                     Crédito en minutos.
                   </span>
                   <br />
@@ -260,7 +260,7 @@ export default function ChronosPage() {
                 <div className="flex flex-wrap gap-4 mb-10">
                   <a
                     href="#contacto"
-                    className="px-6 py-3 bg-gradient-to-r from-[#1ECAD3] to-[#655DC6] text-white font-bold rounded-lg hover:opacity-90 transition-all"
+                    className="px-6 py-3 bg-gradient-to-r from-[#2DB6C1] to-[#655DC6] text-white font-bold rounded-lg hover:opacity-90 transition-all"
                   >
                     Ver demo: KYC en 1 minuto →
                   </a>
@@ -276,7 +276,7 @@ export default function ChronosPage() {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {stats.map((stat, i) => (
                     <div key={i} className="p-4 bg-white/5 border border-white/10 rounded-xl text-center">
-                      <div className="text-2xl font-black text-[#1ECAD3]">{stat.value}</div>
+                      <div className="text-2xl font-black text-[#2DB6C1]">{stat.value}</div>
                       <div className="text-white/50 text-sm mt-1">{stat.label}</div>
                     </div>
                   ))}
@@ -293,7 +293,7 @@ export default function ChronosPage() {
                     {llmProviders.map((provider, i) => (
                       <div
                         key={i}
-                        className="flex items-center gap-3 p-3 bg-white/5 rounded-lg border border-white/10 hover:border-[#1ECAD3]/30 transition-all"
+                        className="flex items-center gap-3 p-3 bg-white/5 rounded-lg border border-white/10 hover:border-[#2DB6C1]/30 transition-all"
                       >
                         <span className="text-2xl">{provider.logo}</span>
                         <div>
@@ -374,7 +374,7 @@ export default function ChronosPage() {
         </section>
 
         {/* Social Proof */}
-        <section className="py-16 bg-gradient-to-r from-[#655DC6]/5 to-[#1ECAD3]/5">
+        <section className="py-16 bg-gradient-to-r from-[#655DC6]/5 to-[#2DB6C1]/5">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-2 gap-8">
               {/* Testimonio */}
@@ -392,7 +392,7 @@ export default function ChronosPage() {
                   automáticamente para auditorías de CNBV.&rdquo;
                 </blockquote>
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-[#655DC6] to-[#1ECAD3] rounded-full flex items-center justify-center text-white font-bold">
+                  <div className="w-12 h-12 bg-gradient-to-br from-[#655DC6] to-[#2DB6C1] rounded-full flex items-center justify-center text-white font-bold">
                     IF
                   </div>
                   <div>
@@ -412,7 +412,7 @@ export default function ChronosPage() {
                       <span className="font-bold text-[#655DC6]">5 días → 1 minuto</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div className="bg-gradient-to-r from-[#655DC6] to-[#1ECAD3] h-2 rounded-full" style={{width: '98%'}}></div>
+                      <div className="bg-gradient-to-r from-[#655DC6] to-[#2DB6C1] h-2 rounded-full" style={{width: '98%'}}></div>
                     </div>
                   </div>
                   <div>
@@ -421,7 +421,7 @@ export default function ChronosPage() {
                       <span className="font-bold text-[#655DC6]">-60%</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div className="bg-gradient-to-r from-[#655DC6] to-[#1ECAD3] h-2 rounded-full" style={{width: '60%'}}></div>
+                      <div className="bg-gradient-to-r from-[#655DC6] to-[#2DB6C1] h-2 rounded-full" style={{width: '60%'}}></div>
                     </div>
                   </div>
                   <div>
@@ -430,7 +430,7 @@ export default function ChronosPage() {
                       <span className="font-bold text-[#655DC6]">&lt;1 día</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div className="bg-gradient-to-r from-[#655DC6] to-[#1ECAD3] h-2 rounded-full" style={{width: '95%'}}></div>
+                      <div className="bg-gradient-to-r from-[#655DC6] to-[#2DB6C1] h-2 rounded-full" style={{width: '95%'}}></div>
                     </div>
                   </div>
                   <div>
@@ -439,7 +439,7 @@ export default function ChronosPage() {
                       <span className="font-bold text-[#655DC6]">100%</span>
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div className="bg-gradient-to-r from-[#655DC6] to-[#1ECAD3] h-2 rounded-full" style={{width: '100%'}}></div>
+                      <div className="bg-gradient-to-r from-[#655DC6] to-[#2DB6C1] h-2 rounded-full" style={{width: '100%'}}></div>
                     </div>
                   </div>
                 </div>
@@ -453,7 +453,7 @@ export default function ChronosPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14">
               <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
-                Integración Nativa con <span className="text-[#1ECAD3]">JAAK</span>
+                Integración Nativa con <span className="text-[#2DB6C1]">JAAK</span>
               </h2>
               <p className="text-xl text-white/60 max-w-3xl mx-auto">
                 Chronos se integra profundamente con el ecosistema JAAK para KYC, firma electrónica y biometría.
@@ -462,8 +462,8 @@ export default function ChronosPage() {
             </div>
 
             <div className="grid md:grid-cols-3 gap-8 mb-12">
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-[#1ECAD3]/40 transition-all">
-                <div className="w-16 h-16 bg-[#1ECAD3]/20 rounded-xl flex items-center justify-center text-3xl mb-6">
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-[#2DB6C1]/40 transition-all">
+                <div className="w-16 h-16 bg-[#2DB6C1]/20 rounded-xl flex items-center justify-center text-3xl mb-6">
                   📄
                 </div>
                 <h3 className="text-xl font-bold text-white mb-3">JAAK OCR</h3>
@@ -484,8 +484,8 @@ export default function ChronosPage() {
                 </p>
               </div>
 
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-[#1ECAD3]/40 transition-all">
-                <div className="w-16 h-16 bg-[#1ECAD3]/20 rounded-xl flex items-center justify-center text-3xl mb-6">
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-[#2DB6C1]/40 transition-all">
+                <div className="w-16 h-16 bg-[#2DB6C1]/20 rounded-xl flex items-center justify-center text-3xl mb-6">
                   👤
                 </div>
                 <h3 className="text-xl font-bold text-white mb-3">JAAK Recog</h3>
@@ -522,7 +522,7 @@ export default function ChronosPage() {
             </div>
 
             {/* Plugins y Extensiones */}
-            <div className="mt-12 bg-gradient-to-br from-[#655DC6]/10 to-[#1ECAD3]/10 border border-white/20 rounded-2xl p-8">
+            <div className="mt-12 bg-gradient-to-br from-[#655DC6]/10 to-[#2DB6C1]/10 border border-white/20 rounded-2xl p-8">
               <div className="text-center mb-8">
                 <h3 className="text-2xl font-bold text-white mb-2">
                   Extiende tus Agentes con Plugins
@@ -535,7 +535,7 @@ export default function ChronosPage() {
                 {pluginSources.map((plugin, i) => (
                   <div
                     key={i}
-                    className="flex flex-col items-center gap-2 p-4 bg-white/5 rounded-xl border border-white/10 hover:border-[#1ECAD3]/40 transition-all"
+                    className="flex flex-col items-center gap-2 p-4 bg-white/5 rounded-xl border border-white/10 hover:border-[#2DB6C1]/40 transition-all"
                   >
                     <span className="text-3xl">{plugin.icon}</span>
                     <div className="text-white font-medium text-sm text-center">{plugin.name}</div>
@@ -568,11 +568,11 @@ export default function ChronosPage() {
         <section className="py-20 bg-[#0B1121]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14">
-              <span className="inline-block px-4 py-2 bg-[#1ECAD3]/10 border border-[#1ECAD3]/20 rounded-full text-[#1ECAD3] text-sm font-medium mb-6">
+              <span className="inline-block px-4 py-2 bg-[#2DB6C1]/10 border border-[#2DB6C1]/20 rounded-full text-[#2DB6C1] text-sm font-medium mb-6">
                 Finance & Lending Templates
               </span>
               <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
-                Agentes <span className="text-[#1ECAD3]">Pre-configurados</span>
+                Agentes <span className="text-[#2DB6C1]">Pre-configurados</span>
               </h2>
               <p className="text-xl text-white/60 max-w-3xl mx-auto">
                 Templates listos para producción. Configura en horas, no en semanas.
@@ -584,10 +584,10 @@ export default function ChronosPage() {
               {agentTemplates.map((template, i) => (
                 <div
                   key={i}
-                  className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-[#1ECAD3]/40 transition-all group"
+                  className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-[#2DB6C1]/40 transition-all group"
                 >
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-[#1ECAD3]/20 rounded-xl flex items-center justify-center text-2xl flex-shrink-0 group-hover:bg-[#1ECAD3]/30 transition-colors">
+                    <div className="w-12 h-12 bg-[#2DB6C1]/20 rounded-xl flex items-center justify-center text-2xl flex-shrink-0 group-hover:bg-[#2DB6C1]/30 transition-colors">
                       {template.icon}
                     </div>
                     <div className="flex-1">
@@ -652,7 +652,7 @@ export default function ChronosPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14">
               <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
-                Seguridad y Cumplimiento <span className="text-[#1ECAD3]">Enterprise</span>
+                Seguridad y Cumplimiento <span className="text-[#2DB6C1]">Enterprise</span>
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
                 A diferencia de OpenClaw que fue prohibido en gobierno chino y bloqueado por Meta,
@@ -662,7 +662,7 @@ export default function ChronosPage() {
 
             <div className="grid md:grid-cols-3 gap-8">
               <div className="text-center">
-                <div className="w-16 h-16 bg-[#1ECAD3]/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                <div className="w-16 h-16 bg-[#2DB6C1]/10 rounded-full flex items-center justify-center mx-auto mb-6">
                   <span className="text-3xl">🔐</span>
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">Multi-Tenancy Real</h3>
@@ -684,7 +684,7 @@ export default function ChronosPage() {
               </div>
 
               <div className="text-center">
-                <div className="w-16 h-16 bg-[#1ECAD3]/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                <div className="w-16 h-16 bg-[#2DB6C1]/10 rounded-full flex items-center justify-center mx-auto mb-6">
                   <span className="text-3xl">✋</span>
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-3">Human-in-the-Loop</h3>
@@ -732,7 +732,7 @@ export default function ChronosPage() {
                     "Cumplimiento regulatorio específico para tu industria",
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-3">
-                      <div className="w-5 h-5 rounded-full bg-[#1ECAD3] flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <div className="w-5 h-5 rounded-full bg-[#2DB6C1] flex items-center justify-center flex-shrink-0 mt-0.5">
                         <svg className="w-3 h-3 text-[#0f0f23]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                         </svg>
@@ -827,7 +827,7 @@ export default function ChronosPage() {
                   <button
                     type="submit"
                     disabled={status === "loading"}
-                    className="w-full px-6 py-4 bg-gradient-to-r from-[#1ECAD3] to-[#655DC6] text-white font-bold rounded-lg hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-lg"
+                    className="w-full px-6 py-4 bg-gradient-to-r from-[#2DB6C1] to-[#655DC6] text-white font-bold rounded-lg hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed text-lg"
                   >
                     {status === "loading" ? "Enviando..." : "Solicitar Demo"}
                   </button>

@@ -27,7 +27,7 @@ export default function EpisodeLayout({
   const epNum = parseInt(epNumber, 10);
 
   return (
-    <main style={{ background: "#202945", fontFamily: FONT, minHeight: "100vh" }}>
+    <main style={{ background: "#212A45", fontFamily: FONT, minHeight: "100vh" }}>
       <style>{`
         @keyframes fadeInUp {
           from { opacity: 0; transform: translateY(20px); }
@@ -37,7 +37,7 @@ export default function EpisodeLayout({
         .el-b { animation: fadeInUp 0.5s 0.1s ease both; }
         .cta-btn {
           display: inline-flex; align-items: center; gap: 6px;
-          background: #1ECAD3; color: #202945; font-weight: 800;
+          background: #2DB6C1; color: #212A45; font-weight: 800;
           padding: 14px 28px; border-radius: 10px; font-size: 0.95rem;
           transition: box-shadow 0.2s, transform 0.2s; text-decoration: none;
         }
@@ -73,13 +73,13 @@ export default function EpisodeLayout({
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Progress */}
           <div className="flex items-center gap-3 mb-6">
-            <span className="text-xs font-bold tracking-widest uppercase" style={{ color: "#1ECAD3" }}>
+            <span className="text-xs font-bold tracking-widest uppercase" style={{ color: "#2DB6C1" }}>
               Episodio {epNumber} de {totalEps} · LFPIORPI
             </span>
             <div className="flex-1 h-1 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.08)", maxWidth: "120px" }}>
               <div
                 className="h-full rounded-full"
-                style={{ background: "#1ECAD3", width: `${(epNum / totalEps) * 100}%`, transition: "width 0.5s" }}
+                style={{ background: "#2DB6C1", width: `${(epNum / totalEps) * 100}%`, transition: "width 0.5s" }}
               />
             </div>
           </div>
@@ -122,7 +122,7 @@ export default function EpisodeLayout({
             {learnings.map((item, i) => (
               <li key={i} className="flex items-start gap-4">
                 <span className="shrink-0 w-6 h-6 rounded-full flex items-center justify-center mt-0.5 text-xs font-black"
-                  style={{ background: "rgba(30,202,211,0.15)", color: "#1ECAD3" }}>
+                  style={{ background: "rgba(30,202,211,0.15)", color: "#2DB6C1" }}>
                   {i + 1}
                 </span>
                 <span style={{ color: "rgba(255,255,255,0.70)", lineHeight: "1.65", fontSize: "0.95rem" }}>{item}</span>
@@ -169,7 +169,7 @@ export default function EpisodeLayout({
             )}
             {nextEp && (
               <Link href={nextEp.href} className="nav-ep" style={{ textAlign: "right" }}>
-                <p className="text-xs font-bold uppercase mb-1" style={{ color: "#1ECAD3" }}>Siguiente episodio →</p>
+                <p className="text-xs font-bold uppercase mb-1" style={{ color: "#2DB6C1" }}>Siguiente episodio →</p>
                 <p className="font-bold text-white" style={{ fontSize: "0.90rem" }}>{nextEp.title}</p>
               </Link>
             )}

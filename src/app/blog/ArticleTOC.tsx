@@ -57,7 +57,7 @@ export default function ArticleTOC() {
       >
         <p
           className="text-[10px] font-bold tracking-widest uppercase mb-4"
-          style={{ color: "#1ECAD3", fontFamily: FONT }}
+          style={{ color: "#2DB6C1", fontFamily: FONT }}
         >
           Contenido
         </p>
@@ -70,11 +70,11 @@ export default function ArticleTOC() {
                 href={`#${item.id}`}
                 className="block text-xs leading-relaxed py-1 transition-colors duration-150 rounded-sm"
                 style={{
-                  color: isActive ? "#1ECAD3" : "rgba(255,255,255,0.38)",
+                  color: isActive ? "#2DB6C1" : "rgba(255,255,255,0.38)",
                   fontFamily: FONT,
                   fontWeight: isActive ? 700 : 500,
                   borderLeft: isActive
-                    ? "2px solid #1ECAD3"
+                    ? "2px solid #2DB6C1"
                     : "2px solid transparent",
                   paddingLeft:
                     item.level === 3

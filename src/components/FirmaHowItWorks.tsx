@@ -50,7 +50,7 @@ const steps: Step[] = [
     detail:
       "Soporta PDF, DOCX y más de 20 formatos. El documento se encripta al vuelo y se almacena de forma segura. Puedes definir múltiples firmantes y el orden de firma.",
     icon: <IconUpload />,
-    color: "#1ECAD3",
+    color: "#2DB6C1",
   },
   {
     number: 2,
