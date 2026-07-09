@@ -14,6 +14,7 @@ import HomepageFinalCTA from "@/components/HomepageFinalCTA";
 import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
+import VerificationFlowAnimation from "@/components/VerificationFlowAnimation";
 
 export default function Home() {
   return (
@@ -30,6 +31,10 @@ export default function Home() {
           <HomepageProblem />
           {/* S3 — Flujo de producto */}
           <HomepageProductFlow />
+          {/* S3.5 — Animación de verificación 0-30s */}
+          <section className="section-padding">
+            <VerificationFlowAnimation />
+          </section>
           {/* S4 — Componentes KYC */}
           <HomepageKYCComponents />
           {/* S5 — Diferenciador */}
