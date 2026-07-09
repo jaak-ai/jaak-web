@@ -193,7 +193,7 @@ export const categoryColors: Record<string, { bg: string; text: string }> = {
   "Firma Electrónica": { bg: "bg-[#2DB6C1]/10", text: "text-[#2DB6C1]" },
   IA: { bg: "bg-emerald-500/10", text: "text-emerald-500" },
   Análisis: { bg: "bg-red-500/10", text: "text-red-500" },
-  KYC: { bg: "bg-[#0066ff]/10", text: "text-[#0066ff]" },
+  KYC: { bg: "bg-[#212A45]/10", text: "text-[#212A45]" },
   Regulación: { bg: "bg-purple-500/10", text: "text-purple-500" },
   Seguridad: { bg: "bg-[#2DB6C1]/10", text: "text-[#2DB6C1]" },
   Fraude: { bg: "bg-amber-500/10", text: "text-amber-600" },

@@ -7,7 +7,7 @@ export default function HomepageFinalCTA() {
       {/* Ambient glow */}
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[140px] pointer-events-none"
-        style={{ background: "rgba(30,202,211,0.10)" }}
+        style={{ background: "rgba(45,182,193,0.10)" }}
       />
       <div
         className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px pointer-events-none"
@@ -42,7 +42,7 @@ export default function HomepageFinalCTA() {
           <div className="hp-glass rounded-3xl p-8 flex flex-col">
             <div
               className="w-11 h-11 rounded-2xl flex items-center justify-center mb-5"
-              style={{ background: "rgba(30,202,211,0.15)" }}
+              style={{ background: "rgba(45,182,193,0.15)" }}
             >
               <svg
                 className="w-5 h-5"
@@ -110,7 +110,7 @@ export default function HomepageFinalCTA() {
               className="inline-flex items-center justify-center px-7 py-4 text-white font-bold text-base rounded-xl transition-all duration-200 group"
               style={{
                 background: "linear-gradient(135deg, #2DB6C1, #25969f)",
-                boxShadow: "0 8px 28px rgba(30,202,211,0.28)",
+                boxShadow: "0 8px 28px rgba(45,182,193,0.28)",
               }}
             >
               Comenzar ahora
@@ -136,7 +136,7 @@ export default function HomepageFinalCTA() {
               className="w-11 h-11 rounded-2xl flex items-center justify-center mb-5"
               style={{
                 background: "linear-gradient(135deg, #2DB6C1, #2AD796)",
-                boxShadow: "0 4px 16px rgba(30,202,211,0.30)",
+                boxShadow: "0 4px 16px rgba(45,182,193,0.30)",
               }}
             >
               <svg

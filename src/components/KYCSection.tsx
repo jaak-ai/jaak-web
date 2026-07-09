@@ -7,10 +7,10 @@ export default function KYCSection() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Content */}
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold text-[#000000] mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-[#212A45] mb-6">
               Automatiza tu proceso KYC (Conoce a Tu Cliente) y asegúrate que tus clientes sean quien dicen ser
             </h2>
-            <p className="text-lg text-[#53535B]">
+            <p className="text-lg text-[#64748B]">
               Combina biometría facial, liveness pasivo, OCR y consulta en listas negras, validando la identidad de usuarios segundos, ayudando al cumplimiento regulatorio con menor fricción, aumentando la conversión y disminuyendo el abandono
             </p>
           </div>

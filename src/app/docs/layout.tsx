@@ -51,7 +51,7 @@ export default function DocsLayout({
             <div className="h-6 w-px bg-gray-200" />
             <Link
               href="/docs"
-              className="text-sm font-semibold text-gray-900 hover:text-[#0066ff] transition-colors"
+              className="text-sm font-semibold text-gray-900 hover:text-[#212A45] transition-colors"
             >
               Documentacion
             </Link>
@@ -66,13 +66,13 @@ export default function DocsLayout({
           <div className="flex items-center gap-4">
             <Link
               href="https://platform.jaak.ai"
-              className="hidden sm:block text-sm font-medium text-gray-700 hover:text-[#0066ff] transition-colors"
+              className="hidden sm:block text-sm font-medium text-gray-700 hover:text-[#212A45] transition-colors"
             >
               Iniciar sesion
             </Link>
             <Link
               href="/contacto"
-              className="rounded-lg bg-[#0066ff] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#0052cc]"
+              className="rounded-lg bg-[#212A45] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#1a1f34]"
             >
               Contactar
             </Link>

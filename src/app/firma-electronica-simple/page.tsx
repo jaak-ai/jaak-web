@@ -102,7 +102,7 @@ export default function FirmaSimplePage() {
         </section>
 
         {/* Features */}
-        <section className="py-20" style={{ background: "#070E1A" }} aria-labelledby="features-heading">
+        <section className="py-20" style={{ background: "#0E1133" }} aria-labelledby="features-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 id="features-heading" className="text-2xl font-black text-white mb-8 text-center">
               ¿Qué incluye la Firma Simple?
@@ -222,7 +222,7 @@ export default function FirmaSimplePage() {
         </section>
 
         {/* Internal links + CTA */}
-        <section className="py-16" style={{ background: "#070E1A" }}>
+        <section className="py-16" style={{ background: "#0E1133" }}>
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p className="text-gray-500 text-sm mb-6">
               ¿Necesita más validez legal? Explore otras soluciones:
@@ -251,7 +251,7 @@ export default function FirmaSimplePage() {
             <Link
               href="/autoservicio"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold text-white text-base transition-all hover:opacity-90 hover:scale-105"
-              style={{ background: "#2DB6C1", boxShadow: "0 0 30px rgba(30,202,211,0.3)" }}
+              style={{ background: "#2DB6C1", boxShadow: "0 0 30px rgba(45,182,193,0.3)" }}
             >
               Probar Firma Simple gratis →
             </Link>

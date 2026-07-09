@@ -146,7 +146,7 @@ export default function AutoservicioFlujoTabs({ onStart }: { onStart?: () => voi
               : "transparent",
             border: active === "firma" ? "none" : "1.5px solid #d1d5db",
             color: active === "firma" ? "#fff" : "#374151",
-            boxShadow: active === "firma" ? "0 4px 20px rgba(30,202,211,0.3)" : "none",
+            boxShadow: active === "firma" ? "0 4px 20px rgba(45,182,193,0.3)" : "none",
           }}
           className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-base transition-all duration-200 cursor-pointer"
         >
@@ -160,7 +160,7 @@ export default function AutoservicioFlujoTabs({ onStart }: { onStart?: () => voi
               : "transparent",
             border: active === "kyc" ? "none" : "1.5px solid #d1d5db",
             color: active === "kyc" ? "#fff" : "#374151",
-            boxShadow: active === "kyc" ? "0 4px 20px rgba(30,202,211,0.3)" : "none",
+            boxShadow: active === "kyc" ? "0 4px 20px rgba(45,182,193,0.3)" : "none",
           }}
           className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-base transition-all duration-200 cursor-pointer"
         >
@@ -204,10 +204,10 @@ function StepCard({ step, delay, onStart }: { step: Step; delay: number; onStart
       bg: "rgba(240,253,250,0.8)",
       border: "#2DB6C1",
       badge: "Ventaja JAAK",
-      badgeBg: "rgba(30,202,211,0.12)",
+      badgeBg: "rgba(45,182,193,0.12)",
     },
     success: {
-      bg: "linear-gradient(135deg, rgba(30,202,211,0.08) 0%, rgba(42,215,150,0.08) 100%)",
+      bg: "linear-gradient(135deg, rgba(45,182,193,0.08) 0%, rgba(42,215,150,0.08) 100%)",
       border: "#2AD796",
       badge: "¡Listo para operar!",
       badgeBg: "rgba(42,215,150,0.15)",
@@ -227,7 +227,7 @@ function StepCard({ step, delay, onStart }: { step: Step; delay: number; onStart
           className="w-16 h-16 rounded-full flex items-center justify-center font-bold text-lg text-white shadow-lg"
           style={{
             background: "#2DB6C1",
-            boxShadow: "0 4px 16px rgba(30,202,211,0.35)",
+            boxShadow: "0 4px 16px rgba(45,182,193,0.35)",
           }}
         >
           {step.num}
@@ -263,8 +263,8 @@ function StepCard({ step, delay, onStart }: { step: Step; delay: number; onStart
           <div
             className="rounded-xl p-3 mb-3 text-base"
             style={{
-              background: "rgba(30,202,211,0.06)",
-              border: "1px solid rgba(30,202,211,0.2)",
+              background: "rgba(45,182,193,0.06)",
+              border: "1px solid rgba(45,182,193,0.2)",
               color: "#0e7490",
             }}
           >
@@ -278,7 +278,7 @@ function StepCard({ step, delay, onStart }: { step: Step; delay: number; onStart
             <span
               key={pi}
               className="text-sm px-2.5 py-1 rounded-full font-medium"
-              style={{ background: "#f3f4f6", color: "#374151" }}
+              style={{ background: "#F3F4F8", color: "#64748B" }}
             >
               {pill}
             </span>

@@ -70,7 +70,7 @@ export default function OperacionesAltoRiesgo() {
               <div className="flex flex-wrap gap-4">
                 <Link
                   href="/contacto"
-                  className="px-6 py-3 bg-[#0066ff] text-white font-semibold rounded-lg hover:bg-[#0052cc] transition-all"
+                  className="px-6 py-3 bg-[#212A45] text-white font-semibold rounded-lg hover:bg-[#212A45] transition-all"
                 >
                   Hablar con ventas
                 </Link>
@@ -116,8 +116,8 @@ export default function OperacionesAltoRiesgo() {
             </div>
             <div className="grid md:grid-cols-3 gap-8">
               {verificationLevels.map((level, index) => (
-                <div key={index} className={`rounded-xl p-8 ${index === 2 ? 'bg-[#0066ff] text-white' : 'bg-white'}`}>
-                  <div className={`text-sm font-bold uppercase tracking-wider mb-2 ${index === 2 ? 'text-white/70' : 'text-[#0066ff]'}`}>
+                <div key={index} className={`rounded-xl p-8 ${index === 2 ? 'bg-[#212A45] text-white' : 'bg-white'}`}>
+                  <div className={`text-sm font-bold uppercase tracking-wider mb-2 ${index === 2 ? 'text-white/70' : 'text-[#212A45]'}`}>
                     Nivel {index + 1}
                   </div>
                   <h3 className={`text-2xl font-black mb-3 ${index === 2 ? 'text-white' : 'text-gray-900'}`}>
@@ -153,7 +153,7 @@ export default function OperacionesAltoRiesgo() {
             </p>
             <Link
               href="/contacto"
-              className="inline-flex px-8 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
+              className="inline-flex px-8 py-4 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-all"
             >
               Solicitar demo
             </Link>

@@ -44,9 +44,9 @@ export default function EmpresasReguladas() {
         <section className="pt-32 pb-20 bg-[#0E1133]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#0066ff]/10 border border-[#0066ff]/20 rounded-full mb-6">
-                <span className="w-2 h-2 bg-[#0066ff] rounded-full"></span>
-                <span className="text-[#0066ff] text-sm font-medium">Soluciones por industria</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#212A45]/10 border border-[#212A45]/20 rounded-full mb-6">
+                <span className="w-2 h-2 bg-[#212A45] rounded-full"></span>
+                <span className="text-[#212A45] text-sm font-medium">Soluciones por industria</span>
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6">
                 Empresas reguladas
@@ -57,7 +57,7 @@ export default function EmpresasReguladas() {
               <div className="flex flex-wrap gap-4">
                 <Link
                   href="/contacto"
-                  className="px-6 py-3 bg-[#0066ff] text-white font-semibold rounded-lg hover:bg-[#0052cc] transition-all"
+                  className="px-6 py-3 bg-[#212A45] text-white font-semibold rounded-lg hover:bg-[#212A45] transition-all"
                 >
                   Hablar con ventas
                 </Link>
@@ -134,7 +134,7 @@ export default function EmpresasReguladas() {
             </p>
             <Link
               href="/contacto"
-              className="inline-flex px-8 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
+              className="inline-flex px-8 py-4 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-all"
             >
               Solicitar demo
             </Link>

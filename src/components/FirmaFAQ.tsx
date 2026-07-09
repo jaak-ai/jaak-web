@@ -106,7 +106,7 @@ export default function FirmaFAQ() {
               id={`faq-question-${item.id}`}
               style={{
                 background: isOpen
-                  ? "rgba(30,202,211,0.04)"
+                  ? "rgba(45,182,193,0.04)"
                   : cl.cardBgMin,
               }}
             >

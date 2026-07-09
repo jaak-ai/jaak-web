@@ -47,9 +47,9 @@ export default function SignaComparacion() {
         {/* Hero */}
         <section className="pt-32 pb-16 bg-gradient-to-br from-[#0E1133] to-[#1a1a1a]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#0066ff]/10 border border-[#0066ff]/20 rounded-full mb-6">
-              <span className="w-2 h-2 bg-[#0066ff] rounded-full"></span>
-              <span className="text-[#0066ff] text-sm font-medium">Comparación detallada</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#212A45]/10 border border-[#212A45]/20 rounded-full mb-6">
+              <span className="w-2 h-2 bg-[#212A45] rounded-full"></span>
+              <span className="text-[#212A45] text-sm font-medium">Comparación detallada</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-black text-white mb-6">
               <span className="text-[#2DB6C1]">Signa</span> vs <span className="text-red-400">Competencia</span>
@@ -74,7 +74,7 @@ export default function SignaComparacion() {
 
             {/* Mobile-friendly comparison card for small screens */}
             <div className="block md:hidden space-y-8">
-              <div className="bg-gradient-to-r from-[#2DB6C1]/5 to-[#0066ff]/5 border-2 border-[#2DB6C1] rounded-2xl p-6 text-center">
+              <div className="bg-gradient-to-r from-[#2DB6C1]/5 to-[#212A45]/5 border-2 border-[#2DB6C1] rounded-2xl p-6 text-center">
                 <h3 className="text-xl font-bold text-gray-900 mb-3">Precio por firma</h3>
                 <p className="text-gray-600 mb-4">
                   Cada proveedor publica su propio tarifario. Consulta los precios de Signa de forma transparente.
@@ -248,7 +248,7 @@ export default function SignaComparacion() {
         </section>
 
         {/* Final CTA */}
-        <section className="py-16 bg-gradient-to-r from-[#2DB6C1] to-[#0066ff]">
+        <section className="py-16 bg-gradient-to-r from-[#2DB6C1] to-[#212A45]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl md:text-4xl font-black text-white mb-6">
               ¿Listo para migrar a Signa?
@@ -260,13 +260,13 @@ export default function SignaComparacion() {
             <div className="flex flex-wrap gap-4 justify-center">
               <Link
                 href="/precios"
-                className="px-8 py-4 bg-white text-[#0066ff] font-bold rounded-lg hover:bg-gray-50 transition-all shadow-lg"
+                className="px-8 py-4 bg-white text-[#212A45] font-bold rounded-lg hover:bg-gray-50 transition-all shadow-lg"
               >
                 Ver precios
               </Link>
               <Link
                 href="/contacto"
-                className="px-8 py-4 bg-transparent border-2 border-white text-white font-bold rounded-lg hover:bg-white hover:text-[#0066ff] transition-all"
+                className="px-8 py-4 bg-transparent border-2 border-white text-white font-bold rounded-lg hover:bg-white hover:text-[#212A45] transition-all"
               >
                 Hablar con un experto
               </Link>

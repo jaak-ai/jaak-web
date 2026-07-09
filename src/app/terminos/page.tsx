@@ -139,7 +139,7 @@ export default function TerminosPage() {
                 </p>
                 <p className="text-gray-600">
                   Los datos biométricos y personales proporcionados por los usuarios permanecen siendo propiedad del titular de dichos datos y son tratados conforme a nuestro{" "}
-                  <Link href="/privacidad" className="text-[#0066ff] hover:underline">
+                  <Link href="/privacidad" className="text-[#212A45] hover:underline">
                     Aviso de Privacidad
                   </Link>.
                 </p>
@@ -190,9 +190,9 @@ export default function TerminosPage() {
                   </li>
                 </ul>
 
-                <div className="bg-[#0066ff]/5 border border-[#0066ff]/20 rounded-xl p-6 mt-6">
+                <div className="bg-[#212A45]/5 border border-[#212A45]/20 rounded-xl p-6 mt-6">
                   <p className="text-gray-700">
-                    <strong className="text-[#0066ff]">Nota:</strong> Nuestros servicios de verificación están certificados por iBeta para prueba de vida y cumplen con estándares NIST para verificación de identidad, lo que proporciona altos niveles de precisión y confiabilidad.
+                    <strong className="text-[#212A45]">Nota:</strong> Nuestros servicios de verificación están certificados por iBeta para prueba de vida y cumplen con estándares NIST para verificación de identidad, lo que proporciona altos niveles de precisión y confiabilidad.
                   </p>
                 </div>
               </div>
@@ -324,13 +324,13 @@ export default function TerminosPage() {
                 </p>
                 <div className="space-y-2">
                   <p className="text-white">
-                    <strong className="text-[#0066ff]">Correo:</strong>{" "}
-                    <a href="mailto:legal@jaak.ai" className="text-white hover:text-[#0066ff] transition-colors">
+                    <strong className="text-[#212A45]">Correo:</strong>{" "}
+                    <a href="mailto:legal@jaak.ai" className="text-white hover:text-[#212A45] transition-colors">
                       legal@jaak.ai
                     </a>
                   </p>
                   <p className="text-white">
-                    <strong className="text-[#0066ff]">Dirección:</strong> Ciudad de México, México
+                    <strong className="text-[#212A45]">Dirección:</strong> Ciudad de México, México
                   </p>
                 </div>
               </div>

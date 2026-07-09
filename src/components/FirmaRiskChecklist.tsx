@@ -110,13 +110,13 @@ export default function FirmaRiskChecklist() {
                       background: isChecked
                         ? item.severity === "high"
                           ? "#EF4444"
-                          : "#F59E0B"
+                          : "#212A45"
                         : cl.inputBg,
                       border: `2px solid ${
                         isChecked
                           ? item.severity === "high"
                             ? "#EF4444"
-                            : "#F59E0B"
+                            : "#212A45"
                           : cl.inputBorder
                       }`,
                     }}
@@ -237,7 +237,7 @@ export default function FirmaRiskChecklist() {
                   className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white transition-all hover:opacity-90"
                   style={{
                     background:
-                      highRiskChecked >= 2 ? "#EF4444" : "#F59E0B",
+                      highRiskChecked >= 2 ? "#EF4444" : "#212A45",
                   }}
                 >
                   Ver solución completa

@@ -146,7 +146,7 @@ function CapacitacionForm() {
       <div className="text-center py-16 px-6">
         <div
           className="w-16 h-16 rounded-full flex items-center justify-center text-3xl mx-auto mb-4"
-          style={{ background: "rgba(30,202,211,0.12)" }}
+          style={{ background: "rgba(45,182,193,0.12)" }}
         >
           ✅
         </div>
@@ -164,7 +164,7 @@ function CapacitacionForm() {
       <div className="flex flex-col justify-center">
         <span
           className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest mb-4 px-3 py-1 rounded-full w-fit"
-          style={{ background: "rgba(30,202,211,0.1)", color: "#0e7490", border: "1px solid rgba(30,202,211,0.3)" }}
+          style={{ background: "rgba(45,182,193,0.1)", color: "#0e7490", border: "1px solid rgba(45,182,193,0.3)" }}
         >
           🎁 Sesión de bienvenida incluida
         </span>
@@ -195,7 +195,7 @@ function CapacitacionForm() {
         </ul>
         <div
           className="mt-6 rounded-xl p-4 text-base"
-          style={{ background: "rgba(30,202,211,0.06)", border: "1px solid rgba(30,202,211,0.15)", color: "#374151" }}
+          style={{ background: "rgba(45,182,193,0.06)", border: "1px solid rgba(45,182,193,0.15)", color: "#64748B" }}
         >
           💬 Nuestro equipo confirmará su sesión por correo dentro de las próximas <strong>24 horas hábiles</strong>.
         </div>
@@ -216,7 +216,7 @@ function CapacitacionForm() {
               onChange={(e) => setForm({ ...form, nombre: e.target.value })}
               placeholder="Su nombre completo"
               className="rounded-lg px-3 py-2.5 text-base text-gray-900 outline-none focus:ring-2 transition-all"
-              style={{ border: "1.5px solid #e5e7eb", background: "#f9fafb" }}
+              style={{ border: "1.5px solid #F3F4F8", background: "#FAFAFA" }}
             />
           </div>
           <div className="col-span-2 md:col-span-1 flex flex-col gap-1">
@@ -226,7 +226,7 @@ function CapacitacionForm() {
               onChange={(e) => setForm({ ...form, empresa: e.target.value })}
               placeholder="Su empresa"
               className="rounded-lg px-3 py-2.5 text-base text-gray-900 outline-none transition-all"
-              style={{ border: "1.5px solid #e5e7eb", background: "#f9fafb" }}
+              style={{ border: "1.5px solid #F3F4F8", background: "#FAFAFA" }}
             />
           </div>
           <div className="flex flex-col gap-1">
@@ -238,7 +238,7 @@ function CapacitacionForm() {
               onChange={(e) => setForm({ ...form, correo: e.target.value })}
               placeholder="correo@empresa.com"
               className="rounded-lg px-3 py-2.5 text-base text-gray-900 outline-none transition-all"
-              style={{ border: "1.5px solid #e5e7eb", background: "#f9fafb" }}
+              style={{ border: "1.5px solid #F3F4F8", background: "#FAFAFA" }}
             />
           </div>
           <div className="flex flex-col gap-1">
@@ -249,7 +249,7 @@ function CapacitacionForm() {
               onChange={(e) => setForm({ ...form, whatsapp: e.target.value })}
               placeholder="+52 55 0000 0000"
               className="rounded-lg px-3 py-2.5 text-base text-gray-900 outline-none transition-all"
-              style={{ border: "1.5px solid #e5e7eb", background: "#f9fafb" }}
+              style={{ border: "1.5px solid #F3F4F8", background: "#FAFAFA" }}
             />
           </div>
           <div className="col-span-2 flex flex-col gap-1">
@@ -259,7 +259,7 @@ function CapacitacionForm() {
               onChange={(e) => setForm({ ...form, numeroPedido: e.target.value })}
               placeholder="Ej. ORD-12345"
               className="rounded-lg px-3 py-2.5 text-base text-gray-900 outline-none transition-all"
-              style={{ border: "1.5px solid #e5e7eb", background: "#f9fafb" }}
+              style={{ border: "1.5px solid #F3F4F8", background: "#FAFAFA" }}
             />
           </div>
         </div>
@@ -303,7 +303,7 @@ function CapacitacionForm() {
                   className="rounded-xl p-3 text-left transition-all duration-150 cursor-pointer"
                   style={{
                     border: active ? "2px solid #2DB6C1" : "1.5px solid #e5e7eb",
-                    background: active ? "rgba(30,202,211,0.06)" : "#f9fafb",
+                    background: active ? "rgba(45,182,193,0.06)" : "#f9fafb",
                   }}
                 >
                   <div className="text-sm font-bold text-gray-700 mb-0.5">📅 {h.label}</div>

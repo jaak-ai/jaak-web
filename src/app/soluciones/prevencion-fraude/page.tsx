@@ -60,7 +60,7 @@ export default function PrevencionFraude() {
               <div className="flex flex-wrap gap-4">
                 <Link
                   href="/contacto"
-                  className="px-6 py-3 bg-[#0066ff] text-white font-semibold rounded-lg hover:bg-[#0052cc] transition-all"
+                  className="px-6 py-3 bg-[#212A45] text-white font-semibold rounded-lg hover:bg-[#212A45] transition-all"
                 >
                   Hablar con ventas
                 </Link>
@@ -70,7 +70,7 @@ export default function PrevencionFraude() {
         </section>
 
         {/* Stats */}
-        <section className="py-16 bg-[#0066ff]">
+        <section className="py-16 bg-[#212A45]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-4 gap-8">
               {stats.map((stat, index) => (
@@ -118,7 +118,7 @@ export default function PrevencionFraude() {
                 </h2>
                 <div className="space-y-4">
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 bg-[#0066ff] rounded-lg flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 bg-[#212A45] rounded-lg flex items-center justify-center flex-shrink-0">
                       <span className="text-white font-bold">1</span>
                     </div>
                     <div>
@@ -127,7 +127,7 @@ export default function PrevencionFraude() {
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 bg-[#0066ff] rounded-lg flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 bg-[#212A45] rounded-lg flex items-center justify-center flex-shrink-0">
                       <span className="text-white font-bold">2</span>
                     </div>
                     <div>
@@ -136,7 +136,7 @@ export default function PrevencionFraude() {
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 bg-[#0066ff] rounded-lg flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 bg-[#212A45] rounded-lg flex items-center justify-center flex-shrink-0">
                       <span className="text-white font-bold">3</span>
                     </div>
                     <div>
@@ -186,7 +186,7 @@ export default function PrevencionFraude() {
             </p>
             <Link
               href="/contacto"
-              className="inline-flex px-8 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
+              className="inline-flex px-8 py-4 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-all"
             >
               Solicitar demo
             </Link>

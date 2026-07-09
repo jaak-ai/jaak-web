@@ -86,7 +86,7 @@ export default function HomepageTrust() {
       />
       <div
         className="absolute bottom-1/3 left-1/4 w-[400px] h-[400px] rounded-full blur-[120px] pointer-events-none"
-        style={{ background: "rgba(30,202,211,0.05)" }}
+        style={{ background: "rgba(45,182,193,0.05)" }}
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -96,8 +96,8 @@ export default function HomepageTrust() {
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
             style={{
               color: "#2DB6C1",
-              border: "1px solid rgba(30,202,211,0.22)",
-              background: "rgba(30,202,211,0.08)",
+              border: "1px solid rgba(45,182,193,0.22)",
+              background: "rgba(45,182,193,0.08)",
             }}
           >
             Cumplimiento regulatorio
@@ -140,8 +140,8 @@ export default function HomepageTrust() {
                   className="rounded-2xl p-4 transition-all duration-200 hover:-translate-y-0.5"
                   style={{
                     background:
-                      "linear-gradient(145deg, rgba(30,202,211,0.07) 0%, rgba(255,255,255,0.02) 100%)",
-                    border: "1px solid rgba(30,202,211,0.12)",
+                      "linear-gradient(145deg, rgba(45,182,193,0.07) 0%, rgba(255,255,255,0.02) 100%)",
+                    border: "1px solid rgba(45,182,193,0.12)",
                   }}
                 >
                   <div

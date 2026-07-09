@@ -27,7 +27,7 @@ export default function TargetAudience() {
             {criteria.map((item, index) => (
               <li
                 key={index}
-                className="flex items-start gap-4 text-lg text-[#53535B]"
+                className="flex items-start gap-4 text-lg text-[#64748B]"
               >
                 <span className="w-6 h-6 bg-[#2DB6C1] rounded-full flex items-center justify-center flex-shrink-0 mt-1">
                   <span className="text-white text-sm">✓</span>

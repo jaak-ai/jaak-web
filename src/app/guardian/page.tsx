@@ -139,7 +139,7 @@ export default function GuardianPage() {
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] opacity-30 blur-[120px] pointer-events-none"
           style={{
             background:
-              "radial-gradient(ellipse at center, #0066ff 0%, transparent 70%)",
+              "radial-gradient(ellipse at center, #212A45 0%, transparent 70%)",
           }}
         />
 
@@ -149,9 +149,9 @@ export default function GuardianPage() {
             <span className="relative">
               JAAK{" "}
               <span
-                className="text-[#0066ff]"
+                className="text-[#212A45]"
                 style={{
-                  textShadow: "0 0 60px rgba(0, 102, 255, 0.5)",
+                  textShadow: "0 0 60px rgba(33, 42, 69, 0.5)",
                 }}
               >
                 Guardian
@@ -189,7 +189,7 @@ export default function GuardianPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="/contacto"
-              className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-white bg-[#0066ff] hover:bg-[#0052cc] transition-colors rounded-lg"
+              className="inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-white bg-[#212A45] hover:bg-[#0E1133] transition-colors rounded-lg"
             >
               Solicitar reunión
             </a>
@@ -254,7 +254,7 @@ export default function GuardianPage() {
         <div className="max-w-5xl mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-white/10">
             <div className="px-6 py-8 text-center">
-              <div className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-[#0066ff] mb-2">
+              <div className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-[#212A45] mb-2">
                 Tiempo real
               </div>
               <div className="text-sm sm:text-base text-white/60 uppercase tracking-wide">
@@ -270,7 +270,7 @@ export default function GuardianPage() {
               </div>
             </div>
             <div className="px-6 py-8 text-center">
-              <div className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-[#0066ff] mb-2">
+              <div className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-[#212A45] mb-2">
                 3
               </div>
               <div className="text-sm sm:text-base text-white/60 uppercase tracking-wide">
@@ -293,7 +293,7 @@ export default function GuardianPage() {
 
           <div className="grid md:grid-cols-3 gap-8">
             <div className="p-8 border border-white/10 rounded-lg bg-white/[0.02]">
-              <div className="mb-6 text-[#0066ff]">
+              <div className="mb-6 text-[#212A45]">
                 <SignalIcon />
               </div>
               <h3 className="text-2xl font-semibold mb-3">5G Nativo</h3>
@@ -304,7 +304,7 @@ export default function GuardianPage() {
             </div>
 
             <div className="p-8 border border-white/10 rounded-lg bg-white/[0.02]">
-              <div className="mb-6 text-[#0066ff]">
+              <div className="mb-6 text-[#212A45]">
                 <EyeIcon />
               </div>
               <h3 className="text-2xl font-semibold mb-3">
@@ -317,7 +317,7 @@ export default function GuardianPage() {
             </div>
 
             <div className="p-8 border border-white/10 rounded-lg bg-white/[0.02]">
-              <div className="mb-6 text-[#0066ff]">
+              <div className="mb-6 text-[#212A45]">
                 <FingerprintIcon />
               </div>
               <h3 className="text-2xl font-semibold mb-3">
@@ -338,11 +338,11 @@ export default function GuardianPage() {
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-8">
             ¿Listo para redefinir
             <br />
-            <span className="text-[#0066ff]">la seguridad</span>?
+            <span className="text-[#212A45]">la seguridad</span>?
           </h2>
           <a
             href="/contacto"
-            className="inline-flex items-center justify-center px-10 py-5 text-lg font-semibold text-white bg-[#0066ff] hover:bg-[#0052cc] transition-colors rounded-lg"
+            className="inline-flex items-center justify-center px-10 py-5 text-lg font-semibold text-white bg-[#212A45] hover:bg-[#0E1133] transition-colors rounded-lg"
           >
             Solicitar reunión
           </a>

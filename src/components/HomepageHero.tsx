@@ -113,7 +113,7 @@ export default function HomepageHero() {
       {/* Ambient glows */}
       <div
         className="absolute top-[-10%] left-[-5%] w-[700px] h-[700px] rounded-full blur-[140px] pointer-events-none"
-        style={{ background: "rgba(30,202,211,0.08)" }}
+        style={{ background: "rgba(45,182,193,0.08)" }}
       />
       <div
         className="absolute bottom-[-15%] right-[-8%] w-[500px] h-[500px] rounded-full blur-[120px] pointer-events-none"
@@ -157,8 +157,8 @@ export default function HomepageHero() {
             <div
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-8"
               style={{
-                background: "rgba(30,202,211,0.10)",
-                border: "1px solid rgba(30,202,211,0.20)",
+                background: "rgba(45,182,193,0.10)",
+                border: "1px solid rgba(45,182,193,0.20)",
               }}
             >
               <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: "#2DB6C1" }} />
@@ -220,7 +220,7 @@ export default function HomepageHero() {
                 className="inline-flex items-center justify-center px-7 py-4 text-white font-bold text-base rounded-xl transition-all duration-200 group"
                 style={{
                   background: "linear-gradient(135deg, #2DB6C1, #25969f)",
-                  boxShadow: "0 8px 28px rgba(30,202,211,0.28)",
+                  boxShadow: "0 8px 28px rgba(45,182,193,0.28)",
                 }}
               >
                 Comenzar ahora
@@ -251,7 +251,7 @@ export default function HomepageHero() {
           <div className="relative flex items-center justify-center" data-sr="right">
             <div
               className="absolute inset-0 blur-3xl rounded-full scale-75 pointer-events-none"
-              style={{ background: "radial-gradient(ellipse, rgba(30,202,211,0.14), rgba(42,215,150,0.06), transparent 70%)" }}
+              style={{ background: "radial-gradient(ellipse, rgba(45,182,193,0.14), rgba(42,215,150,0.06), transparent 70%)" }}
             />
 
             <div className="relative z-10 w-full max-w-sm">
@@ -265,7 +265,7 @@ export default function HomepageHero() {
                   <div className="flex items-center gap-3">
                     <div
                       className="w-10 h-10 rounded-2xl flex items-center justify-center"
-                      style={{ background: "linear-gradient(135deg, #2DB6C1, #2AD796)", boxShadow: "0 4px 16px rgba(30,202,211,0.35)" }}
+                      style={{ background: "linear-gradient(135deg, #2DB6C1, #2AD796)", boxShadow: "0 4px 16px rgba(45,182,193,0.35)" }}
                     >
                       <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -295,23 +295,23 @@ export default function HomepageHero() {
                       style={{
                         height: "232px",
                         background: "linear-gradient(160deg, rgba(8,20,40,0.96) 0%, rgba(14,30,52,0.96) 100%)",
-                        border: "1px solid rgba(30,202,211,0.35)",
-                        boxShadow: "inset 0 0 40px rgba(30,202,211,0.06)",
+                        border: "1px solid rgba(45,182,193,0.35)",
+                        boxShadow: "inset 0 0 40px rgba(45,182,193,0.06)",
                       }}
                     >
                       {/* Horizontal scan lines (subtle grid) */}
                       <div
                         className="absolute inset-0 pointer-events-none"
                         style={{
-                          backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 12px, rgba(30,202,211,0.04) 12px, rgba(30,202,211,0.04) 13px)",
+                          backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 12px, rgba(45,182,193,0.04) 12px, rgba(45,182,193,0.04) 13px)",
                         }}
                       />
 
                       {/* Corner brackets */}
-                      <div className="absolute top-4 left-4 w-7 h-7" style={{ borderTop: "2px solid #2DB6C1", borderLeft: "2px solid #2DB6C1", boxShadow: "0 0 8px rgba(30,202,211,0.6)" }} />
-                      <div className="absolute top-4 right-4 w-7 h-7" style={{ borderTop: "2px solid #2DB6C1", borderRight: "2px solid #2DB6C1", boxShadow: "0 0 8px rgba(30,202,211,0.6)" }} />
-                      <div className="absolute bottom-10 left-4 w-7 h-7" style={{ borderBottom: "2px solid #2DB6C1", borderLeft: "2px solid #2DB6C1", boxShadow: "0 0 8px rgba(30,202,211,0.6)" }} />
-                      <div className="absolute bottom-10 right-4 w-7 h-7" style={{ borderBottom: "2px solid #2DB6C1", borderRight: "2px solid #2DB6C1", boxShadow: "0 0 8px rgba(30,202,211,0.6)" }} />
+                      <div className="absolute top-4 left-4 w-7 h-7" style={{ borderTop: "2px solid #2DB6C1", borderLeft: "2px solid #2DB6C1", boxShadow: "0 0 8px rgba(45,182,193,0.6)" }} />
+                      <div className="absolute top-4 right-4 w-7 h-7" style={{ borderTop: "2px solid #2DB6C1", borderRight: "2px solid #2DB6C1", boxShadow: "0 0 8px rgba(45,182,193,0.6)" }} />
+                      <div className="absolute bottom-10 left-4 w-7 h-7" style={{ borderBottom: "2px solid #2DB6C1", borderLeft: "2px solid #2DB6C1", boxShadow: "0 0 8px rgba(45,182,193,0.6)" }} />
+                      <div className="absolute bottom-10 right-4 w-7 h-7" style={{ borderBottom: "2px solid #2DB6C1", borderRight: "2px solid #2DB6C1", boxShadow: "0 0 8px rgba(45,182,193,0.6)" }} />
 
                       {/* Face outline */}
                       <div className="absolute inset-0 flex items-center justify-center" style={{ paddingBottom: "32px" }}>
@@ -332,15 +332,15 @@ export default function HomepageHero() {
                       <div
                         className="hp-scan-beam"
                         style={{
-                          background: "linear-gradient(90deg, transparent 0%, rgba(30,202,211,0.4) 20%, rgba(30,202,211,1) 50%, rgba(30,202,211,0.4) 80%, transparent 100%)",
-                          boxShadow: "0 0 18px rgba(30,202,211,0.90), 0 0 6px rgba(42,215,150,0.70), 0 2px 24px rgba(30,202,211,0.50)",
+                          background: "linear-gradient(90deg, transparent 0%, rgba(45,182,193,0.4) 20%, rgba(45,182,193,1) 50%, rgba(45,182,193,0.4) 80%, transparent 100%)",
+                          boxShadow: "0 0 18px rgba(45,182,193,0.90), 0 0 6px rgba(42,215,150,0.70), 0 2px 24px rgba(45,182,193,0.50)",
                         }}
                       />
 
                       {/* Status bar */}
                       <div
                         className="absolute bottom-0 left-0 right-0 px-4 py-2.5 flex items-center gap-2"
-                        style={{ background: "rgba(30,202,211,0.12)", borderTop: "1px solid rgba(30,202,211,0.25)" }}
+                        style={{ background: "rgba(45,182,193,0.12)", borderTop: "1px solid rgba(45,182,193,0.25)" }}
                       >
                         <div className="w-2 h-2 rounded-full animate-pulse" style={{ background: "#2DB6C1" }} />
                         <span className="text-xs font-semibold" style={{ color: "#2DB6C1" }}>
@@ -365,7 +365,7 @@ export default function HomepageHero() {
                             className="flex items-center justify-between px-3.5 py-2 rounded-xl transition-all duration-500"
                             style={{
                               background: done
-                                ? "linear-gradient(90deg, rgba(30,202,211,0.12), rgba(42,215,150,0.06))"
+                                ? "linear-gradient(90deg, rgba(45,182,193,0.12), rgba(42,215,150,0.06))"
                                 : active
                                 ? "var(--hp-step-active-bg)"
                                 : "var(--hp-step-inactive-bg)",
@@ -413,7 +413,7 @@ export default function HomepageHero() {
                         <div
                           className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl mt-2"
                           style={{
-                            background: "linear-gradient(90deg, rgba(42,215,150,0.14), rgba(30,202,211,0.07))",
+                            background: "linear-gradient(90deg, rgba(42,215,150,0.14), rgba(45,182,193,0.07))",
                             border: "1px solid rgba(42,215,150,0.28)",
                           }}
                         >
@@ -442,7 +442,7 @@ export default function HomepageHero() {
               {/* Floating badges — keep white text with inline style (colored bg, always dark) */}
               <div
                 className="absolute -top-4 -right-3 px-3 py-1.5 rounded-full text-xs font-bold shadow-lg"
-                style={{ background: "linear-gradient(135deg, #2DB6C1, #25969f)", boxShadow: "0 4px 16px rgba(30,202,211,0.40)", color: "white" }}
+                style={{ background: "linear-gradient(135deg, #2DB6C1, #25969f)", boxShadow: "0 4px 16px rgba(45,182,193,0.40)", color: "white" }}
               >
                 ISO 27001
               </div>

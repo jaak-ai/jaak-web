@@ -19,7 +19,7 @@ export default function Implementation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto">
           {/* Section header */}
-          <h2 className="text-3xl md:text-4xl font-black text-[#0a0f1c] mb-10">
+          <h2 className="text-3xl md:text-4xl font-black text-[#0E1133] mb-10">
             De demo a producción
           </h2>
 
@@ -28,12 +28,12 @@ export default function Implementation() {
             {steps.map((step) => (
               <div
                 key={step.number}
-                className="flex items-center gap-6 p-5 bg-[#f9fafb] rounded-xl border border-[#e5e7eb]"
+                className="flex items-center gap-6 p-5 bg-[#FAFAFA] rounded-xl border border-[#F3F4F8]"
               >
-                <span className="w-12 h-12 bg-[#0a0f1c] text-white rounded-full flex items-center justify-center font-bold text-xl flex-shrink-0">
+                <span className="w-12 h-12 bg-[#0E1133] text-white rounded-full flex items-center justify-center font-bold text-xl flex-shrink-0">
                   {step.number}
                 </span>
-                <span className="text-lg text-[#374151] font-medium">
+                <span className="text-lg text-[#64748B] font-medium">
                   {step.title}
                 </span>
               </div>
@@ -45,7 +45,7 @@ export default function Implementation() {
             <p className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-2">
               Compromiso
             </p>
-            <p className="text-lg text-[#4b5563]">
+            <p className="text-lg text-[#64748B]">
               Sin proyectos eternos. Sin dependencias absurdas.
             </p>
           </div>

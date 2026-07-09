@@ -205,7 +205,7 @@ export default function PreciosClient() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <Link href="/autoservicio"
                 className="inline-flex items-center justify-center px-8 py-4 font-bold text-base text-white rounded-xl transition-all hover:scale-105"
-                style={{ background: "#2DB6C1", boxShadow: "0 8px 32px rgba(30,202,211,0.3)" }}
+                style={{ background: "#2DB6C1", boxShadow: "0 8px 32px rgba(45,182,193,0.3)" }}
               >
                 Empezar con autoservicio →
               </Link>
@@ -236,7 +236,7 @@ export default function PreciosClient() {
       >
         <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${reveal(plansReveal.isVisible)}`}>
           <div className="text-center mb-14">
-            <span className="inline-block text-xs font-bold uppercase tracking-widest mb-4 px-3 py-1 rounded-full" style={{ background: "rgba(30,202,211,0.1)", color: "#2DB6C1", border: "1px solid rgba(30,202,211,0.25)" }}>
+            <span className="inline-block text-xs font-bold uppercase tracking-widest mb-4 px-3 py-1 rounded-full" style={{ background: "rgba(45,182,193,0.1)", color: "#2DB6C1", border: "1px solid rgba(45,182,193,0.25)" }}>
               Modalidades
             </span>
             <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4">Elija su modelo</h2>
@@ -414,7 +414,7 @@ export default function PreciosClient() {
           </p>
           <Link href="/autoservicio"
             className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-white text-base transition-all hover:scale-105"
-            style={{ background: "#2DB6C1", boxShadow: "0 8px 24px rgba(30,202,211,0.3)" }}
+            style={{ background: "#2DB6C1", boxShadow: "0 8px 24px rgba(45,182,193,0.3)" }}
           >
             Empezar ahora →
           </Link>
@@ -477,7 +477,7 @@ export default function PreciosClient() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/autoservicio"
               className="inline-flex items-center justify-center px-8 py-4 font-bold text-base text-white rounded-xl transition-all hover:scale-105"
-              style={{ background: "#2DB6C1", boxShadow: "0 8px 32px rgba(30,202,211,0.3)" }}
+              style={{ background: "#2DB6C1", boxShadow: "0 8px 32px rgba(45,182,193,0.3)" }}
             >
               Empezar con autoservicio →
             </Link>

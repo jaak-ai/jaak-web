@@ -23,7 +23,7 @@ export default function InicioRapido() {
               Volver a documentación
             </Link>
             <div className="flex items-center gap-3 mb-4">
-              <span className="px-3 py-1 bg-[#0066ff]/20 text-[#0066ff] text-sm font-medium rounded-full">Guía</span>
+              <span className="px-3 py-1 bg-[#212A45]/20 text-[#212A45] text-sm font-medium rounded-full">Guía</span>
               <span className="text-white/40">10 min</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-black text-white mb-6">
@@ -43,14 +43,14 @@ export default function InicioRapido() {
               {/* Step 1 */}
               <div className="mb-12">
                 <div className="flex items-center gap-4 mb-4">
-                  <span className="w-10 h-10 bg-[#0066ff] text-white rounded-full flex items-center justify-center font-bold">1</span>
+                  <span className="w-10 h-10 bg-[#212A45] text-white rounded-full flex items-center justify-center font-bold">1</span>
                   <h2 className="text-2xl font-bold text-gray-900 m-0">Obtenga sus credenciales de API</h2>
                 </div>
                 <p className="text-gray-600 mb-4">
                   Primero, necesita crear una cuenta en JAAK y obtener sus credenciales de API.
                 </p>
                 <ol className="list-decimal pl-6 text-gray-600 space-y-2 mb-4">
-                  <li>Regístrese en <a href="https://platform.jaak.ai/#/signup" className="text-[#0066ff] hover:underline">platform.jaak.ai</a></li>
+                  <li>Regístrese en <a href="https://platform.jaak.ai/#/signup" className="text-[#212A45] hover:underline">platform.jaak.ai</a></li>
                   <li>Vaya a <strong>Configuración → API Keys</strong></li>
                   <li>Genere un nuevo API Key para su ambiente (sandbox o producción)</li>
                   <li>Guarde su <code className="bg-gray-100 px-2 py-1 rounded text-sm">API_KEY</code> y <code className="bg-gray-100 px-2 py-1 rounded text-sm">API_SECRET</code></li>
@@ -65,7 +65,7 @@ export default function InicioRapido() {
               {/* Step 2 */}
               <div className="mb-12">
                 <div className="flex items-center gap-4 mb-4">
-                  <span className="w-10 h-10 bg-[#0066ff] text-white rounded-full flex items-center justify-center font-bold">2</span>
+                  <span className="w-10 h-10 bg-[#212A45] text-white rounded-full flex items-center justify-center font-bold">2</span>
                   <h2 className="text-2xl font-bold text-gray-900 m-0">Instale el SDK</h2>
                 </div>
                 <p className="text-gray-600 mb-4">
@@ -94,7 +94,7 @@ export default function InicioRapido() {
               {/* Step 3 */}
               <div className="mb-12">
                 <div className="flex items-center gap-4 mb-4">
-                  <span className="w-10 h-10 bg-[#0066ff] text-white rounded-full flex items-center justify-center font-bold">3</span>
+                  <span className="w-10 h-10 bg-[#212A45] text-white rounded-full flex items-center justify-center font-bold">3</span>
                   <h2 className="text-2xl font-bold text-gray-900 m-0">Configure el cliente</h2>
                 </div>
                 <p className="text-gray-600 mb-4">
@@ -120,7 +120,7 @@ const jaak = new JaakClient({
               {/* Step 4 */}
               <div className="mb-12">
                 <div className="flex items-center gap-4 mb-4">
-                  <span className="w-10 h-10 bg-[#0066ff] text-white rounded-full flex items-center justify-center font-bold">4</span>
+                  <span className="w-10 h-10 bg-[#212A45] text-white rounded-full flex items-center justify-center font-bold">4</span>
                   <h2 className="text-2xl font-bold text-gray-900 m-0">Cree su primera verificación</h2>
                 </div>
                 <p className="text-gray-600 mb-4">
@@ -158,7 +158,7 @@ console.log(session.verificationUrl);
               {/* Step 5 */}
               <div className="mb-12">
                 <div className="flex items-center gap-4 mb-4">
-                  <span className="w-10 h-10 bg-[#0066ff] text-white rounded-full flex items-center justify-center font-bold">5</span>
+                  <span className="w-10 h-10 bg-[#212A45] text-white rounded-full flex items-center justify-center font-bold">5</span>
                   <h2 className="text-2xl font-bold text-gray-900 m-0">Reciba el resultado</h2>
                 </div>
                 <p className="text-gray-600 mb-4">

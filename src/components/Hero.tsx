@@ -6,7 +6,7 @@ export default function Hero() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
         <div className="max-w-4xl">
           {/* Headline */}
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-[#0a0f1c] leading-[1.1] mb-6">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-[#0E1133] leading-[1.1] mb-6">
             Reduzca fraude digital y cumpla regulación sin perder clientes.
           </h1>
 
@@ -17,15 +17,15 @@ export default function Hero() {
 
           {/* Supporting bullets */}
           <ul className="space-y-4 mb-10">
-            <li className="flex items-center gap-3 text-lg text-[#374151]">
+            <li className="flex items-center gap-3 text-lg text-[#64748B]">
               <span className="text-[#2DB6C1] font-bold text-xl">↓</span>
               Fraude en onboarding y operaciones digitales
             </li>
-            <li className="flex items-center gap-3 text-lg text-[#374151]">
+            <li className="flex items-center gap-3 text-lg text-[#64748B]">
               <span className="text-[#2DB6C1] font-bold text-xl">↑</span>
               Conversión en flujos de registro y firma
             </li>
-            <li className="flex items-center gap-3 text-lg text-[#374151]">
+            <li className="flex items-center gap-3 text-lg text-[#64748B]">
               <span className="text-[#10b981] font-bold text-xl">✓</span>
               Cumpla CNBV, UIF, GDPR y auditorías sin fricción
             </li>
@@ -35,7 +35,7 @@ export default function Hero() {
           <div className="mb-4">
             <Link
               href="#contacto"
-              className="inline-flex items-center justify-center px-8 py-4 bg-[#0a0f1c] text-white font-bold text-lg rounded-lg hover:bg-[#1a2744] transition-all hover:scale-105 shadow-lg"
+              className="inline-flex items-center justify-center px-8 py-4 bg-[#0E1133] text-white font-bold text-lg rounded-lg hover:bg-[#1a2744] transition-all hover:scale-105 shadow-lg"
             >
               Agende una demo de 15 minutos
               <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
