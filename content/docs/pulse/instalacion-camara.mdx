@@ -158,6 +158,73 @@ métricas agregadas y anónimas. La captura de imagen con identidad solo ocurre 
 laboratorio, que es opt‑in, temporal y por cámara.
 </Callout>
 
+## Requisitos de red y firewall
+
+Si la cámara está en una red corporativa o detrás de un firewall, es importante autorizar los siguientes accesos. **La buena noticia: no necesitas abrir ningún puerto de entrada desde internet.**
+
+### TL;DR para TI
+
+- **Todo tráfico es SALIENTE HTTPS (TCP 443)** a 4 dominios JAAK + servicios de infra (DNS, NTP).
+- **Sin puertos entrantes desde internet.** El acceso remoto (SSH + video en vivo) funciona vía un túnel saliente que mantiene la cámara.
+- Copiar la **allowlist** de abajo en tu firewall y solicitar un idle timeout ≥60s para esos dominios.
+
+### Salientes obligatorios — HTTPS TCP 443
+
+| Destino | Para qué | Crítico |
+|---------|----------|---------|
+| `api.licensing.jaak.ai` | Registro, activación, heartbeat cada 60s, token del túnel | ✓ Sí |
+| `access.pulse.jaak.ai` | Gateway de acceso remoto — SSH y video en vivo | ✓ Sí |
+| `api.pulse.jaak.ai` | Envío de detecciones y diagnóstico | No |
+| `objectstorage.mx-monterrey-1.oraclecloud.com` | Descarga de actualizaciones OTA | No |
+
+### Infraestructura — sin restricción de FQDN
+
+| Servicio | Puerto | Uso |
+|----------|--------|-----|
+| **DNS** | 53 UDP/TCP | Puede ser tu servidor DNS interno (vía DHCP). |
+| **NTP** | 123 UDP | Puede ser tu servidor NTP interno. Crítico: sin reloj válido, los tokens fallan. |
+
+### Acceso desde LAN — solo para soporte/provisión
+
+Estos puertos son **internos a la red local**, nunca accesibles desde internet:
+
+| Servicio | Puerto | Notas |
+|----------|--------|-------|
+| **SSH debug** | 22 TCP | Acceso local. El SSH remoto NO usa este puerto. |
+| **Preview video** | 8088 TCP | Video local (MJPEG). Si tu LAN no es de confianza, ciérralo a nivel de host. |
+| **Portal cautivo** | 80 TCP | Solo durante onboarding WiFi. Después, la red `JAAK_PULSE` desaparece. |
+
+### Allowlist para copiar en tu firewall
+
+```
+# Saliente HTTPS TCP 443 — permitir GET/POST/PUT + streaming, sin SSL-inspection
+api.licensing.jaak.ai
+access.pulse.jaak.ai
+api.pulse.jaak.ai
+objectstorage.mx-monterrey-1.oraclecloud.com
+
+# Saliente infraestructura (puede ser interno)
+DNS    UDP/TCP 53
+NTP    UDP 123
+
+# Ajuste importante
+# Idle timeout de sesión: >= 60 segundos (ideal 120s) para los FQDN de arriba
+```
+
+### Gotchas comunes de firewall corporativo
+
+1. **Idle timeout menor a 60s** — el riesgo principal. El long-poll mantiene conexiones ~30s; el video es streaming continuo. Si tu firewall corta conexiones inactivas cada menos de 60 segundos, el túnel se rompe. **Pide idle timeout ≥ 60s.**
+
+2. **TLS inspection / DPI** — si tu proxy corporativo intercepta 443 y re-firma con su CA interna, el appliance puede rechazar el certificado. **Pide bypass de SSL-inspection para esos dominios**, o instala la CA corporativa en la cámara.
+
+3. **Métodos HTTP** — algunas políticas restrictivas bloquean métodos como POST o PUT. Asegúrate de que **GET, POST, PUT, chunked encoding y `application/octet-stream`** estén permitidos.
+
+4. **Wildcard (si lo necesitas)** — si tu firewall solo acepta wildcards: `*.jaak.ai` + `*.objectstorage.mx-monterrey-1.oraclecloud.com`.
+
+### Circuito cerrado (sin internet)
+
+Si tu sitio **no tiene acceso a internet**, puedes instalar un servidor **JAAK Pulse local** dentro de tu red y configurar la cámara para reportar solo a ese servidor (Opción D en el paso 4). En ese caso, solo necesitas comunicación LAN entre la cámara y el servidor local.
+
 ## Solución de problemas
 
 ### La red `JAAK_PULSE` no aparece
