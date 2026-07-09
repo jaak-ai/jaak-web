@@ -6,7 +6,7 @@
 # =============================================================================
 # get-pulse.sh — instalador nativo del bundle JAAK Pulse (pulse-api + pulse-web)
 #
-#   curl -fsSL https://get.pulse.jaak.ai | bash
+#   curl -fsSL https://get.pulse.jaak.ai | sudo bash
 #
 # Instala Pulse en una VM Linux (Ubuntu/Debian) en modo NATIVO: systemd + nginx,
 # igual que el cloud-init de jaak-pulse-terraform, pero SIN OCI (sin Vault, sin
@@ -19,7 +19,7 @@
 #
 # Modo desatendido:
 #   JAAK_LICENSE_KEY=... ORACLE_DSN='oracle://...' \
-#     curl -fsSL https://get.pulse.jaak.ai | bash -s -- --yes
+#     curl -fsSL https://get.pulse.jaak.ai | sudo bash -s -- --yes
 #
 # Volo: INTC-214
 # =============================================================================
@@ -68,8 +68,8 @@ usage() {
 get-pulse.sh — instala el bundle JAAK Pulse (pulse-api + pulse-web) nativo.
 
 USO:
-  curl -fsSL https://get.pulse.jaak.ai | bash
-  curl -fsSL https://get.pulse.jaak.ai | bash -s -- [opciones]
+  curl -fsSL https://get.pulse.jaak.ai | sudo bash
+  curl -fsSL https://get.pulse.jaak.ai | sudo bash -s -- [opciones]
 
 OPCIONES:
   --yes                    No pedir confirmación (modo desatendido).
