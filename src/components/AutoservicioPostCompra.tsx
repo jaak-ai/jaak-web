@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { getUtmParams } from "@/components/CloudflareTurnstile";
 
 interface FormData {
   nombre: string;
@@ -129,6 +130,8 @@ function CapacitacionForm() {
           correo: form.correo,
           telefono: form.whatsapp,
           cargo: "Autoservicio",
+          ...getUtmParams(),
+          page_url: window.location.href,
           paquete: `Sesión de onboarding | Horario: ${form.horario || "Sin preferencia"} | Temas: ${form.temas.join(", ") || "Generales"} | Pedido: ${form.numeroPedido || "N/A"} | Notas: ${form.comentarios || "—"}`,
         }),
       });

@@ -4,6 +4,7 @@ import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import { getUtmParams } from "@/components/CloudflareTurnstile";
 import {
   chronosOrganizationSchema,
   chronosSoftwareSchema,
@@ -190,7 +191,7 @@ export default function ChronosPage() {
       const res = await fetch("/api/landing", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, source: "landing-chronos" }),
+        body: JSON.stringify({ ...formData, source: "landing-chronos", ...getUtmParams(), page_url: window.location.href }),
       });
 
       if (res.ok) {

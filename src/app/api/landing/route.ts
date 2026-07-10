@@ -1,10 +1,14 @@
 import { NextResponse } from "next/server";
+import { forwardLeadToKairos } from "@/lib/kairosLead";
 
 const HUBSPOT_PORTAL_ID = "19644701";
 const HUBSPOT_FORM_ID = "b4e48141-58a0-4208-9c42-641bb2731a40";
 const TURNSTILE_VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 
 export async function POST(request: Request) {
+  // Held outside try so the finally below can await it even when the try
+  // throws (serverless freezes pending work after the response returns).
+  let kairosForward: Promise<boolean> | undefined;
   try {
     const body = await request.json();
     const {
@@ -18,6 +22,8 @@ export async function POST(request: Request) {
       utm_source,
       utm_medium,
       utm_campaign,
+      utm_term,
+      utm_content,
     } = body;
 
     if (!name || !email || !telefono) {
@@ -56,6 +62,23 @@ export async function POST(request: Request) {
         );
       }
     }
+
+    // Mirror the lead into Kairos with first-party UTM attribution, in
+    // parallel with HubSpot/Resend. Awaited before returning (serverless
+    // freezes after return); never throws nor fails the user flow.
+    kairosForward = forwardLeadToKairos({
+      email,
+      phone: telefono,
+      contact_name: name,
+      company_name: empresa,
+      message: mensaje,
+      utm_source,
+      utm_medium,
+      utm_campaign,
+      utm_term,
+      utm_content,
+      page_url: body.page_url || request.headers.get("referer") || "",
+    });
 
     // Forward to HubSpot
     let crmSuccess = false;
@@ -136,8 +159,9 @@ export async function POST(request: Request) {
       }
     }
 
-    if (!crmSuccess && !RESEND_API_KEY) {
-      console.warn("Lead not captured — CRM failed and Resend not configured");
+    const kairosSuccess = await kairosForward;
+    if (!crmSuccess && !kairosSuccess && !RESEND_API_KEY) {
+      console.warn("Lead not captured — CRM and Kairos failed, Resend not configured");
     }
 
     return NextResponse.json({ success: true });
@@ -147,5 +171,8 @@ export async function POST(request: Request) {
       { error: "Error al procesar el formulario" },
       { status: 500 }
     );
+  } finally {
+    // Never leave the Kairos forward dangling — even on error paths.
+    await kairosForward;
   }
 }

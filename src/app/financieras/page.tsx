@@ -4,6 +4,7 @@ import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import { getUtmParams } from "@/components/CloudflareTurnstile";
 
 const painPoints = [
   {
@@ -101,7 +102,7 @@ export default function FinancierasPage() {
       const res = await fetch("/api/landing", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, source: "landing-financieras" }),
+        body: JSON.stringify({ ...formData, source: "landing-financieras", ...getUtmParams(), page_url: window.location.href }),
       });
 
       if (res.ok) {
