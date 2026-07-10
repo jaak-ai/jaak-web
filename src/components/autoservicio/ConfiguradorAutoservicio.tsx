@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   productos,
   formatMXN,
@@ -11,6 +11,7 @@ import {
 } from "@/data/autoservicio-catalogo";
 import { useCarrito } from "./CarritoContext";
 import CarritoAutoservicio from "./CarritoAutoservicio";
+import { escribirParamsUrl, leerParamUrl } from "./urlEstado";
 
 const NAVY = "#212A45";
 const TEAL = "#2DB6C1";
@@ -56,6 +57,38 @@ export default function ConfiguradorAutoservicio() {
   const { enCarrito, tierDe, setTier, toggle, aplicarVolumen, comprable } = useCarrito();
   const [seleccionadas, setSeleccionadas] = useState<Set<NecesidadId>>(new Set());
   const [volumen, setVolumen] = useState<Paquete["id"]>("plata");
+  // true cuando ya se leyeron `nec`/`vol` de la URL; hasta entonces no se escribe.
+  const [hidratado, setHidratado] = useState(false);
+
+  // Hidrata necesidades y volumen desde `?nec=...&vol=...` al montar (también
+  // al volver de Catálogo a Guía, porque el componente se remonta).
+  useEffect(() => {
+    const nec = leerParamUrl("nec");
+    if (nec) {
+      const validas = nec
+        .split(",")
+        .filter((id): id is NecesidadId => necesidades.some((n) => n.id === id));
+      if (validas.length) setSeleccionadas(new Set(validas));
+    }
+    const vol = leerParamUrl("vol");
+    if (vol && volumenes.some((v) => v.id === vol)) {
+      setVolumen(vol as Paquete["id"]);
+      // Restaura los tiers sugeridos de los productos no agregados; los del
+      // carrito ya vienen fijados por `sel` y no se tocan.
+      aplicarVolumen(vol as Paquete["id"]);
+    }
+    setHidratado(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Refleja necesidades y volumen en la URL para que un refresh los conserve.
+  useEffect(() => {
+    if (!hidratado) return;
+    escribirParamsUrl({
+      nec: [...seleccionadas].join(",") || null,
+      vol: volumen !== "plata" ? volumen : null,
+    });
+  }, [hidratado, seleccionadas, volumen]);
 
   // Solo necesidades con al menos un producto comprable (con renglón de pricing).
   const necesidadesVisibles = necesidades.filter((n) =>

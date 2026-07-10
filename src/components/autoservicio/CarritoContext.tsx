@@ -1,7 +1,8 @@
 "use client";
 
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { productos, type Paquete } from "@/data/autoservicio-catalogo";
+import { escribirParamsUrl, leerParamUrl } from "./urlEstado";
 
 type Tier = Paquete["id"];
 
@@ -45,6 +46,42 @@ export function CarritoProvider({
   // Productos cuyo tier eligió el usuario explícitamente (chip). El volumen de la
   // Guía no los reescribe: respeta la elección manual hecha en cualquier modo.
   const [touched, setTouched] = useState<Set<string>>(new Set());
+  // true cuando ya se leyó `sel` de la URL; hasta entonces no se escribe la URL
+  // (evita borrar la selección compartida antes de hidratarla).
+  const [hidratado, setHidratado] = useState(false);
+
+  // Hidrata carrito y tiers desde `?sel=producto.tier,...` al montar. Entradas
+  // inválidas (producto o tier inexistente) se descartan en silencio.
+  useEffect(() => {
+    const sel = leerParamUrl("sel");
+    if (sel) {
+      const ids: string[] = [];
+      const tiers: Record<string, Tier> = {};
+      sel.split(",").forEach((token) => {
+        const [id, tier] = token.split(".");
+        const prod = productos.find((p) => p.id === id);
+        if (!prod || ids.includes(id)) return;
+        ids.push(id);
+        if (prod.paquetes.some((q) => q.id === tier)) tiers[id] = tier as Tier;
+      });
+      if (ids.length) {
+        setCart(ids);
+        setTierByProduct((prev) => ({ ...prev, ...tiers }));
+        // Un tier venido de la URL cuenta como elección explícita: el volumen
+        // de la Guía no debe pisarlo.
+        setTouched((prev) => new Set([...prev, ...Object.keys(tiers)]));
+      }
+    }
+    setHidratado(true);
+  }, []);
+
+  // Refleja el carrito en la URL en cada cambio (producto agregado/quitado o
+  // tier ajustado), para que un refresh conserve la selección.
+  useEffect(() => {
+    if (!hidratado) return;
+    const sel = cart.map((id) => `${id}.${tierByProduct[id] ?? "plata"}`).join(",");
+    escribirParamsUrl({ sel: sel || null });
+  }, [hidratado, cart, tierByProduct]);
 
   const enCarrito = (id: string) => cart.includes(id);
   const tierDe = (id: string): Tier => tierByProduct[id] ?? "plata";
