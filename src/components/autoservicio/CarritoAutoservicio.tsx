@@ -10,6 +10,7 @@ import {
   type Paquete,
 } from "@/data/autoservicio-catalogo";
 import { useCarrito } from "./CarritoContext";
+import { getUtmParams } from "@/components/CloudflareTurnstile";
 
 const NAVY = "#212A45";
 const TEAL = "#2DB6C1";
@@ -37,7 +38,7 @@ export default function CarritoAutoservicio() {
   const subtotal = items.reduce((s, i) => s + i.paquete.precio, 0);
   const iva = Math.round(subtotal * IVA);
   const total = subtotal + iva;
-  const checkoutHref = items.length ? buildCheckoutUrl(items, { pricingIndex }) : "#";
+  const checkoutHref = items.length ? buildCheckoutUrl(items, { pricingIndex, utm: getUtmParams() }) : "#";
 
   return (
     <>

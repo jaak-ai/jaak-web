@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { forwardLeadToKairos } from "@/lib/kairosLead";
 
 const HUBSPOT_PORTAL_ID = "19644701";
 const HUBSPOT_FORM_ID = "b4e48141-58a0-4208-9c42-641bb2731a40";
@@ -14,6 +15,23 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+
+    // Mirror the lead into Kairos with first-party UTM attribution, in
+    // parallel with HubSpot. Awaited before returning (serverless freezes
+    // after return); never throws nor fails the user flow.
+    const kairosForward = forwardLeadToKairos({
+      email: correo,
+      phone: telefono,
+      contact_name: nombre,
+      company_name: empresa,
+      message: `Onboarding Autoservicio | Paquete: ${paquete || "No especificado"}`,
+      utm_source: body.utm_source,
+      utm_medium: body.utm_medium,
+      utm_campaign: body.utm_campaign,
+      utm_term: body.utm_term,
+      utm_content: body.utm_content,
+      page_url: body.page_url || request.headers.get("referer") || "",
+    });
 
     const nameParts = nombre.trim().split(" ");
     const firstname = nameParts[0] || "";
@@ -49,12 +67,14 @@ export async function POST(request: Request) {
     if (!res.ok) {
       const errorData = await res.text();
       console.error("HubSpot onboarding error:", errorData);
+      await kairosForward;
       return NextResponse.json(
         { error: "Error al registrar en HubSpot" },
         { status: 500 }
       );
     }
 
+    await kairosForward;
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error processing onboarding form:", error);

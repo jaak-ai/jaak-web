@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { forwardLeadToKairos } from "@/lib/kairosLead";
 
 const HUBSPOT_PORTAL_ID = "19644701";
 const HUBSPOT_FORM_ID = "b4e48141-58a0-4208-9c42-641bb2731a40";
@@ -18,6 +19,8 @@ export async function POST(request: Request) {
       utm_source,
       utm_medium,
       utm_campaign,
+      utm_term,
+      utm_content,
     } = body;
 
     if (!name || !email || !telefono) {
@@ -56,6 +59,23 @@ export async function POST(request: Request) {
         );
       }
     }
+
+    // Mirror the lead into Kairos with first-party UTM attribution, in
+    // parallel with HubSpot/Resend. Awaited before returning (serverless
+    // freezes after return); never throws nor fails the user flow.
+    const kairosForward = forwardLeadToKairos({
+      email,
+      phone: telefono,
+      contact_name: name,
+      company_name: empresa,
+      message: mensaje,
+      utm_source,
+      utm_medium,
+      utm_campaign,
+      utm_term,
+      utm_content,
+      page_url: body.page_url || request.headers.get("referer") || "",
+    });
 
     // Forward to HubSpot
     let crmSuccess = false;
@@ -136,8 +156,9 @@ export async function POST(request: Request) {
       }
     }
 
-    if (!crmSuccess && !RESEND_API_KEY) {
-      console.warn("Lead not captured — CRM failed and Resend not configured");
+    const kairosSuccess = await kairosForward;
+    if (!crmSuccess && !kairosSuccess && !RESEND_API_KEY) {
+      console.warn("Lead not captured — CRM and Kairos failed, Resend not configured");
     }
 
     return NextResponse.json({ success: true });

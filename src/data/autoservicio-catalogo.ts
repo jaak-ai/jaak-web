@@ -263,9 +263,12 @@ export function buildCheckoutUrl(
   options: {
     pricingIndex?: Record<string, Record<string, string>>;
     base?: string;
+    /** Atribución first-party (utm_*) que viaja como query ANTES del hash
+     *  para que platform.jaak.ai (analytics/checkout) la reciba. */
+    utm?: Partial<import("@/lib/attribution").AttributionParams>;
   } = {}
 ): string {
-  const { pricingIndex, base = "https://platform.jaak.ai/#/register/user-info" } = options;
+  const { pricingIndex, base = "https://platform.jaak.ai/#/register/user-info", utm } = options;
   const products = items.map(({ producto, paquete }) => {
     const nombre = producto.nombre.split(" — ")[0];
     return {
@@ -284,5 +287,20 @@ export function buildCheckoutUrl(
     products,
   };
   const d = btoa(encodeURIComponent(JSON.stringify(payload)));
-  return `${base}?d=${d}`;
+  let url = `${base}?d=${d}`;
+  // Inserta utm_* como query previa al hash (#) — los routers hash no ven
+  // esa parte, pero analytics y el servidor de platform sí.
+  const utmEntries = Object.entries(utm ?? {}).filter(
+    (entry): entry is [string, string] =>
+      entry[0].startsWith("utm_") && typeof entry[1] === "string" && entry[1] !== ""
+  );
+  if (utmEntries.length) {
+    const qs = new URLSearchParams(utmEntries).toString();
+    const hashIdx = url.indexOf("#");
+    // Sin hash la URL ya lleva `?d=`, asi que se encadena con `&`.
+    url = hashIdx === -1
+      ? `${url}&${qs}`
+      : `${url.slice(0, hashIdx)}?${qs}${url.slice(hashIdx)}`;
+  }
+  return url;
 }

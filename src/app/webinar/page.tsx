@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { getUtmParams } from "@/components/CloudflareTurnstile";
 
 /* ── Video URL ───────────────────────────────────────────────────────── */
 const VIDEO_URL =
@@ -372,6 +373,8 @@ export default function WebinarPage() {
           telefono: formData.telefono,
           mensaje: `Tipo de institución: ${formData.tipo}. Necesidad: ${formData.necesidad}`,
           source: "webinar-tres-modelos-financieros",
+          ...getUtmParams(),
+          page_url: window.location.href,
         }),
       });
       if (res.ok) {
@@ -433,6 +436,8 @@ export default function WebinarPage() {
           telefono: registeredUser.telefono || "—",
           mensaje,
           source: "webinar-seguimiento",
+          ...getUtmParams(),
+          page_url: window.location.href,
         }),
       });
       setFollowUpStatus(res.ok ? "success" : "error");

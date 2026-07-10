@@ -2,28 +2,35 @@
 
 import Script from "next/script";
 import { useEffect, useRef, useState, useCallback } from "react";
+import {
+  UTM_STORAGE_KEY,
+  readUtmFromSearch,
+  mergeAttribution,
+  type AttributionParams,
+} from "@/lib/attribution";
 
 const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE || "";
-const UTM_STORAGE_KEY = "jaak_utm_params";
 
 // Capture UTM params immediately on module load (before React renders)
 function captureUtmParamsNow() {
   if (typeof window === "undefined") return;
 
-  const params = new URLSearchParams(window.location.search);
-  const utm_source = params.get("utm_source");
-  const utm_medium = params.get("utm_medium");
-  const utm_campaign = params.get("utm_campaign");
+  const fromUrl = readUtmFromSearch(window.location.search);
+  if (!fromUrl) return;
 
-  if (utm_source || utm_medium || utm_campaign) {
-    const utmData = {
-      utm_source: utm_source || "",
-      utm_medium: utm_medium || "",
-      utm_campaign: utm_campaign || "",
-      captured_at: Date.now(),
-    };
-    sessionStorage.setItem(UTM_STORAGE_KEY, JSON.stringify(utmData));
-    console.log("UTM captured:", utmData);
+  const utmData = {
+    ...mergeAttribution(fromUrl, readStoredUtm()),
+    captured_at: Date.now(),
+  };
+  sessionStorage.setItem(UTM_STORAGE_KEY, JSON.stringify(utmData));
+}
+
+function readStoredUtm(): Partial<AttributionParams> | null {
+  try {
+    const stored = sessionStorage.getItem(UTM_STORAGE_KEY);
+    return stored ? (JSON.parse(stored) as Partial<AttributionParams>) : null;
+  } catch {
+    return null;
   }
 }
 
@@ -175,41 +182,12 @@ export function TurnstileWidget({ onVerify, onError, onExpire }: TurnstileWidget
   );
 }
 
-export function getUtmParams() {
+export function getUtmParams(): AttributionParams {
   if (typeof window === "undefined") {
-    return { utm_source: "", utm_medium: "", utm_campaign: "" };
+    return mergeAttribution(null, null);
   }
-
-  // First check URL for fresh UTM params
-  const params = new URLSearchParams(window.location.search);
-  const urlSource = params.get("utm_source");
-  const urlMedium = params.get("utm_medium");
-  const urlCampaign = params.get("utm_campaign");
-
-  if (urlSource || urlMedium || urlCampaign) {
-    return {
-      utm_source: urlSource || "",
-      utm_medium: urlMedium || "",
-      utm_campaign: urlCampaign || "",
-    };
-  }
-
-  // Fallback to stored UTM params
-  try {
-    const stored = sessionStorage.getItem(UTM_STORAGE_KEY);
-    if (stored) {
-      const data = JSON.parse(stored);
-      return {
-        utm_source: data.utm_source || "",
-        utm_medium: data.utm_medium || "",
-        utm_campaign: data.utm_campaign || "",
-      };
-    }
-  } catch {
-    // Ignore parse errors
-  }
-
-  return { utm_source: "", utm_medium: "", utm_campaign: "" };
+  // Fresh URL params win per-field over the stored session attribution.
+  return mergeAttribution(readUtmFromSearch(window.location.search), readStoredUtm());
 }
 
 // Declare turnstile on window

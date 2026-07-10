@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { getUtmParams } from "@/components/CloudflareTurnstile";
 
 interface FormState {
   nombre: string;
@@ -48,7 +49,7 @@ export default function OnboardingForm() {
       const res = await fetch("/api/onboarding", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, ...getUtmParams(), page_url: window.location.href }),
       });
 
       if (!res.ok) {
