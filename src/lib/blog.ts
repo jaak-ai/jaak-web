@@ -11,6 +11,17 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    title: "Umbrales LFPIORPI 2026 para Juegos y Apuestas: Cómo cumplir con el SAT sin perder jugadores",
+    excerpt:
+      "Conoce los umbrales de identificación (325 UMA) y aviso al SAT (645 UMA) del artículo 17 LFPIORPI para casinos, sorteos y plataformas de apuestas en 2026, y cómo automatizar el cumplimiento PLD sin fricción.",
+    date: "10 de julio, 2026",
+    dateISO: "2026-07-10",
+    category: "Regulación",
+    slug: "umbrales-lfpiorpi-2026-juegos-apuestas",
+    readTime: "11 min",
+    image: "/images/blog/umbrales-lfpiorpi-2026-juegos-apuestas.jpeg",
+  },
+  {
     title: "iGaming en México: el onboarding ya no es solo registro, es cumplimiento",
     excerpt:
       "Los operadores de iGaming en México enfrentan un reto muy particular: no basta con tener una buena experiencia de registro. El verdadero reto está en conectar lo que la ley exige con infraestructura capaz de demostrar cumplimiento en cada etapa del onboarding.",
