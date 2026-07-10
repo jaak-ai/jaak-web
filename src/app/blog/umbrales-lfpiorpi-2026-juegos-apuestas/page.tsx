@@ -20,6 +20,7 @@ export const metadata: Metadata = {
     type: "article",
     publishedTime: "2026-07-10",
     authors: ["JAAK"],
+    images: ["/images/blog/umbrales-lfpiorpi-2026-juegos-apuestas.jpeg"],
   },
 };
 
@@ -30,6 +31,7 @@ const articleSchema = {
     "Umbrales LFPIORPI 2026 en Juegos con Apuesta: Compliance Automatizado",
   description:
     "Umbrales de identificación y aviso al SAT (Art. 17 LFPIORPI) para casinos, sorteos y plataformas de apuestas en 2026, y cómo automatizar el cumplimiento PLD.",
+  image: "https://jaak.ai/images/blog/umbrales-lfpiorpi-2026-juegos-apuestas.jpeg",
   datePublished: "2026-07-10",
   dateModified: "2026-07-10",
   author: {
@@ -118,6 +120,8 @@ export default function UmbralesLfpiorpiJuegosApuestas() {
         date="10 de julio, 2026"
         readTime="11 min"
         slug="umbrales-lfpiorpi-2026-juegos-apuestas"
+        image="/images/blog/umbrales-lfpiorpi-2026-juegos-apuestas.jpeg"
+        imageAlt="Portada del artículo: Umbrales LFPIORPI 2026 para juegos y apuestas, dashboard de compliance JAAK"
         relatedPosts={[
           { title: "iGaming en México: el onboarding ya no es solo registro, es cumplimiento", slug: "igaming-onboarding-cumplimiento-mexico", category: "Compliance" },
           { title: "Por qué la CNBV aplicó +696 sanciones en 2025: el problema no es el fraude, son los expedientes", slug: "cnbv-sanciones-2025-expedientes", category: "Regulación" },

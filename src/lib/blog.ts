@@ -19,6 +19,7 @@ export const blogPosts: BlogPost[] = [
     category: "Regulación",
     slug: "umbrales-lfpiorpi-2026-juegos-apuestas",
     readTime: "11 min",
+    image: "/images/blog/umbrales-lfpiorpi-2026-juegos-apuestas.jpeg",
   },
   {
     title: "iGaming en México: el onboarding ya no es solo registro, es cumplimiento",
