@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import { gtmEvent } from "@/components/GoogleTagManager";
@@ -18,8 +19,13 @@ const VIDEO_ID = "q6Xug6_kms0";
 const LOCK_SECONDS = 20;
 const SESSION_LABEL = "Sesión KYC #5207418";
 const REGISTRO_URL = "/api/landing";
-const LEAD_SOURCE = "kyc-demo-autoservicio";
+const LEAD_SOURCE = "landing_demo_kyc";
 const STORAGE_KEY = "kyc-demo-autoservicio-registered";
+
+const WHATSAPP_NUMBER = "5215535091788";
+const WHATSAPP_MESSAGE =
+  "Hola, te contactamos de JAAK IT. Vimos que te interesó nuestra solución de identidad digital y cumplimiento regulatorio. ¿Tienes 5 minutos para que te cuente cómo podemos ayudarte?";
+const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
 
 /* ─────────────────────────────────────────────────────────────────────────
  * Catálogo de productos de prueba (precios reales del catálogo autoservicio)
@@ -244,7 +250,14 @@ function LandingHeader() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-[68px] items-center justify-between gap-4">
           <Link href="/" className="flex items-center gap-2 flex-shrink-0">
-            <span className="text-lg font-bold tracking-tight text-white">JAAK</span>
+            <Image
+              src="/images/logos/jaak-logo-azul.png"
+              alt="JAAK"
+              width={120}
+              height={48}
+              className="h-8 w-auto brightness-0 invert"
+              priority
+            />
           </Link>
 
           <nav className="hidden lg:flex items-center gap-7">
@@ -1311,12 +1324,14 @@ export default function KycDemoAutoservicioPage() {
                 Activar paquete por $99
               </a>
               <a
-                href="mailto:ventas@jaak.ai"
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={() => gtmEvent("click_contact_sales")}
                 className="inline-flex items-center gap-2 rounded-xl px-7 py-3.5 text-[15px] font-semibold text-white border"
                 style={{ borderColor: "rgba(255,255,255,0.25)" }}
               >
-                Hablar con ventas
+                Hablar con ventas por WhatsApp
               </a>
             </div>
           </div>

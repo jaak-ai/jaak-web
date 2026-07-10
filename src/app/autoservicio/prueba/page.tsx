@@ -2,6 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import OnboardingForm from "@/components/OnboardingForm";
 
+const WHATSAPP_NUMBER = "5215535091788";
+const WHATSAPP_MESSAGE =
+  "Hola, te contactamos de JAAK IT. Vimos que te interesó nuestra solución de identidad digital y cumplimiento regulatorio. ¿Tienes 5 minutos para que te cuente cómo podemos ayudarte?";
+const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
+
 export const metadata: Metadata = {
   title: "Paquetes de Prueba JAAK Autoservicio | Empieza hoy",
   description:
@@ -281,7 +286,7 @@ export default function AutoservicioPrueba() {
                 ✉️ ventas@jaak.ai
               </Link>
               <Link
-                href="https://wa.me/525215535091788?text=Hola%20%F0%9F%91%8B%20Me%20interesa%20el%20autoservicio%20de%20JAAK.%20%C2%BFMe%20pueden%20compartir%20los%20precios%20y%20c%C3%B3mo%20empezar%3F"
+                href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#1fba58] text-white font-semibold px-5 py-3 rounded-xl transition-all text-sm"
