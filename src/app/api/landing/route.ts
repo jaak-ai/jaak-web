@@ -6,6 +6,9 @@ const HUBSPOT_FORM_ID = "b4e48141-58a0-4208-9c42-641bb2731a40";
 const TURNSTILE_VERIFY_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 
 export async function POST(request: Request) {
+  // Held outside try so the finally below can await it even when the try
+  // throws (serverless freezes pending work after the response returns).
+  let kairosForward: Promise<boolean> | undefined;
   try {
     const body = await request.json();
     const {
@@ -63,7 +66,7 @@ export async function POST(request: Request) {
     // Mirror the lead into Kairos with first-party UTM attribution, in
     // parallel with HubSpot/Resend. Awaited before returning (serverless
     // freezes after return); never throws nor fails the user flow.
-    const kairosForward = forwardLeadToKairos({
+    kairosForward = forwardLeadToKairos({
       email,
       phone: telefono,
       contact_name: name,
@@ -168,5 +171,8 @@ export async function POST(request: Request) {
       { error: "Error al procesar el formulario" },
       { status: 500 }
     );
+  } finally {
+    // Never leave the Kairos forward dangling — even on error paths.
+    await kairosForward;
   }
 }

@@ -5,6 +5,9 @@ const HUBSPOT_PORTAL_ID = "19644701";
 const HUBSPOT_FORM_ID = "b4e48141-58a0-4208-9c42-641bb2731a40";
 
 export async function POST(request: Request) {
+  // Held outside try so the finally below can await it even when the try
+  // throws (serverless freezes pending work after the response returns).
+  let kairosForward: Promise<boolean> | undefined;
   try {
     const body = await request.json();
     const { name, email, company, phone, role, message } = body;
@@ -20,7 +23,7 @@ export async function POST(request: Request) {
     // Mirror the lead into Kairos with first-party UTM attribution, in
     // parallel with HubSpot. Awaited before every response below (serverless
     // freezes after return); never throws nor fails the user flow.
-    const kairosForward = forwardLeadToKairos({
+    kairosForward = forwardLeadToKairos({
       email,
       phone,
       contact_name: name,
@@ -126,5 +129,8 @@ export async function POST(request: Request) {
       { error: "Error al procesar el formulario" },
       { status: 500 }
     );
+  } finally {
+    // Never leave the Kairos forward dangling — even on error paths.
+    await kairosForward;
   }
 }
