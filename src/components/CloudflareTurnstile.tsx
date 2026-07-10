@@ -6,23 +6,24 @@ import {
   UTM_STORAGE_KEY,
   readUtmFromSearch,
   mergeAttribution,
+  persistAttribution,
   type AttributionParams,
 } from "@/lib/attribution";
 
 const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE || "";
 
-// Capture UTM params immediately on module load (before React renders)
+// Capture UTM params immediately on module load (before React renders).
+// Corre en la evaluación del módulo: cualquier throw aquí tumba TODO el bundle
+// cliente de la página (botones muertos, carrito sin hidratar), así que el
+// acceso a sessionStorage —que lanza SecurityError con cookies bloqueadas o en
+// webviews de email— va blindado.
 function captureUtmParamsNow() {
   if (typeof window === "undefined") return;
-
-  const fromUrl = readUtmFromSearch(window.location.search);
-  if (!fromUrl) return;
-
-  const utmData = {
-    ...mergeAttribution(fromUrl, readStoredUtm()),
-    captured_at: Date.now(),
-  };
-  sessionStorage.setItem(UTM_STORAGE_KEY, JSON.stringify(utmData));
+  try {
+    persistAttribution(window.location.search, window.sessionStorage, Date.now());
+  } catch {
+    // Storage bloqueado: se pierde la atribución, nunca la página.
+  }
 }
 
 function readStoredUtm(): Partial<AttributionParams> | null {
