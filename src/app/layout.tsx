@@ -93,6 +93,9 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://jaak.ai"),
   verification: {
     google: "NfAK5ezzduNLAjO45_UXc1F1iVRHCCEMFniyoF9W7X0",
+    other: {
+      "facebook-domain-verification": "1xjqmahvef8db66w8xe5iwtlm77bxb",
+    },
   },
   title: {
     default: "JAAK - Reduce fraude y cumple regulación sin perder clientes",
