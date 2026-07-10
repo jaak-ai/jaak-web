@@ -19,12 +19,12 @@ export default function ReadingProgress() {
   return (
     <div
       className="fixed top-0 left-0 z-[60] w-full"
-      style={{ height: "2px", background: "rgba(45, 182, 193,0.12)" }}
+      style={{ height: "2px", background: "rgba(30,202,211,0.12)" }}
       aria-hidden="true"
     >
       <div
         className="h-full transition-all duration-75"
-        style={{ width: `${progress}%`, background: "#2DB6C1" }}
+        style={{ width: `${progress}%`, background: "#1ECAD3" }}
       />
     </div>
   );

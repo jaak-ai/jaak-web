@@ -120,7 +120,7 @@ export default function SerieLFPIORPIPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <Header />
-      <main style={{ background: "#212A45", fontFamily: FONT, minHeight: "100vh" }}>
+      <main style={{ background: "#202945", fontFamily: FONT, minHeight: "100vh" }}>
         <style>{`
           @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px); }
@@ -136,25 +136,25 @@ export default function SerieLFPIORPIPage() {
             transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
           }
           .ep-card:hover {
-            border-color: rgba(45,182,193,0.35);
-            box-shadow: 0 8px 28px rgba(45,182,193,0.08);
+            border-color: rgba(30,202,211,0.35);
+            box-shadow: 0 8px 28px rgba(30,202,211,0.08);
             transform: translateY(-2px);
           }
           .cta-btn {
             display: inline-flex; align-items: center; gap: 6px;
-            background: #2DB6C1; color: #212A45; font-weight: 800;
+            background: #1ECAD3; color: #202945; font-weight: 800;
             padding: 14px 28px; border-radius: 10px; font-size: 0.95rem;
             transition: box-shadow 0.2s, transform 0.2s; text-decoration: none;
           }
-          .cta-btn:hover { box-shadow: 0 8px 28px rgba(45,182,193,0.30); transform: translateY(-2px); }
+          .cta-btn:hover { box-shadow: 0 8px 28px rgba(30,202,211,0.30); transform: translateY(-2px); }
           .cta-btn-ghost {
             display: inline-flex; align-items: center; gap: 6px;
-            background: transparent; color: #2DB6C1; font-weight: 700;
+            background: transparent; color: #1ECAD3; font-weight: 700;
             padding: 14px 28px; border-radius: 10px;
-            border: 1.5px solid rgba(45,182,193,0.40); font-size: 0.95rem;
+            border: 1.5px solid rgba(30,202,211,0.40); font-size: 0.95rem;
             transition: border-color 0.2s, background 0.2s; text-decoration: none;
           }
-          .cta-btn-ghost:hover { border-color: #2DB6C1; background: rgba(45,182,193,0.06); }
+          .cta-btn-ghost:hover { border-color: #1ECAD3; background: rgba(30,202,211,0.06); }
         `}</style>
 
         {/* Breadcrumb */}
@@ -169,10 +169,10 @@ export default function SerieLFPIORPIPage() {
         </div>
 
         {/* Hero */}
-        <section style={{ padding: "72px 0 56px", background: "radial-gradient(ellipse 70% 50% at 50% 0%, rgba(45,182,193,0.11) 0%, transparent 65%)" }}>
+        <section style={{ padding: "72px 0 56px", background: "radial-gradient(ellipse 70% 50% at 50% 0%, rgba(30,202,211,0.11) 0%, transparent 65%)" }}>
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <span className="sl-a inline-block text-xs font-bold tracking-widest uppercase px-3 py-1 rounded-full mb-5"
-              style={{ background: "rgba(45,182,193,0.10)", color: "#2DB6C1", border: "1px solid rgba(45,182,193,0.25)" }}>
+              style={{ background: "rgba(30,202,211,0.10)", color: "#1ECAD3", border: "1px solid rgba(30,202,211,0.25)" }}>
               Serie educativa · 5 episodios
             </span>
             <h1 className="sl-b text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-5 leading-tight"
@@ -209,7 +209,7 @@ export default function SerieLFPIORPIPage() {
               verlos en orden o ir directo al tema que necesitas.
             </p>
             <div className="mt-6 mb-8 inline-block px-4 py-2 rounded-full text-sm"
-              style={{ background: "rgba(45,182,193,0.08)", color: "rgba(255,255,255,0.55)", border: "1px solid rgba(45,182,193,0.18)" }}>
+              style={{ background: "rgba(30,202,211,0.08)", color: "rgba(255,255,255,0.55)", border: "1px solid rgba(30,202,211,0.18)" }}>
               Producido por JAAK · Cada episodio: 3–6 minutos · Serie completa: ~25 minutos · Incluye PDF descargable
             </div>
           </div>
@@ -226,7 +226,7 @@ export default function SerieLFPIORPIPage() {
                   className="ep-card p-6 sm:p-8 flex gap-6 no-underline"
                 >
                   <div className="shrink-0">
-                    <span className="text-4xl font-black" style={{ color: "rgba(45,182,193,0.35)", fontFamily: FONT, lineHeight: 1 }}>
+                    <span className="text-4xl font-black" style={{ color: "rgba(30,202,211,0.35)", fontFamily: FONT, lineHeight: 1 }}>
                       {ep.ep}
                     </span>
                   </div>
@@ -234,20 +234,20 @@ export default function SerieLFPIORPIPage() {
                     <h2 className="font-black text-white mb-1 leading-snug" style={{ fontFamily: FONT, fontSize: "1.15rem", letterSpacing: "-0.3px" }}>
                       {ep.title}
                     </h2>
-                    <p className="text-sm mb-3 font-semibold" style={{ color: "#2DB6C1" }}>{ep.subtitle}</p>
+                    <p className="text-sm mb-3 font-semibold" style={{ color: "#1ECAD3" }}>{ep.subtitle}</p>
                     <p className="mb-4" style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.88rem", lineHeight: "1.65" }}>
                       {ep.desc}
                     </p>
                     <ul className="flex flex-col gap-1.5">
                       {ep.learnings.map((l, i) => (
                         <li key={i} className="flex items-start gap-2.5">
-                          <span className="shrink-0 mt-1" style={{ color: "#2DB6C1", fontSize: "0.7rem" }}>▸</span>
+                          <span className="shrink-0 mt-1" style={{ color: "#1ECAD3", fontSize: "0.7rem" }}>▸</span>
                           <span style={{ color: "rgba(255,255,255,0.50)", fontSize: "0.83rem" }}>{l}</span>
                         </li>
                       ))}
                     </ul>
                     <div className="mt-5">
-                      <span className="text-sm font-bold" style={{ color: "#2DB6C1" }}>Ver episodio →</span>
+                      <span className="text-sm font-bold" style={{ color: "#1ECAD3" }}>Ver episodio →</span>
                     </div>
                   </div>
                 </Link>
@@ -259,7 +259,7 @@ export default function SerieLFPIORPIPage() {
         {/* PDF Block */}
         <section id="pdf" style={{ padding: "72px 0", background: "rgba(0,0,0,0.12)", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="p-8 rounded-2xl text-center" style={{ background: "rgba(45,182,193,0.06)", border: "1px solid rgba(45,182,193,0.22)" }}>
+            <div className="p-8 rounded-2xl text-center" style={{ background: "rgba(30,202,211,0.06)", border: "1px solid rgba(30,202,211,0.22)" }}>
               <p className="text-3xl mb-4">📄</p>
               <h2 className="text-2xl font-black text-white mb-3" style={{ letterSpacing: "-0.5px" }}>
                 Guía LFPIORPI para empresas mexicanas — PDF descargable
@@ -286,7 +286,7 @@ export default function SerieLFPIORPIPage() {
         </section>
 
         {/* CTA */}
-        <section style={{ padding: "80px 0", background: "radial-gradient(ellipse 70% 80% at 50% 50%, rgba(45,182,193,0.09) 0%, transparent 70%)" }}>
+        <section style={{ padding: "80px 0", background: "radial-gradient(ellipse 70% 80% at 50% 50%, rgba(30,202,211,0.09) 0%, transparent 70%)" }}>
           <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-2xl sm:text-3xl font-black text-white mb-4" style={{ letterSpacing: "-0.8px" }}>
               ¿Quieres ver cómo JAAK implementa esto en tu operación?

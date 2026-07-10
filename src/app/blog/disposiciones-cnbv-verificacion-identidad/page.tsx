@@ -95,49 +95,49 @@ export default function DisposicionesCNBV() {
                 <h3 className="text-lg font-bold text-gray-900 mb-4">Datos de identificación obligatorios</h3>
                 <ul className="space-y-3 text-gray-600">
                   <li className="flex items-start gap-3">
-                    <svg className="w-5 h-5 text-[#212A45] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-[#0066ff] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     <span>Nombre completo (sin abreviaturas)</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <svg className="w-5 h-5 text-[#212A45] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-[#0066ff] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     <span>Fecha de nacimiento</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <svg className="w-5 h-5 text-[#212A45] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-[#0066ff] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     <span>País de nacimiento y nacionalidad</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <svg className="w-5 h-5 text-[#212A45] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-[#0066ff] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     <span>CURP (Clave Única de Registro de Población)</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <svg className="w-5 h-5 text-[#212A45] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-[#0066ff] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     <span>RFC (Registro Federal de Contribuyentes) cuando aplique</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <svg className="w-5 h-5 text-[#212A45] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-[#0066ff] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     <span>Domicilio particular</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <svg className="w-5 h-5 text-[#212A45] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-[#0066ff] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     <span>Ocupación, profesión o actividad</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <svg className="w-5 h-5 text-[#212A45] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-[#0066ff] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     <span>Teléfono y correo electrónico</span>
@@ -153,7 +153,7 @@ export default function DisposicionesCNBV() {
               </p>
 
               <div className="grid md:grid-cols-2 gap-6 my-8">
-                <div className="bg-[#212A45]/5 rounded-xl p-6">
+                <div className="bg-[#0066ff]/5 rounded-xl p-6">
                   <h3 className="font-bold text-gray-900 mb-3">Documentos primarios</h3>
                   <ul className="space-y-2 text-gray-600">
                     <li>• Credencial para votar (INE/IFE)</li>
@@ -181,10 +181,8 @@ export default function DisposicionesCNBV() {
                 requisitos específicos de seguridad:
               </p>
 
-              <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
-                <p className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-3">
-                  Requisitos para verificación remota
-                </p>
+              <div className="bg-[#0066ff]/5 border-l-4 border-[#0066ff] p-6 my-8">
+                <p className="text-gray-700 font-medium mb-2">Requisitos para verificación remota:</p>
                 <ul className="space-y-2 text-gray-600">
                   <li>• Captura de documento de identidad con tecnología que verifique autenticidad</li>
                   <li>• Comparación biométrica facial contra el documento</li>
@@ -205,7 +203,7 @@ export default function DisposicionesCNBV() {
               <div className="overflow-x-auto my-8">
                 <table className="w-full border-collapse">
                   <thead>
-                    <tr className="bg-[#0E1133] text-white">
+                    <tr className="bg-[#0a0a0a] text-white">
                       <th className="px-4 py-3 text-left">Nivel</th>
                       <th className="px-4 py-3 text-left">Límites</th>
                       <th className="px-4 py-3 text-left">Requisitos</th>
@@ -269,10 +267,7 @@ export default function DisposicionesCNBV() {
               <p className="text-gray-600 leading-relaxed mb-4">
                 El incumplimiento de las disposiciones puede resultar en:
               </p>
-              <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
-                <p className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-3">
-                  Importante
-                </p>
+              <div className="bg-red-50 border-l-4 border-red-500 p-6 my-8">
                 <ul className="space-y-2 text-gray-700">
                   <li>• <strong>Multas administrativas</strong> de hasta 100,000 UMAs</li>
                   <li>• <strong>Suspensión de operaciones</strong> para actividades específicas</li>
@@ -311,7 +306,7 @@ export default function DisposicionesCNBV() {
                 </li>
               </ol>
 
-              <div className="bg-[#0E1133] rounded-xl p-8 my-12">
+              <div className="bg-[#0a0a0a] rounded-xl p-8 my-12">
                 <h3 className="text-xl font-bold text-white mb-4">
                   Conclusión
                 </h3>
@@ -328,7 +323,7 @@ export default function DisposicionesCNBV() {
             <div className="mt-12 flex flex-wrap gap-4">
               <a
                 href="/contacto"
-                className="px-8 py-4 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-all"
+                className="px-8 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
               >
                 Solicitar demo
               </a>

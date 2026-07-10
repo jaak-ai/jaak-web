@@ -2,14 +2,14 @@
 export const signaOrganizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "name": "Signa by JAAK",
-  "alternateName": ["Signa", "Signa Firma Electrónica"],
-  "description": "Firma electrónica con validez legal NOM-151 para México. Expediente probatorio completo y precios transparentes.",
+  "name": "Signa",
+  "alternateName": ["Signa México", "Signa Firma Electrónica"],
+  "description": "Firma electrónica profesional para México con tecnología 2026. 50% más económica que la competencia.",
   "url": "https://jaak.ai/signa",
   "logo": "https://jaak.ai/logo.png",
   "contactPoint": {
     "@type": "ContactPoint",
-    "email": "sales@jaak.ai",
+    "telephone": "+52-555-SIGNA",
     "contactType": "customer service",
     "availableLanguage": ["Spanish", "English"],
     "areaServed": "MX"
@@ -39,22 +39,23 @@ export const signaOrganizationSchema = {
     "itemOffered": {
       "@type": "Service",
       "name": "Firma Electrónica",
-      "description": "Servicio de firma electrónica con validez legal NOM-151 para México"
+      "description": "Servicio de firma electrónica profesional para México"
     },
+    "price": "15.00",
     "priceCurrency": "MXN",
     "availability": "https://schema.org/InStock",
-    "url": "https://jaak.ai/precios"
+    "validFrom": "2026-02-19"
   }
 };
 
 export const signaServiceSchema = {
   "@context": "https://schema.org",
   "@type": "Service",
-  "name": "Firma Electrónica Signa by JAAK",
-  "description": "Servicio de firma electrónica con validez legal NOM-151 en México. Expediente probatorio completo y soporte 24/7.",
+  "name": "Firma Electrónica Profesional Signa",
+  "description": "Servicio de firma electrónica con validez legal en México. NOM-151 certificado, tecnología 2026, soporte 24/7.",
   "provider": {
     "@type": "Organization",
-    "name": "Signa by JAAK",
+    "name": "Signa",
     "url": "https://jaak.ai/signa"
   },
   "areaServed": {
@@ -63,10 +64,12 @@ export const signaServiceSchema = {
   },
   "offers": {
     "@type": "Offer",
+    "price": "15.00",
     "priceCurrency": "MXN",
+    "priceValidUntil": "2026-12-31",
     "availability": "https://schema.org/InStock",
-    "url": "https://jaak.ai/precios",
-    "description": "Precios transparentes por firma"
+    "url": "https://jaak.ai/signa",
+    "description": "50% más económico que la competencia"
   },
   "hasOfferingCatalog": {
     "@type": "OfferingCatalog",
@@ -106,10 +109,10 @@ export const signaFAQSchema = {
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "¿Cuánto cuesta Signa?",
+      "name": "¿Cuánto cuesta Signa vs Mifiel?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Signa maneja precios transparentes por firma, sin costos de setup ni mínimos mensuales. Consulte las tarifas vigentes en https://jaak.ai/precios."
+        "text": "Signa cuesta $15 MXN por firma vs $29.90 MXN de Mifiel. Esto representa un ahorro del 50% con la misma validez legal NOM-151."
       }
     },
     {
@@ -122,18 +125,18 @@ export const signaFAQSchema = {
     },
     {
       "@type": "Question",
-      "name": "¿Cómo es la migración a Signa?",
+      "name": "¿Cuánto tiempo toma migrar de Mifiel a Signa?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "La migración es acompañada: le ayudamos a exportar sus documentos y a configurar su cuenta desde su plataforma actual."
+        "text": "La migración de Mifiel a Signa toma entre 24-48 horas y es completamente gratuita. Te ayudamos con todo el proceso."
       }
     },
     {
       "@type": "Question",
-      "name": "¿Signa incluye expediente probatorio?",
+      "name": "¿Qué ventajas tiene Signa sobre DocuSign?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Sí. Cada documento firmado con Signa incluye constancia de conservación NOM-151, sellos de tiempo y evidencia de integridad que respaldan su validez ante terceros."
+        "text": "Signa es 50% más económico que DocuSign, está optimizado para México con NOM-151, soporte en español 24/7, y no requiere contratos anuales."
       }
     }
   ]

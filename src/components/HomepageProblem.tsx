@@ -212,11 +212,11 @@ export default function HomepageProblem() {
             <div className="flex items-center gap-3 mb-6">
               <div
                 className="w-9 h-9 rounded-xl flex items-center justify-center"
-                style={{ background: "rgba(45,182,193,0.15)" }}
+                style={{ background: "rgba(30,202,211,0.15)" }}
               >
                 <svg
                   className="w-4 h-4"
-                  style={{ color: "#2DB6C1" }}
+                  style={{ color: "#1ECAD3" }}
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >
@@ -230,7 +230,7 @@ export default function HomepageProblem() {
               <div>
                 <div
                   className="text-sm font-bold uppercase tracking-wider"
-                  style={{ color: "#2DB6C1" }}
+                  style={{ color: "#1ECAD3" }}
                 >
                   Con JAAK
                 </div>
@@ -248,7 +248,7 @@ export default function HomepageProblem() {
                   key={i}
                   className="flex items-start gap-3 px-4 py-3 rounded-2xl"
                   style={{
-                    background: "linear-gradient(90deg, rgba(45,182,193,0.10), rgba(42,215,150,0.05))",
+                    background: "linear-gradient(90deg, rgba(30,202,211,0.10), rgba(42,215,150,0.05))",
                     border: "1px solid rgba(42,215,150,0.14)",
                   }}
                 >

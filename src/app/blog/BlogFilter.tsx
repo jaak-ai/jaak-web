@@ -46,7 +46,7 @@ function CategoryBadge({ category }: { category: string }) {
 
 function ReadTime({ time }: { time: string }) {
   return (
-    <span className="flex items-center gap-1 text-[#2DB6C1]/70 text-xs font-medium" style={{ fontFamily: FONT }}>
+    <span className="flex items-center gap-1 text-[#1ECAD3]/70 text-xs font-medium" style={{ fontFamily: FONT }}>
       <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
@@ -63,7 +63,7 @@ function FeaturedCard({ post, hero = false }: { post: (typeof blogPosts)[0]; her
           className="relative overflow-hidden rounded-2xl border transition-all duration-300 h-full"
           style={{ background: "rgba(255,255,255,0.04)", borderColor: "rgba(255,255,255,0.08)" }}
           onMouseEnter={e => {
-            (e.currentTarget as HTMLElement).style.borderColor = "rgba(45, 182, 193,0.35)";
+            (e.currentTarget as HTMLElement).style.borderColor = "rgba(30,202,211,0.35)";
             (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.06)";
           }}
           onMouseLeave={e => {
@@ -73,13 +73,13 @@ function FeaturedCard({ post, hero = false }: { post: (typeof blogPosts)[0]; her
         >
           {post.image ? (
             <div className="relative h-52 overflow-hidden">
-              <Image src={post.image} alt={post.title} fill sizes="(max-width:1024px) 100vw, 50vw" className="object-cover object-top transition-transform duration-500 group-hover:scale-105" />
+              <Image src={post.image} alt={post.title} fill className="object-cover object-top transition-transform duration-500 group-hover:scale-105" />
               <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 40%, rgba(32,41,69,0.95) 100%)" }} />
             </div>
           ) : (
-            <div className="relative h-52 overflow-hidden flex items-center justify-center" style={{ background: "linear-gradient(135deg, rgba(45, 182, 193,0.12) 0%, rgba(32,41,69,0.8) 100%)" }}>
-              <div className="w-16 h-16 rounded-2xl flex items-center justify-center border" style={{ background: "rgba(45, 182, 193,0.1)", borderColor: "rgba(45, 182, 193,0.2)" }}>
-                <svg className="w-8 h-8" style={{ color: "#2DB6C1" }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="relative h-52 overflow-hidden flex items-center justify-center" style={{ background: "linear-gradient(135deg, rgba(30,202,211,0.12) 0%, rgba(32,41,69,0.8) 100%)" }}>
+              <div className="w-16 h-16 rounded-2xl flex items-center justify-center border" style={{ background: "rgba(30,202,211,0.1)", borderColor: "rgba(30,202,211,0.2)" }}>
+                <svg className="w-8 h-8" style={{ color: "#1ECAD3" }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
               </div>
@@ -91,13 +91,13 @@ function FeaturedCard({ post, hero = false }: { post: (typeof blogPosts)[0]; her
               <ReadTime time={post.readTime} />
               <span className="text-white/30 text-xs" style={{ fontFamily: FONT }}>{post.date}</span>
             </div>
-            <h3 className="font-black leading-snug mb-2 text-white group-hover:text-[#2DB6C1] transition-colors duration-200" style={{ fontFamily: FONT, fontSize: "1.15rem", letterSpacing: "-0.3px" }}>
+            <h3 className="font-black leading-snug mb-2 text-white group-hover:text-[#1ECAD3] transition-colors duration-200" style={{ fontFamily: FONT, fontSize: "1.15rem", letterSpacing: "-0.3px" }}>
               {post.title}
             </h3>
             <p className="text-sm leading-relaxed line-clamp-3" style={{ color: "rgba(255,255,255,0.50)", fontFamily: FONT }}>
               {post.excerpt}
             </p>
-            <div className="mt-4 flex items-center gap-1.5 text-[#2DB6C1] text-sm font-bold" style={{ fontFamily: FONT }}>
+            <div className="mt-4 flex items-center gap-1.5 text-[#1ECAD3] text-sm font-bold" style={{ fontFamily: FONT }}>
               Leer artículo
               <svg className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -115,7 +115,7 @@ function FeaturedCard({ post, hero = false }: { post: (typeof blogPosts)[0]; her
         className="relative overflow-hidden rounded-2xl border transition-all duration-300 h-full flex flex-col"
         style={{ background: "rgba(255,255,255,0.04)", borderColor: "rgba(255,255,255,0.08)" }}
         onMouseEnter={e => {
-          (e.currentTarget as HTMLElement).style.borderColor = "rgba(45, 182, 193,0.35)";
+          (e.currentTarget as HTMLElement).style.borderColor = "rgba(30,202,211,0.35)";
           (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.06)";
         }}
         onMouseLeave={e => {
@@ -125,13 +125,13 @@ function FeaturedCard({ post, hero = false }: { post: (typeof blogPosts)[0]; her
       >
         {post.image ? (
           <div className="relative h-40 overflow-hidden shrink-0">
-            <Image src={post.image} alt={post.title} fill sizes="(max-width:768px) 100vw, 33vw" className="object-cover object-top transition-transform duration-500 group-hover:scale-105" />
+            <Image src={post.image} alt={post.title} fill className="object-cover object-top transition-transform duration-500 group-hover:scale-105" />
             <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 50%, rgba(32,41,69,0.95) 100%)" }} />
           </div>
         ) : (
-          <div className="relative h-40 shrink-0 flex items-center justify-center" style={{ background: "linear-gradient(135deg, rgba(45, 182, 193,0.08) 0%, rgba(32,41,69,0.8) 100%)" }}>
-            <div className="w-12 h-12 rounded-xl flex items-center justify-center border" style={{ background: "rgba(45, 182, 193,0.1)", borderColor: "rgba(45, 182, 193,0.2)" }}>
-              <svg className="w-6 h-6" style={{ color: "#2DB6C1" }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="relative h-40 shrink-0 flex items-center justify-center" style={{ background: "linear-gradient(135deg, rgba(30,202,211,0.08) 0%, rgba(32,41,69,0.8) 100%)" }}>
+            <div className="w-12 h-12 rounded-xl flex items-center justify-center border" style={{ background: "rgba(30,202,211,0.1)", borderColor: "rgba(30,202,211,0.2)" }}>
+              <svg className="w-6 h-6" style={{ color: "#1ECAD3" }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
             </div>
@@ -142,7 +142,7 @@ function FeaturedCard({ post, hero = false }: { post: (typeof blogPosts)[0]; her
             <CategoryBadge category={post.category} />
             <ReadTime time={post.readTime} />
           </div>
-          <h3 className="font-black leading-snug mb-2 text-white group-hover:text-[#2DB6C1] transition-colors duration-200 flex-grow" style={{ fontFamily: FONT, fontSize: "0.975rem", letterSpacing: "-0.2px" }}>
+          <h3 className="font-black leading-snug mb-2 text-white group-hover:text-[#1ECAD3] transition-colors duration-200 flex-grow" style={{ fontFamily: FONT, fontSize: "0.975rem", letterSpacing: "-0.2px" }}>
             {post.title}
           </h3>
           <p className="text-xs leading-relaxed line-clamp-2 mb-4" style={{ color: "rgba(255,255,255,0.45)", fontFamily: FONT }}>
@@ -150,7 +150,7 @@ function FeaturedCard({ post, hero = false }: { post: (typeof blogPosts)[0]; her
           </p>
           <div className="pt-3 border-t flex items-center justify-between" style={{ borderColor: "rgba(255,255,255,0.07)" }}>
             <span className="text-xs" style={{ color: "rgba(255,255,255,0.30)", fontFamily: FONT }}>{post.date}</span>
-            <span className="flex items-center gap-1 text-[#2DB6C1] text-xs font-bold" style={{ fontFamily: FONT }}>
+            <span className="flex items-center gap-1 text-[#1ECAD3] text-xs font-bold" style={{ fontFamily: FONT }}>
               Leer
               <svg className="w-3 h-3 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -172,7 +172,7 @@ function HighlightMatch({ text, query }: { text: string; query: string }) {
   return (
     <>
       {text.slice(0, idx)}
-      <mark style={{ background: "rgba(45, 182, 193,0.25)", color: "#2DB6C1", borderRadius: "2px", padding: "0 2px" }}>
+      <mark style={{ background: "rgba(30,202,211,0.25)", color: "#1ECAD3", borderRadius: "2px", padding: "0 2px" }}>
         {text.slice(idx, idx + nq.length)}
       </mark>
       {text.slice(idx + nq.length)}
@@ -188,7 +188,7 @@ function SearchResultCard({ post, query }: { post: (typeof blogPosts)[0]; query:
         className="flex gap-4 p-4 rounded-xl border transition-all duration-200"
         style={{ background: "rgba(255,255,255,0.03)", borderColor: "rgba(255,255,255,0.07)" }}
         onMouseEnter={e => {
-          (e.currentTarget as HTMLElement).style.borderColor = "rgba(45, 182, 193,0.28)";
+          (e.currentTarget as HTMLElement).style.borderColor = "rgba(30,202,211,0.28)";
           (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.055)";
         }}
         onMouseLeave={e => {
@@ -198,7 +198,7 @@ function SearchResultCard({ post, query }: { post: (typeof blogPosts)[0]; query:
       >
         {post.image && (
           <div className="relative w-20 h-14 rounded-lg overflow-hidden shrink-0 hidden sm:block">
-            <Image src={post.image} alt={post.title} fill sizes="80px" className="object-cover object-top" />
+            <Image src={post.image} alt={post.title} fill className="object-cover object-top" />
           </div>
         )}
         <div className="flex-1 min-w-0">
@@ -208,7 +208,7 @@ function SearchResultCard({ post, query }: { post: (typeof blogPosts)[0]; query:
             </span>
             <span className="text-[10px]" style={{ color: "rgba(255,255,255,0.25)", fontFamily: FONT }}>{post.readTime}</span>
           </div>
-          <p className="text-sm font-black text-white leading-snug mb-1 group-hover:text-[#2DB6C1] transition-colors" style={{ fontFamily: FONT, letterSpacing: "-0.3px" }}>
+          <p className="text-sm font-black text-white leading-snug mb-1 group-hover:text-[#1ECAD3] transition-colors" style={{ fontFamily: FONT, letterSpacing: "-0.3px" }}>
             <HighlightMatch text={post.title} query={query} />
           </p>
           <p className="text-xs line-clamp-1" style={{ color: "rgba(255,255,255,0.38)", fontFamily: FONT }}>
@@ -216,7 +216,7 @@ function SearchResultCard({ post, query }: { post: (typeof blogPosts)[0]; query:
           </p>
         </div>
         <div className="shrink-0 flex items-center self-center">
-          <svg className="w-4 h-4 transition-transform duration-150 group-hover:translate-x-0.5" style={{ color: "#2DB6C1" }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-4 h-4 transition-transform duration-150 group-hover:translate-x-0.5" style={{ color: "#1ECAD3" }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>
         </div>
@@ -287,7 +287,7 @@ export default function BlogFilter() {
             <div className="relative shrink-0 sm:w-64">
               <svg
                 className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 pointer-events-none"
-                style={{ color: searchFocused ? "#2DB6C1" : "rgba(255,255,255,0.30)" }}
+                style={{ color: searchFocused ? "#1ECAD3" : "rgba(255,255,255,0.30)" }}
                 fill="none" stroke="currentColor" viewBox="0 0 24 24"
               >
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -302,8 +302,8 @@ export default function BlogFilter() {
                 placeholder="Buscar artículos…"
                 className="w-full pl-8 pr-8 py-1.5 rounded-full text-xs font-medium outline-none transition-all duration-200"
                 style={{
-                  background: searchFocused ? "rgba(45, 182, 193,0.08)" : "rgba(255,255,255,0.06)",
-                  border: `1px solid ${searchFocused ? "rgba(45, 182, 193,0.40)" : "rgba(255,255,255,0.10)"}`,
+                  background: searchFocused ? "rgba(30,202,211,0.08)" : "rgba(255,255,255,0.06)",
+                  border: `1px solid ${searchFocused ? "rgba(30,202,211,0.40)" : "rgba(255,255,255,0.10)"}`,
                   color: "rgba(255,255,255,0.85)",
                   fontFamily: FONT,
                 }}
@@ -344,9 +344,9 @@ export default function BlogFilter() {
                     className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold transition-all duration-200 whitespace-nowrap"
                     style={{
                       fontFamily: FONT,
-                      background: isActive ? "#2DB6C1" : "transparent",
-                      color: isActive ? "#212A45" : "rgba(255,255,255,0.50)",
-                      border: isActive ? "1px solid #2DB6C1" : "1px solid rgba(255,255,255,0.10)",
+                      background: isActive ? "#1ECAD3" : "transparent",
+                      color: isActive ? "#202945" : "rgba(255,255,255,0.50)",
+                      border: isActive ? "1px solid #1ECAD3" : "1px solid rgba(255,255,255,0.10)",
                     }}
                   >
                     {cat}
@@ -355,7 +355,7 @@ export default function BlogFilter() {
                         className="text-[9px] font-bold px-1.5 py-0.5 rounded-full"
                         style={{
                           background: isActive ? "rgba(32,41,69,0.3)" : "rgba(255,255,255,0.08)",
-                          color: isActive ? "#212A45" : "rgba(255,255,255,0.35)",
+                          color: isActive ? "#202945" : "rgba(255,255,255,0.35)",
                         }}
                       >
                         {count}
@@ -371,23 +371,23 @@ export default function BlogFilter() {
 
       {/* ── SEARCH RESULTS ── */}
       {isSearching && (
-        <section className="py-12" style={{ background: "#212A45" }}>
+        <section className="py-12" style={{ background: "#202945" }}>
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <p className="text-xs font-bold tracking-widest uppercase mb-1" style={{ color: "#2DB6C1", fontFamily: FONT }}>
+                <p className="text-xs font-bold tracking-widest uppercase mb-1" style={{ color: "#1ECAD3", fontFamily: FONT }}>
                   Resultados de búsqueda
                 </p>
                 <h2 className="text-xl font-black text-white" style={{ fontFamily: FONT, letterSpacing: "-0.5px" }}>
                   {filtered.length > 0
-                    ? <>"{query}" — <span style={{ color: "#2DB6C1" }}>{filtered.length}</span> {filtered.length === 1 ? "resultado" : "resultados"}</>
+                    ? <>"{query}" — <span style={{ color: "#1ECAD3" }}>{filtered.length}</span> {filtered.length === 1 ? "resultado" : "resultados"}</>
                     : <>Sin resultados para "{query}"</>
                   }
                 </h2>
               </div>
               <button
                 onClick={() => setQuery("")}
-                className="text-xs font-bold transition-colors hover:text-[#2DB6C1]"
+                className="text-xs font-bold transition-colors hover:text-[#1ECAD3]"
                 style={{ color: "rgba(255,255,255,0.35)", fontFamily: FONT }}
               >
                 Limpiar
@@ -419,7 +419,7 @@ export default function BlogFilter() {
                     <button
                       key={cat}
                       onClick={() => { setQuery(""); setSelected(cat); }}
-                      className="px-3 py-1.5 rounded-full text-xs font-bold border transition-colors hover:border-[#2DB6C1] hover:text-[#2DB6C1]"
+                      className="px-3 py-1.5 rounded-full text-xs font-bold border transition-colors hover:border-[#1ECAD3] hover:text-[#1ECAD3]"
                       style={{ borderColor: "rgba(255,255,255,0.12)", color: "rgba(255,255,255,0.45)", fontFamily: FONT }}
                     >
                       {cat}
@@ -434,11 +434,11 @@ export default function BlogFilter() {
 
       {/* ── FEATURED ARTICLES (shown when not searching) ── */}
       {!isSearching && featured.length > 0 && (
-        <section className="py-16" style={{ background: "#212A45" }}>
+        <section className="py-16" style={{ background: "#202945" }}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between mb-8">
               <div>
-                <p className="text-xs font-bold tracking-widest uppercase mb-1.5" style={{ color: "#2DB6C1", fontFamily: FONT }}>
+                <p className="text-xs font-bold tracking-widest uppercase mb-1.5" style={{ color: "#1ECAD3", fontFamily: FONT }}>
                   Artículos destacados
                 </p>
                 <h2 className="text-2xl font-black text-white" style={{ fontFamily: FONT, letterSpacing: "-0.5px" }}>
@@ -470,7 +470,7 @@ export default function BlogFilter() {
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-8">
-              <p className="text-xs font-bold tracking-widest uppercase mb-1.5" style={{ color: "#2DB6C1", fontFamily: FONT }}>
+              <p className="text-xs font-bold tracking-widest uppercase mb-1.5" style={{ color: "#1ECAD3", fontFamily: FONT }}>
                 Más artículos
               </p>
               <h2 className="text-2xl font-black text-white" style={{ fontFamily: FONT, letterSpacing: "-0.5px" }}>
@@ -488,9 +488,9 @@ export default function BlogFilter() {
 
       {/* ── EMPTY STATE (category filter, no results) ── */}
       {!isSearching && filtered.length === 0 && (
-        <section className="py-24 text-center" style={{ background: "#212A45" }}>
-          <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 border" style={{ background: "rgba(45, 182, 193,0.08)", borderColor: "rgba(45, 182, 193,0.15)" }}>
-            <svg className="w-8 h-8" style={{ color: "#2DB6C1" }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <section className="py-24 text-center" style={{ background: "#202945" }}>
+          <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 border" style={{ background: "rgba(30,202,211,0.08)", borderColor: "rgba(30,202,211,0.15)" }}>
+            <svg className="w-8 h-8" style={{ color: "#1ECAD3" }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
           </div>

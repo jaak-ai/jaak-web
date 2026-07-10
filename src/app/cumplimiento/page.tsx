@@ -3,7 +3,6 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import Image from "next/image";
-import { NUM_CERTIFICACIONES, RETENCION, IBETA } from "@/lib/trust";
 
 export const metadata: Metadata = {
   title: "Cumplimiento Regulatorio | JAAK",
@@ -99,7 +98,7 @@ export default function CumplimientoPage() {
       image: "/images/certifications/iso-9001.png",
     },
     {
-      name: IBETA,
+      name: "iBeta",
       description: "Prueba de Vida Certificada",
       image: "/images/certifications/ibeta.png",
     },
@@ -115,12 +114,12 @@ export default function CumplimientoPage() {
       <Header />
       <main>
         {/* Hero Section */}
-        <section className="pt-32 pb-20 bg-[#0E1133]">
+        <section className="pt-32 pb-20 bg-[#0a0a0a]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#212A45]/10 border border-[#212A45]/20 rounded-full mb-6">
-                <span className="w-2 h-2 bg-[#212A45] rounded-full"></span>
-                <span className="text-[#212A45] text-sm font-medium">Cumplimiento Regulatorio</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#0066ff]/10 border border-[#0066ff]/20 rounded-full mb-6">
+                <span className="w-2 h-2 bg-[#0066ff] rounded-full"></span>
+                <span className="text-[#0066ff] text-sm font-medium">Cumplimiento Regulatorio</span>
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6">
                 Verificación de identidad que cumple con la regulación mexicana
@@ -131,7 +130,7 @@ export default function CumplimientoPage() {
               <div className="flex flex-wrap gap-4">
                 <Link
                   href="/contacto"
-                  className="px-6 py-3 bg-[#212A45] text-white font-semibold rounded-lg hover:bg-[#212A45] transition-all"
+                  className="px-6 py-3 bg-[#0066ff] text-white font-semibold rounded-lg hover:bg-[#0052cc] transition-all"
                 >
                   Solicitar revisión regulatoria
                 </Link>
@@ -149,15 +148,15 @@ export default function CumplimientoPage() {
                 <div className="text-gray-600">Regulaciones cubiertas</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-black text-gray-900 mb-2">{NUM_CERTIFICACIONES}</div>
+                <div className="text-3xl md:text-4xl font-black text-gray-900 mb-2">4</div>
                 <div className="text-gray-600">Certificaciones activas</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-black text-gray-900 mb-2">Evidencia</div>
-                <div className="text-gray-600">auditable</div>
+                <div className="text-3xl md:text-4xl font-black text-gray-900 mb-2">100%</div>
+                <div className="text-gray-600">Evidencia auditable</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-black text-gray-900 mb-2">{RETENCION.general}</div>
+                <div className="text-3xl md:text-4xl font-black text-gray-900 mb-2">5 años</div>
                 <div className="text-gray-600">Retención de expedientes</div>
               </div>
             </div>
@@ -181,18 +180,18 @@ export default function CumplimientoPage() {
                 <Link
                   key={index}
                   href={reg.href}
-                  className="group bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all border border-gray-100 hover:border-[#212A45]/20"
+                  className="group bg-white rounded-2xl p-8 shadow-sm hover:shadow-lg transition-all border border-gray-100 hover:border-[#0066ff]/20"
                 >
                   <div className="flex items-start gap-6">
-                    <div className="w-14 h-14 bg-[#212A45]/10 rounded-xl flex items-center justify-center flex-shrink-0 text-[#212A45] group-hover:bg-[#212A45] group-hover:text-white transition-colors">
+                    <div className="w-14 h-14 bg-[#0066ff]/10 rounded-xl flex items-center justify-center flex-shrink-0 text-[#0066ff] group-hover:bg-[#0066ff] group-hover:text-white transition-colors">
                       {reg.icon}
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-2">
-                        <span className="text-2xl font-black text-gray-900 group-hover:text-[#212A45] transition-colors">
+                        <span className="text-2xl font-black text-gray-900 group-hover:text-[#0066ff] transition-colors">
                           {reg.acronym}
                         </span>
-                        <svg className="w-5 h-5 text-gray-400 group-hover:text-[#212A45] group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-5 h-5 text-gray-400 group-hover:text-[#0066ff] group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                         </svg>
                       </div>
@@ -238,12 +237,12 @@ export default function CumplimientoPage() {
         </section>
 
         {/* Evidence Capabilities */}
-        <section className="py-20 bg-[#0E1133]">
+        <section className="py-20 bg-[#0a0a0a]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#2DB6C1]/10 border border-[#2DB6C1]/20 rounded-full mb-6">
-                <span className="w-2 h-2 bg-[#2DB6C1] rounded-full"></span>
-                <span className="text-[#2DB6C1] text-sm font-medium">Evidencia Auditable</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#00d4aa]/10 border border-[#00d4aa]/20 rounded-full mb-6">
+                <span className="w-2 h-2 bg-[#00d4aa] rounded-full"></span>
+                <span className="text-[#00d4aa] text-sm font-medium">Evidencia Auditable</span>
               </div>
               <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
                 Cada verificación genera evidencia
@@ -287,8 +286,8 @@ export default function CumplimientoPage() {
                 },
               ].map((cap, index) => (
                 <div key={index} className="bg-white/5 rounded-xl p-6 border border-white/10">
-                  <div className="w-12 h-12 bg-[#212A45]/20 rounded-xl flex items-center justify-center mb-4">
-                    <svg className="w-6 h-6 text-[#212A45]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-12 h-12 bg-[#0066ff]/20 rounded-xl flex items-center justify-center mb-4">
+                    <svg className="w-6 h-6 text-[#0066ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={cap.icon} />
                     </svg>
                   </div>
@@ -312,7 +311,7 @@ export default function CumplimientoPage() {
             <div className="flex flex-wrap justify-center gap-4">
               <Link
                 href="/contacto"
-                className="px-8 py-4 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-all"
+                className="px-8 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
               >
                 Solicitar revisión regulatoria
               </Link>

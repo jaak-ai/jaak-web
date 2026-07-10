@@ -15,10 +15,10 @@ const destacados = ["kyc", "firma-nom151", "ine", "ocr-id"]
 
 export default function HomepageAutoservicioCTA() {
   return (
-    <section className="hp-section hp-bg-2">
+    <section className="bg-white">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
         <div
-          className="hp-navy-panel relative overflow-hidden rounded-3xl px-8 py-10 lg:px-14 lg:py-14"
+          className="relative overflow-hidden rounded-3xl px-8 py-10 lg:px-14 lg:py-14"
           style={{ background: "linear-gradient(135deg, #0E1133 0%, #1A2142 55%, #212A45 100%)" }}
         >
           <div

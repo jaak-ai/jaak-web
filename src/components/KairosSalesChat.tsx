@@ -11,7 +11,7 @@ export function KairosSalesChat() {
         if (window.JAAKSalesChat) {
           window.JAAKSalesChat.init({
             position: "bottom-right",
-            primaryColor: "#212A45",
+            primaryColor: "#0066FF",
             greeting:
               "Hola! Soy el asistente de JAAK. ¿Cómo puedo ayudarte con nuestras soluciones de verificación de identidad?",
             placeholder: "Escribe tu mensaje...",

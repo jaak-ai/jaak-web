@@ -41,12 +41,12 @@ export default function FirmaContratos() {
       <Header />
       <main>
         {/* Hero */}
-        <section className="pt-32 pb-20 bg-[#0E1133]">
+        <section className="pt-32 pb-20 bg-[#0a0a0a]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#2DB6C1]/10 border border-[#2DB6C1]/20 rounded-full mb-6">
-                <span className="w-2 h-2 bg-[#2DB6C1] rounded-full"></span>
-                <span className="text-[#2DB6C1] text-sm font-medium">Caso de uso</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#00d4aa]/10 border border-[#00d4aa]/20 rounded-full mb-6">
+                <span className="w-2 h-2 bg-[#00d4aa] rounded-full"></span>
+                <span className="text-[#00d4aa] text-sm font-medium">Caso de uso</span>
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6">
                 Firma de contratos
@@ -56,9 +56,9 @@ export default function FirmaContratos() {
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link
-                  href="https://platform.jaak.ai/#/signup"
+                  href="https://platform.dev.jaak.ai/#/signup"
                   target="_blank"
-                  className="px-6 py-3 bg-[#212A45] text-white font-semibold rounded-lg hover:bg-[#212A45] transition-all"
+                  className="px-6 py-3 bg-[#0066ff] text-white font-semibold rounded-lg hover:bg-[#0052cc] transition-all"
                 >
                   Probar ahora
                 </Link>
@@ -106,7 +106,7 @@ export default function FirmaContratos() {
             <div className="grid md:grid-cols-4 gap-8">
               {features.map((feature, index) => (
                 <div key={index} className="text-center">
-                  <div className="w-12 h-12 bg-[#212A45] rounded-xl flex items-center justify-center text-white mx-auto mb-4">
+                  <div className="w-12 h-12 bg-[#0066ff] rounded-xl flex items-center justify-center text-white mx-auto mb-4">
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
@@ -120,7 +120,7 @@ export default function FirmaContratos() {
         </section>
 
         {/* CTA */}
-        <section className="py-20 bg-[#0E1133]">
+        <section className="py-20 bg-[#0a0a0a]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl md:text-4xl font-black text-white mb-6">
               Firma contratos sin riesgo de repudio
@@ -129,9 +129,9 @@ export default function FirmaContratos() {
               Cada firma incluye verificación biométrica del firmante.
             </p>
             <Link
-              href="https://platform.jaak.ai/#/signup"
+              href="https://platform.dev.jaak.ai/#/signup"
               target="_blank"
-              className="inline-flex px-8 py-4 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-all"
+              className="inline-flex px-8 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
             >
               Empezar gratis
             </Link>

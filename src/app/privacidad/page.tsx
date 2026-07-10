@@ -14,7 +14,7 @@ export default function PrivacidadPage() {
       <Header />
       <main>
         {/* Hero Section */}
-        <section className="pt-32 pb-16 bg-[#0E1133]">
+        <section className="pt-32 pb-16 bg-[#0a0a0a]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <h1 className="text-4xl md:text-5xl font-black text-white mb-6">
               Aviso de Privacidad
@@ -39,7 +39,7 @@ export default function PrivacidadPage() {
                 </p>
                 <p className="text-gray-600">
                   Para cualquier cuestion relacionada con el tratamiento de sus datos personales, puede contactarnos a traves de:{" "}
-                  <a href="mailto:privacidad@jaak.ai" className="text-[#212A45] hover:underline">
+                  <a href="mailto:privacidad@jaak.ai" className="text-[#0066ff] hover:underline">
                     privacidad@jaak.ai
                   </a>
                 </p>
@@ -86,9 +86,9 @@ export default function PrivacidadPage() {
                   <li>Plantillas biometricas faciales</li>
                 </ul>
 
-                <div className="bg-[#212A45]/5 border border-[#212A45]/20 rounded-xl p-6 mt-6">
+                <div className="bg-[#0066ff]/5 border border-[#0066ff]/20 rounded-xl p-6 mt-6">
                   <p className="text-gray-700">
-                    <strong className="text-[#212A45]">Nota importante:</strong> Los datos biometricos son considerados datos personales sensibles conforme a la LFPDPPP. Su tratamiento requiere de su consentimiento expreso, el cual sera solicitado al momento de la recopilacion.
+                    <strong className="text-[#0066ff]">Nota importante:</strong> Los datos biometricos son considerados datos personales sensibles conforme a la LFPDPPP. Su tratamiento requiere de su consentimiento expreso, el cual sera solicitado al momento de la recopilacion.
                   </p>
                 </div>
               </div>
@@ -123,7 +123,7 @@ export default function PrivacidadPage() {
 
                 <p className="text-gray-600 mt-4">
                   Si no desea que sus datos personales sean tratados para las finalidades secundarias, puede manifestarlo enviando un correo a{" "}
-                  <a href="mailto:privacidad@jaak.ai" className="text-[#212A45] hover:underline">
+                  <a href="mailto:privacidad@jaak.ai" className="text-[#0066ff] hover:underline">
                     privacidad@jaak.ai
                   </a>
                 </p>
@@ -182,7 +182,7 @@ export default function PrivacidadPage() {
                   </h3>
                   <p className="text-gray-600 mb-4">
                     Para ejercer sus derechos ARCO, envie su solicitud a{" "}
-                    <a href="mailto:privacidad@jaak.ai" className="text-[#212A45] hover:underline">
+                    <a href="mailto:privacidad@jaak.ai" className="text-[#0066ff] hover:underline">
                       privacidad@jaak.ai
                     </a>{" "}
                     incluyendo:
@@ -206,7 +206,7 @@ export default function PrivacidadPage() {
                 </h2>
                 <p className="text-gray-600 mb-4">
                   Usted puede revocar el consentimiento que nos haya otorgado para el tratamiento de sus datos personales enviando su solicitud a{" "}
-                  <a href="mailto:privacidad@jaak.ai" className="text-[#212A45] hover:underline">
+                  <a href="mailto:privacidad@jaak.ai" className="text-[#0066ff] hover:underline">
                     privacidad@jaak.ai
                   </a>
                 </p>
@@ -240,7 +240,7 @@ export default function PrivacidadPage() {
                 </h2>
                 <p className="text-gray-600 mb-4">
                   Nuestro sitio web utiliza cookies y tecnologias similares para mejorar su experiencia de navegacion. Para conocer mas detalles sobre las cookies que utilizamos, consulte nuestra{" "}
-                  <Link href="/cookies" className="text-[#212A45] hover:underline">
+                  <Link href="/cookies" className="text-[#0066ff] hover:underline">
                     Politica de Cookies
                   </Link>.
                 </p>
@@ -257,7 +257,7 @@ export default function PrivacidadPage() {
               </div>
 
               {/* Contacto */}
-              <div className="bg-[#0E1133] rounded-2xl p-8">
+              <div className="bg-[#0a0a0a] rounded-2xl p-8">
                 <h2 className="text-2xl font-bold text-white mb-4">
                   Contacto
                 </h2>
@@ -266,13 +266,13 @@ export default function PrivacidadPage() {
                 </p>
                 <div className="space-y-2">
                   <p className="text-white">
-                    <strong className="text-[#212A45]">Correo:</strong>{" "}
-                    <a href="mailto:privacidad@jaak.ai" className="text-white hover:text-[#212A45] transition-colors">
+                    <strong className="text-[#0066ff]">Correo:</strong>{" "}
+                    <a href="mailto:privacidad@jaak.ai" className="text-white hover:text-[#0066ff] transition-colors">
                       privacidad@jaak.ai
                     </a>
                   </p>
                   <p className="text-white">
-                    <strong className="text-[#212A45]">Dirección:</strong> Av. Insurgentes Sur 1602, Piso 4, Crédito Constructor, Benito Juárez, 03940 CDMX
+                    <strong className="text-[#0066ff]">Dirección:</strong> Av. Insurgentes Sur 1602, Piso 4, Crédito Constructor, Benito Juárez, 03940 CDMX
                   </p>
                 </div>
               </div>

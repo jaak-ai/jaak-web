@@ -38,7 +38,7 @@ const diffItems: DiffItem[] = [
           "Prestador de Servicios de Certificación. Entidad autorizada por la SE (Secretaría de Economía) para emitir certificados digitales y sellos de tiempo con valor legal.",
       },
     ],
-    color: "#2DB6C1",
+    color: "#1ECAD3",
   },
   {
     id: "biometria",
@@ -54,7 +54,7 @@ const diffItems: DiffItem[] = [
           "Detección de vida. Tecnología que verifica que la persona frente a la cámara es un ser humano real y no una foto, video o máscara impresa.",
       },
     ],
-    color: "#2DB6C1",
+    color: "#8B5CF6",
   },
   {
     id: "auditoria",
@@ -75,7 +75,7 @@ const diffItems: DiffItem[] = [
           "Comisión Nacional Bancaria y de Valores. Organismo regulador del sistema financiero mexicano que supervisa bancos, financieras y entidades reguladas.",
       },
     ],
-    color: "#212A45",
+    color: "#F59E0B",
   },
   {
     id: "kyc",
@@ -101,7 +101,7 @@ const diffItems: DiffItem[] = [
           "Office of Foreign Assets Control. Lista de personas y entidades sancionadas por el gobierno de EE.UU. Verificación obligatoria para empresas con operaciones internacionales.",
       },
     ],
-    color: "#2AD796",
+    color: "#10B981",
   },
   {
     id: "disponibilidad",
@@ -138,7 +138,7 @@ function TooltipWord({
     <span className="relative inline-block">
       <span
         className="underline decoration-dotted cursor-help"
-        style={{ textDecorationColor: "#2DB6C1", color: "#A7F3F6" }} // Already correct
+        style={{ textDecorationColor: "#1ECAD3", color: "#A7F3F6" }}
         onMouseEnter={show}
         onMouseLeave={hide}
         onFocus={show}
@@ -154,20 +154,20 @@ function TooltipWord({
           className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-3 rounded-xl text-xs text-gray-200 leading-relaxed z-50 pointer-events-none"
           style={{
             background: "#0D1F3C",
-            border: "1px solid rgba(45,182,193,0.3)",
-            boxShadow: "0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(45,182,193,0.1)",
+            border: "1px solid rgba(30,202,211,0.3)",
+            boxShadow: "0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(30,202,211,0.1)",
           }}
           role="tooltip"
         >
-          <span className="font-bold text-[#2DB6C1]">{term}:</span>{" "}
+          <span className="font-bold text-[#1ECAD3]">{term}:</span>{" "}
           {explanation}
           {/* Arrow */}
           <span
-            className="absolute top-full left-1/2 -translate-x-1/2 -mt-[5px] h-2.5 w-2.5 rotate-45"
+            className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0"
             style={{
-              background: "#0D1F3C",
-              borderRight: "1px solid rgba(45,182,193,0.3)",
-              borderBottom: "1px solid rgba(45,182,193,0.3)",
+              borderLeft: "6px solid transparent",
+              borderRight: "6px solid transparent",
+              borderTop: "6px solid rgba(30,202,211,0.3)",
             }}
             aria-hidden="true"
           />

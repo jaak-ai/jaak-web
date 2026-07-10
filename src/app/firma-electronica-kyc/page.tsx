@@ -27,7 +27,7 @@ const breadcrumbSchema = {
   "@type": "BreadcrumbList",
   itemListElement: [
     { "@type": "ListItem", position: 1, name: "Inicio", item: "https://jaak.ai" },
-    { "@type": "ListItem", position: 2, name: "Firma Electrónica", item: "https://jaak.ai/firma-electronica" },
+    { "@type": "ListItem", position: 2, name: "Firma Electrónica", item: "https://jaak.ai/plataforma/firma-electronica" },
     { "@type": "ListItem", position: 3, name: "Firma Digital NOM-151 + KYC", item: "https://jaak.ai/firma-electronica-kyc" },
   ],
 };
@@ -51,11 +51,11 @@ export default function FirmaKYCPage() {
           <div
             className="absolute top-20 right-0 w-80 h-80 rounded-full opacity-8 blur-3xl pointer-events-none"
             aria-hidden="true"
-            style={{ background: "#2AD796" }}
+            style={{ background: "#10B981" }}
           />
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             <nav className="flex items-center gap-2 text-xs text-gray-600 mb-8" aria-label="Navegación">
-              <Link href="/firma-electronica" className="hover:text-[#2DB6C1] transition-colors">
+              <Link href="/plataforma/firma-electronica" className="hover:text-[#1ECAD3] transition-colors">
                 Firma Electrónica
               </Link>
               <span aria-hidden="true">›</span>
@@ -77,7 +77,7 @@ export default function FirmaKYCPage() {
               Firma electrónica con{" "}
               <span
                 style={{
-                  background: "linear-gradient(135deg, #2AD796, #2AD796)",
+                  background: "linear-gradient(135deg, #10B981, #2AD796)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
@@ -98,7 +98,7 @@ export default function FirmaKYCPage() {
               <Link
                 href="/autoservicio"
                 className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-bold text-white transition-all hover:opacity-90"
-                style={{ background: "#2AD796", boxShadow: "0 0 25px rgba(16,185,129,0.3)" }}
+                style={{ background: "#10B981", boxShadow: "0 0 25px rgba(16,185,129,0.3)" }}
               >
                 Ver solución KYC
               </Link>
@@ -131,7 +131,7 @@ export default function FirmaKYCPage() {
         </section>
 
         {/* KYC Flow */}
-        <section className="py-20" style={{ background: "#0E1133" }} aria-labelledby="flow-heading">
+        <section className="py-20" style={{ background: "#070E1A" }} aria-labelledby="flow-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 id="flow-heading" className="text-2xl font-black text-white mb-4 text-center">
               El flujo completo de Firma Digital NOM-151 + KYC
@@ -146,21 +146,21 @@ export default function FirmaKYCPage() {
                   title: "OCR del documento de identidad",
                   desc: "El firmante captura su INE o pasaporte. El motor OCR extrae y valida automáticamente: nombre, CURP, fecha de nacimiento, vigencia y número de documento.",
                   icon: "🪪",
-                  color: "#2AD796",
+                  color: "#10B981",
                 },
                 {
                   step: "02",
                   title: "Consulta en Renapo (CURP)",
                   desc: "Se valida el CURP extraído directamente contra la base de datos de Renapo en tiempo real. Confirma que la persona existe y sus datos coinciden.",
                   icon: "🏛",
-                  color: "#2DB6C1",
+                  color: "#1ECAD3",
                 },
                 {
                   step: "03",
                   title: "Biometría facial con liveness",
                   desc: "Reconocimiento facial del firmante comparado con la foto del documento de identidad. Incluye detección de vida para prevenir fraudes.",
                   icon: "🧬",
-                  color: "#2DB6C1",
+                  color: "#8B5CF6",
                 },
                 {
                   step: "04",
@@ -174,7 +174,7 @@ export default function FirmaKYCPage() {
                   title: "Firma electrónica + NOM-151",
                   desc: "El firmante verifica y firma el documento. Se genera automáticamente el sello de tiempo NOM-151 certificado por un PSC autorizado.",
                   icon: "✍️",
-                  color: "#2AD796",
+                  color: "#10B981",
                 },
                 {
                   step: "06",
@@ -277,7 +277,7 @@ export default function FirmaKYCPage() {
         </section>
 
         {/* Internal links + CTA */}
-        <section className="py-16" style={{ background: "#0E1133" }}>
+        <section className="py-16" style={{ background: "#070E1A" }}>
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p className="text-gray-500 text-sm mb-6">
               Explora otras opciones de firma electrónica:
@@ -287,7 +287,7 @@ export default function FirmaKYCPage() {
                 { href: "/firma-electronica-biometrica", label: "Firma Digital NOM-151 + Biometría" },
                 { href: "/firma-electronica-nom-151", label: "Firma Digital NOM-151" },
                 { href: "/firma-electronica-simple", label: "Firma Simple" },
-                { href: "/firma-electronica", label: "← Hub principal" },
+                { href: "/plataforma/firma-electronica", label: "← Hub principal" },
               ].map((link) => (
                 <Link
                   key={link.href}
@@ -296,7 +296,7 @@ export default function FirmaKYCPage() {
                   style={{
                     background: "rgba(255,255,255,0.04)",
                     border: "1px solid rgba(255,255,255,0.08)",
-                    color: "#2DB6C1",
+                    color: "#1ECAD3",
                   }}
                 >
                   {link.label}
@@ -307,7 +307,7 @@ export default function FirmaKYCPage() {
               <Link
                 href="/autoservicio"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold text-white text-base transition-all hover:opacity-90"
-                style={{ background: "#2AD796", boxShadow: "0 0 30px rgba(16,185,129,0.3)" }}
+                style={{ background: "#10B981", boxShadow: "0 0 30px rgba(16,185,129,0.3)" }}
               >
                 Ver solución KYC →
               </Link>

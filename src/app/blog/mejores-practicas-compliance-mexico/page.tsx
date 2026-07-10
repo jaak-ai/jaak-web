@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Mejores prácticas de compliance para empresas reguladas en México | JAAK",
-  description: "Desde LFPIORPI hasta las disposiciones de la UIF, esta guía le ayuda a implementar un programa de cumplimiento robusto y auditable para empresas reguladas en México.",
+  description: "Desde LFPIORPI hasta las disposiciones de la UIF, esta guía te ayuda a implementar un programa de cumplimiento robusto y auditable para empresas reguladas en México.",
   keywords: ["compliance México", "LFPIORPI", "UIF", "cumplimiento regulatorio", "PLD", "prevención lavado de dinero", "empresas reguladas"],
   openGraph: {
     title: "Mejores prácticas de compliance para empresas reguladas en México",
@@ -48,7 +48,7 @@ export default function MejoresPracticasCompliance() {
   return (
     <ArticleLayout
       title="Mejores prácticas de compliance para empresas reguladas en México"
-      subtitle="Desde LFPIORPI hasta las disposiciones de la UIF, navegar el ecosistema regulatorio mexicano puede ser complejo. Esta guía le ayuda a implementar un programa de cumplimiento robusto y auditable."
+      subtitle="Desde LFPIORPI hasta las disposiciones de la UIF, navegar el ecosistema regulatorio mexicano puede ser complejo. Esta guía te ayuda a implementar un programa de cumplimiento robusto y auditable."
       category="Compliance"
       date="10 de diciembre, 2025"
       readTime="12 min"
@@ -159,7 +159,7 @@ export default function MejoresPracticasCompliance() {
                     Evaluación y gestión de riesgos
                   </h3>
                   <p className="text-gray-600 mb-4">
-                    Identificar, medir y mitigar los riesgos específicos de su organización.
+                    Identificar, medir y mitigar los riesgos específicos de tu organización.
                   </p>
                   <ul className="space-y-2 text-gray-600 ml-10">
                     <li>• Matriz de riesgos actualizada periódicamente</li>
@@ -225,10 +225,8 @@ export default function MejoresPracticasCompliance() {
                 El KYC es la base de cualquier programa de cumplimiento. Debe incluir:
               </p>
 
-              <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
-                <h3 className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-3">
-                  Proceso de KYC robusto
-                </h3>
+              <div className="bg-[#0066ff]/5 border-l-4 border-[#0066ff] p-6 my-8">
+                <h3 className="font-bold text-gray-900 mb-3">Proceso de KYC robusto:</h3>
                 <ol className="list-decimal pl-4 space-y-2 text-gray-600">
                   <li><strong>Identificación:</strong> Obtener datos y documentos que acrediten la identidad</li>
                   <li><strong>Verificación:</strong> Confirmar que la información es auténtica y válida</li>
@@ -242,14 +240,14 @@ export default function MejoresPracticasCompliance() {
                 Debida diligencia según nivel de riesgo
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
-                No todos los clientes requieren el mismo nivel de escrutinio. Implemente un
+                No todos los clientes requieren el mismo nivel de escrutinio. Implementa un
                 enfoque basado en riesgo:
               </p>
 
               <div className="overflow-x-auto my-8">
                 <table className="w-full border-collapse">
                   <thead>
-                    <tr className="bg-[#0E1133] text-white">
+                    <tr className="bg-[#0a0a0a] text-white">
                       <th className="px-4 py-3 text-left">Nivel de riesgo</th>
                       <th className="px-4 py-3 text-left">Características</th>
                       <th className="px-4 py-3 text-left">Debida diligencia</th>
@@ -326,7 +324,7 @@ export default function MejoresPracticasCompliance() {
                 Conservación de documentos
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
-                La documentación es su defensa ante autoridades y auditorías:
+                La documentación es tu defensa ante autoridades y auditorías:
               </p>
               <ul className="list-disc pl-6 mb-6 space-y-2 text-gray-600">
                 <li><strong>Tiempo mínimo:</strong> 10 años después de terminada la relación comercial</li>
@@ -399,10 +397,8 @@ export default function MejoresPracticasCompliance() {
                 Las consecuencias de no cumplir pueden ser severas:
               </p>
 
-              <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
-                <h3 className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-3">
-                  Posibles sanciones
-                </h3>
+              <div className="bg-red-50 border-l-4 border-red-500 p-6 my-8">
+                <h3 className="font-bold text-gray-900 mb-3">Posibles sanciones:</h3>
                 <ul className="space-y-2 text-gray-700">
                   <li>• <strong>Multas:</strong> Hasta 65,000 UMAs por infracción (~$7.6 millones MXN)</li>
                   <li>• <strong>Suspensión:</strong> De actividades o de ciertas operaciones</li>
@@ -473,7 +469,7 @@ export default function MejoresPracticasCompliance() {
                 Checklist de cumplimiento
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
-                Use esta lista para evaluar el estado de su programa:
+                Usa esta lista para evaluar el estado de tu programa:
               </p>
 
               <div className="bg-gray-50 rounded-xl p-6 my-8">
@@ -498,13 +494,13 @@ export default function MejoresPracticasCompliance() {
                 </div>
               </div>
 
-              <div className="bg-[#0E1133] rounded-xl p-8 my-12">
+              <div className="bg-[#0a0a0a] rounded-xl p-8 my-12">
                 <h3 className="text-xl font-bold text-white mb-4">
                   Conclusión
                 </h3>
                 <p className="text-white/80">
                   Un programa de compliance efectivo no es un gasto, es una inversión que
-                  protege su negocio, fortalece la confianza de sus clientes y lo posiciona
+                  protege tu negocio, fortalece la confianza de tus clientes y te posiciona
                   favorablemente ante reguladores. En un entorno cada vez más vigilado, las
                   empresas con cultura de cumplimiento sólida serán las que prosperen.
                 </p>
@@ -513,7 +509,7 @@ export default function MejoresPracticasCompliance() {
             <div className="mt-12 flex flex-wrap gap-4">
               <a
                 href="/contacto"
-                className="px-8 py-4 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-all"
+                className="px-8 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
               >
                 Solicitar demo
               </a>

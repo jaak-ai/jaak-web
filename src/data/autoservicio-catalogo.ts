@@ -60,7 +60,7 @@ export const productos: Producto[] = [
     unidad: "verificaciones",
     tagline: "Biometría facial con prueba de vida, OCR y consulta de listas en un solo flujo.",
     incluye: [
-      "Prueba de vida iBeta Nivel 1 (antisuplantación)",
+      "Prueba de vida iBeta Level 1 (antisuplantación)",
       "OCR de identificación oficial (INE, pasaporte)",
       "Consulta en listas nominales INE / RENAPO",
       "Alertas OFAC · Interpol · listas negras SAT",

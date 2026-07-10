@@ -105,7 +105,7 @@ export default function CNBVSanciones2025() {
               <div className="overflow-x-auto my-8">
                 <table className="w-full border-collapse text-sm">
                   <thead>
-                    <tr className="bg-[#0E1133] text-white">
+                    <tr className="bg-[#0a0a0a] text-white">
                       <th className="px-4 py-3 text-left">Año</th>
                       <th className="px-4 py-3 text-left">Sanciones</th>
                       <th className="px-4 py-3 text-left">Monto total (MXN)</th>
@@ -124,7 +124,7 @@ export default function CNBVSanciones2025() {
                       ["2025**", "696", "$411.8 M", "+192%", "Caso FinCEN + récord histórico"],
                     ].map(([year, sanctions, amount, change, context], i) => (
                       <tr key={year} className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
-                        <td className="px-4 py-3 font-bold text-[#212A45]">{year}</td>
+                        <td className="px-4 py-3 font-bold text-[#0066ff]">{year}</td>
                         <td className="px-4 py-3 font-medium">{sanctions}</td>
                         <td className="px-4 py-3 text-gray-600">{amount}</td>
                         <td className="px-4 py-3 text-gray-600">{change}</td>
@@ -157,6 +157,7 @@ export default function CNBVSanciones2025() {
                 {[
                   { value: "$22 MDD", label: "Activos combinados de las 3 instituciones" },
                   { value: "$185 mdp", label: "Sanciones CNBV publicadas el 15/jul/2025" },
+                  { value: "52%", label: "De las 696 sanciones vinieron después del caso" },
                   { value: "4", label: "Carteles vinculados en la designación" },
                 ].map((stat) => (
                   <div
@@ -172,7 +173,7 @@ export default function CNBVSanciones2025() {
               <div className="overflow-x-auto my-8">
                 <table className="w-full border-collapse text-sm">
                   <thead>
-                    <tr className="bg-[#0E1133] text-white">
+                    <tr className="bg-[#0a0a0a] text-white">
                       <th className="px-4 py-3 text-left">Fecha</th>
                       <th className="px-4 py-3 text-left">Evento</th>
                       <th className="px-4 py-3 text-left">Impacto</th>
@@ -224,7 +225,7 @@ export default function CNBVSanciones2025() {
               <div className="overflow-x-auto my-8">
                 <table className="w-full border-collapse text-sm">
                   <thead>
-                    <tr className="bg-[#0E1133] text-white">
+                    <tr className="bg-[#0a0a0a] text-white">
                       <th className="px-4 py-3 text-left">Tipo de entidad</th>
                       <th className="px-4 py-3 text-center"># Sanciones</th>
                       <th className="px-4 py-3 text-center">Monto total</th>
@@ -266,8 +267,8 @@ export default function CNBVSanciones2025() {
                     ].map(([type, sanctions, amount, notes], i) => (
                       <tr key={type} className={i % 2 === 0 ? "bg-white" : "bg-gray-50"}>
                         <td className="px-4 py-3 font-medium align-top">{type}</td>
-                        <td className="px-4 py-3 text-center font-bold text-[#2DB6C1] align-top">{sanctions}</td>
-                        <td className="px-4 py-3 text-center font-bold text-[#212A45] align-top whitespace-nowrap">{amount}</td>
+                        <td className="px-4 py-3 text-center font-bold text-[#00d4aa] align-top">{sanctions}</td>
+                        <td className="px-4 py-3 text-center font-bold text-[#0066ff] align-top whitespace-nowrap">{amount}</td>
                         <td className="px-4 py-3 text-gray-600 align-top">{notes}</td>
                       </tr>
                     ))}
@@ -347,7 +348,7 @@ export default function CNBVSanciones2025() {
                     className="border border-gray-200 rounded-xl overflow-hidden"
                   >
                     <div className="flex items-start gap-4 p-6">
-                      <span className="flex-shrink-0 w-10 h-10 bg-[#0E1133] text-[#2DB6C1] font-black text-sm rounded-lg flex items-center justify-center">
+                      <span className="flex-shrink-0 w-10 h-10 bg-[#0a0a0a] text-[#00d4aa] font-black text-sm rounded-lg flex items-center justify-center">
                         {item.num}
                       </span>
                       <div>
@@ -357,8 +358,8 @@ export default function CNBVSanciones2025() {
                         <p className="text-gray-600 text-sm leading-relaxed mb-3">
                           {item.body}
                         </p>
-                        <div className="bg-[#F3F4F8] border border-[#212A45]/10 p-3 rounded-lg">
-                          <p className="text-[11px] text-[#2DB6C1] font-semibold uppercase tracking-wide mb-1">
+                        <div className="bg-[#0066ff]/5 border-l-4 border-[#0066ff] p-3 rounded-r-lg">
+                          <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide mb-1">
                             Caso documentado
                           </p>
                           <p className="text-sm text-gray-700 italic">
@@ -388,7 +389,7 @@ export default function CNBVSanciones2025() {
                 {[
                   {
                     tag: "10 años (antes 5)",
-                    tagColor: "bg-[#0E1133] text-[#2DB6C1]",
+                    tagColor: "bg-[#0a0a0a] text-[#00d4aa]",
                     title: "Plazo de conservación de expedientes",
                     body: "Aplica a toda documentación KYC y registros de operaciones. Vigente desde el 17 de julio de 2025. Cualquier expediente incompleto dentro de ese período es susceptible de multa en visita de verificación.",
                   },
@@ -400,7 +401,7 @@ export default function CNBVSanciones2025() {
                   },
                   {
                     tag: "Umbral: 25% (antes 50%)",
-                    tagColor: "bg-[#212A45] text-white",
+                    tagColor: "bg-[#0066ff] text-white",
                     title: "Beneficiario Controlador",
                     body: "Cualquier persona física con más del 25% de participación o control efectivo debe ser identificada y registrada. El registro debe mantenerse actualizado. Incluye titularidad indirecta y control efectivo.",
                   },
@@ -418,7 +419,7 @@ export default function CNBVSanciones2025() {
                   },
                   {
                     tag: "Ampliación de alcance",
-                    tagColor: "bg-[#2DB6C1] text-[#0E1133]",
+                    tagColor: "bg-[#00d4aa] text-[#0a0a0a]",
                     title: "Nuevos sectores incorporados",
                     body: "Activos virtuales (criptomonedas), desarrollo inmobiliario con ciertos montos, fideicomisos, operaciones desde el extranjero con impacto en México y mayor supervisión a PEPs.",
                   },
@@ -456,9 +457,9 @@ export default function CNBVSanciones2025() {
                 ].map((stat) => (
                   <div
                     key={stat.label}
-                    className="bg-[#0E1133] rounded-xl p-4 text-center"
+                    className="bg-[#0a0a0a] rounded-xl p-4 text-center"
                   >
-                    <p className="text-xl font-black text-[#2DB6C1]">{stat.value}</p>
+                    <p className="text-xl font-black text-[#00d4aa]">{stat.value}</p>
                     <p className="text-white/50 text-xs mt-1">{stat.label}</p>
                   </div>
                 ))}
@@ -542,7 +543,7 @@ export default function CNBVSanciones2025() {
                     </div>
                     <div className="flex items-start gap-3 mt-3 ml-0">
                       <svg
-                        className="w-5 h-5 text-[#2DB6C1] mt-0.5 flex-shrink-0"
+                        className="w-5 h-5 text-[#00d4aa] mt-0.5 flex-shrink-0"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -561,7 +562,7 @@ export default function CNBVSanciones2025() {
               </div>
 
               {/* Conclusión */}
-              <div className="bg-[#0E1133] rounded-xl p-8 my-12">
+              <div className="bg-[#0a0a0a] rounded-xl p-8 my-12">
                 <h3 className="text-xl font-bold text-white mb-4">Conclusión</h3>
                 <p className="text-white/80 leading-relaxed mb-4">
                   El mensaje de 2025 es claro: la CNBV no sanciona solamente a

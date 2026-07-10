@@ -36,8 +36,8 @@ export default function TablaUmbrales() {
         className="w-full flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-200 hover:bg-gray-100 transition-all group"
       >
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-[#212A45]/10 rounded-lg flex items-center justify-center">
-            <svg className="w-5 h-5 text-[#212A45]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="w-10 h-10 bg-[#0066ff]/10 rounded-lg flex items-center justify-center">
+            <svg className="w-5 h-5 text-[#0066ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
             </svg>
           </div>
@@ -62,7 +62,7 @@ export default function TablaUmbrales() {
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
-                  <tr className="bg-[#212A45] text-white">
+                  <tr className="bg-[#0066ff] text-white">
                     <th className="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">Fracc.</th>
                     <th className="px-3 py-3 text-left text-xs font-semibold uppercase tracking-wider">Actividad vulnerable</th>
                     <th className="px-3 py-3 text-right text-xs font-semibold uppercase tracking-wider">Identificacion (UMA)</th>
@@ -78,14 +78,14 @@ export default function TablaUmbrales() {
                       <td className="px-3 py-3 text-sm text-gray-700">{item.actividad}</td>
                       <td className="px-3 py-3 text-sm text-right whitespace-nowrap">
                         {item.idUMA === "---" ? (
-                          <span className="text-[#212A45] font-semibold">---</span>
+                          <span className="text-[#0066ff] font-semibold">---</span>
                         ) : (
                           <span className="text-gray-900">{item.idUMA}</span>
                         )}
                       </td>
                       <td className="px-3 py-3 text-sm text-right whitespace-nowrap">
                         {item.idMXN === "Siempre" ? (
-                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-[#212A45]/10 text-[#212A45]">Siempre</span>
+                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-[#0066ff]/10 text-[#0066ff]">Siempre</span>
                         ) : (
                           <span className="text-gray-900 font-medium">{item.idMXN}</span>
                         )}

@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { IBETA } from "@/lib/trust";
 
 export default function HomepageFinalCTA() {
   return (
@@ -7,7 +6,7 @@ export default function HomepageFinalCTA() {
       {/* Ambient glow */}
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[140px] pointer-events-none"
-        style={{ background: "rgba(45,182,193,0.10)" }}
+        style={{ background: "rgba(30,202,211,0.10)" }}
       />
       <div
         className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px pointer-events-none"
@@ -32,7 +31,16 @@ export default function HomepageFinalCTA() {
           </div>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight max-w-3xl mx-auto">
             El cumplimiento regulatorio no puede esperar.{" "}
-            <span style={{ color: "#2DB6C1" }}>Empiece hoy.</span>
+            <span
+              style={{
+                background: "linear-gradient(90deg, #1ECAD3, #2AD796)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              Empieza hoy.
+            </span>
           </h2>
         </div>
 
@@ -42,11 +50,11 @@ export default function HomepageFinalCTA() {
           <div className="hp-glass rounded-3xl p-8 flex flex-col">
             <div
               className="w-11 h-11 rounded-2xl flex items-center justify-center mb-5"
-              style={{ background: "rgba(45,182,193,0.15)" }}
+              style={{ background: "rgba(30,202,211,0.15)" }}
             >
               <svg
                 className="w-5 h-5"
-                style={{ color: "#2DB6C1" }}
+                style={{ color: "#1ECAD3" }}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -62,19 +70,19 @@ export default function HomepageFinalCTA() {
 
             <div
               className="text-xs font-bold uppercase tracking-widest mb-2"
-              style={{ color: "#2DB6C1" }}
+              style={{ color: "#1ECAD3" }}
             >
               Autoservicio
             </div>
             <h3 className="text-xl font-black text-white mb-3">
-              Pruebe el producto en minutos
+              Prueba el producto en minutos
             </h3>
             <p
               className="text-sm leading-relaxed mb-6 flex-1"
               style={{ color: "var(--hp-text-md)" }}
             >
-              Sin vendedor, sin esperas, sin compromiso. Configure su primer flujo
-              de verificación y genere su primer expediente hoy mismo.
+              Sin vendedor, sin esperas, sin compromiso. Configura tu primer flujo
+              de verificación y genera tu primer expediente hoy mismo.
             </p>
 
             <div className="space-y-2 mb-6">
@@ -107,10 +115,10 @@ export default function HomepageFinalCTA() {
 
             <Link
               href="/autoservicio"
-              className="inline-flex items-center justify-center px-7 py-4 text-white font-bold text-base rounded-xl transition-colors duration-200 group"
+              className="inline-flex items-center justify-center px-7 py-4 text-white font-bold text-base rounded-xl transition-all duration-200 group"
               style={{
-                background: "linear-gradient(135deg, #2DB6C1, #25969f)",
-                boxShadow: "0 8px 28px rgba(45,182,193,0.28)",
+                background: "linear-gradient(135deg, #1ECAD3, #17a8b0)",
+                boxShadow: "0 8px 28px rgba(30,202,211,0.28)",
               }}
             >
               Comenzar ahora
@@ -135,8 +143,8 @@ export default function HomepageFinalCTA() {
             <div
               className="w-11 h-11 rounded-2xl flex items-center justify-center mb-5"
               style={{
-                background: "linear-gradient(135deg, #2DB6C1, #2AD796)",
-                boxShadow: "0 4px 16px rgba(45,182,193,0.30)",
+                background: "linear-gradient(135deg, #1ECAD3, #2AD796)",
+                boxShadow: "0 4px 16px rgba(30,202,211,0.30)",
               }}
             >
               <svg
@@ -161,20 +169,20 @@ export default function HomepageFinalCTA() {
               Demo personalizada
             </div>
             <h3 className="text-xl font-black text-white mb-3">
-              Revisión de su caso con un experto
+              Revisión de tu caso con un experto
             </h3>
             <p
               className="text-sm leading-relaxed mb-6 flex-1"
               style={{ color: "var(--hp-text-md)" }}
             >
-              Un especialista regulatorio analiza su marco de cumplimiento y
-              le muestra exactamente cómo JAAK resuelve su caso específico.
+              Un especialista regulatorio analiza tu marco de cumplimiento y
+              te muestra exactamente cómo JAAK resuelve tu caso específico.
             </p>
 
             <div className="space-y-2 mb-6">
               {[
-                "Revisión de su marco regulatorio",
-                "Demo con su industria y casos reales",
+                "Revisión de tu marco regulatorio",
+                "Demo con tu industria y casos reales",
                 "Propuesta técnica sin costo",
               ].map((item, i) => (
                 <div
@@ -201,14 +209,14 @@ export default function HomepageFinalCTA() {
 
             <Link
               href="/contacto"
-              className="inline-flex items-center justify-center px-7 py-4 font-bold text-base rounded-xl transition-colors duration-200"
+              className="inline-flex items-center justify-center px-7 py-4 font-bold text-base rounded-xl transition-all duration-200"
               style={{
                 color: "var(--hp-ghost-btn-color)",
                 background: "var(--hp-ghost-btn-bg)",
                 border: "1px solid var(--hp-ghost-btn-border)",
               }}
             >
-              Agendar demo
+              Hablar con un experto
             </Link>
           </div>
         </div>
@@ -220,7 +228,7 @@ export default function HomepageFinalCTA() {
         >
           {[
             "Sin compromiso de contratación",
-            `ISO 27001 · ${IBETA}`,
+            "ISO 27001 · iBeta PAD certificado",
             "Tecnología 100% mexicana",
             "Soporte técnico en español",
           ].map((t) => (

@@ -44,10 +44,10 @@ export default function Services() {
     <section id="soluciones" className="py-24 bg-[#f8fafc]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <span className="inline-block px-4 py-1.5 bg-[#0E1133] text-white text-sm font-semibold rounded-full mb-4">
+          <span className="inline-block px-4 py-1.5 bg-[#0a0f1c] text-white text-sm font-semibold rounded-full mb-4">
             Soluciones
           </span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-[#0E1133] mb-4">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-[#0a0f1c] mb-4">
             Una plataforma. Tres capas críticas.
           </h2>
           <p className="text-xl text-[#6b7280] max-w-2xl mx-auto">
@@ -68,12 +68,12 @@ export default function Services() {
               </span>
 
               {/* Icon */}
-              <div className="w-14 h-14 bg-[#0E1133] rounded-xl flex items-center justify-center text-white mb-6">
+              <div className="w-14 h-14 bg-[#0a0f1c] rounded-xl flex items-center justify-center text-white mb-6">
                 {service.icon}
               </div>
 
               {/* Content */}
-              <h3 className="text-xl font-bold text-[#0E1133] mb-2">
+              <h3 className="text-xl font-bold text-[#0a0f1c] mb-2">
                 {service.title}
               </h3>
               <p className="text-[#6b7280] mb-6">{service.subtitle}</p>
@@ -91,7 +91,7 @@ export default function Services() {
 
               {/* CTA */}
               <div className="pt-6 border-t border-[#e5e7eb]">
-                <p className="text-sm font-semibold text-[#0E1133]">
+                <p className="text-sm font-semibold text-[#0a0f1c]">
                   {service.cta}
                 </p>
               </div>

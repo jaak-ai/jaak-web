@@ -27,7 +27,7 @@ const breadcrumbSchema = {
   "@type": "BreadcrumbList",
   itemListElement: [
     { "@type": "ListItem", position: 1, name: "Inicio", item: "https://jaak.ai" },
-    { "@type": "ListItem", position: 2, name: "Firma Electrónica", item: "https://jaak.ai/firma-electronica" },
+    { "@type": "ListItem", position: 2, name: "Firma Electrónica", item: "https://jaak.ai/plataforma/firma-electronica" },
     { "@type": "ListItem", position: 3, name: "Firma Simple", item: "https://jaak.ai/firma-electronica-simple" },
   ],
 };
@@ -50,7 +50,7 @@ export default function FirmaSimplePage() {
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Breadcrumb */}
             <nav className="flex items-center gap-2 text-xs text-gray-600 mb-8" aria-label="Navegación">
-              <Link href="/firma-electronica" className="hover:text-[#2DB6C1] transition-colors">
+              <Link href="/plataforma/firma-electronica" className="hover:text-[#1ECAD3] transition-colors">
                 Firma Electrónica
               </Link>
               <span aria-hidden="true">›</span>
@@ -83,12 +83,12 @@ export default function FirmaSimplePage() {
               <Link
                 href="/autoservicio"
                 className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-bold text-white transition-all hover:opacity-90"
-                style={{ background: "#2DB6C1" }}
+                style={{ background: "#1ECAD3" }}
               >
                 Empezar gratis
               </Link>
               <Link
-                href="/firma-electronica"
+                href="/plataforma/firma-electronica"
                 className="inline-flex items-center justify-center px-7 py-3.5 rounded-xl font-semibold text-gray-400 transition-all hover:text-white"
                 style={{
                   background: "rgba(255,255,255,0.04)",
@@ -102,7 +102,7 @@ export default function FirmaSimplePage() {
         </section>
 
         {/* Features */}
-        <section className="py-20" style={{ background: "#0E1133" }} aria-labelledby="features-heading">
+        <section className="py-20" style={{ background: "#070E1A" }} aria-labelledby="features-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 id="features-heading" className="text-2xl font-black text-white mb-8 text-center">
               ¿Qué incluye la Firma Simple?
@@ -117,7 +117,7 @@ export default function FirmaSimplePage() {
                 {
                   icon: "📧",
                   title: "Notificaciones automáticas",
-                  desc: "El firmante recibe el documento por email y usted recibe confirmación cuando firma.",
+                  desc: "El firmante recibe el documento por email y tú recibes confirmación cuando firma.",
                 },
                 {
                   icon: "📋",
@@ -132,12 +132,12 @@ export default function FirmaSimplePage() {
                 {
                   icon: "🔗",
                   title: "Múltiples firmantes",
-                  desc: "Envíe a varios firmantes en orden o en paralelo. Gestione todo desde su panel.",
+                  desc: "Envía a varios firmantes en orden o en paralelo. Gestiona todo desde tu panel.",
                 },
                 {
                   icon: "📂",
                   title: "Descarga del expediente",
-                  desc: "Descargue el PDF firmado con el log de firma incluido al finalizar.",
+                  desc: "Descarga el PDF firmado con el log de firma incluido al finalizar.",
                 },
               ].map((feature) => (
                 <div
@@ -175,7 +175,7 @@ export default function FirmaSimplePage() {
                     "Cualquier documento de bajo riesgo",
                   ].map((item) => (
                     <li key={item} className="flex items-center gap-3 text-sm text-gray-300">
-                      <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" style={{ color: "#2DB6C1" }} aria-hidden="true">
+                      <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" style={{ color: "#1ECAD3" }} aria-hidden="true">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                       </svg>
                       {item}
@@ -206,12 +206,12 @@ export default function FirmaSimplePage() {
                   ))}
                 </ul>
                 <p className="text-xs text-gray-500 mt-4">
-                  Para estos casos, considere{" "}
-                  <Link href="/firma-electronica-nom-151" className="text-[#2DB6C1] hover:underline">
+                  Para estos casos, considera{" "}
+                  <Link href="/firma-electronica-nom-151" className="text-[#1ECAD3] hover:underline">
                     Firma Digital NOM-151
                   </Link>{" "}
                   o{" "}
-                  <Link href="/firma-electronica-kyc" className="text-[#2DB6C1] hover:underline">
+                  <Link href="/firma-electronica-kyc" className="text-[#1ECAD3] hover:underline">
                     Firma Digital NOM-151 + KYC
                   </Link>
                   .
@@ -222,17 +222,17 @@ export default function FirmaSimplePage() {
         </section>
 
         {/* Internal links + CTA */}
-        <section className="py-16" style={{ background: "#0E1133" }}>
+        <section className="py-16" style={{ background: "#070E1A" }}>
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p className="text-gray-500 text-sm mb-6">
-              ¿Necesita más validez legal? Explore otras soluciones:
+              ¿Necesitas más validez legal? Explora otras soluciones:
             </p>
             <div className="flex flex-wrap justify-center gap-3 mb-8">
               {[
                 { href: "/firma-electronica-nom-151", label: "Firma Digital NOM-151" },
                 { href: "/firma-electronica-biometrica", label: "Firma Digital NOM-151 + Biometría" },
                 { href: "/firma-electronica-kyc", label: "Firma Digital NOM-151 + KYC" },
-                { href: "/firma-electronica", label: "← Hub principal" },
+                { href: "/plataforma/firma-electronica", label: "← Hub principal" },
               ].map((link) => (
                 <Link
                   key={link.href}
@@ -241,7 +241,7 @@ export default function FirmaSimplePage() {
                   style={{
                     background: "rgba(255,255,255,0.04)",
                     border: "1px solid rgba(255,255,255,0.08)",
-                    color: "#2DB6C1",
+                    color: "#1ECAD3",
                   }}
                 >
                   {link.label}
@@ -251,7 +251,7 @@ export default function FirmaSimplePage() {
             <Link
               href="/autoservicio"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold text-white text-base transition-all hover:opacity-90 hover:scale-105"
-              style={{ background: "#2DB6C1", boxShadow: "0 0 30px rgba(45,182,193,0.3)" }}
+              style={{ background: "#1ECAD3", boxShadow: "0 0 30px rgba(30,202,211,0.3)" }}
             >
               Probar Firma Simple gratis →
             </Link>

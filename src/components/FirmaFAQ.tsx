@@ -106,7 +106,7 @@ export default function FirmaFAQ() {
               id={`faq-question-${item.id}`}
               style={{
                 background: isOpen
-                  ? "rgba(45,182,193,0.04)"
+                  ? "rgba(30,202,211,0.04)"
                   : cl.cardBgMin,
               }}
             >
@@ -114,7 +114,7 @@ export default function FirmaFAQ() {
                 className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center mt-0.5 transition-all duration-300 text-sm font-bold"
                 style={{
                   background: isOpen
-                    ? "#2DB6C1"
+                    ? "#1ECAD3"
                     : cl.border,
                   color: isOpen ? "#fff" : "#64748B",
                   transform: isOpen ? "rotate(45deg)" : "rotate(0deg)",

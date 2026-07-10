@@ -80,7 +80,7 @@ export default function ArticleFirmaExpediente() {
         },
       ]}
     >
-      <p className="text-sm font-semibold mb-8" style={{ color: "#2DB6C1" }}>
+      <p className="text-sm font-semibold mb-8" style={{ color: "#1ECAD3" }}>
         Por Arianna Quezada, CEO y cofundadora de JAAK
       </p>
 
@@ -193,11 +193,11 @@ export default function ArticleFirmaExpediente() {
         <div
           className="rounded-xl p-6 border"
           style={{
-            background: "rgba(45, 182, 193,0.05)",
-            borderColor: "rgba(45, 182, 193,0.2)",
+            background: "rgba(30,202,211,0.05)",
+            borderColor: "rgba(30,202,211,0.2)",
           }}
         >
-          <p className="text-xs font-bold tracking-widest uppercase mb-2" style={{ color: "#2DB6C1" }}>
+          <p className="text-xs font-bold tracking-widest uppercase mb-2" style={{ color: "#1ECAD3" }}>
             Tesis I.2o.C.38 C (11a.)
           </p>
           <p className="text-gray-700 leading-relaxed text-sm">
@@ -209,11 +209,11 @@ export default function ArticleFirmaExpediente() {
         <div
           className="rounded-xl p-6 border"
           style={{
-            background: "rgba(45, 182, 193,0.05)",
-            borderColor: "rgba(45, 182, 193,0.2)",
+            background: "rgba(30,202,211,0.05)",
+            borderColor: "rgba(30,202,211,0.2)",
           }}
         >
-          <p className="text-xs font-bold tracking-widest uppercase mb-2" style={{ color: "#2DB6C1" }}>
+          <p className="text-xs font-bold tracking-widest uppercase mb-2" style={{ color: "#1ECAD3" }}>
             Tesis I.11o.C.82 C (11a.)
           </p>
           <p className="text-gray-700 leading-relaxed text-sm">
@@ -255,7 +255,7 @@ export default function ArticleFirmaExpediente() {
           <li key={i} className="flex items-start gap-3 text-gray-700">
             <span
               className="mt-0.5 w-5 h-5 rounded-full flex items-center justify-center shrink-0 text-xs font-bold"
-              style={{ background: "rgba(45, 182, 193,0.15)", color: "#2DB6C1" }}
+              style={{ background: "rgba(30,202,211,0.15)", color: "#1ECAD3" }}
             >
               {i + 1}
             </span>
@@ -302,14 +302,14 @@ export default function ArticleFirmaExpediente() {
       <div
         className="rounded-xl p-6 mb-10 border"
         style={{
-          background: "rgba(45, 182, 193,0.06)",
-          borderColor: "rgba(45, 182, 193,0.2)",
+          background: "rgba(30,202,211,0.06)",
+          borderColor: "rgba(30,202,211,0.2)",
         }}
       >
         <div className="flex items-start gap-4">
           <div
             className="w-12 h-12 rounded-full shrink-0 flex items-center justify-center text-sm font-bold text-white"
-            style={{ background: "linear-gradient(135deg, #2DB6C1 0%, #212A45 100%)" }}
+            style={{ background: "linear-gradient(135deg, #1ECAD3 0%, #0066ff 100%)" }}
           >
             AQ
           </div>
@@ -355,7 +355,7 @@ export default function ArticleFirmaExpediente() {
         <a
           href="/contacto"
           className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-sm transition-all duration-200"
-          style={{ background: "#2DB6C1", color: "#0a0f1e" }}
+          style={{ background: "#1ECAD3", color: "#0a0f1e" }}
         >
           Hablar con un especialista
         </a>

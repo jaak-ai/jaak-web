@@ -8,24 +8,24 @@ import { getPricingIndex } from "@/lib/pricing";
 import { autoservicioBreadcrumbSchema, autoservicioProductsSchema } from "./schema";
 
 export const metadata: Metadata = {
-  title: "Autoservicio — Compre y active servicios JAAK en minutos",
+  title: "Autoservicio — Compra y activa servicios JAAK en minutos",
   description:
-    "Compre KYC, firma electrónica NOM-151, validaciones INE/CURP y OCR en línea. Arme su paquete, pague seguro y active al instante. Sin vendedores, sin esperas.",
+    "Compra KYC, firma electrónica NOM-151, validaciones INE/CURP y OCR en línea. Arma tu paquete, paga seguro y activa al instante. Sin vendedores, sin esperas.",
   alternates: { canonical: "/autoservicio" },
   openGraph: {
     type: "website",
     locale: "es_MX",
     url: "/autoservicio",
     siteName: "JAAK",
-    title: "Autoservicio JAAK — Compre y active sus servicios en minutos",
+    title: "Autoservicio JAAK — Compra y activa tus servicios en minutos",
     description:
-      "Arme su paquete de KYC, firma electrónica, validaciones y OCR. Pague en línea y actívelo al instante, sin vendedores ni esperas.",
+      "Arma tu paquete de KYC, firma electrónica, validaciones y OCR. Paga en línea y actívalo al instante, sin vendedores ni esperas.",
     images: [{ url: "/images/logos/jaak-logo-azul.png", width: 800, height: 400, alt: "Autoservicio JAAK" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Autoservicio JAAK — Compre y active sus servicios en minutos",
-    description: "Arme su paquete de KYC, firma electrónica, validaciones y OCR. Pague en línea y actívelo al instante.",
+    title: "Autoservicio JAAK — Compra y activa tus servicios en minutos",
+    description: "Arma tu paquete de KYC, firma electrónica, validaciones y OCR. Paga en línea y actívalo al instante.",
     images: ["/images/logos/jaak-logo-azul.png"],
     creator: "@jaak_ai",
     site: "@jaak_ai",
@@ -75,14 +75,21 @@ export default async function AutoservicioPage() {
                 Autoservicio JAAK
               </span>
               <h1 className="mt-5 text-4xl font-bold leading-[1.08] tracking-tight text-white lg:text-5xl">
-                Compre y active sus servicios{" "}
-                <span style={{ color: "#2DB6C1" }}>
+                Compra y activa tus servicios{" "}
+                <span
+                  style={{
+                    backgroundImage: "linear-gradient(90deg, #1ecad3, #655dc6)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
                   en minutos
                 </span>
               </h1>
               <p className="mt-5 max-w-xl text-[16px] leading-relaxed" style={{ color: "rgba(255,255,255,0.72)" }}>
-                Arme su paquete combinando KYC, firma electrónica, validaciones y OCR. Pague en línea con seguridad
-                y empiece a operar de inmediato. Sin vendedores, sin esperas.
+                Arma tu paquete combinando KYC, firma electrónica, validaciones y OCR. Paga en línea con seguridad
+                y empieza a operar de inmediato. Sin vendedores, sin esperas.
               </p>
               <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-[13px]" style={{ color: "rgba(255,255,255,0.6)" }}>
                 {["Activación inmediata", "Pago seguro con Stripe", "Selección múltiple", "Sin contratos"].map((t) => (
@@ -102,7 +109,7 @@ export default async function AutoservicioPage() {
         {/* ─── Experiencia: agregar productos (Catálogo / Guía) ─────────── */}
         <AutoservicioVariantes pricingIndex={pricingIndex} />
 
-        {/* ─── Cierre: ¿necesita más que autoservicio? → /precios ─────── */}
+        {/* ─── Cierre: ¿necesitas más que autoservicio? → /precios ─────── */}
         <section className="bg-white">
           <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
             <div
@@ -111,10 +118,10 @@ export default async function AutoservicioPage() {
             >
               <div className="max-w-2xl">
                 <h2 className="text-xl font-bold tracking-tight lg:text-2xl" style={{ color: "#212A45" }}>
-                  ¿Necesita más que el autoservicio?
+                  ¿Necesitas más que el autoservicio?
                 </h2>
                 <p className="mt-2 text-[15px] leading-relaxed" style={{ color: "#64748B" }}>
-                  Para volúmenes altos, planes Enterprise o esquemas de alianza, revise todas las modalidades y encuentre la que se ajusta a su operación.
+                  Para volúmenes altos, planes Enterprise o esquemas de alianza, revisa todas las modalidades y encuentra la que se ajusta a tu operación.
                 </p>
               </div>
               <Link

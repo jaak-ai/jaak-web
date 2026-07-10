@@ -88,7 +88,7 @@ export default function CookiesPage() {
       <Header />
       <main>
         {/* Hero Section */}
-        <section className="pt-32 pb-16 bg-[#0E1133]">
+        <section className="pt-32 pb-16 bg-[#0a0a0a]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <h1 className="text-4xl md:text-5xl font-black text-white mb-6">
               Politica de Cookies
@@ -159,7 +159,7 @@ export default function CookiesPage() {
                         <span
                           className={`px-3 py-1 rounded-full text-xs font-medium ${
                             type.canDisable
-                              ? "bg-[#212A45]/10 text-[#212A45]"
+                              ? "bg-[#0066ff]/10 text-[#0066ff]"
                               : "bg-gray-200 text-gray-600"
                           }`}
                         >
@@ -178,7 +178,7 @@ export default function CookiesPage() {
                               className="flex items-center gap-2 text-sm text-gray-600"
                             >
                               <svg
-                                className="w-4 h-4 text-[#2DB6C1] flex-shrink-0"
+                                className="w-4 h-4 text-[#00d4aa] flex-shrink-0"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -209,7 +209,7 @@ export default function CookiesPage() {
                   Las cookies pueden clasificarse segun su duracion:
                 </p>
                 <div className="grid md:grid-cols-2 gap-6">
-                  <div className="bg-[#212A45]/5 border border-[#212A45]/20 rounded-xl p-6">
+                  <div className="bg-[#0066ff]/5 border border-[#0066ff]/20 rounded-xl p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">
                       Cookies de sesion
                     </h3>
@@ -217,7 +217,7 @@ export default function CookiesPage() {
                       Se eliminan automaticamente cuando cierra su navegador. Son temporales y no permanecen en su dispositivo despues de cerrar la sesion.
                     </p>
                   </div>
-                  <div className="bg-[#2DB6C1]/5 border border-[#2DB6C1]/20 rounded-xl p-6">
+                  <div className="bg-[#00d4aa]/5 border border-[#00d4aa]/20 rounded-xl p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">
                       Cookies persistentes
                     </h3>
@@ -264,7 +264,7 @@ export default function CookiesPage() {
                               href={cookie.privacy}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-[#212A45] hover:underline text-sm"
+                              className="text-[#0066ff] hover:underline text-sm"
                             >
                               Ver politica
                             </a>
@@ -304,7 +304,7 @@ export default function CookiesPage() {
                       href="https://support.google.com/chrome/answer/95647"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[#212A45] hover:underline"
+                      className="text-[#0066ff] hover:underline"
                     >
                       Google Chrome
                     </a>
@@ -314,7 +314,7 @@ export default function CookiesPage() {
                       href="https://support.mozilla.org/es/kb/cookies-informacion-que-los-sitios-web-guardan-en-"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[#212A45] hover:underline"
+                      className="text-[#0066ff] hover:underline"
                     >
                       Mozilla Firefox
                     </a>
@@ -324,7 +324,7 @@ export default function CookiesPage() {
                       href="https://support.apple.com/es-mx/guide/safari/sfri11471/mac"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[#212A45] hover:underline"
+                      className="text-[#0066ff] hover:underline"
                     >
                       Safari
                     </a>
@@ -334,7 +334,7 @@ export default function CookiesPage() {
                       href="https://support.microsoft.com/es-es/windows/eliminar-y-administrar-cookies-168dab11-0753-043d-7c16-ede5947fc64d"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[#212A45] hover:underline"
+                      className="text-[#0066ff] hover:underline"
                     >
                       Microsoft Edge
                     </a>
@@ -389,7 +389,7 @@ export default function CookiesPage() {
                 </h2>
                 <p className="text-gray-600">
                   Esta Politica de Cookies complementa nuestro{" "}
-                  <Link href="/privacidad" className="text-[#212A45] hover:underline">
+                  <Link href="/privacidad" className="text-[#0066ff] hover:underline">
                     Aviso de Privacidad
                   </Link>
                   , que proporciona informacion mas detallada sobre como recopilamos, usamos y protegemos sus datos personales. Le recomendamos leer ambos documentos para comprender completamente nuestras practicas de privacidad.
@@ -397,7 +397,7 @@ export default function CookiesPage() {
               </div>
 
               {/* Contacto */}
-              <div className="bg-[#0E1133] rounded-2xl p-8">
+              <div className="bg-[#0a0a0a] rounded-2xl p-8">
                 <h2 className="text-2xl font-bold text-white mb-4">
                   Contacto
                 </h2>
@@ -406,13 +406,13 @@ export default function CookiesPage() {
                 </p>
                 <div className="space-y-2">
                   <p className="text-white">
-                    <strong className="text-[#212A45]">Correo:</strong>{" "}
-                    <a href="mailto:privacidad@jaak.ai" className="text-white hover:text-[#212A45] transition-colors">
+                    <strong className="text-[#0066ff]">Correo:</strong>{" "}
+                    <a href="mailto:privacidad@jaak.ai" className="text-white hover:text-[#0066ff] transition-colors">
                       privacidad@jaak.ai
                     </a>
                   </p>
                   <p className="text-white">
-                    <strong className="text-[#212A45]">Direccion:</strong> Ciudad de Mexico, Mexico
+                    <strong className="text-[#0066ff]">Direccion:</strong> Ciudad de Mexico, Mexico
                   </p>
                 </div>
               </div>

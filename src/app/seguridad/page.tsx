@@ -1,11 +1,11 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
-import { IBETA } from "@/lib/trust";
 
 export const metadata = {
   title: "Seguridad | JAAK",
-  description: `Conoce las medidas de seguridad, certificaciones y estándares que JAAK implementa para proteger tu información. ISO 27001, ISO 9001, ${IBETA} y NIST.`,
+  description:
+    "Conoce las medidas de seguridad, certificaciones y estándares que JAAK implementa para proteger tu información. ISO 27001, ISO 9001, iBeta y NIST.",
 };
 
 export default function SeguridadPage() {
@@ -35,7 +35,7 @@ export default function SeguridadPage() {
       ],
     },
     {
-      name: IBETA,
+      name: "iBeta",
       subtitle: "Prueba de Vida Certificada",
       description:
         "Certificación de detección de ataques de presentación (PAD) según el estándar ISO 30107-3. Nuestro sistema de prueba de vida ha sido evaluado por un laboratorio acreditado para resistir intentos de suplantación.",
@@ -99,7 +99,7 @@ export default function SeguridadPage() {
         </svg>
       ),
       measures: [
-        "Centros de datos de alta disponibilidad",
+        "Centros de datos Tier III+ certificados",
         "Redundancia geográfica de datos",
         "Firewalls de aplicación web (WAF)",
         "Protección DDoS en todas las capas",
@@ -181,12 +181,12 @@ export default function SeguridadPage() {
       <Header />
       <main>
         {/* Hero Section */}
-        <section className="pt-32 pb-20 bg-[#0E1133]">
+        <section className="pt-32 pb-20 bg-[#0a0a0a]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#2DB6C1]/10 border border-[#2DB6C1]/20 rounded-full mb-6">
-                <span className="w-2 h-2 bg-[#2DB6C1] rounded-full"></span>
-                <span className="text-[#2DB6C1] text-sm font-medium">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#00d4aa]/10 border border-[#00d4aa]/20 rounded-full mb-6">
+                <span className="w-2 h-2 bg-[#00d4aa] rounded-full"></span>
+                <span className="text-[#00d4aa] text-sm font-medium">
                   Seguridad Empresarial
                 </span>
               </div>
@@ -204,7 +204,7 @@ export default function SeguridadPage() {
                   ISO 9001
                 </span>
                 <span className="px-4 py-2 bg-white/10 text-white rounded-lg text-sm font-medium">
-                  {IBETA}
+                  iBeta
                 </span>
                 <span className="px-4 py-2 bg-white/10 text-white rounded-lg text-sm font-medium">
                   NIST 800-63-3
@@ -233,9 +233,9 @@ export default function SeguridadPage() {
                   className="bg-gray-50 rounded-2xl p-8 border border-gray-100"
                 >
                   <div className="flex items-center gap-4 mb-4">
-                    <div className="w-14 h-14 bg-[#212A45]/10 rounded-xl flex items-center justify-center">
+                    <div className="w-14 h-14 bg-[#0066ff]/10 rounded-xl flex items-center justify-center">
                       <svg
-                        className="w-7 h-7 text-[#212A45]"
+                        className="w-7 h-7 text-[#0066ff]"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -252,7 +252,7 @@ export default function SeguridadPage() {
                       <h3 className="text-xl font-bold text-gray-900">
                         {cert.name}
                       </h3>
-                      <p className="text-[#212A45] font-medium text-sm">
+                      <p className="text-[#0066ff] font-medium text-sm">
                         {cert.subtitle}
                       </p>
                     </div>
@@ -269,7 +269,7 @@ export default function SeguridadPage() {
                           className="flex items-center gap-2 text-gray-700"
                         >
                           <svg
-                            className="w-5 h-5 text-[#2DB6C1] flex-shrink-0"
+                            className="w-5 h-5 text-[#00d4aa] flex-shrink-0"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -310,7 +310,7 @@ export default function SeguridadPage() {
                   key={index}
                   className="bg-white rounded-xl p-6 shadow-sm"
                 >
-                  <div className="w-12 h-12 bg-[#212A45]/10 rounded-xl flex items-center justify-center mb-4 text-[#212A45]">
+                  <div className="w-12 h-12 bg-[#0066ff]/10 rounded-xl flex items-center justify-center mb-4 text-[#0066ff]">
                     {category.icon}
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 mb-4">
@@ -323,7 +323,7 @@ export default function SeguridadPage() {
                         className="flex items-start gap-2 text-sm text-gray-600"
                       >
                         <svg
-                          className="w-4 h-4 text-[#212A45] flex-shrink-0 mt-0.5"
+                          className="w-4 h-4 text-[#0066ff] flex-shrink-0 mt-0.5"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -361,7 +361,7 @@ export default function SeguridadPage() {
               {dataProtection.map((item, index) => (
                 <div
                   key={index}
-                  className="border border-gray-200 rounded-xl p-6 hover:border-[#212A45]/30 transition-colors"
+                  className="border border-gray-200 rounded-xl p-6 hover:border-[#0066ff]/30 transition-colors"
                 >
                   <h3 className="text-lg font-bold text-gray-900 mb-3">
                     {item.title}
@@ -387,7 +387,7 @@ export default function SeguridadPage() {
 
             <div className="grid md:grid-cols-4 gap-6 max-w-5xl mx-auto">
               <div className="text-center">
-                <div className="w-16 h-16 bg-[#212A45] rounded-2xl flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
+                <div className="w-16 h-16 bg-[#0066ff] rounded-2xl flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
                   1
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2">
@@ -398,7 +398,7 @@ export default function SeguridadPage() {
                 </p>
               </div>
               <div className="text-center">
-                <div className="w-16 h-16 bg-[#212A45] rounded-2xl flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
+                <div className="w-16 h-16 bg-[#0066ff] rounded-2xl flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
                   2
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2">
@@ -409,7 +409,7 @@ export default function SeguridadPage() {
                 </p>
               </div>
               <div className="text-center">
-                <div className="w-16 h-16 bg-[#212A45] rounded-2xl flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
+                <div className="w-16 h-16 bg-[#0066ff] rounded-2xl flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
                   3
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2">
@@ -420,7 +420,7 @@ export default function SeguridadPage() {
                 </p>
               </div>
               <div className="text-center">
-                <div className="w-16 h-16 bg-[#212A45] rounded-2xl flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
+                <div className="w-16 h-16 bg-[#0066ff] rounded-2xl flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
                   4
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2">
@@ -437,7 +437,7 @@ export default function SeguridadPage() {
         {/* Vulnerability Disclosure */}
         <section className="py-20 bg-white">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="bg-[#0E1133] rounded-2xl p-8 md:p-12">
+            <div className="bg-[#0a0a0a] rounded-2xl p-8 md:p-12">
               <div className="text-center mb-8">
                 <h2 className="text-3xl font-black text-white mb-4">
                   Divulgación responsable de vulnerabilidades
@@ -453,19 +453,19 @@ export default function SeguridadPage() {
                 </h3>
                 <ul className="space-y-2 text-white/70">
                   <li className="flex items-center gap-2">
-                    <svg className="w-5 h-5 text-[#2DB6C1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-[#00d4aa]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     Aplicaciones web en *.jaak.ai
                   </li>
                   <li className="flex items-center gap-2">
-                    <svg className="w-5 h-5 text-[#2DB6C1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-[#00d4aa]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     APIs públicas documentadas
                   </li>
                   <li className="flex items-center gap-2">
-                    <svg className="w-5 h-5 text-[#2DB6C1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-[#00d4aa]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     SDKs oficiales de JAAK
@@ -479,7 +479,7 @@ export default function SeguridadPage() {
                 </p>
                 <a
                   href="mailto:security@jaak.ai"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-[#212A45] text-white font-semibold rounded-lg hover:bg-[#212A45] transition-all"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-[#0066ff] text-white font-semibold rounded-lg hover:bg-[#0052cc] transition-all"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -500,9 +500,9 @@ export default function SeguridadPage() {
             <div className="grid md:grid-cols-3 gap-6">
               <Link
                 href="/privacidad"
-                className="bg-white rounded-xl p-6 border border-gray-200 hover:border-[#212A45] transition-colors group"
+                className="bg-white rounded-xl p-6 border border-gray-200 hover:border-[#0066ff] transition-colors group"
               >
-                <h3 className="text-lg font-bold text-gray-900 group-hover:text-[#212A45] mb-2">
+                <h3 className="text-lg font-bold text-gray-900 group-hover:text-[#0066ff] mb-2">
                   Aviso de Privacidad
                 </h3>
                 <p className="text-gray-600 text-sm">
@@ -511,9 +511,9 @@ export default function SeguridadPage() {
               </Link>
               <Link
                 href="/terminos"
-                className="bg-white rounded-xl p-6 border border-gray-200 hover:border-[#212A45] transition-colors group"
+                className="bg-white rounded-xl p-6 border border-gray-200 hover:border-[#0066ff] transition-colors group"
               >
-                <h3 className="text-lg font-bold text-gray-900 group-hover:text-[#212A45] mb-2">
+                <h3 className="text-lg font-bold text-gray-900 group-hover:text-[#0066ff] mb-2">
                   Términos y Condiciones
                 </h3>
                 <p className="text-gray-600 text-sm">
@@ -522,9 +522,9 @@ export default function SeguridadPage() {
               </Link>
               <Link
                 href="/cumplimiento"
-                className="bg-white rounded-xl p-6 border border-gray-200 hover:border-[#212A45] transition-colors group"
+                className="bg-white rounded-xl p-6 border border-gray-200 hover:border-[#0066ff] transition-colors group"
               >
-                <h3 className="text-lg font-bold text-gray-900 group-hover:text-[#212A45] mb-2">
+                <h3 className="text-lg font-bold text-gray-900 group-hover:text-[#0066ff] mb-2">
                   Cumplimiento
                 </h3>
                 <p className="text-gray-600 text-sm">

@@ -54,7 +54,7 @@ export default function OperacionesAltoRiesgo() {
       <Header />
       <main>
         {/* Hero */}
-        <section className="pt-32 pb-20 bg-[#0E1133]">
+        <section className="pt-32 pb-20 bg-[#0a0a0a]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl">
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#ff6b6b]/10 border border-[#ff6b6b]/20 rounded-full mb-6">
@@ -70,7 +70,7 @@ export default function OperacionesAltoRiesgo() {
               <div className="flex flex-wrap gap-4">
                 <Link
                   href="/contacto"
-                  className="px-6 py-3 bg-[#212A45] text-white font-semibold rounded-lg hover:bg-[#212A45] transition-all"
+                  className="px-6 py-3 bg-[#0066ff] text-white font-semibold rounded-lg hover:bg-[#0052cc] transition-all"
                 >
                   Hablar con ventas
                 </Link>
@@ -116,8 +116,8 @@ export default function OperacionesAltoRiesgo() {
             </div>
             <div className="grid md:grid-cols-3 gap-8">
               {verificationLevels.map((level, index) => (
-                <div key={index} className={`rounded-xl p-8 ${index === 2 ? 'bg-[#212A45] text-white' : 'bg-white'}`}>
-                  <div className={`text-sm font-bold uppercase tracking-wider mb-2 ${index === 2 ? 'text-white/70' : 'text-[#212A45]'}`}>
+                <div key={index} className={`rounded-xl p-8 ${index === 2 ? 'bg-[#0066ff] text-white' : 'bg-white'}`}>
+                  <div className={`text-sm font-bold uppercase tracking-wider mb-2 ${index === 2 ? 'text-white/70' : 'text-[#0066ff]'}`}>
                     Nivel {index + 1}
                   </div>
                   <h3 className={`text-2xl font-black mb-3 ${index === 2 ? 'text-white' : 'text-gray-900'}`}>
@@ -129,7 +129,7 @@ export default function OperacionesAltoRiesgo() {
                   <ul className="space-y-3">
                     {level.features.map((feature, featureIndex) => (
                       <li key={featureIndex} className="flex items-center gap-3">
-                        <svg className={`w-5 h-5 ${index === 2 ? 'text-white' : 'text-[#2DB6C1]'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className={`w-5 h-5 ${index === 2 ? 'text-white' : 'text-[#00d4aa]'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
                         <span className={index === 2 ? 'text-white/90' : 'text-gray-700'}>{feature}</span>
@@ -143,7 +143,7 @@ export default function OperacionesAltoRiesgo() {
         </section>
 
         {/* CTA */}
-        <section className="py-20 bg-[#0E1133]">
+        <section className="py-20 bg-[#0a0a0a]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl md:text-4xl font-black text-white mb-6">
               Protege tus operaciones críticas
@@ -153,7 +153,7 @@ export default function OperacionesAltoRiesgo() {
             </p>
             <Link
               href="/contacto"
-              className="inline-flex px-8 py-4 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-all"
+              className="inline-flex px-8 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
             >
               Solicitar demo
             </Link>

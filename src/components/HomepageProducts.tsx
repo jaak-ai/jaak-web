@@ -45,13 +45,13 @@ const signatureProducts = [
     level: "N2",
     name: "Firma con OTP",
     desc: "Confirmación por SMS o email vinculada al documento firmado.",
-    color: "rgba(45,182,193,0.75)",
+    color: "rgba(30,202,211,0.75)",
   },
   {
     level: "N3",
     name: "Firma Digital NOM-151 + Biometría",
     desc: "Vinculada a la identidad biométrica verificada del firmante.",
-    color: "#2DB6C1",
+    color: "#1ECAD3",
   },
   {
     level: "N4",
@@ -71,7 +71,7 @@ export default function HomepageProducts() {
       />
       <div
         className="absolute top-1/4 right-0 w-[400px] h-[400px] rounded-full blur-[120px] pointer-events-none"
-        style={{ background: "rgba(45,182,193,0.06)" }}
+        style={{ background: "rgba(30,202,211,0.06)" }}
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -80,33 +80,33 @@ export default function HomepageProducts() {
         <div className="text-center mb-14" data-sr>
           <div
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
-            style={{ color: "#2DB6C1", border: "1px solid rgba(45,182,193,0.22)", background: "rgba(45,182,193,0.08)" }}
+            style={{ color: "#1ECAD3", border: "1px solid rgba(30,202,211,0.22)", background: "rgba(30,202,211,0.08)" }}
           >
             Productos
           </div>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight mb-4">
             Flexibles, modulares y{" "}
-            <span style={{ background: "linear-gradient(90deg, #2DB6C1, #2AD796)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+            <span style={{ background: "linear-gradient(90deg, #1ECAD3, #2AD796)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
               disponibles hoy.
             </span>
           </h2>
           <p className="text-lg max-w-xl mx-auto" style={{ color: "var(--hp-text-md)" }}>
-            Use solo lo que necesita. Escale cuando quiera. Todo disponible en autoservicio o con integración asistida.
+            Usa solo lo que necesitas. Escala cuando quieras. Todo disponible en autoservicio o con integración asistida.
           </p>
         </div>
 
         {/* ── Block 1: Verificación ── */}
         <div className="mb-14">
           <div className="flex items-center gap-3 mb-6" data-sr>
-            <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: "rgba(45,182,193,0.15)" }}>
-              <svg className="w-4 h-4" style={{ color: "#2DB6C1" }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: "rgba(30,202,211,0.15)" }}>
+              <svg className="w-4 h-4" style={{ color: "#1ECAD3" }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
             </div>
             <h3 className="text-lg font-black text-white">Verificación de identidad</h3>
             <span
               className="text-xs px-2.5 py-1 rounded-full font-semibold"
-              style={{ color: "#2DB6C1", background: "rgba(45,182,193,0.08)", border: "1px solid rgba(45,182,193,0.18)" }}
+              style={{ color: "#1ECAD3", background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.18)" }}
             >
               Disponible en autoservicio
             </span>
@@ -117,13 +117,13 @@ export default function HomepageProducts() {
               <Link
                 key={p.id}
                 href={p.href}
-                className="hp-glass group rounded-2xl p-5 flex flex-col transition-all duration-300 hover:-translate-y-1 hover:border-[#2DB6C1]/30"
-                style={p.highlight ? { border: "1px solid rgba(45,182,193,0.25)", background: "linear-gradient(145deg, rgba(45,182,193,0.10) 0%, rgba(42,215,150,0.05) 100%)" } : {}}
+                className="hp-glass group rounded-2xl p-5 flex flex-col transition-all duration-300 hover:-translate-y-1 hover:border-[#1ECAD3]/30"
+                style={p.highlight ? { border: "1px solid rgba(30,202,211,0.25)", background: "linear-gradient(145deg, rgba(30,202,211,0.10) 0%, rgba(42,215,150,0.05) 100%)" } : {}}
               >
                 {p.highlight && (
                   <span
                     className="text-xs px-2 py-0.5 rounded-full font-bold mb-3 self-start"
-                    style={{ background: "rgba(45,182,193,0.15)", color: "#2DB6C1" }}
+                    style={{ background: "rgba(30,202,211,0.15)", color: "#1ECAD3" }}
                   >
                     Paquete completo
                   </span>
@@ -154,7 +154,7 @@ export default function HomepageProducts() {
             <div className="flex items-center gap-3 mb-5" data-sr="left">
               <div
                 className="w-8 h-8 rounded-xl flex items-center justify-center"
-                style={{ background: "linear-gradient(135deg, #2DB6C1, #2AD796)", boxShadow: "0 2px 10px rgba(45,182,193,0.25)" }}
+                style={{ background: "linear-gradient(135deg, #1ECAD3, #2AD796)", boxShadow: "0 2px 10px rgba(30,202,211,0.25)" }}
               >
                 <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
@@ -171,12 +171,12 @@ export default function HomepageProducts() {
                 <div
                   key={s.level}
                   className="hp-glass rounded-2xl px-4 py-3.5"
-                  style={s.highlight ? { background: "linear-gradient(90deg, rgba(42,215,150,0.12), rgba(45,182,193,0.08))", border: "1px solid rgba(42,215,150,0.22)" } : {}}
+                  style={s.highlight ? { background: "linear-gradient(90deg, rgba(42,215,150,0.12), rgba(30,202,211,0.08))", border: "1px solid rgba(42,215,150,0.22)" } : {}}
                 >
                   <div className="flex items-center gap-3">
                     <span
                       className="text-xs font-black px-2 py-0.5 rounded-lg"
-                      style={{ background: "rgba(45,182,193,0.12)", color: s.color, border: `1px solid ${s.color}22` }}
+                      style={{ background: "rgba(30,202,211,0.12)", color: s.color, border: `1px solid ${s.color}22` }}
                     >
                       {s.level}
                     </span>
@@ -251,14 +251,14 @@ export default function HomepageProducts() {
         <div
           className="rounded-3xl px-8 py-6 flex flex-col md:flex-row items-start md:items-center gap-5"
           style={{
-            background: "linear-gradient(135deg, rgba(45,182,193,0.10) 0%, rgba(42,215,150,0.06) 100%)",
-            border: "1px solid rgba(45,182,193,0.22)",
+            background: "linear-gradient(135deg, rgba(30,202,211,0.10) 0%, rgba(42,215,150,0.06) 100%)",
+            border: "1px solid rgba(30,202,211,0.22)",
           }}
           data-sr
         >
           <div
             className="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0"
-            style={{ background: "linear-gradient(135deg, #2DB6C1, #2AD796)", boxShadow: "0 4px 20px rgba(45,182,193,0.30)" }}
+            style={{ background: "linear-gradient(135deg, #1ECAD3, #2AD796)", boxShadow: "0 4px 20px rgba(30,202,211,0.30)" }}
           >
             <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
@@ -267,19 +267,19 @@ export default function HomepageProducts() {
           <div className="flex-1">
             <div className="font-black text-lg mb-1" style={{ color: "var(--hp-text-hi)" }}>
               Todos los productos disponibles en{" "}
-              <span style={{ background: "linear-gradient(90deg, #2DB6C1, #2AD796)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+              <span style={{ background: "linear-gradient(90deg, #1ECAD3, #2AD796)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
                 marca blanca
               </span>
             </div>
             <p className="text-sm" style={{ color: "var(--hp-text-md)" }}>
-              Su logo, sus colores y mensajes personalizados. Sus clientes ven su marca,
+              Tu logo, tus colores y mensajes personalizados. Tus clientes ven tu marca,
               no la de JAAK. Disponible para KYC, firma y expediente digital.
             </p>
           </div>
           <Link
             href="/contacto"
-            className="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-bold text-white transition-colors flex-shrink-0"
-            style={{ background: "linear-gradient(135deg, #2DB6C1, #25969f)", boxShadow: "0 4px 16px rgba(45,182,193,0.25)" }}
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-bold text-white transition-all flex-shrink-0"
+            style={{ background: "linear-gradient(135deg, #1ECAD3, #17a8b0)", boxShadow: "0 4px 16px rgba(30,202,211,0.25)" }}
           >
             Hablar sobre marca blanca
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -296,7 +296,7 @@ export default function HomepageProducts() {
           <p className="text-sm" style={{ color: "var(--hp-text-lo)" }}>
             Todos los productos disponibles en autoservicio o con integración asistida.
           </p>
-          <Link href="/precios" className="inline-flex items-center gap-2 text-sm font-semibold whitespace-nowrap" style={{ color: "#2DB6C1" }}>
+          <Link href="/precios" className="inline-flex items-center gap-2 text-sm font-semibold whitespace-nowrap" style={{ color: "#1ECAD3" }}>
             Ver precios y planes
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />

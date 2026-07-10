@@ -137,25 +137,25 @@ export default function FirmaElectronicaPage() {
         <section
           id="hero"
           className="relative pt-32 pb-20 overflow-hidden"
-          style={{ background: "linear-gradient(135deg, #071426 0%, #0A1628 45%, #212A45 100%)" }}
+          style={{ background: "linear-gradient(135deg, #071426 0%, #0A1628 45%, #202945 100%)" }}
           aria-label="Firma electrónica en México con identidad, e.firma y evidencia certificada"
         >
           <div
             className="absolute inset-0 opacity-[0.03] pointer-events-none"
             aria-hidden="true"
             style={{
-              backgroundImage: "linear-gradient(#2DB6C1 1px, transparent 1px), linear-gradient(90deg, #2DB6C1 1px, transparent 1px)",
+              backgroundImage: "linear-gradient(#1ECAD3 1px, transparent 1px), linear-gradient(90deg, #1ECAD3 1px, transparent 1px)",
               backgroundSize: "60px 60px",
             }}
           />
-          <div className="absolute top-20 right-1/4 w-96 h-96 rounded-full opacity-10 blur-3xl pointer-events-none" aria-hidden="true" style={{ background: "#2DB6C1" }} />
+          <div className="absolute top-20 right-1/4 w-96 h-96 rounded-full opacity-10 blur-3xl pointer-events-none" aria-hidden="true" style={{ background: "#1ECAD3" }} />
 
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative text-center">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-[1.1] mb-6">
               Firma electrónica en México con{" "}
               <span
                 style={{
-                  background: "linear-gradient(135deg, #2DB6C1, #2AD796)",
+                  background: "linear-gradient(135deg, #1ECAD3, #2AD796)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
@@ -175,7 +175,7 @@ export default function FirmaElectronicaPage() {
                 <span
                   key={badge}
                   className="px-3.5 py-1.5 rounded-full text-xs font-semibold"
-                  style={{ background: "rgba(45,182,193,0.1)", border: "1px solid rgba(45,182,193,0.25)", color: "#2DB6C1" }}
+                  style={{ background: "rgba(30,202,211,0.1)", border: "1px solid rgba(30,202,211,0.25)", color: "#1ECAD3" }}
                 >
                   {badge}
                 </span>
@@ -185,8 +185,8 @@ export default function FirmaElectronicaPage() {
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link
                 href="/autoservicio"
-                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-bold text-white text-base transition-all will-change-transform hover:opacity-90 hover:scale-105"
-                style={{ background: "linear-gradient(135deg, #2DB6C1, #25969f)", boxShadow: "0 0 30px rgba(45,182,193,0.35)" }}
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-bold text-white text-base transition-all hover:opacity-90 hover:scale-105"
+                style={{ background: "linear-gradient(135deg, #1ECAD3, #17A8B0)", boxShadow: "0 0 30px rgba(30,202,211,0.35)" }}
               >
                 Probar autoservicio
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -195,7 +195,7 @@ export default function FirmaElectronicaPage() {
               </Link>
               <Link
                 href="/contacto"
-                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-bold text-base transition-colors hover:bg-white/10"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-bold text-base transition-all hover:bg-white/10"
                 style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)", color: "#E2E8F0" }}
               >
                 Hablar con un experto
@@ -212,7 +212,7 @@ export default function FirmaElectronicaPage() {
         <section id="niveles-evidencia" className="py-20" style={{ background: "#0A1628" }} aria-labelledby="niveles-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(45,182,193,0.08)", border: "1px solid rgba(45,182,193,0.2)", color: "#2DB6C1" }}>
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#1ECAD3" }}>
                 Niveles de evidencia
               </div>
               <h2 id="niveles-heading" className="text-3xl sm:text-4xl font-black text-white mb-4">
@@ -228,10 +228,10 @@ export default function FirmaElectronicaPage() {
         </section>
 
         {/* ── QUIZ: ¿QUÉ FIRMA NECESITO? ────────────────────────── */}
-        <section id="que-firma-necesito" className="py-20" style={{ background: "#0E1133" }} aria-labelledby="quiz-heading">
+        <section id="que-firma-necesito" className="py-20" style={{ background: "#070E1A" }} aria-labelledby="quiz-heading">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(45,182,193,0.08)", border: "1px solid rgba(45,182,193,0.2)", color: "#2DB6C1" }}>
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#1ECAD3" }}>
                 Recomendador
               </div>
               <h2 id="quiz-heading" className="text-3xl sm:text-4xl font-black text-white mb-4">
@@ -249,12 +249,21 @@ export default function FirmaElectronicaPage() {
         <section id="evidencia" className="py-20" style={{ background: "#0A1628" }} aria-labelledby="diferenciacion-heading">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(45,182,193,0.08)", border: "1px solid rgba(45,182,193,0.2)", color: "#2DB6C1" }}>
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#1ECAD3" }}>
                 Diferenciación
               </div>
               <h2 id="diferenciacion-heading" className="text-3xl sm:text-4xl font-black text-white mb-4">
                 Firma no es lo mismo que{" "}
-                <span style={{ color: "#2DB6C1" }}>evidencia</span>
+                <span
+                  style={{
+                    background: "linear-gradient(135deg, #1ECAD3, #2AD796)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
+                  evidencia
+                </span>
               </h2>
               <p className="text-gray-400 max-w-2xl mx-auto text-base">
                 Una firma puede capturar consentimiento. Pero cuando el documento importa, también necesitas probar
@@ -266,7 +275,7 @@ export default function FirmaElectronicaPage() {
         </section>
 
         {/* ── E.FIRMA SAT ────────────────────────────────────────── */}
-        <section id="efirma" className="py-20" style={{ background: "#0E1133" }} aria-labelledby="efirma-heading">
+        <section id="efirma" className="py-20" style={{ background: "#070E1A" }} aria-labelledby="efirma-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(59,130,246,0.1)", border: "1px solid rgba(59,130,246,0.25)", color: "#60A5FA" }}>
@@ -318,7 +327,7 @@ export default function FirmaElectronicaPage() {
             <div className="text-center mt-8">
               <Link
                 href="/firma-electronica-efirma"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all will-change-transform hover:opacity-90 hover:scale-105"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all hover:opacity-90 hover:scale-105"
                 style={{ background: "#3B82F6" }}
               >
                 Conocer firma con e.firma
@@ -334,7 +343,7 @@ export default function FirmaElectronicaPage() {
         <section id="sello-tiempo-nom151" className="py-20" style={{ background: "#0A1628" }} aria-labelledby="sello-heading">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(245,158,11,0.1)", border: "1px solid rgba(245,158,11,0.25)", color: "#212A45" }}>
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(245,158,11,0.1)", border: "1px solid rgba(245,158,11,0.25)", color: "#F59E0B" }}>
                 Evidencia certificada
               </div>
               <h2 id="sello-heading" className="text-3xl sm:text-4xl font-black text-white mb-4">
@@ -354,8 +363,8 @@ export default function FirmaElectronicaPage() {
               </p>
               <Link
                 href="/firma-certificada-sello-tiempo"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all will-change-transform hover:opacity-90 hover:scale-105"
-                style={{ background: "#212A45" }}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all hover:opacity-90 hover:scale-105"
+                style={{ background: "#F59E0B" }}
               >
                 Conocer firma certificada
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -367,10 +376,10 @@ export default function FirmaElectronicaPage() {
         </section>
 
         {/* ── COMPARISON TABLE ─────────────────────────────────── */}
-        <section id="comparacion" className="py-20" style={{ background: "#0E1133" }} aria-labelledby="comparacion-heading">
+        <section id="comparacion" className="py-20" style={{ background: "#070E1A" }} aria-labelledby="comparacion-heading">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(45,182,193,0.08)", border: "1px solid rgba(45,182,193,0.2)", color: "#2DB6C1" }}>
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#1ECAD3" }}>
                 Comparativa
               </div>
               <h2 id="comparacion-heading" className="text-3xl sm:text-4xl font-black text-white mb-4">
@@ -389,7 +398,7 @@ export default function FirmaElectronicaPage() {
         <section id="como-funciona" className="py-20" style={{ background: "#0A1628" }} aria-labelledby="flujo-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(45,182,193,0.08)", border: "1px solid rgba(45,182,193,0.2)", color: "#2DB6C1" }}>
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#1ECAD3" }}>
                 Flujo de firma
               </div>
               <h2 id="flujo-heading" className="text-3xl sm:text-4xl font-black text-white mb-4">
@@ -404,7 +413,7 @@ export default function FirmaElectronicaPage() {
         </section>
 
         {/* ── RISK / PAIN SECTION ───────────────────────────────── */}
-        <section id="riesgo" className="py-20" style={{ background: "#0E1133" }} aria-labelledby="riesgo-heading">
+        <section id="riesgo" className="py-20" style={{ background: "#070E1A" }} aria-labelledby="riesgo-heading">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.2)", color: "#FCA5A5" }}>
@@ -427,7 +436,7 @@ export default function FirmaElectronicaPage() {
         <section id="casos-uso" className="py-20" style={{ background: "#0A1628" }} aria-labelledby="casos-heading">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(45,182,193,0.08)", border: "1px solid rgba(45,182,193,0.2)", color: "#2DB6C1" }}>
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#1ECAD3" }}>
                 Casos de uso
               </div>
               <h2 id="casos-heading" className="text-3xl sm:text-4xl font-black text-white mb-4">
@@ -442,10 +451,10 @@ export default function FirmaElectronicaPage() {
         </section>
 
         {/* ── FAQ ───────────────────────────────────────────────── */}
-        <section id="faq" className="py-20" style={{ background: "#0E1133" }} aria-labelledby="faq-heading">
+        <section id="faq" className="py-20" style={{ background: "#070E1A" }} aria-labelledby="faq-heading">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(45,182,193,0.08)", border: "1px solid rgba(45,182,193,0.2)", color: "#2DB6C1" }}>
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5" style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)", color: "#1ECAD3" }}>
                 Preguntas frecuentes
               </div>
               <h2 id="faq-heading" className="text-3xl sm:text-4xl font-black text-white mb-4">
@@ -471,8 +480,8 @@ export default function FirmaElectronicaPage() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-sm font-semibold px-4 py-3 rounded-xl text-center transition-colors hover:bg-white/10"
-                  style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "#2DB6C1" }}
+                  className="text-sm font-semibold px-4 py-3 rounded-xl text-center transition-all hover:bg-white/10"
+                  style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "#1ECAD3" }}
                 >
                   {link.label}
                 </Link>
@@ -486,9 +495,9 @@ export default function FirmaElectronicaPage() {
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div
               className="rounded-3xl p-8 md:p-12 overflow-hidden relative"
-              style={{ background: "linear-gradient(135deg, #212A45, #071426)", border: "1px solid rgba(45,182,193,0.15)", boxShadow: "0 0 80px rgba(45,182,193,0.07)" }}
+              style={{ background: "linear-gradient(135deg, #202945, #071426)", border: "1px solid rgba(30,202,211,0.15)", boxShadow: "0 0 80px rgba(30,202,211,0.07)" }}
             >
-              <div className="absolute top-0 right-0 w-64 h-64 rounded-full opacity-10 blur-3xl pointer-events-none" aria-hidden="true" style={{ background: "#2DB6C1" }} />
+              <div className="absolute top-0 right-0 w-64 h-64 rounded-full opacity-10 blur-3xl pointer-events-none" aria-hidden="true" style={{ background: "#1ECAD3" }} />
 
               <h2 id="cta-heading" className="text-3xl sm:text-4xl font-black text-white mb-4 text-center">
                 Elige la firma correcta para cada documento
@@ -498,9 +507,9 @@ export default function FirmaElectronicaPage() {
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="rounded-2xl p-6 flex flex-col gap-5" style={{ background: "rgba(45,182,193,0.06)", border: "1px solid rgba(45,182,193,0.2)" }}>
+                <div className="rounded-2xl p-6 flex flex-col gap-5" style={{ background: "rgba(30,202,211,0.06)", border: "1px solid rgba(30,202,211,0.2)" }}>
                   <div>
-                    <div className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#2DB6C1" }}>Autoservicio</div>
+                    <div className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#1ECAD3" }}>Autoservicio</div>
                     <h3 className="text-xl font-black text-white mb-2">Empieza en minutos</h3>
                     <p className="text-sm text-gray-400 leading-relaxed">
                       Crea tu cuenta, sube tu primer documento y configura el flujo de firma que necesitas sin hablar
@@ -510,7 +519,7 @@ export default function FirmaElectronicaPage() {
                   <ul className="space-y-2">
                     {["Sin contrato ni permanencia", "Pago por uso", "Soporte por chat"].map((item) => (
                       <li key={item} className="flex items-center gap-2 text-sm text-gray-300">
-                        <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" style={{ color: "#2DB6C1" }} aria-hidden="true">
+                        <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" style={{ color: "#1ECAD3" }} aria-hidden="true">
                           <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                         </svg>
                         {item}
@@ -519,8 +528,8 @@ export default function FirmaElectronicaPage() {
                   </ul>
                   <Link
                     href="/autoservicio"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all will-change-transform hover:opacity-90 hover:scale-105"
-                    style={{ background: "#2DB6C1" }}
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white transition-all hover:opacity-90 hover:scale-105"
+                    style={{ background: "#1ECAD3" }}
                   >
                     Probar gratis
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -531,7 +540,7 @@ export default function FirmaElectronicaPage() {
 
                 <div className="rounded-2xl p-6 flex flex-col gap-5" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)" }}>
                   <div>
-                    <div className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#2DB6C1" }}>Enterprise / Integración</div>
+                    <div className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#8B5CF6" }}>Enterprise / Integración</div>
                     <h3 className="text-xl font-black text-white mb-2">Integración completa</h3>
                     <p className="text-sm text-gray-400 leading-relaxed">
                       API REST + SDK + onboarding técnico + soporte dedicado. Configura flujos de firma según
@@ -541,7 +550,7 @@ export default function FirmaElectronicaPage() {
                   <ul className="space-y-2">
                     {["API documentada + webhooks", "Soporte técnico dedicado", "SLA garantizado"].map((item) => (
                       <li key={item} className="flex items-center gap-2 text-sm text-gray-300">
-                        <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" style={{ color: "#2DB6C1" }} aria-hidden="true">
+                        <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" style={{ color: "#8B5CF6" }} aria-hidden="true">
                           <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                         </svg>
                         {item}
@@ -550,7 +559,7 @@ export default function FirmaElectronicaPage() {
                   </ul>
                   <Link
                     href="/contacto"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-colors hover:bg-white/10"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all hover:bg-white/10"
                     style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)", color: "#E2E8F0" }}
                   >
                     Hablar con ventas

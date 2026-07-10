@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Tendencias KYC 2026: Lo que toda institución financiera debe saber | JAAK",
-  description: "Descubra las principales tendencias en Know Your Customer para 2026: IA generativa, verificación biométrica avanzada, regulación actualizada y más. Prepare su organización para el futuro del KYC.",
+  description: "Descubre las principales tendencias en Know Your Customer para 2026: IA generativa, verificación biométrica avanzada, regulación actualizada y más. Prepara tu organización para el futuro del KYC.",
   keywords: ["KYC 2026", "tendencias KYC", "verificación de identidad", "inteligencia artificial KYC", "biometría", "regulación financiera México"],
   openGraph: {
     title: "Tendencias KYC 2026: Lo que toda institución financiera debe saber",
@@ -48,7 +48,7 @@ export default function TendenciasKYC2026() {
   return (
     <ArticleLayout
       title="Tendencias KYC 2026: Lo que toda institución financiera debe saber"
-      subtitle="El panorama de Know Your Customer está evolucionando rápidamente. Descubra las principales tendencias que están transformando la verificación de identidad en México y cómo preparar su organización para los nuevos requerimientos regulatorios."
+      subtitle="El panorama de Know Your Customer está evolucionando rápidamente. Descubre las principales tendencias que están transformando la verificación de identidad en México y cómo preparar tu organización para los nuevos requerimientos regulatorios."
       category="KYC"
       date="8 de enero, 2026"
       readTime="6 min"
@@ -83,12 +83,12 @@ export default function TendenciasKYC2026() {
                 temporal en videos. Estos sistemas pueden identificar manipulaciones que serían
                 imperceptibles para el ojo humano.
               </p>
-              <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
-                <p className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-2">Dato clave</p>
+              <div className="bg-[#0066ff]/5 border-l-4 border-[#0066ff] p-6 my-8">
+                <p className="text-gray-700 font-medium mb-2">Dato clave:</p>
                 <p className="text-gray-600">
-                  Los intentos de fraude con deepfakes han crecido de forma acelerada en los
-                  últimos años. Las instituciones que no actualicen sus sistemas de detección
-                  enfrentarán riesgos significativos en 2026.
+                  Se estima que los intentos de fraude con deepfakes aumentaron un 300% en 2025.
+                  Las instituciones que no actualicen sus sistemas de detección enfrentarán
+                  riesgos significativos en 2026.
                 </p>
               </div>
 
@@ -150,7 +150,7 @@ export default function TendenciasKYC2026() {
                 <p className="text-gray-600">
                   El reto para 2026 es encontrar el equilibrio entre seguridad robusta y experiencia
                   fluida. Las instituciones que logren verificar identidades en segundos mientras
-                  mantienen el cumplimiento regulatorio tendrán una ventaja competitiva
+                  mantienen el 100% de cumplimiento regulatorio tendrán una ventaja competitiva
                   significativa.
                 </p>
               </div>
@@ -174,7 +174,7 @@ export default function TendenciasKYC2026() {
                 6. KYC perpetuo y monitoreo continuo
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
-                El concepto de "conoce a su cliente" está evolucionando de un evento único a un
+                El concepto de "conoce a tu cliente" está evolucionando de un evento único a un
                 proceso continuo. El KYC perpetuo implica:
               </p>
               <ul className="list-disc pl-6 mb-6 space-y-2 text-gray-600">
@@ -195,7 +195,7 @@ export default function TendenciasKYC2026() {
               </p>
 
               <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-6">
-                Preparando su organización para 2026
+                Preparando tu organización para 2026
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
                 Para estar preparado ante estas tendencias, las instituciones financieras deben:
@@ -223,7 +223,7 @@ export default function TendenciasKYC2026() {
                 </li>
               </ol>
 
-              <div className="bg-[#0E1133] rounded-xl p-8 my-12">
+              <div className="bg-[#0a0a0a] rounded-xl p-8 my-12">
                 <h3 className="text-xl font-bold text-white mb-4">
                   Conclusión
                 </h3>
@@ -240,7 +240,7 @@ export default function TendenciasKYC2026() {
             <div className="mt-12 flex flex-wrap gap-4">
               <a
                 href="/contacto"
-                className="px-8 py-4 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-all"
+                className="px-8 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
               >
                 Solicitar demo
               </a>

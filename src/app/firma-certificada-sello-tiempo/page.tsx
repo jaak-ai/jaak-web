@@ -72,7 +72,7 @@ export default function FirmaSelloTiempoPage() {
         >
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <nav className="flex items-center gap-2 text-xs text-gray-600 mb-8" aria-label="Navegación">
-              <Link href="/firma-electronica" className="hover:text-[#2DB6C1] transition-colors">
+              <Link href="/firma-electronica" className="hover:text-[#1ECAD3] transition-colors">
                 Firma Electrónica
               </Link>
               <span aria-hidden="true">›</span>
@@ -81,7 +81,7 @@ export default function FirmaSelloTiempoPage() {
 
             <div
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-6"
-              style={{ background: "rgba(245,158,11,0.1)", border: "1px solid rgba(245,158,11,0.25)", color: "#212A45" }}
+              style={{ background: "rgba(245,158,11,0.1)", border: "1px solid rgba(245,158,11,0.25)", color: "#F59E0B" }}
             >
               Nivel certificado · Evidencia temporal
             </div>
@@ -90,7 +90,7 @@ export default function FirmaSelloTiempoPage() {
               Firma certificada con{" "}
               <span
                 style={{
-                  background: "linear-gradient(135deg, #212A45, #2DB6C1)",
+                  background: "linear-gradient(135deg, #F59E0B, #1ECAD3)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
@@ -110,7 +110,7 @@ export default function FirmaSelloTiempoPage() {
               <Link
                 href="/autoservicio"
                 className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-bold text-white transition-all hover:opacity-90"
-                style={{ background: "#212A45", boxShadow: "0 0 25px rgba(245,158,11,0.3)" }}
+                style={{ background: "#F59E0B", boxShadow: "0 0 25px rgba(245,158,11,0.3)" }}
               >
                 Activar sello de tiempo
               </Link>
@@ -126,7 +126,7 @@ export default function FirmaSelloTiempoPage() {
         </section>
 
         {/* Qué es sello de tiempo / NOM-151 */}
-        <section className="py-20" style={{ background: "#0E1133" }} aria-labelledby="que-es-heading">
+        <section className="py-20" style={{ background: "#070E1A" }} aria-labelledby="que-es-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
               <div>
@@ -175,7 +175,7 @@ export default function FirmaSelloTiempoPage() {
         </section>
 
         {/* Qué contiene el expediente */}
-        <section className="py-20" style={{ background: "#0E1133" }} aria-labelledby="expediente-heading">
+        <section className="py-20" style={{ background: "#070E1A" }} aria-labelledby="expediente-heading">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 id="expediente-heading" className="text-2xl font-black text-white mb-8 text-center">
               Qué contiene el expediente
@@ -192,7 +192,7 @@ export default function FirmaSelloTiempoPage() {
                 "Bitácora de eventos y expediente descargable",
               ].map((item) => (
                 <div key={item} className="flex items-center gap-2.5 text-sm text-gray-300 rounded-xl px-4 py-3" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}>
-                  <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" style={{ color: "#212A45" }} aria-hidden="true">
+                  <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor" style={{ color: "#F59E0B" }} aria-hidden="true">
                     <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                   </svg>
                   {item}
@@ -225,7 +225,7 @@ export default function FirmaSelloTiempoPage() {
         </section>
 
         {/* FAQ */}
-        <section className="py-20" style={{ background: "#0E1133" }} aria-labelledby="faq-heading">
+        <section className="py-20" style={{ background: "#070E1A" }} aria-labelledby="faq-heading">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 id="faq-heading" className="text-2xl font-black text-white mb-8 text-center">
               Preguntas frecuentes
@@ -266,7 +266,7 @@ export default function FirmaSelloTiempoPage() {
                   key={link.href}
                   href={link.href}
                   className="text-sm font-semibold px-4 py-2.5 rounded-xl transition-all hover:bg-white/10"
-                  style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "#2DB6C1" }}
+                  style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "#1ECAD3" }}
                 >
                   {link.label}
                 </Link>
@@ -275,7 +275,7 @@ export default function FirmaSelloTiempoPage() {
             <Link
               href="/autoservicio"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold text-white text-base transition-all hover:opacity-90"
-              style={{ background: "#212A45", boxShadow: "0 0 30px rgba(245,158,11,0.3)" }}
+              style={{ background: "#F59E0B", boxShadow: "0 0 30px rgba(245,158,11,0.3)" }}
             >
               Activar Firma Certificada →
             </Link>

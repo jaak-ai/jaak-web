@@ -32,13 +32,13 @@ const flowSteps: FlowStep[] = [
     title: "Constancia NOM-151",
     description: "Evidencia de conservación e integridad del mensaje de datos conforme al marco mexicano.",
     icon: "🔐",
-    color: "#2DB6C1",
+    color: "#1ECAD3",
   },
   {
     title: "Expediente auditable",
     description: "Concentra documento, eventos, metadatos y evidencias descargables.",
     icon: "🗂️",
-    color: "#2AD796",
+    color: "#10B981",
   },
 ];
 

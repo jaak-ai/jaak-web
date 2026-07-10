@@ -157,8 +157,8 @@ export default function QueEsNOM151ContratosDigitales() {
                 </li>
               </ol>
 
-              <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
-                <p className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-2">En la práctica</p>
+              <div className="bg-[#0066ff]/5 border-l-4 border-[#0066ff] p-6 my-8">
+                <p className="text-gray-700 font-medium mb-2">Cómo funciona en la práctica:</p>
                 <p className="text-gray-600">
                   El sello NOM-151 registra exactamente cuándo se firmó un documento.
                   Si alguien intenta modificarlo después, el cambio es matemáticamente
@@ -280,7 +280,7 @@ export default function QueEsNOM151ContratosDigitales() {
                   <div className="font-bold text-gray-900 text-sm uppercase tracking-wide">
                     Criterio
                   </div>
-                  <div className="font-bold text-[#2DB6C1] text-sm uppercase tracking-wide text-center">
+                  <div className="font-bold text-[#1ECAD3] text-sm uppercase tracking-wide text-center">
                     Con NOM-151
                   </div>
                   <div className="font-bold text-gray-400 text-sm uppercase tracking-wide text-center">

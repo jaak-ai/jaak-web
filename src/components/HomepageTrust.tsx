@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { IBETA } from "@/lib/trust";
 
 const regulations = [
   {
@@ -46,8 +45,8 @@ const certifications = [
     image: "/images/certifications/iso-9001.png",
   },
   {
-    name: IBETA,
-    description: "Prueba de vida anti-spoofing (PAD)",
+    name: "iBeta PAD",
+    description: "Prueba de vida anti-spoofing",
     image: "/images/certifications/ibeta.png",
   },
   {
@@ -68,7 +67,7 @@ const certifications = [
 ];
 
 const trustPoints = [
-  "Motor biométrico propio, desarrollado y operado en México",
+  "Biometría propia sin dependencias de AWS Rekognition o Azure Face",
   "Datos biométricos nunca salen de la infraestructura del cliente",
   "LFPDPPP — cumplimiento con protección de datos personales",
   "Servidores en México para soberanía de datos regulados",
@@ -86,7 +85,7 @@ export default function HomepageTrust() {
       />
       <div
         className="absolute bottom-1/3 left-1/4 w-[400px] h-[400px] rounded-full blur-[120px] pointer-events-none"
-        style={{ background: "rgba(45,182,193,0.05)" }}
+        style={{ background: "rgba(30,202,211,0.05)" }}
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -95,9 +94,9 @@ export default function HomepageTrust() {
           <div
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
             style={{
-              color: "#2DB6C1",
-              border: "1px solid rgba(45,182,193,0.22)",
-              background: "rgba(45,182,193,0.08)",
+              color: "#1ECAD3",
+              border: "1px solid rgba(30,202,211,0.22)",
+              background: "rgba(30,202,211,0.08)",
             }}
           >
             Cumplimiento regulatorio
@@ -106,7 +105,7 @@ export default function HomepageTrust() {
             Diseñado bajo los marcos{" "}
             <span
               style={{
-                background: "linear-gradient(90deg, #2DB6C1, #2AD796)",
+                background: "linear-gradient(90deg, #1ECAD3, #2AD796)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
@@ -140,13 +139,13 @@ export default function HomepageTrust() {
                   className="rounded-2xl p-4 transition-all duration-200 hover:-translate-y-0.5"
                   style={{
                     background:
-                      "linear-gradient(145deg, rgba(45,182,193,0.07) 0%, rgba(255,255,255,0.02) 100%)",
-                    border: "1px solid rgba(45,182,193,0.12)",
+                      "linear-gradient(145deg, rgba(30,202,211,0.07) 0%, rgba(255,255,255,0.02) 100%)",
+                    border: "1px solid rgba(30,202,211,0.12)",
                   }}
                 >
                   <div
                     className="text-sm font-black mb-1"
-                    style={{ color: "#2DB6C1" }}
+                    style={{ color: "#1ECAD3" }}
                   >
                     {r.name}
                   </div>
@@ -205,9 +204,9 @@ export default function HomepageTrust() {
                 className="text-xs leading-relaxed"
                 style={{ color: "var(--hp-text-md)" }}
               >
-                Motor biométrico propio de KYC + firma, desarrollado y operado
-                en México. Sin intermediarios extranjeros en el flujo de datos
-                biométricos sensibles.
+                El único proveedor de KYC + firma con motor biométrico propio,
+                desarrollado y operado en México. Sin intermediarios extranjeros
+                en el flujo de datos biométricos sensibles.
               </p>
             </div>
           </div>

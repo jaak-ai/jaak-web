@@ -96,13 +96,13 @@ const useCases: UseCase[] = [
     sector: "Fintech",
     description:
       "Onboarding digital sin papel. Validación de identidad en tiempo real para apertura de cuentas y créditos.",
-    color: "#2DB6C1",
+    color: "#1ECAD3",
   },
   {
     sector: "Banca",
     description:
       "Cumplimiento regulatorio ante CNBV y UIF. Infraestructura biométrica propia sin dependencia de terceros.",
-    color: "#212A45",
+    color: "#655DC6",
   },
   {
     sector: "Inmobiliario",
@@ -114,13 +114,13 @@ const useCases: UseCase[] = [
     sector: "Recursos humanos",
     description:
       "Alta de empleados 100% digital. Verificación de identidad y firma de contratos sin presencia física.",
-    color: "#2DB6C1",
+    color: "#1ECAD3",
   },
   {
     sector: "Plataformas digitales",
     description:
       "KYC integrado en tu producto. APIs y SDKs listos para implementar en días, no meses.",
-    color: "#212A45",
+    color: "#655DC6",
   },
 ];
 
@@ -277,14 +277,14 @@ export default function EfisysLabConnectPage() {
         <section className="pt-32 pb-20 bg-[#0E1133] relative overflow-hidden">
           {/* Luces de fondo */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute top-0 right-1/4 w-[700px] h-[700px] bg-[#2DB6C1]/6 rounded-full blur-[160px]" />
-            <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#2DB6C1]/10 rounded-full blur-[120px]" />
+            <div className="absolute top-0 right-1/4 w-[700px] h-[700px] bg-[#1ECAD3]/6 rounded-full blur-[160px]" />
+            <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#655DC6]/10 rounded-full blur-[120px]" />
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-[#2AD796]/5 rounded-full blur-[80px]" />
             {/* Grid de nodos */}
             <div
               className="absolute inset-0 opacity-[0.025]"
               style={{
-                backgroundImage: `radial-gradient(circle at 1px 1px, #2DB6C1 1px, transparent 0)`,
+                backgroundImage: `radial-gradient(circle at 1px 1px, #1ECAD3 1px, transparent 0)`,
                 backgroundSize: "48px 48px",
               }}
             />
@@ -296,9 +296,9 @@ export default function EfisysLabConnectPage() {
               {/* Columna izquierda */}
               <div>
                 {/* Badge co-anfitrión */}
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#2DB6C1]/10 border border-[#2DB6C1]/30 rounded-full mb-6">
-                  <span className="w-2 h-2 bg-[#2DB6C1] rounded-full animate-pulse" />
-                  <span className="text-[#2DB6C1] text-sm font-semibold tracking-wide">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#1ECAD3]/10 border border-[#1ECAD3]/30 rounded-full mb-6">
+                  <span className="w-2 h-2 bg-[#1ECAD3] rounded-full animate-pulse" />
+                  <span className="text-[#1ECAD3] text-sm font-semibold tracking-wide">
                     JAAK · Co-anfitrión
                   </span>
                 </div>
@@ -306,14 +306,7 @@ export default function EfisysLabConnectPage() {
                 {/* Título */}
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-3 leading-tight">
                   EFISYS{" "}
-                  <span
-                    style={{
-                      background: "linear-gradient(90deg, #2DB6C1, #2AD796)",
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                      backgroundClip: "text",
-                    }}
-                  >
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1ECAD3] to-[#2AD796]">
                     Lab Connect
                   </span>
                 </h1>
@@ -351,7 +344,7 @@ export default function EfisysLabConnectPage() {
                 <div className="flex flex-wrap gap-4">
                   <a
                     href="#registro"
-                    className="px-8 py-3.5 bg-[#2DB6C1] text-[#0E1133] font-bold rounded-lg hover:bg-[#17b5bd] transition-all text-base"
+                    className="px-8 py-3.5 bg-[#1ECAD3] text-[#0E1133] font-bold rounded-lg hover:bg-[#17b5bd] transition-all text-base"
                   >
                     Registrarme
                   </a>
@@ -395,7 +388,7 @@ export default function EfisysLabConnectPage() {
                         <span className="text-white/40 text-sm">{item.label}</span>
                         <span
                           className="text-sm font-semibold"
-                          style={{ color: i % 2 === 0 ? "#2DB6C1" : "#2AD796" }}
+                          style={{ color: i % 2 === 0 ? "#1ECAD3" : "#2AD796" }}
                         >
                           {item.value}
                         </span>
@@ -404,8 +397,8 @@ export default function EfisysLabConnectPage() {
                   </div>
 
                   {/* Nota de hospedaje */}
-                  <div className="p-3 bg-[#2DB6C1]/8 border border-[#2DB6C1]/15 rounded-lg">
-                    <p className="text-[#2DB6C1] text-xs text-center font-medium">
+                  <div className="p-3 bg-[#1ECAD3]/8 border border-[#1ECAD3]/15 rounded-lg">
+                    <p className="text-[#1ECAD3] text-xs text-center font-medium">
                       Precios especiales para hospedaje en hotel sede
                     </p>
                     <a
@@ -461,8 +454,8 @@ export default function EfisysLabConnectPage() {
                   label: "Registro", value: "Evento sin costo", sub: "Cupo limitado",
                 },
               ].map((item, i) => (
-                <div key={i} className="p-6 bg-white/4 border border-white/8 rounded-2xl hover:border-[#2DB6C1]/30 transition-all">
-                  <div className="w-11 h-11 bg-[#2DB6C1]/10 rounded-xl flex items-center justify-center text-[#2DB6C1] mb-4">
+                <div key={i} className="p-6 bg-white/4 border border-white/8 rounded-2xl hover:border-[#1ECAD3]/30 transition-all">
+                  <div className="w-11 h-11 bg-[#1ECAD3]/10 rounded-xl flex items-center justify-center text-[#1ECAD3] mb-4">
                     {item.icon}
                   </div>
                   <div className="text-white/40 text-xs font-medium uppercase tracking-wider mb-1">{item.label}</div>
@@ -474,13 +467,13 @@ export default function EfisysLabConnectPage() {
             <div className="p-7 bg-white/3 border border-white/8 rounded-2xl text-center">
               <p className="text-white/70 text-lg max-w-3xl mx-auto leading-relaxed">
                 JAAK participa como{" "}
-                <strong className="text-[#2DB6C1]">co-anfitrión</strong> en este espacio
+                <strong className="text-[#1ECAD3]">co-anfitrión</strong> en este espacio
                 de colaboración del sector tecnológico financiero. Un encuentro para
                 compartir visión, tecnología y casos reales de operación digital con evidencia.
               </p>
               <p className="text-white/40 text-sm mt-4">
                 Información y hospedaje:{" "}
-                <a href="mailto:jjuarez@efisys.com.mx" className="text-[#2DB6C1] hover:underline">
+                <a href="mailto:jjuarez@efisys.com.mx" className="text-[#1ECAD3] hover:underline">
                   jjuarez@efisys.com.mx
                 </a>
               </p>
@@ -489,7 +482,7 @@ export default function EfisysLabConnectPage() {
         </section>
 
         {/* ── 3. FORMULARIO DE REGISTRO ─────────────────────────────────── */}
-        <section id="registro" className="py-20 bg-[#212A45]">
+        <section id="registro" className="py-20 bg-[#202945]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-16 items-start">
 
@@ -504,7 +497,7 @@ export default function EfisysLabConnectPage() {
 
                 <h2 className="text-3xl md:text-4xl font-black text-white mb-5 leading-tight">
                   Asegura tu lugar en{" "}
-                  <span className="text-[#2DB6C1]">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1ECAD3] to-[#2AD796]">
                     EFISYS Lab Connect
                   </span>
                 </h2>
@@ -524,7 +517,7 @@ export default function EfisysLabConnectPage() {
                     "Sin costo de registro",
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-3">
-                      <div className="w-5 h-5 rounded-full bg-[#2DB6C1] flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <div className="w-5 h-5 rounded-full bg-[#1ECAD3] flex items-center justify-center flex-shrink-0 mt-0.5">
                         <svg className="w-3 h-3 text-[#0E1133]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                         </svg>
@@ -552,7 +545,7 @@ export default function EfisysLabConnectPage() {
 
               {/* Columna derecha — formulario */}
               <div className="bg-white rounded-2xl p-8 shadow-2xl">
-                <h3 className="text-2xl font-bold text-[#212A45] mb-1">
+                <h3 className="text-2xl font-bold text-[#202945] mb-1">
                   Formulario de registro
                 </h3>
                 <p className="text-gray-500 text-sm mb-7">
@@ -561,12 +554,12 @@ export default function EfisysLabConnectPage() {
 
                 {status === "success" ? (
                   <div className="text-center py-12">
-                    <div className="w-16 h-16 bg-[#2DB6C1]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <svg className="w-8 h-8 text-[#2DB6C1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="w-16 h-16 bg-[#1ECAD3]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <svg className="w-8 h-8 text-[#1ECAD3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
                     </div>
-                    <h4 className="text-xl font-bold text-[#212A45] mb-2">
+                    <h4 className="text-xl font-bold text-[#202945] mb-2">
                       ¡Registro recibido!
                     </h4>
                     <p className="text-gray-500 text-sm max-w-xs mx-auto">
@@ -589,7 +582,7 @@ export default function EfisysLabConnectPage() {
                           required
                           value={formData.name}
                           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#2DB6C1] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400 text-sm transition-all"
+                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#1ECAD3] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400 text-sm transition-all"
                           placeholder="Tu nombre"
                         />
                       </div>
@@ -603,7 +596,7 @@ export default function EfisysLabConnectPage() {
                           required
                           value={formData.empresa}
                           onChange={(e) => setFormData({ ...formData, empresa: e.target.value })}
-                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#2DB6C1] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400 text-sm transition-all"
+                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#1ECAD3] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400 text-sm transition-all"
                           placeholder="Tu empresa u organización"
                         />
                       </div>
@@ -621,7 +614,7 @@ export default function EfisysLabConnectPage() {
                           required
                           value={formData.cargo}
                           onChange={(e) => setFormData({ ...formData, cargo: e.target.value })}
-                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#2DB6C1] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400 text-sm transition-all"
+                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#1ECAD3] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400 text-sm transition-all"
                           placeholder="Tu cargo o área"
                         />
                       </div>
@@ -635,7 +628,7 @@ export default function EfisysLabConnectPage() {
                           required
                           value={formData.ciudad}
                           onChange={(e) => setFormData({ ...formData, ciudad: e.target.value })}
-                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#2DB6C1] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400 text-sm transition-all"
+                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#1ECAD3] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400 text-sm transition-all"
                           placeholder="Ciudad de origen"
                         />
                       </div>
@@ -653,7 +646,7 @@ export default function EfisysLabConnectPage() {
                           required
                           value={formData.email}
                           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#2DB6C1] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400 text-sm transition-all"
+                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#1ECAD3] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400 text-sm transition-all"
                           placeholder="tu@empresa.com"
                         />
                       </div>
@@ -667,7 +660,7 @@ export default function EfisysLabConnectPage() {
                           required
                           value={formData.telefono}
                           onChange={(e) => setFormData({ ...formData, telefono: e.target.value })}
-                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#2DB6C1] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400 text-sm transition-all"
+                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#1ECAD3] focus:border-transparent outline-none text-gray-900 placeholder:text-gray-400 text-sm transition-all"
                           placeholder="+52 55 0000 0000"
                         />
                       </div>
@@ -682,7 +675,7 @@ export default function EfisysLabConnectPage() {
                         id="reg-interes"
                         value={formData.interes}
                         onChange={(e) => setFormData({ ...formData, interes: e.target.value })}
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#2DB6C1] focus:border-transparent outline-none text-gray-900 text-sm transition-all"
+                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#1ECAD3] focus:border-transparent outline-none text-gray-900 text-sm transition-all"
                       >
                         <option value="">Selecciona un área</option>
                         <option value="kyc-identidad">KYC / Identidad digital</option>
@@ -701,7 +694,7 @@ export default function EfisysLabConnectPage() {
                         onChange={(e) =>
                           setFormData({ ...formData, contacto: e.target.checked })
                         }
-                        className="mt-0.5 w-4 h-4 rounded accent-[#2DB6C1] flex-shrink-0"
+                        className="mt-0.5 w-4 h-4 rounded accent-[#1ECAD3] flex-shrink-0"
                       />
                       <span className="text-sm text-gray-600 group-hover:text-gray-800 transition-colors leading-relaxed">
                         Acepto ser contactado por JAAK para conocer sus soluciones
@@ -721,7 +714,7 @@ export default function EfisysLabConnectPage() {
                     <button
                       type="submit"
                       disabled={status === "loading" || !turnstileToken}
-                      className="w-full px-6 py-4 bg-[#2DB6C1] text-[#212A45] font-bold rounded-lg hover:bg-[#17b5bd] transition-all disabled:opacity-50 disabled:cursor-not-allowed text-base"
+                      className="w-full px-6 py-4 bg-[#1ECAD3] text-[#202945] font-bold rounded-lg hover:bg-[#17b5bd] transition-all disabled:opacity-50 disabled:cursor-not-allowed text-base"
                     >
                       {status === "loading" ? "Enviando registro…" : "Enviar registro"}
                     </button>
@@ -736,7 +729,7 @@ export default function EfisysLabConnectPage() {
                     {/* Privacidad */}
                     <p className="text-xs text-gray-400 text-center">
                       Al registrarte aceptas nuestra{" "}
-                      <Link href="/privacidad" className="text-[#2DB6C1] hover:underline">
+                      <Link href="/privacidad" className="text-[#1ECAD3] hover:underline">
                         Política de Privacidad
                       </Link>
                       .
@@ -756,19 +749,22 @@ export default function EfisysLabConnectPage() {
 
               {/* Texto editorial */}
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#212A45]/6 border border-[#212A45]/12 rounded-full mb-6">
-                  <span className="text-[#212A45] text-sm font-semibold">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#202945]/6 border border-[#202945]/12 rounded-full mb-6">
+                  <span className="text-[#202945] text-sm font-semibold">
                     JAAK · Co-anfitrión
                   </span>
                 </div>
 
-                <h2 className="text-3xl md:text-4xl font-black text-[#212A45] mb-6 leading-tight">
-                  ¿Por qué JAAK participa en EFISYS Lab Connect?
+                <h2 className="text-3xl md:text-4xl font-black text-[#202945] mb-6 leading-tight">
+                  ¿Por qué JAAK participa en{" "}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1ECAD3] to-[#2AD796]">
+                    EFISYS Lab Connect?
+                  </span>
                 </h2>
 
                 <p className="text-gray-600 text-lg mb-5 leading-relaxed">
                   Porque el sector financiero de México necesita{" "}
-                  <strong className="text-[#212A45]">
+                  <strong className="text-[#202945]">
                     operación digital con evidencia
                   </strong>
                   . No basta con digitalizar procesos; hay que hacerlos verificables,
@@ -777,17 +773,17 @@ export default function EfisysLabConnectPage() {
 
                 <p className="text-gray-600 text-lg mb-10 leading-relaxed">
                   JAAK construye la infraestructura que hace posible la{" "}
-                  <strong className="text-[#212A45]">validación de identidad</strong>,
+                  <strong className="text-[#202945]">validación de identidad</strong>,
                   la{" "}
-                  <strong className="text-[#212A45]">trazabilidad de operaciones</strong>{" "}
+                  <strong className="text-[#202945]">trazabilidad de operaciones</strong>{" "}
                   y la{" "}
-                  <strong className="text-[#212A45]">evidencia auditable</strong> que
+                  <strong className="text-[#202945]">evidencia auditable</strong> que
                   exigen los reguladores y esperan los usuarios.
                 </p>
 
                 <a
                   href="#registro"
-                  className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#2DB6C1] text-[#212A45] font-bold rounded-lg hover:bg-[#17b5bd] transition-all"
+                  className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#1ECAD3] text-[#202945] font-bold rounded-lg hover:bg-[#17b5bd] transition-all"
                 >
                   Registrarme al evento
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -801,13 +797,13 @@ export default function EfisysLabConnectPage() {
                 {jaakBullets.map((item, i) => (
                   <div
                     key={i}
-                    className="flex gap-5 p-6 bg-gray-50 rounded-2xl border border-gray-100 hover:border-[#2DB6C1]/30 hover:shadow-md transition-all"
+                    className="flex gap-5 p-6 bg-gray-50 rounded-2xl border border-gray-100 hover:border-[#1ECAD3]/30 hover:shadow-md transition-all"
                   >
-                    <div className="w-12 h-12 bg-[#2DB6C1]/10 rounded-xl flex items-center justify-center text-[#2DB6C1] flex-shrink-0">
+                    <div className="w-12 h-12 bg-[#1ECAD3]/10 rounded-xl flex items-center justify-center text-[#1ECAD3] flex-shrink-0">
                       {item.icon}
                     </div>
                     <div>
-                      <h3 className="text-lg font-bold text-[#212A45] mb-1">
+                      <h3 className="text-lg font-bold text-[#202945] mb-1">
                         {item.title}
                       </h3>
                       <p className="text-gray-600 text-sm leading-relaxed">
@@ -823,7 +819,7 @@ export default function EfisysLabConnectPage() {
         </section>
 
         {/* ── 5. SOLUCIONES JAAK ────────────────────────────────────────── */}
-        <section className="py-20 bg-[#212A45]">
+        <section className="py-20 bg-[#202945]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
             <div className="text-center mb-14">
@@ -839,10 +835,10 @@ export default function EfisysLabConnectPage() {
             <div className="grid lg:grid-cols-2 gap-8">
 
               {/* KYC / Identidad */}
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-[#2DB6C1]/40 transition-all">
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-[#1ECAD3]/40 transition-all">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-11 h-11 bg-[#2DB6C1]/15 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <svg className="w-5 h-5 text-[#2DB6C1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-11 h-11 bg-[#1ECAD3]/15 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <svg className="w-5 h-5 text-[#1ECAD3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                     </svg>
@@ -851,7 +847,7 @@ export default function EfisysLabConnectPage() {
                     <div className="text-white font-black text-xl">
                       KYC · Identidad Digital
                     </div>
-                    <div className="text-[#2DB6C1] text-xs font-semibold tracking-wide mt-0.5">
+                    <div className="text-[#1ECAD3] text-xs font-semibold tracking-wide mt-0.5">
                       Expediente digital auditable
                     </div>
                   </div>
@@ -872,7 +868,7 @@ export default function EfisysLabConnectPage() {
                       <span className="text-white/80 text-sm font-medium">
                         {comp.name}
                       </span>
-                      <span className="text-[#2DB6C1] text-xs bg-[#2DB6C1]/10 px-2 py-0.5 rounded-full whitespace-nowrap">
+                      <span className="text-[#1ECAD3] text-xs bg-[#1ECAD3]/10 px-2 py-0.5 rounded-full whitespace-nowrap">
                         {comp.tag}
                       </span>
                     </div>
@@ -940,12 +936,12 @@ export default function EfisysLabConnectPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
             <div className="text-center mb-14">
-              <h2 className="text-3xl md:text-4xl font-black text-[#212A45] mb-4">
+              <h2 className="text-3xl md:text-4xl font-black text-[#202945] mb-4">
                 Sectores donde JAAK opera hoy
               </h2>
               <p className="text-gray-600 text-xl max-w-2xl mx-auto">
                 No se trata de digitalizar procesos,{" "}
-                <strong className="text-[#212A45]">sino de hacerlos verificables.</strong>
+                <strong className="text-[#202945]">sino de hacerlos verificables.</strong>
               </p>
             </div>
 
@@ -953,7 +949,7 @@ export default function EfisysLabConnectPage() {
               {useCases.map((uc, i) => (
                 <div
                   key={i}
-                  className="bg-white rounded-2xl p-7 border border-gray-100 hover:border-[#2DB6C1]/30 hover:shadow-lg transition-all"
+                  className="bg-white rounded-2xl p-7 border border-gray-100 hover:border-[#1ECAD3]/30 hover:shadow-lg transition-all"
                 >
                   <div
                     className="inline-block px-3 py-1 rounded-full text-xs font-bold mb-4 tracking-wide"
@@ -971,8 +967,8 @@ export default function EfisysLabConnectPage() {
               ))}
             </div>
 
-            <div className="p-7 bg-[#212A45]/4 border border-[#212A45]/8 rounded-2xl text-center">
-              <p className="text-[#212A45] font-semibold text-lg">
+            <div className="p-7 bg-[#202945]/4 border border-[#202945]/8 rounded-2xl text-center">
+              <p className="text-[#202945] font-semibold text-lg">
                 La identidad digital y la firma electrónica de JAAK se integran en
                 cualquier flujo de negocio mediante API, Web o SDK.
               </p>
@@ -985,7 +981,7 @@ export default function EfisysLabConnectPage() {
         <section className="py-24 bg-[#0E1133] relative overflow-hidden">
           {/* Luz central */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-[#2DB6C1]/8 rounded-full blur-[130px]" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-[#1ECAD3]/8 rounded-full blur-[130px]" />
           </div>
 
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
@@ -1006,7 +1002,7 @@ export default function EfisysLabConnectPage() {
 
             <h2 className="text-3xl md:text-5xl font-black text-white mb-5 leading-tight">
               Sé parte de{" "}
-              <span className="text-[#2DB6C1]">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1ECAD3] to-[#2AD796]">
                 EFISYS Lab Connect
               </span>
             </h2>
@@ -1021,7 +1017,7 @@ export default function EfisysLabConnectPage() {
             <div className="flex flex-wrap justify-center gap-4 mb-10">
               <a
                 href="#registro"
-                className="px-10 py-4 bg-[#2DB6C1] text-[#0E1133] font-bold rounded-lg hover:bg-[#17b5bd] transition-all text-lg"
+                className="px-10 py-4 bg-[#1ECAD3] text-[#0E1133] font-bold rounded-lg hover:bg-[#17b5bd] transition-all text-lg"
               >
                 Registrarme
               </a>
@@ -1037,7 +1033,7 @@ export default function EfisysLabConnectPage() {
               Información y hospedaje:{" "}
               <a
                 href="mailto:jjuarez@efisys.com.mx"
-                className="text-white/50 hover:text-[#2DB6C1] transition-colors"
+                className="text-white/50 hover:text-[#1ECAD3] transition-colors"
               >
                 jjuarez@efisys.com.mx
               </a>

@@ -37,14 +37,14 @@ const AUTHORS = {
     name: "Javier Moya",
     role: "CTO · JAAK",
     initials: "JM",
-    gradient: "linear-gradient(135deg, #212A45 0%, #2DB6C1 100%)",
+    gradient: "linear-gradient(135deg, #0066ff 0%, #1ECAD3 100%)",
     bio: "Arquitectura de sistemas de identidad digital, inteligencia artificial aplicada y biometría de alta seguridad para sectores regulados.",
   },
   arianna: {
     name: "Arianna Quezada",
     role: "CEO · JAAK",
     initials: "AQ",
-    gradient: "linear-gradient(135deg, #2DB6C1 0%, #212A45 100%)",
+    gradient: "linear-gradient(135deg, #1ECAD3 0%, #0066ff 100%)",
     bio: "Liderazgo en infraestructura de confianza digital, regulación financiera y transformación del sector fintech en Latinoamérica.",
   },
 };
@@ -90,7 +90,7 @@ export default function ArticleLayout({
       <ReadingProgress />
       <Header />
 
-      <main style={{ background: "#212A45", fontFamily: FONT }}>
+      <main style={{ background: "#202945", fontFamily: FONT }}>
         {/* Article CSS overrides for dark theme */}
         <style>{`
           .jaak-article-body .text-gray-600 { color: rgba(255,255,255,0.62) !important; }
@@ -108,18 +108,18 @@ export default function ArticleLayout({
           /* Callout boxes: gray */
           .jaak-article-body .bg-gray-50 { background: rgba(255,255,255,0.05) !important; }
           /* Callout boxes: blue → teal */
-          .jaak-article-body [class*="bg-[#212A45]"] { background: rgba(45, 182, 193,0.08) !important; }
-          .jaak-article-body [class*="border-[#212A45]"] { border-color: #2DB6C1 !important; }
-          .jaak-article-body [class*="text-[#212A45]"] { color: #2DB6C1 !important; }
+          .jaak-article-body [class*="bg-[#0066ff]"] { background: rgba(30,202,211,0.08) !important; }
+          .jaak-article-body [class*="border-[#0066ff]"] { border-color: #1ECAD3 !important; }
+          .jaak-article-body [class*="text-[#0066ff]"] { color: #1ECAD3 !important; }
           /* Callout boxes: amber */
           .jaak-article-body .bg-amber-50 { background: rgba(251,191,36,0.07) !important; }
           .jaak-article-body .text-amber-800 { color: rgba(251,191,36,0.92) !important; }
           .jaak-article-body .text-amber-700 { color: rgba(251,191,36,0.80) !important; }
           .jaak-article-body .border-amber-400 { border-color: rgba(251,191,36,0.70) !important; }
           /* CTA buttons inside article body */
-          .jaak-article-body [class*="bg-[#212A45]"]:not([class*="bg-[#212A45]/"]) {
-            background: #2DB6C1 !important;
-            color: #212A45 !important;
+          .jaak-article-body [class*="bg-[#0066ff]"]:not([class*="bg-[#0066ff]/"]) {
+            background: #1ECAD3 !important;
+            color: #202945 !important;
           }
           .jaak-article-body .bg-gray-100 { background: rgba(255,255,255,0.08) !important; color: rgba(255,255,255,0.85) !important; }
           .jaak-article-body .text-gray-900.font-bold { color: rgba(255,255,255,0.88) !important; }
@@ -130,7 +130,7 @@ export default function ArticleLayout({
           .jaak-article-body .border-gray-100,
           .jaak-article-body .border-gray-200 { border-color: rgba(255,255,255,0.07) !important; }
           /* Tables */
-          .jaak-article-body table th { background: rgba(45, 182, 193,0.08) !important; color: rgba(255,255,255,0.90) !important; border-color: rgba(255,255,255,0.10) !important; }
+          .jaak-article-body table th { background: rgba(30,202,211,0.08) !important; color: rgba(255,255,255,0.90) !important; border-color: rgba(255,255,255,0.10) !important; }
           .jaak-article-body table td { color: rgba(255,255,255,0.65) !important; border-color: rgba(255,255,255,0.07) !important; }
           .jaak-article-body table tr:nth-child(even) { background: rgba(255,255,255,0.02) !important; }
           /* fade in */
@@ -149,7 +149,7 @@ export default function ArticleLayout({
           className="relative pt-28 pb-12 overflow-hidden"
           style={{
             background:
-              "radial-gradient(ellipse 70% 60% at 50% 0%, rgba(45, 182, 193,0.08) 0%, transparent 65%), #212A45",
+              "radial-gradient(ellipse 70% 60% at 50% 0%, rgba(30,202,211,0.08) 0%, transparent 65%), #202945",
           }}
         >
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -157,7 +157,7 @@ export default function ArticleLayout({
             <div className="article-fade mb-7">
               <Link
                 href="/blog"
-                className="inline-flex items-center gap-1.5 text-xs font-bold transition-colors duration-150 hover:text-[#2DB6C1]"
+                className="inline-flex items-center gap-1.5 text-xs font-bold transition-colors duration-150 hover:text-[#1ECAD3]"
                 style={{ color: "rgba(255,255,255,0.40)", fontFamily: FONT }}
               >
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -177,7 +177,7 @@ export default function ArticleLayout({
               </span>
               <span
                 className="flex items-center gap-1 text-xs font-medium"
-                style={{ color: "#2DB6C1", fontFamily: FONT }}
+                style={{ color: "#1ECAD3", fontFamily: FONT }}
               >
                 <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -216,7 +216,7 @@ export default function ArticleLayout({
           {/* Bottom fade */}
           <div
             className="absolute bottom-0 left-0 right-0 h-8 pointer-events-none"
-            style={{ background: "linear-gradient(to bottom, transparent, #212A45)" }}
+            style={{ background: "linear-gradient(to bottom, transparent, #202945)" }}
           />
         </section>
 
@@ -243,7 +243,7 @@ export default function ArticleLayout({
         )}
 
         {/* ── ARTICLE BODY ───────────────────────────────── */}
-        <section className="py-12" style={{ background: "#212A45" }}>
+        <section className="py-12" style={{ background: "#202945" }}>
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col lg:flex-row gap-14">
               {/* Main content */}
@@ -267,7 +267,7 @@ export default function ArticleLayout({
         {/* ── AUTHOR ─────────────────────────────────────── */}
         <section
           className="py-12"
-          style={{ borderTop: "1px solid rgba(255,255,255,0.06)", background: "#212A45" }}
+          style={{ borderTop: "1px solid rgba(255,255,255,0.06)", background: "#202945" }}
         >
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <div
@@ -292,7 +292,7 @@ export default function ArticleLayout({
                 </p>
                 <p
                   className="text-xs font-bold mb-3"
-                  style={{ color: "#2DB6C1", fontFamily: FONT }}
+                  style={{ color: "#1ECAD3", fontFamily: FONT }}
                 >
                   {author.role}
                 </p>
@@ -319,7 +319,7 @@ export default function ArticleLayout({
             <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
               <p
                 className="text-[10px] font-bold tracking-widest uppercase mb-2"
-                style={{ color: "#2DB6C1", fontFamily: FONT }}
+                style={{ color: "#1ECAD3", fontFamily: FONT }}
               >
                 Seguir leyendo
               </p>
@@ -348,7 +348,7 @@ export default function ArticleLayout({
                         {post.category}
                       </span>
                       <p
-                        className="text-sm font-black text-white leading-snug group-hover:text-[#2DB6C1] transition-colors duration-150"
+                        className="text-sm font-black text-white leading-snug group-hover:text-[#1ECAD3] transition-colors duration-150"
                         style={{ fontFamily: FONT, letterSpacing: "-0.3px" }}
                       >
                         {post.title}
@@ -364,19 +364,19 @@ export default function ArticleLayout({
         {/* ── NEWSLETTER ─────────────────────────────────── */}
         <section
           className="py-20"
-          style={{ background: "#212A45", borderTop: "1px solid rgba(255,255,255,0.05)" }}
+          style={{ background: "#202945", borderTop: "1px solid rgba(255,255,255,0.05)" }}
         >
           <div className="max-w-xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div
               className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-5 border"
               style={{
-                background: "rgba(45, 182, 193,0.10)",
-                borderColor: "rgba(45, 182, 193,0.20)",
+                background: "rgba(30,202,211,0.10)",
+                borderColor: "rgba(30,202,211,0.20)",
               }}
             >
               <svg
                 className="w-5 h-5"
-                style={{ color: "#2DB6C1" }}
+                style={{ color: "#1ECAD3" }}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -398,7 +398,7 @@ export default function ArticleLayout({
               }}
             >
               Recibe perspectivas sobre{" "}
-              <span style={{ color: "#2DB6C1" }}>confianza digital.</span>
+              <span style={{ color: "#1ECAD3" }}>confianza digital.</span>
             </h2>
             <p
               className="text-sm mb-7"
@@ -414,9 +414,9 @@ export default function ArticleLayout({
         <section
           className="py-14"
           style={{
-            borderTop: "1px solid rgba(45, 182, 193,0.10)",
+            borderTop: "1px solid rgba(30,202,211,0.10)",
             background:
-              "linear-gradient(135deg, rgba(45, 182, 193,0.06) 0%, rgba(0,102,255,0.05) 100%)",
+              "linear-gradient(135deg, rgba(30,202,211,0.06) 0%, rgba(0,102,255,0.05) 100%)",
           }}
         >
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -435,8 +435,8 @@ export default function ArticleLayout({
                 href="/contacto"
                 className="px-6 py-3 rounded-xl font-black text-sm transition-all hover:-translate-y-0.5"
                 style={{
-                  background: "#2DB6C1",
-                  color: "#212A45",
+                  background: "#1ECAD3",
+                  color: "#202945",
                   fontFamily: FONT,
                   boxShadow: "0 0 0 0 transparent",
                 }}

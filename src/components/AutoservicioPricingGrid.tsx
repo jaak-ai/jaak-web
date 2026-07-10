@@ -31,11 +31,11 @@ const PRODUCTS: Product[] = [
     name: "KYC · Verificación de Identidad",
     icon: "👤",
     color: "#2DB6C1",
-    desc: "Liveness iBeta Nivel 1 · Sin NOM-151",
+    desc: "Liveness iBeta Level 1 · Sin NOM-151",
     popular: "Plata",
     forWhom: "Empresas que necesitan verificar la identidad real de sus clientes o usuarios de forma digital, sin fricción y con alta seguridad antifraude.",
     benefits: [
-      "Prueba de vida iBeta Nivel 1 (antisuplantación)",
+      "Prueba de vida iBeta Level 1 (antisuplantación)",
       "OCR de identificación oficial (INE, pasaporte)",
       "Consulta en listas nominales INE / RENAPO",
       "Alertas OFAC · Interpol · listas negras SAT",
@@ -279,8 +279,8 @@ export default function AutoservicioPricingGrid() {
     >
       {/* Orbs de fondo */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-3xl">
-        <div className="orb-drift-1 absolute rounded-full opacity-25" style={{ width: 420, height: 420, top: "-15%", right: "-8%", background: "radial-gradient(circle, #2DB6C1 0%, transparent 70%)", filter: "blur(55px)" }} />
-        <div className="orb-drift-2 absolute rounded-full opacity-20" style={{ width: 380, height: 380, bottom: "-20%", left: "-10%", background: "radial-gradient(circle, #2DB6C1 0%, transparent 70%)", filter: "blur(55px)" }} />
+        <div className="orb-drift-1 absolute rounded-full opacity-25" style={{ width: 420, height: 420, top: "-15%", right: "-8%", background: "radial-gradient(circle, #1ecad3 0%, transparent 70%)", filter: "blur(55px)" }} />
+        <div className="orb-drift-2 absolute rounded-full opacity-20" style={{ width: 380, height: 380, bottom: "-20%", left: "-10%", background: "radial-gradient(circle, #655dc6 0%, transparent 70%)", filter: "blur(55px)" }} />
         <div className="orb-drift-3 absolute rounded-full opacity-12" style={{ width: 280, height: 280, top: "40%", left: "38%", background: "radial-gradient(circle, #2a60d4 0%, transparent 70%)", filter: "blur(45px)" }} />
       </div>
       <div
@@ -394,7 +394,7 @@ export default function AutoservicioPricingGrid() {
                   <div
                     className="absolute -top-4 left-1/2 -translate-x-1/2 text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full whitespace-nowrap text-white"
                     style={{
-                      background: `linear-gradient(90deg, ${product.color}, #2DB6C1)`,
+                      background: `linear-gradient(90deg, ${product.color}, #00d4aa)`,
                       boxShadow: `0 4px 20px ${product.color}70, 0 0 0 1px ${product.color}40`,
                     }}
                   >
@@ -421,7 +421,7 @@ export default function AutoservicioPricingGrid() {
                     rel="noopener noreferrer"
                     className="block w-full text-center text-base font-bold py-2.5 rounded-xl transition-all duration-150 hover:opacity-90 active:scale-95"
                     style={isPopular ? {
-                      background: `linear-gradient(90deg, ${product.color}, #2DB6C1)`,
+                      background: `linear-gradient(90deg, ${product.color}, #00d4aa)`,
                       color: "#fff",
                       boxShadow: `0 6px 24px ${product.color}60, 0 2px 8px ${product.color}40`,
                     } : {

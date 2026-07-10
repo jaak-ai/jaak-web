@@ -14,7 +14,7 @@ export default function FlujoOnboarding() {
       <Header />
       <main>
         {/* Hero */}
-        <section className="pt-32 pb-12 bg-[#0E1133]">
+        <section className="pt-32 pb-12 bg-[#0a0a0a]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <Link href="/documentacion" className="inline-flex items-center gap-2 text-white/60 hover:text-white mb-6 transition-colors">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -23,7 +23,7 @@ export default function FlujoOnboarding() {
               Volver a documentación
             </Link>
             <div className="flex items-center gap-3 mb-4">
-              <span className="px-3 py-1 bg-[#212A45]/20 text-[#212A45] text-sm font-medium rounded-full">Guía</span>
+              <span className="px-3 py-1 bg-[#0066ff]/20 text-[#0066ff] text-sm font-medium rounded-full">Guía</span>
               <span className="text-white/40">30 min</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-black text-white mb-6">
@@ -48,19 +48,19 @@ export default function FlujoOnboarding() {
                 </p>
                 <div className="grid md:grid-cols-4 gap-4 mb-6">
                   <div className="text-center p-4 bg-gray-50 rounded-lg">
-                    <div className="w-10 h-10 bg-[#212A45] text-white rounded-full flex items-center justify-center font-bold mx-auto mb-2">1</div>
+                    <div className="w-10 h-10 bg-[#0066ff] text-white rounded-full flex items-center justify-center font-bold mx-auto mb-2">1</div>
                     <span className="text-sm font-medium text-gray-900">Captura de documento</span>
                   </div>
                   <div className="text-center p-4 bg-gray-50 rounded-lg">
-                    <div className="w-10 h-10 bg-[#212A45] text-white rounded-full flex items-center justify-center font-bold mx-auto mb-2">2</div>
+                    <div className="w-10 h-10 bg-[#0066ff] text-white rounded-full flex items-center justify-center font-bold mx-auto mb-2">2</div>
                     <span className="text-sm font-medium text-gray-900">Validación OCR</span>
                   </div>
                   <div className="text-center p-4 bg-gray-50 rounded-lg">
-                    <div className="w-10 h-10 bg-[#212A45] text-white rounded-full flex items-center justify-center font-bold mx-auto mb-2">3</div>
+                    <div className="w-10 h-10 bg-[#0066ff] text-white rounded-full flex items-center justify-center font-bold mx-auto mb-2">3</div>
                     <span className="text-sm font-medium text-gray-900">Prueba de vida</span>
                   </div>
                   <div className="text-center p-4 bg-gray-50 rounded-lg">
-                    <div className="w-10 h-10 bg-[#212A45] text-white rounded-full flex items-center justify-center font-bold mx-auto mb-2">4</div>
+                    <div className="w-10 h-10 bg-[#0066ff] text-white rounded-full flex items-center justify-center font-bold mx-auto mb-2">4</div>
                     <span className="text-sm font-medium text-gray-900">Comparación facial</span>
                   </div>
                 </div>
@@ -73,7 +73,7 @@ export default function FlujoOnboarding() {
                   Configura el flujo de verificación según tus necesidades:
                 </p>
 
-                <div className="bg-[#0E1133] rounded-lg overflow-hidden mb-4">
+                <div className="bg-[#0a0a0a] rounded-lg overflow-hidden mb-4">
                   <div className="px-4 py-2 bg-white/5 border-b border-white/10">
                     <span className="text-white/60 text-sm">POST /v1/verifications</span>
                   </div>
@@ -140,7 +140,7 @@ export default function FlujoOnboarding() {
                   Redirige al usuario a la URL de verificación. JAAK se encarga de toda la experiencia:
                 </p>
 
-                <div className="bg-[#0E1133] rounded-lg overflow-hidden mb-4">
+                <div className="bg-[#0a0a0a] rounded-lg overflow-hidden mb-4">
                   <pre className="p-4 text-sm overflow-x-auto">
                     <code className="text-white">{`// En tu frontend
 window.location.href = session.verificationUrl;
@@ -167,7 +167,7 @@ router.push(session.verificationUrl);`}</code>
                   Recibe el resultado de la verificación vía webhook:
                 </p>
 
-                <div className="bg-[#0E1133] rounded-lg overflow-hidden mb-4">
+                <div className="bg-[#0a0a0a] rounded-lg overflow-hidden mb-4">
                   <div className="px-4 py-2 bg-white/5 border-b border-white/10">
                     <span className="text-white/60 text-sm">Webhook: verification.completed</span>
                   </div>
@@ -235,7 +235,7 @@ router.push(session.verificationUrl);`}</code>
               <div className="mb-12">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">4. Manejar los resultados</h2>
 
-                <div className="bg-[#0E1133] rounded-lg overflow-hidden mb-4">
+                <div className="bg-[#0a0a0a] rounded-lg overflow-hidden mb-4">
                   <pre className="p-4 text-sm overflow-x-auto">
                     <code className="text-white">{`app.post('/webhooks/jaak', async (req, res) => {
   const { event, data } = req.body;
@@ -275,25 +275,25 @@ router.push(session.verificationUrl);`}</code>
                 <h3 className="text-xl font-bold text-gray-900 mb-4">Mejores prácticas</h3>
                 <ul className="space-y-3">
                   <li className="flex items-start gap-3">
-                    <svg className="w-5 h-5 text-[#2DB6C1] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-[#00d4aa] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     <span className="text-gray-700">Siempre valida la firma HMAC del webhook antes de procesar</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <svg className="w-5 h-5 text-[#2DB6C1] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-[#00d4aa] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     <span className="text-gray-700">Guarda el sessionId para consultas futuras y auditorías</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <svg className="w-5 h-5 text-[#2DB6C1] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-[#00d4aa] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     <span className="text-gray-700">Implementa idempotencia en tu endpoint de webhook</span>
                   </li>
                   <li className="flex items-start gap-3">
-                    <svg className="w-5 h-5 text-[#2DB6C1] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-[#00d4aa] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                     <span className="text-gray-700">Usa el ambiente sandbox para pruebas antes de producción</span>

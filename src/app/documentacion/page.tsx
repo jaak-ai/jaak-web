@@ -89,37 +89,37 @@ export default function Documentacion() {
   const integrationGuides = [
     {
       title: "Inicio rápido",
-      description: "Configure su primera verificación de identidad en menos de 10 minutos.",
+      description: "Configura tu primera verificación de identidad en menos de 10 minutos.",
       time: "10 min",
       href: "/documentacion/guias/inicio-rapido",
     },
     {
       title: "Flujo de onboarding",
-      description: "Implemente un flujo completo de KYC con verificación de documentos y biometría.",
+      description: "Implementa un flujo completo de KYC con verificación de documentos y biometría.",
       time: "30 min",
       href: "/documentacion/guias/flujo-onboarding",
     },
     {
       title: "Firma electrónica",
-      description: "Agregue firma electrónica con validez legal a sus documentos.",
+      description: "Agrega firma electrónica con validez legal a tus documentos.",
       time: "20 min",
       href: "/documentacion/guias/firma-electronica",
     },
     {
       title: "Verificación empresarial",
-      description: "Implemente KYB para verificar personas morales y sus representantes.",
+      description: "Implementa KYB para verificar personas morales y sus representantes.",
       time: "25 min",
       href: "/documentacion/guias/verificacion-empresarial",
     },
     {
       title: "Consultas PLD/AML",
-      description: "Configure consultas automáticas a listas de personas bloqueadas.",
+      description: "Configura consultas automáticas a listas de personas bloqueadas.",
       time: "15 min",
       href: "/documentacion/guias/consultas-pld-aml",
     },
     {
       title: "Gestión de evidencia",
-      description: "Almacene y recupere expedientes digitales con trazabilidad completa.",
+      description: "Almacena y recupera expedientes digitales con trazabilidad completa.",
       time: "20 min",
       href: "/documentacion/guias/gestion-evidencia",
     },
@@ -139,23 +139,23 @@ export default function Documentacion() {
       <Header />
       <main>
         {/* Hero */}
-        <section className="pt-32 pb-20 bg-[#0E1133]">
+        <section className="pt-32 pb-20 bg-[#0a0a0a]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-4xl mx-auto">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#212A45]/10 border border-[#212A45]/20 rounded-full mb-6">
-                <span className="w-2 h-2 bg-[#212A45] rounded-full"></span>
-                <span className="text-[#212A45] text-sm font-medium">Recursos para desarrolladores</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#0066ff]/10 border border-[#0066ff]/20 rounded-full mb-6">
+                <span className="w-2 h-2 bg-[#0066ff] rounded-full"></span>
+                <span className="text-[#0066ff] text-sm font-medium">Recursos para desarrolladores</span>
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6">
                 Documentacion tecnica
               </h1>
               <p className="text-xl text-white/60 mb-8">
-                Todo lo que necesita para integrar JAAK en su aplicacion: API Reference, SDKs nativos, guias de integracion y documentacion de webhooks.
+                Todo lo que necesitas para integrar JAAK en tu aplicacion: API Reference, SDKs nativos, guias de integracion y documentacion de webhooks.
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <Link
                   href="#api-reference"
-                  className="px-6 py-3 bg-[#212A45] text-white font-semibold rounded-lg hover:bg-[#212A45] transition-all"
+                  className="px-6 py-3 bg-[#0066ff] text-white font-semibold rounded-lg hover:bg-[#0052cc] transition-all"
                 >
                   API Reference
                 </Link>
@@ -184,7 +184,7 @@ export default function Documentacion() {
             <div className="grid md:grid-cols-2 gap-8 mb-12">
               {apiFeatures.map((feature, index) => (
                 <div key={index} className="bg-gray-50 rounded-xl p-8 hover:shadow-lg transition-shadow">
-                  <div className="w-12 h-12 bg-[#212A45] rounded-xl flex items-center justify-center text-white mb-6">
+                  <div className="w-12 h-12 bg-[#0066ff] rounded-xl flex items-center justify-center text-white mb-6">
                     {feature.icon}
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
@@ -192,15 +192,15 @@ export default function Documentacion() {
                 </div>
               ))}
             </div>
-            <div className="bg-[#0E1133] rounded-2xl p-8 md:p-12">
+            <div className="bg-[#0a0a0a] rounded-2xl p-8 md:p-12">
               <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                 <div>
-                  <h3 className="text-2xl font-bold text-white mb-2">Explore la API completa</h3>
+                  <h3 className="text-2xl font-bold text-white mb-2">Explora la API completa</h3>
                   <p className="text-white/60">Documentacion interactiva con ejemplos en cURL, Python, Node.js y mas.</p>
                 </div>
                 <Link
                   href="#"
-                  className="px-6 py-3 bg-[#212A45] text-white font-semibold rounded-lg hover:bg-[#212A45] transition-all whitespace-nowrap"
+                  className="px-6 py-3 bg-[#0066ff] text-white font-semibold rounded-lg hover:bg-[#0052cc] transition-all whitespace-nowrap"
                 >
                   Ver API Docs
                 </Link>
@@ -236,7 +236,7 @@ export default function Documentacion() {
                   <ul className="space-y-2 mb-6">
                     {sdk.features.map((feature, i) => (
                       <li key={i} className="flex items-center gap-2 text-sm text-gray-600">
-                        <svg className="w-4 h-4 text-[#2DB6C1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4 text-[#00d4aa]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
                         {feature}
@@ -245,7 +245,7 @@ export default function Documentacion() {
                   </ul>
                   <Link
                     href={sdk.href}
-                    className="inline-flex items-center gap-2 text-[#212A45] font-semibold hover:gap-3 transition-all"
+                    className="inline-flex items-center gap-2 text-[#0066ff] font-semibold hover:gap-3 transition-all"
                   >
                     Ver documentacion
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -266,7 +266,7 @@ export default function Documentacion() {
                 Guias de integracion
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Tutoriales paso a paso para implementar cada funcionalidad de JAAK en su aplicacion.
+                Tutoriales paso a paso para implementar cada funcionalidad de JAAK en tu aplicacion.
               </p>
             </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -277,14 +277,14 @@ export default function Documentacion() {
                   className="group bg-gray-50 rounded-xl p-6 hover:bg-gray-100 transition-colors"
                 >
                   <div className="flex items-start justify-between mb-4">
-                    <div className="w-10 h-10 bg-[#212A45]/10 rounded-lg flex items-center justify-center">
-                      <svg className="w-5 h-5 text-[#212A45]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="w-10 h-10 bg-[#0066ff]/10 rounded-lg flex items-center justify-center">
+                      <svg className="w-5 h-5 text-[#0066ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                       </svg>
                     </div>
                     <span className="text-xs font-medium text-gray-500 bg-gray-200 px-2 py-1 rounded">{guide.time}</span>
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-[#212A45] transition-colors">{guide.title}</h3>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-[#0066ff] transition-colors">{guide.title}</h3>
                   <p className="text-gray-600 text-sm">{guide.description}</p>
                 </Link>
               ))}
@@ -293,7 +293,7 @@ export default function Documentacion() {
         </section>
 
         {/* Webhooks */}
-        <section id="webhooks" className="py-20 bg-[#0E1133]">
+        <section id="webhooks" className="py-20 bg-[#0a0a0a]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-start">
               <div>
@@ -301,12 +301,12 @@ export default function Documentacion() {
                   Webhooks
                 </h2>
                 <p className="text-xl text-white/60 mb-8">
-                  Reciba notificaciones en tiempo real sobre eventos importantes en su integracion.
+                  Recibe notificaciones en tiempo real sobre eventos importantes en tu integracion.
                 </p>
                 <div className="space-y-4 mb-8">
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 bg-[#2DB6C1]/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <svg className="w-5 h-5 text-[#2DB6C1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="w-10 h-10 bg-[#00d4aa]/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <svg className="w-5 h-5 text-[#00d4aa]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                       </svg>
                     </div>
@@ -316,8 +316,8 @@ export default function Documentacion() {
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 bg-[#2DB6C1]/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <svg className="w-5 h-5 text-[#2DB6C1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="w-10 h-10 bg-[#00d4aa]/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <svg className="w-5 h-5 text-[#00d4aa]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                       </svg>
                     </div>
@@ -327,14 +327,14 @@ export default function Documentacion() {
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 bg-[#2DB6C1]/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <svg className="w-5 h-5 text-[#2DB6C1]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="w-10 h-10 bg-[#00d4aa]/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <svg className="w-5 h-5 text-[#00d4aa]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                       </svg>
                     </div>
                     <div>
                       <h3 className="text-lg font-bold text-white">Reintentos automaticos</h3>
-                      <p className="text-white/60 text-sm">Reintentamos la entrega si su endpoint no responde.</p>
+                      <p className="text-white/60 text-sm">Reintentamos la entrega si tu endpoint no responde.</p>
                     </div>
                   </div>
                 </div>
@@ -355,7 +355,7 @@ export default function Documentacion() {
                 <div className="divide-y divide-white/10">
                   {webhookEvents.map((item, index) => (
                     <div key={index} className="px-6 py-4 flex items-center justify-between">
-                      <code className="text-[#2DB6C1] text-sm font-mono">{item.event}</code>
+                      <code className="text-[#00d4aa] text-sm font-mono">{item.event}</code>
                       <span className="text-white/50 text-sm">{item.description}</span>
                     </div>
                   ))}
@@ -375,30 +375,30 @@ export default function Documentacion() {
             </div>
             <div className="grid md:grid-cols-3 gap-8">
               <Link href="#" className="group bg-white rounded-xl p-8 hover:shadow-lg transition-shadow border border-gray-100">
-                <div className="w-12 h-12 bg-[#212A45]/10 rounded-xl flex items-center justify-center mb-6">
-                  <svg className="w-6 h-6 text-[#212A45]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-12 h-12 bg-[#0066ff]/10 rounded-xl flex items-center justify-center mb-6">
+                  <svg className="w-6 h-6 text-[#0066ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-[#212A45] transition-colors">Sandbox</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-[#0066ff] transition-colors">Sandbox</h3>
                 <p className="text-gray-600">Ambiente de pruebas con datos ficticios para desarrollar sin riesgo.</p>
               </Link>
               <Link href="#" className="group bg-white rounded-xl p-8 hover:shadow-lg transition-shadow border border-gray-100">
-                <div className="w-12 h-12 bg-[#212A45]/10 rounded-xl flex items-center justify-center mb-6">
-                  <svg className="w-6 h-6 text-[#212A45]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-12 h-12 bg-[#0066ff]/10 rounded-xl flex items-center justify-center mb-6">
+                  <svg className="w-6 h-6 text-[#0066ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-[#212A45] transition-colors">Status page</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-[#0066ff] transition-colors">Status page</h3>
                 <p className="text-gray-600">Monitorea la disponibilidad de todos los servicios en tiempo real.</p>
               </Link>
               <Link href="#" className="group bg-white rounded-xl p-8 hover:shadow-lg transition-shadow border border-gray-100">
-                <div className="w-12 h-12 bg-[#212A45]/10 rounded-xl flex items-center justify-center mb-6">
-                  <svg className="w-6 h-6 text-[#212A45]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-12 h-12 bg-[#0066ff]/10 rounded-xl flex items-center justify-center mb-6">
+                  <svg className="w-6 h-6 text-[#0066ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-[#212A45] transition-colors">Changelog</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-[#0066ff] transition-colors">Changelog</h3>
                 <p className="text-gray-600">Historial de cambios, nuevas funcionalidades y mejoras de la API.</p>
               </Link>
             </div>
@@ -406,18 +406,18 @@ export default function Documentacion() {
         </section>
 
         {/* CTA */}
-        <section className="py-20 bg-[#0E1133]">
+        <section className="py-20 bg-[#0a0a0a]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl md:text-4xl font-black text-white mb-6">
-              Necesita ayuda tecnica?
+              Necesitas ayuda tecnica?
             </h2>
             <p className="text-xl text-white/60 mb-8">
-              Nuestro equipo de ingenieria esta disponible para ayudarle con su integracion.
+              Nuestro equipo de ingenieria esta disponible para ayudarte con tu integracion.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link
                 href="/contacto"
-                className="px-8 py-4 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-all"
+                className="px-8 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
               >
                 Contactar soporte tecnico
               </Link>

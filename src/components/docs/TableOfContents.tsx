@@ -81,8 +81,8 @@ export function TableOfContents() {
                 className={`
                   block py-1 transition-colors
                   ${activeId === heading.id
-                    ? 'font-medium text-[#212A45]'
-                    : 'text-gray-600 hover:text-[#212A45]'
+                    ? 'font-medium text-[#0066ff]'
+                    : 'text-gray-600 hover:text-[#0066ff]'
                   }
                 `}
                 onClick={(e) => {

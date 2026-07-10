@@ -6,7 +6,6 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { TurnstileWidget, getUtmParams } from "@/components/CloudflareTurnstile";
 import { gtmEvent } from "@/components/GoogleTagManager";
-import { STATS } from "@/lib/trust";
 
 const API_ENDPOINT = "/api/contact";
 
@@ -25,7 +24,7 @@ export default function ContactoPage() {
 
   const benefits = [
     {
-      title: "Diseñado para cumplir CNBV y NOM-151",
+      title: "Cumplimiento normativo garantizado",
       description: "CNBV, LFPIORPI, LFPDPPP, CUB y todas las regulaciones aplicables.",
     },
     {
@@ -37,8 +36,8 @@ export default function ContactoPage() {
       description: "ISO 27001, ISO 9001, iBeta para prueba de vida.",
     },
     {
-      title: "Reducción de fraude",
-      description: `${STATS.precisionBiometrica} de precisión en la detección de identidades falsas.`,
+      title: "Reducción de fraude comprobada",
+      description: "Hasta 99.9% de precisión en detección de identidades falsas.",
     },
     {
       title: "Soporte especializado",
@@ -52,7 +51,6 @@ export default function ContactoPage() {
 
   const handleTurnstileError = useCallback(() => {
     setErrorMessage("Error de verificación. Por favor, recarga la página.");
-    setStatus("error");
   }, []);
 
   const handleTurnstileExpire = useCallback(() => {
@@ -119,18 +117,18 @@ export default function ContactoPage() {
       <Header />
       <main>
         {/* Hero Section */}
-        <section className="pt-32 pb-20 bg-[#0E1133] relative overflow-hidden">
+        <section className="pt-32 pb-20 bg-[#0a0a0a] relative overflow-hidden">
           {/* Background gradient effects */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-[#2DB6C1]/10 rounded-full blur-[120px]" />
-            <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-[#2DB6C1]/10 rounded-full blur-[100px]" />
+            <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-[#0066ff]/10 rounded-full blur-[120px]" />
+            <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-[#00d4aa]/10 rounded-full blur-[100px]" />
           </div>
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="text-center max-w-3xl mx-auto mb-16">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6">
                 Hablemos de tu{" "}
-                <span className="text-[#2DB6C1]">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0066ff] to-[#00d4aa]">
                   proyecto
                 </span>
               </h1>
@@ -150,7 +148,7 @@ export default function ContactoPage() {
                 <div className="space-y-6">
                   {benefits.map((benefit, index) => (
                     <div key={index} className="flex gap-4">
-                      <div className="w-10 h-10 bg-[#2DB6C1] rounded-lg flex items-center justify-center flex-shrink-0">
+                      <div className="w-10 h-10 bg-gradient-to-br from-[#0066ff] to-[#00d4aa] rounded-lg flex items-center justify-center flex-shrink-0">
                         <svg
                           className="w-5 h-5 text-white"
                           fill="none"
@@ -241,7 +239,7 @@ export default function ContactoPage() {
                           onChange={(e) =>
                             setFormData({ ...formData, name: e.target.value })
                           }
-                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#2DB6C1] focus:border-transparent outline-none transition-all text-gray-900 placeholder:text-gray-400"
+                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0066ff] focus:border-transparent outline-none transition-all text-gray-900 placeholder:text-gray-400"
                           placeholder="Tu nombre"
                         />
                       </div>
@@ -260,7 +258,7 @@ export default function ContactoPage() {
                           onChange={(e) =>
                             setFormData({ ...formData, email: e.target.value })
                           }
-                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#2DB6C1] focus:border-transparent outline-none transition-all text-gray-900 placeholder:text-gray-400"
+                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0066ff] focus:border-transparent outline-none transition-all text-gray-900 placeholder:text-gray-400"
                           placeholder="tu@email.com"
                         />
                       </div>
@@ -281,7 +279,7 @@ export default function ContactoPage() {
                           onChange={(e) =>
                             setFormData({ ...formData, company: e.target.value })
                           }
-                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#2DB6C1] focus:border-transparent outline-none transition-all text-gray-900 placeholder:text-gray-400"
+                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0066ff] focus:border-transparent outline-none transition-all text-gray-900 placeholder:text-gray-400"
                           placeholder="Tu empresa"
                         />
                       </div>
@@ -300,7 +298,7 @@ export default function ContactoPage() {
                           onChange={(e) =>
                             setFormData({ ...formData, phone: e.target.value })
                           }
-                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#2DB6C1] focus:border-transparent outline-none transition-all text-gray-900 placeholder:text-gray-400"
+                          className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0066ff] focus:border-transparent outline-none transition-all text-gray-900 placeholder:text-gray-400"
                           placeholder="+52 55 1234 5678"
                         />
                       </div>
@@ -320,7 +318,7 @@ export default function ContactoPage() {
                         onChange={(e) =>
                           setFormData({ ...formData, message: e.target.value })
                         }
-                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#2DB6C1] focus:border-transparent outline-none transition-all resize-none text-gray-900 placeholder:text-gray-400"
+                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#0066ff] focus:border-transparent outline-none transition-all resize-none text-gray-900 placeholder:text-gray-400"
                         placeholder="Cuéntanos sobre tu proyecto o necesidades..."
                       />
                     </div>
@@ -338,13 +336,13 @@ export default function ContactoPage() {
                     <button
                       type="submit"
                       disabled={status === "loading" || !turnstileToken}
-                      className="w-full px-6 py-4 bg-[#2DB6C1] text-white font-bold rounded-lg hover:bg-[#25969f] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full px-6 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {status === "loading" ? "Enviando..." : "Enviar solicitud"}
                     </button>
 
                     {status === "success" && (
-                      <div aria-live="polite" className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                      <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
                         <p className="text-green-700 text-center font-medium">
                           ¡Mensaje enviado con éxito! Nos pondremos en contacto contigo pronto.
                         </p>
@@ -352,7 +350,7 @@ export default function ContactoPage() {
                     )}
 
                     {status === "error" && (
-                      <div role="alert" className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                      <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
                         <p className="text-red-700 text-center font-medium">
                           {errorMessage}
                         </p>
@@ -362,7 +360,7 @@ export default function ContactoPage() {
 
                   <p className="mt-6 text-sm text-gray-500 text-center">
                     Al enviar este formulario, aceptas nuestra{" "}
-                    <Link href="/privacidad" className="text-[#2DB6C1] hover:underline">
+                    <Link href="/privacidad" className="text-[#0066ff] hover:underline">
                       Política de Privacidad
                     </Link>
                     .
@@ -374,14 +372,14 @@ export default function ContactoPage() {
         </section>
 
         {/* Additional Info Section */}
-        <section className="py-20 bg-[#0E1133] border-t border-white/10">
+        <section className="py-20 bg-[#0a0a0a] border-t border-white/10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-3 gap-8">
               {/* Email */}
               <div className="text-center p-8 bg-white/5 rounded-xl border border-white/10">
-                <div className="w-14 h-14 bg-[#2DB6C1]/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-14 h-14 bg-[#0066ff]/20 rounded-full flex items-center justify-center mx-auto mb-4">
                   <svg
-                    className="w-7 h-7 text-[#2DB6C1]"
+                    className="w-7 h-7 text-[#0066ff]"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -397,7 +395,7 @@ export default function ContactoPage() {
                 <h3 className="text-lg font-semibold text-white mb-2">Email</h3>
                 <a
                   href="mailto:hello@jaak.ai"
-                  className="text-[#2DB6C1] hover:underline"
+                  className="text-[#0066ff] hover:underline"
                 >
                   hello@jaak.ai
                 </a>
@@ -405,9 +403,9 @@ export default function ContactoPage() {
 
               {/* Phone */}
               <div className="text-center p-8 bg-white/5 rounded-xl border border-white/10">
-                <div className="w-14 h-14 bg-[#2DB6C1]/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-14 h-14 bg-[#0066ff]/20 rounded-full flex items-center justify-center mx-auto mb-4">
                   <svg
-                    className="w-7 h-7 text-[#2DB6C1]"
+                    className="w-7 h-7 text-[#0066ff]"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -423,7 +421,7 @@ export default function ContactoPage() {
                 <h3 className="text-lg font-semibold text-white mb-2">Teléfono</h3>
                 <a
                   href="tel:+525535091788"
-                  className="text-[#2DB6C1] hover:underline"
+                  className="text-[#0066ff] hover:underline"
                 >
                   +52 55 3509 1788
                 </a>
@@ -431,9 +429,9 @@ export default function ContactoPage() {
 
               {/* Location */}
               <div className="text-center p-8 bg-white/5 rounded-xl border border-white/10">
-                <div className="w-14 h-14 bg-[#2DB6C1]/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-14 h-14 bg-[#0066ff]/20 rounded-full flex items-center justify-center mx-auto mb-4">
                   <svg
-                    className="w-7 h-7 text-[#2DB6C1]"
+                    className="w-7 h-7 text-[#0066ff]"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"

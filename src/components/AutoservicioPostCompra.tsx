@@ -32,21 +32,21 @@ function ProximosPasos() {
     {
       num: "01",
       title: "Compra confirmada",
-      desc: "Su pago fue procesado y su acceso está activo inmediatamente.",
-      badge: { text: "Completado", color: "#2DB6C1" },
-      color: "#2DB6C1",
+      desc: "Tu pago fue procesado y tu acceso está activo inmediatamente.",
+      badge: { text: "Completado", color: "#1ecad3" },
+      color: "#1ecad3",
     },
     {
       num: "02",
-      title: "Acceda a su espacio",
-      desc: "Ingrese a JAAK Autoservicio con sus credenciales de registro.",
-      color: "#2DB6C1",
+      title: "Accede a tu espacio",
+      desc: "Ingresa a JAAK Autoservicio con tus credenciales de registro.",
+      color: "#1ecad3",
     },
     {
       num: "03",
-      title: "Cree su primer flujo",
-      desc: "Configure sus procesos de firma o verificación en minutos.",
-      color: "#2DB6C1",
+      title: "Crea tu primer flujo",
+      desc: "Configura tus procesos de firma o verificación en minutos.",
+      color: "#655dc6",
     },
   ];
 
@@ -135,7 +135,7 @@ function CapacitacionForm() {
       if (!res.ok) throw new Error("error");
       setSuccess(true);
     } catch {
-      setError("Hubo un problema al enviar. Intente de nuevo o escríbanos a hola@jaak.ai");
+      setError("Hubo un problema al enviar. Intenta de nuevo o escríbenos a hola@jaak.ai");
     } finally {
       setLoading(false);
     }
@@ -146,13 +146,13 @@ function CapacitacionForm() {
       <div className="text-center py-16 px-6">
         <div
           className="w-16 h-16 rounded-full flex items-center justify-center text-3xl mx-auto mb-4"
-          style={{ background: "rgba(45,182,193,0.12)" }}
+          style={{ background: "rgba(30,202,211,0.12)" }}
         >
           ✅
         </div>
         <h3 className="text-2xl font-bold text-gray-900 mb-2">¡Solicitud enviada!</h3>
         <p className="text-gray-500 max-w-sm mx-auto">
-          Nuestro equipo confirmará su sesión por correo dentro de las próximas 24 horas hábiles.
+          Nuestro equipo confirmará tu sesión por correo dentro de las próximas 24 horas hábiles.
         </p>
       </div>
     );
@@ -164,40 +164,45 @@ function CapacitacionForm() {
       <div className="flex flex-col justify-center">
         <span
           className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest mb-4 px-3 py-1 rounded-full w-fit"
-          style={{ background: "rgba(45,182,193,0.1)", color: "#0e7490", border: "1px solid rgba(45,182,193,0.3)" }}
+          style={{ background: "rgba(30,202,211,0.1)", color: "#0e7490", border: "1px solid rgba(30,202,211,0.3)" }}
         >
           🎁 Sesión de bienvenida incluida
         </span>
         <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 leading-tight">
-          ¿Quiere una sesión{" "}
+          ¿Quieres una sesión{" "}
           <span
-            style={{ color: "#2DB6C1" }}
+            style={{
+              backgroundImage: "linear-gradient(90deg, #1ecad3, #655dc6)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
           >
             de capacitación?
           </span>
         </h2>
         <p className="text-gray-500 mb-6 text-base leading-relaxed">
-          Si desea acompañamiento para comenzar, déjenos sus datos y elija el horario disponible que mejor le funcione.
-          Nuestro equipo le guiará en sus primeros pasos.
+          Si deseas acompañamiento para comenzar, déjanos tus datos y elige el horario disponible que mejor te funcione.
+          Nuestro equipo te guiará en tus primeros pasos.
         </p>
         <ul className="space-y-3 text-base text-gray-600">
           {[
             "Sesión personalizada de 60 minutos",
             "Guía paso a paso de la plataforma",
             "Resolución de dudas en tiempo real",
-            "Sin costo adicional para su empresa",
+            "Sin costo adicional para tu empresa",
           ].map((item, i) => (
             <li key={i} className="flex items-center gap-2">
-              <span style={{ color: "#2DB6C1" }}>✓</span>
+              <span style={{ color: "#1ecad3" }}>✓</span>
               {item}
             </li>
           ))}
         </ul>
         <div
           className="mt-6 rounded-xl p-4 text-base"
-          style={{ background: "rgba(45,182,193,0.06)", border: "1px solid rgba(45,182,193,0.15)", color: "#64748B" }}
+          style={{ background: "rgba(30,202,211,0.06)", border: "1px solid rgba(30,202,211,0.15)", color: "#374151" }}
         >
-          💬 Nuestro equipo confirmará su sesión por correo dentro de las próximas <strong>24 horas hábiles</strong>.
+          💬 Nuestro equipo confirmará tu sesión por correo dentro de las próximas <strong>24 horas hábiles</strong>.
         </div>
       </div>
 
@@ -214,9 +219,9 @@ function CapacitacionForm() {
               required
               value={form.nombre}
               onChange={(e) => setForm({ ...form, nombre: e.target.value })}
-              placeholder="Su nombre completo"
+              placeholder="Tu nombre completo"
               className="rounded-lg px-3 py-2.5 text-base text-gray-900 outline-none focus:ring-2 transition-all"
-              style={{ border: "1.5px solid #F3F4F8", background: "#FAFAFA" }}
+              style={{ border: "1.5px solid #e5e7eb", background: "#f9fafb" }}
             />
           </div>
           <div className="col-span-2 md:col-span-1 flex flex-col gap-1">
@@ -224,9 +229,9 @@ function CapacitacionForm() {
             <input
               value={form.empresa}
               onChange={(e) => setForm({ ...form, empresa: e.target.value })}
-              placeholder="Su empresa"
+              placeholder="Tu empresa"
               className="rounded-lg px-3 py-2.5 text-base text-gray-900 outline-none transition-all"
-              style={{ border: "1.5px solid #F3F4F8", background: "#FAFAFA" }}
+              style={{ border: "1.5px solid #e5e7eb", background: "#f9fafb" }}
             />
           </div>
           <div className="flex flex-col gap-1">
@@ -238,7 +243,7 @@ function CapacitacionForm() {
               onChange={(e) => setForm({ ...form, correo: e.target.value })}
               placeholder="correo@empresa.com"
               className="rounded-lg px-3 py-2.5 text-base text-gray-900 outline-none transition-all"
-              style={{ border: "1.5px solid #F3F4F8", background: "#FAFAFA" }}
+              style={{ border: "1.5px solid #e5e7eb", background: "#f9fafb" }}
             />
           </div>
           <div className="flex flex-col gap-1">
@@ -249,7 +254,7 @@ function CapacitacionForm() {
               onChange={(e) => setForm({ ...form, whatsapp: e.target.value })}
               placeholder="+52 55 0000 0000"
               className="rounded-lg px-3 py-2.5 text-base text-gray-900 outline-none transition-all"
-              style={{ border: "1.5px solid #F3F4F8", background: "#FAFAFA" }}
+              style={{ border: "1.5px solid #e5e7eb", background: "#f9fafb" }}
             />
           </div>
           <div className="col-span-2 flex flex-col gap-1">
@@ -259,7 +264,7 @@ function CapacitacionForm() {
               onChange={(e) => setForm({ ...form, numeroPedido: e.target.value })}
               placeholder="Ej. ORD-12345"
               className="rounded-lg px-3 py-2.5 text-base text-gray-900 outline-none transition-all"
-              style={{ border: "1.5px solid #F3F4F8", background: "#FAFAFA" }}
+              style={{ border: "1.5px solid #e5e7eb", background: "#f9fafb" }}
             />
           </div>
         </div>
@@ -277,7 +282,7 @@ function CapacitacionForm() {
                   onClick={() => toggleTema(tema)}
                   className="text-sm px-3 py-1.5 rounded-full font-medium transition-all duration-150 cursor-pointer"
                   style={{
-                    background: active ? "#2DB6C1" : "#f3f4f6",
+                    background: active ? "linear-gradient(135deg, #1ecad3, #655dc6)" : "#f3f4f6",
                     color: active ? "#fff" : "#374151",
                     border: active ? "none" : "1.5px solid #e5e7eb",
                   }}
@@ -291,7 +296,7 @@ function CapacitacionForm() {
 
         {/* Horario */}
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Elija su horario disponible</label>
+          <label className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Elige tu horario disponible</label>
           <div className="grid grid-cols-2 gap-3">
             {HORARIOS.map((h) => {
               const active = form.horario === h.id;
@@ -302,12 +307,12 @@ function CapacitacionForm() {
                   onClick={() => setForm({ ...form, horario: h.id })}
                   className="rounded-xl p-3 text-left transition-all duration-150 cursor-pointer"
                   style={{
-                    border: active ? "2px solid #2DB6C1" : "1.5px solid #e5e7eb",
-                    background: active ? "rgba(45,182,193,0.06)" : "#f9fafb",
+                    border: active ? "2px solid #1ecad3" : "1.5px solid #e5e7eb",
+                    background: active ? "rgba(30,202,211,0.06)" : "#f9fafb",
                   }}
                 >
                   <div className="text-sm font-bold text-gray-700 mb-0.5">📅 {h.label}</div>
-                  <div className="text-sm font-semibold" style={{ color: "#2DB6C1" }}>{h.sub}</div>
+                  <div className="text-sm font-semibold" style={{ color: "#1ecad3" }}>{h.sub}</div>
                   <div className="text-sm text-gray-400 mt-1">{h.note}</div>
                 </button>
               );
@@ -322,7 +327,7 @@ function CapacitacionForm() {
             rows={2}
             value={form.comentarios}
             onChange={(e) => setForm({ ...form, comentarios: e.target.value })}
-            placeholder="¿Hay algo específico que quiera revisar?"
+            placeholder="¿Hay algo específico que quieras revisar?"
             className="rounded-lg px-3 py-2.5 text-base text-gray-900 outline-none resize-none transition-all"
             style={{ border: "1.5px solid #e5e7eb", background: "#f9fafb" }}
           />
@@ -334,7 +339,7 @@ function CapacitacionForm() {
           type="submit"
           disabled={loading}
           className="w-full py-3 rounded-xl font-bold text-white text-base transition-all duration-200 hover:opacity-90 disabled:opacity-60"
-          style={{ background: "#2DB6C1" }}
+          style={{ background: "linear-gradient(135deg, #1ecad3, #655dc6)" }}
         >
           {loading ? "Enviando..." : "📅 Solicitar capacitación"}
         </button>

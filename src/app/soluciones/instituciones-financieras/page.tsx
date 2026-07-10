@@ -3,7 +3,6 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import Image from "next/image";
-import { STATS } from "@/lib/trust";
 
 export const metadata: Metadata = {
   title: "KYC para Instituciones Financieras | JAAK",
@@ -77,13 +76,13 @@ export default function InstitucionesFinancieras() {
       <Header />
       <main>
         {/* Hero */}
-        <section className="pt-32 pb-20 bg-[#0E1133]">
+        <section className="pt-32 pb-20 bg-[#0a0a0a]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#212A45]/10 border border-[#212A45]/20 rounded-full mb-6">
-                  <span className="w-2 h-2 bg-[#212A45] rounded-full"></span>
-                  <span className="text-[#212A45] text-sm font-medium">Soluciones por industria</span>
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#0066ff]/10 border border-[#0066ff]/20 rounded-full mb-6">
+                  <span className="w-2 h-2 bg-[#0066ff] rounded-full"></span>
+                  <span className="text-[#0066ff] text-sm font-medium">Soluciones por industria</span>
                 </div>
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6">
                   Instituciones financieras
@@ -94,12 +93,12 @@ export default function InstitucionesFinancieras() {
                 <div className="flex flex-wrap gap-4">
                   <Link
                     href="/contacto"
-                    className="px-6 py-3 bg-[#212A45] text-white font-semibold rounded-lg hover:bg-[#212A45] transition-all"
+                    className="px-6 py-3 bg-[#0066ff] text-white font-semibold rounded-lg hover:bg-[#0052cc] transition-all"
                   >
                     Hablar con ventas
                   </Link>
                   <Link
-                    href="https://platform.jaak.ai/#/signup"
+                    href="https://platform.dev.jaak.ai/#/signup"
                     target="_blank"
                     className="px-6 py-3 bg-white/10 text-white font-semibold rounded-lg hover:bg-white/20 transition-all"
                   >
@@ -134,7 +133,7 @@ export default function InstitucionesFinancieras() {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {regulations.map((reg, index) => (
                 <div key={index} className="bg-gray-50 rounded-xl p-6 text-center">
-                  <div className="text-2xl font-black text-[#212A45] mb-3">{reg.name}</div>
+                  <div className="text-2xl font-black text-[#0066ff] mb-3">{reg.name}</div>
                   <p className="text-gray-600 text-sm">{reg.description}</p>
                 </div>
               ))}
@@ -153,7 +152,7 @@ export default function InstitucionesFinancieras() {
             <div className="grid md:grid-cols-2 gap-8">
               {useCases.map((useCase, index) => (
                 <div key={index} className="bg-white rounded-xl p-8 shadow-sm hover:shadow-lg transition-shadow">
-                  <div className="w-16 h-16 bg-[#212A45]/10 rounded-xl flex items-center justify-center text-[#212A45] mb-6">
+                  <div className="w-16 h-16 bg-[#0066ff]/10 rounded-xl flex items-center justify-center text-[#0066ff] mb-6">
                     {useCase.icon}
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3">{useCase.title}</h3>
@@ -165,7 +164,7 @@ export default function InstitucionesFinancieras() {
         </section>
 
         {/* Benefits */}
-        <section className="py-20 bg-[#0E1133]">
+        <section className="py-20 bg-[#0a0a0a]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
@@ -175,7 +174,7 @@ export default function InstitucionesFinancieras() {
                 <div className="space-y-4">
                   {benefits.map((benefit, index) => (
                     <div key={index} className="flex items-center gap-4">
-                      <div className="w-6 h-6 bg-[#2DB6C1] rounded-full flex items-center justify-center flex-shrink-0">
+                      <div className="w-6 h-6 bg-[#00d4aa] rounded-full flex items-center justify-center flex-shrink-0">
                         <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                         </svg>
@@ -187,16 +186,16 @@ export default function InstitucionesFinancieras() {
               </div>
               <div className="bg-white/5 border border-white/10 rounded-2xl p-8">
                 <div className="text-center">
-                  <div className="text-6xl font-black text-white mb-2">{STATS.precisionBiometrica}</div>
-                  <div className="text-white/60">de precisión biométrica</div>
+                  <div className="text-6xl font-black text-white mb-2">95%</div>
+                  <div className="text-white/60">de verificaciones automáticas</div>
                 </div>
                 <div className="grid grid-cols-2 gap-6 mt-8">
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-[#2DB6C1]">{STATS.procesoKyc}</div>
+                    <div className="text-3xl font-bold text-[#00d4aa]">&lt;30s</div>
                     <div className="text-white/50 text-sm">tiempo promedio</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-[#2DB6C1]">{STATS.disponibilidad}</div>
+                    <div className="text-3xl font-bold text-[#00d4aa]">99.9%</div>
                     <div className="text-white/50 text-sm">disponibilidad</div>
                   </div>
                 </div>
@@ -216,7 +215,7 @@ export default function InstitucionesFinancieras() {
             </p>
             <Link
               href="/contacto"
-              className="inline-flex px-8 py-4 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-all"
+              className="inline-flex px-8 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
             >
               Solicitar demo
             </Link>

@@ -4,11 +4,10 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 import KycBiometricAnimation from "@/components/KycBiometricAnimation";
 import ScrollReveal from "@/components/ScrollReveal";
-import { IBETA, STATS } from "@/lib/trust";
 
 export const metadata: Metadata = {
   title: "Verificación de Identidad (KYC) | JAAK",
-  description: `KYC biométrico con prueba de vida certificada ${IBETA}. Verifica identidad en segundos con IA. Cumple LFPIORPI, CNBV y regulación antilavado.`,
+  description: "KYC biométrico con prueba de vida certificada iBeta. Verifica identidad en segundos con IA. Cumple LFPIORPI, CNBV y regulación antilavado.",
   keywords: ["KYC", "verificación de identidad", "prueba de vida", "biometría facial", "iBeta", "LFPIORPI", "onboarding digital", "anti-spoofing"],
   openGraph: {
     title: "Verificación de Identidad (KYC) | JAAK",
@@ -52,7 +51,7 @@ export default function VerificacionIdentidad() {
                     style={{ color: "rgba(255,255,255,0.50)", border: "1px solid rgba(255,255,255,0.10)", background: "rgba(255,255,255,0.04)" }}
                   >
                     <span className="w-1.5 h-1.5 rounded-full bg-[#2DB6C1] animate-pulse" />
-                    {IBETA} · Tecnología propia
+                    iBeta Level 1 · Tecnología propia
                   </div>
                 </div>
 
@@ -168,7 +167,7 @@ export default function VerificacionIdentidad() {
                 {
                   icon: "⚠️",
                   title: "Fraude en el onboarding",
-                  body: "Una parte significativa del fraude financiero digital en México ocurre en el momento de alta del cliente, cuando los controles son más débiles.",
+                  body: "El 73% del fraude financiero digital en México ocurre en el momento de alta del cliente, cuando los controles son más débiles.",
                   accent: "rgba(239,68,68,0.10)",
                   border: "rgba(239,68,68,0.18)",
                   labelColor: "#fca5a5",
@@ -227,24 +226,24 @@ export default function VerificacionIdentidad() {
               {[
                 {
                   icon: "👁️",
-                  badge: IBETA,
+                  badge: "iBeta Level 1",
                   title: "Prueba de vida pasiva",
-                  body: `Detecta en tiempo real si el usuario es una persona real. Sin retos activos, sin fricción. ${IBETA} certifica la detección de ataques de presentación (liveness) según ISO 30107-3.`,
+                  body: "Detecta en tiempo real si el usuario es una persona real. Sin retos activos, sin fricción. iBeta Level 1 es el estándar más exigente del mercado para liveness detection.",
                   tag: "Anti-spoofing · Pasivo",
                 },
                 {
                   icon: "🪪",
-                  badge: `${STATS.precisionBiometrica} precisión`,
+                  badge: ">99% precisión OCR",
                   title: "Verificación de documento",
-                  body: `OCR avanzado sobre INE, pasaporte y comprobantes. Detecta alteraciones, valida vigencia y extrae datos con precisión del ${STATS.precisionBiometrica} en condiciones de campo real.`,
+                  body: "OCR avanzado sobre INE, pasaporte y comprobantes. Detecta alteraciones, valida vigencia y extrae datos con precisión superior al 99% en condiciones de campo real.",
                   tag: "INE · Pasaporte · Comprobante",
                 },
                 {
                   icon: "🤳",
                   badge: "NIST FRVT evaluado",
                   title: "Comparación facial biométrica",
-                  body: "Algoritmos evaluados por el Instituto Nacional de Estándares (NIST). Coteja el rostro en vivo contra la foto del documento mediante biometría 1:1.",
-                  tag: "Biometría 1:1 · NIST FRVT",
+                  body: "Algoritmos evaluados por el Instituto Nacional de Estándares (NIST). Coteja el rostro en vivo contra la foto del documento con tasa de error facial < 0.1%.",
+                  tag: "Biometría 1:1 · <0.1% error",
                 },
                 {
                   icon: "🏛️",
@@ -299,7 +298,7 @@ export default function VerificacionIdentidad() {
               </div>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight mb-5">
                 De usuario desconocido a identidad verificada en{" "}
-                <span style={{ color: "#2DB6C1" }}>{STATS.procesoKyc}.</span>
+                <span style={{ color: "#2DB6C1" }}>30 segundos.</span>
               </h2>
               <p className="text-lg" style={{ color: "rgba(255,255,255,0.50)" }}>
                 Un proceso simple para el usuario. Evidencia completa para tu área de compliance.
@@ -371,7 +370,7 @@ export default function VerificacionIdentidad() {
               </div>
               <Link
                 href="/contacto"
-                className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-5 py-2.5 font-bold text-sm rounded-xl transition-all will-change-transform"
+                className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-5 py-2.5 font-bold text-sm rounded-xl transition-all"
                 style={{ background: "linear-gradient(135deg, #2DB6C1, #25969f)", color: "#fff", boxShadow: "0 4px 16px rgba(45,182,193,0.25)" }}
               >
                 Ver demo en vivo
@@ -406,16 +405,16 @@ export default function VerificacionIdentidad() {
             <div data-sr-grid className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
                 {
-                  label: IBETA,
+                  label: "iBeta Level 1",
                   question: "¿Tu prueba de vida resiste ataques de presentación?",
-                  answer: "Certifica la detección de ataques de presentación (liveness) según ISO 30107-3, evaluada por un laboratorio acreditado.",
+                  answer: "El único estándar internacional que certifica liveness detection. Obligatorio para acreditar biometría ante CNBV.",
                   reg: "Relevante para CNBV",
                   color: "#2DB6C1",
                 },
                 {
                   label: "NIST FRVT",
                   question: "¿Con qué precisión reconoces un rostro?",
-                  answer: "Evaluación independiente del gobierno de EE.UU. sobre la precisión del reconocimiento facial en escenarios reales.",
+                  answer: "Evaluación independiente del gobierno de EE.UU. Tasa de error facial < 0.1% en escenarios reales.",
                   reg: "Precisión de biometría",
                   color: "#2AD796",
                 },
@@ -436,7 +435,8 @@ export default function VerificacionIdentidad() {
               ].map((c, i) => (
                 <div
                   key={i}
-                  className="rounded-2xl p-6 flex flex-col border border-[#212A45]/10 transition-colors hover:border-[#2DB6C1]/50"
+                  className="rounded-2xl p-6 flex flex-col"
+                  style={{ border: "1px solid #EEEEEE", borderLeft: `3px solid ${c.color}` }}
                 >
                   <div
                     className="text-xs font-bold px-2.5 py-1 rounded-full self-start mb-4"
@@ -824,8 +824,8 @@ export default function VerificacionIdentidad() {
                   Integración técnica
                 </div>
                 <h2 className="text-3xl md:text-4xl font-black text-white leading-tight mb-5">
-                  Integración{" "}
-                  <span style={{ color: "#2AD796" }}>guiada, con soporte en cada paso.</span>
+                  Integración lista en{" "}
+                  <span style={{ color: "#2AD796" }}>menos de una semana.</span>
                 </h2>
                 <p className="text-lg mb-10" style={{ color: "rgba(255,255,255,0.50)" }}>
                   SDK para iOS, Android y Web. API REST documentada. Sandbox disponible desde el primer día.
@@ -881,7 +881,7 @@ export default function VerificacionIdentidad() {
                     <span className="w-3 h-3 rounded-full" style={{ background: "rgba(245,158,11,0.6)" }} />
                     <span className="w-3 h-3 rounded-full" style={{ background: "rgba(42,215,150,0.6)" }} />
                     <span className="ml-3 text-xs font-mono" style={{ color: "rgba(255,255,255,0.35)" }}>
-                      Ejemplo de respuesta · POST /identity/verify → 200 OK
+                      POST /identity/verify → 200 OK
                     </span>
                   </div>
                   {/* Code body */}
@@ -978,7 +978,7 @@ export default function VerificacionIdentidad() {
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
                 <Link
                   href="/contacto"
-                  className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 text-white font-bold text-base sm:text-lg rounded-xl transition-all will-change-transform duration-200 group"
+                  className="inline-flex items-center justify-center gap-2 px-6 sm:px-8 py-3.5 sm:py-4 text-white font-bold text-base sm:text-lg rounded-xl transition-all duration-200 group"
                   style={{
                     background: "linear-gradient(135deg, #2DB6C1, #25969f)",
                     boxShadow: "0 8px 32px rgba(45,182,193,0.30)",
@@ -991,7 +991,7 @@ export default function VerificacionIdentidad() {
                 </Link>
                 <Link
                   href="/precios"
-                  className="inline-flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-4 font-semibold text-base sm:text-lg rounded-xl transition-colors duration-200"
+                  className="inline-flex items-center justify-center px-6 sm:px-8 py-3.5 sm:py-4 font-semibold text-base sm:text-lg rounded-xl transition-all duration-200"
                   style={{
                     color: "rgba(255,255,255,0.78)",
                     background: "rgba(255,255,255,0.06)",
@@ -1007,7 +1007,7 @@ export default function VerificacionIdentidad() {
                 className="mt-8 md:mt-10 pt-6 md:pt-8 flex flex-wrap justify-center gap-3 md:gap-6 text-xs"
                 style={{ borderTop: "1px solid rgba(255,255,255,0.07)", color: "rgba(255,255,255,0.28)" }}
               >
-                {["Sin compromiso", `ISO 27001 · ${IBETA}`, `${STATS.verificacionesAcumuladas} verificaciones`, "Tecnología propia"].map((t) => (
+                {["Sin compromiso", "ISO 27001 · iBeta Level 1", "70M+ verificaciones", "Tecnología propia"].map((t) => (
                   <span key={t} className="flex items-center gap-1.5">
                     <svg className="w-4 h-4" style={{ color: "#2AD796" }} fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />

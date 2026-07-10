@@ -9,7 +9,8 @@ export default function Footer() {
         { name: "Verificación de identidad", href: "/plataforma/verificacion-identidad" },
         { name: "Firma electrónica", href: "/plataforma/firma-electronica" },
         { name: "Gestión de evidencia", href: "/plataforma/gestion-evidencia" },
-        { name: "API & SDKs", href: "/docs" },
+        { name: "Chronos (Agentes IA)", href: "/chronos" },
+        { name: "API & SDKs", href: "/documentacion" },
         { name: "Precios", href: "/precios" },
       ],
     },
@@ -36,11 +37,11 @@ export default function Footer() {
     resources: {
       title: "Recursos",
       links: [
-        { name: "Documentación", href: "/docs" },
+        { name: "Documentación", href: "/documentacion" },
         { name: "Blog", href: "/blog" },
         { name: "RSS Feed", href: "/rss.xml" },
         { name: "API Reference", href: "https://docs.jaak.ai/api" },
-        { name: "Sandbox", href: "https://platform.jaak.ai/#/signup" },
+        { name: "Sandbox", href: "https://platform.dev.jaak.ai/#/signup" },
         { name: "Status", href: "https://status.jaak.ai" },
       ],
     },
@@ -49,6 +50,9 @@ export default function Footer() {
       links: [
         { name: "Sobre nosotros", href: "/nosotros" },
         { name: "Contacto", href: "/contacto" },
+        { name: "Carreras", href: "/contacto" },
+        { name: "Socios", href: "/contacto" },
+        { name: "Prensa", href: "/contacto" },
       ],
     },
   };
@@ -102,24 +106,9 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-[#0E1133]">
-      {/* Conversion CTA */}
-      <div className="border-b border-[rgba(255,255,255,0.09)]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <p className="text-white text-base sm:text-lg font-semibold">
-            Su próxima auditoría puede llegar mañana. Llegue con el expediente listo.
-          </p>
-          <Link
-            href="/contacto"
-            className="inline-flex items-center justify-center px-6 py-3 bg-[#2DB6C1] hover:bg-[#25969f] text-white text-sm font-semibold rounded-lg transition-colors whitespace-nowrap self-start sm:self-auto"
-          >
-            Agendar demo
-          </Link>
-        </div>
-      </div>
-
+    <footer className="bg-[#0a0a0a]">
       {/* Main footer */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-white/10">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-8 lg:gap-12">
           {/* Logo and social */}
           <div className="col-span-2 sm:col-span-3 lg:col-span-2">
@@ -143,7 +132,7 @@ export default function Footer() {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-full flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 transition-colors"
+                  className="w-9 h-9 rounded-full flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 transition-all"
                   aria-label={social.name}
                 >
                   {social.icon}

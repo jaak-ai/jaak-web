@@ -190,12 +190,12 @@ export const blogPosts: BlogPost[] = [
 ];
 
 export const categoryColors: Record<string, { bg: string; text: string }> = {
-  "Firma Electrónica": { bg: "bg-[#2DB6C1]/10", text: "text-[#2DB6C1]" },
+  "Firma Electrónica": { bg: "bg-[#1ECAD3]/10", text: "text-[#1ECAD3]" },
   IA: { bg: "bg-emerald-500/10", text: "text-emerald-500" },
   Análisis: { bg: "bg-red-500/10", text: "text-red-500" },
-  KYC: { bg: "bg-[#212A45]/10", text: "text-[#212A45]" },
+  KYC: { bg: "bg-[#0066ff]/10", text: "text-[#0066ff]" },
   Regulación: { bg: "bg-purple-500/10", text: "text-purple-500" },
-  Seguridad: { bg: "bg-[#2DB6C1]/10", text: "text-[#2DB6C1]" },
+  Seguridad: { bg: "bg-[#00d4aa]/10", text: "text-[#00d4aa]" },
   Fraude: { bg: "bg-amber-500/10", text: "text-amber-600" },
   Onboarding: { bg: "bg-orange-500/10", text: "text-orange-500" },
   Compliance: { bg: "bg-indigo-500/10", text: "text-indigo-500" },

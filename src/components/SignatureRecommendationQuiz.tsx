@@ -148,11 +148,11 @@ export default function SignatureRecommendationQuiz() {
           <div
             key={i}
             className="h-1.5 rounded-full flex-1 transition-all duration-300"
-            style={{ background: i <= step ? "#2DB6C1" : cl.divider }}
+            style={{ background: i <= step ? "#1ECAD3" : cl.divider }}
           />
         ))}
       </div>
-      <p className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "#2DB6C1" }}>
+      <p className="text-xs font-semibold uppercase tracking-wider mb-2" style={{ color: "#1ECAD3" }}>
         Pregunta {step + 1} de {questions.length}
       </p>
       <h3 className="text-xl font-black mb-6" style={{ color: isDark ? "#fff" : "#0A0F1A" }}>

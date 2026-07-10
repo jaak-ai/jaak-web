@@ -8,7 +8,7 @@ const flowSteps = [
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
       </svg>
     ),
-    color: "#2DB6C1",
+    color: "#1ECAD3",
   },
   {
     number: "02",
@@ -31,7 +31,7 @@ const flowSteps = [
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
       </svg>
     ),
-    color: "#2DB6C1",
+    color: "#1ECAD3",
   },
   {
     number: "04",
@@ -61,7 +61,7 @@ export default function HomepageProductFlow() {
       {/* Ambient glow */}
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full blur-[120px] pointer-events-none"
-        style={{ background: "rgba(45, 182, 193,0.06)" }}
+        style={{ background: "rgba(30,202,211,0.06)" }}
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -70,9 +70,9 @@ export default function HomepageProductFlow() {
           <div
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6"
             style={{
-              color: "#2DB6C1",
-              border: "1px solid rgba(45, 182, 193,0.22)",
-              background: "rgba(45, 182, 193,0.08)",
+              color: "#1ECAD3",
+              border: "1px solid rgba(30,202,211,0.22)",
+              background: "rgba(30,202,211,0.08)",
             }}
           >
             Cómo funciona
@@ -81,7 +81,7 @@ export default function HomepageProductFlow() {
             De la solicitud al expediente{" "}
             <span
               style={{
-                background: "linear-gradient(90deg, #2DB6C1, #2AD796)",
+                background: "linear-gradient(90deg, #1ECAD3, #2AD796)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
@@ -106,7 +106,7 @@ export default function HomepageProductFlow() {
             className="hidden lg:block absolute top-[52px] left-[12.5%] right-[12.5%] h-px"
             style={{
               background:
-                "linear-gradient(to right, transparent, rgba(45, 182, 193,0.25), rgba(42,215,150,0.25), transparent)",
+                "linear-gradient(to right, transparent, rgba(30,202,211,0.25), rgba(42,215,150,0.25), transparent)",
             }}
           />
 
@@ -117,17 +117,17 @@ export default function HomepageProductFlow() {
                 <div
                   className="relative w-24 h-24 rounded-3xl flex items-center justify-center mb-6 transition-all duration-300 group-hover:-translate-y-1"
                   style={{
-                    background: `linear-gradient(145deg, rgba(45, 182, 193,0.18), rgba(45, 182, 193,0.06))`,
-                    border: `1px solid rgba(45, 182, 193,0.22)`,
+                    background: `linear-gradient(145deg, rgba(30,202,211,0.18), rgba(30,202,211,0.06))`,
+                    border: `1px solid rgba(30,202,211,0.22)`,
                     backdropFilter: "blur(12px)",
-                    boxShadow: "0 8px 32px rgba(45, 182, 193,0.10)",
+                    boxShadow: "0 8px 32px rgba(30,202,211,0.10)",
                     color: s.color,
                   }}
                 >
                   {s.icon}
                   <div
                     className="absolute -top-2.5 -right-2.5 w-7 h-7 rounded-full flex items-center justify-center text-xs font-black"
-                    style={{ background: "linear-gradient(135deg, #2DB6C1, #2AD796)", color: "white" }}
+                    style={{ background: "linear-gradient(135deg, #1ECAD3, #2AD796)", color: "white" }}
                   >
                     {s.number.replace("0", "")}
                   </div>
@@ -151,9 +151,9 @@ export default function HomepageProductFlow() {
                           key={b}
                           className="text-xs px-2.5 py-1 rounded-full font-medium"
                           style={{
-                            background: "rgba(45, 182, 193,0.12)",
-                            border: "1px solid rgba(45, 182, 193,0.20)",
-                            color: "#2DB6C1",
+                            background: "rgba(30,202,211,0.12)",
+                            border: "1px solid rgba(30,202,211,0.20)",
+                            color: "#1ECAD3",
                           }}
                         >
                           {b}
@@ -171,7 +171,7 @@ export default function HomepageProductFlow() {
         <div className="hp-glass-teal mt-12 rounded-2xl px-8 py-5 text-center">
           <p className="text-sm font-medium" style={{ color: "var(--hp-text-md)" }}>
             Cada expediente incluye:{" "}
-            <span style={{ color: "#2DB6C1" }}>
+            <span style={{ color: "#1ECAD3" }}>
               sello de tiempo · hash de integridad · registros biométricos · consentimiento informado · firma electrónica
             </span>
           </p>

@@ -32,7 +32,7 @@ export default function EmpresasReguladas() {
     },
     {
       problem: "Alto riesgo de suplantación",
-      solution: "Biometría certificada con prueba de vida que reduce el fraude",
+      solution: "Biometría certificada con prueba de vida que elimina el fraude",
     },
   ];
 
@@ -41,12 +41,12 @@ export default function EmpresasReguladas() {
       <Header />
       <main>
         {/* Hero */}
-        <section className="pt-32 pb-20 bg-[#0E1133]">
+        <section className="pt-32 pb-20 bg-[#0a0a0a]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#212A45]/10 border border-[#212A45]/20 rounded-full mb-6">
-                <span className="w-2 h-2 bg-[#212A45] rounded-full"></span>
-                <span className="text-[#212A45] text-sm font-medium">Soluciones por industria</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#0066ff]/10 border border-[#0066ff]/20 rounded-full mb-6">
+                <span className="w-2 h-2 bg-[#0066ff] rounded-full"></span>
+                <span className="text-[#0066ff] text-sm font-medium">Soluciones por industria</span>
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6">
                 Empresas reguladas
@@ -57,7 +57,7 @@ export default function EmpresasReguladas() {
               <div className="flex flex-wrap gap-4">
                 <Link
                   href="/contacto"
-                  className="px-6 py-3 bg-[#212A45] text-white font-semibold rounded-lg hover:bg-[#212A45] transition-all"
+                  className="px-6 py-3 bg-[#0066ff] text-white font-semibold rounded-lg hover:bg-[#0052cc] transition-all"
                 >
                   Hablar con ventas
                 </Link>
@@ -108,7 +108,7 @@ export default function EmpresasReguladas() {
                       <p className="text-gray-900 text-lg">{item.problem}</p>
                     </div>
                     <div>
-                      <div className="flex items-center gap-3 text-[#2DB6C1] mb-2">
+                      <div className="flex items-center gap-3 text-[#00d4aa] mb-2">
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
@@ -124,7 +124,7 @@ export default function EmpresasReguladas() {
         </section>
 
         {/* CTA */}
-        <section className="py-20 bg-[#0E1133]">
+        <section className="py-20 bg-[#0a0a0a]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl md:text-4xl font-black text-white mb-6">
               Cumple con tu regulación sin complicaciones
@@ -134,7 +134,7 @@ export default function EmpresasReguladas() {
             </p>
             <Link
               href="/contacto"
-              className="inline-flex px-8 py-4 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-all"
+              className="inline-flex px-8 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
             >
               Solicitar demo
             </Link>

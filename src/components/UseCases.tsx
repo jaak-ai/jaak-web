@@ -24,11 +24,11 @@ export default function UseCases() {
   ];
 
   return (
-    <section className="py-20 bg-[#FAFAFA]">
+    <section className="py-20 bg-[#f9fafb]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           {/* Section header */}
-          <h2 className="text-3xl md:text-4xl font-black text-[#0E1133] mb-10">
+          <h2 className="text-3xl md:text-4xl font-black text-[#0a0f1c] mb-10">
             Para quién es JAAK hoy
           </h2>
 
@@ -37,14 +37,14 @@ export default function UseCases() {
             {cases.map((useCase, index) => (
               <div
                 key={index}
-                className="bg-white p-6 rounded-xl border border-[#F3F4F8]"
+                className="bg-white p-6 rounded-xl border border-[#e5e7eb]"
               >
-                <h3 className="text-lg font-bold text-[#0E1133] mb-4">
+                <h3 className="text-lg font-bold text-[#0a0f1c] mb-4">
                   {useCase.title}
                 </h3>
                 <ul className="space-y-3">
                   {useCase.benefits.map((benefit, idx) => (
-                    <li key={idx} className="flex items-start gap-2 text-[#64748B]">
+                    <li key={idx} className="flex items-start gap-2 text-[#4b5563]">
                       <span className="text-[#2DB6C1] mt-1">•</span>
                       {benefit}
                     </li>
@@ -55,7 +55,7 @@ export default function UseCases() {
           </div>
 
           {/* Disclaimer */}
-          <div className="bg-[#0E1133] rounded-xl p-6 text-center">
+          <div className="bg-[#0a0f1c] rounded-xl p-6 text-center">
             <p className="text-white text-lg">
               Si no estás en un entorno regulado, JAAK no es para ti.
               <br />

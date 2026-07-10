@@ -114,8 +114,8 @@ export default function QueEsKYCMexico() {
                 desea realizar.
               </p>
 
-              <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
-                <p className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-2">Concepto clave</p>
+              <div className="bg-[#0066ff]/5 border-l-4 border-[#0066ff] p-6 my-8">
+                <p className="text-gray-700 font-medium mb-2">Concepto clave:</p>
                 <p className="text-gray-600">
                   KYC no es un trámite administrativo. Es la primera barrera
                   contra el lavado de dinero, el financiamiento al terrorismo
@@ -346,9 +346,9 @@ export default function QueEsKYCMexico() {
                 </li>
               </ul>
 
-              <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
-                <p className="text-[11px] font-semibold tracking-wide uppercase text-[#b91c1c] mb-2">Advertencia regulatoria</p>
-                <p className="text-gray-600">
+              <div className="bg-amber-50 border-l-4 border-amber-400 p-6 my-8">
+                <p className="text-amber-800 font-medium mb-2">Advertencia regulatoria:</p>
+                <p className="text-amber-700">
                   Las multas por incumplimiento de la LFPIORPI pueden llegar
                   hasta 65,000 veces el salario mínimo diario. Para las
                   entidades financieras reguladas por la CNBV, las sanciones
@@ -380,10 +380,11 @@ export default function QueEsKYCMexico() {
               </p>
               <p className="text-gray-600 leading-relaxed mb-4">
                 Las instituciones que han adoptado plataformas de KYC digital
-                modernas reportan tasas de conversión notablemente más altas en
-                procesos de onboarding, comparadas con quienes mantienen procesos
-                manuales o híbridos. La fricción no viene del KYC en sí: viene de
-                los procesos mal diseñados que lo implementan.
+                modernas reportan tasas de conversión superiores al 85% en
+                procesos de onboarding, comparadas con las tasas del 40-60%
+                que logran quienes mantienen procesos manuales o híbridos.
+                La fricción no viene del KYC en sí: viene de los procesos
+                mal diseñados que lo implementan.
               </p>
 
               <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-6">
@@ -523,7 +524,7 @@ export default function QueEsKYCMexico() {
             <div className="mt-12 flex flex-wrap gap-4">
               <Link
                 href="/contacto"
-                className="px-6 py-3 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-all"
+                className="px-6 py-3 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
               >
                 Hablar con un experto
               </Link>

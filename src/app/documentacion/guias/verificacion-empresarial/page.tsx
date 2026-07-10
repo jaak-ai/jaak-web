@@ -14,7 +14,7 @@ export default function VerificacionEmpresarialGuia() {
       <Header />
       <main>
         {/* Hero */}
-        <section className="pt-32 pb-12 bg-[#0E1133]">
+        <section className="pt-32 pb-12 bg-[#0a0a0a]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <Link href="/documentacion" className="inline-flex items-center gap-2 text-white/60 hover:text-white mb-6 transition-colors">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -23,7 +23,7 @@ export default function VerificacionEmpresarialGuia() {
               Volver a documentación
             </Link>
             <div className="flex items-center gap-3 mb-4">
-              <span className="px-3 py-1 bg-[#212A45]/20 text-[#212A45] text-sm font-medium rounded-full">Guía</span>
+              <span className="px-3 py-1 bg-[#0066ff]/20 text-[#0066ff] text-sm font-medium rounded-full">Guía</span>
               <span className="text-white/40">25 min</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-black text-white mb-6">
@@ -87,7 +87,7 @@ export default function VerificacionEmpresarialGuia() {
               <div className="mb-12">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">1. Crear verificación empresarial</h2>
 
-                <div className="bg-[#0E1133] rounded-lg overflow-hidden mb-4">
+                <div className="bg-[#0a0a0a] rounded-lg overflow-hidden mb-4">
                   <div className="px-4 py-2 bg-white/5 border-b border-white/10">
                     <span className="text-white/60 text-sm">POST /v1/kyb/verifications</span>
                   </div>
@@ -172,7 +172,7 @@ export default function VerificacionEmpresarialGuia() {
                   Sube los documentos corporativos para su validación:
                 </p>
 
-                <div className="bg-[#0E1133] rounded-lg overflow-hidden mb-4">
+                <div className="bg-[#0a0a0a] rounded-lg overflow-hidden mb-4">
                   <pre className="p-4 text-sm overflow-x-auto">
                     <code className="text-white">{`// Subir acta constitutiva
 await jaak.kyb.uploadDocument(kybSession.id, {
@@ -207,7 +207,7 @@ console.log(docs);`}</code>
                   Inicia la verificación KYC de representantes legales y beneficiarios finales:
                 </p>
 
-                <div className="bg-[#0E1133] rounded-lg overflow-hidden mb-4">
+                <div className="bg-[#0a0a0a] rounded-lg overflow-hidden mb-4">
                   <pre className="p-4 text-sm overflow-x-auto">
                     <code className="text-white">{`// Agregar representante legal
 const legalRep = await jaak.kyb.addPerson(kybSession.id, {
@@ -246,7 +246,7 @@ persons.forEach(person => {
               <div className="mb-12">
                 <h2 className="text-2xl font-bold text-gray-900 mb-4">4. Consultar resultados</h2>
 
-                <div className="bg-[#0E1133] rounded-lg overflow-hidden mb-4">
+                <div className="bg-[#0a0a0a] rounded-lg overflow-hidden mb-4">
                   <div className="px-4 py-2 bg-white/5 border-b border-white/10">
                     <span className="text-white/60 text-sm">Webhook: kyb.completed</span>
                   </div>

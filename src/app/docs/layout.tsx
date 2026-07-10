@@ -2,21 +2,9 @@ import { Sidebar } from '@/components/docs/Sidebar'
 import { SearchModal } from '@/components/docs/SearchModal'
 import { SearchButton } from '@/components/docs/SearchButton'
 import { docsConfig } from '@/lib/docs/config'
-import type { SearchDoc } from '@/lib/docs/search'
-import { allDocs } from 'contentlayer2/generated'
 import Link from 'next/link'
 import Image from 'next/image'
 import type { Metadata } from 'next'
-
-const searchDocs: SearchDoc[] = allDocs
-  .filter((doc) => !doc.unlisted)
-  .map((doc) => ({
-    title: doc.title,
-    description: doc.description,
-    url: doc.url,
-    category: doc.category,
-    text: doc.body.raw.replace(/\s+/g, ' ').trim().slice(0, 300),
-  }))
 
 export const metadata: Metadata = {
   title: {
@@ -51,7 +39,7 @@ export default function DocsLayout({
             <div className="h-6 w-px bg-gray-200" />
             <Link
               href="/docs"
-              className="text-sm font-semibold text-gray-900 hover:text-[#212A45] transition-colors"
+              className="text-sm font-semibold text-gray-900 hover:text-[#0066ff] transition-colors"
             >
               Documentacion
             </Link>
@@ -66,13 +54,13 @@ export default function DocsLayout({
           <div className="flex items-center gap-4">
             <Link
               href="https://platform.jaak.ai"
-              className="hidden sm:block text-sm font-medium text-gray-700 hover:text-[#212A45] transition-colors"
+              className="hidden sm:block text-sm font-medium text-gray-700 hover:text-[#0066ff] transition-colors"
             >
               Iniciar sesion
             </Link>
             <Link
               href="/contacto"
-              className="rounded-lg bg-[#212A45] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#1a1f34]"
+              className="rounded-lg bg-[#0066ff] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#0052cc]"
             >
               Contactar
             </Link>
@@ -89,7 +77,7 @@ export default function DocsLayout({
       </div>
 
       {/* Search modal */}
-      <SearchModal searchDocs={searchDocs} />
+      <SearchModal />
     </div>
   )
 }

@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { STATS } from "@/lib/trust";
 
 export const metadata: Metadata = {
   title: "Nosotros | JAAK - Plataforma de Verificación de Identidad",
@@ -181,19 +180,19 @@ export default function NosotrosPage() {
       <Header />
       <main>
         {/* Hero Section */}
-        <section className="relative bg-[#0E1133] pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden">
+        <section className="relative bg-[#0a0a0a] pt-32 pb-20 lg:pt-40 lg:pb-32 overflow-hidden">
           {/* Background gradient */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#212A45]/10 via-transparent to-transparent" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#212A45]/5 rounded-full blur-3xl" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0066ff]/10 via-transparent to-transparent" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#0066ff]/5 rounded-full blur-3xl" />
 
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-4xl mx-auto">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full text-sm text-white/70 mb-8">
-                <span className="w-2 h-2 bg-[#2DB6C1] rounded-full" />
+                <span className="w-2 h-2 bg-[#00d4aa] rounded-full" />
                 Propósito de JAAK
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-                <span className="text-[#212A45]">Seguridad</span> confiable
+                <span className="text-[#0066ff]">Seguridad</span> confiable
               </h1>
               <p className="text-xl text-white/70 max-w-3xl mx-auto leading-relaxed">
                 Tecnología 100% mexicana diseñada para resolver los retos
@@ -209,32 +208,32 @@ export default function NosotrosPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-2 gap-12 lg:gap-20">
               {/* Vision */}
-              <div className="bg-gradient-to-br from-[#212A45]/5 to-[#2DB6C1]/5 rounded-3xl p-8 lg:p-12">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#212A45]/10 rounded-full text-sm text-[#212A45] font-medium mb-6">
+              <div className="bg-gradient-to-br from-[#0066ff]/5 to-[#00d4aa]/5 rounded-3xl p-8 lg:p-12">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#0066ff]/10 rounded-full text-sm text-[#0066ff] font-medium mb-6">
                   Visión
                 </div>
                 <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
                   Ofrecer a nuestros clientes globales una plataforma segura y completa para la gestión y verificación de identidades.
                 </h2>
-                <div className="w-16 h-1 bg-[#212A45] rounded-full"></div>
+                <div className="w-16 h-1 bg-[#0066ff] rounded-full"></div>
               </div>
 
               {/* Mission */}
-              <div className="bg-gradient-to-br from-[#2DB6C1]/5 to-[#212A45]/5 rounded-3xl p-8 lg:p-12">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#2DB6C1]/10 rounded-full text-sm text-[#2DB6C1] font-medium mb-6">
+              <div className="bg-gradient-to-br from-[#00d4aa]/5 to-[#0066ff]/5 rounded-3xl p-8 lg:p-12">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#00d4aa]/10 rounded-full text-sm text-[#00d4aa] font-medium mb-6">
                   Misión
                 </div>
                 <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
                   Brindar facilidad, innovación y seguridad para nuestros clientes con la tecnología JAAK.
                 </h2>
-                <div className="w-16 h-1 bg-[#2DB6C1] rounded-full"></div>
+                <div className="w-16 h-1 bg-[#00d4aa] rounded-full"></div>
               </div>
             </div>
           </div>
         </section>
 
         {/* Fundamentals Section (7 S's) */}
-        <section className="py-20 lg:py-28 bg-[#0E1133]">
+        <section className="py-20 lg:py-28 bg-[#0a0a0a]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-3xl mx-auto mb-16">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-sm text-white/70 mb-6">
@@ -253,7 +252,7 @@ export default function NosotrosPage() {
                   key={index}
                   className="bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors"
                 >
-                  <div className="w-12 h-12 bg-[#212A45] rounded-xl flex items-center justify-center text-white font-bold text-xl mb-4">
+                  <div className="w-12 h-12 bg-[#0066ff] rounded-xl flex items-center justify-center text-white font-bold text-xl mb-4">
                     {item.letter}
                   </div>
                   <h3 className="text-lg font-bold text-white mb-2">
@@ -285,7 +284,7 @@ export default function NosotrosPage() {
                   key={index}
                   className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow"
                 >
-                  <div className="w-14 h-14 bg-[#212A45]/10 rounded-xl flex items-center justify-center text-[#212A45] mb-6">
+                  <div className="w-14 h-14 bg-[#0066ff]/10 rounded-xl flex items-center justify-center text-[#0066ff] mb-6">
                     {value.icon}
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3">
@@ -305,12 +304,12 @@ export default function NosotrosPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
               <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#212A45]/10 rounded-full text-sm text-[#212A45] font-medium mb-6">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#0066ff]/10 rounded-full text-sm text-[#0066ff] font-medium mb-6">
                   Orgullosamente mexicanos
                 </div>
                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
                   Tecnología{" "}
-                  <span className="text-[#2DB6C1]">100% mexicana</span>
+                  <span className="text-[#00d4aa]">100% mexicana</span>
                 </h2>
                 <p className="text-lg text-gray-600 mb-6 leading-relaxed">
                   JAAK nació en México con la visión de resolver los retos
@@ -325,9 +324,9 @@ export default function NosotrosPage() {
                 </p>
                 <div className="grid sm:grid-cols-2 gap-6">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-[#212A45]/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <div className="w-12 h-12 bg-[#0066ff]/10 rounded-xl flex items-center justify-center flex-shrink-0">
                       <svg
-                        className="w-6 h-6 text-[#212A45]"
+                        className="w-6 h-6 text-[#0066ff]"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -356,9 +355,9 @@ export default function NosotrosPage() {
                     </div>
                   </div>
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-[#212A45]/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <div className="w-12 h-12 bg-[#0066ff]/10 rounded-xl flex items-center justify-center flex-shrink-0">
                       <svg
-                        className="w-6 h-6 text-[#212A45]"
+                        className="w-6 h-6 text-[#0066ff]"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -386,32 +385,32 @@ export default function NosotrosPage() {
                 <div className="bg-gradient-to-br from-gray-100 to-gray-50 rounded-3xl p-8 lg:p-12">
                   <div className="grid grid-cols-2 gap-6">
                     <div className="bg-white rounded-2xl p-6 shadow-sm">
-                      <div className="text-4xl font-bold text-[#212A45] mb-2">
-                        {STATS.verificacionesAcumuladas}
+                      <div className="text-4xl font-bold text-[#0066ff] mb-2">
+                        +50M
                       </div>
                       <div className="text-sm text-gray-600">
                         Verificaciones realizadas
                       </div>
                     </div>
                     <div className="bg-white rounded-2xl p-6 shadow-sm">
-                      <div className="text-4xl font-bold text-[#212A45] mb-2">
-                        {STATS.clientesEmpresariales}
+                      <div className="text-4xl font-bold text-[#0066ff] mb-2">
+                        +200
                       </div>
                       <div className="text-sm text-gray-600">
                         Clientes empresariales
                       </div>
                     </div>
                     <div className="bg-white rounded-2xl p-6 shadow-sm">
-                      <div className="text-4xl font-bold text-[#2DB6C1] mb-2">
-                        {STATS.disponibilidad}
+                      <div className="text-4xl font-bold text-[#00d4aa] mb-2">
+                        99.9%
                       </div>
                       <div className="text-sm text-gray-600">
-                        Disponibilidad
+                        Uptime garantizado
                       </div>
                     </div>
                     <div className="bg-white rounded-2xl p-6 shadow-sm">
-                      <div className="text-4xl font-bold text-[#2DB6C1] mb-2">
-                        {STATS.verificacionBiometrica}
+                      <div className="text-4xl font-bold text-[#00d4aa] mb-2">
+                        &lt;3s
                       </div>
                       <div className="text-sm text-gray-600">
                         Tiempo de verificación
@@ -428,7 +427,7 @@ export default function NosotrosPage() {
         <section className="py-20 lg:py-28 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-3xl mx-auto mb-16">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#212A45]/10 rounded-full text-sm text-[#212A45] font-medium mb-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#0066ff]/10 rounded-full text-sm text-[#0066ff] font-medium mb-6">
                 Certificaciones internacionales
               </div>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -473,7 +472,7 @@ export default function NosotrosPage() {
         {/* CTA Section */}
         <section className="py-20 lg:py-28 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="bg-gradient-to-br from-[#212A45] to-[#212A45] rounded-3xl p-8 lg:p-16 text-center">
+            <div className="bg-gradient-to-br from-[#0066ff] to-[#0052cc] rounded-3xl p-8 lg:p-16 text-center">
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
                 Sé parte del equipo JAAK
               </h2>
@@ -485,7 +484,7 @@ export default function NosotrosPage() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   href="/contacto"
-                  className="inline-flex items-center justify-center px-8 py-4 bg-white text-[#212A45] font-semibold rounded-xl hover:bg-gray-100 transition-colors"
+                  className="inline-flex items-center justify-center px-8 py-4 bg-white text-[#0066ff] font-semibold rounded-xl hover:bg-gray-100 transition-colors"
                 >
                   Contáctanos
                   <svg

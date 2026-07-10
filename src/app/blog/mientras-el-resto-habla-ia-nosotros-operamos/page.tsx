@@ -28,7 +28,7 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Article",
   headline: "Mientras el resto habla de IA, nosotros operamos: JAAK en producción",
-  description: "JAAK opera biometría e IA en producción. No es teoría: es infraestructura real funcionando hoy en México.",
+  description: "JAAK opera biometría e IA en producción con más de 70 millones de usuarios verificados. No es teoría: es infraestructura real funcionando hoy en México.",
   image: "https://jaak.ai/images/blog/jaak-operamos.jpg",
   datePublished: "2026-02-26",
   dateModified: "2026-02-26",
@@ -50,7 +50,7 @@ const jsonLd = {
     "@type": "WebPage",
     "@id": "https://jaak.ai/blog/mientras-el-resto-habla-ia-nosotros-operamos",
   },
-  keywords: "JAAK, IA en producción, biometría producción, KYC real, verificación identidad México",
+  keywords: "JAAK, IA en producción, biometría producción, KYC real, verificación identidad México, 70 millones usuarios",
   inLanguage: "es-MX",
 };
 
@@ -116,10 +116,8 @@ export default function MientrasElRestoHablaIA() {
                 En paralelo a las actividades del día, esto sucedió de forma autónoma:
               </p>
 
-              <div className="bg-gray-50 rounded-xl p-6 mb-6 border border-[#212A45]/10">
-                <p className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-2">
-                  Agente de ingeniería
-                </p>
+              <div className="bg-gray-50 rounded-xl p-6 mb-6 border-l-4 border-emerald-500">
+                <p className="font-semibold text-gray-900 mb-2">🤖 Agente de ingeniería</p>
                 <p className="text-gray-600">
                   Analizó el repositorio de nuestra plataforma de ventas, identificó inconsistencias
                   en el pipeline de CI/CD, trazó la causa raíz hasta un refactor a medio terminar, y
@@ -127,10 +125,8 @@ export default function MientrasElRestoHablaIA() {
                 </p>
               </div>
 
-              <div className="bg-gray-50 rounded-xl p-6 mb-6 border border-[#212A45]/10">
-                <p className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-2">
-                  Agente de ventas
-                </p>
+              <div className="bg-gray-50 rounded-xl p-6 mb-6 border-l-4 border-[#0066ff]">
+                <p className="font-semibold text-gray-900 mb-2">🎯 Agente de ventas</p>
                 <p className="text-gray-600">
                   Procesó los leads del evento: escaneó badges con código QR, identificó personas,
                   buscó información pública relevante, y los cargó en el CRM con prioridad, rol,
@@ -139,10 +135,8 @@ export default function MientrasElRestoHablaIA() {
                 </p>
               </div>
 
-              <div className="bg-gray-50 rounded-xl p-6 mb-8 border border-[#212A45]/10">
-                <p className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-2">
-                  Agente de identidad
-                </p>
+              <div className="bg-gray-50 rounded-xl p-6 mb-8 border-l-4 border-purple-500">
+                <p className="font-semibold text-gray-900 mb-2">📸 Agente de identidad</p>
                 <p className="text-gray-600">
                   Capturó y procesó imágenes faciales de contactos clave para enrollment biométrico,
                   usando la misma tecnología que JAAK vende a sus clientes del sector financiero.
@@ -170,9 +164,9 @@ export default function MientrasElRestoHablaIA() {
               <div className="overflow-hidden rounded-xl border border-gray-200 mb-8">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="bg-[#0E1133]">
+                    <tr className="bg-[#0a0a0a]">
                       <th className="px-6 py-4 text-left text-white/60 font-semibold">El mercado actual</th>
-                      <th className="px-6 py-4 text-left text-[#212A45] font-semibold">JAAK</th>
+                      <th className="px-6 py-4 text-left text-[#0066ff] font-semibold">JAAK</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-100">
@@ -206,8 +200,8 @@ export default function MientrasElRestoHablaIA() {
                 Lo que esto significa para el fintech mexicano
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
-                En México hay aproximadamente 1,000 empresas fintech activas, con una base amplia de
-                usuarios finales en sus plataformas. La mayoría enfrenta el mismo reto: crecer sin
+                En México hay aproximadamente 1,000 empresas fintech activas, con más de 70 millones
+                de usuarios finales en sus plataformas. La mayoría enfrenta el mismo reto: crecer sin
                 escalar proporcionalmente el costo operativo.
               </p>
               <p className="text-gray-600 leading-relaxed mb-4">
@@ -221,10 +215,8 @@ export default function MientrasElRestoHablaIA() {
                 operativo de la empresa financiera del futuro.
               </p>
 
-              <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
-                <p className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-2">
-                  El punto clave
-                </p>
+              <div className="bg-[#0066ff]/5 border-l-4 border-[#0066ff] p-6 my-8">
+                <p className="text-gray-700 font-medium mb-2">El punto clave:</p>
                 <p className="text-gray-600">
                   Esa experiencia no se compra en un webinar. No se aprende en un workshop de
                   &ldquo;adopción de IA&rdquo;. Se adquiere haciéndolo — y JAAK ya lo está haciendo.
@@ -246,7 +238,7 @@ export default function MientrasElRestoHablaIA() {
                 La pregunta es: <strong>¿vas a hacerlo solo, o con alguien que ya sabe cómo se hace?</strong>
               </p>
 
-              <div className="bg-[#0E1133] rounded-xl p-8 my-12">
+              <div className="bg-[#0a0a0a] rounded-xl p-8 my-12">
                 <h3 className="text-xl font-bold text-white mb-4">
                   Conclusión
                 </h3>

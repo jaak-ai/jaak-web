@@ -31,9 +31,28 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 1,
     },
+    // Chronos - AI Agent Platform
+    {
+      url: `${baseUrl}/chronos`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.95,
+    },
+    {
+      url: `${baseUrl}/chronos/comparacion`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
     // Platform pages
     {
       url: `${baseUrl}/plataforma/verificacion-identidad`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/plataforma/firma-electronica`,
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.9,
@@ -62,49 +81,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.85,
-    },
-    // Firma Electrónica - clúster SEO (hub + variantes)
-    {
-      url: `${baseUrl}/firma-electronica`,
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 0.95,
-    },
-    {
-      url: `${baseUrl}/firma-electronica-simple`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/firma-electronica-nom-151`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/firma-electronica-efirma`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/firma-electronica-biometrica`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/firma-electronica-kyc`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/firma-certificada-sello-tiempo`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.8,
     },
     // Pricing
     {

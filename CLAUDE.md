@@ -157,16 +157,13 @@ import Header from "@/components/Header";
 ### CSS Variables (globals.css)
 
 ```css
---primary: #212A45;      /* Navy JAAK */
---accent: #2DB6C1;       /* Teal */
---accent-green: #2AD796; /* Verde, solo éxito */
---text-dark: #212A45;
---text-gray: #6B7280;
+--primary: #0066ff;      /* Azul JAAK */
+--accent: #00d4aa;       /* Cyan/Teal */
+--text-dark: #111827;
+--text-gray: #6b7280;
 ```
 
-Clases utilitarias: `.btn-primary`, `.btn-secondary`, `.btn-cyan`, `.section-padding`, `.card`, `.hover-lift`, `.gradient-bg`, `.animate-fade-in-up`
-
-DESIGN.md es la fuente de verdad del sistema de diseño; nunca hardcodear hex nuevos.
+Clases utilitarias: `.btn-primary`, `.btn-secondary`, `.btn-blue`, `.btn-cyan`, `.btn-green`, `.section-padding`, `.card`, `.hover-lift`, `.gradient-bg`, `.animate-fade-in-up`
 
 ---
 

@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "La protección de datos personales: un compromiso que va más allá del cumplimiento | JAAK",
-  description: "La protección de datos ya no es solo un requisito legal, es un pilar de confianza, reputación y continuidad operativa. Descubra cómo fortalecer su estrategia de protección desde la verificación de identidad.",
+  description: "La protección de datos ya no es solo un requisito legal, es un pilar de confianza, reputación y continuidad operativa. Descubre cómo fortalecer tu estrategia de protección desde la verificación de identidad.",
   keywords: ["protección de datos", "datos personales", "privacidad", "cumplimiento normativo", "verificación de identidad", "seguridad de datos", "JAAK"],
   openGraph: {
     title: "La protección de datos personales: un compromiso que va más allá del cumplimiento",
@@ -76,8 +76,8 @@ export default function ProteccionDatosPersonales() {
                 operativa para cualquier empresa que gestione identidades, transacciones o información personal.
               </p>
 
-              <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
-                <p className="text-[11px] font-semibold tracking-wide uppercase text-[#2DB6C1] mb-2">En este artículo</p>
+              <div className="bg-[#00d4aa]/5 border-l-4 border-[#00d4aa] p-6 my-8">
+                <p className="text-gray-700 font-medium mb-2">En este artículo encontrarás:</p>
                 <p className="text-gray-600">
                   Una guía informativa para entender por qué la protección de datos personales se ha convertido
                   en un tema crítico para las organizaciones, cuáles son los riesgos de gestionarla sin estructura
@@ -140,21 +140,21 @@ export default function ProteccionDatosPersonales() {
               </ul>
 
               <h2 className="text-2xl font-bold text-gray-900 mt-12 mb-6">
-                ¿Cómo saber si su organización está gestionando correctamente los datos personales?
+                ¿Cómo saber si tu organización está gestionando correctamente los datos personales?
               </h2>
               <p className="text-gray-600 leading-relaxed mb-4">
-                Si responde "sí" a más de dos de estas preguntas, es probable que exista un riesgo operativo o de cumplimiento:
+                Si respondes "sí" a más de dos de estas preguntas, es probable que exista un riesgo operativo o de cumplimiento:
               </p>
               <ul className="list-disc pl-6 mb-6 space-y-3 text-gray-600">
-                <li>¿Sus procesos de verificación dependen en gran medida de revisiones manuales?</li>
-                <li>¿No tiene visibilidad clara de cómo se almacenan y validan los datos personales?</li>
-                <li>¿Cumple con la regulación, pero a costa de fricción y tiempos largos para el usuario?</li>
-                <li>¿Ha tenido dudas sobre si sus procesos actuales resistirían una auditoría?</li>
+                <li>¿Tus procesos de verificación dependen en gran medida de revisiones manuales?</li>
+                <li>¿No tienes visibilidad clara de cómo se almacenan y validan los datos personales?</li>
+                <li>¿Cumples con la regulación, pero a costa de fricción y tiempos largos para el usuario?</li>
+                <li>¿Has tenido dudas sobre si tus procesos actuales resistirían una auditoría?</li>
                 <li>¿La experiencia de verificación afecta la conversión o el onboarding de clientes?</li>
               </ul>
 
-              <div className="relative bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8 before:absolute before:left-6 before:top-0 before:h-px before:w-12 before:bg-[#2DB6C1]">
-                <p className="text-gray-700 font-medium">
+              <div className="bg-[#00d4aa]/5 border-l-4 border-[#00d4aa] p-6 my-8">
+                <p className="text-gray-700">
                   Estas señales indican que proteger datos no es solo cuestión de intención, sino de contar con la tecnología adecuada.
                 </p>
               </div>
@@ -206,7 +206,7 @@ export default function ProteccionDatosPersonales() {
                 <li>Capacidad de escalar operaciones sin comprometer el cumplimiento.</li>
               </ul>
 
-              <div className="bg-[#0E1133] rounded-xl p-8 my-8">
+              <div className="bg-[#0a0a0a] rounded-xl p-8 my-8">
                 <p className="text-white text-xl font-medium italic text-center">
                   "Proteger los datos personales ya no es solo cumplir una norma, es proteger la confianza del negocio."
                 </p>
@@ -229,16 +229,16 @@ export default function ProteccionDatosPersonales() {
 
               <div className="bg-gray-50 rounded-xl p-8 my-12">
                 <h3 className="text-xl font-bold text-gray-900 mb-4">
-                  ¿Quiere saber si sus procesos actuales están protegiendo realmente los datos de sus usuarios?
+                  ¿Quieres saber si tus procesos actuales están protegiendo realmente los datos de tus usuarios?
                 </h3>
                 <p className="text-gray-600 mb-6">
-                  Descubra cómo JAAK puede ayudarle a fortalecer su estrategia de protección de datos desde la verificación de identidad.
+                  Descubre cómo JAAK puede ayudarte a fortalecer tu estrategia de protección de datos desde la verificación de identidad.
                 </p>
                 <Link
                   href="/contacto"
-                  className="inline-flex items-center px-6 py-3 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-all"
+                  className="inline-flex items-center px-6 py-3 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
                 >
-                  Conozca JAAK
+                  Conoce JAAK
                   <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>

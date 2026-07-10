@@ -50,7 +50,7 @@ const steps: Step[] = [
     detail:
       "Soporta PDF, DOCX y más de 20 formatos. El documento se encripta al vuelo y se almacena de forma segura. Puedes definir múltiples firmantes y el orden de firma.",
     icon: <IconUpload />,
-    color: "#2DB6C1",
+    color: "#1ECAD3",
   },
   {
     number: 2,
@@ -59,7 +59,7 @@ const steps: Step[] = [
     detail:
       "El enlace incluye autenticación de un solo uso. Puedes configurar expiración, recordatorios automáticos y personalizar el correo con tu marca. Sin instalaciones.",
     icon: <IconLink />,
-    color: "#2DB6C1",
+    color: "#8B5CF6",
   },
   {
     number: 3,
@@ -68,7 +68,7 @@ const steps: Step[] = [
     detail:
       "Flujo 100% móvil optimizado. Según el nivel configurado: firma simple, validación biométrica o KYC completo. El proceso tarda menos de 3 minutos.",
     icon: <IconPen />,
-    color: "#212A45",
+    color: "#F59E0B",
   },
   {
     number: 4,
@@ -77,7 +77,7 @@ const steps: Step[] = [
     detail:
       "El sello de tiempo es emitido por una Entidad Autorizada (PSC) conforme a la NOM-151-SCFI-2016. Incluye hash del documento, timestamp y cadena de custodia.",
     icon: <IconStamp />,
-    color: "#2AD796",
+    color: "#10B981",
   },
   {
     number: 5,

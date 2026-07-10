@@ -1,16 +1,11 @@
 import { isValidElement, type ReactElement } from 'react'
 import Link from 'next/link'
-import dynamic from 'next/dynamic'
 import type { MDXComponents } from 'mdx/types'
 import { Callout } from './Callout'
 import { CodeBlock } from './CodeBlock'
+import { Mermaid } from './Mermaid'
 import { Tabs, CodeTabs } from './Tabs'
 import { Endpoint, ParamsTable, ResponseSchema, HttpMethod } from './api'
-
-const Mermaid = dynamic(() => import('./Mermaid').then((m) => m.Mermaid), {
-  ssr: false,
-  loading: () => <div className="min-h-[320px]" />,
-})
 
 function extractCodeText(node: unknown): string {
   if (typeof node === 'string') return node
@@ -52,12 +47,12 @@ export const mdxComponents: MDXComponents = {
     const isExternal = href?.startsWith('http')
     if (isExternal) {
       return (
-        <a href={href} target="_blank" rel="noopener noreferrer" className="text-[#212A45] hover:underline">
+        <a href={href} target="_blank" rel="noopener noreferrer" className="text-[#0066ff] hover:underline">
           {children}
         </a>
       )
     }
-    return <Link href={href || '#'} className="text-[#212A45] hover:underline">{children}</Link>
+    return <Link href={href || '#'} className="text-[#0066ff] hover:underline">{children}</Link>
   },
   ul: ({ children }) => (
     <ul className="mb-4 list-disc pl-6 text-gray-600 space-y-2">{children}</ul>
@@ -88,13 +83,13 @@ export const mdxComponents: MDXComponents = {
       }
     }
     return (
-      <pre className="mb-4 overflow-x-auto rounded-lg bg-[#0E1133] p-4 text-sm text-gray-100">
+      <pre className="mb-4 overflow-x-auto rounded-lg bg-[#0a0a0a] p-4 text-sm text-gray-100">
         {children}
       </pre>
     )
   },
   blockquote: ({ children }) => (
-    <blockquote className="relative mb-4 rounded-md border border-[#212A45]/10 bg-[#FAFAFA] px-5 py-4 italic text-gray-600 before:absolute before:left-6 before:top-0 before:h-px before:w-12 before:bg-[#2DB6C1] [&>p:last-child]:mb-0">
+    <blockquote className="mb-4 border-l-4 border-[#0066ff] pl-4 italic text-gray-600">
       {children}
     </blockquote>
   ),

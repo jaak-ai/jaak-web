@@ -15,7 +15,9 @@ export default function UrgentBanner() {
           <span className="font-semibold text-white"> Agenda una demo con un experto</span>
         </span>
         <Link
-          href="/contacto"
+          href="https://meetings.hubspot.com/jose-andres-yllescas-lira"
+          target="_blank"
+          rel="noopener noreferrer"
           className="ml-2 inline-flex items-center gap-1.5 px-3 py-1 bg-[#2DB6C1] hover:bg-[#25969f] text-white text-xs font-bold rounded-full transition-all hover:scale-105"
         >
           Agendar demo

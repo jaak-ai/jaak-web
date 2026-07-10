@@ -27,7 +27,7 @@ const breadcrumbSchema = {
   "@type": "BreadcrumbList",
   itemListElement: [
     { "@type": "ListItem", position: 1, name: "Inicio", item: "https://jaak.ai" },
-    { "@type": "ListItem", position: 2, name: "Firma Electrónica", item: "https://jaak.ai/firma-electronica" },
+    { "@type": "ListItem", position: 2, name: "Firma Electrónica", item: "https://jaak.ai/plataforma/firma-electronica" },
     { "@type": "ListItem", position: 3, name: "Firma Digital NOM-151", item: "https://jaak.ai/firma-electronica-nom-151" },
   ],
 };
@@ -50,7 +50,7 @@ export default function FirmaNom151Page() {
         >
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <nav className="flex items-center gap-2 text-xs text-gray-600 mb-8" aria-label="Navegación">
-              <Link href="/firma-electronica" className="hover:text-[#2DB6C1] transition-colors">
+              <Link href="/plataforma/firma-electronica" className="hover:text-[#1ECAD3] transition-colors">
                 Firma Electrónica
               </Link>
               <span aria-hidden="true">›</span>
@@ -60,9 +60,9 @@ export default function FirmaNom151Page() {
             <div
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-6"
               style={{
-                background: "rgba(45, 182, 193,0.1)",
-                border: "1px solid rgba(45, 182, 193,0.25)",
-                color: "#2DB6C1",
+                background: "rgba(30,202,211,0.1)",
+                border: "1px solid rgba(30,202,211,0.25)",
+                color: "#1ECAD3",
               }}
             >
               Nivel certificado · NOM-151-SCFI-2016
@@ -72,7 +72,7 @@ export default function FirmaNom151Page() {
               Firma electrónica con{" "}
               <span
                 style={{
-                  background: "linear-gradient(135deg, #2DB6C1, #2AD796)",
+                  background: "linear-gradient(135deg, #1ECAD3, #2AD796)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
@@ -92,7 +92,7 @@ export default function FirmaNom151Page() {
               <Link
                 href="/autoservicio"
                 className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl font-bold text-white transition-all hover:opacity-90"
-                style={{ background: "#2DB6C1", boxShadow: "0 0 25px rgba(45, 182, 193,0.3)" }}
+                style={{ background: "#1ECAD3", boxShadow: "0 0 25px rgba(30,202,211,0.3)" }}
               >
                 Activar NOM-151
               </Link>
@@ -108,7 +108,7 @@ export default function FirmaNom151Page() {
         </section>
 
         {/* What is NOM-151 */}
-        <section className="py-20" style={{ background: "#0E1133" }} aria-labelledby="nom-heading">
+        <section className="py-20" style={{ background: "#070E1A" }} aria-labelledby="nom-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
               <div>
@@ -157,7 +157,7 @@ export default function FirmaNom151Page() {
                   <div
                     key={item.title}
                     className="flex gap-4 p-4 rounded-xl"
-                    style={{ background: "rgba(45, 182, 193,0.04)", border: "1px solid rgba(45, 182, 193,0.12)" }}
+                    style={{ background: "rgba(30,202,211,0.04)", border: "1px solid rgba(30,202,211,0.12)" }}
                   >
                     <span className="text-xl flex-shrink-0" aria-hidden="true">{item.icon}</span>
                     <div>
@@ -225,7 +225,7 @@ export default function FirmaNom151Page() {
         </section>
 
         {/* Internal links + CTA */}
-        <section className="py-16" style={{ background: "#0E1133" }}>
+        <section className="py-16" style={{ background: "#070E1A" }}>
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p className="text-gray-500 text-sm mb-6">
               ¿Necesitas también verificación de identidad? Explora:
@@ -235,7 +235,7 @@ export default function FirmaNom151Page() {
                 { href: "/firma-electronica-biometrica", label: "Firma Digital NOM-151 + Biometría" },
                 { href: "/firma-electronica-kyc", label: "Firma Digital NOM-151 + KYC" },
                 { href: "/firma-electronica-simple", label: "Firma Simple" },
-                { href: "/firma-electronica", label: "← Hub principal" },
+                { href: "/plataforma/firma-electronica", label: "← Hub principal" },
               ].map((link) => (
                 <Link
                   key={link.href}
@@ -244,7 +244,7 @@ export default function FirmaNom151Page() {
                   style={{
                     background: "rgba(255,255,255,0.04)",
                     border: "1px solid rgba(255,255,255,0.08)",
-                    color: "#2DB6C1",
+                    color: "#1ECAD3",
                   }}
                 >
                   {link.label}
@@ -254,7 +254,7 @@ export default function FirmaNom151Page() {
             <Link
               href="/autoservicio"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold text-white text-base transition-all hover:opacity-90"
-              style={{ background: "#2DB6C1", boxShadow: "0 0 30px rgba(45, 182, 193,0.3)" }}
+              style={{ background: "#1ECAD3", boxShadow: "0 0 30px rgba(30,202,211,0.3)" }}
             >
               Activar Firma Digital NOM-151 →
             </Link>

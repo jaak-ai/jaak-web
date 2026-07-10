@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import type { SearchDoc, SearchResult } from '@/lib/docs/search'
+import { search, initSearchIndex, type SearchResult } from '@/lib/docs/search'
 
 const categoryLabels: Record<string, string> = {
   guia: 'Guia',
@@ -20,30 +20,18 @@ const categoryColors: Record<string, string> = {
   recurso: 'bg-gray-100 text-gray-700',
 }
 
-export function SearchModal({ searchDocs }: { searchDocs: SearchDoc[] }) {
+export function SearchModal() {
   const [isOpen, setIsOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [results, setResults] = useState<SearchResult[]>([])
   const [selectedIndex, setSelectedIndex] = useState(0)
-  const [ready, setReady] = useState(false)
-  const searchRef = useRef<((query: string) => SearchResult[]) | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
 
-  // Load the search module and build the index on first open
+  // Initialize search index on mount
   useEffect(() => {
-    if (!isOpen || searchRef.current) return
-    let cancelled = false
-    import('@/lib/docs/search').then((mod) => {
-      if (cancelled) return
-      mod.initSearchIndex(searchDocs)
-      searchRef.current = mod.search
-      setReady(true)
-    })
-    return () => {
-      cancelled = true
-    }
-  }, [isOpen, searchDocs])
+    initSearchIndex()
+  }, [])
 
   // Keyboard shortcut: Cmd+K / Ctrl+K to open, Escape to close
   useEffect(() => {
@@ -68,15 +56,16 @@ export function SearchModal({ searchDocs }: { searchDocs: SearchDoc[] }) {
     }
   }, [isOpen])
 
-  // Search as user types (once the index is ready)
+  // Search as user types
   useEffect(() => {
-    if (query.length > 1 && searchRef.current) {
-      setResults(searchRef.current(query))
+    if (query.length > 1) {
+      const searchResults = search(query)
+      setResults(searchResults)
       setSelectedIndex(0)
     } else {
       setResults([])
     }
-  }, [query, ready])
+  }, [query])
 
   // Handle result selection
   const handleSelect = useCallback(
@@ -174,7 +163,7 @@ export function SearchModal({ searchDocs }: { searchDocs: SearchDoc[] }) {
                     onMouseEnter={() => setSelectedIndex(index)}
                     className={`flex w-full items-start gap-3 px-4 py-3 text-left transition-colors ${
                       selectedIndex === index
-                        ? 'bg-[#212A45]/5'
+                        ? 'bg-[#0066ff]/5'
                         : 'hover:bg-gray-50'
                     }`}
                   >
@@ -182,7 +171,7 @@ export function SearchModal({ searchDocs }: { searchDocs: SearchDoc[] }) {
                     <svg
                       className={`mt-0.5 h-5 w-5 flex-shrink-0 ${
                         selectedIndex === index
-                          ? 'text-[#212A45]'
+                          ? 'text-[#0066ff]'
                           : 'text-gray-400'
                       }`}
                       fill="none"
@@ -202,7 +191,7 @@ export function SearchModal({ searchDocs }: { searchDocs: SearchDoc[] }) {
                         <span
                           className={`text-sm font-medium ${
                             selectedIndex === index
-                              ? 'text-[#212A45]'
+                              ? 'text-[#0066ff]'
                               : 'text-gray-900'
                           }`}
                         >
@@ -225,7 +214,7 @@ export function SearchModal({ searchDocs }: { searchDocs: SearchDoc[] }) {
                     {/* Arrow indicator for selected */}
                     {selectedIndex === index && (
                       <svg
-                        className="mt-0.5 h-5 w-5 flex-shrink-0 text-[#212A45]"
+                        className="mt-0.5 h-5 w-5 flex-shrink-0 text-[#0066ff]"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"

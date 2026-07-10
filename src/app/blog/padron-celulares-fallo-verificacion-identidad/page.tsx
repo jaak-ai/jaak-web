@@ -62,9 +62,9 @@ export default function PadronCelularesFalloVerificacion() {
         { title: "Tendencias KYC 2026", slug: "tendencias-kyc-2026", category: "KYC" },
       ]}
     >
-              <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
-                <p className="text-[11px] font-semibold tracking-wide uppercase text-[#b91c1c] mb-2">Alerta crítica</p>
-                <p className="text-gray-600">
+              <div className="bg-red-50 border-l-4 border-red-500 p-6 my-8">
+                <p className="text-red-800 font-medium mb-2">Alerta crítica</p>
+                <p className="text-red-700">
                   A solo días de iniciar el registro obligatorio de líneas telefónicas, comenzaron a circular
                   pruebas contundentes de una falla crítica: cualquiera puede registrar una línea usando
                   los datos de otra persona.
@@ -93,7 +93,7 @@ export default function PadronCelularesFalloVerificacion() {
                 También se reportó el uso de datos de figuras públicas como AMLO y Claudia Sheinbaum.
               </p>
 
-              <div className="relative bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8 before:absolute before:left-6 before:top-0 before:h-px before:w-12 before:bg-[#2DB6C1]">
+              <div className="bg-[#0066ff]/5 border-l-4 border-[#0066ff] p-6 my-8">
                 <p className="text-gray-700 font-bold text-lg">
                   El mensaje es devastador: si pueden hacerlo con ellos, pueden hacerlo contigo.
                 </p>
@@ -186,9 +186,8 @@ export default function PadronCelularesFalloVerificacion() {
                 <li>Riesgo legal para ciudadanos inocentes</li>
               </ul>
 
-              <div className="bg-[#F3F4F8] border border-[#212A45]/10 rounded-xl p-6 my-8">
-                <p className="text-[11px] font-semibold tracking-wide uppercase text-[#b91c1c] mb-2">Riesgo real</p>
-                <p className="text-gray-700 font-bold">
+              <div className="bg-red-50 border-l-4 border-red-500 p-6 my-8">
+                <p className="text-red-800 font-bold">
                   No reduce el crimen. Redistribuye el riesgo hacia la población.
                 </p>
               </div>
@@ -204,7 +203,7 @@ export default function PadronCelularesFalloVerificacion() {
                 En JAAK abordamos el problema desde otro ángulo:
               </p>
 
-              <div className="bg-[#2DB6C1]/10 rounded-xl p-8 my-8">
+              <div className="bg-[#00d4aa]/10 rounded-xl p-8 my-8">
                 <h3 className="text-xl font-bold text-gray-900 mb-4">
                   1. Prueba de vida activa y en tiempo real
                 </h3>
@@ -219,12 +218,12 @@ export default function PadronCelularesFalloVerificacion() {
                   <li>Responde a estímulos en tiempo real</li>
                   <li>Detecta deepfakes y replay attacks</li>
                 </ul>
-                <p className="text-[#2DB6C1] font-bold mt-4">
+                <p className="text-[#00d4aa] font-bold mt-4">
                   Sin vida real, no hay identidad.
                 </p>
               </div>
 
-              <div className="bg-[#212A45]/10 rounded-xl p-8 my-8">
+              <div className="bg-[#0066ff]/10 rounded-xl p-8 my-8">
                 <h3 className="text-xl font-bold text-gray-900 mb-4">
                   2. Identidad como proceso, no como trámite
                 </h3>
@@ -241,7 +240,7 @@ export default function PadronCelularesFalloVerificacion() {
                   <li>Historial</li>
                   <li>Coherencia biométrica</li>
                 </ul>
-                <p className="text-[#212A45] font-bold mt-4">
+                <p className="text-[#0066ff] font-bold mt-4">
                   La identidad se construye, no se asume.
                 </p>
               </div>
@@ -289,7 +288,7 @@ export default function PadronCelularesFalloVerificacion() {
                 Entonces <strong>no es un padrón, es una fábrica de problemas legales y reputacionales</strong>.
               </p>
 
-              <div className="bg-[#0E1133] rounded-xl p-8 my-12">
+              <div className="bg-[#0a0a0a] rounded-xl p-8 my-12">
                 <h3 className="text-xl font-bold text-white mb-4">
                   Conclusión
                 </h3>
@@ -305,7 +304,7 @@ export default function PadronCelularesFalloVerificacion() {
             <div className="flex flex-wrap justify-center gap-4">
               <a
                 href="/contacto"
-                className="px-8 py-4 bg-[#212A45] text-white font-bold rounded-lg hover:bg-[#212A45] transition-all"
+                className="px-8 py-4 bg-[#0066ff] text-white font-bold rounded-lg hover:bg-[#0052cc] transition-all"
               >
                 Solicitar demo
               </a>
