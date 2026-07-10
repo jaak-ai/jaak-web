@@ -1,12 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import OnboardingForm from "@/components/OnboardingForm";
-import { TRIAL_CHECKOUT_LINKS } from "@/lib/trial-checkout-links";
+import { productos, buildCheckoutUrl } from "@/data/autoservicio-catalogo";
+import { getPricingIndex } from "@/lib/pricing";
 
 const WHATSAPP_NUMBER = "5215535091788";
 const WHATSAPP_MESSAGE =
   "Hola, te contactamos de JAAK IT. Vimos que te interesó nuestra solución de identidad digital y cumplimiento regulatorio. ¿Tienes 5 minutos para que te cuente cómo podemos ayudarte?";
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
+
+// KYC no tiene renglón de pricing comprable vía carrito en producción (ver
+// src/lib/pricing.ts): usa el flujo de onboarding dedicado en vez de un
+// deep-link de carrito.
+const KYC_ONBOARDING_URL = "https://platform.jaak.ai/#/onboarding/plans/cobre";
 
 export const metadata: Metadata = {
   title: "Paquetes de Prueba JAAK Autoservicio | Empieza hoy",
@@ -14,7 +20,17 @@ export const metadata: Metadata = {
     "Elige tu paquete de prueba único y empieza a usar JAAK en producción de inmediato. Sin contrato, sin setup fee, activación automática.",
 };
 
-export default function AutoservicioPrueba() {
+export default async function AutoservicioPrueba() {
+  // IDs de pricing reales (por producto+tier) para hidratar el checkout, igual
+  // que /autoservicio — nunca un snapshot hardcodeado que pueda desactualizarse.
+  const pricingIndex = await getPricingIndex();
+  const cobreCheckoutUrl = (catalogId: string) => {
+    const producto = productos.find((p) => p.id === catalogId);
+    const paquete = producto?.paquetes.find((q) => q.id === "cobre");
+    if (!producto || !paquete) return "/autoservicio";
+    return buildCheckoutUrl([{ producto, paquete }], { pricingIndex });
+  };
+
   const valueBadges = [
     "Sin contrato mínimo",
     "Activación inmediata",
@@ -47,7 +63,7 @@ export default function AutoservicioPrueba() {
       color: "#2DB6C1",
       qty: "5 verificaciones",
       price: "$99",
-      link: TRIAL_CHECKOUT_LINKS.kyc,
+      link: KYC_ONBOARDING_URL,
     },
     {
       icon: "✍️",
@@ -55,7 +71,7 @@ export default function AutoservicioPrueba() {
       color: "#3b82f6",
       qty: "10 sesiones",
       price: "$49",
-      link: TRIAL_CHECKOUT_LINKS["firma-simple"],
+      link: cobreCheckoutUrl("firma-simple"),
     },
     {
       icon: "📜",
@@ -63,7 +79,7 @@ export default function AutoservicioPrueba() {
       color: "#0ea5e9",
       qty: "5 sesiones",
       price: "$99",
-      link: TRIAL_CHECKOUT_LINKS["firma-nom151"],
+      link: cobreCheckoutUrl("firma-nom151"),
     },
     {
       icon: "✍️",
@@ -71,7 +87,7 @@ export default function AutoservicioPrueba() {
       color: "#8b5cf6",
       qty: "5 sesiones",
       price: "$130",
-      link: TRIAL_CHECKOUT_LINKS["firma-nom151-bio"],
+      link: cobreCheckoutUrl("firma-nom151-bio"),
     },
     {
       icon: "🔐",
@@ -79,7 +95,7 @@ export default function AutoservicioPrueba() {
       color: "#f59e0b",
       qty: "5 sesiones",
       price: "$174",
-      link: TRIAL_CHECKOUT_LINKS["firma-nom151-kyc"],
+      link: cobreCheckoutUrl("firma-nom151-kyc"),
     },
   ];
 
