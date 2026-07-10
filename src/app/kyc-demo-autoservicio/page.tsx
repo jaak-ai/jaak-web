@@ -5,6 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import { gtmEvent } from "@/components/GoogleTagManager";
+import { getUtmParams } from "@/components/CloudflareTurnstile";
+import { TRIAL_CHECKOUT_LINKS } from "@/lib/trial-checkout-links";
 
 /* ─────────────────────────────────────────────────────────────────────────
  * Constantes de marca e identidad visual (paleta de esta campaña)
@@ -46,21 +48,21 @@ const PRODUCTS: TrialProduct[] = [
     nombre: "KYC biométrico",
     tagline: "Valida identidad con documento, biometría facial, prueba de vida y evidencia.",
     desde: "Desde $99 MXN",
-    checkoutHref: "/autoservicio/prueba",
+    checkoutHref: TRIAL_CHECKOUT_LINKS.kyc,
   },
   {
     id: "firma",
     nombre: "Firma electrónica",
     tagline: "Firma documentos de forma digital con trazabilidad del proceso.",
     desde: "Desde $49 MXN",
-    checkoutHref: "/autoservicio/prueba",
+    checkoutHref: TRIAL_CHECKOUT_LINKS["firma-simple"],
   },
   {
     id: "firma-nom151-kyc",
     nombre: "Firma NOM-151 + KYC",
     tagline: "Une identidad, firma y expediente auditable en un solo flujo.",
     desde: "Desde $174 MXN",
-    checkoutHref: "/autoservicio/prueba",
+    checkoutHref: TRIAL_CHECKOUT_LINKS["firma-nom151-kyc"],
   },
   {
     id: "ine-curp",
@@ -179,31 +181,6 @@ declare global {
     YT?: YTNamespace;
     onYouTubeIframeAPIReady?: () => void;
   }
-}
-
-/* ─────────────────────────────────────────────────────────────────────────
- * UTM capture
- * ───────────────────────────────────────────────────────────────────────── */
-interface UtmParams {
-  utm_source: string;
-  utm_medium: string;
-  utm_campaign: string;
-  utm_content: string;
-  utm_term: string;
-}
-
-function readUtmParams(): UtmParams {
-  if (typeof window === "undefined") {
-    return { utm_source: "", utm_medium: "", utm_campaign: "", utm_content: "", utm_term: "" };
-  }
-  const params = new URLSearchParams(window.location.search);
-  return {
-    utm_source: params.get("utm_source") || "",
-    utm_medium: params.get("utm_medium") || "",
-    utm_campaign: params.get("utm_campaign") || "",
-    utm_content: params.get("utm_content") || "",
-    utm_term: params.get("utm_term") || "",
-  };
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -763,11 +740,32 @@ function LeadRegistrationForm({
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const startedInteraction = useRef(false);
 
+  const checkoutHref = productCheckoutHref(form.producto || "no-se");
+  const [autoRedirectSeconds, setAutoRedirectSeconds] = useState(4);
+  const [autoRedirectCancelled, setAutoRedirectCancelled] = useState(false);
+  const redirectedRef = useRef(false);
+
   useEffect(() => {
     if (selectedProduct) {
       setForm((prev) => ({ ...prev, producto: selectedProduct }));
     }
   }, [selectedProduct]);
+
+  // Auto-redirige a la compra tras el registro exitoso, dando tiempo a leer
+  // la confirmación y a cancelar si prefiere quedarse a ver la demo completa.
+  useEffect(() => {
+    if (status !== "success" || autoRedirectCancelled) return;
+    if (autoRedirectSeconds <= 0) {
+      if (!redirectedRef.current) {
+        redirectedRef.current = true;
+        gtmEvent("checkout_started", { selected_product: form.producto, mode: "auto" });
+        window.location.href = checkoutHref;
+      }
+      return;
+    }
+    const t = setTimeout(() => setAutoRedirectSeconds((s) => s - 1), 1000);
+    return () => clearTimeout(t);
+  }, [status, autoRedirectCancelled, autoRedirectSeconds, checkoutHref, form.producto]);
 
   const trackStart = () => {
     if (!startedInteraction.current) {
@@ -784,7 +782,7 @@ function LeadRegistrationForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("loading");
-    const utm = readUtmParams();
+    const utm = getUtmParams();
     const productoLabel = productLabel(form.producto);
 
     try {
@@ -800,12 +798,10 @@ function LeadRegistrationForm({
             `Producto a probar: ${productoLabel || "No especificado"}`,
             `Volumen estimado mensual: ${form.volumen || "No especificado"}`,
             form.comentario && `Comentario: ${form.comentario}`,
-            `UTMs: source=${utm.utm_source} medium=${utm.utm_medium} campaign=${utm.utm_campaign} content=${utm.utm_content} term=${utm.utm_term}`,
           ].filter(Boolean).join(" | "),
           source: LEAD_SOURCE,
-          utm_source: utm.utm_source,
-          utm_medium: utm.utm_medium,
-          utm_campaign: utm.utm_campaign,
+          ...utm,
+          page_url: window.location.href,
         }),
       });
 
@@ -833,7 +829,8 @@ function LeadRegistrationForm({
     "w-full rounded-xl border px-4 py-3 text-[14px] outline-none transition-all focus:ring-2";
 
   if (status === "success") {
-    const href = productCheckoutHref(form.producto || "no-se");
+    const redirecting = !autoRedirectCancelled && autoRedirectSeconds > 0;
+    const progressPct = ((4 - autoRedirectSeconds) / 4) * 100;
     return (
       <div
         className="rounded-3xl p-8 sm:p-10 text-center"
@@ -852,17 +849,41 @@ function LeadRegistrationForm({
           Tu registro quedó completo y el video demo ya está desbloqueado por completo. El siguiente paso es
           activar tu paquete inicial y comenzar a operar.
         </p>
+
+        {redirecting && (
+          <div className="mt-6 max-w-xs mx-auto">
+            <p className="text-[13px] font-semibold" style={{ color: "#0F8E96" }}>
+              Te llevamos a tu compra en {autoRedirectSeconds}s…
+            </p>
+            <div className="mt-2 h-1 rounded-full overflow-hidden" style={{ background: "rgba(30,202,211,0.15)" }}>
+              <div
+                className="h-full rounded-full transition-all duration-1000 ease-linear"
+                style={{ width: `${progressPct}%`, background: TEAL }}
+              />
+            </div>
+            <button
+              type="button"
+              onClick={() => setAutoRedirectCancelled(true)}
+              className="mt-2 text-[12.5px] font-medium underline"
+              style={{ color: "#8992A3" }}
+            >
+              Cancelar y quedarme aquí
+            </button>
+          </div>
+        )}
+
         <div className="mt-7 flex flex-col sm:flex-row justify-center gap-3">
           <Link
-            href={href}
-            onClick={() => gtmEvent("checkout_started", { selected_product: form.producto })}
+            href={checkoutHref}
+            onClick={() => gtmEvent("checkout_started", { selected_product: form.producto, mode: "manual" })}
             className="inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-[14.5px] font-bold text-white transition-transform hover:-translate-y-px"
             style={{ background: NAVY }}
           >
-            Comprar mi paquete por $99
+            Comprar mi paquete por $99 ahora
           </Link>
           <a
             href="#demo"
+            onClick={() => setAutoRedirectCancelled(true)}
             className="inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-[14.5px] font-semibold"
             style={{ border: "1px solid #D7DEE7", color: NAVY }}
           >
@@ -1022,6 +1043,10 @@ export default function KycDemoAutoservicioPage() {
     document.getElementById("registro")?.scrollIntoView({ behavior: "smooth" });
   };
 
+  const scrollToProductos = () => {
+    document.getElementById("productos")?.scrollIntoView({ behavior: "smooth" });
+  };
+
   const handleOverlayRegister = () => {
     gtmEvent("click_unlock_demo");
     gtmEvent("unlock_form_started");
@@ -1030,7 +1055,13 @@ export default function KycDemoAutoservicioPage() {
 
   const handleOverlayBuy = () => {
     gtmEvent("click_buy_99_from_video");
-    gtmEvent("checkout_started", { selected_product: selectedProduct || "kyc" });
+    // Aún no sabemos qué producto quiere: lo llevamos a elegirlo, de ahí el
+    // flujo continúa solo (selección → registro → redirect automático).
+    if (selectedProduct) {
+      scrollToRegistro();
+    } else {
+      scrollToProductos();
+    }
   };
 
   const handleSelectProduct = (id: ProductId) => {
