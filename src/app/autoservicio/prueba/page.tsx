@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import OnboardingForm from "@/components/OnboardingForm";
+import { TRIAL_CHECKOUT_LINKS } from "@/lib/trial-checkout-links";
 
 const WHATSAPP_NUMBER = "5215535091788";
 const WHATSAPP_MESSAGE =
@@ -46,7 +47,7 @@ export default function AutoservicioPrueba() {
       color: "#2DB6C1",
       qty: "5 verificaciones",
       price: "$99",
-      link: "https://platform.jaak.ai/#/onboarding/plans/cobre",
+      link: TRIAL_CHECKOUT_LINKS.kyc,
     },
     {
       icon: "✍️",
@@ -54,7 +55,7 @@ export default function AutoservicioPrueba() {
       color: "#3b82f6",
       qty: "10 sesiones",
       price: "$49",
-      link: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWNkNGVkYzNhODg3MzU1MzNmMmI5ZjclMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWNkNGVkYzNhODg3MzU1MzNmMmI5ZjclMjIlMkMlMjJrJTIyJTNBJTIyc2lnbmFfc2ltcGxlJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwU2ltcGxlJTIyJTJDJTIycHIlMjIlM0E1Ni44NCUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJGaXJtYSUyMFNpbXBsZSUyMENvYnJlJTIwMTAlMjIlMkMlMjJxJTIyJTNBNSU3RCU1RCU3RA%3D%3D",
+      link: TRIAL_CHECKOUT_LINKS["firma-simple"],
     },
     {
       icon: "📜",
@@ -62,7 +63,7 @@ export default function AutoservicioPrueba() {
       color: "#0ea5e9",
       qty: "5 sesiones",
       price: "$99",
-      link: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWNkNTYyMjNhODg3MzU1MzNmMmJhNTUlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWNkNTYyMjNhODg3MzU1MzNmMmJhNTUlMjIlMkMlMjJrJTIyJTNBJTIyc2lnbmFfYWR2YW5jZWQlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBBdmFuemFkYSUyMChOT00tMTUxKSUyMiUyQyUyMnByJTIyJTNBMTE0Ljg0JTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMkZpcm1hJTIwTk9NMTUxJTIwQ29icmUlMjA1JTIyJTJDJTIycSUyMiUzQTUlN0QlNUQlN0Q%3D",
+      link: TRIAL_CHECKOUT_LINKS["firma-nom151"],
     },
     {
       icon: "✍️",
@@ -70,7 +71,7 @@ export default function AutoservicioPrueba() {
       color: "#8b5cf6",
       qty: "5 sesiones",
       price: "$130",
-      link: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWNkNWNhNjNhODg3MzU1MzNmMmJhNzklMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWNkNWNhNjNhODg3MzU1MzNmMmJhNzklMjIlMkMlMjJrJTIyJTNBJTIyc2lnbmFfYWR2YW5jZWRfYmlvbWV0cmljJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwQXZhbnphZGElMjAlMkIlMjBCaW9tZXRyaWElMjIlMkMlMjJwciUyMiUzQTE1MC44JTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMkZpcm1hJTIwTk9NMTUxJTIwJTJCJTIwQklPJTIwQ29icmUlMjA1JTIyJTJDJTIycSUyMiUzQTUlN0QlNUQlN0Q%3D",
+      link: TRIAL_CHECKOUT_LINKS["firma-nom151-bio"],
     },
     {
       icon: "🔐",
@@ -78,7 +79,7 @@ export default function AutoservicioPrueba() {
       color: "#f59e0b",
       qty: "5 sesiones",
       price: "$174",
-      link: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWNkNWY5ODNhODg3MzU1MzNmMmJhYjElMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWNkNWY5ODNhODg3MzU1MzNmMmJhYjElMjIlMkMlMjJrJTIyJTNBJTIyc2lnbmFfYmlvbWV0cmljJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwY29uJTIwQmlvbWV0cmlhJTIyJTJDJTIycHIlMjIlM0EyMDEuODQlMkMlMjJjJTIyJTNBJTIyTVhOJTIyJTJDJTIycyUyMiUzQTAlMkMlMjJkJTIyJTNBJTIyRmlybWElMjBOT00xNTElMjAlMkIlMjBLWUMlMjBDb2JyZSUyMDUlMjIlMkMlMjJxJTIyJTNBNSU3RCU1RCU3RA%3D%3D",
+      link: TRIAL_CHECKOUT_LINKS["firma-nom151-kyc"],
     },
   ];
 
