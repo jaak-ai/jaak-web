@@ -210,6 +210,9 @@ export default function Header() {
                   <Link href="/plataforma/verificacion-identidad" className="block text-gray-700 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
                     Verificación de identidad
                   </Link>
+                  <Link href="/kyc-demo-autoservicio" className="block text-gray-700 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
+                    Demo KYC + prueba $99
+                  </Link>
                   <Link href="/plataforma/firma-electronica" className="block text-gray-700 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
                     Firma electrónica
                   </Link>
@@ -364,6 +367,19 @@ export default function Header() {
                       <div>
                         <div className="text-[15px] font-semibold text-gray-900 group-hover:text-[#0066ff] transition-colors">Verificación de identidad</div>
                         <div className="text-sm text-gray-500 mt-0.5">KYC biométrico con prueba de vida</div>
+                      </div>
+                    </div>
+                  </Link>
+                  <Link href="/kyc-demo-autoservicio" className="group block">
+                    <div className="flex items-start gap-4">
+                      <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-[#0066ff] transition-colors">
+                        <svg className="w-5 h-5 text-gray-900 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <div className="text-[15px] font-semibold text-gray-900 group-hover:text-[#0066ff] transition-colors">Demo KYC + prueba $99</div>
+                        <div className="text-sm text-gray-500 mt-0.5">Mira el flujo y actívalo en autoservicio</div>
                       </div>
                     </div>
                   </Link>
