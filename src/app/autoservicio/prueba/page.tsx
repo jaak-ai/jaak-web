@@ -12,7 +12,7 @@ const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent
 // KYC no tiene renglón de pricing comprable vía carrito en producción (ver
 // src/lib/pricing.ts): usa el flujo de onboarding dedicado en vez de un
 // deep-link de carrito.
-const KYC_ONBOARDING_URL = "https://platform.jaak.ai/#/onboarding/plans/cobre";
+const KYC_ONBOARDING_URL = "https://platform.jaak.ai/#/onboarding/user-info?plan=cobre";
 
 export const metadata: Metadata = {
   title: "Paquetes de Prueba JAAK Autoservicio | Empieza hoy",
