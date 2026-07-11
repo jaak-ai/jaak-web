@@ -44,7 +44,7 @@ const PRODUCTS: Product[] = [
     ],
     idealFor: ["Fintechs", "Apps de crédito", "Plataformas digitales", "E-commerce regulado"],
     plans: [
-      {name:"Cobre",   qty:"5 verificaciones",   price:"$99",     link:"https://platform.jaak.ai/#/onboarding/plans/cobre"},
+      {name:"Cobre",   qty:"5 verificaciones",   price:"$99",     link:"https://platform.jaak.ai/#/onboarding/user-info?plan=cobre"},
       {name:"Bronce",  qty:"50 verificaciones",  price:"$1,500",  link:"https://platform.jaak.ai/#/onboarding/plans/bronce"},
       {name:"Plata",   qty:"100 verificaciones", price:"$2,800",  link:"https://platform.jaak.ai/#/onboarding/plans/plata"},
       {name:"Oro",     qty:"250 verificaciones", price:"$6,625",  link:"https://platform.jaak.ai/#/onboarding/plans/oro"},
