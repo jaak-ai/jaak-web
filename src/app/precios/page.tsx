@@ -151,7 +151,7 @@ const PRODUCTS: ProductDefinition[] = [
     applicationCategory: "SecurityApplication",
     image: IMG_IDENTIDAD,
     packages: [
-      { tier: "Cobre",   sku: "JAAK-KYC-COBRE",   qty: 5,   unit: "verificación", unitPlural: "verificaciones", price: 99,    url: "https://platform.jaak.ai/#/onboarding/plans/cobre" },
+      { tier: "Cobre",   sku: "JAAK-KYC-COBRE",   qty: 5,   unit: "verificación", unitPlural: "verificaciones", price: 99,    url: "https://platform.jaak.ai/#/onboarding/user-info?plan=cobre" },
       { tier: "Bronce",  sku: "JAAK-KYC-BRONCE",  qty: 50,  unit: "verificación", unitPlural: "verificaciones", price: 1500,  url: "https://platform.jaak.ai/#/onboarding/plans/bronce" },
       { tier: "Plata",   sku: "JAAK-KYC-PLATA",   qty: 100, unit: "verificación", unitPlural: "verificaciones", price: 2800,  url: "https://platform.jaak.ai/#/onboarding/plans/plata" },
       { tier: "Oro",     sku: "JAAK-KYC-ORO",     qty: 250, unit: "verificación", unitPlural: "verificaciones", price: 6625,  url: "https://platform.jaak.ai/#/onboarding/plans/oro" },

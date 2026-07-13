@@ -91,7 +91,7 @@ const productLabel = (id: string) => PRODUCT_OPTIONS.find((p) => p.id === id)?.l
 // KYC no tiene renglón de pricing comprable vía carrito en producción (ver
 // src/lib/pricing.ts): usa el flujo de onboarding dedicado en vez de un
 // deep-link de carrito.
-const KYC_ONBOARDING_URL = "https://platform.jaak.ai/#/onboarding/plans/cobre";
+const KYC_ONBOARDING_URL = "https://platform.jaak.ai/#/onboarding/user-info?plan=cobre";
 
 // Mapeo id de esta landing → id real del catálogo de autoservicio (paquete
 // "cobre" = entrada de prueba). INE/CURP y OCR se dejan fuera a propósito:
