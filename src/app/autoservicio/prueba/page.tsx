@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import OnboardingForm from "@/components/OnboardingForm";
-import { productos, buildCheckoutUrl } from "@/data/autoservicio-catalogo";
-import { getPricingIndex } from "@/lib/pricing";
+import { buildCheckoutUrl } from "@/data/autoservicio-catalogo";
+import { getAutoservicioCatalog } from "@/lib/catalog";
 
 const WHATSAPP_NUMBER = "5215535091788";
 const WHATSAPP_MESSAGE =
@@ -23,12 +23,12 @@ export const metadata: Metadata = {
 export default async function AutoservicioPrueba() {
   // IDs de pricing reales (por producto+tier) para hidratar el checkout, igual
   // que /autoservicio — nunca un snapshot hardcodeado que pueda desactualizarse.
-  const pricingIndex = await getPricingIndex();
+  const { productos, pricingIndex, productKeys } = await getAutoservicioCatalog();
   const cobreCheckoutUrl = (catalogId: string) => {
     const producto = productos.find((p) => p.id === catalogId);
     const paquete = producto?.paquetes.find((q) => q.id === "cobre");
     if (!producto || !paquete) return "/autoservicio";
-    return buildCheckoutUrl([{ producto, paquete }], { pricingIndex });
+    return buildCheckoutUrl([{ producto, paquete }], { pricingIndex, productKeys });
   };
 
   const valueBadges = [
