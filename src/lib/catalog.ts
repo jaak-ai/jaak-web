@@ -25,6 +25,10 @@ import {
 
 const API_BASE = process.env.JAAK_API_BASE_URL || "https://services.api.jaak.ai";
 
+// Los productos recurrentes (KYC/suscripción) se compran por el flujo de planes,
+// no por el carrito de /register. Opción b (SD-283).
+const ONBOARDING_PLANS_URL = "https://platform.jaak.ai/#/onboarding/plans";
+
 // Unidad de consumo por producto (no viene del endpoint todavía).
 const UNIDAD_BY_SLUG: Record<string, string> = {
   kyc: "verificaciones",
@@ -114,16 +118,14 @@ export function mapProducto(p: CatalogProduct): Producto | null {
     incluye: p.incluye || [],
     recomendado: isTier(p.recommendedTier) ? p.recommendedTier : undefined,
     paquetes,
+    checkoutUrl: p.billingType === "recurring" ? ONBOARDING_PLANS_URL : undefined,
   };
 }
 
 export function mapCatalog(data: CatalogResponse): Producto[] {
+  // KYC y demás recurrentes SÍ se muestran (SD-283), pero con `checkoutUrl` a
+  // /onboarding/plans en vez del carrito de /register (lo maneja la card).
   return (data.products || [])
-    // KYC y demás recurrentes se compran por /onboarding/plans (suscripción),
-    // no por el carrito de /register. Su CTA propia (opción b, SD-283) es la
-    // última rebanada de Fase 2; por ahora se excluyen para no romper el
-    // checkout del carrito. Los productos de pago único (one_time) sí entran.
-    .filter((p) => p.billingType !== "recurring")
     .map(mapProducto)
     .filter((p): p is Producto => p !== null);
 }

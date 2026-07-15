@@ -216,7 +216,10 @@ export default function ConfiguradorAutoservicio() {
                                   </p>
                                 </div>
                               </div>
-                              {activo ? (
+                              {producto.checkoutUrl ? (
+                                // KYC/suscripción: se compra por el flujo de planes.
+                                <a href={producto.checkoutUrl} className="flex-shrink-0 rounded-lg px-3 py-1.5 text-[12px] font-semibold text-white transition-colors" style={{ background: TEAL }}>Comprar</a>
+                              ) : activo ? (
                                 <button type="button" onClick={() => toggle(producto.id)} className="flex-shrink-0 text-[12px]" style={{ color: "#64748B" }}>Quitar</button>
                               ) : (
                                 <button type="button"

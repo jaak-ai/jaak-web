@@ -29,6 +29,9 @@ export interface Producto {
   incluye: string[];
   recomendado?: Paquete["id"];
   paquetes: Paquete[];
+  // Si está presente, el producto NO va por el carrito de /register sino que su
+  // CTA enlaza aquí (ej. KYC/suscripción → /onboarding/plans). Opción b, SD-283.
+  checkoutUrl?: string;
 }
 
 export const IVA = 0.16;
@@ -69,6 +72,7 @@ export const productos: Producto[] = [
     ],
     recomendado: "plata",
     paquetes: tiers(99, 1500, 2800, 6625, 12500, 5, 50, 100, 250, 500),
+    checkoutUrl: "https://platform.jaak.ai/#/onboarding/plans",
   },
   {
     id: "firma-simple",

@@ -183,13 +183,24 @@ export default function CatalogoAutoservicio() {
               </span>
             </div>
           </div>
-          <button type="button"
-            onClick={() => toggle(producto.id)}
-            className="rounded-xl px-4 py-2.5 text-[13px] font-semibold transition-colors"
-            style={agregado ? { background: "#F1FAFB", color: TEAL_DARK, border: `1px solid ${TEAL}` } : { background: TEAL, color: "#fff" }}
-          >
-            {agregado ? "Quitar" : "Agregar"}
-          </button>
+          {producto.checkoutUrl ? (
+            // KYC/suscripción: se compra por el flujo de planes, no por el carrito.
+            <a
+              href={producto.checkoutUrl}
+              className="rounded-xl px-4 py-2.5 text-[13px] font-semibold transition-colors"
+              style={{ background: TEAL, color: "#fff" }}
+            >
+              Comprar
+            </a>
+          ) : (
+            <button type="button"
+              onClick={() => toggle(producto.id)}
+              className="rounded-xl px-4 py-2.5 text-[13px] font-semibold transition-colors"
+              style={agregado ? { background: "#F1FAFB", color: TEAL_DARK, border: `1px solid ${TEAL}` } : { background: TEAL, color: "#fff" }}
+            >
+              {agregado ? "Quitar" : "Agregar"}
+            </button>
+          )}
         </div>
       </article>
     );
