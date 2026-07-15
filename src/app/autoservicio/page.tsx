@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AutoservicioVariantes from "@/components/autoservicio/AutoservicioVariantes";
 import ComoFuncionaBanner from "@/components/autoservicio/ComoFuncionaBanner";
-import { getPricingIndex } from "@/lib/pricing";
+import { getAutoservicioCatalog } from "@/lib/catalog";
 import { autoservicioBreadcrumbSchema, autoservicioProductsSchema } from "./schema";
 
 export const metadata: Metadata = {
@@ -35,8 +35,9 @@ export const metadata: Metadata = {
 const TEAL = "#2DB6C1";
 
 export default async function AutoservicioPage() {
-  // IDs de pricing reales (por producto+tier) para hidratar el checkout.
-  const pricingIndex = await getPricingIndex();
+  // Catálogo data-driven (endpoint unificado): productos + categorías +
+  // pricingIndex (IDs reales para el checkout) + productKeys, todo de una fuente.
+  const { productos, categorias, pricingIndex, productKeys } = await getAutoservicioCatalog();
 
   return (
     <>
@@ -107,7 +108,7 @@ export default async function AutoservicioPage() {
         <ComoFuncionaBanner />
 
         {/* ─── Experiencia: agregar productos (Catálogo / Guía) ─────────── */}
-        <AutoservicioVariantes pricingIndex={pricingIndex} />
+        <AutoservicioVariantes productos={productos} categorias={categorias} pricingIndex={pricingIndex} productKeys={productKeys} />
 
         {/* ─── Cierre: ¿necesitas más que autoservicio? → /precios ─────── */}
         <section className="bg-white">

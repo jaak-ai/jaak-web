@@ -262,18 +262,21 @@ export function buildCheckoutUrl(
   items: { producto: Producto; paquete: Paquete }[],
   options: {
     pricingIndex?: Record<string, Record<string, string>>;
+    /** productKey por producto (del endpoint). Si no se pasa, usa el mapa local
+     *  (fallback cuando el catálogo viene del hardcode). */
+    productKeys?: Record<string, string>;
     base?: string;
     /** Atribución first-party (utm_*) que viaja como query ANTES del hash
      *  para que platform.jaak.ai (analytics/checkout) la reciba. */
     utm?: Partial<import("@/lib/attribution").AttributionParams>;
   } = {}
 ): string {
-  const { pricingIndex, base = "https://platform.jaak.ai/#/register/user-info", utm } = options;
+  const { pricingIndex, productKeys: productKeysOverride, base = "https://platform.jaak.ai/#/register/user-info", utm } = options;
   const products = items.map(({ producto, paquete }) => {
     const nombre = producto.nombre.split(" — ")[0];
     return {
       i: pricingIndex?.[producto.id]?.[paquete.id] ?? "",
-      k: productKeys[producto.id] ?? producto.id,
+      k: productKeysOverride?.[producto.id] ?? productKeys[producto.id] ?? producto.id,
       n: nombre,
       pr: Math.round(paquete.precio * (1 + IVA) * 100) / 100,
       c: "MXN",

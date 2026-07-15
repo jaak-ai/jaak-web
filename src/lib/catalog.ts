@@ -69,12 +69,17 @@ interface CatalogProduct {
   incluye: string[];
   recommendedTier: string;
   sellable: boolean;
+  billingType?: string; // one_time | recurring
+  fulfillment?: { rail: string; productKey: string };
   tiers: CatalogTier[];
 }
 interface CatalogResponse {
   products: CatalogProduct[];
   total: number;
 }
+
+// pricingIndex: slug → tier → pricing _id (para hidratar el checkout).
+export type PricingIndex = Record<string, Record<string, string>>;
 
 // Precio CON IVA → SIN IVA (redondeado a centavos).
 function sinIVA(conIVA: number): number {
@@ -114,6 +119,11 @@ export function mapProducto(p: CatalogProduct): Producto | null {
 
 export function mapCatalog(data: CatalogResponse): Producto[] {
   return (data.products || [])
+    // KYC y demás recurrentes se compran por /onboarding/plans (suscripción),
+    // no por el carrito de /register. Su CTA propia (opción b, SD-283) es la
+    // última rebanada de Fase 2; por ahora se excluyen para no romper el
+    // checkout del carrito. Los productos de pago único (one_time) sí entran.
+    .filter((p) => p.billingType !== "recurring")
     .map(mapProducto)
     .filter((p): p is Producto => p !== null);
 }
@@ -121,9 +131,31 @@ export function mapCatalog(data: CatalogResponse): Producto[] {
 // Fetch + mapeo, con fallback al catálogo hardcodeado si el endpoint falla.
 // `categorias` sigue siendo taxonomía local estable (5 rótulos), no copy por
 // producto — no es el hardcodeo que Fase 2 elimina.
+// pricingIndex (slug → tier → _id) desde la respuesta del endpoint.
+export function buildPricingIndex(data: CatalogResponse): PricingIndex {
+  const index: PricingIndex = {};
+  for (const p of data.products || []) {
+    for (const t of p.tiers || []) {
+      if (isTier(t.tier) && t.id) (index[p.slug] ??= {})[t.tier] = t.id;
+    }
+  }
+  return index;
+}
+
+// productKeys (slug → productKey del backend) para el `k` del deep-link.
+export function buildProductKeys(data: CatalogResponse): Record<string, string> {
+  const keys: Record<string, string> = {};
+  for (const p of data.products || []) {
+    if (p.fulfillment?.productKey) keys[p.slug] = p.fulfillment.productKey;
+  }
+  return keys;
+}
+
 export async function getAutoservicioCatalog(): Promise<{
   categorias: Categoria[];
   productos: Producto[];
+  pricingIndex: PricingIndex;
+  productKeys: Record<string, string>;
 }> {
   try {
     const res = await fetch(`${API_BASE}/public/v1/catalog`, {
@@ -133,9 +165,20 @@ export async function getAutoservicioCatalog(): Promise<{
     const data: CatalogResponse = await res.json();
     const productos = mapCatalog(data);
     if (productos.length === 0) throw new Error("catalog empty");
-    return { categorias: fallbackCategorias, productos };
+    return {
+      categorias: fallbackCategorias,
+      productos,
+      pricingIndex: buildPricingIndex(data),
+      productKeys: buildProductKeys(data),
+    };
   } catch {
-    // Fallback seguro: la página no se rompe si el endpoint no responde.
-    return { categorias: fallbackCategorias, productos: fallbackProductos };
+    // Fallback seguro: la página no se rompe si el endpoint no responde. Sin
+    // índice, `comprable` no oculta nada y el checkout usa el productKeys local.
+    return {
+      categorias: fallbackCategorias,
+      productos: fallbackProductos,
+      pricingIndex: {},
+      productKeys: {},
+    };
   }
 }

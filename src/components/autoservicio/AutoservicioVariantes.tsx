@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import CatalogoAutoservicio from "./CatalogoAutoservicio";
 import ConfiguradorAutoservicio from "./ConfiguradorAutoservicio";
 import { CarritoProvider } from "./CarritoContext";
+import { type Categoria, type Producto } from "@/data/autoservicio-catalogo";
 
 const NAVY = "#212A45";
 
@@ -32,9 +33,15 @@ function ModoIcon({ v, className }: { v: Variante; className?: string }) {
 type PricingIndex = Record<string, Record<string, string>>;
 
 export default function AutoservicioVariantes({
+  productos,
+  categorias,
   pricingIndex = {},
+  productKeys = {},
 }: {
+  productos: Producto[];
+  categorias: Categoria[];
   pricingIndex?: PricingIndex;
+  productKeys?: Record<string, string>;
 }) {
   // Default: catálogo (perfil autónomo). El switch fijo permite cambiar de modo
   // en cualquier momento sin salir de /autoservicio.
@@ -70,7 +77,7 @@ export default function AutoservicioVariantes({
   };
 
   return (
-    <CarritoProvider pricingIndex={pricingIndex}>
+    <CarritoProvider productos={productos} categorias={categorias} pricingIndex={pricingIndex} productKeys={productKeys}>
     <div id="experiencia">
       {/* Selector de modo según el perfil del comprador. No es fijo: vive al
           inicio de la experiencia y se va con el scroll para no estorbar. */}

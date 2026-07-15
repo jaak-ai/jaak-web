@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from "react";
 import {
-  productos,
-  categorias,
   formatMXN,
   tierEstilos,
   type CategoriaId,
@@ -34,7 +32,7 @@ function CategoryIcon({ categoria, className }: { categoria: CategoriaId; classN
 }
 
 export default function CatalogoAutoservicio() {
-  const { enCarrito, tierDe, setTier, toggle, comprable } = useCarrito();
+  const { productos, categorias, enCarrito, tierDe, setTier, toggle, comprable } = useCarrito();
   // Solo categorías con al menos un producto comprable (con renglón de pricing).
   const categoriasVisibles = categorias.filter((c) =>
     productos.some((p) => p.categoria === c.id && comprable(p.id))
@@ -61,7 +59,7 @@ export default function CatalogoAutoservicio() {
       if (el) obs.observe(el);
     });
     return () => obs.disconnect();
-  }, []);
+  }, [categorias]);
 
   const irA = (id: CategoriaId) => {
     setActiveCat(id);
