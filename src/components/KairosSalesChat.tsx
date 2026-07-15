@@ -3,9 +3,15 @@
 import Script from "next/script";
 
 export function KairosSalesChat() {
+  const widgetUrl = process.env.NEXT_PUBLIC_KAIROS_WIDGET_URL;
+
+  if (!widgetUrl) {
+    return null;
+  }
+
   return (
     <Script
-      src="https://chat-widget.jaak.ai/widget.js"
+      src={widgetUrl}
       strategy="afterInteractive"
       onLoad={() => {
         if (window.JAAKSalesChat) {
