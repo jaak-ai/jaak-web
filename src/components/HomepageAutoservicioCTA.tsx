@@ -2,7 +2,6 @@ import Link from "next/link";
 import { formatMXN } from "@/data/autoservicio-catalogo";
 import { getAutoservicioCatalog } from "@/lib/catalog";
 
-const NAVY = "#212A45";
 const TEAL = "#2DB6C1";
 
 export default async function HomepageAutoservicioCTA() {

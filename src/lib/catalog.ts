@@ -56,7 +56,7 @@ const TIER_IDS: Paquete["id"][] = ["cobre", "bronce", "plata", "oro", "platino"]
 const isTier = (t: string): t is Paquete["id"] => (TIER_IDS as string[]).includes(t);
 
 // ── Forma (parcial) de la respuesta del endpoint ──────────────────────────────
-interface CatalogTier {
+export interface CatalogTier {
   id: string;
   tier: string;
   tierName: string;
@@ -64,7 +64,7 @@ interface CatalogTier {
   price: number; // CON IVA
   quota: { value: number; prefix?: string; postfix?: string };
 }
-interface CatalogProduct {
+export interface CatalogProduct {
   slug: string;
   displayName: string;
   group: string;
@@ -77,7 +77,7 @@ interface CatalogProduct {
   fulfillment?: { rail: string; productKey: string };
   tiers: CatalogTier[];
 }
-interface CatalogResponse {
+export interface CatalogResponse {
   products: CatalogProduct[];
   total: number;
 }
@@ -130,9 +130,6 @@ export function mapCatalog(data: CatalogResponse): Producto[] {
     .filter((p): p is Producto => p !== null);
 }
 
-// Fetch + mapeo, con fallback al catálogo hardcodeado si el endpoint falla.
-// `categorias` sigue siendo taxonomía local estable (5 rótulos), no copy por
-// producto — no es el hardcodeo que Fase 2 elimina.
 // pricingIndex (slug → tier → _id) desde la respuesta del endpoint.
 export function buildPricingIndex(data: CatalogResponse): PricingIndex {
   const index: PricingIndex = {};

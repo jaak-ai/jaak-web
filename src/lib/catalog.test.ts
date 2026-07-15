@@ -1,8 +1,8 @@
 import { describe, it, expect } from "vitest";
-import { mapProducto, mapCatalog } from "./catalog";
+import { mapProducto, mapCatalog, type CatalogProduct, type CatalogResponse } from "./catalog";
 
 // Endpoint devuelve precios CON IVA; verificamos el mapeo al modelo `Producto`.
-const consultaIne = {
+const consultaIne: CatalogProduct = {
   slug: "consulta-ine",
   displayName: "Consulta INE",
   group: "validaciones",
@@ -18,7 +18,7 @@ const consultaIne = {
 
 describe("mapProducto", () => {
   it("mapea al modelo Producto con precios SIN IVA y tiers ordenados", () => {
-    const p = mapProducto(consultaIne as any)!;
+    const p = mapProducto(consultaIne)!;
     expect(p.id).toBe("consulta-ine");
     expect(p.nombre).toBe("Consulta INE");
     expect(p.categoria).toBe("validaciones");
@@ -33,41 +33,41 @@ describe("mapProducto", () => {
   });
 
   it("descarta productos sin tiers válidos", () => {
-    const bare = { ...consultaIne, tiers: [{ id: "x", tier: "n/a", tierName: "", tierOrder: 0, price: 0, quota: { value: 0 } }] };
-    expect(mapProducto(bare as any)).toBeNull();
+    const bare: CatalogProduct = {
+      ...consultaIne,
+      tiers: [{ id: "x", tier: "n/a", tierName: "", tierOrder: 0, price: 0, quota: { value: 0 } }],
+    };
+    expect(mapProducto(bare)).toBeNull();
   });
 
   it("prefiere unidad del endpoint cuando viene", () => {
-    const p = mapProducto({ ...consultaIne, unidad: "checadas" } as any)!;
+    const p = mapProducto({ ...consultaIne, unidad: "checadas" })!;
     expect(p.unidad).toBe("checadas");
   });
 
   it("productos one_time no llevan checkoutUrl (van por el carrito)", () => {
-    const p = mapProducto(consultaIne as any)!;
+    const p = mapProducto(consultaIne)!;
     expect(p.checkoutUrl).toBeUndefined();
   });
 
   it("recurring (KYC) lleva checkoutUrl a /onboarding/plans", () => {
-    const p = mapProducto({ ...consultaIne, slug: "kyc", billingType: "recurring" } as any)!;
+    const p = mapProducto({ ...consultaIne, slug: "kyc", billingType: "recurring" })!;
     expect(p.checkoutUrl).toContain("/onboarding/plans");
   });
 
   it("unidad cae al mapa por categoría si el endpoint no la trae y el slug no está", () => {
-    const p = mapProducto({ ...consultaIne, slug: "nuevo-desconocido", group: "firma", unidad: undefined } as any)!;
+    const p = mapProducto({ ...consultaIne, slug: "nuevo-desconocido", group: "firma", unidad: undefined })!;
     expect(p.unidad).toBe("firmas");
   });
 });
 
 describe("mapCatalog", () => {
-  it("mapea la lista y filtra los no vendibles/sin tiers", () => {
-    const data = {
-      products: [
-        consultaIne,
-        { ...consultaIne, slug: "roto", tiers: [] },
-      ],
+  it("mapea la lista y filtra los sin tiers", () => {
+    const data: CatalogResponse = {
+      products: [consultaIne, { ...consultaIne, slug: "roto", tiers: [] }],
       total: 2,
     };
-    const out = mapCatalog(data as any);
+    const out = mapCatalog(data);
     expect(out).toHaveLength(1);
     expect(out[0].id).toBe("consulta-ine");
   });
