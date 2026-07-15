@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import AutoservicioVariantes from "@/components/autoservicio/AutoservicioVariantes";
 import ComoFuncionaBanner from "@/components/autoservicio/ComoFuncionaBanner";
 import { getAutoservicioCatalog } from "@/lib/catalog";
-import { autoservicioBreadcrumbSchema, autoservicioProductsSchema } from "./schema";
+import { autoservicioBreadcrumbSchema, buildAutoservicioProductsSchema } from "./schema";
 
 export const metadata: Metadata = {
   title: "Autoservicio — Compra y activa servicios JAAK en minutos",
@@ -47,7 +47,7 @@ export default async function AutoservicioPage() {
         dangerouslySetInnerHTML={{
           __html: JSON.stringify([
             autoservicioBreadcrumbSchema,
-            autoservicioProductsSchema,
+            buildAutoservicioProductsSchema(productos, categorias),
           ]),
         }}
       />
