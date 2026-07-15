@@ -37,8 +37,13 @@ describe("mapProducto", () => {
     expect(mapProducto(bare as any)).toBeNull();
   });
 
-  it("unidad cae al mapa por categoría si el slug no está", () => {
-    const p = mapProducto({ ...consultaIne, slug: "nuevo-desconocido", group: "firma" } as any)!;
+  it("prefiere unidad del endpoint cuando viene", () => {
+    const p = mapProducto({ ...consultaIne, unidad: "checadas" } as any)!;
+    expect(p.unidad).toBe("checadas");
+  });
+
+  it("unidad cae al mapa por categoría si el endpoint no la trae y el slug no está", () => {
+    const p = mapProducto({ ...consultaIne, slug: "nuevo-desconocido", group: "firma", unidad: undefined } as any)!;
     expect(p.unidad).toBe("firmas");
   });
 });

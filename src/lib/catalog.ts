@@ -8,8 +8,9 @@
 // Notas de mapeo:
 // - El endpoint devuelve precios CON IVA; `Producto.paquetes.precio` es SIN IVA
 //   (buildCheckoutUrl vuelve a aplicar IVA), así que dividimos ÷(1+IVA).
-// - `unidad` (verificaciones/firmas/…) aún no viene del endpoint → mapa local
-//   por slug con fallback por categoría. TODO: moverlo a catalog_display.
+// - `unidad` (verificaciones/firmas/…) viene del endpoint (catalog_display);
+//   se mantiene un mapa local por slug/categoría como fallback por si el
+//   backend aún no lo trae (deploy en progreso).
 // ─────────────────────────────────────────────────────────────────────────────
 
 import {
@@ -63,6 +64,7 @@ interface CatalogProduct {
   slug: string;
   displayName: string;
   group: string;
+  unidad?: string; // sustantivo de consumo (del endpoint; fallback local abajo)
   tagline: string;
   incluye: string[];
   recommendedTier: string;
@@ -102,7 +104,7 @@ export function mapProducto(p: CatalogProduct): Producto | null {
     id: p.slug,
     nombre: p.displayName,
     categoria: p.group as CategoriaId,
-    unidad: UNIDAD_BY_SLUG[p.slug] || UNIDAD_BY_GROUP[p.group] || "unidades",
+    unidad: p.unidad || UNIDAD_BY_SLUG[p.slug] || UNIDAD_BY_GROUP[p.group] || "unidades",
     tagline: p.tagline || "",
     incluye: p.incluye || [],
     recomendado: isTier(p.recommendedTier) ? p.recommendedTier : undefined,
