@@ -18,10 +18,12 @@
 # timer jaak-pulse-updater ya instalado (no este script).
 #
 # Modo desatendido:
-#   JAAK_LICENSE_KEY=... ORACLE_DSN='oracle://...' \
+#   JAAK_LICENSE_KEY=... ORACLE_DSN='oracle://...' ADMIN_EMAIL=admin@pulse.local \
+#     ADMIN_PASSWORD='...' \
 #     curl -fsSL https://get.pulse.jaak.ai | sudo bash -s -- --yes
+# Post-instalación: sudo bash get-pulse.sh --create-admin [--admin-email <email>]
 #
-# Volo: INTC-214
+# Volo: INTC-214, INTC-372
 # =============================================================================
 
 set -euo pipefail
@@ -56,6 +58,9 @@ ORACLE_DSN="${ORACLE_DSN:-}"
 LICENSING_URL="${LICENSING_URL:-$DEFAULT_LICENSING_URL}"
 SERVER_NAME="${SERVER_NAME:-_}"
 ASSUME_YES="${ASSUME_YES:-0}"
+ADMIN_EMAIL="${ADMIN_EMAIL:-}"
+ADMIN_PASSWORD="${ADMIN_PASSWORD:-}"
+CREATE_ADMIN="${CREATE_ADMIN:-0}"
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -70,11 +75,14 @@ get-pulse.sh — instala el bundle JAAK Pulse (pulse-api + pulse-web) nativo.
 USO:
   curl -fsSL https://get.pulse.jaak.ai | sudo bash
   curl -fsSL https://get.pulse.jaak.ai | sudo bash -s -- [opciones]
+  sudo bash get-pulse.sh --create-admin [--admin-email <email>]
 
 OPCIONES:
   --yes                    No pedir confirmación (modo desatendido).
   --licensing-url <url>    URL del licensing-api (default: https://api.licensing.jaak.ai).
   --server-name <name>     server_name de nginx (default: "_").
+  --admin-email <email>    Email del admin (default: admin@pulse.local).
+  --create-admin           Crear o rotar el admin de una instalación existente.
   -h, --help               Esta ayuda.
 
 VARIABLES DE ENTORNO (para modo desatendido):
@@ -83,6 +91,12 @@ VARIABLES DE ENTORNO (para modo desatendido):
                      oracle://user:pass@host:1522/service?ssl=true&ssl%20verify=false
   LICENSING_URL      (opcional)  Igual que --licensing-url.
   SERVER_NAME        (opcional)  Igual que --server-name.
+  ADMIN_EMAIL        (opcional)  Email del admin (default: admin@pulse.local).
+  ADMIN_PASSWORD     (opcional)  Password del admin; si falta, se genera.
+
+MODO POST-INSTALACIÓN:
+  sudo bash get-pulse.sh --create-admin [--admin-email <email>]
+  Actualiza las credenciales y ejecuta solo el seed, sin reinstalar Pulse.
 
 Precedencia: flags > env > prompt (si hay TTY) > error.
 EOF
@@ -94,6 +108,8 @@ parse_args() {
       --yes|-y)          ASSUME_YES=1; shift ;;
       --licensing-url)   LICENSING_URL="${2:?--licensing-url requiere valor}"; shift 2 ;;
       --server-name)     SERVER_NAME="${2:?--server-name requiere valor}"; shift 2 ;;
+      --admin-email)     ADMIN_EMAIL="${2:?--admin-email requiere valor}"; shift 2 ;;
+      --create-admin)    CREATE_ADMIN=1; shift ;;
       -h|--help)         usage; exit 0 ;;
       *)                 die "opción desconocida: $1 (usa --help)" ;;
     esac
@@ -114,6 +130,33 @@ prompt_var() {
   fi
   [[ -z "$__val" && -n "$__default" ]] && __val="$__default"
   printf -v "$__var" '%s' "$__val"
+}
+
+collect_admin_credentials() {
+  local default_email="${1:-admin@pulse.local}"
+  if [[ -z "$ADMIN_EMAIL" ]]; then
+    if have_tty; then
+      prompt_var ADMIN_EMAIL "  ADMIN_EMAIL [$default_email]: " "$default_email"
+    else
+      ADMIN_EMAIL="$default_email"
+    fi
+  fi
+
+  if [[ -z "$ADMIN_PASSWORD" ]]; then
+    ADMIN_PASSWORD="$(openssl rand -base64 24 | tr -d '/+=' | cut -c1-20)"
+  fi
+}
+
+print_admin_credentials() {
+  cat >&2 <<EOF
+
+Primer inicio de sesión:
+  URL:            http://<esta-vm>/
+  ADMIN_EMAIL:    $ADMIN_EMAIL
+  ADMIN_PASSWORD: $ADMIN_PASSWORD
+
+Para rotar el password: sudo bash get-pulse.sh --create-admin. Queda guardada en $ENV_FILE (0600).
+EOF
 }
 
 # ---------------------------------------------------------------------------
@@ -165,6 +208,7 @@ collect_config() {
     prompt_var LICENSING_URL "  LICENSING_URL [$LICENSING_URL]: " "$LICENSING_URL"
     prompt_var SERVER_NAME   "  nginx server_name [$SERVER_NAME]: " "$SERVER_NAME"
   fi
+  collect_admin_credentials
 
   # Secretos efímeros generados localmente (nunca se imprimen)
   JWT_SECRET="$(openssl rand -hex 32)"
@@ -175,6 +219,7 @@ collect_config() {
   log "Se instalará:"
   log "  LICENSING_URL = $LICENSING_URL"
   log "  server_name   = $SERVER_NAME"
+  log "  ADMIN_EMAIL   = $ADMIN_EMAIL"
   log "  ORACLE_DSN    = ${ORACLE_DSN%%@*}@… (oculto)"
   log "  destino       = $INSTALL_DIR (systemd + nginx)"
   if [[ "$ASSUME_YES" != "1" ]]; then
@@ -203,6 +248,24 @@ emit_env() {
   printf '%s="%s"\n' "$k" "$v"
 }
 
+update_env_var() {
+  local key="$1" value="$2" tmp
+  [[ "$key" =~ ^[A-Z_][A-Z0-9_]*$ ]] || die "clave de configuración inválida: $key"
+  [[ -f "$ENV_FILE" ]] || die "no existe $ENV_FILE. Ejecuta primero la instalación completa."
+
+  umask 077
+  tmp="$(mktemp "${ENV_FILE}.tmp.XXXXXX")"
+  awk -v key="$key" 'index($0, key "=") != 1' "$ENV_FILE" > "$tmp" \
+    || { rm -f "$tmp"; die "no pude leer $ENV_FILE."; }
+  emit_env "$key" "$value" >> "$tmp" \
+    || { rm -f "$tmp"; die "no pude actualizar $key en $ENV_FILE."; }
+  chmod 600 "$tmp" \
+    || { rm -f "$tmp"; die "no pude proteger el temporal de $ENV_FILE."; }
+  mv -f "$tmp" "$ENV_FILE" \
+    || { rm -f "$tmp"; die "no pude reemplazar $ENV_FILE."; }
+  chmod 600 "$ENV_FILE"
+}
+
 write_env() {
   log "Escribiendo $ENV_FILE…"
   local ncpu gomaxprocs gomemlimit
@@ -219,6 +282,8 @@ write_env() {
     emit_env SERVICE_KEY      "$SERVICE_KEY"
     emit_env JAAK_LICENSE_KEY "$JAAK_LICENSE_KEY"
     emit_env LICENSING_URL    "$LICENSING_URL"
+    emit_env ADMIN_EMAIL      "$ADMIN_EMAIL"
+    emit_env ADMIN_PASSWORD   "$ADMIN_PASSWORD"
     emit_env GOMAXPROCS       "$gomaxprocs"
     emit_env GOMEMLIMIT       "${gomemlimit}GiB"
   } > "$ENV_FILE"
@@ -391,6 +456,26 @@ db_migrate_seed() {
   rm -f "$mlog"
 
   "$BIN_DIR/jaak-pulse-api" seed    || die "seed falló."
+}
+
+create_admin_mode() {
+  local existing_admin_email=""
+  [[ "$(id -u)" -eq 0 ]] || die "corre --create-admin como root o con sudo."
+  [[ -f "$ENV_FILE" ]] || die "instalación existente no encontrada: falta $ENV_FILE. Ejecuta primero la instalación completa."
+  [[ -x "$BIN_DIR/jaak-pulse-api" ]] || die "instalación existente no encontrada: falta $BIN_DIR/jaak-pulse-api. Ejecuta primero la instalación completa."
+
+  log "Creando o rotando el usuario admin…"
+  if [[ -z "$ADMIN_EMAIL" ]]; then
+    existing_admin_email="$(sed -n 's/^ADMIN_EMAIL="\([^"]*\)"$/\1/p' "$ENV_FILE" | tail -n 1)"
+  fi
+  collect_admin_credentials "${existing_admin_email:-admin@pulse.local}"
+  update_env_var ADMIN_EMAIL "$ADMIN_EMAIL"
+  update_env_var ADMIN_PASSWORD "$ADMIN_PASSWORD"
+
+  set -a; # shellcheck disable=SC1090
+  source "$ENV_FILE"; set +a
+  "$BIN_DIR/jaak-pulse-api" seed || die "seed falló."
+  print_admin_credentials
 }
 
 # ---------------------------------------------------------------------------
@@ -579,6 +664,7 @@ $LOG_PREFIX ✅ JAAK Pulse instalado.
 
 Actualizaciones automáticas cada 30 min vía jaak-pulse-updater.timer.
 EOF
+  print_admin_credentials
 }
 
 # ---------------------------------------------------------------------------
@@ -586,6 +672,10 @@ EOF
 # ---------------------------------------------------------------------------
 main() {
   parse_args "$@"
+  if [[ "$CREATE_ADMIN" == "1" ]]; then
+    create_admin_mode
+    return
+  fi
   log "Instalador JAAK Pulse (nativo, sin OCI)."
   preflight
   collect_config
