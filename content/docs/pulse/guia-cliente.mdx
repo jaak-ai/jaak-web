@@ -101,13 +101,13 @@ JAAK publica releases **firmados**. El cliente decide cómo se aplican:
 | **Automático** (default) | `jaak-pulse-updater.timer` (systemd) comprueba cada ~30 min y aplica releases firmados con rollback automático | Disponible |
 | **Manual / ventana de mantenimiento** | Deshabilitar el timer (`systemctl disable --now jaak-pulse-updater.timer`) y ejecutar `jaak-pulse-api update --check` en la ventana elegida | Disponible |
 | **Canal estable** | Único canal `stable` (sin betas a clientes) | Disponible |
-| **Pin de versión / aprobación previa explícita** | Fijar una versión y requerir aprobación antes de aplicar | **[roadmap]** — ver nota |
+| **Pin de versión / aprobación previa / ventana de mantenimiento** | Variables `UPDATE_PIN_VERSION`, `UPDATE_REQUIRE_APPROVAL`/`UPDATE_APPROVED`, `UPDATE_WINDOW` en `/opt/jaak-pulse/.env` — detalle en [Actualizaciones (OTA)](/docs/pulse/actualizaciones) | Disponible |
 
-> **Nota para ambientes regulados:** hoy el control fino (pin de versión, gate de aprobación) se logra operando en **modo manual** (timer deshabilitado; el cliente aplica `update --check` cuando lo aprueba su proceso de cambios). El pin/aprobación como configuración de primera clase está en roadmap. Ningún update se aplica sin que el cliente haya habilitado el modo automático o ejecutado la actualización manualmente.
+> **Nota para ambientes regulados:** la política solo retiene el paso de **aplicar** — la descarga y la verificación de firma ocurren siempre, así el artefacto ya está validado cuando la política lo permita. Ningún update se aplica sin que el cliente haya habilitado el modo automático, configurado la política que lo permite, o ejecutado la actualización manualmente. El OTA cubre **pulse-api y pulse-web** (guía completa: [Actualizaciones (OTA)](/docs/pulse/actualizaciones)).
 
 ### Rollback y migraciones de BBDD (crítico)
 
-- El updater conserva el binario anterior (`.bak`), hace swap atómico, reinicia y verifica `/healthz`; si falla, **revierte automáticamente** al binario previo.
+- El updater conserva la versión anterior (`.bak`) tanto del binario `pulse-api` como del dist de `pulse-web`, hace swap atómico y verifica salud (`/healthz` / nginx); si falla, **revierte automáticamente** a la versión previa.
 - **Advertencia honesta:** el rollback es de **binario**. Las **migraciones de esquema** de la BBDD se diseñan **backward-compatible**, pero un rollback de binario **no revierte el esquema**. Para un rollback seguro en cambios de esquema: tomar **backup de la ADB antes de actualizar** (responsabilidad del cliente, [§3](#s3)) y coordinar con JAAK si una versión introduce migraciones no compatibles hacia atrás. La política de compatibilidad de migraciones y retención de versiones: [a definir con JAAK].
 
 <div id="s6" className="scroll-mt-24" />
