@@ -1,0 +1,168 @@
+---
+title: Actualizaciones (OTA)
+description: Cómo se actualizan pulse-api y pulse-web en tu VM — releases firmados verificados con minisign + sha256, aplicados automáticamente por el updater con swap atómico y rollback; política de actualización para ambientes regulados y migración de instalaciones antiguas.
+category: guia
+order: 4
+unlisted: true
+---
+
+# Actualizaciones OTA de JAAK Pulse
+
+Las instalaciones de Pulse en VM ([Terraform/OCI](/docs/pulse/guia-cliente) y
+[get-pulse](/docs/pulse/instalacion)) se actualizan **solas, por OTA**: un timer de
+systemd comprueba cada 30 minutos si hay release nuevo, lo descarga, **verifica la firma**
+y lo aplica con swap atómico y rollback automático. No hace falta re-ejecutar el
+instalador ni copiar archivos a mano.
+
+Se actualizan **los dos productos** en cada pasada, cada uno con su propio versionado:
+
+| Producto | Qué es | Dónde vive | Versión local |
+|---|---|---|---|
+| `pulse-api` | Binario Go (API) | `/opt/jaak-pulse/bin/jaak-pulse-api` | Compilada en el binario |
+| `pulse-web` | Dashboard estático (dist servido por nginx) | `/opt/jaak-pulse/web/` | `/opt/jaak-pulse/web/.version` |
+
+> El OTA de `pulse-web` requiere `pulse-api` **v0.43.1 o superior**. Las instalaciones
+> con updater más antiguo no necesitan hacer nada: el updater actualiza primero el
+> binario de `pulse-api`, y a partir de ese momento las pasadas siguientes actualizan
+> también la web ([ver migración](#migración-de-instalaciones-anteriores-al-ota)).
+
+## Cómo funciona
+
+Cada 30 minutos, `jaak-pulse-updater.timer` ejecuta `jaak-pulse-api update --check`,
+que hace por cada producto:
+
+1. **Consulta** el último release estable en licensing-api
+   (`/api/v1/releases/latest?channel=stable&product=…`, autenticado con tu license key).
+2. **Compara versiones** (semver). Si no hay versión más nueva, termina ahí.
+3. **Descarga y verifica** el artefacto: firma **minisign (Ed25519)** contra la clave
+   pública de JAAK embebida en el binario **y** sha256 del manifest firmado. Un artefacto
+   que no verifica **nunca se aplica**.
+4. **Consulta la política** de actualización ([ver abajo](#política-de-actualización-ambientes-regulados)).
+   Si la política no lo permite, el update queda retenido (se reintenta en la siguiente
+   pasada); descargar y verificar ocurre siempre.
+5. **Aplica con swap atómico**:
+   - `pulse-api`: conserva el binario anterior como `.bak`, swap, reinicia el servicio y
+     verifica `/healthz`. Si falla, **revierte automáticamente** al binario previo.
+   - `pulse-web`: extrae el dist a un directorio temporal (verificando que contenga
+     `index.html`), intercambia el directorio completo conservando el anterior como
+     `.bak` y verifica que nginx siga respondiendo. Si falla, **revierte** al dist
+     previo. nginx no necesita reinicio.
+
+El fallo de un producto **no bloquea** al otro: si la web falla, la API se actualiza
+igual (y viceversa). El resultado de cada pasada queda en el journal.
+
+## Operación día a día
+
+```bash
+systemctl status jaak-pulse-updater.timer   # ¿está activo el OTA?
+systemctl list-timers jaak-pulse-updater    # próxima comprobación
+journalctl -u jaak-pulse-updater -n 50      # resultado de las últimas pasadas
+sudo systemctl start jaak-pulse-updater.service  # forzar una comprobación AHORA
+cat /opt/jaak-pulse/web/.version            # versión instalada de pulse-web
+```
+
+La versión instalada de `pulse-api` aparece en cada pasada del updater en el journal
+(`updater: pulse-api already up-to-date`, o la versión aplicada).
+
+## Política de actualización (ambientes regulados)
+
+Por defecto el OTA es automático. Para ambientes con proceso de cambios (pin de versión,
+aprobación previa, ventana de mantenimiento) la política se configura con variables en
+`/opt/jaak-pulse/.env` — el updater las lee en cada pasada, sin reiniciar nada:
+
+| Variable | Efecto |
+|---|---|
+| `UPDATE_PIN_VERSION=v1.4.0` | **Pin**: no aplica versiones por encima de la fijada. Para avanzar, cambia (o quita) el pin. |
+| `UPDATE_REQUIRE_APPROVAL=1` | Exige aprobación explícita antes de aplicar. |
+| `UPDATE_APPROVED=1` | La señal de aprobación (junto con la anterior): sin ella el update queda retenido "awaiting approval". |
+| `UPDATE_WINDOW=2-6` | **Ventana de mantenimiento** en hora local, formato `HH-HH` (0–23). `22-6` cruza medianoche (22:00–05:59). Fuera de la ventana el update queda retenido. |
+
+Orden de evaluación: pin → aprobación → ventana. La política **solo retiene el paso de
+aplicar**: la descarga y la verificación de firma ocurren siempre, así el artefacto ya
+está validado cuando la política lo permita. Sin estas variables, el comportamiento es
+el automático de siempre.
+
+### Modo manual (timer apagado)
+
+Si prefieres aplicar actualizaciones solo cuando tu proceso lo apruebe:
+
+```bash
+sudo systemctl disable --now jaak-pulse-updater.timer  # apagar el OTA automático
+sudo systemctl start jaak-pulse-updater.service        # aplicar cuando tú decidas
+```
+
+## Rollback y migraciones de base de datos
+
+El rollback automático cubre **binario y dist web**. Las **migraciones de esquema** de
+la base de datos se diseñan backward-compatible, pero un rollback de binario **no
+revierte el esquema**: para cambios de esquema toma backup de tu base antes de
+actualizar. Detalle en la [guía de operación](/docs/pulse/guia-cliente).
+
+## Migración de instalaciones anteriores al OTA
+
+### Ya tienes `jaak-pulse-updater.timer` (instalaciones con get-pulse o Terraform)
+
+**No hay que hacer nada.** El updater existente actualiza el binario de `pulse-api`; en
+cuanto recibe v0.43.1+, las pasadas siguientes actualizan también `pulse-web`. Si tu
+`/opt/jaak-pulse/web/` no tiene `.version` (instalaciones previas), la primera pasada lo
+trata como versión desconocida, re-sincroniza la web al último release firmado y deja el
+`.version` escrito. Verifica después:
+
+```bash
+journalctl -u jaak-pulse-updater -n 20   # debe mencionar pulse-api Y pulse-web
+cat /opt/jaak-pulse/web/.version
+```
+
+### No tienes el timer (instalación manual antigua)
+
+Comprueba primero: `systemctl status jaak-pulse-updater.timer`. Si no existe, actívalo:
+
+1. Asegúrate de que `/opt/jaak-pulse/.env` contiene `LICENSING_URL` y
+   `JAAK_LICENSE_KEY` (los usa el updater para autenticarse).
+
+2. Crea las units:
+
+```bash
+sudo tee /etc/systemd/system/jaak-pulse-updater.service > /dev/null <<'EOF'
+[Unit]
+Description=JAAK Pulse Updater (oneshot)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+EnvironmentFile=/opt/jaak-pulse/.env
+ExecStart=/opt/jaak-pulse/bin/jaak-pulse-api update --check
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=jaak-pulse-updater
+EOF
+
+sudo tee /etc/systemd/system/jaak-pulse-updater.timer > /dev/null <<'EOF'
+[Unit]
+Description=JAAK Pulse Updater Timer (every 30 min)
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=30min
+Unit=jaak-pulse-updater.service
+
+[Install]
+WantedBy=timers.target
+EOF
+```
+
+3. Actívalo y fuerza la primera pasada:
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable --now jaak-pulse-updater.timer
+sudo systemctl start jaak-pulse-updater.service
+journalctl -u jaak-pulse-updater -n 20
+```
+
+La primera pasada trae `pulse-api` y `pulse-web` al último release firmado; de ahí en
+adelante la VM queda al día sola.
+
+¿Dudas o problemas con una actualización? [Contáctanos](/contacto).
