@@ -36,6 +36,8 @@ El script pide de forma interactiva:
 - `JAAK_LICENSE_KEY` — tu license key con entitlement PULSE.
 - `ORACLE_DSN` — el DSN de tu Oracle 26ai.
 - `LICENSING_URL` (default `https://api.licensing.jaak.ai`) y el `server_name` de nginx.
+- `ADMIN_EMAIL` — email del usuario admin del dashboard (default `admin@pulse.local`).
+  El password del admin se genera automáticamente y se muestra al final de la instalación.
 
 ## Modo desatendido
 
@@ -45,8 +47,13 @@ usa `--yes`:
 ```bash
 JAAK_LICENSE_KEY=LK-xxxx \
 ORACLE_DSN='oracle://user:pass@host:1522/service?ssl=true&ssl%20verify=false' \
+ADMIN_EMAIL=admin@miempresa.com \
   curl -fsSL https://www.jaak.ai/docs/pulse/get-pulse.sh | sudo bash -s -- --yes
 ```
+
+`ADMIN_EMAIL` y `ADMIN_PASSWORD` son **opcionales**. Si no se define `ADMIN_EMAIL`, se
+usa `admin@pulse.local`. Si no se define `ADMIN_PASSWORD`, el instalador genera uno
+aleatorio y lo muestra una sola vez al final.
 
 Flags disponibles:
 
@@ -55,6 +62,8 @@ Flags disponibles:
 | `--yes` | No pregunta nada; falla si falta configuración obligatoria |
 | `--licensing-url <url>` | URL del licensing (default `https://api.licensing.jaak.ai`) |
 | `--server-name <name>` | `server_name` de nginx |
+| `--admin-email <email>` | Email del admin del dashboard (default `admin@pulse.local`) |
+| `--create-admin` | Modo post-instalación: crea o rota el admin sin reinstalar |
 | `--help` | Ayuda |
 
 Precedencia de configuración: **flags > variables de entorno > prompt interactivo
@@ -72,6 +81,9 @@ archivo — la aplicación **no consulta el Vault en runtime**.
 Solo dos valores son entrada del instalador: `JAAK_LICENSE_KEY` y `ORACLE_DSN` (que
 incluye el password de la base). El resto (`JWT_SECRET`, `API_KEY`, `SERVICE_KEY`) los
 genera el propio instalador; no hace falta guardarlos en el Vault.
+
+Opcionalmente, `ADMIN_PASSWORD` también puede inyectarse desde Vault si se desea un
+valor gestionado (en lugar del password autogenerado).
 
 ```bash
 #!/usr/bin/env bash
@@ -108,7 +120,8 @@ flag `--auth instance_principal`.
 Notas:
 
 - El instalador es idempotente, pero **cada ejecución regenera `JWT_SECRET`** (invalida
-  sesiones activas del dashboard; sin más impacto).
+  sesiones activas del dashboard; sin más impacto) y el **password del admin** (igual
+  que `JWT_SECRET`: el seed hace upsert y rota el valor si el usuario ya existe).
 - Si rotas el password de la base en tu Vault, **re-ejecuta el wrapper** para regenerar
   el `.env` — la API no toma el valor nuevo sola.
 
@@ -128,16 +141,48 @@ sudo bash get-pulse.sh
 
 1. Instala prerrequisitos (`nginx`, `jq`, `minisign` pinneado por sha256, …).
 2. Escribe `/opt/jaak-pulse/.env` (permisos `0600`) con tu configuración y secretos
-   efímeros (`JWT_SECRET`, `API_KEY`, `SERVICE_KEY` generados con `openssl`).
+   efímeros (`JWT_SECRET`, `API_KEY`, `SERVICE_KEY` y `ADMIN_PASSWORD` generados
+   con `openssl` o aportados por env/flag; `ADMIN_EMAIL` por flag/env/prompt,
+   default `admin@pulse.local`).
 3. Descarga **pulse-api** y **pulse-web** firmados desde licensing-api y los verifica
    (minisign + sha256).
-4. Ejecuta las migraciones (`migrate` + `seed`) contra tu Oracle.
+4. Ejecuta las migraciones (`migrate` + `seed`) contra tu Oracle. El **seed** crea el
+   usuario admin del dashboard con `ADMIN_EMAIL` / `ADMIN_PASSWORD`.
 5. Configura systemd (`jaak-pulse-api`, `jaak-pulse-updater.timer`), nginx
    (`/` → web estática, `/api/` → `127.0.0.1:8787`), sysctl/limits, y abre 80/443.
 6. Verifica `http://localhost/healthz` y `/api/healthz`.
 
 Es **idempotente**: es seguro re-ejecutarlo. Las actualizaciones posteriores las aplica
 automáticamente `jaak-pulse-updater.timer` (cada 30 minutos), no este script.
+
+## Primer inicio de sesión
+
+El instalador crea el usuario admin del dashboard. Las credenciales se muestran al final
+de la instalación (bloque **Primer inicio de sesión**) y quedan en
+`/opt/jaak-pulse/.env` con permisos `0600`.
+
+1. Abre `http://<vm>/` en el navegador.
+2. Inicia sesión con el `ADMIN_EMAIL` y el `ADMIN_PASSWORD` impresos.
+3. El dashboard **no** ofrece cambio de contraseña self-service. Para rotar el
+   password del admin, re-ejecuta el modo post-instalación:
+   `sudo bash get-pulse.sh --create-admin` (cada re-ejecución completa del
+   instalador también lo rota).
+
+Cada re-ejecución completa del instalador regenera y muestra un password nuevo (igual
+que `JWT_SECRET`): el seed hace upsert y rota el password si el usuario ya existe.
+
+## Crear o rotar el usuario admin (post-instalación)
+
+Para instalaciones hechas con una versión anterior del script (sin usuario admin) o para
+rotar el password sin reinstalar:
+
+```bash
+curl -fsSL https://www.jaak.ai/docs/pulse/get-pulse.sh -o get-pulse.sh
+sudo bash get-pulse.sh --create-admin --admin-email admin@miempresa.com
+```
+
+Este modo **no reinstala nada**: actualiza `.env` y re-ejecuta el seed (upsert; si el
+usuario existe, rota su password). Al final imprime las credenciales nuevas.
 
 ## Post-instalación
 
