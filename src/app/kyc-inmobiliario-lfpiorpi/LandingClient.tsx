@@ -173,18 +173,71 @@ const FAQ_ITEMS = [
 ];
 
 /* ─────────────────────────────────────────────────────────────────────────
- * VideoUnlockPlayer — YouTube IFrame API, botones deshabilitados hasta 20s
+ * VideoGateOverlay — icono que tapa el video al llegar a los 20s
  * ───────────────────────────────────────────────────────────────────────── */
-function VideoUnlockPlayer({ onUnlock }: { onUnlock: () => void }) {
+function VideoGateOverlay() {
+  return (
+    <div
+      className="absolute inset-0 flex items-center justify-center p-5 sm:p-8"
+      style={{ background: "rgba(7,20,38,0.85)", backdropFilter: "blur(6px)" }}
+    >
+      <div className="w-full max-w-sm text-center">
+        <div
+          className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full"
+          style={{ background: "rgba(30,202,211,0.15)", border: "1.5px solid rgba(30,202,211,0.4)" }}
+        >
+          <svg className="h-6 w-6" style={{ color: TEAL }} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-12V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+        </div>
+        <h3 className="text-lg sm:text-xl font-bold text-white mb-2 leading-snug">
+          ¿Quieres ver el flujo completo?
+        </h3>
+        <p className="text-[13.5px] leading-relaxed text-white/70 mb-6">
+          Prueba el KYC biométrico de JAAK por $99 + IVA o escríbenos por WhatsApp y te mostramos la demo entera.
+        </p>
+        <div className="flex flex-col gap-3">
+          <a
+            href={KYC_ONBOARDING_URL}
+            onClick={() => gtmEvent("click_buy_99", { location: "video_gate", page: "kyc-inmobiliario-lfpiorpi" })}
+            className="w-full rounded-xl px-5 py-3.5 text-[14px] font-bold transition-transform hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            style={{ background: TEAL, color: NAVY_DARK }}
+          >
+            Comprar Plan Cobre — $99 + IVA
+          </a>
+          <a
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => gtmEvent("click_whatsapp", { location: "video_gate", page: "kyc-inmobiliario-lfpiorpi" })}
+            className="w-full inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-[14px] font-semibold text-white transition-transform hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            style={{ background: "#25D366" }}
+          >
+            <svg className="h-4 w-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.71.45 3.38 1.3 4.86L2.05 22l5.36-1.4a9.9 9.9 0 004.63 1.18h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.86 9.86 0 0012.04 2zm5.83 14.14c-.24.68-1.4 1.3-1.93 1.38-.5.08-1.12.11-1.81-.11-.42-.13-.96-.31-1.65-.6-2.9-1.25-4.8-4.17-4.94-4.36-.14-.19-1.18-1.57-1.18-3 0-1.42.75-2.12 1.01-2.41.27-.29.58-.36.78-.36l.56.01c.18.01.42-.07.65.5.24.58.82 2 .89 2.15.07.15.12.32.02.51-.09.19-.14.31-.28.48-.14.16-.29.36-.42.49-.14.14-.28.29-.12.57.16.28.72 1.19 1.55 1.93 1.06.95 1.96 1.24 2.24 1.38.28.14.44.12.6-.07.16-.19.68-.79.87-1.06.18-.28.36-.23.6-.14.24.09 1.53.72 1.79.85.26.13.44.19.5.3.06.11.06.63-.18 1.31z" />
+            </svg>
+            Hablar por WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * VideoGatePlayer — YouTube IFrame API; al llegar a los 20s se pausa el
+ * video y aparece un overlay con las opciones de compra ($99) o WhatsApp.
+ * ───────────────────────────────────────────────────────────────────────── */
+function VideoGatePlayer() {
   const containerRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<YTPlayer | null>(null);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const unlockedRef = useRef(false);
+  const lockedRef = useRef(false);
 
   const [playerReady, setPlayerReady] = useState(false);
   const [started, setStarted] = useState(false);
+  const [locked, setLocked] = useState(false);
   const [secondsWatched, setSecondsWatched] = useState(0);
-  const [unlocked, setUnlocked] = useState(false);
 
   const stopPolling = useCallback(() => {
     if (intervalRef.current) {
@@ -209,11 +262,11 @@ function VideoUnlockPlayer({ onUnlock }: { onUnlock: () => void }) {
             if (!player) return;
             const t = player.getCurrentTime();
             setSecondsWatched(Math.min(Math.floor(t), LOCK_SECONDS));
-            if (!unlockedRef.current && t >= LOCK_SECONDS) {
-              unlockedRef.current = true;
-              setUnlocked(true);
-              onUnlock();
-              gtmEvent("video_unlocked_ctas", { page: "kyc-inmobiliario-lfpiorpi" });
+            if (!lockedRef.current && t >= LOCK_SECONDS) {
+              lockedRef.current = true;
+              player.pauseVideo();
+              setLocked(true);
+              gtmEvent("video_reached_20s", { page: "kyc-inmobiliario-lfpiorpi" });
               stopPolling();
             }
           }, 500);
@@ -222,7 +275,7 @@ function VideoUnlockPlayer({ onUnlock }: { onUnlock: () => void }) {
         stopPolling();
       }
     },
-    [started, stopPolling, onUnlock]
+    [started, stopPolling]
   );
 
   const createPlayer = useCallback(() => {
@@ -262,7 +315,7 @@ function VideoUnlockPlayer({ onUnlock }: { onUnlock: () => void }) {
     playerRef.current?.playVideo();
   };
 
-  const progressPct = unlocked ? 100 : Math.min((secondsWatched / LOCK_SECONDS) * 100, 100);
+  const progressPct = locked ? 100 : Math.min((secondsWatched / LOCK_SECONDS) * 100, 100);
 
   return (
     <div className="w-full">
@@ -300,97 +353,65 @@ function VideoUnlockPlayer({ onUnlock }: { onUnlock: () => void }) {
             </div>
           </button>
         )}
+
+        {locked && <VideoGateOverlay />}
       </div>
 
-      {/* Barra de desbloqueo */}
-      <div className="mt-4">
-        <div className="flex items-center justify-between mb-1.5">
-          <span className="text-[12px] font-medium text-white/50">
-            {unlocked ? "Botones desbloqueados" : `Desbloqueando en ${LOCK_SECONDS}s...`}
-          </span>
-          <span className="text-[12px] font-medium text-white/50">
-            {unlocked ? "✓" : `${secondsWatched}/${LOCK_SECONDS}s`}
-          </span>
+      {/* Barra de progreso hacia el bloqueo */}
+      {!locked && (
+        <div className="mt-4">
+          <div className="flex items-center justify-between mb-1.5">
+            <span className="text-[12px] font-medium text-white/50">Desbloqueando en {LOCK_SECONDS}s...</span>
+            <span className="text-[12px] font-medium text-white/50">{secondsWatched}/{LOCK_SECONDS}s</span>
+          </div>
+          <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.12)" }}>
+            <div
+              className="h-full rounded-full transition-all"
+              style={{ width: `${progressPct}%`, background: `linear-gradient(90deg, ${TEAL}, ${VIOLET})` }}
+            />
+          </div>
         </div>
-        <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.12)" }}>
-          <div
-            className="h-full rounded-full transition-all"
-            style={{ width: `${progressPct}%`, background: unlocked ? TEAL : `linear-gradient(90deg, ${TEAL}, ${VIOLET})` }}
-          />
-        </div>
-      </div>
+      )}
     </div>
   );
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
- * HeroCtas — botones que se desbloquean a los 20s de reproducción
+ * HeroCtas — botones siempre activos, sin depender del video
  * ───────────────────────────────────────────────────────────────────────── */
-function HeroCtas({ unlocked }: { unlocked: boolean }) {
+function HeroCtas() {
   return (
     <div className="flex flex-col sm:flex-row gap-3">
       <a
-        href={unlocked ? HUBSPOT_MEETING_URL : undefined}
-        target={unlocked ? "_blank" : undefined}
-        rel={unlocked ? "noopener noreferrer" : undefined}
-        aria-disabled={!unlocked}
-        onClick={(e) => {
-          if (!unlocked) {
-            e.preventDefault();
-            return;
-          }
-          gtmEvent("click_hablar_ejecutivo", { page: "kyc-inmobiliario-lfpiorpi" });
-        }}
-        className={`inline-flex flex-col items-center justify-center gap-0.5 rounded-xl px-6 py-3.5 text-[14.5px] font-bold text-center transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${
-          unlocked ? "cursor-pointer hover:-translate-y-px" : "cursor-not-allowed"
-        }`}
-        style={{
-          background: unlocked ? TEAL : "rgba(255,255,255,0.08)",
-          color: unlocked ? NAVY_DARK : "rgba(255,255,255,0.4)",
-        }}
+        href={HUBSPOT_MEETING_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={() => gtmEvent("click_hablar_ejecutivo", { page: "kyc-inmobiliario-lfpiorpi" })}
+        className="inline-flex items-center justify-center rounded-xl px-6 py-3.5 text-[14.5px] font-bold text-center transition-all hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+        style={{ background: TEAL, color: NAVY_DARK }}
       >
-        <span>Hablar con un ejecutivo JAAK</span>
-        {!unlocked && (
-          <span className="text-[10.5px] font-medium opacity-80">Se desbloquea al ver {LOCK_SECONDS}s de la demo</span>
-        )}
+        Hablar con un ejecutivo JAAK
       </a>
 
       <a
-        href={unlocked ? WHATSAPP_URL : undefined}
-        target={unlocked ? "_blank" : undefined}
-        rel={unlocked ? "noopener noreferrer" : undefined}
-        aria-disabled={!unlocked}
-        onClick={(e) => {
-          if (!unlocked) {
-            e.preventDefault();
-            return;
-          }
-          gtmEvent("click_whatsapp", { page: "kyc-inmobiliario-lfpiorpi" });
-        }}
-        className={`relative inline-flex flex-col items-center justify-center gap-0.5 rounded-xl px-6 py-3.5 text-[14.5px] font-bold text-center transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${
-          unlocked ? "cursor-pointer hover:-translate-y-px" : "cursor-not-allowed"
-        }`}
-        style={{
-          background: unlocked ? "#25D366" : "rgba(255,255,255,0.08)",
-          color: unlocked ? "#fff" : "rgba(255,255,255,0.4)",
-        }}
+        href={WHATSAPP_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={() => gtmEvent("click_whatsapp", { page: "kyc-inmobiliario-lfpiorpi" })}
+        className="relative inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-[14.5px] font-bold text-center text-white transition-all hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+        style={{ background: "#25D366" }}
       >
-        {unlocked && (
-          <span
-            className="absolute inset-0 rounded-xl animate-ping"
-            style={{ background: "#25D366", opacity: 0.35 }}
-            aria-hidden="true"
-          />
-        )}
+        <span
+          className="absolute inset-0 rounded-xl animate-ping"
+          style={{ background: "#25D366", opacity: 0.35 }}
+          aria-hidden="true"
+        />
         <span className="relative flex items-center gap-2">
           <svg className="h-4 w-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.71.45 3.38 1.3 4.86L2.05 22l5.36-1.4a9.9 9.9 0 004.63 1.18h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.86 9.86 0 0012.04 2zm5.83 14.14c-.24.68-1.4 1.3-1.93 1.38-.5.08-1.12.11-1.81-.11-.42-.13-.96-.31-1.65-.6-2.9-1.25-4.8-4.17-4.94-4.36-.14-.19-1.18-1.57-1.18-3 0-1.42.75-2.12 1.01-2.41.27-.29.58-.36.78-.36l.56.01c.18.01.42-.07.65.5.24.58.82 2 .89 2.15.07.15.12.32.02.51-.09.19-.14.31-.28.48-.14.16-.29.36-.42.49-.14.14-.28.29-.12.57.16.28.72 1.19 1.55 1.93 1.06.95 1.96 1.24 2.24 1.38.28.14.44.12.6-.07.16-.19.68-.79.87-1.06.18-.28.36-.23.6-.14.24.09 1.53.72 1.79.85.26.13.44.19.5.3.06.11.06.63-.18 1.31z" />
           </svg>
           Escríbenos por WhatsApp
         </span>
-        {!unlocked && (
-          <span className="text-[10.5px] font-medium opacity-80">Se desbloquea al ver {LOCK_SECONDS}s de la demo</span>
-        )}
       </a>
     </div>
   );
@@ -444,13 +465,9 @@ function FAQAccordion() {
  * Página principal
  * ───────────────────────────────────────────────────────────────────────── */
 export default function KycInmobiliarioLfpiorpiLandingClient() {
-  const [ctasUnlocked, setCtasUnlocked] = useState(false);
-
   useEffect(() => {
     gtmEvent("view_kyc_inmobiliario_lfpiorpi_landing");
   }, []);
-
-  const handleUnlock = useCallback(() => setCtasUnlocked(true), []);
 
   return (
     <>
@@ -507,10 +524,10 @@ export default function KycInmobiliarioLfpiorpiLandingClient() {
                 </p>
 
                 <div className="mb-6">
-                  <VideoUnlockPlayer onUnlock={handleUnlock} />
+                  <VideoGatePlayer />
                 </div>
 
-                <HeroCtas unlocked={ctasUnlocked} />
+                <HeroCtas />
 
                 <div className="mt-8 pt-6" style={{ borderTop: "1px solid rgba(255,255,255,0.1)" }}>
                   <Link
