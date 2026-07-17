@@ -562,7 +562,11 @@ server {
 
     location /api/ {
         limit_req zone=api_limit burst=20 nodelay;
-        proxy_pass http://pulse_api/;
+        # proxy_pass SIN "/" final: reenvia la URI /api/v1/... intacta. pulse-api
+        # registra sus rutas bajo /api/v1/* y su methodGuard solo permite POST a
+        # paths con prefijo /api/. Con "/" final nginx quitaba el prefijo y el
+        # login devolvia HTTP 405 (INTC-380).
+        proxy_pass http://pulse_api;
         proxy_http_version 1.1;
         proxy_set_header Connection "";
         proxy_set_header Host \$host;
@@ -644,8 +648,11 @@ start_and_verify() {
   systemctl enable --now jaak-pulse-updater.timer
 
   sleep 10
-  curl -fsS http://localhost/healthz     >/dev/null || { journalctl -u nginx -n 20 --no-pager; die "healthz nginx falló."; }
-  curl -fsS http://localhost/api/healthz >/dev/null || { journalctl -u jaak-pulse-api -n 30 --no-pager; die "healthz api falló."; }
+  curl -fsS http://localhost/healthz                >/dev/null || { journalctl -u nginx -n 20 --no-pager; die "healthz nginx falló."; }
+  curl -fsS http://127.0.0.1:$API_PORT/healthz      >/dev/null || { journalctl -u jaak-pulse-api -n 30 --no-pager; die "healthz api (loopback) falló."; }
+  # E2E nginx -> backend conservando el prefijo /api/ (endpoint publico, GET).
+  # Un 405/404 aqui = regresion del proxy (ver INTC-380).
+  curl -fsS http://localhost/api/v1/auth/config     >/dev/null || { journalctl -u jaak-pulse-api -n 30 --no-pager; die "api via nginx (/api/v1/auth/config) falló."; }
   log "Deployment verificado."
 }
 
