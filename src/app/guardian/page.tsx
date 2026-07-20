@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "JAAK Guardian Protocol | Robot de Vigilancia Autónomo con IA",
@@ -130,6 +131,7 @@ function ExclamationTriangleIcon() {
 export default function GuardianPage() {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white">
+      <ScrollReveal />
       <Header />
 
       {/* Hero Section */}
@@ -143,7 +145,7 @@ export default function GuardianPage() {
           }}
         />
 
-        <div className="relative z-10 max-w-5xl mx-auto text-center">
+        <div data-sr className="relative z-10 max-w-5xl mx-auto text-center">
           {/* Tag */}
           <span className="inline-block px-4 py-1.5 mb-8 text-sm font-medium tracking-wide text-white/80 border border-white/20 rounded-lg">
             Nuevo · Serie A 2025
@@ -210,13 +212,13 @@ export default function GuardianPage() {
       {/* El problema */}
       <section className="py-32 px-6">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-center mb-20">
+          <h2 data-sr className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-center mb-20">
             Vigilancia sin identidad
             <br />
             <span className="text-white/60">es vigilancia ciega</span>
           </h2>
 
-          <div className="grid md:grid-cols-3 gap-12">
+          <div data-sr-grid className="grid md:grid-cols-3 gap-12">
             <div className="text-center">
               <div className="inline-flex items-center justify-center w-14 h-14 mb-6 text-white/80 border border-white/20 rounded-lg">
                 <ShieldExclamationIcon />
@@ -256,7 +258,7 @@ export default function GuardianPage() {
       {/* Stats impact */}
       <section className="py-32 px-6 border-t border-b border-white/10">
         <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-white/10">
+          <div data-sr-grid className="grid grid-cols-2 md:grid-cols-4 divide-x divide-white/10">
             <div className="px-6 py-8 text-center">
               <div className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-[#0066ff] mb-2">
                 &lt;8ms
@@ -296,14 +298,16 @@ export default function GuardianPage() {
       {/* Tecnología */}
       <section className="py-32 px-6">
         <div className="max-w-5xl mx-auto">
+          <div data-sr>
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-center mb-6">
             Tres capas de inteligencia
           </h2>
           <p className="text-xl text-white/60 text-center mb-20 max-w-2xl mx-auto">
             Cada componente diseñado para trabajar en perfecta sincronía
           </p>
+          </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div data-sr-grid className="grid md:grid-cols-3 gap-8">
             <div className="p-8 border border-white/10 rounded-lg bg-white/[0.02]">
               <div className="mb-6 text-[#0066ff]">
                 <SignalIcon />
@@ -346,7 +350,7 @@ export default function GuardianPage() {
 
       {/* Mercado */}
       <section className="py-32 px-6 border-t border-white/10">
-        <div className="max-w-4xl mx-auto text-center">
+        <div data-sr className="max-w-4xl mx-auto text-center">
           <div className="text-6xl sm:text-7xl md:text-8xl font-bold tracking-tight mb-4">
             <span className="text-[#0066ff]">$4.2B</span> TAM
           </div>
@@ -364,7 +368,7 @@ export default function GuardianPage() {
 
       {/* CTA final */}
       <section className="py-32 px-6">
-        <div className="max-w-4xl mx-auto text-center">
+        <div data-sr className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-8">
             ¿Listo para redefinir
             <br />

@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "Nosotros | JAAK - Plataforma de Verificación de Identidad",
@@ -177,6 +178,7 @@ export default function NosotrosPage() {
 
   return (
     <>
+      <ScrollReveal />
       <Header />
       <main>
         {/* Hero Section */}
@@ -186,7 +188,7 @@ export default function NosotrosPage() {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#0066ff]/5 rounded-full blur-3xl" />
 
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-4xl mx-auto">
+            <div data-sr className="text-center max-w-4xl mx-auto">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full text-sm text-white/70 mb-8">
                 <span className="w-2 h-2 bg-[#00d4aa] rounded-full" />
                 Propósito de JAAK
@@ -208,7 +210,7 @@ export default function NosotrosPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-2 gap-12 lg:gap-20">
               {/* Vision */}
-              <div className="bg-gradient-to-br from-[#0066ff]/5 to-[#00d4aa]/5 rounded-3xl p-8 lg:p-12">
+              <div data-sr="left" className="bg-gradient-to-br from-[#0066ff]/5 to-[#00d4aa]/5 rounded-3xl p-8 lg:p-12">
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#0066ff]/10 rounded-full text-sm text-[#0066ff] font-medium mb-6">
                   Visión
                 </div>
@@ -219,7 +221,7 @@ export default function NosotrosPage() {
               </div>
 
               {/* Mission */}
-              <div className="bg-gradient-to-br from-[#00d4aa]/5 to-[#0066ff]/5 rounded-3xl p-8 lg:p-12">
+              <div data-sr="right" className="bg-gradient-to-br from-[#00d4aa]/5 to-[#0066ff]/5 rounded-3xl p-8 lg:p-12">
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#00d4aa]/10 rounded-full text-sm text-[#00d4aa] font-medium mb-6">
                   Misión
                 </div>
@@ -235,7 +237,7 @@ export default function NosotrosPage() {
         {/* Fundamentals Section (7 S's) */}
         <section className="py-20 lg:py-28 bg-[#0a0a0a]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto mb-16">
+            <div data-sr className="text-center max-w-3xl mx-auto mb-16">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-sm text-white/70 mb-6">
                 Nuestros fundamentos
               </div>
@@ -246,7 +248,7 @@ export default function NosotrosPage() {
                 Los principios fundamentales que guían cada acción y decisión en nuestra organización.
               </p>
             </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div data-sr-grid className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {fundamentals.map((item, index) => (
                 <div
                   key={index}
@@ -270,7 +272,7 @@ export default function NosotrosPage() {
         {/* Values Section */}
         <section className="py-20 lg:py-28 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto mb-16">
+            <div data-sr className="text-center max-w-3xl mx-auto mb-16">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                 Nuestros valores
               </h2>
@@ -278,7 +280,7 @@ export default function NosotrosPage() {
                 Los valores que definen nuestra cultura y la forma en que trabajamos.
               </p>
             </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div data-sr-grid className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {values.map((value, index) => (
                 <div
                   key={index}
@@ -303,7 +305,7 @@ export default function NosotrosPage() {
         <section className="py-20 lg:py-28 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-              <div>
+              <div data-sr>
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#0066ff]/10 rounded-full text-sm text-[#0066ff] font-medium mb-6">
                   Orgullosamente mexicanos
                 </div>
@@ -381,7 +383,7 @@ export default function NosotrosPage() {
                   </div>
                 </div>
               </div>
-              <div className="relative">
+              <div data-sr="right" className="relative">
                 <div className="bg-gradient-to-br from-gray-100 to-gray-50 rounded-3xl p-8 lg:p-12">
                   <div className="grid grid-cols-2 gap-6">
                     <div className="bg-white rounded-2xl p-6 shadow-sm">
@@ -426,7 +428,7 @@ export default function NosotrosPage() {
         {/* Certifications Section */}
         <section className="py-20 lg:py-28 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto mb-16">
+            <div data-sr className="text-center max-w-3xl mx-auto mb-16">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#0066ff]/10 rounded-full text-sm text-[#0066ff] font-medium mb-6">
                 Certificaciones internacionales
               </div>
@@ -438,7 +440,7 @@ export default function NosotrosPage() {
                 seguridad, calidad y precisión en cada verificación.
               </p>
             </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div data-sr-grid className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {certifications.map((cert, index) => (
                 <div
                   key={index}
@@ -472,7 +474,7 @@ export default function NosotrosPage() {
         {/* CTA Section */}
         <section className="py-20 lg:py-28 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="bg-gradient-to-br from-[#0066ff] to-[#0052cc] rounded-3xl p-8 lg:p-16 text-center">
+            <div data-sr="scale" className="bg-gradient-to-br from-[#0066ff] to-[#0052cc] rounded-3xl p-8 lg:p-16 text-center">
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6">
                 Sé parte del equipo JAAK
               </h2>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "Firma Electrónica NOM-151 | Sello de Tiempo Certificado México | JAAK",
@@ -35,6 +36,7 @@ const breadcrumbSchema = {
 export default function FirmaNom151Page() {
   return (
     <>
+      <ScrollReveal />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
@@ -48,7 +50,7 @@ export default function FirmaNom151Page() {
           style={{ background: "linear-gradient(135deg, #071020 0%, #071A28 100%)" }}
           aria-labelledby="hero-heading"
         >
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div data-sr className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <nav className="flex items-center gap-2 text-xs text-gray-600 mb-8" aria-label="Navegación">
               <Link href="/plataforma/firma-electronica" className="hover:text-[#1ECAD3] transition-colors">
                 Firma Electrónica
@@ -111,7 +113,7 @@ export default function FirmaNom151Page() {
         <section className="py-20" style={{ background: "#070E1A" }} aria-labelledby="nom-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-              <div>
+              <div data-sr="left">
                 <h2 id="nom-heading" className="text-2xl font-black text-white mb-4">
                   ¿Qué es la NOM-151?
                 </h2>
@@ -131,7 +133,7 @@ export default function FirmaNom151Page() {
                   que la firma sea prácticamente irrefutable en un proceso legal.
                 </p>
               </div>
-              <div className="space-y-4">
+              <div data-sr-grid className="space-y-4">
                 {[
                   {
                     icon: "🔐",
@@ -174,10 +176,10 @@ export default function FirmaNom151Page() {
         {/* Use cases */}
         <section className="py-20" style={{ background: "#0A1628" }} aria-labelledby="usecases-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 id="usecases-heading" className="text-2xl font-black text-white mb-8 text-center">
+            <h2 data-sr id="usecases-heading" className="text-2xl font-black text-white mb-8 text-center">
               Casos de uso ideales para Firma Digital NOM-151
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div data-sr-grid className="grid grid-cols-1 md:grid-cols-3 gap-5">
               {[
                 {
                   icon: "🏦",
@@ -226,7 +228,7 @@ export default function FirmaNom151Page() {
 
         {/* Internal links + CTA */}
         <section className="py-16" style={{ background: "#070E1A" }}>
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div data-sr className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p className="text-gray-500 text-sm mb-6">
               ¿Necesitas también verificación de identidad? Explora:
             </p>

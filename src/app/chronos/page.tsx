@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import { getUtmParams } from "@/components/CloudflareTurnstile";
+import ScrollReveal from "@/components/ScrollReveal";
 import {
   chronosOrganizationSchema,
   chronosSoftwareSchema,
@@ -210,6 +211,7 @@ export default function ChronosPage() {
 
   return (
     <>
+      <ScrollReveal />
       {/* Structured Data for SEO - robots e IA pueden leer esto fácilmente */}
       <script
         type="application/ld+json"
@@ -235,7 +237,7 @@ export default function ChronosPage() {
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div>
+              <div data-sr>
                 <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#655DC6]/10 border border-[#655DC6]/30 rounded-full mb-6">
                   <span className="w-2 h-2 bg-[#655DC6] rounded-full animate-pulse"></span>
                   <span className="text-[#655DC6] text-sm font-medium">Agentes IA para Instituciones Financieras</span>
@@ -285,7 +287,7 @@ export default function ChronosPage() {
               </div>
 
               {/* Right: LLM Providers */}
-              <div className="hidden lg:block">
+              <div data-sr="right" className="hidden lg:block">
                 <div className="bg-white/5 border border-white/10 rounded-2xl p-8 backdrop-blur-sm">
                   <h3 className="text-white/60 text-xs font-medium uppercase tracking-wider mb-6">
                     Proveedores LLM Soportados
@@ -318,7 +320,7 @@ export default function ChronosPage() {
         {/* Por qué Chronos vs OpenClaw/NemoClaw */}
         <section className="py-20 bg-white" id="comparacion-rapida">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-14">
+            <div data-sr className="text-center mb-14">
               <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
                 ¿Por qué <span className="text-[#655DC6]">Chronos</span> y no OpenClaw o NemoClaw?
               </h2>
@@ -377,7 +379,7 @@ export default function ChronosPage() {
         {/* Social Proof */}
         <section className="py-16 bg-gradient-to-r from-[#655DC6]/5 to-[#1ECAD3]/5">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid md:grid-cols-2 gap-8">
+            <div data-sr-grid className="grid md:grid-cols-2 gap-8">
               {/* Testimonio */}
               <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
                 <div className="flex items-center gap-1 mb-4">
@@ -452,7 +454,7 @@ export default function ChronosPage() {
         {/* Integraciones con JAAK */}
         <section className="py-20 bg-gradient-to-br from-[#0f0f23] to-[#1a1a3e]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-14">
+            <div data-sr className="text-center mb-14">
               <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
                 Integración Nativa con <span className="text-[#1ECAD3]">JAAK</span>
               </h2>
@@ -462,7 +464,7 @@ export default function ChronosPage() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8 mb-12">
+            <div data-sr-grid className="grid md:grid-cols-3 gap-8 mb-12">
               <div className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-[#1ECAD3]/40 transition-all">
                 <div className="w-16 h-16 bg-[#1ECAD3]/20 rounded-xl flex items-center justify-center text-3xl mb-6">
                   📄
@@ -568,7 +570,7 @@ export default function ChronosPage() {
         {/* Templates de Agentes */}
         <section className="py-20 bg-[#0B1121]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-14">
+            <div data-sr className="text-center mb-14">
               <span className="inline-block px-4 py-2 bg-[#1ECAD3]/10 border border-[#1ECAD3]/20 rounded-full text-[#1ECAD3] text-sm font-medium mb-6">
                 Finance & Lending Templates
               </span>
@@ -581,7 +583,7 @@ export default function ChronosPage() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div data-sr-grid className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {agentTemplates.map((template, i) => (
                 <div
                   key={i}
@@ -615,7 +617,7 @@ export default function ChronosPage() {
         {/* Casos de Uso */}
         <section className="py-20 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-14">
+            <div data-sr className="text-center mb-14">
               <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
                 Casos de Uso para <span className="text-[#655DC6]">Bancos y Financieras</span>
               </h2>
@@ -624,7 +626,7 @@ export default function ChronosPage() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8">
+            <div data-sr-grid className="grid md:grid-cols-2 gap-8">
               {useCases.map((useCase, i) => (
                 <div
                   key={i}
@@ -651,7 +653,7 @@ export default function ChronosPage() {
         {/* Seguridad y Compliance */}
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-14">
+            <div data-sr className="text-center mb-14">
               <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
                 Seguridad y Cumplimiento <span className="text-[#1ECAD3]">Enterprise</span>
               </h2>
@@ -661,7 +663,7 @@ export default function ChronosPage() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
+            <div data-sr-grid className="grid md:grid-cols-3 gap-8">
               <div className="text-center">
                 <div className="w-16 h-16 bg-[#1ECAD3]/10 rounded-full flex items-center justify-center mx-auto mb-6">
                   <span className="text-3xl">🔐</span>
@@ -715,7 +717,7 @@ export default function ChronosPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-16 items-start">
               {/* Left */}
-              <div>
+              <div data-sr>
                 <h2 className="text-3xl md:text-4xl font-black text-white mb-6">
                   Solicita una Demo de Chronos
                 </h2>

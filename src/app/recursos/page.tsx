@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "Recursos educativos en cumplimiento digital · JAAK",
@@ -158,6 +159,7 @@ export default function RecursosPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <ScrollReveal />
       <Header />
       <main style={{ background: "#202945", fontFamily: FONT, minHeight: "100vh" }}>
         <style>{`
@@ -278,7 +280,7 @@ export default function RecursosPage() {
 
         {/* INTRO TEXT */}
         <section style={{ padding: "48px 0", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div data-sr className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p style={{ color: "rgba(255,255,255,0.60)", fontSize: "1rem", lineHeight: "1.8" }}>
               En JAAK creemos que el cumplimiento empieza por entender. Esta sección reúne sesiones
               ejecutivas, guías prácticas y recursos sobre los temas regulatorios que más afectan a
@@ -295,7 +297,7 @@ export default function RecursosPage() {
         {/* WEBINARS */}
         <section id="webinars" style={{ padding: "72px 0", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="mb-12">
+            <div data-sr className="mb-12">
               <p className="text-xs font-bold tracking-widest uppercase mb-3" style={{ color: "#1ECAD3", fontFamily: FONT }}>
                 Sesiones ejecutivas con expertos
               </p>
@@ -307,7 +309,7 @@ export default function RecursosPage() {
                 de empresas mexicanas.
               </p>
             </div>
-            <div className="grid sm:grid-cols-2 gap-6">
+            <div data-sr-grid className="grid sm:grid-cols-2 gap-6">
               {WEBINARS.map((w) => (
                 <article key={w.href} className="webinar-card p-7 flex flex-col gap-4">
                   <div className="flex items-center gap-3">
@@ -355,7 +357,7 @@ export default function RecursosPage() {
         {/* SERIE LFPIORPI */}
         <section style={{ padding: "72px 0", borderTop: "1px solid rgba(255,255,255,0.05)", background: "rgba(0,0,0,0.12)" }}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="mb-12 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
+            <div data-sr className="mb-12 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
               <div>
                 <span className="inline-block text-xs font-bold tracking-widest uppercase px-3 py-1 rounded-full mb-4"
                   style={{ background: "rgba(30,202,211,0.10)", color: "#1ECAD3", border: "1px solid rgba(30,202,211,0.25)" }}>
@@ -374,7 +376,7 @@ export default function RecursosPage() {
               </Link>
             </div>
 
-            <div className="flex flex-col gap-3">
+            <div data-sr-grid className="flex flex-col gap-3">
               {SERIES.map((ep) => (
                 <Link key={ep.href} href={ep.href} className="ep-card p-5 flex items-center gap-5 no-underline">
                   <span className="text-3xl font-black shrink-0" style={{ color: "rgba(30,202,211,0.30)", fontFamily: FONT, lineHeight: 1 }}>
@@ -395,7 +397,7 @@ export default function RecursosPage() {
 
         {/* TAGS SEO */}
         <section style={{ padding: "60px 0", borderTop: "1px solid rgba(255,255,255,0.05)" }}>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div data-sr className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <p className="text-xs font-bold tracking-widest uppercase mb-6" style={{ color: "#1ECAD3", fontFamily: FONT }}>
               Temas que cubrimos
             </p>
@@ -411,7 +413,7 @@ export default function RecursosPage() {
 
         {/* CTA BANNER */}
         <section style={{ padding: "80px 0", background: "radial-gradient(ellipse 70% 80% at 50% 50%, rgba(30,202,211,0.10) 0%, transparent 70%)", borderTop: "1px solid rgba(30,202,211,0.12)" }}>
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div data-sr="scale" className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl sm:text-4xl font-black text-white mb-4" style={{ fontFamily: FONT, letterSpacing: "-1px" }}>
               ¿Tu operación genera evidencia —{" "}
               <span style={{ color: "#1ECAD3" }}>o solo archivos?</span>

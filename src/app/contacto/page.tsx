@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { TurnstileWidget, getUtmParams } from "@/components/CloudflareTurnstile";
 import { gtmEvent } from "@/components/GoogleTagManager";
+import ScrollReveal from "@/components/ScrollReveal";
 
 const API_ENDPOINT = "/api/contact";
 
@@ -114,6 +115,7 @@ export default function ContactoPage() {
 
   return (
     <>
+      <ScrollReveal />
       <Header />
       <main>
         {/* Hero Section */}
@@ -125,7 +127,7 @@ export default function ContactoPage() {
           </div>
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div className="text-center max-w-3xl mx-auto mb-16">
+            <div data-sr className="text-center max-w-3xl mx-auto mb-16">
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6">
                 Hablemos de tu{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0066ff] to-[#00d4aa]">
@@ -141,7 +143,7 @@ export default function ContactoPage() {
             {/* Main Content Grid */}
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
               {/* Left Side - Benefits */}
-              <div className="order-2 lg:order-1">
+              <div data-sr="left" className="order-2 lg:order-1">
                 <h2 className="text-2xl font-bold text-white mb-8">
                   Por qué elegir JAAK
                 </h2>
@@ -374,7 +376,7 @@ export default function ContactoPage() {
         {/* Additional Info Section */}
         <section className="py-20 bg-[#0a0a0a] border-t border-white/10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid md:grid-cols-3 gap-8">
+            <div data-sr-grid className="grid md:grid-cols-3 gap-8">
               {/* Email */}
               <div className="text-center p-8 bg-white/5 rounded-xl border border-white/10">
                 <div className="w-14 h-14 bg-[#0066ff]/20 rounded-full flex items-center justify-center mx-auto mb-4">

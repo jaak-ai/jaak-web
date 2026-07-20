@@ -48,7 +48,14 @@ export default function AutoservicioVariantes({
 
   const elegir = (v: Variante) => {
     setVariante(v);
-    if (typeof window !== "undefined") window.history.replaceState(null, "", `#${v}`);
+    if (typeof window === "undefined") return;
+    // Preservar path + query (sel/utm de campañas). Solo `#v` puede dejar
+    // el search en estados raros según el historial parcheado de Next.
+    const url = new URL(window.location.href);
+    url.hash = v;
+    if (url.href !== window.location.href) {
+      window.history.replaceState(null, "", url);
+    }
   };
 
   const Tab = ({ v, titulo, sub }: { v: Variante; titulo: string; sub: string }) => {

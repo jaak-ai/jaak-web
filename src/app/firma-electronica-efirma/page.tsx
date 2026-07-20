@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "e.firma (SAT) en México | JAAK",
@@ -66,6 +67,7 @@ const breadcrumbSchema = {
 export default function FirmaEfirmaPage() {
   return (
     <>
+      <ScrollReveal />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <Header />
@@ -77,7 +79,7 @@ export default function FirmaEfirmaPage() {
           style={{ background: "linear-gradient(135deg, #071426 0%, #0A1628 100%)" }}
           aria-labelledby="hero-heading"
         >
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div data-sr className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <nav className="flex items-center gap-2 text-xs text-gray-600 mb-8" aria-label="Navegación">
               <Link href="/firma-electronica" className="hover:text-[#1ECAD3] transition-colors">
                 Firma Electrónica
@@ -137,7 +139,7 @@ export default function FirmaEfirmaPage() {
         <section className="py-20" style={{ background: "#070E1A" }} aria-labelledby="que-es-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-              <div>
+              <div data-sr="left">
                 <h2 id="que-es-heading" className="text-2xl font-black text-white mb-4">
                   ¿Qué es la e.firma?
                 </h2>
@@ -156,7 +158,7 @@ export default function FirmaEfirmaPage() {
                   de firma digital auditable.
                 </p>
               </div>
-              <div>
+              <div data-sr="right">
                 <h2 className="text-2xl font-black text-white mb-4">Cuándo usarla</h2>
                 <div className="space-y-3">
                   {[
@@ -181,16 +183,18 @@ export default function FirmaEfirmaPage() {
         {/* Cómo funciona + diferencias */}
         <section className="py-20" style={{ background: "#0A1628" }} aria-labelledby="funciona-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 id="funciona-heading" className="text-2xl font-black text-white mb-4 text-center">
-              Cómo funciona dentro de JAAK
-            </h2>
-            <p className="text-gray-400 text-sm text-center max-w-2xl mx-auto mb-10">
-              La e.firma no es solo una aceptación digital. Es una firma electrónica avanzada basada en el
-              certificado digital del firmante. En JAAK puede integrarse dentro de un flujo auditable para firmar
-              documentos, generar evidencia y complementar capas como NOM-151, biometría o KYC cuando el caso lo
-              requiere.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-14">
+            <div data-sr>
+              <h2 id="funciona-heading" className="text-2xl font-black text-white mb-4 text-center">
+                Cómo funciona dentro de JAAK
+              </h2>
+              <p className="text-gray-400 text-sm text-center max-w-2xl mx-auto mb-10">
+                La e.firma no es solo una aceptación digital. Es una firma electrónica avanzada basada en el
+                certificado digital del firmante. En JAAK puede integrarse dentro de un flujo auditable para firmar
+                documentos, generar evidencia y complementar capas como NOM-151, biometría o KYC cuando el caso lo
+                requiere.
+              </p>
+            </div>
+            <div data-sr-grid className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-14">
               {[
                 { step: "1", title: "Sube el documento", desc: "Carga el contrato o documento que requiere firma." },
                 { step: "2", title: "El firmante usa su e.firma", desc: "Aplica su certificado digital vigente para firmar." },
@@ -205,10 +209,10 @@ export default function FirmaEfirmaPage() {
               ))}
             </div>
 
-            <h2 className="text-2xl font-black text-white mb-6 text-center">
+            <h2 data-sr className="text-2xl font-black text-white mb-6 text-center">
               Diferencia entre e.firma, NOM-151, biometría y KYC
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div data-sr-grid className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {[
                 { name: "e.firma", desc: "El firmante usa su certificado digital vigente del SAT como mecanismo de firma.", color: "#3B82F6" },
                 { name: "NOM-151", desc: "Fortalece la conservación e integridad del documento firmado en el tiempo.", color: "#1ECAD3" },
@@ -227,10 +231,10 @@ export default function FirmaEfirmaPage() {
         {/* Evidencia + casos de uso */}
         <section className="py-20" style={{ background: "#070E1A" }} aria-labelledby="usecases-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 id="usecases-heading" className="text-2xl font-black text-white mb-8 text-center">
+            <h2 data-sr id="usecases-heading" className="text-2xl font-black text-white mb-8 text-center">
               Evidencia generada y casos de uso
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div data-sr-grid className="grid grid-cols-1 md:grid-cols-3 gap-5">
               {[
                 { icon: "🪪", title: "Certificado del firmante", desc: "Identificación del certificado digital usado para firmar." },
                 { icon: "⏱", title: "Fecha y hora", desc: "Momento exacto en que se aplicó la firma con e.firma." },
@@ -252,7 +256,7 @@ export default function FirmaEfirmaPage() {
         {/* FAQ */}
         <section className="py-20" style={{ background: "#0A1628" }} aria-labelledby="faq-heading">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 id="faq-heading" className="text-2xl font-black text-white mb-8 text-center">
+            <h2 data-sr id="faq-heading" className="text-2xl font-black text-white mb-8 text-center">
               Preguntas frecuentes
             </h2>
             <div className="space-y-3">
@@ -281,7 +285,7 @@ export default function FirmaEfirmaPage() {
 
         {/* Internal links + CTA */}
         <section className="py-16" style={{ background: "#070E1A" }}>
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div data-sr className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p className="text-gray-500 text-sm mb-6">¿Necesitas otra capa de evidencia? Explora:</p>
             <div className="flex flex-wrap justify-center gap-3 mb-8">
               {[

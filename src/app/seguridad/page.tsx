@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export const metadata = {
   title: "Seguridad | JAAK",
@@ -178,12 +179,13 @@ export default function SeguridadPage() {
 
   return (
     <>
+      <ScrollReveal />
       <Header />
       <main>
         {/* Hero Section */}
         <section className="pt-32 pb-20 bg-[#0a0a0a]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-3xl">
+            <div data-sr className="max-w-3xl">
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#00d4aa]/10 border border-[#00d4aa]/20 rounded-full mb-6">
                 <span className="w-2 h-2 bg-[#00d4aa] rounded-full"></span>
                 <span className="text-[#00d4aa] text-sm font-medium">
@@ -217,7 +219,7 @@ export default function SeguridadPage() {
         {/* Certifications Section */}
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
+            <div data-sr className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
                 Certificaciones y estándares
               </h2>
@@ -226,7 +228,7 @@ export default function SeguridadPage() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8">
+            <div data-sr-grid className="grid md:grid-cols-2 gap-8">
               {certifications.map((cert, index) => (
                 <div
                   key={index}
@@ -295,7 +297,7 @@ export default function SeguridadPage() {
         {/* Security Measures Section */}
         <section className="py-20 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
+            <div data-sr className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
                 Medidas de seguridad
               </h2>
@@ -304,7 +306,7 @@ export default function SeguridadPage() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div data-sr-grid className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {securityMeasures.map((category, index) => (
                 <div
                   key={index}
@@ -348,7 +350,7 @@ export default function SeguridadPage() {
         {/* Data Protection Section */}
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
+            <div data-sr className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
                 Protección de datos
               </h2>
@@ -357,7 +359,7 @@ export default function SeguridadPage() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8">
+            <div data-sr-grid className="grid md:grid-cols-2 gap-8">
               {dataProtection.map((item, index) => (
                 <div
                   key={index}
@@ -376,7 +378,7 @@ export default function SeguridadPage() {
         {/* Incident Response Section */}
         <section className="py-20 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-3xl mx-auto text-center mb-12">
+            <div data-sr className="max-w-3xl mx-auto text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
                 Respuesta ante incidentes
               </h2>
@@ -385,7 +387,7 @@ export default function SeguridadPage() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+            <div data-sr-grid className="grid md:grid-cols-4 gap-6 max-w-5xl mx-auto">
               <div className="text-center">
                 <div className="w-16 h-16 bg-[#0066ff] rounded-2xl flex items-center justify-center mx-auto mb-4 text-white text-2xl font-bold">
                   1
@@ -437,7 +439,7 @@ export default function SeguridadPage() {
         {/* Vulnerability Disclosure */}
         <section className="py-20 bg-white">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="bg-[#0a0a0a] rounded-2xl p-8 md:p-12">
+            <div data-sr className="bg-[#0a0a0a] rounded-2xl p-8 md:p-12">
               <div className="text-center mb-8">
                 <h2 className="text-3xl font-black text-white mb-4">
                   Divulgación responsable de vulnerabilidades
@@ -494,10 +496,10 @@ export default function SeguridadPage() {
         {/* Related Links */}
         <section className="py-16 bg-gray-50">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">
+            <h2 data-sr className="text-2xl font-bold text-gray-900 mb-8 text-center">
               Documentos relacionados
             </h2>
-            <div className="grid md:grid-cols-3 gap-6">
+            <div data-sr-grid className="grid md:grid-cols-3 gap-6">
               <Link
                 href="/privacidad"
                 className="bg-white rounded-xl p-6 border border-gray-200 hover:border-[#0066ff] transition-colors group"

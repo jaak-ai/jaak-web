@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ScrollReveal from "@/components/ScrollReveal";
 import EvidenceFlow from "@/components/EvidenceFlow";
 
 export const metadata: Metadata = {
@@ -59,6 +60,7 @@ const breadcrumbSchema = {
 export default function FirmaSelloTiempoPage() {
   return (
     <>
+      <ScrollReveal />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <Header />
@@ -70,7 +72,7 @@ export default function FirmaSelloTiempoPage() {
           style={{ background: "linear-gradient(135deg, #071426 0%, #0A1628 100%)" }}
           aria-labelledby="hero-heading"
         >
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div data-sr className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <nav className="flex items-center gap-2 text-xs text-gray-600 mb-8" aria-label="Navegación">
               <Link href="/firma-electronica" className="hover:text-[#1ECAD3] transition-colors">
                 Firma Electrónica
@@ -129,7 +131,7 @@ export default function FirmaSelloTiempoPage() {
         <section className="py-20" style={{ background: "#070E1A" }} aria-labelledby="que-es-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-              <div>
+              <div data-sr="left">
                 <h2 id="que-es-heading" className="text-2xl font-black text-white mb-4">
                   ¿Qué es un sello digital de tiempo?
                 </h2>
@@ -143,7 +145,7 @@ export default function FirmaSelloTiempoPage() {
                   necesariamente el nivel de conservación e integridad más alto disponible.
                 </p>
               </div>
-              <div>
+              <div data-sr="right">
                 <h2 className="text-2xl font-black text-white mb-4">¿Qué es una constancia NOM-151?</h2>
                 <p className="text-gray-400 text-sm leading-relaxed mb-4">
                   La <strong className="text-gray-200">NOM-151-SCFI-2016</strong> refuerza la conservación e
@@ -162,14 +164,16 @@ export default function FirmaSelloTiempoPage() {
         {/* Flujo visual */}
         <section className="py-20" style={{ background: "#0A1628" }} aria-labelledby="flujo-heading">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 id="flujo-heading" className="text-2xl font-black text-white mb-4 text-center">
-              Cómo funciona en JAAK
-            </h2>
-            <p className="text-gray-400 text-sm text-center max-w-2xl mx-auto mb-10">
-              Un sello de tiempo ayuda a probar cuándo existía un documento o cuándo ocurrió un evento de firma.
-              NOM-151 refuerza la conservación e integridad del mensaje de datos conforme al marco mexicano. En JAAK
-              puedes integrar estas capas dentro de un expediente auditable.
-            </p>
+            <div data-sr>
+              <h2 id="flujo-heading" className="text-2xl font-black text-white mb-4 text-center">
+                Cómo funciona en JAAK
+              </h2>
+              <p className="text-gray-400 text-sm text-center max-w-2xl mx-auto mb-10">
+                Un sello de tiempo ayuda a probar cuándo existía un documento o cuándo ocurrió un evento de firma.
+                NOM-151 refuerza la conservación e integridad del mensaje de datos conforme al marco mexicano. En JAAK
+                puedes integrar estas capas dentro de un expediente auditable.
+              </p>
+            </div>
             <EvidenceFlow />
           </div>
         </section>
@@ -177,10 +181,10 @@ export default function FirmaSelloTiempoPage() {
         {/* Qué contiene el expediente */}
         <section className="py-20" style={{ background: "#070E1A" }} aria-labelledby="expediente-heading">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 id="expediente-heading" className="text-2xl font-black text-white mb-8 text-center">
+            <h2 data-sr id="expediente-heading" className="text-2xl font-black text-white mb-8 text-center">
               Qué contiene el expediente
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div data-sr-grid className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {[
                 "Documento firmado",
                 "Hash del documento",
@@ -205,10 +209,10 @@ export default function FirmaSelloTiempoPage() {
         {/* Casos de uso */}
         <section className="py-20" style={{ background: "#0A1628" }} aria-labelledby="usecases-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 id="usecases-heading" className="text-2xl font-black text-white mb-8 text-center">
+            <h2 data-sr id="usecases-heading" className="text-2xl font-black text-white mb-8 text-center">
               Casos de uso ideales
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div data-sr-grid className="grid grid-cols-1 md:grid-cols-3 gap-5">
               {[
                 { icon: "✅", title: "Aprobaciones sensibles", desc: "Consentimientos y órdenes de servicio con fecha cierta." },
                 { icon: "📝", title: "Consentimientos", desc: "Evidencia de aceptación con fecha y hora confiables." },
@@ -227,7 +231,7 @@ export default function FirmaSelloTiempoPage() {
         {/* FAQ */}
         <section className="py-20" style={{ background: "#070E1A" }} aria-labelledby="faq-heading">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 id="faq-heading" className="text-2xl font-black text-white mb-8 text-center">
+            <h2 data-sr id="faq-heading" className="text-2xl font-black text-white mb-8 text-center">
               Preguntas frecuentes
             </h2>
             <div className="space-y-3">
@@ -252,7 +256,7 @@ export default function FirmaSelloTiempoPage() {
 
         {/* Internal links + CTA */}
         <section className="py-16" style={{ background: "#0A1628" }}>
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div data-sr className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p className="text-gray-500 text-sm mb-6">¿Necesitas también identidad o e.firma? Explora:</p>
             <div className="flex flex-wrap justify-center gap-3 mb-8">
               {[
