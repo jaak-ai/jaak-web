@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "Firma Simple en México | Sin Fricción y Legal | JAAK",
@@ -35,6 +36,7 @@ const breadcrumbSchema = {
 export default function FirmaSimplePage() {
   return (
     <>
+      <ScrollReveal />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
@@ -47,7 +49,7 @@ export default function FirmaSimplePage() {
           style={{ background: "linear-gradient(135deg, #071020 0%, #0A1628 100%)" }}
           aria-labelledby="hero-heading"
         >
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div data-sr className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Breadcrumb */}
             <nav className="flex items-center gap-2 text-xs text-gray-600 mb-8" aria-label="Navegación">
               <Link href="/plataforma/firma-electronica" className="hover:text-[#1ECAD3] transition-colors">
@@ -104,10 +106,10 @@ export default function FirmaSimplePage() {
         {/* Features */}
         <section className="py-20" style={{ background: "#070E1A" }} aria-labelledby="features-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 id="features-heading" className="text-2xl font-black text-white mb-8 text-center">
+            <h2 data-sr id="features-heading" className="text-2xl font-black text-white mb-8 text-center">
               ¿Qué incluye la Firma Simple?
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div data-sr-grid className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {[
                 {
                   icon: "⚡",
@@ -161,7 +163,7 @@ export default function FirmaSimplePage() {
         <section className="py-20" style={{ background: "#0A1628" }} aria-labelledby="when-heading">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-              <div>
+              <div data-sr="left">
                 <h2 id="when-heading" className="text-2xl font-black text-white mb-6">
                   ¿Cuándo usar la Firma Simple?
                 </h2>
@@ -184,6 +186,7 @@ export default function FirmaSimplePage() {
                 </ul>
               </div>
               <div
+                data-sr="right"
                 className="rounded-2xl p-6"
                 style={{
                   background: "rgba(239,68,68,0.06)",
@@ -223,7 +226,7 @@ export default function FirmaSimplePage() {
 
         {/* Internal links + CTA */}
         <section className="py-16" style={{ background: "#070E1A" }}>
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div data-sr className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p className="text-gray-500 text-sm mb-6">
               ¿Necesitas más validez legal? Explora otras soluciones:
             </p>

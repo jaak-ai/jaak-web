@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import { getUtmParams } from "@/components/CloudflareTurnstile";
+import ScrollReveal from "@/components/ScrollReveal";
 
 const painPoints = [
   {
@@ -121,6 +122,7 @@ export default function FinancierasPage() {
 
   return (
     <>
+      <ScrollReveal />
       <Header />
       <main>
         {/* Hero */}
@@ -132,7 +134,7 @@ export default function FinancierasPage() {
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div>
+              <div data-sr>
                 <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#655DC6]/10 border border-[#655DC6]/30 rounded-full mb-6">
                   <span className="w-2 h-2 bg-[#655DC6] rounded-full"></span>
                   <span className="text-[#a99df0] text-sm font-medium">Para SOFOMES, fintechs y fondos de inversión</span>
@@ -179,7 +181,7 @@ export default function FinancierasPage() {
               </div>
 
               {/* Right: compliance card */}
-              <div className="hidden lg:flex justify-center">
+              <div data-sr="right" className="hidden lg:flex justify-center">
                 <div className="bg-white/5 border border-white/10 rounded-2xl p-8 max-w-sm w-full backdrop-blur-sm">
                   <h3 className="text-white font-bold text-lg mb-6">Panel de cumplimiento</h3>
                   <div className="space-y-4">
@@ -207,7 +209,7 @@ export default function FinancierasPage() {
         {/* Pain Points */}
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-14">
+            <div data-sr className="text-center mb-14">
               <h2 className="text-3xl md:text-4xl font-black text-[#202945] mb-4">
                 Los problemas que cuestan más de lo que crees
               </h2>
@@ -217,7 +219,7 @@ export default function FinancierasPage() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
+            <div data-sr-grid className="grid md:grid-cols-3 gap-8">
               {painPoints.map((point, i) => (
                 <div
                   key={i}
@@ -237,7 +239,7 @@ export default function FinancierasPage() {
         {/* How it works */}
         <section className="py-20 bg-[#202945]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-14">
+            <div data-sr className="text-center mb-14">
               <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
                 De semanas a horas
               </h2>
@@ -246,7 +248,7 @@ export default function FinancierasPage() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
+            <div data-sr-grid className="grid md:grid-cols-3 gap-8">
               {steps.map((step, i) => (
                 <div key={i} className="relative">
                   <div className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-[#655DC6]/40 transition-all">
@@ -263,7 +265,7 @@ export default function FinancierasPage() {
         {/* Products */}
         <section className="py-20 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-14">
+            <div data-sr className="text-center mb-14">
               <h2 className="text-3xl md:text-4xl font-black text-[#202945] mb-4">
                 Stack completo de cumplimiento
               </h2>
@@ -272,7 +274,7 @@ export default function FinancierasPage() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
+            <div data-sr-grid className="grid md:grid-cols-3 gap-8">
               {products.map((product, i) => (
                 <div
                   key={i}
@@ -288,7 +290,7 @@ export default function FinancierasPage() {
               ))}
             </div>
 
-            <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div data-sr-grid className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6">
               {[
                 { value: "Horas", label: "Tiempo de integración" },
                 { value: "99.9%", label: "Uptime garantizado" },
@@ -309,7 +311,7 @@ export default function FinancierasPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-16 items-start">
               {/* Left */}
-              <div>
+              <div data-sr>
                 <h2 className="text-3xl md:text-4xl font-black text-white mb-6">
                   Habla con un experto hoy
                 </h2>

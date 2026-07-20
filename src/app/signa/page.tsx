@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import ScrollReveal from "@/components/ScrollReveal";
 import { signaOrganizationSchema, signaServiceSchema, signaFAQSchema, signaBreadcrumbSchema } from "./schema";
 
 export const metadata: Metadata = {
@@ -95,6 +96,7 @@ export const metadata: Metadata = {
 export default function SignaHome() {
   return (
     <>
+      <ScrollReveal />
       {/* Structured Data for SEO */}
       <script
         type="application/ld+json"
@@ -114,7 +116,7 @@ export default function SignaHome() {
         <section className="pt-32 pb-20 bg-gradient-to-br from-[#0a0a0a] via-[#0a0a0a] to-[#1a1a1a]" role="banner">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <header>
+              <header data-sr>
                 <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#00d4aa]/10 border border-[#00d4aa]/20 rounded-full mb-6">
                   <span className="w-2 h-2 bg-[#00d4aa] rounded-full"></span>
                   <span className="text-[#00d4aa] text-sm font-medium">Tecnología 2026</span>
@@ -175,7 +177,7 @@ export default function SignaHome() {
                 </div>
               </header>
 
-              <div className="relative">
+              <div data-sr="right" className="relative">
                 {/* Interactive Savings Calculator */}
                 <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8">
                   <h3 className="text-2xl font-bold text-white mb-6">📊 Calcula Tu Ahorro Real</h3>
@@ -222,7 +224,7 @@ export default function SignaHome() {
         {/* Comparison Grid - SEO Optimized for "mejor firma electrónica méxico" */}
         <section className="py-20 bg-white" role="region" aria-labelledby="why-choose-signa">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
+            <div data-sr className="text-center mb-16">
               <h2 id="why-choose-signa" className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
                 🏆 ¿Por Qué <span className="text-[#00d4aa]">Signa</span> es la 
                 <span className="text-[#0066ff]"> Mejor Firma Electrónica México</span>?
@@ -234,7 +236,7 @@ export default function SignaHome() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
+            <div data-sr-grid className="grid md:grid-cols-3 gap-8">
               <div className="bg-gray-50 rounded-xl p-8 text-center">
                 <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
                   <span className="text-2xl">💸</span>
@@ -289,7 +291,7 @@ export default function SignaHome() {
         {/* Success Stories */}
         <section className="py-20 bg-[#0a0a0a]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
+            <div data-sr className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
                 Lo Que Dicen Nuestros Clientes
               </h2>
@@ -298,7 +300,7 @@ export default function SignaHome() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
+            <div data-sr-grid className="grid md:grid-cols-3 gap-8">
               <div className="bg-white/5 border border-white/10 rounded-xl p-6">
                 <div className="flex items-start mb-4">
                   <div className="flex-shrink-0">
@@ -367,7 +369,7 @@ export default function SignaHome() {
 
         {/* CTA Section */}
         <section className="py-20 bg-gradient-to-r from-[#00d4aa] to-[#0066ff]">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div data-sr className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl md:text-4xl font-black text-white mb-6">
               ¿Listo para Ahorrar 50% en Firma Electrónica?
             </h2>

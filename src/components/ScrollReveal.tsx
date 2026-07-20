@@ -33,6 +33,9 @@ export default function ScrollReveal() {
       [data-sr-grid].sr-in > *:nth-child(4)  { transition-delay: 240ms; }
       [data-sr-grid].sr-in > *:nth-child(5)  { transition-delay: 320ms; }
       [data-sr-grid].sr-in > *:nth-child(6)  { transition-delay: 400ms; }
+      [data-sr-grid].sr-in > *:nth-child(7)  { transition-delay: 480ms; }
+      [data-sr-grid].sr-in > *:nth-child(8)  { transition-delay: 560ms; }
+      [data-sr-grid].sr-in > *:nth-child(9)  { transition-delay: 640ms; }
       [data-sr-grid].sr-in > * {
         opacity: 1;
         transform: none;

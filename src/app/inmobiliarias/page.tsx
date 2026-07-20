@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import { getUtmParams } from "@/components/CloudflareTurnstile";
+import ScrollReveal from "@/components/ScrollReveal";
 
 const painPoints = [
   {
@@ -109,6 +110,7 @@ export default function InmobiliariasPage() {
 
   return (
     <>
+      <ScrollReveal />
       <Header />
       <main>
         {/* Hero */}
@@ -120,7 +122,7 @@ export default function InmobiliariasPage() {
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div>
+              <div data-sr>
                 <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#1ECAD3]/10 border border-[#1ECAD3]/30 rounded-full mb-6">
                   <span className="w-2 h-2 bg-[#1ECAD3] rounded-full"></span>
                   <span className="text-[#1ECAD3] text-sm font-medium">Para inmobiliarias, notarías y firmas legales</span>
@@ -174,7 +176,7 @@ export default function InmobiliariasPage() {
               </div>
 
               {/* Right: mini-preview card */}
-              <div className="hidden lg:flex justify-center">
+              <div data-sr="right" className="hidden lg:flex justify-center">
                 <div className="bg-white/5 border border-white/10 rounded-2xl p-8 max-w-sm w-full backdrop-blur-sm">
                   <div className="flex items-center gap-3 mb-6">
                     <div className="w-10 h-10 bg-[#1ECAD3]/20 rounded-lg flex items-center justify-center">
@@ -205,7 +207,7 @@ export default function InmobiliariasPage() {
         {/* Pain Points */}
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-14">
+            <div data-sr className="text-center mb-14">
               <h2 className="text-3xl md:text-4xl font-black text-[#202945] mb-4">
                 Los riesgos que tu operación no puede ignorar
               </h2>
@@ -215,7 +217,7 @@ export default function InmobiliariasPage() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
+            <div data-sr-grid className="grid md:grid-cols-3 gap-8">
               {painPoints.map((point, i) => (
                 <div
                   key={i}
@@ -235,7 +237,7 @@ export default function InmobiliariasPage() {
         {/* How it works */}
         <section className="py-20 bg-[#202945]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-14">
+            <div data-sr className="text-center mb-14">
               <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
                 Cómo funciona
               </h2>
@@ -244,7 +246,7 @@ export default function InmobiliariasPage() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
+            <div data-sr-grid className="grid md:grid-cols-3 gap-8">
               {steps.map((step, i) => (
                 <div key={i} className="relative">
                   {i < steps.length - 1 && (
@@ -264,7 +266,7 @@ export default function InmobiliariasPage() {
         {/* Products */}
         <section className="py-20 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-14">
+            <div data-sr className="text-center mb-14">
               <h2 className="text-3xl md:text-4xl font-black text-[#202945] mb-4">
                 Solución completa para operaciones inmobiliarias
               </h2>
@@ -286,7 +288,7 @@ export default function InmobiliariasPage() {
             </div>
 
             {/* Stats */}
-            <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div data-sr-grid className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6">
               {[
                 { value: "30s", label: "Tiempo de verificación" },
                 { value: "99.9%", label: "Precisión biométrica" },
@@ -307,7 +309,7 @@ export default function InmobiliariasPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-16 items-start">
               {/* Left */}
-              <div>
+              <div data-sr>
                 <h2 className="text-3xl md:text-4xl font-black text-white mb-6">
                   Agenda tu demo gratuita hoy
                 </h2>

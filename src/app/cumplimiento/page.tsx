@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import Image from "next/image";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "Cumplimiento Regulatorio | JAAK",
@@ -111,12 +112,13 @@ export default function CumplimientoPage() {
 
   return (
     <>
+      <ScrollReveal />
       <Header />
       <main>
         {/* Hero Section */}
         <section className="pt-32 pb-20 bg-[#0a0a0a]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-3xl">
+            <div data-sr className="max-w-3xl">
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#0066ff]/10 border border-[#0066ff]/20 rounded-full mb-6">
                 <span className="w-2 h-2 bg-[#0066ff] rounded-full"></span>
                 <span className="text-[#0066ff] text-sm font-medium">Cumplimiento Regulatorio</span>
@@ -142,7 +144,7 @@ export default function CumplimientoPage() {
         {/* Quick Stats */}
         <section className="py-12 bg-white border-b border-gray-100">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div data-sr-grid className="grid grid-cols-2 md:grid-cols-4 gap-8">
               <div className="text-center">
                 <div className="text-3xl md:text-4xl font-black text-gray-900 mb-2">4+</div>
                 <div className="text-gray-600">Regulaciones cubiertas</div>
@@ -166,7 +168,7 @@ export default function CumplimientoPage() {
         {/* Regulations Grid */}
         <section className="py-20 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
+            <div data-sr className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
                 Regulaciones que cubrimos
               </h2>
@@ -175,7 +177,7 @@ export default function CumplimientoPage() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-6">
+            <div data-sr-grid className="grid md:grid-cols-2 gap-6">
               {regulations.map((reg, index) => (
                 <Link
                   key={index}
@@ -208,7 +210,7 @@ export default function CumplimientoPage() {
         {/* Certifications */}
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
+            <div data-sr className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
                 Certificaciones y estándares
               </h2>
@@ -217,7 +219,7 @@ export default function CumplimientoPage() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-4 gap-6">
+            <div data-sr-grid className="grid md:grid-cols-4 gap-6">
               {certifications.map((cert, index) => (
                 <div key={index} className="text-center p-6 bg-gray-50 rounded-xl">
                   <div className="w-20 h-20 mx-auto mb-4 relative">
@@ -239,7 +241,7 @@ export default function CumplimientoPage() {
         {/* Evidence Capabilities */}
         <section className="py-20 bg-[#0a0a0a]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
+            <div data-sr className="text-center mb-16">
               <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#00d4aa]/10 border border-[#00d4aa]/20 rounded-full mb-6">
                 <span className="w-2 h-2 bg-[#00d4aa] rounded-full"></span>
                 <span className="text-[#00d4aa] text-sm font-medium">Evidencia Auditable</span>
@@ -252,7 +254,7 @@ export default function CumplimientoPage() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-6">
+            <div data-sr-grid className="grid md:grid-cols-3 gap-6">
               {[
                 {
                   title: "Expediente Digital",
@@ -301,7 +303,7 @@ export default function CumplimientoPage() {
 
         {/* CTA Section */}
         <section className="py-20 bg-white">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div data-sr className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-6">
               ¿Necesitas cumplir con regulación?
             </h2>

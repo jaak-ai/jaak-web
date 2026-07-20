@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "Firma Electrónica Biométrica | Verificación Facial en México | JAAK",
@@ -35,6 +36,7 @@ const breadcrumbSchema = {
 export default function FirmaBiometricaPage() {
   return (
     <>
+      <ScrollReveal />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
@@ -48,7 +50,7 @@ export default function FirmaBiometricaPage() {
           style={{ background: "linear-gradient(135deg, #071020 0%, #130D2A 100%)" }}
           aria-labelledby="hero-heading"
         >
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div data-sr className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <nav className="flex items-center gap-2 text-xs text-gray-600 mb-8" aria-label="Navegación">
               <Link href="/plataforma/firma-electronica" className="hover:text-[#1ECAD3] transition-colors">
                 Firma Electrónica
@@ -111,13 +113,15 @@ export default function FirmaBiometricaPage() {
         {/* How biometrics work */}
         <section className="py-20" style={{ background: "#070E1A" }} aria-labelledby="biometria-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 id="biometria-heading" className="text-2xl font-black text-white mb-4 text-center">
-              Cómo funciona la biometría en JAAK
-            </h2>
-            <p className="text-gray-500 text-center text-sm mb-10 max-w-2xl mx-auto">
-              Todo el proceso ocurre en el navegador del firmante, sin instalar aplicaciones.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div data-sr>
+              <h2 id="biometria-heading" className="text-2xl font-black text-white mb-4 text-center">
+                Cómo funciona la biometría en JAAK
+              </h2>
+              <p className="text-gray-500 text-center text-sm mb-10 max-w-2xl mx-auto">
+                Todo el proceso ocurre en el navegador del firmante, sin instalar aplicaciones.
+              </p>
+            </div>
+            <div data-sr-grid className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[
                 {
                   step: "01",
@@ -169,10 +173,10 @@ export default function FirmaBiometricaPage() {
         {/* Benefits */}
         <section className="py-20" style={{ background: "#0A1628" }} aria-labelledby="benefits-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 id="benefits-heading" className="text-2xl font-black text-white mb-8 text-center">
+            <h2 data-sr id="benefits-heading" className="text-2xl font-black text-white mb-8 text-center">
               ¿Qué incluye la Firma Digital NOM-151 + Biometría?
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div data-sr-grid className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {[
                 {
                   icon: "🔒",
@@ -228,7 +232,7 @@ export default function FirmaBiometricaPage() {
 
         {/* Internal links + CTA */}
         <section className="py-16" style={{ background: "#070E1A" }}>
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div data-sr className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p className="text-gray-500 text-sm mb-6">
               ¿Necesitas también validación de documentos de identidad y listas? Explora:
             </p>

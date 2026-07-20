@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import { getUtmParams } from "@/components/CloudflareTurnstile";
+import ScrollReveal from "@/components/ScrollReveal";
 
 const painPoints = [
   {
@@ -130,6 +131,7 @@ export default function BancosPage() {
 
   return (
     <>
+      <ScrollReveal />
       <Header />
       <main>
         {/* Hero */}
@@ -141,7 +143,7 @@ export default function BancosPage() {
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div>
+              <div data-sr>
                 <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#1ECAD3]/10 border border-[#1ECAD3]/30 rounded-full mb-6">
                   <span className="w-2 h-2 bg-[#1ECAD3] rounded-full animate-pulse"></span>
                   <span className="text-[#1ECAD3] text-sm font-medium">Para bancos, cajas de ahorro y Afores</span>
@@ -187,7 +189,7 @@ export default function BancosPage() {
               </div>
 
               {/* Right: architecture diagram */}
-              <div className="hidden lg:flex justify-center">
+              <div data-sr="right" className="hidden lg:flex justify-center">
                 <div className="bg-white/5 border border-white/10 rounded-2xl p-8 max-w-sm w-full backdrop-blur-sm">
                   <h3 className="text-white/60 text-xs font-medium uppercase tracking-wider mb-6">Arquitectura JAAK</h3>
                   <div className="space-y-3">
@@ -222,7 +224,7 @@ export default function BancosPage() {
         {/* Pain Points */}
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-14">
+            <div data-sr className="text-center mb-14">
               <h2 className="text-3xl md:text-4xl font-black text-[#202945] mb-4">
                 El costo oculto de depender de terceros
               </h2>
@@ -232,7 +234,7 @@ export default function BancosPage() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
+            <div data-sr-grid className="grid md:grid-cols-3 gap-8">
               {painPoints.map((point, i) => (
                 <div
                   key={i}
@@ -252,7 +254,7 @@ export default function BancosPage() {
         {/* How it works */}
         <section className="py-20 bg-[#202945]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-14">
+            <div data-sr className="text-center mb-14">
               <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
                 Infraestructura biométrica propia
               </h2>
@@ -261,7 +263,7 @@ export default function BancosPage() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-8">
+            <div data-sr-grid className="grid md:grid-cols-3 gap-8">
               {steps.map((step, i) => (
                 <div key={i} className="bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-[#1ECAD3]/40 transition-all">
                   <div className="text-5xl font-black text-[#1ECAD3]/20 mb-4">{step.number}</div>
@@ -276,7 +278,7 @@ export default function BancosPage() {
         {/* Products */}
         <section className="py-20 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-14">
+            <div data-sr className="text-center mb-14">
               <h2 className="text-3xl md:text-4xl font-black text-[#202945] mb-4">
                 Suite biométrica bancaria completa
               </h2>
@@ -285,7 +287,7 @@ export default function BancosPage() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-8">
+            <div data-sr-grid className="grid md:grid-cols-2 gap-8">
               {products.map((product, i) => (
                 <div
                   key={i}
@@ -319,7 +321,7 @@ export default function BancosPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-16 items-start">
               {/* Left */}
-              <div>
+              <div data-sr>
                 <h2 className="text-3xl md:text-4xl font-black text-white mb-6">
                   Agenda una demo técnica
                 </h2>

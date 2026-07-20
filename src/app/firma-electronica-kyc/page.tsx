@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export const metadata: Metadata = {
   title: "Firma Electrónica con KYC | Verificación de Identidad Completa México | JAAK",
@@ -35,6 +36,7 @@ const breadcrumbSchema = {
 export default function FirmaKYCPage() {
   return (
     <>
+      <ScrollReveal />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
@@ -53,7 +55,7 @@ export default function FirmaKYCPage() {
             aria-hidden="true"
             style={{ background: "#10B981" }}
           />
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <div data-sr className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             <nav className="flex items-center gap-2 text-xs text-gray-600 mb-8" aria-label="Navegación">
               <Link href="/plataforma/firma-electronica" className="hover:text-[#1ECAD3] transition-colors">
                 Firma Electrónica
@@ -133,13 +135,15 @@ export default function FirmaKYCPage() {
         {/* KYC Flow */}
         <section className="py-20" style={{ background: "#070E1A" }} aria-labelledby="flow-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 id="flow-heading" className="text-2xl font-black text-white mb-4 text-center">
-              El flujo completo de Firma Digital NOM-151 + KYC
-            </h2>
-            <p className="text-gray-500 text-center text-sm mb-10 max-w-2xl mx-auto">
-              Todo en un solo flujo para el firmante, menos de 5 minutos desde el inicio hasta el expediente generado.
-            </p>
-            <div className="space-y-4">
+            <div data-sr>
+              <h2 id="flow-heading" className="text-2xl font-black text-white mb-4 text-center">
+                El flujo completo de Firma Digital NOM-151 + KYC
+              </h2>
+              <p className="text-gray-500 text-center text-sm mb-10 max-w-2xl mx-auto">
+                Todo en un solo flujo para el firmante, menos de 5 minutos desde el inicio hasta el expediente generado.
+              </p>
+            </div>
+            <div data-sr-grid className="space-y-4">
               {[
                 {
                   step: "01",
@@ -223,10 +227,10 @@ export default function FirmaKYCPage() {
         {/* Regulatory compliance */}
         <section className="py-20" style={{ background: "#0A1628" }} aria-labelledby="compliance-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 id="compliance-heading" className="text-2xl font-black text-white mb-8 text-center">
+            <h2 data-sr id="compliance-heading" className="text-2xl font-black text-white mb-8 text-center">
               Cumplimiento regulatorio incluido
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div data-sr-grid className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {[
                 {
                   icon: "🏛",
@@ -278,7 +282,7 @@ export default function FirmaKYCPage() {
 
         {/* Internal links + CTA */}
         <section className="py-16" style={{ background: "#070E1A" }}>
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div data-sr className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <p className="text-gray-500 text-sm mb-6">
               Explora otras opciones de firma electrónica:
             </p>
