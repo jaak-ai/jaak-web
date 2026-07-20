@@ -21,5 +21,8 @@ export function escribirParamsUrl(cambios: Record<string, string | null>) {
   // Las comas de nuestros valores son válidas sin escapar en un query string;
   // se restauran para mantener la URL legible.
   url.search = url.searchParams.toString().replace(/%2C/gi, ",");
+  // No-op si nada cambió: evita replaceState en bucle con el App Router de Next
+  // (campañas con ?sel= + utm_* re-disparaban hidratación del carrito).
+  if (url.href === window.location.href) return;
   window.history.replaceState(null, "", url);
 }
