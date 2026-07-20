@@ -1,0 +1,92 @@
+---
+title: Solución de problemas
+description: Diagnóstico y remediación de problemas comunes de JAAK Pulse self-hosted — errores de login, health checks, proxy nginx y servicios systemd, con comandos verificables paso a paso.
+category: guia
+order: 6
+unlisted: true
+---
+
+# Solución de problemas
+
+Guía de remediación para incidencias comunes en una instalación de **JAAK Pulse
+self-hosted** (modo nativo: systemd + nginx). Cada entrada incluye síntoma, causa,
+comando de remediación y cómo verificar.
+
+Todos los comandos se ejecutan **en la VM** (por SSH o consola), como `root` o con `sudo`.
+
+---
+
+## Login devuelve `HTTP 405` (Method Not Allowed)
+
+**Síntoma:** al enviar el formulario de "Inicia sesión" en la consola, la respuesta
+es **`HTTP 405`**. El bootstrap y la rotación del admin (`get-pulse.sh --create-admin`)
+terminan bien; solo falla el login desde la consola.
+
+**Causa:** el `proxy_pass` de nginx tenía una **barra final** (`http://pulse_api/;`).
+Con esa barra, nginx **quita el prefijo `/api/`** antes de reenviar al backend, de modo
+que `POST /api/v1/auth/login` llega a `pulse-api` como `/v1/auth/login`. El backend solo
+acepta rutas bajo `/api/v1/…` y responde `405`. Afecta a **todo** el tráfico de la API,
+no solo al login (el health check `/api/healthz` daba un falso positivo y por eso el
+despliegue "pasaba").
+
+**Remediación** — quitar la barra final del `proxy_pass` y recargar nginx:
+
+```bash
+sudo sed -i 's#proxy_pass http://pulse_api/;#proxy_pass http://pulse_api;#' \
+  /etc/nginx/sites-available/jaak-pulse
+sudo nginx -t && sudo systemctl reload nginx
+```
+
+**Verificación** — desde la propia VM (o cualquier equipo con acceso a la consola):
+
+```bash
+# 1) nginx vivo
+curl -fsS http://localhost/healthz && echo OK
+
+# 2) backend vivo en loopback
+curl -fsS http://127.0.0.1:8787/healthz && echo OK
+
+# 3) la API responde a través de nginx conservando el prefijo /api/
+#    (este es el camino que fallaba). Debe devolver 200 con un JSON de config.
+curl -fsS http://localhost/api/v1/auth/config && echo OK
+```
+
+Si los tres devuelven `OK`, el login vuelve a funcionar. Vuelve a intentar iniciar
+sesión en la consola.
+
+> Las instalaciones nuevas (con `get-pulse.sh` actualizado) ya no traen este problema;
+> esta remediación es solo para VMs desplegadas antes de la corrección.
+
+---
+
+## El health check de la API falla tras corregir el proxy
+
+**Síntoma:** después de aplicar la remediación anterior, un check antiguo contra
+`http://localhost/api/healthz` empieza a devolver `404`.
+
+**Causa:** es **esperado**. `/api/healthz` solo devolvía `200` por el bug del proxy
+(caía en `/healthz`). El backend no expone `/api/healthz`; su health real vive en la
+raíz (`/healthz`).
+
+**Qué usar en su lugar:**
+
+- Salud de nginx: `curl -fsS http://localhost/healthz`
+- Salud del backend: `curl -fsS http://127.0.0.1:8787/healthz`
+- Salud end-to-end de la API vía nginx: `curl -fsS http://localhost/api/v1/auth/config`
+
+---
+
+## Comprobaciones generales de servicios
+
+Si la consola no carga o la API no responde, revisa el estado de los servicios:
+
+```bash
+systemctl status jaak-pulse-api nginx jaak-pulse-updater.timer
+journalctl -u jaak-pulse-api -n 50 --no-pager   # logs del backend
+journalctl -u nginx -n 50 --no-pager            # logs de nginx
+```
+
+- `jaak-pulse-api` debe estar `active (running)`.
+- `nginx` debe estar `active (running)` y `nginx -t` sin errores.
+- El password del admin queda en `/opt/jaak-pulse/.env` (permisos `0600`). Para rotarlo:
+  `sudo bash get-pulse.sh --create-admin`.

@@ -184,6 +184,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: `${baseUrl}/kyc-inmobiliario-lfpiorpi`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
+    {
       url: `${baseUrl}/autoservicio`,
       lastModified: now,
       changeFrequency: "monthly",

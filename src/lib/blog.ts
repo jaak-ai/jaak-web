@@ -11,6 +11,17 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    title: "Ley Antilavado en México: por qué el sector inmobiliario no puede seguir operando como hace diez años",
+    excerpt:
+      "La reforma a la LFPIORPI de julio 2025 creó la fracción V Bis, eliminó el umbral de habitualidad y puso al desarrollo inmobiliario en el centro del radar de la UIF. Analizamos qué cambió y cómo convertir el cumplimiento en un expediente digital defendible.",
+    date: "17 de julio, 2026",
+    dateISO: "2026-07-17",
+    category: "Regulación",
+    slug: "ley-antilavado-inmobiliarias-mexico",
+    readTime: "11 min",
+    image: "/images/blog/ley-antilavado-inmobiliarias-2026.png",
+  },
+  {
     title: "Umbrales LFPIORPI 2026 para Juegos y Apuestas: Cómo cumplir con el SAT sin perder jugadores",
     excerpt:
       "Conoce los umbrales de identificación (325 UMA) y aviso al SAT (645 UMA) del artículo 17 LFPIORPI para casinos, sorteos y plataformas de apuestas en 2026, y cómo automatizar el cumplimiento PLD sin fricción.",
