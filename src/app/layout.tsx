@@ -3,6 +3,7 @@ import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { GoogleTagManagerHead, GoogleTagManagerBody } from "@/components/GoogleTagManager";
+import { MicrosoftClarity } from "@/components/MicrosoftClarity";
 import { TurnstileScript } from "@/components/CloudflareTurnstile";
 import { KairosSalesChat } from "@/components/KairosSalesChat";
 import "./globals.css";
@@ -195,6 +196,7 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         <GoogleTagManagerBody />
+        <MicrosoftClarity />
         {children}
         <Analytics />
         <SpeedInsights />
