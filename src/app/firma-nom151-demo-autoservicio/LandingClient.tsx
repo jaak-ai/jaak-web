@@ -6,6 +6,7 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 import { gtmEvent } from "@/components/GoogleTagManager";
 import { getUtmParams } from "@/components/CloudflareTurnstile";
+import { getWhatsAppUrl } from "@/lib/whatsapp";
 import { productos, buildCheckoutUrl, formatMXN } from "@/data/autoservicio-catalogo";
 import type { PricingIndex } from "@/lib/pricing";
 
@@ -1287,6 +1288,27 @@ export default function FirmaNom151DemoLandingClient({
                 <p className="mt-5 text-[13px]" style={{ color: "rgba(255,255,255,0.45)" }}>
                   Compra en línea, activa en minutos y firma con validez legal desde autoservicio.
                 </p>
+
+                <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px]">
+                  <Link
+                    href="/contacto"
+                    onClick={() => gtmEvent("contact_click", { source: "hero", destination: "contacto", page_path: "/firma-nom151-demo-autoservicio" })}
+                    className="font-semibold underline underline-offset-2 transition-colors hover:text-white"
+                    style={{ color: "rgba(255,255,255,0.6)" }}
+                  >
+                    ¿Necesitas un volumen mayor o un flujo personalizado? Habla con un especialista.
+                  </Link>
+                  <a
+                    href={getWhatsAppUrl("hero")}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => gtmEvent("whatsapp_click", { source: "hero", destination: "whatsapp", page_path: "/firma-nom151-demo-autoservicio" })}
+                    className="font-semibold underline underline-offset-2 transition-colors hover:text-white"
+                    style={{ color: "rgba(255,255,255,0.6)" }}
+                  >
+                    Resolver dudas por WhatsApp
+                  </a>
+                </div>
               </div>
 
               {/* Video */}

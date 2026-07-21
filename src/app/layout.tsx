@@ -6,6 +6,7 @@ import { GoogleTagManagerHead, GoogleTagManagerBody } from "@/components/GoogleT
 import { MicrosoftClarity } from "@/components/MicrosoftClarity";
 import { TurnstileScript } from "@/components/CloudflareTurnstile";
 import { KairosSalesChat } from "@/components/KairosSalesChat";
+import FloatingDemoWidget from "@/components/FloatingDemoWidget";
 import "./globals.css";
 
 const jsonLd = {
@@ -202,6 +203,7 @@ export default function RootLayout({
         <SpeedInsights />
         <TurnstileScript />
         <KairosSalesChat />
+        <FloatingDemoWidget />
         {/* Meta Pixel */}
         <Script id="meta-pixel" strategy="afterInteractive">
           {`
