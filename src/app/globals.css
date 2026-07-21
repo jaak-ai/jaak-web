@@ -303,6 +303,18 @@ body {
   will-change: transform, opacity;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .hp-scan-beam {
+    animation: none;
+    opacity: 0.5;
+  }
+  .animate-pulse,
+  .animate-ping,
+  .animate-spin {
+    animation: none !important;
+  }
+}
+
 /* Client logos marquee */
 @keyframes hp-marquee {
   0%   { transform: translateX(0); }
