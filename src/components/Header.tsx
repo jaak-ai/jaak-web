@@ -7,6 +7,7 @@ import UrgentBanner from "./UrgentBanner";
 import DemoSelector from "./DemoSelector";
 import { gtmEvent } from "./GoogleTagManager";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
+import { SCHEDULE_DEMO_URL } from "@/lib/scheduling";
 
 type DropdownKey = "platform" | "solutions" | "compliance" | "resources" | null;
 
@@ -237,6 +238,20 @@ export default function Header() {
                   >
                     KYC para inmobiliarias
                   </Link>
+                  <a
+                    href={SCHEDULE_DEMO_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => {
+                      gtmEvent("schedule_demo_click", { source: "header", destination: "meetings_hubspot", page_path: window.location.pathname });
+                      setMobileMenuOpen(false);
+                    }}
+                    data-cta="agendar-demo"
+                    data-source="header"
+                    className="block text-gray-700 hover:text-[#0066ff]"
+                  >
+                    Agendar demo con un especialista
+                  </a>
                   <Link
                     href="/contacto"
                     onClick={() => {
@@ -247,7 +262,7 @@ export default function Header() {
                     data-source="header"
                     className="block text-gray-700 hover:text-[#0066ff]"
                   >
-                    Contactar a un especialista
+                    Formulario de contacto
                   </Link>
                   <a
                     href={getWhatsAppUrl("header")}
