@@ -7,6 +7,8 @@ import UrgentBanner from "./UrgentBanner";
 import DemoSelector from "./DemoSelector";
 import { gtmEvent } from "./GoogleTagManager";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
+import { SCHEDULE_DEMO_URL } from "@/lib/scheduling";
+import { KYC_GENERAL_DEMO, sectorDemos } from "@/lib/sectorDemos";
 
 type DropdownKey = "platform" | "solutions" | "compliance" | "resources" | null;
 
@@ -226,17 +228,51 @@ export default function Header() {
                     Firma Digital NOM-151
                   </Link>
                   <Link
-                    href="/kyc-inmobiliario-lfpiorpi"
+                    href={KYC_GENERAL_DEMO.href}
                     onClick={() => {
-                      gtmEvent("demo_kyc_inmobiliario_click", { source: "header", destination: "kyc_inmobiliario", page_path: window.location.pathname });
+                      gtmEvent("demo_kyc_click", { source: "header", destination: "kyc_general", page_path: window.location.pathname });
                       setMobileMenuOpen(false);
                     }}
-                    data-cta="demo-kyc-inmobiliario"
+                    data-cta="demo-kyc"
                     data-source="header"
                     className="block text-gray-700 hover:text-[#0066ff]"
                   >
-                    KYC para inmobiliarias
+                    KYC
                   </Link>
+                  <div className="pl-4">
+                    <span className="text-xs font-bold uppercase tracking-wide text-gray-400">Elegir por sector</span>
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {sectorDemos.map((s) => (
+                        <Link
+                          key={s.trackingId}
+                          href={s.href}
+                          onClick={() => {
+                            gtmEvent(s.trackingId === "kyc_inmobiliario" ? "demo_kyc_inmobiliario_click" : "demo_kyc_sector_click", { source: "header", destination: s.trackingId, page_path: window.location.pathname });
+                            setMobileMenuOpen(false);
+                          }}
+                          data-cta={`demo-${s.trackingId}`}
+                          data-source="header"
+                          className="text-xs font-semibold px-2.5 py-1 rounded-full bg-gray-100 text-gray-700"
+                        >
+                          {s.sector}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                  <a
+                    href={SCHEDULE_DEMO_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => {
+                      gtmEvent("schedule_demo_click", { source: "header", destination: "meetings_hubspot", page_path: window.location.pathname });
+                      setMobileMenuOpen(false);
+                    }}
+                    data-cta="agendar-demo"
+                    data-source="header"
+                    className="block text-gray-700 hover:text-[#0066ff]"
+                  >
+                    Agendar demo con un especialista
+                  </a>
                   <Link
                     href="/contacto"
                     onClick={() => {
@@ -247,7 +283,7 @@ export default function Header() {
                     data-source="header"
                     className="block text-gray-700 hover:text-[#0066ff]"
                   >
-                    Contactar a un especialista
+                    Formulario de contacto
                   </Link>
                   <a
                     href={getWhatsAppUrl("header")}

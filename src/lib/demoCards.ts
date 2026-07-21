@@ -8,7 +8,6 @@ export interface DemoCard {
   bullets: string[];
   href: string;
   ctaLabel: string;
-  priceNote?: string;
   trackingId: DemoTrackingId;
 }
 
@@ -29,7 +28,6 @@ export const demoCards: DemoCard[] = [
     ],
     href: "/firma-nom151-demo-autoservicio",
     ctaLabel: "Ver demo de Firma NOM-151",
-    priceNote: "Plan desde $99 + IVA",
     trackingId: "firma_nom151",
   },
   {

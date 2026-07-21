@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { gtmEvent } from "./GoogleTagManager";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
+import { SCHEDULE_DEMO_URL } from "@/lib/scheduling";
 
 const navPills = [
   { label: "Autoservicio", href: "/autoservicio" },
@@ -163,7 +165,7 @@ export default function HomepageHero() {
                   boxShadow: "0 8px 28px rgba(30,202,211,0.28)",
                 }}
               >
-                Ver demos desde $99
+                Ver demo rápida
                 <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
@@ -185,18 +187,32 @@ export default function HomepageHero() {
               </Link>
             </div>
 
-            <a
-              href={getWhatsAppUrl("hero")}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => gtmEvent("whatsapp_click", { source: "hero", destination: "whatsapp", page_path: window.location.pathname })}
-              data-cta="whatsapp"
-              data-source="hero"
-              className="inline-block text-sm font-medium underline underline-offset-2 mb-6 transition-colors"
-              style={{ color: "var(--hp-text-faint)" }}
-            >
-              Escríbenos por WhatsApp
-            </a>
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-1 mb-6">
+              <a
+                href={SCHEDULE_DEMO_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => gtmEvent("schedule_demo_click", { source: "hero", destination: "meetings_hubspot", page_path: window.location.pathname })}
+                data-cta="agendar-demo"
+                data-source="hero"
+                className="inline-block text-sm font-medium underline underline-offset-2 transition-colors"
+                style={{ color: "var(--hp-text-faint)" }}
+              >
+                Agendar demo con un especialista
+              </a>
+              <a
+                href={getWhatsAppUrl("hero")}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => gtmEvent("whatsapp_click", { source: "hero", destination: "whatsapp", page_path: window.location.pathname })}
+                data-cta="whatsapp"
+                data-source="hero"
+                className="inline-block text-sm font-medium underline underline-offset-2 transition-colors"
+                style={{ color: "var(--hp-text-faint)" }}
+              >
+                Escríbenos por WhatsApp
+              </a>
+            </div>
 
             <p className="text-xs" style={{ color: "var(--hp-text-faint)" }}>
               Para financieras, fintechs, inmobiliarias y organizaciones sujetas a cumplimiento regulatorio.
@@ -269,20 +285,23 @@ export default function HomepageHero() {
                       <div className="absolute bottom-10 left-4 w-7 h-7" style={{ borderBottom: "2px solid #1ECAD3", borderLeft: "2px solid #1ECAD3", boxShadow: "0 0 8px rgba(30,202,211,0.6)" }} />
                       <div className="absolute bottom-10 right-4 w-7 h-7" style={{ borderBottom: "2px solid #1ECAD3", borderRight: "2px solid #1ECAD3", boxShadow: "0 0 8px rgba(30,202,211,0.6)" }} />
 
-                      {/* Face outline */}
-                      <div className="absolute inset-0 flex items-center justify-center" style={{ paddingBottom: "32px" }}>
-                        <svg width="90" height="100" viewBox="0 0 80 90" fill="none" style={{ opacity: 0.55 }}>
-                          <ellipse cx="40" cy="34" rx="24" ry="30" stroke="#1ECAD3" strokeWidth="1.5"/>
-                          <path d="M18 72 Q40 62 62 72" stroke="#1ECAD3" strokeWidth="1.5" fill="none"/>
-                          <circle cx="30" cy="29" r="4" stroke="#1ECAD3" strokeWidth="1.5"/>
-                          <circle cx="50" cy="29" r="4" stroke="#1ECAD3" strokeWidth="1.5"/>
-                          <path d="M33 44 Q40 48 47 44" stroke="#1ECAD3" strokeWidth="1.5" fill="none"/>
-                          <circle cx="30" cy="29" r="1.5" fill="#1ECAD3" opacity="0.8"/>
-                          <circle cx="50" cy="29" r="1.5" fill="#1ECAD3" opacity="0.8"/>
-                          {/* Nose bridge */}
-                          <path d="M40 36 L38 42 L42 42" stroke="#1ECAD3" strokeWidth="1" fill="none" opacity="0.6"/>
-                        </svg>
+                      {/* Foto con malla de puntos biométricos */}
+                      <div className="absolute inset-0 flex items-end justify-center" style={{ paddingBottom: "32px" }}>
+                        <Image
+                          src="/images/hero/biometric-verification.png"
+                          alt=""
+                          width={560}
+                          height={646}
+                          priority
+                          className="w-auto object-contain"
+                          style={{ height: "192px" }}
+                        />
                       </div>
+                      {/* Viñeta para fundir los bordes de la foto con el panel oscuro */}
+                      <div
+                        className="absolute inset-0 pointer-events-none"
+                        style={{ background: "radial-gradient(ellipse 60% 65% at 50% 42%, transparent 60%, rgba(8,20,40,0.75) 100%)" }}
+                      />
 
                       {/* Scan beam — vivid green-cyan line */}
                       <div

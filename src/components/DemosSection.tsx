@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { gtmEvent } from "./GoogleTagManager";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
+import { SCHEDULE_DEMO_URL } from "@/lib/scheduling";
 import { demoCards, type DemoCard } from "@/lib/demoCards";
 
 const TEAL = "#1ECAD3";
@@ -74,11 +75,6 @@ function DemoCardItem({ card }: { card: DemoCard }) {
             Hablar con un especialista
           </Link>
         </div>
-        {card.priceNote && (
-          <p className="mt-3 text-xs" style={{ color: "var(--hp-text-faint)" }}>
-            {card.priceNote}
-          </p>
-        )}
       </div>
     </div>
   );
@@ -136,16 +132,28 @@ export default function DemosSection() {
           <p className="text-[15px] font-medium text-center sm:text-left" style={{ color: "var(--hp-text-md)" }}>
             ¿Tu industria necesita un flujo diferente?
           </p>
-          <div className="flex flex-wrap justify-center gap-3">
+          <div className="flex flex-wrap justify-center gap-x-5 gap-y-2">
+            <a
+              href={SCHEDULE_DEMO_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => gtmEvent("schedule_demo_click", { source: "demo_section", destination: "meetings_hubspot", page_path: window.location.pathname })}
+              data-cta="agendar-demo"
+              data-source="demo_section"
+              className="inline-flex items-center gap-1.5 text-sm font-bold transition-colors"
+              style={{ color: TEAL }}
+            >
+              Agendar demo →
+            </a>
             <Link
               href="/contacto"
               onClick={() => gtmEvent("contact_click", { source: "demo_section", destination: "contacto", page_path: window.location.pathname })}
               data-cta="cuentanos-tu-caso"
               data-source="demo_section"
-              className="inline-flex items-center gap-1.5 text-sm font-bold transition-colors"
-              style={{ color: TEAL }}
+              className="inline-flex items-center gap-1.5 text-sm font-semibold transition-colors"
+              style={{ color: "var(--hp-text-faint)" }}
             >
-              Cuéntanos tu caso →
+              Cuéntanos tu caso
             </Link>
             <a
               href={getWhatsAppUrl("demo_section")}

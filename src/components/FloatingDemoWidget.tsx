@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { gtmEvent } from "./GoogleTagManager";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
+import { SCHEDULE_DEMO_URL } from "@/lib/scheduling";
 
 const TEAL = "#1ECAD3";
 const NAVY_DARK = "#071426";
@@ -95,11 +96,11 @@ export default function FloatingDemoWidget() {
       {open && (
         <div
           role="dialog"
-          aria-label="Prueba JAAK desde $99"
+          aria-label="Conoce JAAK"
           className="mb-[76px] sm:mb-3 w-[calc(100vw-2rem)] max-w-[320px] rounded-2xl bg-white shadow-2xl border border-gray-100 overflow-hidden ml-auto"
         >
           <div className="px-4 py-3 flex items-center justify-between" style={{ background: NAVY_DARK }}>
-            <span className="text-sm font-bold text-white">Prueba JAAK desde $99</span>
+            <span className="text-sm font-bold text-white">Conoce JAAK</span>
             <button
               type="button"
               aria-label="Cerrar"
@@ -130,6 +131,15 @@ export default function FloatingDemoWidget() {
             </Link>
 
             <p className="text-[11px] font-bold uppercase tracking-wide text-gray-400 px-1 mt-2 mb-1.5">Hablar con JAAK</p>
+            <a
+              href={SCHEDULE_DEMO_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => track("schedule_demo_click", "meetings_hubspot")}
+              className="block px-3 py-2 rounded-lg text-sm font-semibold text-gray-800 hover:bg-gray-50 transition-colors"
+            >
+              Agendar demo con un especialista
+            </a>
             <Link
               href="/contacto"
               onClick={() => track("contact_click", "contacto")}
@@ -164,7 +174,7 @@ export default function FloatingDemoWidget() {
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
         </svg>
-        Prueba JAAK desde $99
+        Ver una demo
       </button>
 
       {/* Bottom bar — mobile */}
@@ -178,7 +188,7 @@ export default function FloatingDemoWidget() {
         className="sm:hidden fixed bottom-0 left-0 right-0 flex items-center justify-center gap-2 py-3.5 text-sm font-bold text-white"
         style={{ background: `linear-gradient(135deg, ${TEAL}, #17a8b0)` }}
       >
-        Ver demos desde $99
+        Ver una demo
       </button>
     </div>
   );
