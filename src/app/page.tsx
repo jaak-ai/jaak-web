@@ -6,10 +6,12 @@ import HomepageProblem from "@/components/HomepageProblem";
 import HomepageProductFlow from "@/components/HomepageProductFlow";
 import HomepageKYCComponents from "@/components/HomepageKYCComponents";
 import HomepageDifferentiator from "@/components/HomepageDifferentiator";
+import DemosSection from "@/components/DemosSection";
 import HomepageIndustries from "@/components/HomepageIndustries";
 import HomepageProducts from "@/components/HomepageProducts";
 import HomepageAutoservicioCTA from "@/components/HomepageAutoservicioCTA";
 import HomepageTrust from "@/components/HomepageTrust";
+import RecentBlogPosts from "@/components/RecentBlogPosts";
 import HomepageFinalCTA from "@/components/HomepageFinalCTA";
 import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
@@ -34,6 +36,8 @@ export default function Home() {
           <HomepageKYCComponents />
           {/* S5 — Diferenciador */}
           <HomepageDifferentiator />
+          {/* S5.5 — Demos por producto y sector */}
+          <DemosSection />
           {/* S6 — Industrias */}
           <HomepageIndustries />
           {/* S7 — Productos */}
@@ -42,6 +46,8 @@ export default function Home() {
           <HomepageAutoservicioCTA />
           {/* S8 — Prueba / confianza */}
           <HomepageTrust />
+          {/* S8.5 — Blog / recursos educativos */}
+          <RecentBlogPosts />
           {/* S9 — CTA final */}
           <HomepageFinalCTA />
           <ContactForm />

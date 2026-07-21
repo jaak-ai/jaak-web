@@ -5,6 +5,7 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { gtmEvent } from "@/components/GoogleTagManager";
+import { getWhatsAppUrl } from "@/lib/whatsapp";
 
 /* ─────────────────────────────────────────────────────────────────────────
  * Constantes de marca y contenido
@@ -538,6 +539,27 @@ export default function KycInmobiliarioLfpiorpiLandingClient() {
                   >
                     Prueba el Plan Cobre de KYC desde $99 + IVA →
                   </Link>
+                </div>
+
+                <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px]">
+                  <Link
+                    href="/contacto"
+                    onClick={() => gtmEvent("contact_click", { source: "hero", destination: "contacto", page_path: "/kyc-inmobiliario-lfpiorpi" })}
+                    className="font-semibold underline underline-offset-2 transition-colors hover:text-white"
+                    style={{ color: "rgba(255,255,255,0.55)" }}
+                  >
+                    ¿Necesitas un volumen mayor o un flujo personalizado? Habla con un especialista.
+                  </Link>
+                  <a
+                    href={getWhatsAppUrl("hero")}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => gtmEvent("whatsapp_click", { source: "hero", destination: "whatsapp", page_path: "/kyc-inmobiliario-lfpiorpi" })}
+                    className="font-semibold underline underline-offset-2 transition-colors hover:text-white"
+                    style={{ color: "rgba(255,255,255,0.55)" }}
+                  >
+                    Resolver dudas por WhatsApp
+                  </a>
                 </div>
               </div>
 

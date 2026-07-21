@@ -1,8 +1,23 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { blogPosts, categoryColors } from "@/lib/blog";
+import { gtmEvent } from "./GoogleTagManager";
 
-const posts = blogPosts.slice(0, 3);
+// Prioriza contenido sobre Firma Digital NOM-151, KYC/identidad digital y
+// sector inmobiliario/LFPIORPI; completa con los artículos más recientes.
+const PRIORITY_SLUGS = [
+  "que-es-nom-151-contratos-digitales",
+  "que-es-kyc-cuando-es-obligatorio-mexico",
+  "ley-antilavado-inmobiliarias-mexico",
+];
+
+const priorityPosts = PRIORITY_SLUGS.map((slug) => blogPosts.find((p) => p.slug === slug)).filter(
+  (p): p is NonNullable<typeof p> => Boolean(p)
+);
+const fillerPosts = blogPosts.filter((p) => !PRIORITY_SLUGS.includes(p.slug));
+const posts = [...priorityPosts, ...fillerPosts].slice(0, 3);
 
 export default function RecentBlogPosts() {
   return (
@@ -26,6 +41,9 @@ export default function RecentBlogPosts() {
           </div>
           <Link
             href="/blog"
+            onClick={() => gtmEvent("cta_click", { source: "blog", destination: "blog_index", page_path: window.location.pathname })}
+            data-cta="ver-todos-articulos"
+            data-source="blog"
             className="inline-flex items-center gap-2 text-sm font-semibold whitespace-nowrap transition-colors"
             style={{ color: "#2DB6C1" }}
           >
@@ -44,6 +62,9 @@ export default function RecentBlogPosts() {
               <Link
                 key={post.slug}
                 href={`/blog/${post.slug}`}
+                onClick={() => gtmEvent("cta_click", { source: "blog", destination: "blog_article", page_path: window.location.pathname })}
+                data-cta="blog-article"
+                data-source="blog"
                 className="group flex flex-col bg-white rounded-2xl overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
               >
                 {/* Cover */}

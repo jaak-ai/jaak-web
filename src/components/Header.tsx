@@ -4,6 +4,9 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import UrgentBanner from "./UrgentBanner";
+import DemoSelector from "./DemoSelector";
+import { gtmEvent } from "./GoogleTagManager";
+import { getWhatsAppUrl } from "@/lib/whatsapp";
 
 type DropdownKey = "platform" | "solutions" | "compliance" | "resources" | null;
 
@@ -156,6 +159,9 @@ export default function Header() {
                   </svg>
                 </button>
               </div>
+
+              {/* Ver demos */}
+              <DemoSelector />
             </div>
 
             {/* Right side buttons */}
@@ -203,6 +209,63 @@ export default function Header() {
         {mobileMenuOpen && (
           <div className="lg:hidden bg-white border-t border-gray-200 max-h-[calc(100vh-114px)] overflow-y-auto">
             <div className="px-4 py-6 space-y-6">
+              {/* Demos Section */}
+              <div>
+                <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Demos</h3>
+                <div className="space-y-3">
+                  <Link
+                    href="/firma-nom151-demo-autoservicio"
+                    onClick={() => {
+                      gtmEvent("demo_firma_nom151_click", { source: "header", destination: "firma_nom151", page_path: window.location.pathname });
+                      setMobileMenuOpen(false);
+                    }}
+                    data-cta="demo-firma-nom151"
+                    data-source="header"
+                    className="block text-gray-700 hover:text-[#0066ff]"
+                  >
+                    Firma Digital NOM-151
+                  </Link>
+                  <Link
+                    href="/kyc-inmobiliario-lfpiorpi"
+                    onClick={() => {
+                      gtmEvent("demo_kyc_inmobiliario_click", { source: "header", destination: "kyc_inmobiliario", page_path: window.location.pathname });
+                      setMobileMenuOpen(false);
+                    }}
+                    data-cta="demo-kyc-inmobiliario"
+                    data-source="header"
+                    className="block text-gray-700 hover:text-[#0066ff]"
+                  >
+                    KYC para inmobiliarias
+                  </Link>
+                  <Link
+                    href="/contacto"
+                    onClick={() => {
+                      gtmEvent("contact_click", { source: "header", destination: "contacto", page_path: window.location.pathname });
+                      setMobileMenuOpen(false);
+                    }}
+                    data-cta="ayuda-elegir"
+                    data-source="header"
+                    className="block text-gray-700 hover:text-[#0066ff]"
+                  >
+                    Contactar a un especialista
+                  </Link>
+                  <a
+                    href={getWhatsAppUrl("header")}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => {
+                      gtmEvent("whatsapp_click", { source: "header", destination: "whatsapp", page_path: window.location.pathname });
+                      setMobileMenuOpen(false);
+                    }}
+                    data-cta="whatsapp"
+                    data-source="header"
+                    className="block text-gray-700 hover:text-[#0066ff]"
+                  >
+                    WhatsApp
+                  </a>
+                </div>
+              </div>
+
               {/* Platform Section */}
               <div>
                 <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Plataforma</h3>

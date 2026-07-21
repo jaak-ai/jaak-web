@@ -6,6 +6,7 @@ import Image from "next/image";
 import { blogPosts, categoryColors } from "@/lib/blog";
 import ReadingProgress from "./ReadingProgress";
 import ArticleTOC from "./ArticleTOC";
+import ArticleBottomCta from "./ArticleBottomCta";
 import type { ReactNode } from "react";
 
 interface RelatedPost {
@@ -430,32 +431,7 @@ export default function ArticleLayout({
             >
               ¿Listo para operar con confianza digital?
             </h2>
-            <div className="flex flex-wrap justify-center gap-3">
-              <Link
-                href="/contacto"
-                className="px-6 py-3 rounded-xl font-black text-sm transition-all hover:-translate-y-0.5"
-                style={{
-                  background: "#1ECAD3",
-                  color: "#202945",
-                  fontFamily: FONT,
-                  boxShadow: "0 0 0 0 transparent",
-                }}
-              >
-                Solicitar demo
-              </Link>
-              <Link
-                href="/autoservicio"
-                className="px-6 py-3 rounded-xl font-black text-sm transition-all hover:-translate-y-0.5 border"
-                style={{
-                  background: "transparent",
-                  color: "rgba(255,255,255,0.75)",
-                  borderColor: "rgba(255,255,255,0.14)",
-                  fontFamily: FONT,
-                }}
-              >
-                Probar autoservicio
-              </Link>
-            </div>
+            <ArticleBottomCta slug={slug} category={category} />
           </div>
         </section>
       </main>

@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { gtmEvent } from "./GoogleTagManager";
+import { getWhatsAppUrl } from "@/lib/whatsapp";
 
 const navPills = [
   { label: "Autoservicio", href: "/autoservicio" },
@@ -149,22 +151,28 @@ export default function HomepageHero() {
             </p>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-3 mb-8">
-              <Link
-                href="/autoservicio"
+            <div className="flex flex-col sm:flex-row gap-3 mb-4">
+              <a
+                href="#demos"
+                onClick={() => gtmEvent("cta_click", { source: "hero", destination: "demos_section", page_path: window.location.pathname })}
+                data-cta="ver-demos"
+                data-source="hero"
                 className="inline-flex items-center justify-center px-7 py-4 text-white font-bold text-base rounded-xl transition-all duration-200 group"
                 style={{
                   background: "linear-gradient(135deg, #1ECAD3, #17a8b0)",
                   boxShadow: "0 8px 28px rgba(30,202,211,0.28)",
                 }}
               >
-                Comenzar ahora
+                Ver demos desde $99
                 <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
-              </Link>
+              </a>
               <Link
                 href="/contacto"
+                onClick={() => gtmEvent("contact_click", { source: "hero", destination: "contacto", page_path: window.location.pathname })}
+                data-cta="hablar-especialista"
+                data-source="hero"
                 className="inline-flex items-center justify-center px-7 py-4 font-semibold text-base rounded-xl transition-all duration-200"
                 style={{
                   color: "var(--hp-ghost-btn-color)",
@@ -173,9 +181,22 @@ export default function HomepageHero() {
                   backdropFilter: "blur(12px)",
                 }}
               >
-                Solicitar demo
+                Hablar con un especialista
               </Link>
             </div>
+
+            <a
+              href={getWhatsAppUrl("hero")}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => gtmEvent("whatsapp_click", { source: "hero", destination: "whatsapp", page_path: window.location.pathname })}
+              data-cta="whatsapp"
+              data-source="hero"
+              className="inline-block text-sm font-medium underline underline-offset-2 mb-6 transition-colors"
+              style={{ color: "var(--hp-text-faint)" }}
+            >
+              Escríbenos por WhatsApp
+            </a>
 
             <p className="text-xs" style={{ color: "var(--hp-text-faint)" }}>
               Para financieras, fintechs, inmobiliarias y organizaciones sujetas a cumplimiento regulatorio.
