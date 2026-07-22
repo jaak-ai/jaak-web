@@ -291,7 +291,7 @@ export default function HomepageHero() {
                           src="/images/hero/biometric-verification.png"
                           alt=""
                           width={560}
-                          height={646}
+                          height={643}
                           priority
                           className="w-auto object-contain"
                           style={{ height: "192px" }}
