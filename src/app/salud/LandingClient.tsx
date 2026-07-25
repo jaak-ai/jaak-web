@@ -23,6 +23,28 @@ const WHATSAPP_MESSAGE =
   "Hola, quiero conocer la solución de firma digital y evidencia de JAAK para el sector salud.";
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
 
+const TRIAL_PACKAGES = [
+  {
+    key: "nom151",
+    name: "Firma Digital NOM-151",
+    detail: "5 documentos incluidos · Firma electrónica avanzada con conservación NOM-151.",
+    priceLabel: "$99 + IVA",
+    originalPriceLabel: "$165",
+    badge: "40% de descuento",
+    href: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWNkNTYyMjNhODg3MzU1MzNmMmJhNTUlMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWNkNTYyMjNhODg3MzU1MzNmMmJhNTUlMjIlMkMlMjJrJTIyJTNBJTIyc2lnbmFfYWR2YW5jZWQlMjIlMkMlMjJuJTIyJTNBJTIyRmlybWElMjBEaWdpdGFsJTIwTk9NLTE1MSUyMiUyQyUyMnByJTIyJTNBMTE0Ljg0JTJDJTIyYyUyMiUzQSUyMk1YTiUyMiUyQyUyMnMlMjIlM0EwJTJDJTIyZCUyMiUzQSUyMkZpcm1hJTIwRGlnaXRhbCUyME5PTS0xNTElMjBDb2JyZSUyMDUlMjIlMkMlMjJxJTIyJTNBNSU3RCU1RCU3RA%3D%3D",
+    cta: "Probar por $99 + IVA",
+  },
+  {
+    key: "nom151_bio",
+    name: "Firma NOM-151 + Biometría",
+    detail: "5 documentos incluidos · Firma electrónica avanzada con validación de identidad biométrica.",
+    priceLabel: "$130 + IVA",
+    badge: "",
+    href: "https://platform.jaak.ai/#/register/user-info?d=JTdCJTIycGslMjIlM0ElNUIlMjI2OWNkNWNhNjNhODg3MzU1MzNmMmJhNzklMjIlNUQlMkMlMjJwcm9kdWN0cyUyMiUzQSU1QiU3QiUyMmklMjIlM0ElMjI2OWNkNWNhNjNhODg3MzU1MzNmMmJhNzklMjIlMkMlMjJrJTIyJTNBJTIyc2lnbmFfYWR2YW5jZWRfYmlvbWV0cmljJTIyJTJDJTIybiUyMiUzQSUyMkZpcm1hJTIwTk9NMTUxJTIwJTJCJTIwQklPJTIyJTJDJTIycHIlMjIlM0ExNTAuOCUyQyUyMmMlMjIlM0ElMjJNWE4lMjIlMkMlMjJzJTIyJTNBMCUyQyUyMmQlMjIlM0ElMjJGaXJtYSUyME5PTTE1MSUyMCUyQiUyMEJJTyUyMENvYnJlJTIwNSUyMiUyQyUyMnElMjIlM0E1JTJDJTIydCUyMiUzQSUyMkNvYnJlJTIyJTdEJTVEJTdE",
+    cta: "Probar con biometría",
+  },
+];
+
 const RISKS = [
   "Firmas cuya identidad resulta difícil de comprobar.",
   "Fechas registradas manualmente.",
@@ -179,6 +201,34 @@ function XIcon() {
     <svg className="w-3.5 h-3.5" fill="none" stroke="#94A3B8" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" />
     </svg>
+  );
+}
+
+function WhatsAppIcon() {
+  return (
+    <svg className="h-4 w-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.71.45 3.38 1.3 4.86L2.05 22l5.36-1.4a9.9 9.9 0 004.63 1.18h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.86 9.86 0 0012.04 2zm5.83 14.14c-.24.68-1.4 1.3-1.93 1.38-.5.08-1.12.11-1.81-.11-.42-.13-.96-.31-1.65-.6-2.9-1.25-4.8-4.17-4.94-4.36-.14-.19-1.18-1.57-1.18-3 0-1.42.75-2.12 1.01-2.41.27-.29.58-.36.78-.36l.56.01c.18.01.42-.07.65.5.24.58.82 2 .89 2.15.07.15.12.32.02.51-.09.19-.14.31-.28.48-.14.16-.29.36-.42.49-.14.14-.28.29-.12.57.16.28.72 1.19 1.55 1.93 1.06.95 1.96 1.24 2.24 1.38.28.14.44.12.6-.07.16-.19.68-.79.87-1.06.18-.28.36-.23.6-.14.24.09 1.53.72 1.79.85.26.13.44.19.5.3.06.11.06.63-.18 1.31z" />
+    </svg>
+  );
+}
+
+function WhatsAppButton({ location, variant = "solid" }: { location: string; variant?: "solid" | "outline" }) {
+  return (
+    <a
+      href={WHATSAPP_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={() => gtmEvent("whatsapp_click", { source: location, destination: "whatsapp", page_path: "/salud" })}
+      className="inline-flex items-center justify-center gap-2 rounded-lg px-6 py-3 font-bold transition-all"
+      style={
+        variant === "solid"
+          ? { background: "#25D366", color: "#fff" }
+          : { border: "1px solid rgba(255,255,255,0.30)", color: "#fff" }
+      }
+    >
+      <WhatsAppIcon />
+      Escríbenos por WhatsApp
+    </a>
   );
 }
 
@@ -578,6 +628,7 @@ export default function SaludLandingClient() {
                   >
                     Ver cómo funciona
                   </a>
+                  <WhatsAppButton location="hero" />
                 </div>
 
                 <p className="text-sm text-white/45">
@@ -722,6 +773,61 @@ export default function SaludLandingClient() {
                 Quiero revisar mi caso de uso
               </a>
             </div>
+          </div>
+        </section>
+
+        {/* OFERTA: PAQUETE DE PRUEBA COBRE */}
+        <section className="py-20 bg-white">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div data-sr className="text-center mb-12 max-w-2xl mx-auto">
+              <h2 className="text-3xl md:text-4xl font-black mb-4" style={{ color: NAVY }}>
+                Pruébalo tú mismo: firma digital NOM-151 por tiempo limitado.
+              </h2>
+              <p className="text-lg" style={{ color: TEXT_BODY }}>
+                Activa un paquete de prueba de la línea Cobre y firma tus primeros documentos con evidencia NOM-151 en minutos.
+              </p>
+            </div>
+
+            <div data-sr-grid className="grid sm:grid-cols-2 gap-6 mb-8">
+              {TRIAL_PACKAGES.map((pkg) => (
+                <div key={pkg.key} className="rounded-2xl p-8 bg-white" style={{ border: pkg.badge ? "1.5px solid rgba(30,202,211,0.45)" : `1px solid ${BORDER}` }}>
+                  {pkg.badge && (
+                    <span
+                      className="inline-block text-xs font-bold uppercase tracking-wide px-3 py-1 rounded-full mb-4"
+                      style={{ background: "rgba(30,202,211,0.12)", color: "#0E8E96" }}
+                    >
+                      {pkg.badge}
+                    </span>
+                  )}
+                  <h3 className="text-lg font-bold mb-2" style={{ color: NAVY }}>{pkg.name}</h3>
+                  <p className="text-[14px] leading-relaxed mb-5" style={{ color: TEXT_MUTED }}>{pkg.detail}</p>
+                  <div className="flex items-baseline gap-2 mb-6">
+                    {pkg.originalPriceLabel && (
+                      <span className="text-lg font-medium line-through" style={{ color: "#B7C0CC" }}>{pkg.originalPriceLabel}</span>
+                    )}
+                    <span className="text-3xl font-black" style={{ color: NAVY }}>{pkg.priceLabel}</span>
+                    <span className="text-sm" style={{ color: TEXT_MUTED }}>MXN</span>
+                  </div>
+                  <a
+                    href={pkg.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => gtmEvent("click_buy_trial", { package: pkg.key, page: "salud" })}
+                    className="block w-full text-center px-6 py-3 font-bold rounded-lg transition-all"
+                    style={{ background: TEAL, color: NAVY }}
+                  >
+                    {pkg.cta}
+                  </a>
+                </div>
+              ))}
+            </div>
+
+            <p data-sr className="text-center text-sm" style={{ color: TEXT_MUTED }}>
+              Precios en pesos mexicanos, más IVA. Paquetes de prueba de la línea Cobre.{" "}
+              <Link href="/autoservicio" className="font-semibold underline" style={{ color: "#0E8E96" }}>
+                Conoce todos los paquetes de JAAK →
+              </Link>
+            </p>
           </div>
         </section>
 
@@ -919,16 +1025,7 @@ export default function SaludLandingClient() {
               >
                 Agenda una demostración
               </a>
-              <a
-                href={WHATSAPP_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => gtmEvent("whatsapp_click", { source: "cierre", destination: "whatsapp", page_path: "/salud" })}
-                className="px-6 py-3 border font-semibold rounded-lg text-white transition-all"
-                style={{ borderColor: "rgba(255,255,255,0.30)" }}
-              >
-                Hablar por WhatsApp
-              </a>
+              <WhatsAppButton location="cierre" />
             </div>
           </div>
         </section>
