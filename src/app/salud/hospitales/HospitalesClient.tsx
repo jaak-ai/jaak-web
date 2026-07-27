@@ -80,7 +80,7 @@ function SignMark({ mark }: { mark: Mark }) {
 function SignersMatrix() {
   return (
     <div>
-      <div className="overflow-x-auto rounded-2xl" style={{ border: `1px solid ${BORDER}` }}>
+      <div className="overflow-x-auto rounded-2xl" style={{ border: `1px solid ${BORDER}`, contain: "layout paint" }}>
         <table className="w-full text-sm min-w-[640px]">
           <caption className="sr-only">Firmas requeridas por documento clínico, según rol y nivel de riesgo</caption>
           <thead>
