@@ -17,7 +17,7 @@ const TEAL = "#1ECAD3";
 const LIGHT = "#F6F8FA";
 const BORDER = "#E3E8EE";
 const TEXT_BODY = "#4B5768";
-const TEXT_MUTED = "#6B7686";
+const TEXT_MUTED = "#5C6B7A"; // #6B7686 fallaba AA (4.33:1) sobre fondo LIGHT
 
 const VIDEO_ID = "q0Iliu1wK-g";
 const MEETINGS_URL = "https://meetings.hubspot.com/jose-andres-yllescas-lira";
@@ -255,7 +255,7 @@ function HeroVisual() {
             </span>
             <span
               className="text-[10px] font-bold px-2 py-1 rounded-full"
-              style={{ background: "rgba(30,202,211,0.12)", color: "#0E8E96" }}
+              style={{ background: "rgba(30,202,211,0.12)", color: "#0A6870" }}
             >
               En proceso
             </span>
@@ -440,7 +440,7 @@ function LeadFormSection() {
             className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full"
             style={{ background: "rgba(30,202,211,0.14)" }}
           >
-            <CheckIcon color="#0E8E96" />
+            <CheckIcon color="#0A6870" />
           </div>
           <h3 className="text-xl font-bold mb-2" style={{ color: NAVY }}>
             Solicitud enviada
@@ -522,7 +522,7 @@ function LeadFormSection() {
             <input required type="checkbox" name="acepta" checked={form.acepta} onChange={handleChange} className="mt-1" />
             <span>
               Acepto el{" "}
-              <Link href="/privacidad" className="underline" style={{ color: "#0E8E96" }}>
+              <Link href="/privacidad" className="underline" style={{ color: "#0A6870" }}>
                 Aviso de Privacidad
               </Link>{" "}
               de JAAK.
@@ -585,7 +585,7 @@ function NormativeChangesSection() {
     <section className="py-20 bg-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div data-sr className="max-w-3xl mb-4">
-          <span className="text-xs font-bold uppercase tracking-wider font-mono" style={{ color: "#0E8E96" }}>
+          <span className="text-xs font-bold uppercase tracking-wider font-mono" style={{ color: "#0A6870" }}>
             Registro de cambios normativos
           </span>
           <h2 className="text-3xl md:text-4xl font-black mt-3 mb-5" style={{ color: NAVY }}>
@@ -607,7 +607,7 @@ function NormativeChangesSection() {
               style={{ background: LIGHT, border: `1px solid ${BORDER}` }}
             >
               <div className="flex flex-wrap items-center gap-3 mb-3">
-                <span className="text-xs font-bold font-mono px-2.5 py-1 rounded-full" style={{ background: "rgba(30,202,211,0.12)", color: "#0E8E96" }}>
+                <span className="text-xs font-bold font-mono px-2.5 py-1 rounded-full" style={{ background: "rgba(30,202,211,0.12)", color: "#0A6870" }}>
                   {change.date}
                 </span>
                 <span className="text-xs font-semibold uppercase tracking-wide" style={{ color: TEXT_MUTED }}>
@@ -622,7 +622,7 @@ function NormativeChangesSection() {
                 rel="noopener noreferrer"
                 onClick={() => gtmEvent("salud_normative_source_click", { title: change.title, page: "salud" })}
                 className="text-xs font-bold underline"
-                style={{ color: "#0E8E96" }}
+                style={{ color: "#0A6870" }}
               >
                 Ver fuente · {change.sourceLabel} →
               </a>
@@ -651,7 +651,7 @@ function EvidenceLayersSection() {
           {saludEvidenceLayers.map((layer) => (
             <div key={layer.name} className="bg-white rounded-2xl p-6" style={{ border: `1px solid ${BORDER}` }}>
               <div className="flex items-baseline gap-2 mb-3">
-                <span className="text-xs font-mono font-bold" style={{ color: "#0E8E96" }}>{layer.n}</span>
+                <span className="text-xs font-mono font-bold" style={{ color: "#0A6870" }}>{layer.n}</span>
                 <h3 className="text-base font-bold" style={{ color: NAVY }}>{layer.name}</h3>
               </div>
               <p className="text-[13px] font-bold uppercase tracking-wide mb-1" style={{ color: "#127A38" }}>Qué sí prueba</p>
@@ -702,13 +702,13 @@ function SectorSelectorSection() {
               className="group block rounded-2xl p-6 h-full"
               style={{ background: LIGHT, border: `1px solid ${BORDER}` }}
             >
-              <span className="text-xs font-bold uppercase tracking-wide font-mono" style={{ color: "#0E8E96" }}>
+              <span className="text-xs font-bold uppercase tracking-wide font-mono" style={{ color: "#0A6870" }}>
                 {sector.eyebrow}
               </span>
               <h3 className="text-lg font-bold mt-3 mb-4" style={{ color: NAVY }}>{sector.title}</h3>
               <span
                 className="text-sm font-bold inline-flex items-center gap-1.5 group-hover:gap-2.5 transition-all"
-                style={{ color: "#0E8E96" }}
+                style={{ color: "#0A6870" }}
               >
                 Ver base normativa →
               </span>
@@ -833,7 +833,7 @@ export default function SaludLandingClient() {
             <div data-sr-grid className="grid md:grid-cols-3 gap-6 mb-6">
               {LOCKS.map((lock) => (
                 <div key={lock.q} className="bg-white rounded-2xl p-8" style={{ border: `1px solid ${BORDER}` }}>
-                  <h3 className="text-xl font-bold mb-3" style={{ color: "#0E8E96" }}>{lock.q}</h3>
+                  <h3 className="text-xl font-bold mb-3" style={{ color: "#0A6870" }}>{lock.q}</h3>
                   <p className="text-[15px] leading-relaxed" style={{ color: TEXT_BODY }}>{lock.a}</p>
                 </div>
               ))}
@@ -862,7 +862,7 @@ export default function SaludLandingClient() {
                 <div key={d.title} className="rounded-2xl p-8" style={{ background: LIGHT, border: `1px solid ${BORDER}` }}>
                   <h3 className="text-lg font-bold mb-3" style={{ color: NAVY }}>{d.title}</h3>
                   <p className="text-[14.5px] leading-relaxed mb-4" style={{ color: TEXT_BODY }}>{d.text}</p>
-                  <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: "#0E8E96" }}>{d.ref}</p>
+                  <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: "#0A6870" }}>{d.ref}</p>
                 </div>
               ))}
             </div>
@@ -946,7 +946,7 @@ export default function SaludLandingClient() {
                   {pkg.badge && (
                     <span
                       className="inline-block text-xs font-bold uppercase tracking-wide px-3 py-1 rounded-full mb-4"
-                      style={{ background: "rgba(30,202,211,0.12)", color: "#0E8E96" }}
+                      style={{ background: "rgba(30,202,211,0.12)", color: "#0A6870" }}
                     >
                       {pkg.badge}
                     </span>
@@ -976,7 +976,7 @@ export default function SaludLandingClient() {
 
             <p data-sr className="text-center text-sm" style={{ color: TEXT_MUTED }}>
               Precios en pesos mexicanos, más IVA. Paquetes de prueba de la línea Cobre.{" "}
-              <Link href="/autoservicio" className="font-semibold underline" style={{ color: "#0E8E96" }}>
+              <Link href="/autoservicio" className="font-semibold underline" style={{ color: "#0A6870" }}>
                 Conoce todos los paquetes de JAAK →
               </Link>
             </p>
@@ -1000,7 +1000,7 @@ export default function SaludLandingClient() {
                   style={{ background: LIGHT, border: `1px solid ${BORDER}` }}
                 >
                   <span className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center mt-0.5" style={{ background: "rgba(30,202,211,0.15)" }}>
-                    <CheckIcon color="#0E8E96" />
+                    <CheckIcon color="#0A6870" />
                   </span>
                   <span className="text-[14.5px] font-medium" style={{ color: NAVY }}>{uc}</span>
                 </div>
@@ -1051,7 +1051,7 @@ export default function SaludLandingClient() {
                 <ul className="space-y-4">
                   {JAAK_PROCESS.map((item) => (
                     <li key={item} className="flex items-start gap-3">
-                      <CheckIcon color="#0E8E96" />
+                      <CheckIcon color="#0A6870" />
                       <span className="text-[14.5px] font-medium" style={{ color: NAVY }}>{item}</span>
                     </li>
                   ))}
@@ -1097,14 +1097,14 @@ export default function SaludLandingClient() {
               {SECURITY_CAPS.map((cap) => (
                 <div key={cap} className="flex items-center gap-3 p-4 rounded-xl bg-white" style={{ border: `1px solid ${BORDER}` }}>
                   <span className="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center" style={{ background: "rgba(30,202,211,0.15)" }}>
-                    <CheckIcon color="#0E8E96" />
+                    <CheckIcon color="#0A6870" />
                   </span>
                   <span className="text-[13.5px] font-medium" style={{ color: NAVY }}>{cap}</span>
                 </div>
               ))}
             </div>
 
-            <Link href="/privacidad" className="text-sm font-semibold underline" style={{ color: "#0E8E96" }}>
+            <Link href="/privacidad" className="text-sm font-semibold underline" style={{ color: "#0A6870" }}>
               Consulta el Aviso de Privacidad de JAAK →
             </Link>
           </div>
@@ -1129,7 +1129,7 @@ export default function SaludLandingClient() {
                     rel="noopener noreferrer"
                     onClick={() => gtmEvent("schedule_demo_click", { source: "formulario", destination: "meetings_hubspot", page_path: "/salud" })}
                     className="underline font-medium"
-                    style={{ color: "#0E8E96" }}
+                    style={{ color: "#0A6870" }}
                   >
                     Reserva tu demostración en nuestro calendario →
                   </a>

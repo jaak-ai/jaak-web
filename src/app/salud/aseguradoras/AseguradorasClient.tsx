@@ -8,6 +8,7 @@ import {
   NAVY,
   NAVY_SOFT,
   TEAL,
+  TEAL_DEEP,
   LIGHT,
   BORDER,
   TEXT_BODY,
@@ -144,7 +145,7 @@ function EvidenceChain() {
     <div data-sr-grid className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
       {CHAIN.map((link) => (
         <div key={link.n} className="rounded-2xl p-5 bg-white h-full flex flex-col" style={{ border: `1px solid ${BORDER}` }}>
-          <span className="text-xs font-mono font-bold" style={{ color: "#0E8E96" }}>{link.n}</span>
+          <span className="text-xs font-mono font-bold" style={{ color: TEAL_DEEP }}>{link.n}</span>
           <h3 className="text-base font-bold mt-2 mb-2" style={{ color: NAVY }}>{link.title}</h3>
           <p className="text-[13.5px] leading-relaxed flex-1" style={{ color: TEXT_BODY }}>{link.text}</p>
           <p className="text-[12.5px] mt-3 pt-3 border-t leading-relaxed" style={{ borderColor: BORDER, color: STOP }}>{link.breaks}</p>

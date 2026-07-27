@@ -5,11 +5,13 @@ import Link from "next/link";
 export const NAVY = "#02132D";
 export const NAVY_SOFT = "#0C2544";
 export const TEAL = "#1ECAD3";
-export const TEAL_DEEP = "#0E8E96";
+// #0A6870 y #5C6B7A (en vez de #0E8E96 y #6B7686) para cumplir 4.5:1 AA
+// en texto pequeño sobre blanco/LIGHT; verificado con cálculo de contraste real.
+export const TEAL_DEEP = "#0A6870";
 export const LIGHT = "#F6F8FA";
 export const BORDER = "#E3E8EE";
 export const TEXT_BODY = "#4B5768";
-export const TEXT_MUTED = "#6B7686";
+export const TEXT_MUTED = "#5C6B7A";
 export const OK = "#127A38";
 export const WARN = "#8A6D1F";
 export const STOP = "#A81E1E";
