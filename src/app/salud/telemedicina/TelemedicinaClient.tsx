@@ -20,6 +20,7 @@ import {
   SectorCTADuo,
   SectorDisclosure,
   SectionHeading,
+  ToolsBand,
   type NormRow,
   type ClaimPair,
   type SourceLink,
@@ -157,6 +158,8 @@ export default function TelemedicinaClient() {
           onSecondaryClick={() => gtmEvent("salud_telemedicina_mosaic_jump", { page: PAGE })}
         />
 
+        <ToolsBand trackingPrefix={PAGE} />
+
         <section className="py-16" style={{ background: NAVY }}>
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <span className="text-xs font-bold uppercase tracking-wider font-mono block mb-3" style={{ color: TEAL }}>Elemento firma · Línea de la sesión</span>
@@ -213,8 +216,8 @@ export default function TelemedicinaClient() {
             <div data-sr>
               <SectorCTADuo
                 primaryEyebrow="Para producto y jurídico"
-                primaryTitle="Sesión de 30 minutos con nuestro asesor en derecho sanitario"
-                primaryText="Revisamos su flujo de teleconsulta y qué criterio de identificación remota conviene documentar mientras no exista norma final. También qué preguntas dejar para su propio abogado, incluida la teleconsulta interestatal."
+                primaryTitle="Sesión de 30 minutos con un especialista de producto de JAAK"
+                primaryText="Revisamos su flujo de teleconsulta y le mostramos cómo configurar KYC con prueba de vida para identificar al paciente antes de la sesión. No damos asesoría legal: los criterios normativos, incluida la teleconsulta interestatal, debe validarlos su propio abogado."
                 primaryCtaLabel="Agendar la sesión"
                 primaryCtaHref="https://meetings.hubspot.com/jose-andres-yllescas-lira"
                 secondaryEyebrow="Para ingeniería"

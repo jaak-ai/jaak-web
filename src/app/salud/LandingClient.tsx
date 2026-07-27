@@ -10,6 +10,7 @@ import { gtmEvent } from "@/components/GoogleTagManager";
 import { saludNormativeChanges, saludNormativeChangesUpdatedOn } from "@/lib/saludNormativeChanges";
 import { saludEvidenceLayers } from "@/lib/saludEvidenceLayers";
 import { saludSectors } from "@/lib/saludSectors";
+import { ToolsBand } from "@/components/salud/SectorPage";
 
 const NAVY = "#02132D";
 const NAVY_SOFT = "#0C2544";
@@ -18,6 +19,8 @@ const LIGHT = "#F6F8FA";
 const BORDER = "#E3E8EE";
 const TEXT_BODY = "#4B5768";
 const TEXT_MUTED = "#5C6B7A"; // #6B7686 fallaba AA (4.33:1) sobre fondo LIGHT
+const STOP_TINT = { bg: "rgba(168,30,30,0.05)", border: "rgba(168,30,30,0.18)" };
+const WARN_TINT = { bg: "rgba(214,158,46,0.07)", border: "rgba(214,158,46,0.22)" };
 
 const VIDEO_ID = "q0Iliu1wK-g";
 const MEETINGS_URL = "https://meetings.hubspot.com/jose-andres-yllescas-lira";
@@ -101,8 +104,8 @@ const STEPS = [
   },
   {
     n: "03",
-    title: "Define el nivel de firma y autenticación",
-    text: "Firma electrónica, códigos de autenticación, biometría, validación documental o e.firma, de acuerdo con el caso de uso y la configuración disponible.",
+    title: "Elige la herramienta",
+    text: "KYC para validar identidad, Firma NOM-151 para conservación, o Firma NOM-151 + Biometría cuando necesita ambas a la vez, como en consentimiento informado.",
   },
   {
     n: "04",
@@ -179,7 +182,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "¿Es obligatorio utilizar biometría?",
-    a: "Depende del nivel de identidad y evidencia que requiera cada caso. JAAK permite configurar diferentes mecanismos de autenticación.",
+    a: "No. Ofrecemos Firma Digital NOM-151 sola, o Firma NOM-151 + Biometría cuando además necesita identificar al firmante, como en un consentimiento informado. Usted elige según el caso.",
   },
   {
     q: "¿Se puede integrar con nuestro expediente clínico?",
@@ -638,42 +641,42 @@ function EvidenceLayersSection() {
   return (
     <section className="py-20" style={{ background: LIGHT }}>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div data-sr className="max-w-3xl mb-14">
+        <div data-sr className="max-w-3xl mb-6">
           <h2 className="text-3xl md:text-4xl font-black mb-5" style={{ color: NAVY }}>
-            Seis capas sostienen un expediente defendible. Cada una prueba algo distinto.
+            Seis capas de evidencia, explicadas en simple.
           </h2>
           <p className="text-lg" style={{ color: TEXT_BODY }}>
-            No basta con que una capa esté resuelta. Un expediente se defiende cuando las seis pueden sostenerse con evidencia verificable.
+            Referencia orientativa, no una opinión legal. Muestra qué tipo de evidencia puede generar un expediente digital y qué no prueba por sí sola.
           </p>
-        </div>
-
-        <div data-sr-grid className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {saludEvidenceLayers.map((layer) => (
-            <div key={layer.name} className="bg-white rounded-2xl p-6" style={{ border: `1px solid ${BORDER}` }}>
-              <div className="flex items-baseline gap-2 mb-3">
-                <span className="text-xs font-mono font-bold" style={{ color: "#0A6870" }}>{layer.n}</span>
-                <h3 className="text-base font-bold" style={{ color: NAVY }}>{layer.name}</h3>
-              </div>
-              <p className="text-[13px] font-bold uppercase tracking-wide mb-1" style={{ color: "#127A38" }}>Qué sí prueba</p>
-              <p className="text-[14px] leading-relaxed mb-4" style={{ color: TEXT_BODY }}>{layer.proves}</p>
-              <p className="text-[13px] font-bold uppercase tracking-wide mb-1" style={{ color: "#A81E1E" }}>Qué no prueba</p>
-              <p className="text-[14px] leading-relaxed mb-4" style={{ color: TEXT_BODY }}>{layer.doesNotProve}</p>
-              <p className="text-xs font-mono" style={{ color: TEXT_MUTED }}>{layer.ref}</p>
-            </div>
-          ))}
         </div>
 
         <div
           data-sr
-          className="mt-8 rounded-2xl p-6 sm:p-7"
-          style={{ background: "#FFFBF2", border: "1px solid #F0D89A", borderLeft: "4px solid #D69E2E" }}
+          className="mb-10 rounded-xl px-5 py-3.5 inline-flex items-start gap-2.5"
+          style={{ background: "#FFFBF2", border: "1px solid #F0D89A" }}
         >
-          <span className="text-xs font-bold uppercase tracking-wide font-mono" style={{ color: "#8A6D1F" }}>
-            Alcance de este contenido
+          <span className="text-xs leading-relaxed" style={{ color: "#6B5A34" }}>
+            JAAK es proveedor de software, no despacho legal. Esta guía no sustituye la revisión de su propio equipo jurídico.
           </span>
-          <p className="text-[14px] leading-relaxed mt-2" style={{ color: "#6B5A34" }}>
-            Material informativo. No sustituye una opinión legal para un caso concreto. Ninguna tecnología garantiza por sí sola validez jurídica, evita sanciones ni excluye responsabilidad profesional. Lo que sí puede hacer un sistema bien diseñado es reducir brechas de evidencia y permitir explicar qué ocurrió.
-          </p>
+        </div>
+
+        <div data-sr-grid className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {saludEvidenceLayers.map((layer, i) => {
+            const accent = [TEAL, "#5C6B7A", "#D69E2E"][i % 3];
+            return (
+              <div key={layer.name} className="bg-white rounded-2xl p-6" style={{ border: `1px solid ${BORDER}`, borderTop: `3px solid ${accent}` }}>
+                <div className="flex items-baseline gap-2 mb-3">
+                  <span className="text-xs font-mono font-bold" style={{ color: "#0A6870" }}>{layer.n}</span>
+                  <h3 className="text-base font-bold" style={{ color: NAVY }}>{layer.name}</h3>
+                </div>
+                <p className="text-[13px] font-bold uppercase tracking-wide mb-1" style={{ color: "#127A38" }}>Qué sí prueba</p>
+                <p className="text-[14px] leading-relaxed mb-4" style={{ color: TEXT_BODY }}>{layer.proves}</p>
+                <p className="text-[13px] font-bold uppercase tracking-wide mb-1" style={{ color: "#A81E1E" }}>Qué no prueba</p>
+                <p className="text-[14px] leading-relaxed mb-4" style={{ color: TEXT_BODY }}>{layer.doesNotProve}</p>
+                <p className="text-xs font-mono" style={{ color: TEXT_MUTED }}>{layer.ref}</p>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -799,11 +802,14 @@ export default function SaludLandingClient() {
             </div>
 
             <div data-sr-grid className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {RISKS.map((risk) => (
-                <div key={risk} className="p-6 rounded-2xl" style={{ background: LIGHT, border: `1px solid ${BORDER}` }}>
-                  <p className="text-[15px] font-medium" style={{ color: NAVY }}>{risk}</p>
-                </div>
-              ))}
+              {RISKS.map((risk, i) => {
+                const accent = [STOP_TINT, WARN_TINT, STOP_TINT, WARN_TINT][i % 4];
+                return (
+                  <div key={risk} className="p-6 rounded-2xl" style={{ background: accent.bg, border: `1px solid ${accent.border}` }}>
+                    <p className="text-[15px] font-medium" style={{ color: NAVY }}>{risk}</p>
+                  </div>
+                );
+              })}
             </div>
 
             <p className="mt-8 text-sm max-w-2xl" style={{ color: TEXT_MUTED }}>
@@ -811,6 +817,9 @@ export default function SaludLandingClient() {
             </p>
           </div>
         </section>
+
+        {/* BLOQUE 0. NUESTRAS HERRAMIENTAS */}
+        <ToolsBand trackingPrefix="salud_hub" background={LIGHT} />
 
         {/* BLOQUE A. REGISTRO DE CAMBIOS NORMATIVOS */}
         <NormativeChangesSection />
@@ -1071,12 +1080,15 @@ export default function SaludLandingClient() {
             </div>
 
             <div data-sr-grid className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {AREAS.map((area) => (
-                <div key={area.name} className="p-6 rounded-2xl" style={{ background: LIGHT, border: `1px solid ${BORDER}` }}>
-                  <h3 className="font-bold mb-2" style={{ color: NAVY }}>{area.name}</h3>
-                  <p className="text-[14px] leading-relaxed" style={{ color: TEXT_BODY }}>{area.text}</p>
-                </div>
-              ))}
+              {AREAS.map((area, i) => {
+                const accent = [TEAL, "#5C6B7A", "#D69E2E"][i % 3];
+                return (
+                  <div key={area.name} className="p-6 rounded-2xl" style={{ background: LIGHT, border: `1px solid ${BORDER}`, borderLeftWidth: "3px", borderLeftColor: accent }}>
+                    <h3 className="font-bold mb-2" style={{ color: NAVY }}>{area.name}</h3>
+                    <p className="text-[14px] leading-relaxed" style={{ color: TEXT_BODY }}>{area.text}</p>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>

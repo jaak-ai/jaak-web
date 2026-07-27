@@ -21,6 +21,7 @@ import {
   SectorCTADuo,
   SectorDisclosure,
   SectionHeading,
+  ToolsBand,
   type NormRow,
   type ClaimPair,
   type SourceLink,
@@ -292,6 +293,8 @@ export default function HospitalesClient() {
           onSecondaryClick={() => gtmEvent("salud_hospitales_matrix_jump", { page: PAGE })}
         />
 
+        <ToolsBand trackingPrefix={PAGE} background={LIGHT} />
+
         <section id="matriz" className="py-16 bg-white">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <SectionHeading
@@ -328,7 +331,7 @@ export default function HospitalesClient() {
             </div>
             <div data-sr className="mt-8 rounded-2xl p-6" style={{ background: "rgba(255,255,255,0.035)", border: "1px solid rgba(255,255,255,0.14)" }}>
               <span className="text-xs font-bold uppercase tracking-wide font-mono block mb-4" style={{ color: TEAL }}>
-                Qué buscará un auditor de certificación
+                Puntos que un flujo digital debería cubrir
               </span>
               <ul className="grid sm:grid-cols-2 gap-x-8 gap-y-2.5">
                 {AUDITOR_CHECKS.map((item) => (
@@ -374,8 +377,8 @@ export default function HospitalesClient() {
             <div data-sr>
               <SectorCTADuo
                 primaryEyebrow="Para dirección médica y jurídico"
-                primaryTitle="Sesión de 30 minutos con nuestro asesor en derecho sanitario"
-                primaryText="Revisamos su matriz de documentos, qué modalidad de firma es proporcional a cada uno y qué preguntas conviene resolver con su propio abogado antes de decidir. Incluye la ruta de urgencia e incapacidad. Sin demo de producto si no la pide."
+                primaryTitle="Sesión de 30 minutos con un especialista de producto de JAAK"
+                primaryText="Revisamos su matriz de firmantes y le mostramos cómo configurar KYC, Firma NOM-151 o Firma NOM-151 + Biometría para consentimiento, ingreso hospitalario y la ruta de urgencia e incapacidad. No damos asesoría legal: las preguntas jurídicas quedan para su propio abogado."
                 primaryCtaLabel="Agendar la sesión"
                 primaryCtaHref="https://meetings.hubspot.com/jose-andres-yllescas-lira"
                 secondaryEyebrow="Para TI, calidad y compras"

@@ -21,6 +21,7 @@ import {
   SectorCTADuo,
   SectorDisclosure,
   SectionHeading,
+  ToolsBand,
   type NormRow,
   type ClaimPair,
   type SourceLink,
@@ -205,6 +206,8 @@ export default function AseguradorasClient() {
           onSecondaryClick={() => gtmEvent("salud_aseguradoras_retention_jump", { page: PAGE })}
         />
 
+        <ToolsBand trackingPrefix={PAGE} background={LIGHT} />
+
         <section className="py-16 bg-white">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <SectionHeading
@@ -274,8 +277,8 @@ export default function AseguradorasClient() {
             <div data-sr>
               <SectorCTADuo
                 primaryEyebrow="Para cumplimiento y jurídico"
-                primaryTitle="Sesión de 30 minutos con nuestro asesor en derecho sanitario"
-                primaryText="Revisamos su matriz de documentos del expediente de siniestro, qué plazo aplica a cada uno y dónde conviene una opinión de su propio abogado antes de decidir. Sin demo de producto si no la pide."
+                primaryTitle="Sesión de 30 minutos con un especialista de producto de JAAK"
+                primaryText="Revisamos su expediente de siniestro y le mostramos cómo configurar KYC para verificar al asegurado y Firma NOM-151 para conservar la evidencia. No damos asesoría legal: los plazos y criterios normativos debe validarlos su propio equipo jurídico."
                 primaryCtaLabel="Agendar la sesión"
                 primaryCtaHref="https://meetings.hubspot.com/jose-andres-yllescas-lira"
                 secondaryEyebrow="Para siniestros y antifraude"

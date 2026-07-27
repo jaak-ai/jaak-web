@@ -22,6 +22,7 @@ import {
   SectorCTADuo,
   SectorDisclosure,
   SectionHeading,
+  ToolsBand,
   type NormRow,
   type ClaimPair,
   type SourceLink,
@@ -158,6 +159,8 @@ export default function LaboratoriosClient() {
           onSecondaryClick={() => gtmEvent("salud_laboratorios_study_click", { page: PAGE })}
         />
 
+        <ToolsBand trackingPrefix={PAGE} background={LIGHT} />
+
         <section className="py-16 bg-white">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <SectionHeading
@@ -201,8 +204,8 @@ export default function LaboratoriosClient() {
             <div data-sr>
               <SectorCTADuo
                 primaryEyebrow="Para calidad y dirección"
-                primaryTitle="Sesión de 30 minutos con nuestro asesor en derecho sanitario"
-                primaryText="Revisamos su proceso de alta de paciente, cómo medir su tasa real de duplicados y qué evidencia debe producir el sistema para una auditoría de certificación. Sin demo de producto si no la pide."
+                primaryTitle="Sesión de 30 minutos con un especialista de producto de JAAK"
+                primaryText="Revisamos su proceso de alta de paciente y le mostramos cómo configurar KYC para resolver identidad en recepción y reducir duplicados. No damos asesoría legal: los criterios de auditoría de certificación debe definirlos su propio equipo de calidad."
                 primaryCtaLabel="Agendar la sesión"
                 primaryCtaHref="https://meetings.hubspot.com/jose-andres-yllescas-lira"
                 secondaryEyebrow="Para operaciones y tecnología"

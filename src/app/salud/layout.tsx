@@ -95,7 +95,7 @@ const faqSchema = {
       name: "¿Es obligatorio utilizar biometría?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Depende del nivel de identidad y evidencia que requiera cada caso. JAAK permite configurar diferentes mecanismos de autenticación.",
+        text: "No. Ofrecemos Firma Digital NOM-151 sola, o Firma NOM-151 + Biometría cuando además necesita identificar al firmante, como en un consentimiento informado. Usted elige según el caso.",
       },
     },
     {

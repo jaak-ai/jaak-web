@@ -20,6 +20,7 @@ import {
   SectorCTADuo,
   SectorDisclosure,
   SectionHeading,
+  ToolsBand,
   type NormRow,
   type ClaimPair,
   type SourceLink,
@@ -202,6 +203,8 @@ export default function SoftwareClinicoClient() {
           onSecondaryClick={() => gtmEvent("salud_software_clinico_decision_jump", { page: PAGE })}
         />
 
+        <ToolsBand trackingPrefix={PAGE} background={LIGHT} />
+
         <section className="py-16 bg-white">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <SectionHeading
@@ -259,7 +262,7 @@ export default function SoftwareClinicoClient() {
               <SectorCTADuo
                 primaryEyebrow="Para producto y dirección"
                 primaryTitle="Llamada de 30 minutos con nuestro equipo técnico"
-                primaryText="Revisamos su arquitectura actual, qué capas le faltan para pasar un cuestionario jurídico hospitalario y cómo se vería la integración. Incluye el esquema comercial de canal."
+                primaryText="Revisamos su arquitectura actual, qué de KYC, Firma NOM-151 o Firma NOM-151 + Biometría le conviene integrar vía API, y cómo se vería la integración. Incluye el esquema comercial de canal."
                 primaryCtaLabel="Agendar la llamada"
                 primaryCtaHref="https://meetings.hubspot.com/jose-andres-yllescas-lira"
                 secondaryEyebrow="Para ingeniería"
