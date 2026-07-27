@@ -202,6 +202,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.75,
     },
     {
+      url: `${baseUrl}/salud/farmacias`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.75,
+    },
+    {
       url: `${baseUrl}/kyc-inmobiliario-lfpiorpi`,
       lastModified: now,
       changeFrequency: "monthly",
