@@ -72,6 +72,7 @@ export function SectorHero({
   primaryCtaHref,
   secondaryCtaLabel,
   secondaryCtaHref,
+  secondaryCtaExternal = false,
   onPrimaryClick,
   onSecondaryClick,
 }: {
@@ -85,6 +86,7 @@ export function SectorHero({
   primaryCtaHref: string;
   secondaryCtaLabel: string;
   secondaryCtaHref: string;
+  secondaryCtaExternal?: boolean;
   onPrimaryClick?: () => void;
   onSecondaryClick?: () => void;
 }) {
@@ -116,6 +118,8 @@ export function SectorHero({
               <a
                 href={secondaryCtaHref}
                 onClick={onSecondaryClick}
+                target={secondaryCtaExternal ? "_blank" : undefined}
+                rel={secondaryCtaExternal ? "noopener noreferrer" : undefined}
                 className="px-6 py-3 border font-semibold rounded-lg text-white transition-all"
                 style={{ borderColor: "rgba(255,255,255,0.30)" }}
               >
