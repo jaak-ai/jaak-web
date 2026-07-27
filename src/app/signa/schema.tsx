@@ -2,14 +2,14 @@
 export const signaOrganizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "name": "Signa",
-  "alternateName": ["Signa México", "Signa Firma Electrónica"],
+  "name": "JAAK",
+  "alternateName": ["Signa", "Signa Firma Electrónica"],
   "description": "Firma electrónica profesional para México con tecnología 2026. 50% más económica que la competencia.",
   "url": "https://jaak.ai/signa",
-  "logo": "https://jaak.ai/logo.png",
+  "logo": "https://jaak.ai/images/logos/jaak-logo-azul.png",
   "contactPoint": {
     "@type": "ContactPoint",
-    "telephone": "+52-555-SIGNA",
+    "telephone": "+525535091788",
     "contactType": "customer service",
     "availableLanguage": ["Spanish", "English"],
     "areaServed": "MX"
@@ -26,9 +26,9 @@ export const signaOrganizationSchema = {
         "@type": "Offer",
         "itemOffered": {
           "@type": "Service",
-          "name": "Firma Electrónica Profesional",
+          "name": "Signa · Firma Electrónica Profesional",
           "description": "Firma electrónica válida en México con NOM-151",
-          "provider": "Signa",
+          "provider": "JAAK",
           "areaServed": "MX"
         }
       }
@@ -51,12 +51,12 @@ export const signaOrganizationSchema = {
 export const signaServiceSchema = {
   "@context": "https://schema.org",
   "@type": "Service",
-  "name": "Firma Electrónica Profesional Signa",
+  "name": "Signa · Firma Electrónica Profesional",
   "description": "Servicio de firma electrónica con validez legal en México. NOM-151 certificado, tecnología 2026, soporte 24/7.",
   "provider": {
     "@type": "Organization",
-    "name": "Signa",
-    "url": "https://jaak.ai/signa"
+    "name": "JAAK",
+    "url": "https://jaak.ai"
   },
   "areaServed": {
     "@type": "Country",
