@@ -1111,7 +1111,7 @@ export default function SaludLandingClient() {
         </section>
 
         {/* SECCIÓN 11. FORMULARIO */}
-        <section id="formulario" className="py-20 bg-white">
+        <section id="formulario" className="py-20 bg-white overflow-hidden">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-16 items-start">
               <div data-sr>
