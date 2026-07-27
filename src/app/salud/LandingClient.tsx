@@ -7,6 +7,9 @@ import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
 import { getUtmParams } from "@/components/CloudflareTurnstile";
 import { gtmEvent } from "@/components/GoogleTagManager";
+import { saludNormativeChanges, saludNormativeChangesUpdatedOn } from "@/lib/saludNormativeChanges";
+import { saludEvidenceLayers } from "@/lib/saludEvidenceLayers";
+import { saludSectors } from "@/lib/saludSectors";
 
 const NAVY = "#02132D";
 const NAVY_SOFT = "#0C2544";
@@ -577,6 +580,146 @@ function FAQAccordion() {
   );
 }
 
+function NormativeChangesSection() {
+  return (
+    <section className="py-20 bg-white">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div data-sr className="max-w-3xl mb-4">
+          <span className="text-xs font-bold uppercase tracking-wider font-mono" style={{ color: "#0E8E96" }}>
+            Registro de cambios normativos
+          </span>
+          <h2 className="text-3xl md:text-4xl font-black mt-3 mb-5" style={{ color: NAVY }}>
+            Esta página se actualiza cuando se publica algo en el DOF.
+          </h2>
+          <p className="text-lg" style={{ color: TEXT_BODY }}>
+            No es una promesa genérica: cada entrada tiene fecha, instrumento y fuente oficial verificable.
+          </p>
+        </div>
+        <p className="text-sm font-mono mb-8" style={{ color: TEXT_MUTED }}>
+          Última actualización: {saludNormativeChangesUpdatedOn}
+        </p>
+
+        <ol data-sr-grid className="space-y-4">
+          {saludNormativeChanges.map((change) => (
+            <li
+              key={change.title}
+              className="rounded-2xl p-6 sm:p-7"
+              style={{ background: LIGHT, border: `1px solid ${BORDER}` }}
+            >
+              <div className="flex flex-wrap items-center gap-3 mb-3">
+                <span className="text-xs font-bold font-mono px-2.5 py-1 rounded-full" style={{ background: "rgba(30,202,211,0.12)", color: "#0E8E96" }}>
+                  {change.date}
+                </span>
+                <span className="text-xs font-semibold uppercase tracking-wide" style={{ color: TEXT_MUTED }}>
+                  {change.type}
+                </span>
+              </div>
+              <h3 className="text-base font-bold mb-2" style={{ color: NAVY }}>{change.title}</h3>
+              <p className="text-[14.5px] leading-relaxed mb-3" style={{ color: TEXT_BODY }}>{change.description}</p>
+              <a
+                href={change.sourceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => gtmEvent("salud_normative_source_click", { title: change.title, page: "salud" })}
+                className="text-xs font-bold underline"
+                style={{ color: "#0E8E96" }}
+              >
+                Ver fuente · {change.sourceLabel} →
+              </a>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
+function EvidenceLayersSection() {
+  return (
+    <section className="py-20" style={{ background: LIGHT }}>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div data-sr className="max-w-3xl mb-14">
+          <h2 className="text-3xl md:text-4xl font-black mb-5" style={{ color: NAVY }}>
+            Seis capas sostienen un expediente defendible. Cada una prueba algo distinto.
+          </h2>
+          <p className="text-lg" style={{ color: TEXT_BODY }}>
+            No basta con que una capa esté resuelta. Un expediente se defiende cuando las seis pueden sostenerse con evidencia verificable.
+          </p>
+        </div>
+
+        <div data-sr-grid className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {saludEvidenceLayers.map((layer) => (
+            <div key={layer.name} className="bg-white rounded-2xl p-6" style={{ border: `1px solid ${BORDER}` }}>
+              <div className="flex items-baseline gap-2 mb-3">
+                <span className="text-xs font-mono font-bold" style={{ color: "#0E8E96" }}>{layer.n}</span>
+                <h3 className="text-base font-bold" style={{ color: NAVY }}>{layer.name}</h3>
+              </div>
+              <p className="text-[13px] font-bold uppercase tracking-wide mb-1" style={{ color: "#127A38" }}>Qué sí prueba</p>
+              <p className="text-[14px] leading-relaxed mb-4" style={{ color: TEXT_BODY }}>{layer.proves}</p>
+              <p className="text-[13px] font-bold uppercase tracking-wide mb-1" style={{ color: "#A81E1E" }}>Qué no prueba</p>
+              <p className="text-[14px] leading-relaxed mb-4" style={{ color: TEXT_BODY }}>{layer.doesNotProve}</p>
+              <p className="text-xs font-mono" style={{ color: TEXT_MUTED }}>{layer.ref}</p>
+            </div>
+          ))}
+        </div>
+
+        <div
+          data-sr
+          className="mt-8 rounded-2xl p-6 sm:p-7"
+          style={{ background: "#FFFBF2", border: "1px solid #F0D89A", borderLeft: "4px solid #D69E2E" }}
+        >
+          <span className="text-xs font-bold uppercase tracking-wide font-mono" style={{ color: "#8A6D1F" }}>
+            Alcance de este contenido
+          </span>
+          <p className="text-[14px] leading-relaxed mt-2" style={{ color: "#6B5A34" }}>
+            Material informativo. No sustituye una opinión legal para un caso concreto. Ninguna tecnología garantiza por sí sola validez jurídica, evita sanciones ni excluye responsabilidad profesional. Lo que sí puede hacer un sistema bien diseñado es reducir brechas de evidencia y permitir explicar qué ocurrió.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SectorSelectorSection() {
+  return (
+    <section className="py-20 bg-white">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div data-sr className="text-center max-w-2xl mx-auto mb-14">
+          <h2 className="text-3xl md:text-4xl font-black mb-5" style={{ color: NAVY }}>
+            Cada institución tiene su propia cadena probatoria.
+          </h2>
+          <p className="text-lg" style={{ color: TEXT_BODY }}>
+            Elige tu tipo de institución para ver la base normativa, los errores más comunes y el elemento distintivo de tu caso.
+          </p>
+        </div>
+
+        <div data-sr-grid className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {saludSectors.map((sector) => (
+            <Link
+              key={sector.slug}
+              href={sector.href}
+              onClick={() => gtmEvent("salud_sector_card_click", { sector: sector.slug, page: "salud" })}
+              className="group block rounded-2xl p-6 h-full"
+              style={{ background: LIGHT, border: `1px solid ${BORDER}` }}
+            >
+              <span className="text-xs font-bold uppercase tracking-wide font-mono" style={{ color: "#0E8E96" }}>
+                {sector.eyebrow}
+              </span>
+              <h3 className="text-lg font-bold mt-3 mb-4" style={{ color: NAVY }}>{sector.title}</h3>
+              <span
+                className="text-sm font-bold inline-flex items-center gap-1.5 group-hover:gap-2.5 transition-all"
+                style={{ color: "#0E8E96" }}
+              >
+                Ver base normativa →
+              </span>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function SaludLandingClient() {
   return (
     <>
@@ -668,6 +811,15 @@ export default function SaludLandingClient() {
             </p>
           </div>
         </section>
+
+        {/* BLOQUE A. REGISTRO DE CAMBIOS NORMATIVOS */}
+        <NormativeChangesSection />
+
+        {/* BLOQUE B. SEIS CAPAS DE LA CADENA PROBATORIA */}
+        <EvidenceLayersSection />
+
+        {/* BLOQUE C. SELECTOR DE TIPO DE INSTITUCIÓN */}
+        <SectorSelectorSection />
 
         {/* SECCIÓN 3. LOS TRES CANDADOS DE LA EVIDENCIA */}
         <section className="py-20" style={{ background: LIGHT }}>

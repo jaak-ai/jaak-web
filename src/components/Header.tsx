@@ -354,6 +354,9 @@ export default function Header() {
                   <Link href="/soluciones/operaciones-alto-riesgo" className="block text-gray-700 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
                     Operaciones de alto riesgo
                   </Link>
+                  <Link href="/salud" className="block text-gray-700 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
+                    Sector salud
+                  </Link>
                 </div>
               </div>
 
@@ -640,6 +643,19 @@ export default function Header() {
                       <div>
                         <div className="text-[15px] font-semibold text-gray-900 group-hover:text-[#0066ff] transition-colors">Operaciones de alto riesgo</div>
                         <div className="text-sm text-gray-500 mt-0.5">Eliminación de procesos manuales</div>
+                      </div>
+                    </div>
+                  </Link>
+                  <Link href="/salud" className="group block">
+                    <div className="flex items-start gap-4">
+                      <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-[#0066ff] transition-colors">
+                        <svg className="w-5 h-5 text-gray-900 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4.5c-2-2.5-6-2.5-8 0-2.5 3-1.5 7 2 10l6 5.5 6-5.5c3.5-3 4.5-7 2-10-2-2.5-6-2.5-8 0z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <div className="text-[15px] font-semibold text-gray-900 group-hover:text-[#0066ff] transition-colors">Sector salud</div>
+                        <div className="text-sm text-gray-500 mt-0.5">Firma y evidencia para hospitales y clínicas</div>
                       </div>
                     </div>
                   </Link>
