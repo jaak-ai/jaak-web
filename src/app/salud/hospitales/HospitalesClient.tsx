@@ -21,6 +21,7 @@ import {
   SectorCTADuo,
   SectorDisclosure,
   SectionHeading,
+  ToolsBand,
   type NormRow,
   type ClaimPair,
   type SourceLink,
@@ -231,18 +232,6 @@ const CLAIMS: ClaimPair[] = [
     ref: "NOM-004-SSA3-2012 · 5.10 y 5.12",
   },
   {
-    said: "«Con el consentimiento firmado quedamos protegidos ante una demanda.»",
-    real:
-      "El consentimiento no excluye la negligencia, y la carga de probar que se informó recae en quien está en mejor posición de hacerlo. Una firma impecable sobre información insuficiente sigue siendo insuficiente.",
-    ref: "Jurisprudencia 1a./J. 22/2011 · Registro 2012512",
-  },
-  {
-    said: "«Un expediente incompleto demuestra negligencia.»",
-    real:
-      "No de forma automática: se valoran todos los elementos. Pero la deficiencia documental debilita la defensa, y los tribunales pueden desplazar la carga hacia la institución que posee los registros y tiene mayor facilidad probatoria.",
-    ref: "Registros 2012113 · 2013945 · 2022136",
-  },
-  {
     said: "«Una autorización general al ingreso cubre toda la estancia.»",
     real:
       "El Reglamento pide autorización al ingreso y consentimiento específico para procedimientos de alto riesgo. Una autorización general no sustituye al consentimiento del acto concreto.",
@@ -255,9 +244,6 @@ const SOURCES: SourceLink[] = [
   { code: "P07", label: "Reglamento de la LGS en prestación de servicios de atención médica", url: "https://www.diputados.gob.mx/LeyesBiblio/regley/Reg_LGS_MPSAM_170718.pdf", meta: "Cámara de Diputados · Artículos 80 a 83" },
   { code: "P06", label: "Ley General de Salud, artículos 51 Bis 1 y 51 Bis 2", url: "https://www.diputados.gob.mx/LeyesBiblio/pdf/LGS.pdf", meta: "Cámara de Diputados · Texto vigente" },
   { code: "P04", label: "NOM-024-SSA3-2012, registro electrónico para la salud", url: "https://www.dof.gob.mx/normasOficiales/4956/SALUD1/SALUD1.html", meta: "DOF · 30 nov 2012 · Vigente" },
-  { code: "J04", label: "Carga de la prueba del deber de informar", url: "https://sjf2.scjn.gob.mx/detalle/tesis/2012512", meta: "SCJN · Registro digital 2012512" },
-  { code: "J03", label: "Responsabilidad médico-sanitaria. Expediente clínico incompleto", url: "https://sjf2.scjn.gob.mx/detalle/tesis/2012113", meta: "SCJN · Registro digital 2012113" },
-  { code: "J07", label: "El consentimiento no excluye la negligencia", url: "https://sjf2.scjn.gob.mx/detalle/tesis/2001287", meta: "SCJN · Jurisprudencia 1a./J. 22/2011" },
   { code: "P29", label: "Modificación de reglas del modelo de certificación del CSG", url: "https://www.dof.gob.mx/nota_detalle.php?codigo=5783050&fecha=30/03/2026", meta: "DOF · 30 mar 2026" },
 ];
 
@@ -277,8 +263,8 @@ export default function HospitalesClient() {
           }
           lede={
             <>
-              Es el único documento clínico que puede exigir cuatro firmantes: paciente o representante, médico y dos testigos idóneos. Y aun con las cuatro firmas, la Primera Sala ha sostenido que{" "}
-              <strong className="text-white font-semibold">el profesional está en mejor posición para probar que informó.</strong> La firma acredita atribución, no comprensión.
+              Es el único documento clínico que puede exigir cuatro firmantes: paciente o representante, médico y dos testigos idóneos.{" "}
+              <strong className="text-white font-semibold">La firma acredita atribución, no comprensión.</strong> Por eso el expediente debe poder mostrar qué versión del documento se firmó y quién participó, no solo que existe una firma.
             </>
           }
           heroNote="La NOM-004 admite firma autógrafa, electrónica o digital, pero no define niveles de autenticación ni evidencia mínima. Esa neutralidad permite diseñar controles proporcionales al riesgo, siempre que se documente por qué son fiables."
@@ -291,6 +277,8 @@ export default function HospitalesClient() {
           onPrimaryClick={() => gtmEvent("demo_kyc_click", { source: "hero", destination: "kyc_general", page: PAGE })}
           onSecondaryClick={() => gtmEvent("salud_hospitales_matrix_jump", { page: PAGE })}
         />
+
+        <ToolsBand trackingPrefix={PAGE} background={LIGHT} />
 
         <section id="matriz" className="py-16 bg-white">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -328,7 +316,7 @@ export default function HospitalesClient() {
             </div>
             <div data-sr className="mt-8 rounded-2xl p-6" style={{ background: "rgba(255,255,255,0.035)", border: "1px solid rgba(255,255,255,0.14)" }}>
               <span className="text-xs font-bold uppercase tracking-wide font-mono block mb-4" style={{ color: TEAL }}>
-                Qué buscará un auditor de certificación
+                Puntos que un flujo digital debería cubrir
               </span>
               <ul className="grid sm:grid-cols-2 gap-x-8 gap-y-2.5">
                 {AUDITOR_CHECKS.map((item) => (
@@ -374,8 +362,8 @@ export default function HospitalesClient() {
             <div data-sr>
               <SectorCTADuo
                 primaryEyebrow="Para dirección médica y jurídico"
-                primaryTitle="Sesión de 30 minutos con nuestro asesor en derecho sanitario"
-                primaryText="Revisamos su matriz de documentos, qué modalidad de firma es proporcional a cada uno y qué preguntas conviene resolver con su propio abogado antes de decidir. Incluye la ruta de urgencia e incapacidad. Sin demo de producto si no la pide."
+                primaryTitle="Sesión de 30 minutos con un especialista de producto de JAAK"
+                primaryText="Revisamos su matriz de firmantes y le mostramos cómo configurar KYC, Firma NOM-151 o Firma NOM-151 + Biometría para consentimiento, ingreso hospitalario y la ruta de urgencia e incapacidad. No damos asesoría legal: las preguntas jurídicas quedan para su propio abogado."
                 primaryCtaLabel="Agendar la sesión"
                 primaryCtaHref="https://meetings.hubspot.com/jose-andres-yllescas-lira"
                 secondaryEyebrow="Para TI, calidad y compras"

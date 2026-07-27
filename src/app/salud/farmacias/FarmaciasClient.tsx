@@ -23,6 +23,7 @@ import {
   SectorCTADuo,
   SectorDisclosure,
   SectionHeading,
+  ToolsBand,
   type NormRow,
   type ClaimPair,
   type SourceLink,
@@ -199,6 +200,8 @@ export default function FarmaciasClient() {
           onSecondaryClick={() => gtmEvent("salud_farmacias_matrix_jump", { page: PAGE })}
         />
 
+        <ToolsBand trackingPrefix={PAGE} background={LIGHT} />
+
         <section id="matriz" className="py-16 bg-white">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <SectionHeading
@@ -257,8 +260,8 @@ export default function FarmaciasClient() {
             <div data-sr>
               <SectorCTADuo
                 primaryEyebrow="Para regulatorio y operaciones"
-                primaryTitle="Sesión de 30 minutos con nuestro asesor en derecho sanitario"
-                primaryText="Revisamos su matriz de dispensación por fracción, qué validar en cada caso y qué criterio interno conviene documentar para la receta general, donde no hay regla nacional única."
+                primaryTitle="Sesión de 30 minutos con un especialista de producto de JAAK"
+                primaryText="Revisamos su proceso de dispensación y le mostramos cómo configurar KYC para verificar identidad del paciente y prescriptor en el mostrador. No damos asesoría legal: los criterios de validación por fracción debe definirlos su propio equipo regulatorio."
                 primaryCtaLabel="Agendar la sesión"
                 primaryCtaHref="https://meetings.hubspot.com/jose-andres-yllescas-lira"
                 secondaryEyebrow="Para tecnología y punto de venta"

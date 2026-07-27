@@ -1,4 +1,8 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
+import { gtmEvent } from "@/components/GoogleTagManager";
 
 // Paleta local compartida por las páginas de institución de /salud,
 // consistente con la que ya usa src/app/salud/LandingClient.tsx.
@@ -291,5 +295,149 @@ export function SectionHeading({ eyebrow, title, lede }: { eyebrow?: string; tit
       <h2 className="text-2xl md:text-3xl font-black mb-4" style={{ color: NAVY }}>{title}</h2>
       {lede && <p className="text-lg" style={{ color: TEXT_BODY }}>{lede}</p>}
     </div>
+  );
+}
+
+// Los tres productos reales de JAAK aplicables a salud (fuente: src/data/autoservicio-catalogo.ts).
+// JAAK vende software, no asesoría: cada tarjeta enlaza a una demo real, no a contenido genérico.
+export interface JaakTool {
+  key: string;
+  badge: string;
+  name: string;
+  text: string;
+  bullets: string[];
+  href: string;
+  ctaLabel: string;
+  tone: "teal" | "navy" | "highlight";
+}
+
+export const JAAK_TOOLS: JaakTool[] = [
+  {
+    key: "kyc",
+    badge: "Identidad",
+    name: "KYC — Verificación de identidad",
+    text: "Biometría facial con prueba de vida, OCR de identificación oficial y consulta en listas, en un solo flujo.",
+    bullets: [
+      "Prueba de vida (antisuplantación)",
+      "OCR de identificación oficial",
+      "Consulta en listas nominales y de riesgo",
+      "Expediente digital descargable",
+    ],
+    href: "/kyc-demo-autoservicio",
+    ctaLabel: "Ver demo de KYC",
+    tone: "teal",
+  },
+  {
+    key: "nom151",
+    badge: "Firma",
+    name: "Firma Digital NOM-151",
+    text: "Firma electrónica avanzada con sello de tiempo, huella criptográfica del documento y constancia de conservación.",
+    bullets: [
+      "Sello de tiempo oficial",
+      "Hash criptográfico del documento",
+      "Constancia de conservación legal",
+      "Expediente con validez en juicio",
+    ],
+    href: "/firma-nom151-demo-autoservicio",
+    ctaLabel: "Ver demo de Firma NOM-151",
+    tone: "navy",
+  },
+  {
+    key: "nom151-bio",
+    badge: "Sugerido para consentimiento informado",
+    name: "Firma NOM-151 + Biometría",
+    text: "Firma NOM-151 vinculada a la validación facial del firmante: queda identificado quien firma, no solo el documento.",
+    bullets: [
+      "Todo lo de Firma Digital NOM-151",
+      "Verificación facial del firmante al momento de firmar",
+      "Video y fotografías de la sesión vinculados al expediente",
+      "Constancia individual por firmante",
+    ],
+    href: "/firma-electronica-biometrica",
+    ctaLabel: "Ver demo con biometría",
+    tone: "highlight",
+  },
+];
+
+const TOOL_TONE: Record<JaakTool["tone"], { bg: string; border: string; badgeBg: string; badgeColor: string }> = {
+  teal: { bg: "rgba(30,202,211,0.07)", border: "rgba(30,202,211,0.35)", badgeBg: "rgba(30,202,211,0.14)", badgeColor: TEAL_DEEP },
+  navy: { bg: "#EEF1F6", border: "#C7D3E0", badgeBg: "rgba(2,19,45,0.08)", badgeColor: NAVY },
+  highlight: { bg: "rgba(214,158,46,0.09)", border: "rgba(214,158,46,0.45)", badgeBg: "rgba(214,158,46,0.18)", badgeColor: WARN },
+};
+
+export function ToolsBand({
+  eyebrow = "Nuestras herramientas",
+  title = "Tres productos. No una consultoría.",
+  lede = "JAAK ofrece software de identidad y firma electrónica. Pruebe cada uno directamente; no somos un despacho legal y esto no sustituye la asesoría de su equipo jurídico.",
+  tools = JAAK_TOOLS,
+  trackingPrefix = "salud",
+  background = "#fff",
+}: {
+  eyebrow?: string;
+  title?: string;
+  lede?: string;
+  tools?: JaakTool[];
+  trackingPrefix?: string;
+  background?: string;
+}) {
+  const [active, setActive] = useState(0);
+  const tool = tools[active];
+  const style = TOOL_TONE[tool.tone];
+  const inactiveCardBg = background === "#fff" ? LIGHT : "#fff";
+
+  return (
+    <section className="py-16" style={{ background }}>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionHeading eyebrow={eyebrow} title={title} lede={lede} />
+
+        <div data-sr-grid className="grid sm:grid-cols-3 gap-3 mb-6">
+          {tools.map((t, i) => {
+            const s = TOOL_TONE[t.tone];
+            const isActive = i === active;
+            return (
+              <button
+                key={t.key}
+                type="button"
+                onClick={() => setActive(i)}
+                aria-pressed={isActive}
+                className="text-left rounded-2xl p-5 transition-all"
+                style={{
+                  background: isActive ? s.bg : inactiveCardBg,
+                  border: `1.5px solid ${isActive ? s.border : BORDER}`,
+                }}
+              >
+                <span
+                  className="inline-block text-[10.5px] font-bold uppercase tracking-wide px-2 py-1 rounded-full mb-2.5"
+                  style={{ background: s.badgeBg, color: s.badgeColor }}
+                >
+                  {t.badge}
+                </span>
+                <p className="font-bold text-[15px]" style={{ color: NAVY }}>{t.name}</p>
+              </button>
+            );
+          })}
+        </div>
+
+        <div data-sr className="rounded-2xl p-7 sm:p-8" style={{ background: style.bg, border: `1px solid ${style.border}` }}>
+          <p className="text-[15px] leading-relaxed mb-5 max-w-2xl" style={{ color: TEXT_BODY }}>{tool.text}</p>
+          <ul className="grid sm:grid-cols-2 gap-x-6 gap-y-2 mb-6">
+            {tool.bullets.map((b) => (
+              <li key={b} className="flex items-start gap-2 text-[14px]" style={{ color: NAVY }}>
+                <span aria-hidden="true" style={{ color: style.badgeColor }}>—</span>
+                {b}
+              </li>
+            ))}
+          </ul>
+          <Link
+            href={tool.href}
+            className="inline-block px-6 py-3 font-bold rounded-lg"
+            style={{ background: NAVY, color: "#fff" }}
+            onClick={() => gtmEvent(`${trackingPrefix}_tool_demo_click`, { tool: tool.key })}
+          >
+            {tool.ctaLabel}
+          </Link>
+        </div>
+      </div>
+    </section>
   );
 }
