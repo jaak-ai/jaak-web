@@ -401,7 +401,6 @@ function LeadFormSection() {
           telefono: form.telefono,
           mensaje: [
             form.cargo && `Cargo: ${form.cargo}`,
-            form.tipoInstitucion && `Tipo de institución: ${form.tipoInstitucion}`,
             form.volumen && `Documentos mensuales: ${form.volumen}`,
             form.casoUso && `Caso de uso: ${form.casoUso}`,
             form.mensaje && `Mensaje: ${form.mensaje}`,
@@ -409,6 +408,7 @@ function LeadFormSection() {
             .filter(Boolean)
             .join(" | "),
           source: "landing-salud",
+          tipo_institucion: form.tipoInstitucion,
           ...getUtmParams(),
           page_url: window.location.href,
         }),

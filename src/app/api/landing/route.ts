@@ -18,6 +18,7 @@ export async function POST(request: Request) {
       telefono,
       mensaje,
       source,
+      tipo_institucion,
       turnstile_token,
       utm_source,
       utm_medium,
@@ -96,6 +97,9 @@ export async function POST(request: Request) {
       ];
       if (empresa) hubspotFields.push({ name: "company", value: empresa });
       if (mensaje) hubspotFields.push({ name: "message", value: mensaje });
+      // Tipo de institución del formulario de /salud, para segmentar por vertical.
+      // La propiedad landing_salud debe existir en HubSpot antes de que este campo llegue.
+      if (tipo_institucion) hubspotFields.push({ name: "landing_salud", value: tipo_institucion });
 
       const crmRes = await fetch(
         `https://api.hsforms.com/submissions/v3/integration/submit/${HUBSPOT_PORTAL_ID}/${HUBSPOT_FORM_ID}`,
