@@ -30,14 +30,6 @@ import {
 
 const PAGE = "salud_laboratorios";
 const DEMO_HREF = "/kyc-demo-autoservicio";
-const STUDY_URL = "https://pmc.ncbi.nlm.nih.gov/articles/PMC4116260/";
-
-const OUTCOMES = [
-  { fig: "1.3×", text: "Probabilidad de readmisión asociada a registros duplicados en el estudio citado." },
-  { fig: "3.5×", text: "Probabilidad de ingreso a terapia intensiva asociada a la duplicación." },
-  { fig: "4.7×", text: "Probabilidad de mortalidad asociada a la duplicación de registros." },
-  { fig: "+32%", text: "Estancia hospitalaria más larga en los casos con registro duplicado." },
-];
 
 const NORM_ROWS: NormRow[] = [
   { instrument: "NOM-024-SSA3-2012", flagLabel: "Obliga", flagTone: "obliga", numeral: "6.4 · 6.5", effect: "Uso de catálogos nacionales y CURP validada como identificador para el intercambio de información en salud. La calidad de la identidad maestra es lo que evita duplicados y cruces erróneos." },
@@ -52,7 +44,7 @@ const CLAIMS: ClaimPair[] = [
   {
     said: "«Los duplicados son un problema de limpieza de base de datos.»",
     real: "Son un problema clínico. Un historial partido en dos significa que quien solicita el siguiente estudio no ve el anterior, ni la alergia, ni el valor de referencia previo del paciente.",
-    ref: "NOM-024 · 6.4 y 6.5 · Literatura revisada por pares",
+    ref: "NOM-024 · 6.4 y 6.5",
   },
   {
     said: "«El resultado va firmado en PDF, con eso se acredita.»",
@@ -71,7 +63,6 @@ const SOURCES: SourceLink[] = [
   { code: "P01", label: "NOM-004-SSA3-2012, Del expediente clínico", url: "https://dof.gob.mx/nota_detalle_popup.php?codigo=5272787", meta: "DOF · 15 oct 2012 · Vigente" },
   { code: "P13", label: "Ley Federal de Protección de Datos Personales (2025)", url: "https://www.diputados.gob.mx/LeyesBiblio/pdf/LFPDPPP.pdf", meta: "Publicada 20 mar 2025" },
   { code: "P08", label: "NOM-151-SCFI-2016", url: "https://www.dof.gob.mx/nota_detalle.php?codigo=5478024&fecha=30/03/2017", meta: "DOF · 30 mar 2017 · Vigente" },
-  { code: "R13", label: "Estudios duplicados en transferencias entre instituciones", url: STUDY_URL, meta: "Artículo revisado por pares · No México" },
   { code: "P30", label: "Consejo de Salubridad General · Modelo de certificación", url: "https://www.csg.gob.mx/descargas/pdf/certificacion-establecimientos/modelo_de_seguridad/hospitales/Manual_MOCEBPASS.pdf", meta: "Fuente oficial · URL sujeta a actualización" },
 ];
 
@@ -111,18 +102,6 @@ function IdentityMerge() {
           </ul>
         </div>
       </div>
-
-      <div data-sr-grid className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
-        {OUTCOMES.map((out) => (
-          <div key={out.fig} className="rounded-2xl p-5 bg-white" style={{ border: `1px solid ${BORDER}` }}>
-            <span className="font-mono text-2xl font-bold" style={{ color: NAVY }}>{out.fig}</span>
-            <p className="text-[13px] leading-relaxed mt-2" style={{ color: TEXT_BODY }}>{out.text}</p>
-          </div>
-        ))}
-      </div>
-      <p className="text-sm mt-6 max-w-3xl" style={{ color: TEXT_MUTED }}>
-        Asociaciones reportadas en literatura revisada por pares internacional. No son datos mexicanos ni una predicción para su institución: son la razón por la que la identidad maestra del paciente se discute como control de seguridad y no como campo de captura.
-      </p>
     </div>
   );
 }
@@ -143,20 +122,19 @@ export default function LaboratoriosClient() {
           }
           lede={
             <>
-              Evidencia internacional publicada este año asocia los registros duplicados de paciente con mayor probabilidad de readmisión, de ingreso a terapia intensiva y de mortalidad, además de estancias significativamente más largas.{" "}
-              <strong className="text-white font-semibold">Es evidencia extranjera, no mexicana, y conviene decirlo así.</strong>
+              Un historial partido en dos significa que quien solicita el siguiente estudio no ve el anterior, ni la alergia, ni el valor de referencia previo del paciente.{" "}
+              <strong className="text-white font-semibold">Es un riesgo clínico, no solo un problema de captura.</strong>
             </>
           }
-          heroNote="Pero cambia la conversación: la identidad deja de ser un trámite de alta de paciente y se vuelve un control de seguridad. La NOM-024 ya apunta ahí al exigir CURP validada como identificador para intercambio de información en salud."
-          statFigure="32%"
-          statCaption="De los pacientes transferidos entre instituciones tuvo estudios duplicados en el estudio revisado por pares citado, y uno de cada cinco tuvo al menos una duplicación clínicamente injustificada. Cuando la identidad no es confiable, el costo aparece en el laboratorio."
+          heroNote="La identidad deja de ser un trámite de alta de paciente y se vuelve un control de seguridad. La NOM-024 ya apunta ahí al exigir CURP validada como identificador para intercambio de información en salud."
+          statFigure="CURP"
+          statCaption="La NOM-024 exige un identificador validado para el intercambio de información en salud entre instituciones. La calidad de esa identidad maestra es lo que evita duplicados y cruces erróneos de resultados."
           primaryCtaLabel="Ver demo de verificación de identidad"
           primaryCtaHref={DEMO_HREF}
-          secondaryCtaLabel="Ver el estudio"
-          secondaryCtaHref={STUDY_URL}
-          secondaryCtaExternal
+          secondaryCtaLabel="Base normativa"
+          secondaryCtaHref="#normativa"
           onPrimaryClick={() => gtmEvent("demo_kyc_click", { source: "hero", destination: "kyc_general", page: PAGE })}
-          onSecondaryClick={() => gtmEvent("salud_laboratorios_study_click", { page: PAGE })}
+          onSecondaryClick={() => gtmEvent("salud_laboratorios_normativa_jump", { page: PAGE })}
         />
 
         <ToolsBand trackingPrefix={PAGE} background={LIGHT} />
@@ -172,7 +150,7 @@ export default function LaboratoriosClient() {
           </div>
         </section>
 
-        <section className="py-16" style={{ background: LIGHT }}>
+        <section id="normativa" className="py-16" style={{ background: LIGHT }}>
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <SectionHeading
               eyebrow="Base normativa"
