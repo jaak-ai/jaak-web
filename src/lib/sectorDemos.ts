@@ -14,6 +14,8 @@ export interface SectorDemo {
 
 // Demos de KYC por sector. Agregar un nuevo sector solo requiere un
 // objeto aquí; hoy solo existe la demo del sector inmobiliario.
+// Salud aún no tiene una demo propia: reutiliza la demo general de KYC.
 export const sectorDemos: SectorDemo[] = [
   { sector: "Inmobiliarias", href: "/kyc-inmobiliario-lfpiorpi", trackingId: "kyc_inmobiliario" },
+  { sector: "Salud", href: "/kyc-demo-autoservicio", trackingId: "kyc_salud" },
 ];

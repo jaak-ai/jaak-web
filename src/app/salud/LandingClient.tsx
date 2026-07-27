@@ -7,6 +7,9 @@ import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
 import { getUtmParams } from "@/components/CloudflareTurnstile";
 import { gtmEvent } from "@/components/GoogleTagManager";
+import { saludNormativeChanges, saludNormativeChangesUpdatedOn } from "@/lib/saludNormativeChanges";
+import { saludEvidenceLayers } from "@/lib/saludEvidenceLayers";
+import { saludSectors } from "@/lib/saludSectors";
 
 const NAVY = "#02132D";
 const NAVY_SOFT = "#0C2544";
@@ -14,7 +17,7 @@ const TEAL = "#1ECAD3";
 const LIGHT = "#F6F8FA";
 const BORDER = "#E3E8EE";
 const TEXT_BODY = "#4B5768";
-const TEXT_MUTED = "#6B7686";
+const TEXT_MUTED = "#5C6B7A"; // #6B7686 fallaba AA (4.33:1) sobre fondo LIGHT
 
 const VIDEO_ID = "q0Iliu1wK-g";
 const MEETINGS_URL = "https://meetings.hubspot.com/jose-andres-yllescas-lira";
@@ -252,7 +255,7 @@ function HeroVisual() {
             </span>
             <span
               className="text-[10px] font-bold px-2 py-1 rounded-full"
-              style={{ background: "rgba(30,202,211,0.12)", color: "#0E8E96" }}
+              style={{ background: "rgba(30,202,211,0.12)", color: "#0A6870" }}
             >
               En proceso
             </span>
@@ -398,7 +401,6 @@ function LeadFormSection() {
           telefono: form.telefono,
           mensaje: [
             form.cargo && `Cargo: ${form.cargo}`,
-            form.tipoInstitucion && `Tipo de institución: ${form.tipoInstitucion}`,
             form.volumen && `Documentos mensuales: ${form.volumen}`,
             form.casoUso && `Caso de uso: ${form.casoUso}`,
             form.mensaje && `Mensaje: ${form.mensaje}`,
@@ -406,6 +408,7 @@ function LeadFormSection() {
             .filter(Boolean)
             .join(" | "),
           source: "landing-salud",
+          tipo_institucion: form.tipoInstitucion,
           ...getUtmParams(),
           page_url: window.location.href,
         }),
@@ -437,7 +440,7 @@ function LeadFormSection() {
             className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full"
             style={{ background: "rgba(30,202,211,0.14)" }}
           >
-            <CheckIcon color="#0E8E96" />
+            <CheckIcon color="#0A6870" />
           </div>
           <h3 className="text-xl font-bold mb-2" style={{ color: NAVY }}>
             Solicitud enviada
@@ -519,7 +522,7 @@ function LeadFormSection() {
             <input required type="checkbox" name="acepta" checked={form.acepta} onChange={handleChange} className="mt-1" />
             <span>
               Acepto el{" "}
-              <Link href="/privacidad" className="underline" style={{ color: "#0E8E96" }}>
+              <Link href="/privacidad" className="underline" style={{ color: "#0A6870" }}>
                 Aviso de Privacidad
               </Link>{" "}
               de JAAK.
@@ -574,6 +577,146 @@ function FAQAccordion() {
         </div>
       ))}
     </div>
+  );
+}
+
+function NormativeChangesSection() {
+  return (
+    <section className="py-20 bg-white">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div data-sr className="max-w-3xl mb-4">
+          <span className="text-xs font-bold uppercase tracking-wider font-mono" style={{ color: "#0A6870" }}>
+            Registro de cambios normativos
+          </span>
+          <h2 className="text-3xl md:text-4xl font-black mt-3 mb-5" style={{ color: NAVY }}>
+            Esta página se actualiza cuando se publica algo en el DOF.
+          </h2>
+          <p className="text-lg" style={{ color: TEXT_BODY }}>
+            No es una promesa genérica: cada entrada tiene fecha, instrumento y fuente oficial verificable.
+          </p>
+        </div>
+        <p className="text-sm font-mono mb-8" style={{ color: TEXT_MUTED }}>
+          Última actualización: {saludNormativeChangesUpdatedOn}
+        </p>
+
+        <ol data-sr-grid className="space-y-4">
+          {saludNormativeChanges.map((change) => (
+            <li
+              key={change.title}
+              className="rounded-2xl p-6 sm:p-7"
+              style={{ background: LIGHT, border: `1px solid ${BORDER}` }}
+            >
+              <div className="flex flex-wrap items-center gap-3 mb-3">
+                <span className="text-xs font-bold font-mono px-2.5 py-1 rounded-full" style={{ background: "rgba(30,202,211,0.12)", color: "#0A6870" }}>
+                  {change.date}
+                </span>
+                <span className="text-xs font-semibold uppercase tracking-wide" style={{ color: TEXT_MUTED }}>
+                  {change.type}
+                </span>
+              </div>
+              <h3 className="text-base font-bold mb-2" style={{ color: NAVY }}>{change.title}</h3>
+              <p className="text-[14.5px] leading-relaxed mb-3" style={{ color: TEXT_BODY }}>{change.description}</p>
+              <a
+                href={change.sourceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => gtmEvent("salud_normative_source_click", { title: change.title, page: "salud" })}
+                className="text-xs font-bold underline"
+                style={{ color: "#0A6870" }}
+              >
+                Ver fuente · {change.sourceLabel} →
+              </a>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
+function EvidenceLayersSection() {
+  return (
+    <section className="py-20" style={{ background: LIGHT }}>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div data-sr className="max-w-3xl mb-14">
+          <h2 className="text-3xl md:text-4xl font-black mb-5" style={{ color: NAVY }}>
+            Seis capas sostienen un expediente defendible. Cada una prueba algo distinto.
+          </h2>
+          <p className="text-lg" style={{ color: TEXT_BODY }}>
+            No basta con que una capa esté resuelta. Un expediente se defiende cuando las seis pueden sostenerse con evidencia verificable.
+          </p>
+        </div>
+
+        <div data-sr-grid className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {saludEvidenceLayers.map((layer) => (
+            <div key={layer.name} className="bg-white rounded-2xl p-6" style={{ border: `1px solid ${BORDER}` }}>
+              <div className="flex items-baseline gap-2 mb-3">
+                <span className="text-xs font-mono font-bold" style={{ color: "#0A6870" }}>{layer.n}</span>
+                <h3 className="text-base font-bold" style={{ color: NAVY }}>{layer.name}</h3>
+              </div>
+              <p className="text-[13px] font-bold uppercase tracking-wide mb-1" style={{ color: "#127A38" }}>Qué sí prueba</p>
+              <p className="text-[14px] leading-relaxed mb-4" style={{ color: TEXT_BODY }}>{layer.proves}</p>
+              <p className="text-[13px] font-bold uppercase tracking-wide mb-1" style={{ color: "#A81E1E" }}>Qué no prueba</p>
+              <p className="text-[14px] leading-relaxed mb-4" style={{ color: TEXT_BODY }}>{layer.doesNotProve}</p>
+              <p className="text-xs font-mono" style={{ color: TEXT_MUTED }}>{layer.ref}</p>
+            </div>
+          ))}
+        </div>
+
+        <div
+          data-sr
+          className="mt-8 rounded-2xl p-6 sm:p-7"
+          style={{ background: "#FFFBF2", border: "1px solid #F0D89A", borderLeft: "4px solid #D69E2E" }}
+        >
+          <span className="text-xs font-bold uppercase tracking-wide font-mono" style={{ color: "#8A6D1F" }}>
+            Alcance de este contenido
+          </span>
+          <p className="text-[14px] leading-relaxed mt-2" style={{ color: "#6B5A34" }}>
+            Material informativo. No sustituye una opinión legal para un caso concreto. Ninguna tecnología garantiza por sí sola validez jurídica, evita sanciones ni excluye responsabilidad profesional. Lo que sí puede hacer un sistema bien diseñado es reducir brechas de evidencia y permitir explicar qué ocurrió.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function SectorSelectorSection() {
+  return (
+    <section className="py-20 bg-white">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div data-sr className="text-center max-w-2xl mx-auto mb-14">
+          <h2 className="text-3xl md:text-4xl font-black mb-5" style={{ color: NAVY }}>
+            Cada institución tiene su propia cadena probatoria.
+          </h2>
+          <p className="text-lg" style={{ color: TEXT_BODY }}>
+            Elige tu tipo de institución para ver la base normativa, los errores más comunes y el elemento distintivo de tu caso.
+          </p>
+        </div>
+
+        <div data-sr-grid className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {saludSectors.map((sector) => (
+            <Link
+              key={sector.slug}
+              href={sector.href}
+              onClick={() => gtmEvent("salud_sector_card_click", { sector: sector.slug, page: "salud" })}
+              className="group block rounded-2xl p-6 h-full"
+              style={{ background: LIGHT, border: `1px solid ${BORDER}` }}
+            >
+              <span className="text-xs font-bold uppercase tracking-wide font-mono" style={{ color: "#0A6870" }}>
+                {sector.eyebrow}
+              </span>
+              <h3 className="text-lg font-bold mt-3 mb-4" style={{ color: NAVY }}>{sector.title}</h3>
+              <span
+                className="text-sm font-bold inline-flex items-center gap-1.5 group-hover:gap-2.5 transition-all"
+                style={{ color: "#0A6870" }}
+              >
+                Ver base normativa →
+              </span>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -669,6 +812,15 @@ export default function SaludLandingClient() {
           </div>
         </section>
 
+        {/* BLOQUE A. REGISTRO DE CAMBIOS NORMATIVOS */}
+        <NormativeChangesSection />
+
+        {/* BLOQUE B. SEIS CAPAS DE LA CADENA PROBATORIA */}
+        <EvidenceLayersSection />
+
+        {/* BLOQUE C. SELECTOR DE TIPO DE INSTITUCIÓN */}
+        <SectorSelectorSection />
+
         {/* SECCIÓN 3. LOS TRES CANDADOS DE LA EVIDENCIA */}
         <section className="py-20" style={{ background: LIGHT }}>
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -681,7 +833,7 @@ export default function SaludLandingClient() {
             <div data-sr-grid className="grid md:grid-cols-3 gap-6 mb-6">
               {LOCKS.map((lock) => (
                 <div key={lock.q} className="bg-white rounded-2xl p-8" style={{ border: `1px solid ${BORDER}` }}>
-                  <h3 className="text-xl font-bold mb-3" style={{ color: "#0E8E96" }}>{lock.q}</h3>
+                  <h3 className="text-xl font-bold mb-3" style={{ color: "#0A6870" }}>{lock.q}</h3>
                   <p className="text-[15px] leading-relaxed" style={{ color: TEXT_BODY }}>{lock.a}</p>
                 </div>
               ))}
@@ -710,7 +862,7 @@ export default function SaludLandingClient() {
                 <div key={d.title} className="rounded-2xl p-8" style={{ background: LIGHT, border: `1px solid ${BORDER}` }}>
                   <h3 className="text-lg font-bold mb-3" style={{ color: NAVY }}>{d.title}</h3>
                   <p className="text-[14.5px] leading-relaxed mb-4" style={{ color: TEXT_BODY }}>{d.text}</p>
-                  <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: "#0E8E96" }}>{d.ref}</p>
+                  <p className="text-xs font-semibold uppercase tracking-wide" style={{ color: "#0A6870" }}>{d.ref}</p>
                 </div>
               ))}
             </div>
@@ -794,7 +946,7 @@ export default function SaludLandingClient() {
                   {pkg.badge && (
                     <span
                       className="inline-block text-xs font-bold uppercase tracking-wide px-3 py-1 rounded-full mb-4"
-                      style={{ background: "rgba(30,202,211,0.12)", color: "#0E8E96" }}
+                      style={{ background: "rgba(30,202,211,0.12)", color: "#0A6870" }}
                     >
                       {pkg.badge}
                     </span>
@@ -824,7 +976,7 @@ export default function SaludLandingClient() {
 
             <p data-sr className="text-center text-sm" style={{ color: TEXT_MUTED }}>
               Precios en pesos mexicanos, más IVA. Paquetes de prueba de la línea Cobre.{" "}
-              <Link href="/autoservicio" className="font-semibold underline" style={{ color: "#0E8E96" }}>
+              <Link href="/autoservicio" className="font-semibold underline" style={{ color: "#0A6870" }}>
                 Conoce todos los paquetes de JAAK →
               </Link>
             </p>
@@ -848,7 +1000,7 @@ export default function SaludLandingClient() {
                   style={{ background: LIGHT, border: `1px solid ${BORDER}` }}
                 >
                   <span className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center mt-0.5" style={{ background: "rgba(30,202,211,0.15)" }}>
-                    <CheckIcon color="#0E8E96" />
+                    <CheckIcon color="#0A6870" />
                   </span>
                   <span className="text-[14.5px] font-medium" style={{ color: NAVY }}>{uc}</span>
                 </div>
@@ -899,7 +1051,7 @@ export default function SaludLandingClient() {
                 <ul className="space-y-4">
                   {JAAK_PROCESS.map((item) => (
                     <li key={item} className="flex items-start gap-3">
-                      <CheckIcon color="#0E8E96" />
+                      <CheckIcon color="#0A6870" />
                       <span className="text-[14.5px] font-medium" style={{ color: NAVY }}>{item}</span>
                     </li>
                   ))}
@@ -945,21 +1097,21 @@ export default function SaludLandingClient() {
               {SECURITY_CAPS.map((cap) => (
                 <div key={cap} className="flex items-center gap-3 p-4 rounded-xl bg-white" style={{ border: `1px solid ${BORDER}` }}>
                   <span className="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center" style={{ background: "rgba(30,202,211,0.15)" }}>
-                    <CheckIcon color="#0E8E96" />
+                    <CheckIcon color="#0A6870" />
                   </span>
                   <span className="text-[13.5px] font-medium" style={{ color: NAVY }}>{cap}</span>
                 </div>
               ))}
             </div>
 
-            <Link href="/privacidad" className="text-sm font-semibold underline" style={{ color: "#0E8E96" }}>
+            <Link href="/privacidad" className="text-sm font-semibold underline" style={{ color: "#0A6870" }}>
               Consulta el Aviso de Privacidad de JAAK →
             </Link>
           </div>
         </section>
 
         {/* SECCIÓN 11. FORMULARIO */}
-        <section id="formulario" className="py-20 bg-white">
+        <section id="formulario" className="py-20 bg-white overflow-hidden">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-16 items-start">
               <div data-sr>
@@ -977,7 +1129,7 @@ export default function SaludLandingClient() {
                     rel="noopener noreferrer"
                     onClick={() => gtmEvent("schedule_demo_click", { source: "formulario", destination: "meetings_hubspot", page_path: "/salud" })}
                     className="underline font-medium"
-                    style={{ color: "#0E8E96" }}
+                    style={{ color: "#0A6870" }}
                   >
                     Reserva tu demostración en nuestro calendario →
                   </a>
