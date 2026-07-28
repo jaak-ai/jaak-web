@@ -57,13 +57,13 @@ export default function Header() {
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-[72px]">
             {/* Logo */}
-            <Link href="/" className="flex items-center flex-shrink-0">
+            <Link href="/" className="flex items-center flex-shrink-0 min-w-0">
               <Image
                 src="/images/logos/jaak-logo-azul.png"
                 alt="JAAK"
                 width={120}
                 height={48}
-                className="h-10 w-auto"
+                className="h-7 sm:h-10 w-auto"
                 priority
               />
             </Link>
@@ -167,7 +167,7 @@ export default function Header() {
             </div>
 
             {/* Right side buttons */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-1.5 sm:gap-4 flex-shrink-0">
               <Link
                 href="https://platform.jaak.ai"
                 className="hidden sm:block text-gray-700 hover:text-[#0066ff] font-medium text-[15px] transition-colors"
@@ -180,9 +180,26 @@ export default function Header() {
               >
                 Solicitar revisión
               </Link>
+
+              {/* CTA "Agendar demo" — visible en móvil sin depender del menú hamburguesa */}
+              <a
+                href={SCHEDULE_DEMO_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() =>
+                  gtmEvent("schedule_demo_click", { source: "header", destination: "meetings_hubspot", page_path: window.location.pathname })
+                }
+                data-cta="agendar-demo"
+                data-source="header"
+                aria-label="Agendar demo con un especialista"
+                className="lg:hidden inline-flex items-center justify-center min-h-[40px] px-2.5 sm:px-4 py-2 whitespace-nowrap text-xs sm:text-[15px] font-bold sm:font-semibold rounded-lg border border-[#2DB6C1] text-[#0F8E96] hover:bg-[#2DB6C1]/10 transition-all"
+              >
+                Demo
+              </a>
+
               <Link
                 href="/autoservicio"
-                className="px-5 py-2.5 bg-[#2DB6C1] text-white font-semibold text-[15px] rounded-lg hover:bg-[#25969f] transition-all"
+                className="inline-flex items-center justify-center min-h-[40px] px-2.5 sm:px-5 py-2 sm:py-2.5 whitespace-nowrap bg-[#2DB6C1] text-white font-semibold text-xs sm:text-[15px] rounded-lg hover:bg-[#25969f] transition-all"
               >
                 Comprar
               </Link>
@@ -192,7 +209,7 @@ export default function Header() {
                 type="button"
                 aria-label={mobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
                 aria-expanded={mobileMenuOpen}
-                className="lg:hidden p-2 text-gray-700 hover:text-[#0066ff]"
+                className="lg:hidden min-w-[44px] min-h-[44px] flex items-center justify-center text-gray-700 hover:text-[#0066ff] flex-shrink-0"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -387,6 +404,9 @@ export default function Header() {
                   </Link>
                   <Link href="/cumplimiento/actividades-vulnerables" className="block text-gray-700 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
                     PLD / Umbrales 2026
+                  </Link>
+                  <Link href="/listas-de-riesgo-pld-aml" className="block text-gray-700 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
+                    Listas de riesgo PLD/AML
                   </Link>
                   <Link href="/cumplimiento/cnbv" className="block text-gray-700 hover:text-[#0066ff]" onClick={() => setMobileMenuOpen(false)}>
                     CNBV
@@ -870,6 +890,19 @@ export default function Header() {
                       <div>
                         <div className="text-[15px] font-semibold text-gray-900 group-hover:text-[#0066ff] transition-colors">CNBV</div>
                         <div className="text-sm text-gray-500 mt-0.5">Identificación remota no presencial</div>
+                      </div>
+                    </div>
+                  </Link>
+                  <Link href="/listas-de-riesgo-pld-aml" className="group block">
+                    <div className="flex items-start gap-4">
+                      <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-[#0066ff] transition-colors">
+                        <svg className="w-5 h-5 text-gray-900 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-4.35-4.35M17 10a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <div className="text-[15px] font-semibold text-gray-900 group-hover:text-[#0066ff] transition-colors">Listas de riesgo PLD/AML</div>
+                        <div className="text-sm text-gray-500 mt-0.5">Screening AML: OFAC, PEP y SAT 69-B</div>
                       </div>
                     </div>
                   </Link>
