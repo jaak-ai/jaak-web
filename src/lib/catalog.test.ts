@@ -50,9 +50,9 @@ describe("mapProducto", () => {
     expect(p.checkoutUrl).toBeUndefined();
   });
 
-  it("recurring (KYC) lleva checkoutUrl a /onboarding/plans", () => {
+  it("recurring (KYC) lleva checkoutUrl a /register/products", () => {
     const p = mapProducto({ ...consultaIne, slug: "kyc", billingType: "recurring" })!;
-    expect(p.checkoutUrl).toContain("/onboarding/plans");
+    expect(p.checkoutUrl).toContain("/register/products");
   });
 
   it("unidad cae al mapa por categoría si el endpoint no la trae y el slug no está", () => {

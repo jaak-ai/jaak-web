@@ -6,7 +6,7 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 import { gtmEvent } from "@/components/GoogleTagManager";
 import { getUtmParams } from "@/components/CloudflareTurnstile";
-import { productos, buildCheckoutUrl } from "@/data/autoservicio-catalogo";
+import { productos, buildCheckoutUrl, buildKycRegisterUrl } from "@/data/autoservicio-catalogo";
 import type { PricingIndex } from "@/lib/pricing";
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -88,10 +88,9 @@ const PRODUCT_OPTIONS: { id: ProductId; label: string }[] = [
 
 const productLabel = (id: string) => PRODUCT_OPTIONS.find((p) => p.id === id)?.label ?? "";
 
-// KYC no tiene renglón de pricing comprable vía carrito en producción (ver
-// src/lib/pricing.ts): usa el flujo de onboarding dedicado en vez de un
-// deep-link de carrito.
-const KYC_ONBOARDING_URL = "https://platform.jaak.ai/#/onboarding/user-info?plan=cobre";
+// KYC usa el checkout unificado /register con el plan pre-seleccionado
+// (TO-809 Fase 3 / AUTO-20).
+const KYC_REGISTER_URL = buildKycRegisterUrl("gratis");
 
 // Mapeo id de esta landing → id real del catálogo de autoservicio (paquete
 // "cobre" = entrada de prueba). INE/CURP y OCR se dejan fuera a propósito:
@@ -112,7 +111,7 @@ function buildTrialCheckoutHref(
   pricingIndex: PricingIndex,
   utm: ReturnType<typeof getUtmParams>
 ): string {
-  if (id === "kyc") return KYC_ONBOARDING_URL;
+  if (id === "kyc") return KYC_REGISTER_URL;
   const catalogId = id ? CATALOG_PRODUCT_ID[id] : undefined;
   if (!catalogId) return "/autoservicio";
   const producto = productos.find((p) => p.id === catalogId);

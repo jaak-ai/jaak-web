@@ -30,7 +30,8 @@ export interface Producto {
   recomendado?: Paquete["id"];
   paquetes: Paquete[];
   // Si está presente, el producto NO va por el carrito de /register sino que su
-  // CTA enlaza aquí (ej. KYC/suscripción → /onboarding/plans). Opción b, SD-283.
+  // CTA enlaza aquí (ej. KYC/suscripción → /register con plan pre-seleccionado,
+  // TO-809 Fase 3 / AUTO-20). Lo maneja la card.
   checkoutUrl?: string;
 }
 
@@ -55,6 +56,32 @@ const tiers = (
   { id: "platino", nombre: "Platino", cantidad: qpl, precio: pl },
 ];
 
+// Deep-link a la selección unificada de /register con el plan KYC pre-seleccionado
+// (checkout unificado TO-809 Fase 3 / AUTO-20). Reemplaza los CTAs viejos a
+// /onboarding/*. El register reconstruye precio/nombre del plan en vivo; aquí solo
+// viaja el código de plan + modo "once".
+export const KYC_PLAN_CODE_BY_TIER: Record<string, string> = {
+  cobre: "gratis", bronce: "bronce", plata: "plata", oro: "oro", platino: "platino", platino1: "platino",
+};
+export function buildKycRegisterUrl(
+  planCode: string,
+  options: { base?: string; utm?: Partial<import("@/lib/attribution").AttributionParams> } = {}
+): string {
+  const { base = "https://platform.jaak.ai/#/register/products", utm } = options;
+  const d = btoa(encodeURIComponent(JSON.stringify({ k: { pc: planCode, m: "once" } })));
+  let url = `${base}?d=${d}`;
+  // utm_* como query ANTES del hash (mismo patrón que buildCheckoutUrl)
+  const utmEntries = Object.entries(utm ?? {}).filter(
+    (e): e is [string, string] => e[0].startsWith("utm_") && typeof e[1] === "string" && e[1] !== ""
+  );
+  if (utmEntries.length) {
+    const qs = new URLSearchParams(utmEntries).toString();
+    const hashIdx = url.indexOf("#");
+    url = hashIdx === -1 ? `${url}&${qs}` : `${url.slice(0, hashIdx)}?${qs}${url.slice(hashIdx)}`;
+  }
+  return url;
+}
+
 export const productos: Producto[] = [
   {
     id: "kyc",
@@ -72,7 +99,7 @@ export const productos: Producto[] = [
     ],
     recomendado: "plata",
     paquetes: tiers(99, 1500, 2800, 6625, 12500, 5, 50, 100, 250, 500),
-    checkoutUrl: "https://platform.jaak.ai/#/onboarding/plans",
+    checkoutUrl: buildKycRegisterUrl(KYC_PLAN_CODE_BY_TIER["plata"]),
   },
   {
     id: "firma-simple",

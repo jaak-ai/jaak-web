@@ -17,6 +17,7 @@ import {
   IVA,
   categorias as fallbackCategorias,
   productos as fallbackProductos,
+  buildKycRegisterUrl,
   type Categoria,
   type CategoriaId,
   type Paquete,
@@ -25,9 +26,8 @@ import {
 
 const API_BASE = process.env.JAAK_API_BASE_URL || "https://services.api.jaak.ai";
 
-// Los productos recurrentes (KYC/suscripción) se compran por el flujo de planes,
-// no por el carrito de /register. Opción b (SD-283).
-const ONBOARDING_PLANS_URL = "https://platform.jaak.ai/#/onboarding/plans";
+// Los productos recurrentes (KYC/suscripción) van al checkout unificado /register
+// con el plan KYC pre-seleccionado (TO-809 Fase 3 / AUTO-20). Opción b (SD-283).
 
 // Unidad de consumo por producto (no viene del endpoint todavía).
 const UNIDAD_BY_SLUG: Record<string, string> = {
@@ -118,13 +118,13 @@ export function mapProducto(p: CatalogProduct): Producto | null {
     incluye: p.incluye || [],
     recomendado: isTier(p.recommendedTier) ? p.recommendedTier : undefined,
     paquetes,
-    checkoutUrl: p.billingType === "recurring" ? ONBOARDING_PLANS_URL : undefined,
+    checkoutUrl: p.billingType === "recurring" ? buildKycRegisterUrl("plata") : undefined,
   };
 }
 
 export function mapCatalog(data: CatalogResponse): Producto[] {
-  // KYC y demás recurrentes SÍ se muestran (SD-283), pero con `checkoutUrl` a
-  // /onboarding/plans en vez del carrito de /register (lo maneja la card).
+  // KYC y demás recurrentes SÍ se muestran (SD-283), pero con `checkoutUrl` al
+  // checkout unificado /register/products (lo maneja la card).
   return (data.products || [])
     .map(mapProducto)
     .filter((p): p is Producto => p !== null);
