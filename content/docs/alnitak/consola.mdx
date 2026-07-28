@@ -132,7 +132,7 @@ Al pie: cuántos superan el umbral y cuántos se descartaron.
 
 ### Consulta kNN
 
-Panel derecho con la **consulta literal que la API envió a Elasticsearch** —
+Panel derecho con la **consulta literal que la API envió al almacén vectorial** —
 `_source`, filtro por versión de modelo, `k`, `num_candidates` y el vector de
 consulta— junto a los datos de la respuesta: `hits.total.value`, `max_score`,
 shards correctos y fallidos, `timed_out`, documentos en el índice y RAM.
@@ -183,5 +183,5 @@ pasó con esta consulta?"; **Grafana** responde "¿cómo está el clúster?".
 |---|---|
 | Vigilar el SLA y las alertas del turno | Dar de alta identidades en masa (eso es la API) |
 | Resolver casos de revisión manual | Cambiar configuración del servicio |
-| Investigar una consulta concreta | Re-vectorizar la galería o conmutar el alias (operaciones privilegiadas, ver [Mantenimiento](/docs/alnitak/mantenimiento)) |
+| Investigar una consulta concreta | Re-vectorizar la galería o conmutar el alias: son operaciones privilegiadas y van por API |
 | Comprobar el estado del índice y del vectorizador | Sustituir a la observabilidad del clúster |

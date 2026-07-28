@@ -111,14 +111,6 @@ curl -X POST https://alnitak.interno/api/v1/identify \
     { "name": "resolve",       "ms": 4 }
   ],
   "slack_ms": 359,
-  "elasticsearch": {
-    "index": "galeria_biometrica",
-    "total": 50000000,
-    "max_score": 0.913,
-    "shards": { "successful": 5, "failed": 0 },
-    "timed_out": false,
-    "query": "{\"knn\":{...}}"
-  },
   "multi_face": false,
   "model_version": "<modelo-activo>"
 }
@@ -136,9 +128,13 @@ curl -X POST https://alnitak.interno/api/v1/identify \
 | `quality` | Puntuaciones ICAO y de vivacidad, en [0, 1]. |
 | `candidates[].score` | Similitud coseno **normalizada a [0, 1]**, en la misma escala que `threshold`. |
 | `candidates[].verdict` | `match`, `review` o `no_match`. |
-| `elasticsearch.query` | La consulta kNN literal enviada al índice. Hace cada resultado reproducible y auditable. |
 | `multi_face` | `true` si la imagen tenía varios rostros: se resolvió con el mayor y la consulta queda marcada. |
 | `model_version` | Modelo de vectorización con el que se resolvió. |
+
+La respuesta incluye además un bloque de diagnóstico de la búsqueda —índice
+consultado, candidatos totales, score máximo, estado de los shards y la consulta
+literal que se envió al almacén vectorial— que la consola usa para trazabilidad.
+Su esquema se documenta en el manual de integración de la entrega.
 
 ---
 
@@ -210,7 +206,7 @@ el rechazo, para que un operador pueda resolverlo.
   "vectors": 50000000,
   "dims": 512,
   "similarity": "cosine",
-  "quantization": "int8_hnsw",
+  "quantization": "int8",
   "index_ram_bytes": 32212254720,
   "unquantized_ram_bytes": 109951162778,
   "shards": 5,
@@ -226,8 +222,8 @@ Requiere `read:metrics`.
 <Endpoint method="GET" path="/api/v1/gallery/reembed/{id}" description="Progreso del trabajo de re-vectorización" auth="api-key" />
 <Endpoint method="POST" path="/api/v1/gallery/alias" description="Conmuta el alias de la galería al índice nuevo" auth="api-key" />
 
-Los tres requieren `admin:gallery`. Procedimiento completo en
-[Mantenimiento](/docs/alnitak/mantenimiento).
+Los tres requieren `admin:gallery`. El procedimiento completo está en el manual
+de mantenimiento de la entrega.
 
 ---
 
@@ -289,12 +285,12 @@ Todos los errores comparten el mismo sobre:
 | `duplicate_or_fraud` | `409` | El rostro ya está en la galería (solo en alta) | Resolver el expediente duplicado |
 | `rate_limited` | `429` | Superado el límite por IP y ventana | Reducir la tasa, o revisar `trusted_proxies` |
 | `vectorizer_unavailable` | `503` | El motor de tokenización no responde | Revisar el vectorizador y las GPU |
-| `gallery_unavailable` | `503` | Elasticsearch no responde | Revisar el clúster |
+| `gallery_unavailable` | `503` | El almacén vectorial no responde | Revisar el clúster de búsqueda |
 | `internal` | `500` | Error no clasificado | Revisar logs con el `query_id` |
 
 <Callout type="warning" title="429 antes de tiempo">
 Un `429` con el servicio lejos de su capacidad casi siempre significa que todo
-el tráfico entra por un gateway y comparte la cuota de una sola IP. Es
-configuración de `trusted_proxies`, no saturación. Ver
-[Configuración](/docs/alnitak/configuracion).
+el tráfico entra por un gateway y comparte la cuota de una sola IP: es
+configuración del limitador, no saturación. Lo cubre el manual de configuración
+de la entrega.
 </Callout>

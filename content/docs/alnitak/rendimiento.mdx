@@ -57,12 +57,13 @@ presupuesto:  400 ms
    latencia, pero **no cubre rostros múltiples, encuadres difíciles ni
    detecciones fallidas**. Las 18.000 peticiones devolvieron exactamente un
    rostro.
-2. **Es la cadena directa** generador → motor de vectorización → Elasticsearch.
-   La sobrecarga de la capa de orquestación —pequeña, en Go— **no está medida**
+2. **Es la cadena directa** generador → motor de vectorización → almacén
+   vectorial.
+   La sobrecarga de la capa de orquestación —pequeña— **no está medida**
    en esta corrida.
 3. **El 87 % del coste es la GPU** (52,046 de 60,022 ms). Si el tráfico real
    lleva imágenes más pesadas o con varias caras, ese lado crece.
-   Elasticsearch tiene margen de sobra.
+   La búsqueda tiene margen de sobra.
 </Callout>
 
 ### Desglose por etapa
@@ -89,7 +90,7 @@ Se listan para que no se confundan con la cifra buena:
 | Cifra | Qué es | ¿Es el compromiso? |
 |---:|---|:---:|
 | **60,022 ms** | p99 end-to-end a 60 rps, imagen → candidatos | **Sí** |
-| 9,555 ms | solo la búsqueda en Elasticsearch, sin vectorizar | No |
+| 9,555 ms | solo la búsqueda vectorial, sin vectorizar | No |
 | 9,744 ms | p99 de búsqueda a 120 rps | No |
 | ~5.000 ms | **primera** consulta tras preparar el índice, con caché vacía | No |
 | 51,4 / 57,1 / 51,7 ms | end-to-end a 10 / 20 / 40 rps | Válidas, pero el compromiso se mide a 60 |
@@ -104,9 +105,9 @@ Se listan para que no se confundan con la cifra buena:
 | Motor de vectorización, punto de mínima latencia | 238 rps | p95 29 ms |
 
 Ambos escenarios se midieron **con una sola GPU A10 y una sola réplica del
-servicio**, y en ninguno se alcanzó el punto de colapso. Con 50 M, Elasticsearch
-trabajó al **8–12 % de CPU y con 0 rechazos** en sus thread pools: no se llegó a
-saturación en ningún nivel.
+servicio**, y en ninguno se alcanzó el punto de colapso. Con 50 M, el almacén
+vectorial trabajó al **8–12 % de CPU y con 0 peticiones rechazadas**: no se
+llegó a saturación en ningún nivel.
 
 Corolario de dimensionado: **una única GPU cubre casi seis veces el mínimo
 exigido**. El número de GPU se elige por redundancia y margen de crecimiento,
@@ -146,7 +147,7 @@ sextuplicar la carga**: p99 de 10,17 ms a 10 rps y 9,56 ms a 60 rps.
 | Para crecer en… | Se agrega |
 |---|---|
 | Tráfico | Réplicas de vectorización (GPU) |
-| Galería | Nodos de datos de Elasticsearch |
+| Galería | Nodos de datos del almacén vectorial |
 
 ## Arranque en frío
 
@@ -195,6 +196,6 @@ etiquetado del cliente, como parte de la puesta en marcha.
 | Componente | Propuesta | Base |
 |---|---|---|
 | Vectorización | 2 × GPU NVIDIA A10 (24 GB VRAM) tras balanceador | Toda la evidencia se midió con una sola GPU |
-| Elasticsearch — datos | 3 nodos: 16 vCPU, 100 GB RAM (heap 16 GB), ≥ 400 GB NVMe, hosts físicos distintos | Configuración exacta de la corrida: p99 9,74 ms a 120 rps con 8–12 % de CPU |
-| Elasticsearch — maestros | 3 nodos dedicados: 4 GB RAM (heap 2 GB) | Quórum separado de la ruta de datos |
-| API orquestadora | 2+ réplicas sin estado tras balanceador | Servicio Go ligero |
+| Almacén vectorial — nodos de datos | 3 nodos: 16 vCPU, 100 GB RAM, ≥ 400 GB NVMe, hosts físicos distintos | Configuración exacta de la corrida: p99 9,74 ms a 120 rps con 8–12 % de CPU |
+| Almacén vectorial — nodos de coordinación | 3 nodos dedicados, 4 GB RAM | Quórum separado de la ruta de datos |
+| API orquestadora | 2+ réplicas sin estado tras balanceador | Servicio ligero, sin estado |
