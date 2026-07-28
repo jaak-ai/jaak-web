@@ -1,0 +1,201 @@
+---
+title: Seguridad y cumplimiento
+description: Credenciales, scopes, custodia cifrada de la biometría, auditoría encadenada, retención y requisitos de infraestructura de JAAK Alnitak.
+category: concepto
+order: 12
+unlisted: true
+---
+
+Controles de seguridad de **JAAK Alnitak** y qué debe aportar la
+infraestructura del cliente para que operen de extremo a extremo.
+
+## Límites de confianza
+
+API, vectorizador, Elasticsearch, operadores y clientes son **límites de
+confianza distintos**. La autenticación no sustituye al aislamiento de red, a
+la autorización por tenant ni a los controles del propio Elasticsearch.
+
+`/healthz` y `/readyz` quedan sin autenticación, y por eso no exponen
+configuración, credenciales ni detalles internos.
+
+## Autenticación por tipo de consumidor
+
+### Personas — consola de operación
+
+- **SSO** con el proveedor de identidad corporativo.
+- Sesión con token firmado **RS256** en cookie `httpOnly`, `Secure`,
+  `SameSite=Lax`.
+- **Dominio de correo restringido por configuración**: solo cuentas del dominio
+  autorizado pueden entrar.
+
+<Callout type="danger" title="Confusión de algoritmo JWT">
+El verificador está **fijado exclusivamente a RS256**, con la clave pública
+seleccionada por `kid`. Rechaza `none`, `HS256` y claves ambiguas. Sin esa
+fijación, un atacante podría forjar un token usando material público como
+secreto simétrico. `iss`, `aud`, `exp` y `nbf` son obligatorios.
+</Callout>
+
+### Integraciones de servicio — canales del cliente
+
+- **API key de servicio** con formato `alnilam_<keyID>_<secreto>`, secreto
+  aleatorio de 32 bytes, enviada en la cabecera `X-API-Key`.
+- **El secreto nunca se persiste**: se guarda únicamente su **HMAC-SHA256 con
+  un pepper de servidor** (mínimo 32 bytes) custodiado en el gestor de
+  secretos.
+- Verificación con **comparación en tiempo constante**, para no filtrar
+  información por tiempos de respuesta.
+
+<Callout type="warning" title="El secreto se muestra una sola vez">
+Al generar una credencial, el secreto en claro se entrega una única vez y no
+puede recuperarse después. Si se pierde, se revoca la credencial y se emite
+otra.
+</Callout>
+
+## Autorización por scopes
+
+Cada credencial se limita a las operaciones que necesita:
+
+| Scope | Alcance |
+|---|---|
+| `identify` | Consulta 1:N |
+| `enroll` | Alta en galería |
+| `read:metrics` | Métricas, estadísticas de galería, nodos, alertas |
+| `read:events` | Eventos y flujo en vivo |
+| `admin:gallery` | Re-embedding y conmutación de alias |
+
+Una credencial de solo consulta **no puede dar altas ni tocar la galería**. El
+re-embedding y el swap de alias reescriben o sustituyen la galería completa: se
+separan en su propio scope y exigen separación de funciones.
+
+<Callout type="warning" title="Tenant y canal vienen de la credencial, nunca de la petición">
+Se derivan **exclusivamente** de la credencial validada y se propagan al
+contexto de la petición para filtrado por tenant y auditoría. No se aceptan
+como parámetro para autorizar ni para filtrar datos, porque eso permitiría
+cruzar entre organizaciones enviando otro valor.
+</Callout>
+
+## Custodia de la biometría
+
+| Dato | Tratamiento |
+|---|---|
+| **Imagen de consulta** | Se procesa **en memoria y no se persiste** en ninguna etapa. |
+| **Vector de consulta** | Transitorio: vive solo durante la atención de la solicitud. |
+| **Recortes faciales alineados** | Cifrados en reposo con **AES-256-GCM** en almacenamiento de objetos, **fuera del índice de búsqueda**. |
+| **Galería vectorial** | En Elasticsearch, no público, con credencial de mínimo privilegio y TLS. |
+
+Cada recorte se cifra con **nonce aleatorio único** por objeto y versión de
+clave, y el identificador biométrico como **dato asociado autenticado (AAD)**.
+La etiqueta GCM se verifica antes de descifrar o re-vectorizar: eso impide
+asociar otro rostro a un identificador existente sustituyendo el objeto.
+
+La clave maestra vive en el gestor de secretos (Vault/HSM), versionada, con
+identidad de workload, permisos mínimos, rotación ensayada y auditoría de
+acceso. **Nunca se almacena junto al objeto cifrado.**
+
+**Rotar la clave de cifrado no obliga a re-vectorizar la galería**: son planos
+independientes.
+
+## Auditoría
+
+Registro **append-only** de cada consulta y cada alta:
+
+| Campo | |
+|---|---|
+| Identificador de operación | El `query_id` que devuelve la API |
+| Tenant y canal | Derivados de la credencial |
+| Huella **SHA-256 de la imagen** | No la imagen |
+| Veredicto y score máximo | |
+| Latencia | |
+| Actor técnico opaco | |
+| Sello de tiempo UTC | |
+
+- **Encadenamiento por hash:** cada evento incorpora el hash del anterior
+  (`prev_hash`). Cualquier alteración o borrado **rompe la cadena**, y un
+  verificador permite comprobar la integridad completa del registro en
+  cualquier momento.
+- **Minimización:** la auditoría **nunca** persiste imágenes, vectores ni datos
+  personales. Solo huellas y metadatos de la operación.
+- **Operaciones privilegiadas:** el re-embedding y el swap de alias también se
+  auditan, con actor e índices de origen y destino.
+- Las consultas lanzadas desde la consola tienen exactamente la misma
+  trazabilidad que las de los canales automatizados.
+
+## Amenazas cubiertas
+
+| Amenaza | Controles |
+|---|---|
+| Suplantación de cliente | API keys aleatorias con HMAC-SHA256 y pepper; JWT RS256 con `iss`/`aud`/`exp`/`nbf`; scopes por operación; tenant y canal derivados de credencial |
+| Inyección o sustitución de imagen | MIME y tamaño validados, decodificación segura, límites de tiempo, umbrales de calidad y vivacidad, una sola imagen por petición |
+| Abuso de consulta 1:N (enumeración de galería) | Scope `identify`, rate limit por cliente/IP, Top-N acotado, alertas de volumen, auditoría por consulta y respuesta mínima |
+| Alta fraudulenta | Scope `enroll`, comprobación 1:N previa, revisión de coincidencias, separación operativa entre identificar y dar de alta |
+| Exfiltración de galería u objetos | Elasticsearch y buckets no públicos, cifrado de recortes, TLS/mTLS, RBAC, credenciales de mínimo privilegio, respaldos cifrados y egress restringido |
+| Sustitución de recorte o reutilización de nonce | Nonce único por objeto y versión de clave, identificador biométrico como AAD, etiqueta GCM verificada antes de descifrar |
+| Cruce entre tenants | Filtro obligatorio por tenant desde la credencial, control de acceso por índice/alias, pruebas de aislamiento |
+| Re-embedding o swap no autorizado | Scope `admin:gallery`, separación de funciones, auditoría encadenada |
+| Manipulación de auditoría | JSONL append-only, permisos restrictivos, `prev_hash`, verificación periódica, copia remota WORM y alertas ante ruptura |
+| Fuga por logs o errores | Errores genéricos, logs estructurados con lista de permitidos, redacción de cabeceras, prohibición de registrar tokens y API keys |
+
+## Retención y borrado
+
+- Política de retención por plazo definido según la finalidad del tratamiento,
+  acordada con el cliente.
+- **Borrado por segmentos completos con acta de destrucción.**
+- Los respaldos respetan el mismo plazo que el dato en línea: un dato eliminado
+  no sobrevive en los backups más allá del plazo.
+
+## Cumplimiento normativo
+
+<Callout type="info" title="Qué aporta la solución y qué no">
+En un despliegue on-premise, la solución **aporta los controles técnicos que
+facilitan el cumplimiento** de los marcos aplicables. **No constituye por sí
+misma una certificación**: el cumplimiento formal depende también de los
+procesos y políticas del cliente.
+</Callout>
+
+**LFPDPPP** (datos personales sensibles / biométricos):
+
+- **Finalidad y minimización:** la imagen de consulta no se persiste; la
+  auditoría no guarda datos personales.
+- **Medidas de seguridad:** AES-256-GCM en reposo, TLS en tránsito, claves en
+  gestor de secretos, autenticación y autorización por scopes.
+- **Derechos ARCO:** el identificador biométrico opaco y el borrado por
+  segmentos con acta facilitan atender solicitudes de acceso, rectificación,
+  cancelación y oposición.
+- **Consentimiento y aviso de privacidad:** proceso del cliente, habilitado por
+  la trazabilidad que el sistema provee.
+
+**NOM-151** (conservación e integridad de datos):
+
+- Cadena de hash de la auditoría como mecanismo de detección de alteraciones.
+- Sellos de tiempo UTC en cada evento.
+- Custodia documentada y verificador de cadena para exhibir la integridad del
+  registro ante terceros.
+
+## Requisitos del lado del cliente
+
+Para que estos controles operen de extremo a extremo, la infraestructura del
+cliente debe proveer:
+
+- **Segmentación de red** que aísle el clúster de Elasticsearch, el
+  vectorizador y el almacén de objetos.
+- **TLS/mTLS** en todas las comunicaciones entre componentes.
+- **Discos y respaldos cifrados.**
+- **Gestor de secretos** (Vault/HSM) para la clave maestra y los peppers.
+- **Sincronización NTP** en todos los nodos — la validez de los sellos de
+  tiempo de la auditoría depende de ella.
+- **Envío de la auditoría a un SIEM** o almacenamiento WORM corporativo.
+- **Políticas de retención y borrado documentadas** por la organización.
+
+## Lista de verificación antes de producción
+
+| Comprobación | Cómo |
+|---|---|
+| La API **no** está en modo desarrollo | Una petición a `/api/v1/identify` sin credencial devuelve `401` |
+| `insecure_skip_verify` desactivado | `false` en configuración; el arranque no emite el aviso correspondiente |
+| Secretos fuera del fichero y de la imagen | Todos por variable de entorno desde el gestor de secretos |
+| Pepper de al menos 32 bytes | El arranque falla si no lo cumple |
+| Clave de recortes configurada | Sin ella no hay custodia y un cambio de modelo obligaría a recapturar |
+| Credencial de Elasticsearch de mínimo privilegio | API key acotada al índice, con caducidad |
+| Rate limit ajustado al dimensionado | Con `trusted_proxies` si hay gateway delante |
+| Auditoría replicándose a WORM/SIEM | Verificar que llegan eventos |
+| Cadena de auditoría íntegra | Ejecutar el verificador |

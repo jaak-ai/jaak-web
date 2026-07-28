@@ -1,0 +1,127 @@
+---
+title: Operación
+description: Consola de operación, observabilidad, alertas, escalado y disponibilidad del día a día de JAAK Alnitak.
+category: guia
+order: 8
+unlisted: true
+---
+
+Qué ve y qué hace el equipo de operación de **JAAK Alnitak** en el día a día.
+
+## Consola de operación
+
+Aplicación web de acceso restringido por SSO corporativo, con dos áreas:
+**Datos y operación** (salud del servicio frente al SLA) y **Búsqueda 1:N**
+(consulta manual, flujo en vivo y trazabilidad por consulta).
+
+La guía pantalla por pantalla, con capturas, está en
+[Consola de operación](/docs/alnitak/consola).
+
+<Callout type="warning" title="La consola no es una vía lateral">
+Toda consulta lanzada desde la consola queda en la **misma auditoría encadenada
+por hash** que las consultas automatizadas de los canales: quién consultó,
+cuándo, con qué veredicto y con qué huella de imagen. No hay operación manual
+sin rastro.
+</Callout>
+
+## Observabilidad
+
+| Capa | Mecanismo |
+|---|---|
+| Salud y disponibilidad | `GET /healthz` (proceso vivo) y `GET /readyz` (listo para tráfico), usadas por balanceador y orquestador. |
+| Métricas | `GET /metrics` en formato Prometheus: p50/p95/p99 **por etapa del pipeline**, throughput, veredictos (coincidencia, revisión, sin coincidencia), vectores indexados y número de segmentos del índice. |
+| Consola | KPIs contra el SLA en vivo, alertas del turno y trazabilidad por consulta. |
+| Grafana | Dashboard dedicado al clúster de búsqueda, con definición JSON versionada para desplegar en el Grafana del cliente. |
+| Verificación | Guion de humo de 10 comprobaciones para validar un despliegue en minutos, y arnés de carga con veredicto automático CUMPLE / NO CUMPLE. |
+
+### Dashboard de Elasticsearch
+
+El dashboard de Grafana entregado cubre estado del clúster y shards, tasa y
+latencia de búsqueda, **saturación de los pools de búsqueda (colas y
+rechazos)**, indexación, JVM/GC, y CPU y disco por nodo. Se alimenta de
+Prometheus y del exporter oficial de Elasticsearch.
+
+### Qué vigilar, por orden de importancia
+
+| Señal | Umbral de atención | Por qué importa |
+|---|---|---|
+| `slack_ms` negativo o p95 acercándose a 400 ms | Cualquier aparición | Es el SLA incumpliéndose consulta a consulta. |
+| **Número de segmentos del índice** | Crecimiento sostenido | Una kNN recorre el grafo HNSW de cada segmento. Un índice sin fusionar multiplica la latencia. |
+| Rechazos en los thread pools de búsqueda | > 0 | Saturación real del clúster. |
+| Lecturas a disco en la ruta de búsqueda | Cualquiera sostenida | El conjunto caliente dejó de caber en memoria. Rompe el presupuesto de latencia. |
+| Tasa de `503 vectorizer_unavailable` | > 0 sostenido | GPU caída o saturada. |
+| Tasa de `429` | > 0 con el servicio ocioso | Casi siempre configuración de `trusted_proxies`, no carga. |
+| Altas rechazadas por duplicado | Pico anómalo | Puede ser fraude o un canal reenviando. |
+| Imágenes rechazadas por baja calidad | Pico anómalo | Suele indicar un problema de captura en un canal concreto. |
+
+## Los tres factores que deciden el SLA
+
+Casi todo incumplimiento de latencia en producción se explica por uno de estos
+tres, y ninguno es un problema de código:
+
+1. **Número de segmentos.** Ejecuta
+   `POST /galeria_biometrica_v1/_forcemerge?max_num_segments=1` después de cada
+   carga masiva. El servicio expone el número de segmentos como métrica
+   precisamente para detectar un índice sin fusionar.
+2. **El índice se sirve desde memoria, sin lecturas a disco.** El conjunto
+   caliente (~30 GB por copia con 50 M de vectores) debe caber en heap más
+   caché de páginas. El NVMe es para persistencia y recuperación, no para
+   servir consultas. **Corolario medido: un solo índice caliente por clúster** —
+   con dos índices compitiendo por caché, el p50 observado se degradó de 7 a
+   184 ms.
+3. **`num_candidates`.** Palanca entre recall y latencia. Se calibra una vez en
+   la validación del despliegue y se deja fijo.
+
+## Disponibilidad
+
+**Objetivo de diseño y operación: 99.9 % – 99.95 % mensual.** Es un objetivo,
+no una cifra medida: la medición comienza con la operación del servicio en cada
+ambiente, y `/metrics/summary` devuelve `availability_30d` nulo hasta tener
+ventana suficiente.
+
+Se sostiene con redundancia en cada capa:
+
+| Capa | Redundancia |
+|---|---|
+| Elasticsearch | 2 réplicas por shard: la pérdida de un nodo no interrumpe consultas ni compromete la galería. |
+| API | Sin estado, escalado horizontal: cualquier réplica atiende cualquier consulta. |
+| Vectorizador | Réplicas tras balanceador: perder una reduce capacidad, no disponibilidad. |
+
+## Escalado
+
+| Componente | Cómo escala |
+|---|---|
+| API orquestadora | Agregar réplicas tras el balanceador. |
+| Elasticsearch | Agregar nodos de datos y reequilibrar shards. Las réplicas existentes ya reparten la lectura kNN. |
+| Vectorizador | Agregar réplicas o GPU. El throughput crece de forma casi lineal con el batching. |
+
+**Ley de escalamiento medida:** el 87 % del coste de una consulta es la GPU, y
+la búsqueda no se degrada al sextuplicar la carga (p99 de 10,17 a 9,56 ms de 10
+a 60 rps). Por tanto:
+
+- Para crecer en **tráfico**, se agregan réplicas de vectorización.
+- Para crecer en **galería**, se agregan nodos de datos.
+
+El punto de saturación es la vectorización. Una sola GPU A10 sostiene 291
+vectorizaciones por segundo y la cadena completa 361 peticiones por segundo,
+casi seis veces el mínimo de 60 rps. El dimensionado base contempla 2 GPU:
+**la segunda no hace falta para el rendimiento contratado**, es redundancia
+ante la caída de una tarjeta y margen de crecimiento.
+
+## Guardia y soporte 24/7
+
+La telemetría por etapa, las alertas de la consola y la auditoría encadenada
+permiten que un operador de guardia vea en vivo **qué etapa se degrada, qué
+veredictos cambian y qué consultas fallan**, sin depender de un promedio
+diario.
+
+Bolsa de horas, tiempos de respuesta por severidad y canales de atención son
+materia del acuerdo de servicio.
+
+## Actualizaciones
+
+JAAK entrega versiones con tag semántico y promoción por ambientes
+(desarrollo → calidad → staging → producción). **Nada llega a producción sin
+haber pasado por los ambientes previos**, y la cadena de tags es la evidencia
+de qué versión se validó dónde. Los hotfix siguen la misma cadena: no se
+construyen imágenes fuera del pipeline.

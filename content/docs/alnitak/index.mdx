@@ -1,0 +1,87 @@
+---
+title: JAAK Alnitak — Identificación facial 1:N
+description: Manual de cliente del microservicio de identificación biométrica 1:N de JAAK — arquitectura, instalación, configuración, API, operación y mantenimiento.
+category: guia
+order: 1
+unlisted: true
+---
+
+**JAAK Alnitak** identifica a una persona a partir de una fotografía facial,
+comparándola contra una galería de **más de 50 millones de vectores** y
+devolviendo una lista Top-N ordenada por score junto con un veredicto de tres
+estados, dentro de un presupuesto de **400 ms extremo a extremo con
+vectorización incluida**.
+
+Esta documentación está dirigida al equipo técnico y de operación del cliente:
+cómo se instala, cómo se configura, cómo se consume y cómo se opera el día a
+día del servicio.
+
+<Callout type="info" title="Documentación de despliegue dedicado">
+Alnitak se entrega **on-premise en la infraestructura del cliente** (o sobre
+nube privada, con la misma arquitectura). No es un servicio multiinquilino
+público: no hay endpoint compartido ni alta autoservicio. El acceso a esta
+documentación se comparte por enlace directo con los equipos del proyecto.
+</Callout>
+
+## Qué resuelve
+
+| Caso de uso | Operación |
+|---|---|
+| **Identificar** a una persona desconocida contra toda la galería | `POST /api/v1/identify` — búsqueda 1:N, devuelve Top-N con score y veredicto |
+| **Dar de alta** una identidad nueva, sin admitir duplicados | `POST /api/v1/enroll` — ejecuta una 1:N previa y rechaza el alta si el rostro ya existe |
+| **Vigilar** el cumplimiento del SLA consulta a consulta | Consola de operación + métricas Prometheus + desglose de latencia por etapa en cada respuesta |
+| **Auditar** quién consultó qué y cuándo | Auditoría encadenada por hash, con actor, veredicto y huella de imagen |
+
+## Los dos motores
+
+La solución encadena dos componentes propios de JAAK:
+
+| Componente | Rol |
+|---|---|
+| **Motor de tokenización facial** (`alnitak`) | Detecta el rostro, lo alinea y produce el vector de **512 dimensiones** L2-normalizado. Implementado en Rust sobre ONNX Runtime con aceleración GPU. |
+| **API de orquestación y galería** (`alnilam`) | Punto de entrada de todos los canales. Autentica, valida la imagen, orquesta el pipeline, aplica el veredicto, registra la auditoría y expone las métricas. Servicio Go sin estado. Se apoya en Elasticsearch como almacén vectorial. |
+
+Se suma la **consola de operación** (Angular), interfaz web para operadores
+autorizados con acceso por SSO corporativo.
+
+<Callout type="warning" title="Sobre los nombres internos">
+`alnitak` y `alnilam` son los nombres de los dos componentes del sistema. Los
+verás aparecer literalmente en nombres de imagen, variables de entorno
+(`ALNILAM_*`) y claves de configuración. La documentación usa **JAAK Alnitak**
+para referirse a la solución completa.
+</Callout>
+
+## Mapa de esta documentación
+
+| Documento | Para quién | Qué contiene |
+|---|---|---|
+| [Arquitectura](/docs/alnitak/arquitectura) | Arquitectura, seguridad | Pipeline de una consulta, score y veredicto, decisiones de diseño |
+| [Galería, vectores e índice](/docs/alnitak/galeria) | Arquitectura, datos | Qué es un vector, esquema del documento, índice HNSW cuantificado, ciclo de vida del dato |
+| [Instalación](/docs/alnitak/instalacion) | Infraestructura, DevOps | Requisitos, entorno local, despliegue on-premise, creación de la galería, verificación |
+| [Configuración](/docs/alnitak/configuracion) | Infraestructura, DevOps | Referencia completa de `config.yaml` y variables de entorno |
+| [API](/docs/alnitak/api) | Integradores | Autenticación, endpoints, esquemas de petición y respuesta, códigos de error |
+| [Consola de operación](/docs/alnitak/consola) | Operación, analistas | Guía de la interfaz web, pantalla por pantalla |
+| [Operación](/docs/alnitak/operacion) | Operación, guardia | Observabilidad, qué vigilar, alertas, escalado, disponibilidad |
+| [Mantenimiento](/docs/alnitak/mantenimiento) | Operación, DBA | Migración de galería, cambio de modelo y re-vectorización, respaldos |
+| [Actualizaciones](/docs/alnitak/actualizaciones) | Infraestructura, DevOps | Versionado, promoción por ambientes, procedimiento de actualización y rollback |
+| [Rendimiento y SLA](/docs/alnitak/rendimiento) | Arquitectura, compras | Compromisos, cifras medidas y su contexto, dimensionado |
+| [Seguridad](/docs/alnitak/seguridad) | Seguridad, cumplimiento | Credenciales, scopes, auditoría, custodia de biometría |
+| [Solución de problemas](/docs/alnitak/solucion-de-problemas) | Todos | Síntomas frecuentes y su causa |
+
+## Compromisos del servicio
+
+| Compromiso | Valor |
+|---|---|
+| Latencia extremo a extremo (vectorización incluida) | ≤ **400 ms** |
+| Caudal sostenido | ≥ **60 peticiones/segundo** |
+| Tamaño de galería | > **50 millones** de vectores de 512 dimensiones |
+| Disponibilidad mensual (objetivo de diseño) | **99.9 % – 99.95 %** |
+
+Las cifras medidas que respaldan los tres primeros, con su corpus y entorno de
+medición, están en [Rendimiento y SLA](/docs/alnitak/rendimiento).
+
+## Soporte
+
+Para incidencias, altas de credenciales o dudas de integración, contacta con el
+equipo de JAAK asignado al proyecto por los canales acordados en el contrato de
+servicio.

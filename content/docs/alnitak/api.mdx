@@ -1,0 +1,300 @@
+---
+title: Referencia de API
+description: Endpoints, autenticación, esquemas de petición y respuesta y códigos de error de la API v1 de JAAK Alnitak.
+category: api
+order: 6
+unlisted: true
+---
+
+Referencia de la **API v1** de JAAK Alnitak. Todos los endpoints de negocio
+cuelgan de `/api/v1` y exigen credencial; las sondas y las métricas no.
+
+La URL base es la de tu despliegue: no hay endpoint compartido.
+
+## Autenticación
+
+Tres credenciales, todas aceptadas por el mismo middleware:
+
+| Consumidor | Credencial | Transporte |
+|---|---|---|
+| Integraciones de servicio | API key de servicio `alnilam_<keyID>_<secreto>` | Cabecera `X-API-Key` |
+| Consola de operación (operador humano) | JWT **RS256** emitido tras el SSO | Cookie httpOnly `alnilam_session` o `Authorization: Bearer` |
+| Servidor MCP | API key de servicio | Cabecera `X-API-Key` |
+
+De la credencial se resuelven **`tenant`, `canal`, `actor` y `scopes`**, que se
+usan para autorización, filtrado por tenant y auditoría.
+
+<Callout type="warning" title="El tenant nunca viaja en la petición">
+Tenant y canal se derivan **exclusivamente de la credencial validada**. No se
+aceptan como parámetro para autorizar ni para filtrar datos. Enviar un `tenant`
+en el cuerpo no cambia nada.
+</Callout>
+
+Los fallos de credencial responden `401` o `403` **sin revelar el motivo**: el
+mismo mensaje para clave desconocida, mal formada o inválida.
+
+### Scopes
+
+| Scope | Permite |
+|---|---|
+| `identify` | `POST /api/v1/identify` |
+| `enroll` | `POST /api/v1/enroll` |
+| `read:metrics` | Métricas, estadísticas de galería, nodos, alertas |
+| `read:events` | Eventos recientes, detalle de evento, flujo en vivo |
+| `admin:gallery` | Re-embedding y conmutación de alias |
+
+---
+
+## Identificación 1:N
+
+<Endpoint
+  method="POST"
+  path="/api/v1/identify"
+  description="Busca un rostro contra toda la galería y devuelve la lista Top-N con veredicto"
+  auth="api-key"
+/>
+
+Acepta `multipart/form-data` (campo de fichero) o `application/json` con la
+imagen en base64.
+
+<ParamsTable
+  title="Cuerpo (application/json)"
+  params={[
+    { name: "image_base64", type: "string", required: true, description: "Imagen facial codificada en base64. Tamaño máximo configurable, 4 MiB por defecto." },
+    { name: "top_n", type: "integer", required: false, default: "10", description: "Tamaño de la lista de candidatos devuelta." },
+    { name: "num_candidates", type: "integer", required: false, default: "800", description: "Candidatos explorados por shard antes de fusionar. Palanca entre recall y latencia." },
+    { name: "threshold", type: "number", required: false, default: "0.82", description: "Umbral t del veredicto de tres estados, en escala de coseno normalizado [0,1]." },
+    { name: "channel", type: "string", required: false, description: "Canal de origen, para trazabilidad." }
+  ]}
+/>
+
+### Ejemplo de solicitud
+
+```bash
+curl -X POST https://alnitak.interno/api/v1/identify \
+  -H "X-API-Key: $ALNITAK_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "image_base64": "/9j/4AAQSkZJRgABAQ...",
+    "top_n": 5,
+    "threshold": 0.82
+  }'
+```
+
+### Respuesta (200 OK)
+
+```json
+{
+  "query_id": "q_01J8XK2M4T9F",
+  "took_ms": 41,
+  "vectorization_ms": 28,
+  "threshold": 0.82,
+  "top_n": 5,
+  "num_candidates": 800,
+  "scanned": 4000,
+  "quality": { "icao": 0.91, "liveness": 0.97 },
+  "candidates": [
+    {
+      "rank": 1,
+      "biometric_id": "bio_8f21c0",
+      "record": "EXP-2026-00412",
+      "score": 0.913,
+      "shard": "3",
+      "verdict": "match"
+    }
+  ],
+  "stages": [
+    { "name": "decode",        "ms": 0 },
+    { "name": "detect_align",  "ms": 12 },
+    { "name": "vectorize",     "ms": 16 },
+    { "name": "knn_search",    "ms": 9 },
+    { "name": "resolve",       "ms": 4 }
+  ],
+  "slack_ms": 359,
+  "elasticsearch": {
+    "index": "galeria_biometrica",
+    "total": 50000000,
+    "max_score": 0.913,
+    "shards": { "successful": 5, "failed": 0 },
+    "timed_out": false,
+    "query": "{\"knn\":{...}}"
+  },
+  "multi_face": false,
+  "model_version": "<modelo-activo>"
+}
+```
+
+### Campos de la respuesta
+
+| Campo | Qué es |
+|---|---|
+| `query_id` | Identificador de la consulta. Es la clave para buscarla en la auditoría y en `/events/{id}`. |
+| `took_ms` | Tiempo total extremo a extremo, medido con un solo reloj. |
+| `stages[]` | Milisegundos reales de cada etapa del pipeline en **esta** consulta. |
+| `slack_ms` | Holgura frente al presupuesto: `latency_ms − took_ms`. Negativo significa SLA incumplido en esa consulta. |
+| `scanned` | Candidatos efectivamente explorados. |
+| `quality` | Puntuaciones ICAO y de vivacidad, en [0, 1]. |
+| `candidates[].score` | Similitud coseno **normalizada a [0, 1]**, en la misma escala que `threshold`. |
+| `candidates[].verdict` | `match`, `review` o `no_match`. |
+| `elasticsearch.query` | La consulta kNN literal enviada al índice. Hace cada resultado reproducible y auditable. |
+| `multi_face` | `true` si la imagen tenía varios rostros: se resolvió con el mayor y la consulta queda marcada. |
+| `model_version` | Modelo de vectorización con el que se resolvió. |
+
+---
+
+## Alta en galería
+
+<Endpoint
+  method="POST"
+  path="/api/v1/enroll"
+  description="Da de alta una identidad, con control antiduplicado previo"
+  auth="api-key"
+/>
+
+Mismos formatos de entrada que `/identify`, más el campo `record`.
+
+<ParamsTable
+  title="Cuerpo (application/json)"
+  params={[
+    { name: "image_base64", type: "string", required: true, description: "Imagen facial en base64." },
+    { name: "record", type: "string", required: true, description: "Expediente o identificador de negocio que se asocia al rostro." },
+    { name: "channel", type: "string", required: false, description: "Canal de origen." },
+    { name: "threshold", type: "number", required: false, default: "0.82", description: "Umbral de la comprobación antiduplicado previa." }
+  ]}
+/>
+
+### Respuesta (201 Created)
+
+```json
+{
+  "biometric_id": "bio_8f21c0",
+  "record": "EXP-2026-00412",
+  "channel": "web",
+  "took_ms": 44,
+  "quality": { "icao": 0.93, "liveness": 0.98 },
+  "verdict": "no_match",
+  "candidates": [],
+  "model_version": "<modelo-activo>"
+}
+```
+
+El `verdict` de un alta correcta es `no_match`: es el resultado de la búsqueda
+1:N previa, y confirma que el rostro no estaba ya en la galería.
+
+### Alta rechazada por duplicado (409)
+
+```json
+{
+  "error": {
+    "code": "duplicate_or_fraud",
+    "message": "el rostro ya existe en la galería",
+    "details": {}
+  },
+  "candidates": [
+    { "rank": 1, "biometric_id": "bio_1a77de", "record": "EXP-2025-00981", "score": 0.958, "shard": "1", "verdict": "match" }
+  ]
+}
+```
+
+Es el único caso en que un error incluye `candidates`: son los que provocaron
+el rechazo, para que un operador pueda resolverlo.
+
+---
+
+## Galería
+
+<Endpoint method="GET" path="/api/v1/gallery/stats" description="Estado del índice: vectores, memoria, shards, parámetros HNSW" auth="api-key" />
+
+```json
+{
+  "vectors": 50000000,
+  "dims": 512,
+  "similarity": "cosine",
+  "quantization": "int8_hnsw",
+  "index_ram_bytes": 32212254720,
+  "unquantized_ram_bytes": 109951162778,
+  "shards": 5,
+  "replicas": 2,
+  "hnsw": { "m": 16, "ef_construction": 100 },
+  "model_version": "<modelo-activo>"
+}
+```
+
+Requiere `read:metrics`.
+
+<Endpoint method="POST" path="/api/v1/gallery/reembed" description="Arranca la re-vectorización de la galería con un modelo nuevo" auth="api-key" />
+<Endpoint method="GET" path="/api/v1/gallery/reembed/{id}" description="Progreso del trabajo de re-vectorización" auth="api-key" />
+<Endpoint method="POST" path="/api/v1/gallery/alias" description="Conmuta el alias de la galería al índice nuevo" auth="api-key" />
+
+Los tres requieren `admin:gallery`. Procedimiento completo en
+[Mantenimiento](/docs/alnitak/mantenimiento).
+
+---
+
+## Métricas y eventos
+
+| Método | Ruta | Scope | Devuelve |
+|---|---|---|---|
+| `GET` | `/api/v1/metrics/summary` | `read:metrics` | p50, p95, p99, rps, uso de GPU, disponibilidad 30 d, consultas del día y el SLA configurado |
+| `GET` | `/api/v1/metrics/history` | `read:metrics` | Serie temporal de rps y p95 por bucket |
+| `GET` | `/api/v1/metrics/stages` | `read:metrics` | Presupuesto por etapa, total y holgura |
+| `GET` | `/api/v1/events/recent` | `read:events` | Últimas consultas atendidas |
+| `GET` | `/api/v1/events/{id}` | `read:events` | Detalle completo de una consulta |
+| `GET` | `/api/v1/stream/events` | `read:events` | Flujo en vivo de consultas (SSE) |
+| `GET` | `/api/v1/infra/nodes` | `read:metrics` | Carga y estado por nodo del clúster |
+| `GET` | `/api/v1/alerts/summary` | `read:metrics` | Alertas del turno |
+
+<Callout type="info" title="Campos nulos cuando aún no hay observación">
+En `/metrics/summary`, `gpu_use`, `availability_30d` y `downtime_minutes_30d`
+son **nulos** mientras no haya ventana suficiente de observación;
+`observed_since` marca el inicio de la ventana. El servicio no inventa una
+disponibilidad que todavía no ha medido.
+</Callout>
+
+---
+
+## Sondas y métricas de plataforma
+
+| Método | Ruta | Auth | Para qué |
+|---|---|---|---|
+| `GET` | `/healthz` | No | Liveness: el proceso está vivo |
+| `GET` | `/readyz` | No | Readiness: listo para atender tráfico |
+| `GET` | `/metrics` | No | Métricas en formato Prometheus |
+
+Ninguna expone configuración, credenciales ni detalles internos.
+
+---
+
+## Formato de error
+
+Todos los errores comparten el mismo sobre:
+
+```json
+{
+  "error": {
+    "code": "low_quality",
+    "message": "la imagen no supera el umbral de calidad",
+    "details": {}
+  }
+}
+```
+
+| Código | HTTP | Causa | Qué hacer |
+|---|---|---|---|
+| `invalid_image` | `400` | Formato no soportado, imagen corrupta o por encima del tamaño máximo | Revisar formato y tamaño antes de enviar |
+| `low_quality` | `422` | Sin rostro detectable, o calidad/vivacidad por debajo del umbral | Recapturar con mejor iluminación y encuadre |
+| `unauthorized` | `401` | Credencial ausente, desconocida, mal formada o inválida | Revisar la credencial |
+| `forbidden` | `403` | Credencial válida sin el scope requerido | Solicitar el scope |
+| `not_found` | `404` | Recurso inexistente | — |
+| `duplicate_or_fraud` | `409` | El rostro ya está en la galería (solo en alta) | Resolver el expediente duplicado |
+| `rate_limited` | `429` | Superado el límite por IP y ventana | Reducir la tasa, o revisar `trusted_proxies` |
+| `vectorizer_unavailable` | `503` | El motor de tokenización no responde | Revisar el vectorizador y las GPU |
+| `gallery_unavailable` | `503` | Elasticsearch no responde | Revisar el clúster |
+| `internal` | `500` | Error no clasificado | Revisar logs con el `query_id` |
+
+<Callout type="warning" title="429 antes de tiempo">
+Un `429` con el servicio lejos de su capacidad casi siempre significa que todo
+el tráfico entra por un gateway y comparte la cuota de una sola IP. Es
+configuración de `trusted_proxies`, no saturación. Ver
+[Configuración](/docs/alnitak/configuracion).
+</Callout>

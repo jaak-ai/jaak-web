@@ -1,0 +1,287 @@
+---
+title: Configuración
+description: Referencia completa de config.yaml y variables de entorno de JAAK Alnitak — servidor, Elasticsearch, TLS, vectorizador, identificación, autenticación y custodia de recortes.
+category: guia
+order: 5
+unlisted: true
+---
+
+Referencia completa de la configuración de la API de **JAAK Alnitak**.
+
+## Cómo se carga la configuración
+
+La API busca `config.yaml` en este orden: el directorio actual, `./api` y
+`/etc/alnilam`. La ruta se puede forzar con `ALNILAM_CONFIG`.
+
+**Toda clave del fichero tiene su variable de entorno equivalente**, con el
+prefijo `ALNILAM_` y los puntos sustituidos por guiones bajos:
+
+```
+elasticsearch.ca_cert_path  →  ALNILAM_ELASTICSEARCH_CA_CERT_PATH
+server.rate_limit_max       →  ALNILAM_SERVER_RATE_LIMIT_MAX
+```
+
+La ausencia del fichero **no es un error**: quedan los valores por defecto más
+lo que aporte el entorno. En cambio, una configuración presente que no se puede
+interpretar **aborta el arranque** — nunca degrada a valores por defecto en
+silencio.
+
+<Callout type="warning" title="Variable presente y vacía ≠ variable ausente">
+Una variable de entorno **presente con valor vacío anula el valor por
+defecto**; una variable **ausente** deja que el valor por defecto se aplique.
+Es la forma de decir "este campo no existe en mi índice":
+`ALNILAM_ELASTICSEARCH_FIELDS_MODEL_VERSION=""`.
+</Callout>
+
+## `server`
+
+| Clave | Por defecto | Descripción |
+|---|---|---|
+| `port` | `8080` | Puerto de escucha de la API. |
+| `rate_limit_max` | `120` | Máximo de peticiones **por IP de origen y ventana**. `0` desactiva el limitador. |
+| `rate_limit_window` | `1s` | Ventana del limitador, como duración (`"1s"`, `"500ms"`). |
+| `trusted_proxies` | `[]` | IPs o rangos CIDR de proxies y balanceadores de confianza. Solo desde ellos se toma la IP real del cliente de `X-Forwarded-For`. |
+
+<Callout type="danger" title="El valor por defecto del rate limit es conservador y hay que ajustarlo">
+En un despliegue on-premise el tráfico suele entrar por un **único gateway**.
+Sin `trusted_proxies`, todas las peticiones comparten la cuota de una sola IP
+—la del gateway— y el servicio devuelve `429` mucho antes de su capacidad
+real.
+
+```yaml
+# Detrás de un balanceador de confianza: cuota por cliente final, no por gateway
+server:
+  rate_limit_max: 200
+  rate_limit_window: "1s"
+  trusted_proxies: ["10.0.0.0/8"]
+
+# El gateway/WAF ya hace control de admisión: limitador fuera
+server:
+  rate_limit_max: 0
+```
+
+`trusted_proxies` está vacío por defecto a propósito: confiar a ciegas en
+`X-Forwarded-For` permitiría falsear la IP y saltarse el límite.
+</Callout>
+
+## `elasticsearch`
+
+| Clave | Por defecto | Descripción |
+|---|---|---|
+| `addresses` | `["http://localhost:9200"]` | Nodos del clúster. |
+| `username` / `password` | `""` | Autenticación básica. |
+| `api_key` | `""` | API key del clúster (base64 de `id:api_key`). **Si está presente gana sobre usuario/contraseña**, y el arranque lo avisa en el log. |
+| `index` | `galeria_biometrica` | Alias de la galería. |
+| `shards` | `5` | Shards primarios al crear el índice. |
+| `replicas` | `2` | Réplicas por shard. |
+| `active_model` | `<modelo-activo>` | Modelo de vectorización activo. Filtra la búsqueda kNN por `model_version`. |
+| `similarity` | `cosine` | Similitud del `dense_vector` (`cosine` o `dot_product`). Determina cómo se desnormaliza el `_score`. |
+| `ca_cert_path` | `""` | Ruta a un PEM con la CA del clúster. Si el fichero no existe o no parsea, **el arranque falla**. |
+| `ca_cert` | `""` | El mismo PEM en línea. Excluyente con `ca_cert_path`. |
+| `insecure_skip_verify` | `false` | Desactiva la verificación del certificado. **Solo desarrollo.** El arranque lo avisa en el log. |
+| `external_index` | `false` | El índice lo administra un tercero: el servicio lo consulta tal cual, sin crear alias ni migrarlo. |
+| `read_only` | `false` | Galería en solo lectura: el servicio solo consulta. Rechaza altas, re-embedding, swap de alias, forcemerge y carga masiva. |
+
+<Callout type="info" title="Sobre `<modelo-activo>`">
+A lo largo de la documentación, `<modelo-activo>` representa el identificador de
+la versión del modelo de vectorización. **La cadena exacta la fija la entrega**:
+aparece en el volcado de configuración efectiva del arranque y en el campo
+`model_version` de `GET /api/v1/gallery/stats`. Usa siempre ese valor, no uno
+escrito a mano.
+</Callout>
+
+<Callout type="tip" title="Credencial recomendada">
+Usa la **API key del clúster**, no usuario/contraseña: puede acotarse a índices
+y privilegios concretos y tener caducidad. Es un secreto — en el volcado de
+configuración efectiva del arranque aparece como `[oculto]`.
+</Callout>
+
+### TLS hacia un clúster con CA propia
+
+Un clúster gestionado por ECK u operado on-premise sirve HTTPS con una
+autoridad certificadora que no está en el pool del sistema. Sin configurarla,
+la conexión falla con `x509: certificate signed by unknown authority`.
+
+```yaml
+elasticsearch:
+  addresses:
+    - "https://mi-cluster-es-http:9200"
+  api_key: ""                                  # inyectada por entorno
+  ca_cert_path: "/etc/alnilam/tls/ca.pem"
+```
+
+En un clúster ECK la CA vive en el secret `<cluster>-es-http-certs-public`,
+clave `ca.crt`.
+
+### `elasticsearch.fields` — consultar un índice ajeno
+
+Mapea los campos lógicos de la galería a los nombres reales del índice destino,
+para operar sobre un índice preexistente con otro esquema **sin tocar código**.
+
+| Clave | Por defecto | Obligatorio |
+|---|---|---|
+| `fields.vector` | `vector_rostro` | Sí |
+| `fields.id` | `id_biometrico` | Sí |
+| `fields.record` | `expediente` | No |
+| `fields.channel` | `canal` | No |
+| `fields.created_at` | `alta` | No |
+| `fields.model_version` | `model_version` | No |
+
+Un campo puesto explícitamente a `""` no se pide en `_source`, no se escribe en
+las altas y no se filtra por él.
+
+<Callout type="danger" title="Filtrar por un campo que no existe devuelve cero candidatos">
+Si el índice del cliente no tiene `model_version` y dejas el valor por defecto,
+la búsqueda kNN filtra por un campo inexistente y **devuelve cero candidatos
+sobre el índice entero** — sin error. Declara
+`ALNILAM_ELASTICSEARCH_FIELDS_MODEL_VERSION=""` en ese caso.
+</Callout>
+
+## `vectorizer`
+
+| Clave | Por defecto | Descripción |
+|---|---|---|
+| `url` | `http://localhost:8000` | Endpoint del motor de tokenización facial. |
+| `timeout_ms` | `250` | Timeout de la llamada, con un reintento. |
+
+## `identify`
+
+| Clave | Por defecto | Descripción |
+|---|---|---|
+| `default_top_n` | `10` | Tamaño de la lista Top-N si la petición no lo indica. |
+| `default_num_candidates` | `800` | Candidatos explorados **por shard** antes de fusionar. Rango operativo 500–1000. |
+| `default_threshold` | `0.82` | Umbral `t` del veredicto de tres estados. |
+| `max_image_bytes` | `4194304` | Tamaño máximo de imagen aceptado (4 MiB). |
+
+<Callout type="info" title="num_candidates es la palanca entre recall y latencia">
+Más candidatos: más recall y más latencia. Menos: lo contrario. Se ajusta **una
+sola vez durante la validación del despliegue** y se deja fijo; no es un
+parámetro que convenga tocar en caliente.
+</Callout>
+
+## `sla`
+
+| Clave | Por defecto | Descripción |
+|---|---|---|
+| `latency_ms` | `400` | Presupuesto de latencia. Es la base del `slack_ms` de cada respuesta y de los KPIs de la consola. |
+| `rps` | `60` | Caudal comprometido, para los KPIs. |
+
+## `auth`
+
+| Clave | Descripción |
+|---|---|
+| `server_pepper` | Pepper del HMAC de las API keys, **mínimo 32 bytes**. En producción se inyecta desde el gestor de secretos (`ALNILAM_AUTH_SERVER_PEPPER`), nunca en el fichero. |
+| `api_keys` | Lista de credenciales de servicio. |
+| `jwt.issuer` / `jwt.audience` / `jwt.keys` | Verificación de tokens JWT. |
+
+```yaml
+auth:
+  server_pepper: ""            # ALNILAM_AUTH_SERVER_PEPPER
+  api_keys:
+    - id: "canal-onboarding"
+      key_hash: "<HMAC-SHA256 del secreto con el pepper, en hex>"
+      tenant: "cliente"
+      channel: "web"
+      actor: "servicio-onboarding"
+      scopes: ["identify", "enroll"]
+  jwt:
+    issuer: "https://auth.ejemplo.com"
+    audience: "jaak-alnilam-api"
+    keys:
+      - id: "key-1"
+        algorithm: "RS256"
+```
+
+<Callout type="danger" title="Listas vacías = modo desarrollo sin autenticación">
+Si `auth.api_keys` **y** `auth.jwt.keys` están vacíos, la API arranca en modo
+desarrollo y procesa todas las peticiones a `/api/v1/*` **sin exigir
+credencial**. Verifícalo siempre tras un despliegue: una petición sin
+credencial debe responder `401`.
+</Callout>
+
+Scopes disponibles: `identify`, `enroll`, `read:metrics`, `read:events`,
+`admin:gallery`. Detalle en [Seguridad](/docs/alnitak/seguridad).
+
+## `cropstore` y `crop`
+
+Custodia cifrada de los recortes faciales alineados, en almacenamiento de
+objetos compatible con S3. Es lo que permite re-vectorizar la galería ante un
+cambio de modelo sin volver a pedir las imágenes originales.
+
+| Clave | Por defecto | Descripción |
+|---|---|---|
+| `cropstore.endpoint` | `""` | Endpoint del almacén. **Vacío = no hay almacén**: el alta funciona, pero no se guarda recorte. |
+| `cropstore.region` | `""` | Región. |
+| `cropstore.bucket` | `alnilam-crops` | Bucket destino. |
+| `cropstore.access_key` / `secret_key` | `""` | Credenciales. Secretos. |
+| `cropstore.use_ssl` | `false` | TLS contra el almacén. Actívalo en cualquier entorno real. |
+| `crop.key` | `""` | Clave AES-256 de cifrado: 64 caracteres hex o base64 de 32 bytes. **Vacía = sin cifrado, no se guardan recortes.** |
+
+<Callout type="warning">
+Sin `crop.key` no hay custodia biométrica y **un cambio de modelo obligaría a
+volver a capturar a toda la galería**. La clave se guarda versionada en el
+gestor de secretos, nunca junto al objeto cifrado.
+</Callout>
+
+## `log`
+
+| Clave | Por defecto | Descripción |
+|---|---|---|
+| `level` | `info` | Nivel de log (`debug`, `info`, `warn`, `error`). |
+
+## Secretos: nunca en el fichero
+
+Estas claves **jamás se registran en logs** y se inyectan desde el gestor de
+secretos:
+
+| Secreto | Variable |
+|---|---|
+| Contraseña de Elasticsearch | `ALNILAM_ELASTICSEARCH_PASSWORD` |
+| API key de Elasticsearch | `ALNILAM_ELASTICSEARCH_API_KEY` |
+| Pepper de API keys | `ALNILAM_AUTH_SERVER_PEPPER` |
+| Credenciales del almacén de objetos | `ALNILAM_CROPSTORE_ACCESS_KEY` / `ALNILAM_CROPSTORE_SECRET_KEY` |
+| Clave AES de recortes | `ALNILAM_CROP_KEY` |
+
+## Ejemplo completo de producción
+
+```yaml
+server:
+  port: 8080
+  rate_limit_max: 200
+  rate_limit_window: "1s"
+  trusted_proxies: ["10.0.0.0/8"]
+
+elasticsearch:
+  addresses: ["https://es-galeria:9200"]
+  index: "galeria_biometrica"
+  shards: 5
+  replicas: 2
+  active_model: "<modelo-activo>"
+  similarity: "cosine"
+  ca_cert_path: "/etc/alnilam/tls/ca.pem"
+  insecure_skip_verify: false
+
+vectorizer:
+  url: "http://vectorizador:8000"
+  timeout_ms: 250
+
+identify:
+  default_top_n: 10
+  default_num_candidates: 800
+  default_threshold: 0.82
+  max_image_bytes: 4194304
+
+cropstore:
+  endpoint: "objetos.interno:9000"
+  bucket: "alnilam-crops"
+  use_ssl: true
+
+sla:
+  latency_ms: 400
+  rps: 60
+
+log:
+  level: "info"
+```
+
+Los secretos correspondientes llegan por entorno desde el gestor de secretos.
