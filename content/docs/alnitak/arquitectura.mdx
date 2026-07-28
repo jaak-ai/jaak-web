@@ -14,26 +14,27 @@ tecnológicas principales.
 
 | Componente | Función |
 |---|---|
-| **Consola de operación** (Angular) | Interfaz para operadores autorizados: consulta manual 1:N, KPIs contra el SLA, alertas y trazabilidad. Acceso por SSO corporativo. |
-| **API orquestadora** (Go) | Punto de entrada de todos los canales. Autentica, valida la imagen, orquesta el pipeline, aplica el veredicto, registra la auditoría y expone métricas por etapa. Sin estado, escalable horizontalmente. |
-| **Servicio de vectorización facial** (GPU) | Detecta y alinea el rostro y produce el vector de 512 dimensiones. Rust sobre ONNX Runtime, ejecución sobre GPU. |
-| **Elasticsearch** (almacén vectorial) | Guarda la galería como índice `dense_vector` de 512 dimensiones con cuantificación `int8_hnsw` (`m=16`, `ef_construction=100`). Resuelve la búsqueda kNN. |
+| **Consola de operación** | Interfaz para operadores autorizados: consulta manual 1:N, KPIs contra el SLA, alertas y trazabilidad. Acceso por SSO corporativo. |
+| **API orquestadora** | Punto de entrada de todos los canales. Autentica, valida la imagen, orquesta el pipeline, aplica el veredicto, registra la auditoría y expone métricas por etapa. Sin estado, escalable horizontalmente. |
+| **Servicio de vectorización facial** (GPU) | Detecta y alinea el rostro y produce el vector de 512 dimensiones. Ejecución acelerada por GPU. |
+| **Almacén vectorial** | Guarda la galería como vectores de 512 dimensiones con cuantificación a 8 bits sobre grafo HNSW. Resuelve la búsqueda kNN y aplica los filtros de metadatos dentro de la misma consulta. |
 | **Almacenamiento de objetos** | Custodia los recortes faciales alineados del enrolamiento, **cifrados y fuera del índice de búsqueda**. |
 
 ```mermaid
 flowchart LR
-  C[Canales del cliente] -->|X-API-Key| A[API orquestadora Go]
-  O[Consola Angular] -->|Cookie de sesión SSO| A
+  C[Canales del cliente] -->|X-API-Key| A[API orquestadora]
+  O[Consola de operación] -->|Cookie de sesión SSO| A
   A -->|imagen alineada| V[Vectorizador GPU]
   V -->|vector 512-D| A
-  A -->|kNN| E[(Elasticsearch<br/>galeria_biometrica)]
+  A -->|kNN| E[(Almacén vectorial<br/>galería biométrica)]
   A -->|crop cifrado| S[(Object storage)]
   A --> AU[(Auditoría encadenada)]
 ```
 
 La custodia de los recortes cifrados es lo que permite **re-vectorizar la
 galería completa ante un cambio de modelo** sin volver a pedir las imágenes
-originales al cliente (ver [Mantenimiento](/docs/alnitak/mantenimiento)).
+originales al cliente. El procedimiento está en el manual de mantenimiento de
+la entrega.
 
 ## Pipeline de una consulta
 
@@ -48,7 +49,7 @@ Cinco etapas, todas medidas con reloj real en cada petición:
    (`multi_face: true` en la respuesta).
 3. **Vectorización** — el rostro alineado se convierte en un vector de 512
    dimensiones. La llamada tiene un timeout de 250 ms con un reintento.
-4. **Búsqueda kNN** — Elasticsearch recorre el grafo HNSW cuantificado y
+4. **Búsqueda kNN** — el almacén vectorial recorre el grafo cuantificado y
    devuelve los `k` vecinos más cercanos.
 5. **Orquestación y resolución** — la API normaliza los scores, aplica el
    umbral y el veredicto, arma la lista Top-N y registra el evento de
@@ -79,15 +80,15 @@ El score de cada candidato es la **similitud coseno normalizada al intervalo
 
 La banda intermedia de **0.06** existe para evitar decisiones automáticas en la
 franja donde el error es más probable, y dirigir esos casos a un operador. El
-umbral por defecto es `0.82` y se ajusta en
-[configuración](/docs/alnitak/configuracion) o por petición.
+umbral por defecto es `0.82`, ajustable en la configuración del despliegue o
+por petición.
 
-<Callout type="danger" title="Elasticsearch no puntúa el coseno directamente">
-Con `dot_product` sobre vectores L2-normalizados, Elasticsearch devuelve
-`(1 + coseno) / 2`, **no** el coseno. Un umbral biométrico expresado en coseno
-debe convertirse antes de aplicarlo. La API ya hace esa normalización: el campo
-`score` de la respuesta está en la misma escala que el `threshold` que envías.
-Si comparas contra Elasticsearch directamente, la conversión es tuya.
+<Callout type="tip" title="El score que recibes ya está normalizado">
+Los motores de búsqueda vectorial no siempre devuelven el coseno tal cual:
+según la métrica configurada pueden entregarlo reescalado. **La API se encarga
+de la normalización**, de modo que el campo `score` de la respuesta y el
+`threshold` que envías están siempre en la misma escala [0, 1]. No tienes que
+convertir nada.
 </Callout>
 
 ## Alta con control antiduplicado
@@ -102,32 +103,25 @@ Es un control doble:
 - **Antiduplicado** — higiene de la galería: un rostro, una identidad.
 - **Antifraude** — un mismo rostro no puede obtener dos expedientes distintos.
 
-## Por qué Elasticsearch como almacén vectorial
+## Criterios del almacén vectorial
 
-Se evaluaron tres opciones: Elasticsearch, Lucene embebido en la propia API y
-una base de datos vectorial especializada.
+La galería vive en un almacén vectorial que cumple cuatro condiciones, y esas
+condiciones —no el producto concreto— son las que sostienen el SLA:
 
-**Se eligió Elasticsearch** por:
+- **Búsqueda kNN aproximada sobre grafo HNSW**, madura y en versión estable, no
+  experimental.
+- **Cuantificación a 8 bits** del vector indexado, que reduce drásticamente la
+  memoria de trabajo frente a los vectores en coma flotante sin cuantificar, con
+  rescoring sobre los originales para no perder precisión en la ordenación
+  final.
+- **Filtrado por metadatos dentro de la misma consulta kNN** —canal, expediente,
+  versión de modelo— y no como post-filtrado.
+- **Replicación y redistribución de datos** nativas, que dan redundancia y
+  capacidad de lectura sin componentes adicionales.
 
-- **Es tecnología que la organización ya opera.** No se introduce una
-  plataforma nueva que respaldar, securizar y aprender.
-- **La búsqueda kNN con `int8_hnsw` es GA**, no experimental. La cuantificación
-  int8 reduce sustancialmente la memoria de trabajo de la galería frente a los
-  vectores float32 crudos.
-- **Unifica galería vectorial, filtrado por metadatos y alta disponibilidad**
-  en un solo sistema. Los filtros por canal o expediente se aplican dentro de
-  la misma consulta kNN, y las réplicas por shard dan redundancia y capacidad
-  de lectura sin componentes adicionales.
-
-**Frente a Lucene embebido:** ataría la galería a un solo proceso, sin
-réplicas, sin rebalanceo y sin un modelo de operación maduro para datos de este
-tamaño.
-
-**Frente a una base vectorial especializada:** añadiría un sistema más que
-operar y respaldar, sin ventaja decisiva a esta escala trabajando con vectores
-cuantificados a int8. El cuello de botella del SLA no está en el motor
-vectorial, sino en la disciplina de operación del índice (segmentos, memoria,
-candidatos).
+El cuello de botella del SLA no está en el motor vectorial: está en la GPU de
+vectorización y en la disciplina de operación del índice (compactación de
+segmentos, memoria residente, número de candidatos explorados).
 
 ## Resiliencia
 
@@ -137,20 +131,16 @@ candidatos).
 | Rechazo explícito por calidad | Una imagen sin rostro no genera una identificación dudosa: se rechaza y queda en auditoría |
 | Marcado de consultas multirrostro | La consulta se resuelve con el rostro mayor y queda señalada para revisión |
 | API sin estado tras balanceador | Cualquier réplica atiende cualquier consulta |
-| Réplicas por shard en Elasticsearch | La pérdida de un nodo no interrumpe las consultas ni compromete la galería |
+| Galería replicada en el almacén vectorial | La pérdida de un nodo no interrumpe las consultas ni compromete la galería |
 | Vectorizador replicado | La pérdida de una réplica reduce capacidad, no disponibilidad |
 
 ## Esquema de alias de la galería
 
-El servicio consulta **siempre por el alias** `galeria_biometrica`, que apunta
-al índice físico versionado `galeria_biometrica_v1`. Esa indirección es la que
-permite reconstruir la galería con un modelo nuevo en un índice paralelo y
-conmutar en caliente (blue/green) sin ventana de indisponibilidad.
+El servicio consulta **siempre por un alias**, no por el índice físico. Esa
+indirección es la que permite reconstruir la galería con un modelo nuevo en un
+índice paralelo y conmutar en caliente (blue/green), sin ventana de
+indisponibilidad y de forma atómica: nunca hay un instante en que el alias
+apunte a dos índices ni a ninguno.
 
-<Callout type="warning">
-Si en tu clúster ya existe un **índice plano** llamado `galeria_biometrica`
-—por ejemplo, de un enrolamiento previo al esquema de alias— el servicio **no
-arranca**: Elasticsearch no admite un alias con el mismo nombre que un índice
-existente. Hay un procedimiento de migración única en
-[Mantenimiento](/docs/alnitak/mantenimiento).
-</Callout>
+El procedimiento de conmutación y los casos de migración están en el manual de
+mantenimiento de la entrega.

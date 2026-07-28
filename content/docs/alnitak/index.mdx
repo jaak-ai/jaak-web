@@ -38,10 +38,10 @@ La solución encadena dos componentes propios de JAAK:
 
 | Componente | Rol |
 |---|---|
-| **Motor de tokenización facial** (`alnitak`) | Detecta el rostro, lo alinea y produce el vector de **512 dimensiones** L2-normalizado. Implementado en Rust sobre ONNX Runtime con aceleración GPU. |
-| **API de orquestación y galería** (`alnilam`) | Punto de entrada de todos los canales. Autentica, valida la imagen, orquesta el pipeline, aplica el veredicto, registra la auditoría y expone las métricas. Servicio Go sin estado. Se apoya en Elasticsearch como almacén vectorial. |
+| **Motor de tokenización facial** (`alnitak`) | Detecta el rostro, lo alinea y produce el vector de **512 dimensiones** L2-normalizado. Ejecución acelerada por GPU. |
+| **API de orquestación y galería** (`alnilam`) | Punto de entrada de todos los canales. Autentica, valida la imagen, orquesta el pipeline, aplica el veredicto, registra la auditoría y expone las métricas. Servicio sin estado, escalable horizontalmente. Resuelve la búsqueda contra el almacén vectorial. |
 
-Se suma la **consola de operación** (Angular), interfaz web para operadores
+Se suma la **consola de operación**, interfaz web para operadores
 autorizados con acceso por SSO corporativo.
 
 <Callout type="warning" title="Sobre los nombres internos">
@@ -55,18 +55,29 @@ para referirse a la solución completa.
 
 | Documento | Para quién | Qué contiene |
 |---|---|---|
-| [Arquitectura](/docs/alnitak/arquitectura) | Arquitectura, seguridad | Pipeline de una consulta, score y veredicto, decisiones de diseño |
-| [Galería, vectores e índice](/docs/alnitak/galeria) | Arquitectura, datos | Qué es un vector, esquema del documento, índice HNSW cuantificado, ciclo de vida del dato |
-| [Instalación](/docs/alnitak/instalacion) | Infraestructura, DevOps | Requisitos, entorno local, despliegue on-premise, creación de la galería, verificación |
-| [Configuración](/docs/alnitak/configuracion) | Infraestructura, DevOps | Referencia completa de `config.yaml` y variables de entorno |
+| [Arquitectura](/docs/alnitak/arquitectura) | Arquitectura, seguridad | Pipeline de una consulta, score y veredicto, resiliencia |
 | [API](/docs/alnitak/api) | Integradores | Autenticación, endpoints, esquemas de petición y respuesta, códigos de error |
 | [Consola de operación](/docs/alnitak/consola) | Operación, analistas | Guía de la interfaz web, pantalla por pantalla |
-| [Operación](/docs/alnitak/operacion) | Operación, guardia | Observabilidad, qué vigilar, alertas, escalado, disponibilidad |
-| [Mantenimiento](/docs/alnitak/mantenimiento) | Operación, DBA | Migración de galería, cambio de modelo y re-vectorización, respaldos |
-| [Actualizaciones](/docs/alnitak/actualizaciones) | Infraestructura, DevOps | Versionado, promoción por ambientes, procedimiento de actualización y rollback |
 | [Rendimiento y SLA](/docs/alnitak/rendimiento) | Arquitectura, compras | Compromisos, cifras medidas y su contexto, dimensionado |
 | [Seguridad](/docs/alnitak/seguridad) | Seguridad, cumplimiento | Credenciales, scopes, auditoría, custodia de biometría |
-| [Solución de problemas](/docs/alnitak/solucion-de-problemas) | Todos | Síntomas frecuentes y su causa |
+
+### Manual de despliegue y operación
+
+Los procedimientos de **instalación, configuración, operación, mantenimiento,
+actualización y resolución de incidencias** se entregan por canal privado a los
+equipos del proyecto, junto con el resto de artefactos de la entrega:
+
+| Documento | Contenido |
+|---|---|
+| Galería, vectores e índice | Esquema del dato indexado, parámetros del almacén vectorial, ciclo de vida |
+| Instalación | Requisitos, despliegue on-premise, creación de la galería, verificación |
+| Configuración | Referencia completa de parámetros y variables de entorno |
+| Operación | Observabilidad, qué vigilar, alertas, escalado, disponibilidad |
+| Mantenimiento | Migración de galería, cambio de modelo y re-vectorización, respaldos |
+| Actualizaciones | Versionado, promoción por ambientes, actualización y rollback |
+| Solución de problemas | Síntomas frecuentes y su causa |
+
+Solicítalos al equipo de JAAK asignado al proyecto.
 
 ## Compromisos del servicio
 

@@ -11,9 +11,9 @@ infraestructura del cliente para que operen de extremo a extremo.
 
 ## Límites de confianza
 
-API, vectorizador, Elasticsearch, operadores y clientes son **límites de
+API, vectorizador, almacén vectorial, operadores y clientes son **límites de
 confianza distintos**. La autenticación no sustituye al aislamiento de red, a
-la autorización por tenant ni a los controles del propio Elasticsearch.
+la autorización por tenant ni a los controles del propio almacén vectorial.
 
 `/healthz` y `/readyz` quedan sin autenticación, y por eso no exponen
 configuración, credenciales ni detalles internos.
@@ -81,7 +81,7 @@ cruzar entre organizaciones enviando otro valor.
 | **Imagen de consulta** | Se procesa **en memoria y no se persiste** en ninguna etapa. |
 | **Vector de consulta** | Transitorio: vive solo durante la atención de la solicitud. |
 | **Recortes faciales alineados** | Cifrados en reposo con **AES-256-GCM** en almacenamiento de objetos, **fuera del índice de búsqueda**. |
-| **Galería vectorial** | En Elasticsearch, no público, con credencial de mínimo privilegio y TLS. |
+| **Galería vectorial** | En el almacén vectorial, no expuesto públicamente, con credencial de mínimo privilegio y TLS. |
 
 Cada recorte se cifra con **nonce aleatorio único** por objeto y versión de
 clave, y el identificador biométrico como **dato asociado autenticado (AAD)**.
@@ -128,7 +128,7 @@ Registro **append-only** de cada consulta y cada alta:
 | Inyección o sustitución de imagen | MIME y tamaño validados, decodificación segura, límites de tiempo, umbrales de calidad y vivacidad, una sola imagen por petición |
 | Abuso de consulta 1:N (enumeración de galería) | Scope `identify`, rate limit por cliente/IP, Top-N acotado, alertas de volumen, auditoría por consulta y respuesta mínima |
 | Alta fraudulenta | Scope `enroll`, comprobación 1:N previa, revisión de coincidencias, separación operativa entre identificar y dar de alta |
-| Exfiltración de galería u objetos | Elasticsearch y buckets no públicos, cifrado de recortes, TLS/mTLS, RBAC, credenciales de mínimo privilegio, respaldos cifrados y egress restringido |
+| Exfiltración de galería u objetos | Almacén vectorial y buckets no públicos, cifrado de recortes, TLS/mTLS, RBAC, credenciales de mínimo privilegio, respaldos cifrados y egress restringido |
 | Sustitución de recorte o reutilización de nonce | Nonce único por objeto y versión de clave, identificador biométrico como AAD, etiqueta GCM verificada antes de descifrar |
 | Cruce entre tenants | Filtro obligatorio por tenant desde la credencial, control de acceso por índice/alias, pruebas de aislamiento |
 | Re-embedding o swap no autorizado | Scope `admin:gallery`, separación de funciones, auditoría encadenada |
@@ -176,7 +176,7 @@ procesos y políticas del cliente.
 Para que estos controles operen de extremo a extremo, la infraestructura del
 cliente debe proveer:
 
-- **Segmentación de red** que aísle el clúster de Elasticsearch, el
+- **Segmentación de red** que aísle el clúster de búsqueda, el
   vectorizador y el almacén de objetos.
 - **TLS/mTLS** en todas las comunicaciones entre componentes.
 - **Discos y respaldos cifrados.**
@@ -195,7 +195,7 @@ cliente debe proveer:
 | Secretos fuera del fichero y de la imagen | Todos por variable de entorno desde el gestor de secretos |
 | Pepper de al menos 32 bytes | El arranque falla si no lo cumple |
 | Clave de recortes configurada | Sin ella no hay custodia y un cambio de modelo obligaría a recapturar |
-| Credencial de Elasticsearch de mínimo privilegio | API key acotada al índice, con caducidad |
+| Credencial del almacén vectorial de mínimo privilegio | Acotada al índice de la galería, con caducidad |
 | Rate limit ajustado al dimensionado | Con `trusted_proxies` si hay gateway delante |
 | Auditoría replicándose a WORM/SIEM | Verificar que llegan eventos |
 | Cadena de auditoría íntegra | Ejecutar el verificador |

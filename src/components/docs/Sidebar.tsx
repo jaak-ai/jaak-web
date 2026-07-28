@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
-import { docsNavigation, type NavItem } from '@/lib/docs/navigation'
+import { docsNavigation, alnitakNavigation, type NavItem } from '@/lib/docs/navigation'
 
 interface NavItemsProps {
   items: NavItem[]
@@ -103,10 +103,30 @@ function NavItemComponent({ item, level, pathname }: NavItemComponentProps) {
 }
 
 export function Sidebar() {
+  const pathname = usePathname()
+  // El manual de Alnitak es un espacio propio: la navegación general de la
+  // documentación no aplica ahí y confunde al lector.
+  const isAlnitak = pathname === '/docs/alnitak' || pathname.startsWith('/docs/alnitak/')
+
   return (
     <nav className="w-64 flex-shrink-0 border-r border-gray-200 bg-white hidden lg:block">
       <div className="sticky top-32 h-[calc(100vh-8rem)] overflow-y-auto p-6">
-        <NavItems items={docsNavigation} />
+        {isAlnitak ? (
+          <>
+            <Link
+              href="/docs"
+              className="mb-4 flex items-center gap-1.5 text-xs font-medium text-gray-500 transition-colors hover:text-[#0066ff]"
+            >
+              <span aria-hidden="true">←</span> Documentación
+            </Link>
+            <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-900">
+              JAAK Alnitak
+            </p>
+            <NavItems items={alnitakNavigation} />
+          </>
+        ) : (
+          <NavItems items={docsNavigation} />
+        )}
       </div>
     </nav>
   )

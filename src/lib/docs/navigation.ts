@@ -186,6 +186,19 @@ export const docsNavigation: NavItem[] = [
   },
 ]
 
+// Navegación propia de /docs/alnitak. Vive fuera de docsNavigation a propósito:
+// las páginas son unlisted (acceso por enlace directo), así que no deben salir
+// en el sidebar general ni en la búsqueda, pero sí necesitan navegación entre
+// ellas cuando ya estás dentro del manual.
+export const alnitakNavigation: NavItem[] = [
+  { title: 'Introducción', href: '/docs/alnitak' },
+  { title: 'Arquitectura', href: '/docs/alnitak/arquitectura' },
+  { title: 'Referencia de API', href: '/docs/alnitak/api' },
+  { title: 'Consola de operación', href: '/docs/alnitak/consola' },
+  { title: 'Rendimiento y SLA', href: '/docs/alnitak/rendimiento' },
+  { title: 'Seguridad y cumplimiento', href: '/docs/alnitak/seguridad' },
+]
+
 export function flattenNavigation(items: NavItem[]): NavItem[] {
   return items.flatMap((item) => {
     if (item.items) {
@@ -196,7 +209,12 @@ export function flattenNavigation(items: NavItem[]): NavItem[] {
 }
 
 export function findPrevNext(slug: string): { prev?: NavItem; next?: NavItem } {
-  const flat = flattenNavigation(docsNavigation).filter((item) => item.href)
+  // El manual de Alnitak navega dentro de su propio árbol: encadenarlo con la
+  // documentación general llevaría al lector fuera del manual sin avisar.
+  const isAlnitak = slug === 'alnitak' || slug.startsWith('alnitak/')
+  const source = isAlnitak ? alnitakNavigation : docsNavigation
+
+  const flat = flattenNavigation(source).filter((item) => item.href)
   const index = flat.findIndex((item) => item.href === `/docs/${slug}` || (item.href === '/docs' && slug === ''))
 
   return {
