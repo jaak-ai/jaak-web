@@ -2,7 +2,7 @@
 title: Configuración
 description: Referencia completa de config.yaml y variables de entorno de JAAK Alnitak — servidor, Elasticsearch, TLS, vectorizador, identificación, autenticación y custodia de recortes.
 category: guia
-order: 4
+order: 5
 unlisted: true
 ---
 
@@ -74,13 +74,21 @@ server:
 | `index` | `galeria_biometrica` | Alias de la galería. |
 | `shards` | `5` | Shards primarios al crear el índice. |
 | `replicas` | `2` | Réplicas por shard. |
-| `active_model` | `w600k_r50` | Modelo de vectorización activo. Filtra la búsqueda kNN por `model_version`. |
+| `active_model` | `<modelo-activo>` | Modelo de vectorización activo. Filtra la búsqueda kNN por `model_version`. |
 | `similarity` | `cosine` | Similitud del `dense_vector` (`cosine` o `dot_product`). Determina cómo se desnormaliza el `_score`. |
 | `ca_cert_path` | `""` | Ruta a un PEM con la CA del clúster. Si el fichero no existe o no parsea, **el arranque falla**. |
 | `ca_cert` | `""` | El mismo PEM en línea. Excluyente con `ca_cert_path`. |
 | `insecure_skip_verify` | `false` | Desactiva la verificación del certificado. **Solo desarrollo.** El arranque lo avisa en el log. |
 | `external_index` | `false` | El índice lo administra un tercero: el servicio lo consulta tal cual, sin crear alias ni migrarlo. |
 | `read_only` | `false` | Galería en solo lectura: el servicio solo consulta. Rechaza altas, re-embedding, swap de alias, forcemerge y carga masiva. |
+
+<Callout type="info" title="Sobre `<modelo-activo>`">
+A lo largo de la documentación, `<modelo-activo>` representa el identificador de
+la versión del modelo de vectorización. **La cadena exacta la fija la entrega**:
+aparece en el volcado de configuración efectiva del arranque y en el campo
+`model_version` de `GET /api/v1/gallery/stats`. Usa siempre ese valor, no uno
+escrito a mano.
+</Callout>
 
 <Callout type="tip" title="Credencial recomendada">
 Usa la **API key del clúster**, no usuario/contraseña: puede acotarse a índices
@@ -248,7 +256,7 @@ elasticsearch:
   index: "galeria_biometrica"
   shards: 5
   replicas: 2
-  active_model: "w600k_r50"
+  active_model: "<modelo-activo>"
   similarity: "cosine"
   ca_cert_path: "/etc/alnilam/tls/ca.pem"
   insecure_skip_verify: false

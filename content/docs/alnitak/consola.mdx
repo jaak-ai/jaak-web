@@ -1,0 +1,187 @@
+---
+title: Consola de operación
+description: Guía de la interfaz web de JAAK Alnitak — panel de datos y operación, búsqueda manual 1:N, flujo de consultas en vivo y detalle por consulta.
+category: guia
+order: 7
+unlisted: true
+---
+
+Guía de la **consola de operación**: la aplicación web desde la que un operador
+autorizado vigila el servicio y ejecuta consultas manuales.
+
+<Callout type="info" title="Sobre las capturas de esta página">
+Están tomadas de un despliegue de demostración con **galería sintética**: los
+identificadores, expedientes y rostros no corresponden a ninguna persona real.
+Los volúmenes son los de un entorno de pruebas, no los de producción.
+</Callout>
+
+## Acceso
+
+- La consola se sirve en la URL que fije tu despliegue.
+- Acceso **únicamente por SSO corporativo**, con el dominio de correo restringido
+  por configuración.
+- La sesión viaja en cookie `httpOnly`, `Secure`, `SameSite=Lax`, con token
+  firmado RS256.
+- Lo que cada usuario ve y puede hacer depende de sus **scopes**: un usuario con
+  `read:metrics` y `read:events` ve los paneles pero no puede lanzar consultas;
+  hace falta `identify` para el área de búsqueda.
+
+## Estructura
+
+Una barra superior común y **dos pestañas**:
+
+| Pestaña | Para qué |
+|---|---|
+| **Datos y operación** | Salud del servicio frente al SLA. Es la vista de guardia. |
+| **Búsqueda 1:N** | Consulta manual y trazabilidad. Es la vista de analista. |
+
+En la barra superior, el control **Flujo en vivo / Pausar** congela la
+actualización automática para poder inspeccionar un caso sin que la pantalla se
+mueva.
+
+---
+
+## Pestaña: Datos y operación
+
+![Consola JAAK Alnitak — pestaña Datos y operación con KPIs contra el SLA, carga y latencia de 24 horas, presupuesto de latencia por etapa, estado de infraestructura y alertas del turno](/docs/alnitak/consola-dashboard.png)
+
+### Los cuatro KPIs
+
+| KPI | Qué muestra | Cuándo preocuparse |
+|---|---|---|
+| **Latencia p95 · extremo a extremo** | p95 real frente al requisito de ≤ 400 ms, con la etiqueta *dentro de SLA* / fuera | Cuando la barra se acerca al límite o la etiqueta cambia |
+| **Throughput sostenido** | Peticiones por segundo frente al piso contratado | *bajo el mínimo* con tráfico real esperado indica un problema de admisión; con tráfico bajo es simplemente que no hay carga |
+| **Galería indexada** | Vectores en el índice, con dimensiones y cuantificación | Un salto o caída brusca sin operación planificada |
+| **Disponibilidad · 30 días** | Disponibilidad medida de la ventana móvil | Aparece con guion (`—`) mientras no haya ventana de observación suficiente: el servicio no inventa una cifra que no ha medido |
+
+### Carga y latencia · últimas 24 horas
+
+Serie de req/s y p95 del último día, con p50, p95 y p99 en la cabecera. Sirve
+para identificar horas pico y correlacionar una degradación con un cambio de
+carga.
+
+### Presupuesto de latencia · desglose por etapa
+
+El reparto de los milisegundos entre las cinco etapas del pipeline —recepción y
+decodificación, detección y alineación, vectorización, búsqueda kNN,
+orquestación— y la **holgura frente a los 400 ms**.
+
+Es el panel que dice *dónde* se va el tiempo:
+
+- Vectorización dominante → mirar GPU y tamaño de las imágenes de entrada.
+- Búsqueda kNN dominante → mirar segmentos del índice, memoria y
+  `num_candidates`.
+
+### Infraestructura
+
+RAM ocupada por el índice (cuantificada y sin cuantificar), distribución
+`shards × réplicas`, parámetros HNSW y uso del vectorizador por réplica.
+
+### Alertas del turno
+
+Tres contadores accionables, no un log:
+
+| Alerta | Qué significa |
+|---|---|
+| **Usurpación de identidad** | Un rostro coincide con expedientes distintos. Enrolamiento detenido para revisión manual. |
+| **Duplicado en enrolamiento** | La persona ya existe en galería con otro folio. Se sugiere fusión de expediente. |
+| **Calidad insuficiente** | Imagen rechazada antes de vectorizar (ICAO / oclusión). No consume consulta. |
+
+Al pie, el contador de **consultas del día**.
+
+---
+
+## Pestaña: Búsqueda 1:N
+
+![Consola JAAK Alnitak — pestaña Búsqueda 1:N con consulta manual, tabla de candidatos ordenados por score, consulta kNN literal, flujo de identificaciones en vivo y detalle de la consulta seleccionada](/docs/alnitak/consola-busqueda.png)
+
+### Consulta manual 1:N
+
+Panel izquierdo:
+
+1. **Carga la imagen** arrastrándola, con *Cargar archivo* o con *Usar cámara*.
+   Formatos JPG y PNG, hasta 4 MB.
+2. **Ajusta los parámetros**:
+   - **Top-N (k)** — cuántos candidatos devolver.
+   - **Candidatos kNN** — `num_candidates`, los candidatos explorados por shard.
+     Más candidatos: más recall y más latencia.
+3. **Buscar coincidencias.**
+
+Bajo el botón, la consola recuerda el contexto activo: umbral, alias de la
+galería, similitud, dimensiones y cuantificación.
+
+<Callout type="warning" title="Toda consulta manual queda auditada">
+La consola **no es una vía lateral**. Cada búsqueda lanzada desde aquí entra en
+la misma auditoría encadenada por hash que las consultas automatizadas: quién
+consultó, cuándo, con qué veredicto y con qué huella de imagen.
+</Callout>
+
+### Resultados
+
+Tabla de candidatos ordenados por score descendente:
+
+| Columna | Contenido |
+|---|---|
+| **#** | Posición en el ranking |
+| **Expediente** | Identificador biométrico y expediente asociado |
+| **Score** | Similitud normalizada a [0, 1], con barra proporcional |
+| **Shard** | Shard que aportó el candidato |
+| **Veredicto** | Coincidencia · Revisión manual · Sin coincidencia |
+
+Al pie: cuántos superan el umbral y cuántos se descartaron.
+
+### Consulta kNN
+
+Panel derecho con la **consulta literal que la API envió a Elasticsearch** —
+`_source`, filtro por versión de modelo, `k`, `num_candidates` y el vector de
+consulta— junto a los datos de la respuesta: `hits.total.value`, `max_score`,
+shards correctos y fallidos, `timed_out`, documentos en el índice y RAM.
+
+<Callout type="tip" title="Por qué se muestra la consulta cruda">
+Hace cada resultado **reproducible y auditable**: se puede ver exactamente qué
+se le preguntó al índice y repetirlo fuera de la consola. Un sistema biométrico
+que no puede enseñar su propia pregunta no es auditable.
+</Callout>
+
+### Flujo de consultas · identificaciones en vivo
+
+Corriente en tiempo real de las consultas que atiende el servicio, con ID,
+canal, hora, score, latencia y veredicto. El deslizador de **umbral** permite
+ver cómo se reclasificarían los eventos con otro punto de corte, sin cambiar la
+configuración del servicio.
+
+Se pausa desde la barra superior para inspeccionar un caso sin perder el resto.
+
+### Detalle de consulta
+
+Al seleccionar un evento del flujo:
+
+- **Cabecera** con el identificador de consulta, canal, hora, shards
+  consultados, `num_candidates`, Top-N y **resolución**.
+- **Calidad**: puntuación **ICAO** y de **vivacidad**, en [0, 1].
+- **Candidatos** evaluados con su score, coloreados por veredicto.
+
+Es la vista que usa un analista para resolver un caso marcado como revisión
+manual.
+
+---
+
+## Observabilidad complementaria en Grafana
+
+Además de estos paneles, la entrega incluye un **dashboard de Grafana** dedicado
+al clúster de búsqueda: estado del clúster y shards, tasa y latencia de
+búsqueda, saturación de los pools (colas y rechazos), indexación, JVM/GC, y CPU
+y disco por nodo. Se entrega como definición JSON versionada para desplegar en
+el Grafana del cliente.
+
+Reparto de responsabilidades: la **consola** responde "¿cumplimos el SLA y qué
+pasó con esta consulta?"; **Grafana** responde "¿cómo está el clúster?".
+
+## Qué hacer desde la consola, y qué no
+
+| Sí | No |
+|---|---|
+| Vigilar el SLA y las alertas del turno | Dar de alta identidades en masa (eso es la API) |
+| Resolver casos de revisión manual | Cambiar configuración del servicio |
+| Investigar una consulta concreta | Re-vectorizar la galería o conmutar el alias (operaciones privilegiadas, ver [Mantenimiento](/docs/alnitak/mantenimiento)) |
+| Comprobar el estado del índice y del vectorizador | Sustituir a la observabilidad del clúster |

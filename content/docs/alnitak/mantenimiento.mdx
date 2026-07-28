@@ -2,7 +2,7 @@
 title: Mantenimiento
 description: Migración de galería, cambio de modelo con re-vectorización blue/green, recalibración del umbral y respaldos en JAAK Alnitak.
 category: guia
-order: 7
+order: 9
 unlisted: true
 ---
 
@@ -152,7 +152,7 @@ curl -X POST "$ES/_reindex?slices=auto&wait_for_completion=false" \
   "dest":   { "index": "galeria_biometrica_v1" },
   "script": {
     "source": "ctx._source.model_version = params.m",
-    "params": { "m": "w600k_r50" },
+    "params": { "m": "<modelo-activo>" },
     "lang": "painless"
   }
 }'
@@ -165,7 +165,7 @@ Vigila el progreso con `GET /_tasks/<task_id>`.
 ```bash
 curl "$ES/galeria_biometrica/_count"
 curl "$ES/galeria_biometrica_v1/_count"
-curl "$ES/galeria_biometrica_v1/_count?q=model_version:w600k_r50"
+curl "$ES/galeria_biometrica_v1/_count?q=model_version:<modelo-activo>"
 ```
 
 Los tres deben coincidir. **Sin `model_version`, el filtro de las búsquedas kNN

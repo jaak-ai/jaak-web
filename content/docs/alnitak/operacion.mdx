@@ -2,7 +2,7 @@
 title: Operación
 description: Consola de operación, observabilidad, alertas, escalado y disponibilidad del día a día de JAAK Alnitak.
 category: guia
-order: 6
+order: 8
 unlisted: true
 ---
 
@@ -10,36 +10,12 @@ Qué ve y qué hace el equipo de operación de **JAAK Alnitak** en el día a dí
 
 ## Consola de operación
 
-Aplicación web de acceso restringido por SSO corporativo, organizada en dos
-áreas.
+Aplicación web de acceso restringido por SSO corporativo, con dos áreas:
+**Datos y operación** (salud del servicio frente al SLA) y **Búsqueda 1:N**
+(consulta manual, flujo en vivo y trazabilidad por consulta).
 
-### Datos y operación
-
-Panel de salud del servicio frente a los compromisos contratados:
-
-| Bloque | Contenido |
-|---|---|
-| **KPIs contra el SLA** | Latencia p95 frente al límite de 400 ms, caudal frente al piso de 60 rps, vectores indexados y disponibilidad de los últimos 30 días. |
-| **Gráfica de 24 horas** | Carga (rps) y latencia del último día, para identificar patrones y horas pico. |
-| **Presupuesto de latencia por etapa** | Desglose por etapa con la holgura restante frente a los 400 ms, alimentado por las mediciones reales de cada consulta. |
-| **Estado de infraestructura** | RAM ocupada por el índice, distribución de shards × réplicas y carga por nodo del clúster. |
-| **Alertas del turno** | Intentos de suplantación detectados, altas rechazadas por duplicado e imágenes rechazadas por baja calidad. |
-
-### Búsqueda 1:N
-
-Área de consulta manual para operadores autorizados:
-
-- **Captura** desde cámara o desde archivo de imagen.
-- **Parámetros** `k` (tamaño del Top-N) y `num_candidates`.
-- **Resultados**: lista Top-N ordenada por score descendente, con el score
-  normalizado y el veredicto de tres estados.
-- **Trazabilidad**: la consola muestra la **consulta kNN literal enviada a
-  Elasticsearch**, de modo que cada resultado es reproducible y auditable.
-- **Flujo en vivo** de las consultas que atiende el servicio, con pausa y
-  reanudación para inspeccionar un caso sin perder el resto.
-- **Detalle por consulta**: calidad de imagen (evaluación ICAO), resultado de
-  vivacidad, candidatos evaluados, resolución final y desglose de latencia de
-  esa consulta concreta.
+La guía pantalla por pantalla, con capturas, está en
+[Consola de operación](/docs/alnitak/consola).
 
 <Callout type="warning" title="La consola no es una vía lateral">
 Toda consulta lanzada desde la consola queda en la **misma auditoría encadenada

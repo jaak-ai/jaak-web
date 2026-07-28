@@ -2,7 +2,7 @@
 title: Solución de problemas
 description: Síntomas frecuentes de JAAK Alnitak, su causa real y cómo resolverlos — arranque, latencia, autenticación, calidad de imagen y galería.
 category: guia
-order: 10
+order: 13
 unlisted: true
 ---
 
@@ -170,7 +170,7 @@ encuentra nada.
 
 ```bash
 curl "$ES/galeria_biometrica/_count"
-curl "$ES/galeria_biometrica/_count?q=model_version:w600k_r50"
+curl "$ES/galeria_biometrica/_count?q=model_version:<modelo-activo>"
 ```
 
 Si el segundo da 0, o el campo no existe:

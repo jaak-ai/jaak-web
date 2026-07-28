@@ -2,7 +2,7 @@
 title: Referencia de API
 description: Endpoints, autenticación, esquemas de petición y respuesta y códigos de error de la API v1 de JAAK Alnitak.
 category: api
-order: 5
+order: 6
 unlisted: true
 ---
 
@@ -120,7 +120,7 @@ curl -X POST https://alnitak.interno/api/v1/identify \
     "query": "{\"knn\":{...}}"
   },
   "multi_face": false,
-  "model_version": "w600k_r50"
+  "model_version": "<modelo-activo>"
 }
 ```
 
@@ -174,7 +174,7 @@ Mismos formatos de entrada que `/identify`, más el campo `record`.
   "quality": { "icao": 0.93, "liveness": 0.98 },
   "verdict": "no_match",
   "candidates": [],
-  "model_version": "w600k_r50"
+  "model_version": "<modelo-activo>"
 }
 ```
 
@@ -216,7 +216,7 @@ el rechazo, para que un operador pueda resolverlo.
   "shards": 5,
   "replicas": 2,
   "hnsw": { "m": 16, "ef_construction": 100 },
-  "model_version": "w600k_r50"
+  "model_version": "<modelo-activo>"
 }
 ```
 
