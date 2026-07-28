@@ -13,10 +13,12 @@ export async function POST(request: Request) {
     const body = await request.json();
     const {
       name,
+      apellido,
       empresa,
       email,
       telefono,
       mensaje,
+      cargo,
       source,
       tipo_institucion,
       turnstile_token,
@@ -27,12 +29,18 @@ export async function POST(request: Request) {
       utm_content,
     } = body;
 
-    if (!name || !email || !telefono) {
+    // El ebook de listas de riesgo pide teléfono opcional (ver brief de la
+    // landing); el resto de las landings lo siguen requiriendo.
+    const phoneRequired = source !== "landing-listas-riesgo-ebook";
+    if (!name || !email || (phoneRequired && !telefono)) {
       return NextResponse.json(
-        { error: "Nombre, correo y teléfono son requeridos" },
+        { error: "Nombre y correo son requeridos" },
         { status: 400 }
       );
     }
+
+    const fullName = apellido ? `${name} ${apellido}`.trim() : name;
+    const fullMessage = cargo ? `Cargo: ${cargo}${mensaje ? ` | ${mensaje}` : ""}` : mensaje;
 
     // Validación Turnstile server-side (solo cuando el token viene en el payload)
     // No se exige a todas las landings para no romper formularios sin Turnstile
@@ -70,9 +78,9 @@ export async function POST(request: Request) {
     kairosForward = forwardLeadToKairos({
       email,
       phone: telefono,
-      contact_name: name,
+      contact_name: fullName,
       company_name: empresa,
-      message: mensaje,
+      message: fullMessage,
       utm_source,
       utm_medium,
       utm_campaign,
@@ -84,19 +92,18 @@ export async function POST(request: Request) {
     // Forward to HubSpot
     let crmSuccess = false;
     try {
-      const nameParts = name.trim().split(" ");
-      const firstname = nameParts[0] || "";
-      const lastname = nameParts.slice(1).join(" ") || "";
+      const firstname = apellido ? name : name.trim().split(" ")[0] || "";
+      const lastname = apellido || name.trim().split(" ").slice(1).join(" ") || "";
 
       const hubspotFields = [
         { name: "firstname", value: firstname },
         { name: "lastname", value: lastname },
         { name: "email", value: email },
-        { name: "phone", value: telefono },
+        { name: "phone", value: telefono || "" },
         { name: "cual_es_tu_funcion_en_la_empresa_", value: source || "landing" },
       ];
       if (empresa) hubspotFields.push({ name: "company", value: empresa });
-      if (mensaje) hubspotFields.push({ name: "message", value: mensaje });
+      if (fullMessage) hubspotFields.push({ name: "message", value: fullMessage });
       // Tipo de institución del formulario de /salud, para segmentar por vertical.
       // La propiedad landing_salud debe existir en HubSpot antes de que este campo llegue.
       if (tipo_institucion) hubspotFields.push({ name: "landing_salud", value: tipo_institucion });
@@ -132,6 +139,7 @@ export async function POST(request: Request) {
           "landing-financieras": "Financieras",
           "landing-bancos": "Bancos",
           "landing-efisys-lab-connect": "EFISYS Lab Connect",
+          "landing-listas-riesgo-ebook": "Ebook Listas de Riesgo PLD/AML",
         };
         const label = sourceLabel[source] || source || "Landing";
 
@@ -144,15 +152,15 @@ export async function POST(request: Request) {
           body: JSON.stringify({
             from: "JAAK Leads <noreply@jaak.ai>",
             to: ["javier.moya@jaak.ai"],
-            subject: `[Landing JAAK] Nuevo lead: ${name} de ${empresa || "sin empresa"} — ${label}`,
+            subject: `[Landing JAAK] Nuevo lead: ${fullName} de ${empresa || "sin empresa"} — ${label}`,
             html: `
               <h2>Nuevo lead desde Landing ${label}</h2>
               <table cellpadding="8" style="border-collapse:collapse;width:100%;max-width:600px">
-                <tr><td><strong>Nombre</strong></td><td>${name}</td></tr>
+                <tr><td><strong>Nombre</strong></td><td>${fullName}</td></tr>
                 <tr><td><strong>Empresa</strong></td><td>${empresa || "—"}</td></tr>
                 <tr><td><strong>Email</strong></td><td><a href="mailto:${email}">${email}</a></td></tr>
-                <tr><td><strong>Teléfono</strong></td><td>${telefono}</td></tr>
-                <tr><td><strong>Mensaje</strong></td><td>${mensaje || "—"}</td></tr>
+                <tr><td><strong>Teléfono</strong></td><td>${telefono || "—"}</td></tr>
+                <tr><td><strong>Mensaje</strong></td><td>${fullMessage || "—"}</td></tr>
                 <tr><td><strong>Fuente</strong></td><td>${source || "landing"}</td></tr>
               </table>
             `,

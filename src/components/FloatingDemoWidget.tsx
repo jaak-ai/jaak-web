@@ -10,7 +10,9 @@ import { SCHEDULE_DEMO_URL } from "@/lib/scheduling";
 const TEAL = "#1ECAD3";
 const NAVY_DARK = "#071426";
 
-const HIDDEN_PREFIXES = ["/autoservicio", "/contacto"];
+// La landing de listas de riesgo y su thank-you page tienen su propio
+// MobileStickyCTA (Agendar demo + Descargar guía) — evita duplicar barras.
+const HIDDEN_PREFIXES = ["/autoservicio", "/contacto", "/listas-de-riesgo-pld-aml", "/gracias"];
 const DISMISS_STORAGE_KEY = "jaak_floating_demo_dismissed_until";
 const DISMISS_DAYS = 7;
 const SCROLL_RATIO_TRIGGER = 0.27;

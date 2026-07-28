@@ -164,6 +164,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    {
+      url: `${baseUrl}/listas-de-riesgo-pld-aml`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
     // Industry landing pages
     {
       url: `${baseUrl}/bancos`,
