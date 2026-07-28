@@ -1,0 +1,243 @@
+---
+title: Instalación
+description: Requisitos de infraestructura, entorno de evaluación, despliegue on-premise, creación de la galería y verificación de JAAK Alnitak.
+category: guia
+order: 3
+unlisted: true
+---
+
+Cómo instalar **JAAK Alnitak** en la infraestructura del cliente: qué hace
+falta, en qué orden se levanta cada pieza y cómo se comprueba que el despliegue
+quedó bien.
+
+## 1. Requisitos
+
+### Hardware
+
+Dimensionado de referencia para una galería de ~50 millones de vectores con el
+SLA de 400 ms / 60 rps:
+
+| Componente | Propuesta | Nota |
+|---|---|---|
+| **Vectorización** | 2 × GPU NVIDIA A10 (24 GB VRAM) tras balanceador | Toda la evidencia se midió con **una sola GPU**. La segunda es redundancia y margen de crecimiento, no necesidad para alcanzar los 60 rps. |
+| **Elasticsearch — nodos de datos** | 3 nodos: 16 vCPU, 100 GB RAM (heap 16 GB), ≥ 400 GB NVMe por nodo | Hosts físicos distintos (antiafinidad). |
+| **Elasticsearch — nodos maestros** | 3 nodos dedicados: 4 GB RAM (heap 2 GB) | Quórum separado de la ruta de datos. |
+| **API orquestadora** | 2+ réplicas sin estado tras balanceador | Servicio Go ligero. |
+| **Consola de operación** | 1+ réplica | Estático servido por nginx. |
+
+<Callout type="warning" title="Dimensiona el disco para el pico, no para el régimen">
+En régimen permanente el índice int8 de 50 M ocupa ~126 GB de shards
+primarios. Durante una migración de modelo conviven **dos índices físicos
+completos**, así que el disco debe dimensionarse para ~250 GB de primarios en
+el pico. La RAM se dimensiona para el conjunto de trabajo caliente del índice
+activo: ~30 GB por copia, más heap y sistema.
+</Callout>
+
+### Software
+
+| Dependencia | Versión | Nota |
+|---|---|---|
+| Elasticsearch | 8.15 o superior | Validado en 8.15.x y 9.4.x. La búsqueda kNN con `int8_hnsw` es GA. |
+| Runtime de contenedores | Docker / containerd | Kubernetes recomendado, no obligatorio. |
+| Driver NVIDIA + CUDA | Compatible con la GPU | En Kubernetes, el device plugin de NVIDIA instalado en los nodos con GPU. |
+| Proveedor de identidad | Google Workspace (OIDC) | Solo para el SSO de la consola. Las integraciones de servicio usan API key y no lo necesitan. |
+| Almacenamiento de objetos | Compatible S3 | Custodia cifrada de los recortes faciales. |
+
+### Red y accesos
+
+- La API necesita alcanzar **Elasticsearch** (9200/TCP, HTTPS recomendado) y el
+  **vectorizador**.
+- Los canales del cliente necesitan alcanzar la **API**, normalmente a través
+  del gateway o balanceador corporativo.
+- Elasticsearch y el bucket de objetos **no deben ser accesibles desde
+  internet**.
+- El egress del clúster se restringe a lo estrictamente necesario.
+
+## 2. Artefactos de entrega
+
+JAAK entrega por versión:
+
+| Artefacto | Qué es |
+|---|---|
+| Imagen `jaak-alnilam-api` | API orquestadora (Go). |
+| Imagen `jaak-alnilam-web` | Consola de operación (Angular + nginx). |
+| Imagen del vectorizador | Motor de tokenización facial sobre GPU. |
+| `es-mapping.json` | Mapping del índice de la galería. |
+| `smoke.sh` | Guion de humo de verificación del despliegue. |
+
+Cada versión lleva **tag semántico** (`vX.Y.Z`) y la imagen se referencia por
+digest. Nada llega a producción sin haber pasado por los ambientes previos
+(desarrollo → calidad → staging → producción), y la cadena de tags es la
+evidencia de qué se validó dónde.
+
+## 3. Entorno de evaluación local
+
+Para probar la solución en una máquina, sin GPU ni clúster:
+
+```bash
+# Levanta Elasticsearch, API y consola
+docker compose up -d
+
+# Carga una galería sintética de prueba
+make seed
+```
+
+| Servicio | URL local |
+|---|---|
+| API | `http://localhost:8080` |
+| Consola | `http://localhost:4200` |
+| Elasticsearch | `http://localhost:9200` |
+
+<Callout type="danger" title="El entorno local arranca sin autenticación">
+Si `auth.api_keys` y `auth.jwt.keys` están vacíos, la API arranca en **modo
+desarrollo**: todas las peticiones a `/api/v1/*` se procesan sin credencial.
+Es cómodo para evaluar y **inaceptable en cualquier entorno con datos reales**.
+Ver [Configuración](/docs/alnitak/configuracion).
+</Callout>
+
+## 4. Despliegue on-premise
+
+Orden de arranque:
+
+### 4.1 Elasticsearch
+
+Clúster de 3 nodos de datos + 3 maestros dedicados, con seguridad activada y
+TLS. Crea una **credencial de mínimo privilegio** para la API — se recomienda
+una API key del clúster acotada al índice de la galería y con caducidad, en
+lugar de usuario/contraseña.
+
+### 4.2 Vectorizador
+
+Despliega el motor de tokenización en los nodos con GPU. Verifica que responde
+antes de continuar: la API arranca igualmente, pero toda consulta fallará con
+`503 vectorizer_unavailable`.
+
+### 4.3 Índice de la galería
+
+El servicio consulta siempre por el **alias** `galeria_biometrica`, que apunta
+al índice físico versionado `galeria_biometrica_v1`. La API crea el índice y el
+alias en el arranque si no existen. Este es el mapping que aplica:
+
+```json
+{
+  "settings": {
+    "number_of_shards": 5,
+    "number_of_replicas": 2
+  },
+  "mappings": {
+    "properties": {
+      "id_biometrico":  { "type": "keyword" },
+      "expediente":     { "type": "keyword" },
+      "canal":          { "type": "keyword" },
+      "model_version":  { "type": "keyword" },
+      "alta":           { "type": "date" },
+      "vector_rostro": {
+        "type": "dense_vector",
+        "dims": 512,
+        "index": true,
+        "similarity": "cosine",
+        "index_options": {
+          "type": "int8_hnsw",
+          "m": 16,
+          "ef_construction": 100,
+          "confidence_interval": 0.99
+        }
+      }
+    }
+  }
+}
+```
+
+<Callout type="danger" title="Si ya existe un índice plano llamado galeria_biometrica">
+El arranque **falla**: Elasticsearch no admite un alias con el mismo nombre que
+un índice existente. Antes de desplegar, comprueba el caso y, si aplica, ejecuta
+la [migración de índice plano a alias](/docs/alnitak/mantenimiento).
+
+```bash
+curl -I "$ES/galeria_biometrica"          # 200 → existe algo con ese nombre
+curl -I "$ES/_alias/galeria_biometrica"   # 404 → y no es un alias: migrar
+```
+</Callout>
+
+### 4.4 API orquestadora
+
+Despliega 2 o más réplicas sin estado detrás del balanceador, con la
+configuración de [Configuración](/docs/alnitak/configuracion). Los secretos
+—pepper de API keys, clave privada RS256, credenciales de Elasticsearch, clave
+de cifrado de recortes— **se inyectan desde el gestor de secretos, nunca en el
+fichero de configuración ni en la imagen**.
+
+Sondas para el balanceador y el orquestador:
+
+| Sonda | Ruta | Significado |
+|---|---|---|
+| Liveness | `GET /healthz` | El proceso está vivo. |
+| Readiness | `GET /readyz` | Listo para atender tráfico (dependencias alcanzables). |
+
+Ambas quedan **fuera de la autenticación** y no exponen configuración,
+credenciales ni detalles internos.
+
+### 4.5 Consola de operación
+
+Despliega la imagen `jaak-alnilam-web`. La plantilla de nginx acepta
+`API_UPSTREAM` para apuntar al servicio de la API. Configura el SSO según
+[Seguridad](/docs/alnitak/seguridad).
+
+## 5. Carga inicial de la galería
+
+Dos vías:
+
+| Vía | Cuándo |
+|---|---|
+| `POST /api/v1/enroll`, identidad a identidad | Operación normal. Ejecuta el control antiduplicado en cada alta. |
+| Carga masiva por `_bulk` contra Elasticsearch | Migración inicial desde una galería existente. **No aplica el control antiduplicado**: la higiene de los datos es responsabilidad del proceso de carga. |
+
+<Callout type="danger" title="Forcemerge obligatorio tras cualquier carga masiva">
+Una búsqueda kNN recorre el grafo HNSW de **cada segmento** del índice y luego
+fusiona resultados. Un índice recién cargado con decenas de segmentos multiplica
+los recorridos y con ellos la latencia — es la causa más frecuente de un
+despliegue que "cumple en pruebas y no en producción".
+
+Durante la carga masiva: desactiva réplicas y refresco. Al terminar:
+restáuralos y ejecuta
+
+```bash
+curl -X POST "$ES/galeria_biometrica_v1/_forcemerge?max_num_segments=1"
+```
+
+El servicio expone el número de segmentos como métrica para detectar de
+inmediato un índice sin fusionar.
+</Callout>
+
+## 6. Verificación del despliegue
+
+Ejecuta el guion de humo entregado:
+
+```bash
+./smoke.sh
+```
+
+Comprueba manualmente, como mínimo:
+
+| Comprobación | Comando | Esperado |
+|---|---|---|
+| API viva | `curl -f $API/healthz` | `200` |
+| API lista | `curl -f $API/readyz` | `200` |
+| Galería poblada | `curl -H "X-API-Key: $KEY" $API/api/v1/gallery/stats` | `vectors` con el recuento esperado y el `model_version` correcto |
+| Consulta 1:N real | `POST /api/v1/identify` con una imagen de prueba | `200`, con `took_ms` y `slack_ms` coherentes |
+| Alta y antiduplicado | `POST /api/v1/enroll` dos veces con el mismo rostro | La segunda debe devolver `409 duplicate_or_fraud` |
+| Métricas | `curl $API/metrics` | Formato Prometheus, con las series del pipeline |
+| Autenticación activa | Petición a `/api/v1/identify` **sin** credencial | `401` — si devuelve `200`, la API está en modo desarrollo |
+
+<Callout type="tip" title="Prueba de carga con veredicto automático">
+La entrega incluye un generador de carga (`--url --images --rps --duration
+--concurrency --warmup --out`) que descarta el calentamiento, sostiene la tasa
+objetivo y emite un veredicto explícito **CUMPLE / NO CUMPLE** frente a los 400
+ms y los 60 rps, con código de salida 0 solo si cumple. Es integrable en el
+pipeline de entrega como evidencia automatizada.
+</Callout>
+
+## Siguiente paso
+
+- [Configuración](/docs/alnitak/configuracion) — referencia completa de parámetros.
+- [Operación](/docs/alnitak/operacion) — qué vigilar el día a día.

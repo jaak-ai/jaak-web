@@ -1,0 +1,200 @@
+---
+title: Rendimiento y SLA
+description: Compromisos de latencia, caudal y capacidad de JAAK Alnitak, cifras medidas con su corpus y entorno, y dimensionado de memoria.
+category: concepto
+order: 8
+unlisted: true
+---
+
+Compromisos de rendimiento de **JAAK Alnitak** y las mediciones que los
+respaldan, cada una con el corpus y el entorno en que se obtuvo.
+
+<Callout type="info" title="Cómo leer este documento">
+Toda cifra de esta página procede de una corrida instrumentada con evidencia
+firmada. Se indica siempre el corpus, el hardware y el tamaño de galería: una
+cifra de latencia sin esas tres cosas no significa nada. Lo que **no** está
+medido se dice explícitamente.
+</Callout>
+
+## Los tres compromisos
+
+| Compromiso | Medido | Margen |
+|---|---|---|
+| Galería > 50 millones de vectores | 50.000.000 exactos, 0 rechazados | — |
+| Caudal ≥ 60 peticiones/segundo | **120 rps** de búsqueda, 36.000/36.000, p99 9,744 ms | **2×** |
+| Latencia ≤ 400 ms extremo a extremo con vectorización | **p99 60,022 ms**, 18.000/18.000 | **6,7×** |
+
+20 mediciones de capacidad válidas, todas con **0 errores, 0 descartes y sin
+saturación**.
+
+## Latencia extremo a extremo
+
+Medido a 60 rps sostenidos, cadena completa, **un solo reloj desde los bytes de
+la imagen hasta los candidatos**, sobre la galería de 50 millones:
+
+| Percentil | ms |
+|---|---:|
+| p50 | 34,963 |
+| p95 | 50,925 |
+| **p99** | **60,022** |
+| máximo (la peor de 18.000) | 146,018 |
+
+Se consume el **15 % del presupuesto de 400 ms**. Incluso la peor petición de
+las 18.000 se queda en el 37 %.
+
+```
+presupuesto:  400 ms
+  vectorización (GPU)  ████ 52 ms
+  búsqueda (ES)        █ 10 ms
+  sin usar             ██████████████████████████ 338 ms
+```
+
+18.000/18.000 correctas, 0 errores, 0 descartes, 0 imágenes sin rostro.
+
+<Callout type="warning" title="Tres etiquetas obligatorias al citar los 60,022 ms">
+1. **Corpus de 200 variantes de una fotografía** (480–2160 px, JPEG 60–97).
+   Ejercita el coste de decodificación e inferencia, que es lo que domina la
+   latencia, pero **no cubre rostros múltiples, encuadres difíciles ni
+   detecciones fallidas**. Las 18.000 peticiones devolvieron exactamente un
+   rostro.
+2. **Es la cadena directa** generador → motor de vectorización → Elasticsearch.
+   La sobrecarga de la capa de orquestación —pequeña, en Go— **no está medida**
+   en esta corrida.
+3. **El 87 % del coste es la GPU** (52,046 de 60,022 ms). Si el tráfico real
+   lleva imágenes más pesadas o con varias caras, ese lado crece.
+   Elasticsearch tiene margen de sobra.
+</Callout>
+
+### Desglose por etapa
+
+Medición de la cadena completa sobre GPU NVIDIA A10 y galería de 5.000.000 de
+vectores:
+
+| Etapa | ms |
+|---|---:|
+| Recepción y decodificación | 0 |
+| Detección y alineación | 12 |
+| Vectorización | 3 |
+| Búsqueda kNN | 12 |
+| Orquestación y resolución | 4 |
+| **Total** | **31** |
+
+31 ms de 400: el **8 % del presupuesto**, con 369 ms de holgura. La etapa de
+búsqueda crece con el tamaño de la galería; el resto no depende de él.
+
+### Latencias que NO responden al compromiso
+
+Se listan para que no se confundan con la cifra buena:
+
+| Cifra | Qué es | ¿Es el compromiso? |
+|---:|---|:---:|
+| **60,022 ms** | p99 end-to-end a 60 rps, imagen → candidatos | **Sí** |
+| 9,555 ms | solo la búsqueda en Elasticsearch, sin vectorizar | No |
+| 9,744 ms | p99 de búsqueda a 120 rps | No |
+| ~5.000 ms | **primera** consulta tras preparar el índice, con caché vacía | No |
+| 51,4 / 57,1 / 51,7 ms | end-to-end a 10 / 20 / 40 rps | Válidas, pero el compromiso se mide a 60 |
+
+## Caudal
+
+| Escenario | Caudal sostenido | Latencia |
+|---|---|---|
+| Búsqueda sobre 50 M, escalera de 8 niveles | **120 rps** (36.000/36.000, 0 errores) | p99 9,744 ms |
+| Cadena completa sobre 5 M, 100 peticiones concurrentes | **361 rps** | p95 ~360 ms |
+| Motor de vectorización aislado, 1 GPU A10 | **291 rps** | p95 337 ms |
+| Motor de vectorización, punto de mínima latencia | 238 rps | p95 29 ms |
+
+Ambos escenarios se midieron **con una sola GPU A10 y una sola réplica del
+servicio**, y en ninguno se alcanzó el punto de colapso. Con 50 M, Elasticsearch
+trabajó al **8–12 % de CPU y con 0 rechazos** en sus thread pools: no se llegó a
+saturación en ningún nivel.
+
+Corolario de dimensionado: **una única GPU cubre casi seis veces el mínimo
+exigido**. El número de GPU se elige por redundancia y margen de crecimiento,
+no por necesidad de alcanzar los 60 rps.
+
+## Memoria y disco con 50 M de vectores
+
+Huella medida del índice int8 con los 50 millones cargados:
+
+| Magnitud | Valor | Qué es |
+|---|---|---|
+| Tamaño en disco (shards primarios) | ~126 GB | Persistencia. Incluye los float32 crudos (~102 GB), que **solo se leen al rescorear** unos pocos candidatos. |
+| **Conjunto de trabajo caliente** | **~30 GB por copia** | Lo que la búsqueda recorre en memoria: vectores cuantificados (~26 GB) más el grafo. |
+
+La cuantificación int8 es la decisión que hace viable el SLA: lo que debe residir
+en memoria son ~30 GB por copia, no los ~250 GB de un escenario float32 sin
+cuantificar. El coste en recall se compensa con `num_candidates` entre 500 y
+1000 por shard y rescoring sobre los float32.
+
+<Callout type="danger" title="No fuerces los float32 a caché">
+La huella real se dispara si se preconfiguran los ficheros de vectores crudos
+para precarga en caché de páginas: eso arrastra ~102 GB por copia a memoria sin
+necesidad. Es **configuración corregible, no una limitación del cuantizador**.
+La degradación observada de p50 de 7 a 184 ms con dos índices abiertos se
+explica por ahí.
+</Callout>
+
+**Pico de migración:** durante un cambio de modelo conviven dos índices físicos,
+así que el **disco** se dimensiona para ~250 GB de primarios en el pico. La
+memoria no: solo el índice activo se sirve caliente.
+
+## Ley de escalamiento medida
+
+El 87 % del coste de una consulta es la GPU, y **la búsqueda no se degrada al
+sextuplicar la carga**: p99 de 10,17 ms a 10 rps y 9,56 ms a 60 rps.
+
+| Para crecer en… | Se agrega |
+|---|---|
+| Tráfico | Réplicas de vectorización (GPU) |
+| Galería | Nodos de datos de Elasticsearch |
+
+## Arranque en frío
+
+La primera consulta tras preparar un índice, con la caché vacía, es del orden de
+segundos, no de milisegundos. **No es la latencia de régimen** y no debe usarse
+para dimensionar. Se mitiga con un calentamiento tras cada despliegue o
+conmutación de alias.
+
+## Arnés de carga reproducible
+
+La entrega incluye un generador de carga que permite reproducir estas
+mediciones en el entorno del cliente:
+
+- **Parámetros:** `--url --images --rps --duration --concurrency --warmup --out`.
+- **Método:** ejecuta una fase de calentamiento que se descarta, y luego
+  sostiene la tasa objetivo durante la duración indicada.
+- **Reporte:** p50, p95, p99, media y máximo extremo a extremo, caudal
+  sostenido, y salida JSON con los parámetros completos de la corrida.
+- **Veredicto automático CUMPLE / NO CUMPLE** frente a los 400 ms y los 60 rps,
+  con código de salida 0 solo si cumple. Integrable en el pipeline de entrega
+  como evidencia automatizada.
+
+<Callout type="warning" title="Un generador de carga sin cota de concurrencia mide su propio desbordamiento">
+Si el generador no acota la concurrencia, lo que se observa a tasas altas es su
+propio encolamiento, no el del servidor. El arnés entregado acota la
+concurrencia explícitamente (`--concurrency`) y reporta si la corrida quedó
+saturada. Una corrida saturada es **inválida**, no un fallo del servicio.
+</Callout>
+
+## Precisión biométrica
+
+<Callout type="danger" title="No se publican cifras de precisión">
+Las mediciones de precisión disponibles se obtuvieron sobre **vectores
+sintéticos**, no sobre rostros reales. No son un punto de operación biométrico y
+**no se citan**: cualquier FAR/FRR derivado de ese material sería una
+afirmación sin respaldo.
+
+La medición de precisión sobre población real y la acreditación independiente
+son trabajo en curso, y se comunicarán como resultados propios cuando existan.
+La calibración del umbral para un despliegue concreto se hace con el conjunto
+etiquetado del cliente, como parte de la puesta en marcha.
+</Callout>
+
+## Hardware de referencia
+
+| Componente | Propuesta | Base |
+|---|---|---|
+| Vectorización | 2 × GPU NVIDIA A10 (24 GB VRAM) tras balanceador | Toda la evidencia se midió con una sola GPU |
+| Elasticsearch — datos | 3 nodos: 16 vCPU, 100 GB RAM (heap 16 GB), ≥ 400 GB NVMe, hosts físicos distintos | Configuración exacta de la corrida: p99 9,74 ms a 120 rps con 8–12 % de CPU |
+| Elasticsearch — maestros | 3 nodos dedicados: 4 GB RAM (heap 2 GB) | Quórum separado de la ruta de datos |
+| API orquestadora | 2+ réplicas sin estado tras balanceador | Servicio Go ligero |
