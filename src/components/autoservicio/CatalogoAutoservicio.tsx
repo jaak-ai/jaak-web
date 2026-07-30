@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import {
   formatMXN,
   tierEstilos,
+  buildKycRegisterUrl,
+  KYC_PLAN_CODE_BY_TIER,
   type CategoriaId,
   type Producto,
   type Paquete,
@@ -185,8 +187,10 @@ export default function CatalogoAutoservicio() {
           </div>
           {producto.checkoutUrl ? (
             // KYC/suscripción: se compra por el flujo de planes, no por el carrito.
+            // El deep-link lleva el tier seleccionado en la card (no el fijo del
+            // catálogo) para que /register preseleccione el plan correcto.
             <a
-              href={producto.checkoutUrl}
+              href={buildKycRegisterUrl(KYC_PLAN_CODE_BY_TIER[tierDe(producto.id)] ?? "plata")}
               className="rounded-xl px-4 py-2.5 text-[13px] font-semibold transition-colors"
               style={{ background: TEAL, color: "#fff" }}
             >
