@@ -61,6 +61,9 @@ ASSUME_YES="${ASSUME_YES:-0}"
 ADMIN_EMAIL="${ADMIN_EMAIL:-}"
 ADMIN_PASSWORD="${ADMIN_PASSWORD:-}"
 CREATE_ADMIN="${CREATE_ADMIN:-0}"
+# Generada o preservada por collect_config; declarada aquí para no romper con
+# `set -u` si write_env corre sin collect_config (tests).
+LAB_MASTER_KEY="${LAB_MASTER_KEY:-}"
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -93,6 +96,10 @@ VARIABLES DE ENTORNO (para modo desatendido):
   SERVER_NAME        (opcional)  Igual que --server-name.
   ADMIN_EMAIL        (opcional)  Email del admin (default: admin@pulse.local).
   ADMIN_PASSWORD     (opcional)  Password del admin; si falta, se genera.
+  LAB_MASTER_KEY     (opcional)  Clave maestra del modo laboratorio (base64 de 32
+                     bytes). Si falta, se preserva la del .env o se genera una.
+                     Solo se aporta para RESTAURAR una instalación: rotarla deja
+                     ilegibles las sesiones de laboratorio ya existentes.
 
 MODO POST-INSTALACIÓN:
   sudo bash get-pulse.sh --create-admin [--admin-email <email>]
@@ -215,6 +222,43 @@ collect_config() {
   API_KEY="$(openssl rand -hex 32)"
   SERVICE_KEY="$(openssl rand -hex 32)"
 
+  # LAB_MASTER_KEY (modo laboratorio): AES-256 en base64 de 32 bytes, el único
+  # formato que acepta pulse-api. Sin ella, crear una sesión de laboratorio
+  # falla fail-closed (500) porque la API se niega a envolver claves de PII de
+  # lab con una clave conocida (INTC-491).
+  #
+  # A diferencia de los tres de arriba, NO se regenera al re-ejecutar: envuelve
+  # las claves por sesión de las sesiones de lab ya creadas, así que rotarla
+  # dejaría sus fotos y vectores indescifrables.
+  #
+  # Precedencia env > .env > generar. El env importa para restaurar: reinstalar
+  # sobre una base existente (VM nueva, backup restaurado, wrapper que la lee de
+  # un Vault) tiene que poder reponer LA MISMA clave, o las sesiones de lab de
+  # esa base quedan ilegibles.
+  local lab_key_source="env"
+  if [[ -z "$LAB_MASTER_KEY" ]]; then
+    lab_key_source="env-file"
+    LAB_MASTER_KEY="$(read_env_var LAB_MASTER_KEY)"
+  fi
+
+  if [[ -z "$LAB_MASTER_KEY" ]]; then
+    LAB_MASTER_KEY="$(openssl rand -base64 32)"
+  elif ! is_lab_master_key "$LAB_MASTER_KEY"; then
+    if [[ "$lab_key_source" == "env" ]]; then
+      # Aportada a mano: regenerarla en silencio destruiría los datos de lab que
+      # el operador está intentando recuperar. Mejor parar.
+      die "LAB_MASTER_KEY inválida: se espera base64 de 32 bytes (openssl rand -base64 32)."
+    fi
+    # En el .env: un valor con formato inválido nunca pudo cifrar nada (pulse-api
+    # lo rechaza antes de crear la sesión), así que no hay datos que perder.
+    log "WARNING: LAB_MASTER_KEY del .env con formato inválido — se regenera."
+    LAB_MASTER_KEY="$(openssl rand -base64 32)"
+  elif [[ "$lab_key_source" == "env" ]]; then
+    log "LAB_MASTER_KEY: se usa la aportada por entorno."
+  else
+    log "LAB_MASTER_KEY: se preserva la del .env (no se rota)."
+  fi
+
   echo "" >&2
   log "Se instalará:"
   log "  LICENSING_URL = $LICENSING_URL"
@@ -239,6 +283,23 @@ collect_config() {
 # Emite KEY="value" con el MISMO escaping que fetch_secrets.py. Imprescindible:
 # ORACLE_DSN lleva `&` y espacios (…&ssl verify=false) que romperían tanto el
 # `source` de bash como el parseo si fueran crudos.
+
+# Lee el valor de una clave del .env existente; "" si no hay .env o no está la
+# clave. Contraparte de emit_env para los valores que se PRESERVAN entre
+# ejecuciones (LAB_MASTER_KEY): el resto se regenera en cada instalación.
+read_env_var() {
+  local key="$1"
+  [[ -f "$ENV_FILE" ]] || return 0
+  sed -n "s/^$key=\"\(.*\)\"\$/\1/p" "$ENV_FILE" | tail -n 1
+}
+
+# base64 estándar de 32 bytes = 43 caracteres del alfabeto + un '=' de padding.
+# Mismo criterio que pulse-api (base64.StdEncoding y len(key) == 32); cualquier
+# otra cosa la rechaza y el modo laboratorio queda fail-closed.
+is_lab_master_key() {
+  [[ "$1" =~ ^[A-Za-z0-9+/]{43}=$ ]]
+}
+
 emit_env() {
   local k="$1" v="$2"
   v="${v//\\/\\\\}"   # \  -> \\   (primero)
@@ -267,7 +328,12 @@ update_env_var() {
 }
 
 write_env() {
-  log "Escribiendo $ENV_FILE…"
+  # ${ENV_FILE} con llaves, no $ENV_FILE: en locales UTF-8 bash absorbe el "…"
+  # como parte del nombre de la variable y `set -u` mata el instalador con
+  # "ENV_FILE…: unbound variable". Solo se notaba con el entorno propagado
+  # (sudo -E, como en el wrapper de Vault de la doc); con `sudo` a secas el
+  # locale queda en C y el bug no aparece.
+  log "Escribiendo ${ENV_FILE}…"
   local ncpu gomaxprocs gomemlimit
   ncpu="$(nproc 2>/dev/null || echo 2)"
   gomaxprocs=$(( ncpu > 2 ? ncpu - 2 : 2 ))
@@ -280,6 +346,7 @@ write_env() {
     emit_env JWT_SECRET       "$JWT_SECRET"
     emit_env API_KEY          "$API_KEY"
     emit_env SERVICE_KEY      "$SERVICE_KEY"
+    emit_env LAB_MASTER_KEY   "$LAB_MASTER_KEY"
     emit_env JAAK_LICENSE_KEY "$JAAK_LICENSE_KEY"
     emit_env LICENSING_URL    "$LICENSING_URL"
     emit_env ADMIN_EMAIL      "$ADMIN_EMAIL"
