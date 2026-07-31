@@ -6,6 +6,7 @@ import Link from "next/link";
 import { gtmEvent } from "./GoogleTagManager";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
 import { SCHEDULE_DEMO_URL } from "@/lib/scheduling";
+import { MOBILE_NAV_STATE_EVENT } from "./Header";
 
 const TEAL = "#1ECAD3";
 const NAVY_DARK = "#071426";
@@ -24,7 +25,19 @@ export default function FloatingDemoWidget() {
 
   const [visible, setVisible] = useState(false);
   const [open, setOpen] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
+
+  // Se oculta temporalmente mientras el menú móvil esté abierto para no
+  // superponerse con el panel (Fase 1B) — no afecta su funcionalidad ni
+  // su lógica de aparición/descarte fuera de ese estado.
+  useEffect(() => {
+    const handleMobileNavChange = (e: Event) => {
+      setMobileNavOpen(Boolean((e as CustomEvent<{ open: boolean }>).detail?.open));
+    };
+    window.addEventListener(MOBILE_NAV_STATE_EVENT, handleMobileNavChange);
+    return () => window.removeEventListener(MOBILE_NAV_STATE_EVENT, handleMobileNavChange);
+  }, []);
 
   useEffect(() => {
     if (isHiddenRoute) return;
@@ -70,7 +83,7 @@ export default function FloatingDemoWidget() {
     };
   }, [open]);
 
-  if (isHiddenRoute || !visible) return null;
+  if (isHiddenRoute || !visible || mobileNavOpen) return null;
 
   const toggle = () => {
     const next = !open;

@@ -10,15 +10,20 @@ export async function POST(request: Request) {
   let kairosForward: Promise<boolean> | undefined;
   try {
     const body = await request.json();
-    const { name, email, company, phone, role, message } = body;
+    const { name, firstname: firstnameInput, lastname: lastnameInput, email, company, phone, role, message } = body;
 
-    // Validate required fields
-    if (!name || !email || !phone || !role) {
+    // Callers can send either a single `name` (original behavior, split
+    // below) or `firstname`/`lastname` directly (e.g. OcrApiForm, which
+    // collects them as separate fields). Phone is required for every
+    // caller — no exceptions.
+    if (!(name || firstnameInput) || !email || !phone || !role) {
       return NextResponse.json(
         { error: "Nombre, correo electrónico, teléfono y función son requeridos" },
         { status: 400 }
       );
     }
+
+    const fullName = name || [firstnameInput, lastnameInput].filter(Boolean).join(" ");
 
     // Mirror the lead into Kairos with first-party UTM attribution, in
     // parallel with HubSpot. Awaited before every response below (serverless
@@ -26,7 +31,7 @@ export async function POST(request: Request) {
     kairosForward = forwardLeadToKairos({
       email,
       phone,
-      contact_name: name,
+      contact_name: fullName,
       company_name: company,
       message,
       turnstile_token: body.turnstile_token,
@@ -38,10 +43,11 @@ export async function POST(request: Request) {
       page_url: body.page_url || request.headers.get("referer") || "",
     });
 
-    // Split name into first and last name for HubSpot
-    const nameParts = name.trim().split(" ");
-    const firstname = nameParts[0] || "";
-    const lastname = nameParts.slice(1).join(" ") || "";
+    // Split `name` into first/last for HubSpot, unless firstname/lastname
+    // already came in separately.
+    const nameParts = (name || "").trim().split(" ");
+    const firstname = firstnameInput || nameParts[0] || "";
+    const lastname = lastnameInput || nameParts.slice(1).join(" ") || "";
 
     // Prepare HubSpot form submission
     // Only include fields that exist in the HubSpot form

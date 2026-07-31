@@ -27,13 +27,23 @@ Ingeniero senior de Next.js trabajando en un sitio web de marketing que consume 
 npm ci              # Instalar dependencias (limpio); postinstall corre `contentlayer2 build`
 npm run dev         # Dev: `contentlayer2 dev & next dev` (watch MDX + Next en localhost:3000)
 npm run lint        # ESLint plano (`eslint`, NO `next lint`)
+npm test            # Vitest (unit tests) — ver "Tests" abajo
 npm run build       # Build de producción (`contentlayer2 build && next build`)
 npm start           # Servidor de producción
 ```
 
 **Notas**:
-- No hay tests automatizados ni framework de test configurado en el repo. La verificación obligatoria antes de commit es `npm run lint` + `npm run build` (el build falla si Contentlayer no genera los tipos MDX).
+- La verificación obligatoria antes de commit es `npm run lint` + `npm test` + `npm run build` (el build falla si Contentlayer no genera los tipos MDX).
 - Si el build se queja de tipos faltantes de docs, corre primero `npx contentlayer2 build` para regenerar `.contentlayer/generated/`.
+
+### Tests
+
+El repo **sí** tiene tests automatizados con Vitest (`npm test` → `vitest run`). No es un framework e2e ni de componentes — son unit tests de lógica de `src/lib/`:
+- `src/lib/attribution.test.ts`
+- `src/lib/kairosLead.test.ts`
+- `src/lib/pricing.test.ts`
+
+Al añadir lógica nueva en `src/lib/` con reglas de negocio (pricing, atribución, parsing), considera agregar un test junto al archivo (`*.test.ts`).
 
 ---
 
@@ -94,7 +104,9 @@ src/app/
 └── [páginas estáticas]         # privacidad, terminos, cookies, seguridad, contacto, nosotros
 ```
 
-> **Importante**: `src/app/docs/` (Contentlayer) y `src/app/documentacion/` (legacy) coexisten. El sistema activo de documentación es `/docs`; `documentacion/` es legacy.
+> **Importante**: `src/app/docs/` (Contentlayer) y `src/app/documentacion/` (legacy) coexisten.
+> - `/docs/[[...slug]]` es el sistema **activo**: contenido MDX vía Contentlayer2, generado desde `content/docs/`, con búsqueda FlexSearch y navegación prev/next.
+> - `/documentacion` (+ `/documentacion/guias/*`) es **legacy**: páginas React hardcodeadas, no MDX. Contiene enlaces muertos (`href="#"` en las tarjetas de SDK iOS/Android/Web) y no debe usarse como destino de nuevos enlaces internos — enlaza siempre a `/docs`. No mover contenido nuevo aquí.
 
 ### Sistema de Documentación (Contentlayer2)
 
@@ -109,18 +121,35 @@ La lógica de docs vive en `src/lib/docs/` (`config.ts` URLs de APIs por entorno
 
 ### Componentes (`src/components/`)
 
-~40 componentes React. Los principales:
-- `Header.tsx` - Navegación con dropdowns (client component)
+~90 componentes React. Los principales:
+- `Header.tsx` - Composición del header (banner + logo + CTA); delega la navegación a `src/components/navigation/` (ver abajo) y a `src/config/navigation.ts`
 - `Footer.tsx` - Footer del sitio
+- `UrgentBanner.tsx` - Banner fijo superior con el único CTA "Agendar demo" siempre visible
+- `DemoSelector.tsx` - Panel "Ver demos" del header desktop (por producto/sector)
+- `FloatingDemoWidget.tsx` - Widget flotante de demos (oculto en autoservicio, contacto, listas-de-riesgo, gracias)
 - `ContactForm.tsx` - Formulario con HubSpot + Turnstile
 - `NewsletterForm.tsx` - Signup de newsletter
 - `Hero.tsx` / `HeroRegulated.tsx` - Secciones hero
 - `SimuladorPLD.tsx` / `TablaUmbrales.tsx` - Componentes interactivos de cumplimiento
 
-**Integraciones de terceros** (cargadas en root layout):
-- `GoogleTagManager.tsx` - GTM head + body scripts
+#### Navegación (`src/components/navigation/`)
+
+Fuente única de verdad de la navegación global (desktop + móvil), extraída de `Header.tsx`:
+- `src/config/navigation.ts` — datos: mega menús, enlaces simples, CTA globales. Define `visibility.desktop`/`visibility.mobile` por ítem y `status: "active" | "pending"` para categorías preparadas pero aún no publicadas.
+- `DesktopNavigation.tsx` — triggers + mega menús de escritorio (estado de hover propio)
+- `MegaMenu.tsx` — renderiza un mega menú a partir de `MegaMenuConfig`
+- `MobileNavigation.tsx` — acordeón del menú móvil, consume el mismo `navigation.ts`
+- `NavigationCTA.tsx` — cluster "Iniciar sesión" / "Comprar" (CTA globales; "Agendar demo" vive en `UrgentBanner.tsx`, no aquí)
+
+Al añadir o modificar un enlace del header (desktop o móvil), edita **solo** `src/config/navigation.ts` — no dupliques el enlace en un componente.
+
+**Integraciones de terceros** (cargadas en root layout, `src/app/layout.tsx`):
+- `GoogleTagManager.tsx` - GTM head + body scripts + helper `gtmEvent()`
 - `CloudflareTurnstile.tsx` - Protección anti-bot para forms
 - `KairosSalesChat.tsx` - Widget de chat flotante
+- `MicrosoftClarity.tsx` - Session recording (Microsoft Clarity)
+- Meta Pixel — script inline en `layout.tsx` (no componentizado), ID `863305889229368`
+- HubSpot tracking script — `<Script id="hs-script-loader" src="//js.hs-scripts.com/19644701.js">` inline en `layout.tsx`, independiente de las llamadas a HubSpot Forms API de la sección API Routes
 
 ### Datos (`src/lib/`)
 
@@ -156,20 +185,29 @@ import Header from "@/components/Header";
 
 ### CSS Variables (globals.css)
 
+Valores reales actualmente en `src/app/globals.css` (corrige una versión previa de este documento que citaba valores distintos):
+
 ```css
---primary: #0066ff;      /* Azul JAAK */
---accent: #00d4aa;       /* Cyan/Teal */
---text-dark: #111827;
---text-gray: #6b7280;
+--primary: #212A45;       /* Navy JAAK */
+--primary-dark: #0E1133;
+--accent: #2DB6C1;        /* Teal/Cyan */
+--accent-hover: #25969f;
+--accent-green: #2AD796;
+--text-dark: #212A45;
+--text-body: #4A5568;
+--text-muted: #64748B;
+--text-gray: #6B7280;
 ```
 
 Clases utilitarias: `.btn-primary`, `.btn-secondary`, `.btn-blue`, `.btn-cyan`, `.btn-green`, `.section-padding`, `.card`, `.hover-lift`, `.gradient-bg`, `.animate-fade-in-up`
+
+**Discrepancia conocida (pendiente de decisión, no corregida en código):** algunos componentes (`DemoSelector.tsx`, `FloatingDemoWidget.tsx`) definen localmente `TEAL = "#1ECAD3"` y `NAVY = "#202945"`, ligeramente distintos de los tokens globales de arriba. Cualquier normalización de color debe resolver esta discrepancia primero y hacerse en una fase dedicada — no mezclar con cambios funcionales.
 
 ---
 
 ## API Routes
 
-Cuatro route handlers `POST`, todos en `src/app/api/*/route.ts`:
+Seis route handlers `POST`, todos en `src/app/api/*/route.ts`:
 
 | Ruta | Destino | Notas |
 |------|---------|-------|
@@ -177,6 +215,8 @@ Cuatro route handlers `POST`, todos en `src/app/api/*/route.ts`:
 | `/api/capacitacion` | HubSpot Forms API | Form de webinar/capacitación |
 | `/api/onboarding` | HubSpot Forms API | Form de onboarding/autoservicio |
 | `/api/landing` | CRM webhook + Resend (fallback) | Captura de leads de landings; sin HubSpot |
+| `/api/newsletter` | Ver `src/app/api/newsletter/route.ts` | Usado por `NewsletterForm.tsx` (evento `sign_up`) |
+| `/api/lp-telemetry` | Ver `src/app/api/lp-telemetry/route.ts` | Telemetría de landing pages, usado por `src/lib/useLpFunnel.ts` |
 
 **HubSpot Config** (compartido por contact/capacitacion/onboarding; el Portal y Form ID están **hardcodeados** en cada route):
 - Portal ID: `19644701`
