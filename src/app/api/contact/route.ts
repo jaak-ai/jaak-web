@@ -10,14 +10,25 @@ export async function POST(request: Request) {
   let kairosForward: Promise<boolean> | undefined;
   try {
     const body = await request.json();
-    const { name, firstname: firstnameInput, lastname: lastnameInput, email, company, phone, role, message } = body;
+    const { name, firstname: firstnameInput, lastname: lastnameInput, email, company, phone, role, message, formContext } = body;
 
     // Callers can send either a single `name` (split below, original
     // behavior) or `firstname`/`lastname` directly (e.g. OcrApiForm, which
-    // collects them as separate fields). Phone is optional here — some
-    // callers (e.g. the OCR form) don't collect it, and it was already only
-    // enforced client-side by the fields that need it (ContactForm keeps its
-    // own `required` attribute).
+    // collects them as separate fields).
+    //
+    // Phone stays required for every caller except the OCR landing, which
+    // doesn't collect it and identifies itself explicitly via
+    // `formContext: "ocr-documental"` — no other caller sets this field, so
+    // ContactForm and any other existing/future caller keep the original
+    // "phone required" behavior unchanged.
+    const isOcrForm = formContext === "ocr-documental";
+
+    if (!isOcrForm && !phone) {
+      return NextResponse.json(
+        { error: "Nombre, correo electrónico, teléfono y función son requeridos" },
+        { status: 400 }
+      );
+    }
     if (!(name || firstnameInput) || !email || !role) {
       return NextResponse.json(
         { error: "Nombre, correo electrónico y función son requeridos" },
