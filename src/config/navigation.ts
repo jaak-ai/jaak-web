@@ -134,8 +134,8 @@ export const megaMenus: MegaMenuConfig[] = [
           {
             id: "products-ocr-documental",
             label: "OCR documental",
-            href: "/autoservicio",
-            description: "Extracción y validación automática de documentos oficiales",
+            href: "/ocr-documental",
+            description: "Extrae y estructura datos de identificaciones y documentos",
             icon: "M4 8V6a2 2 0 012-2h2M4 8v8m0-8h2m14 0V6a2 2 0 00-2-2h-2m4 4v8m0-8h-2M4 16v2a2 2 0 002 2h2m-4-4h2m14 4v-2m0 2a2 2 0 01-2 2h-2m4-4h-2M9 12h6",
             status: "active",
             visibility: { desktop: true, mobile: true },
