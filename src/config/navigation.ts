@@ -1,15 +1,13 @@
 /**
  * Fuente única de verdad de la navegación global (header desktop + móvil).
  *
- * Fase 1A: este archivo reproduce fielmente el contenido y los destinos que
- * ya existen en producción — no reorganiza categorías todavía. Los campos
- * `status` y `relatedTo` quedan preparados para la Fase 1B (ver PENDING
- * CATEGORIES abajo), pero no alteran lo que se renderiza hoy.
- *
- * `visibility.desktop` / `visibility.mobile` reproducen intencionalmente
- * algunas asimetrías que ya existían entre el mega menú de escritorio y el
- * acordeón móvil (ver notas inline). No se "corrigieron" esas asimetrías en
- * Fase 1A para no introducir cambios visibles no solicitados.
+ * Fase 1B: reorganiza "Plataforma" en las 4 categorías comerciales
+ * (Identidad, Consultas oficiales, Listas de riesgo PLD/AML, Firma y
+ * evidencia), renombra el trigger a "Productos", retira las tarjetas CTA
+ * de los mega menús y la columna de Certificaciones, y da paridad completa
+ * de contenido entre escritorio y móvil (el acordeón móvil ya no oculta
+ * ítems que sí muestra el mega menú — ver notas de Fase 1A que esto
+ * resuelve).
  */
 
 export type NavStatus = "active" | "pending";
@@ -28,7 +26,7 @@ export interface NavLink {
   icon?: string;
   status: NavStatus;
   visibility: NavVisibility;
-  /** IDs de otros NavLink con los que este ítem está relacionado (Fase 1B). */
+  /** IDs de otros NavLink con los que este ítem está relacionado. */
   relatedTo?: string[];
 }
 
@@ -36,14 +34,11 @@ export interface NavColumnLinks {
   type: "links";
   id: string;
   heading?: string;
+  /** Columna completa aún no publicada (p. ej. Consultas oficiales). Se
+   *  omite de ambos renderers hasta que pase a "active" — el componente
+   *  que la consume no necesita cambiar cuando eso ocurra. */
+  status?: NavStatus;
   items: NavLink[];
-}
-
-export interface NavColumnBadges {
-  type: "badges";
-  id: string;
-  heading: string;
-  items: { name: string; caption: string }[];
 }
 
 export interface NavColumnChecklist {
@@ -53,30 +48,15 @@ export interface NavColumnChecklist {
   items: string[];
 }
 
-/** Columna vacía usada solo para conservar el conteo de grid-cols original. */
-export interface NavColumnSpacer {
-  type: "spacer";
-  id: string;
-}
+export type NavColumn = NavColumnLinks | NavColumnChecklist;
 
-export type NavColumn = NavColumnLinks | NavColumnBadges | NavColumnChecklist | NavColumnSpacer;
-
-export interface MegaMenuCTA {
-  heading: string;
-  description: string;
-  ctaLabel: string;
-  ctaHref: string;
-}
-
-export type MegaMenuId = "platform" | "solutions" | "compliance" | "resources";
+export type MegaMenuId = "products" | "solutions" | "compliance" | "resources";
 
 export interface MegaMenuConfig {
   id: MegaMenuId;
   triggerLabel: string;
   status: NavStatus;
   columns: NavColumn[];
-  /** Solo se renderiza en el panel de escritorio (MegaMenu.tsx). */
-  cta?: MegaMenuCTA;
 }
 
 export interface SimpleNavLink {
@@ -95,9 +75,28 @@ export interface GlobalCTA {
   visibility: NavVisibility;
 }
 
-export function isPublished(entry: { status: NavStatus }): boolean {
-  return entry.status === "active";
+export function isPublished(entry: { status?: NavStatus }): boolean {
+  return (entry.status ?? "active") === "active";
 }
+
+/* ────────────────────────────────────────────────────────────────────── */
+/* Ítem compartido: Listas de riesgo PLD/AML                              */
+/* ────────────────────────────────────────────────────────────────────── */
+/*
+ * Un único objeto, referenciado tanto desde "Productos" (categoría
+ * comercial) como desde "Cumplimiento" (producto relacionado / herramienta
+ * recomendada). Mismo id, label, href, descripción e icono en ambos
+ * lugares — nunca se define dos veces.
+ */
+const listasRiesgoLink: NavLink = {
+  id: "listas-riesgo-pld-aml",
+  label: "Listas de riesgo PLD/AML",
+  href: "/listas-de-riesgo-pld-aml",
+  description: "Screening de sanciones, PEP y fuentes nacionales e internacionales.",
+  icon: "M21 21l-4.35-4.35M17 10a7 7 0 11-14 0 7 7 0 0114 0z",
+  status: "active",
+  visibility: { desktop: true, mobile: true },
+};
 
 /* ────────────────────────────────────────────────────────────────────── */
 /* Mega menús                                                             */
@@ -105,17 +104,17 @@ export function isPublished(entry: { status: NavStatus }): boolean {
 
 export const megaMenus: MegaMenuConfig[] = [
   {
-    id: "platform",
-    triggerLabel: "Plataforma",
+    id: "products",
+    triggerLabel: "Productos",
     status: "active",
     columns: [
       {
         type: "links",
-        id: "platform-identidad",
-        heading: "Identidad",
+        id: "products-identidad",
+        heading: "Verificación de identidad",
         items: [
           {
-            id: "platform-verificacion-identidad",
+            id: "products-verificacion-identidad",
             label: "Verificación de identidad",
             href: "/plataforma/verificacion-identidad",
             description: "KYC biométrico con prueba de vida",
@@ -124,23 +123,52 @@ export const megaMenus: MegaMenuConfig[] = [
             visibility: { desktop: true, mobile: true },
           },
           {
-            id: "platform-kyc-demo",
-            label: "Demo KYC + prueba $99",
+            id: "products-kyc-biometrico",
+            label: "KYC biométrico + prueba $99",
             href: "/kyc-demo-autoservicio",
-            description: "Mira el flujo y actívalo en autoservicio",
+            description: "Actívalo en autoservicio",
             icon: "M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z",
+            status: "active",
+            visibility: { desktop: true, mobile: true },
+          },
+          {
+            id: "products-ocr-documental",
+            label: "OCR documental",
+            href: "/autoservicio",
+            description: "Extracción y validación automática de documentos oficiales",
+            icon: "M4 8V6a2 2 0 012-2h2M4 8v8m0-8h2m14 0V6a2 2 0 00-2-2h-2m4 4v8m0-8h-2M4 16v2a2 2 0 002 2h2m-4-4h2m14 4v-2m0 2a2 2 0 01-2 2h-2m4-4h-2M9 12h6",
             status: "active",
             visibility: { desktop: true, mobile: true },
           },
         ],
       },
       {
+        // Fase 1B: preparada pero no publicada. `status:"pending"` a nivel
+        // de columna hace que MegaMenu / MobileNavigation la omitan por
+        // completo sin necesitar cambios de código cuando se active — solo
+        // cambiar este `status` a "active" y completar `href`.
         type: "links",
-        // Columna sin heading visible en el original (usa un "&nbsp;" como spacer).
-        id: "platform-firma",
+        id: "products-consultas-oficiales",
+        heading: "Consultas oficiales",
+        status: "pending",
         items: [
           {
-            id: "platform-firma-electronica",
+            id: "pending:consultas-oficiales",
+            label: "Consultas oficiales",
+            href: null,
+            description: "INE, RENAPO/CURP — landing en preparación",
+            status: "pending",
+            visibility: { desktop: false, mobile: false },
+          },
+        ],
+      },
+      {
+        type: "links",
+        id: "products-firma",
+        heading: "Firma digital y evidencia",
+        items: [
+          {
+            id: "products-firma-electronica",
             label: "Firma electrónica",
             href: "/plataforma/firma-electronica",
             description: "Firma con validez legal completa",
@@ -149,63 +177,16 @@ export const megaMenus: MegaMenuConfig[] = [
             visibility: { desktop: true, mobile: true },
           },
           {
-            id: "platform-firma-simple",
-            label: "Firma Simple",
-            href: "/firma-electronica-simple",
-            status: "active",
-            visibility: { desktop: true, mobile: true },
-          },
-          {
-            id: "platform-firma-nom151",
-            label: "Firma Digital NOM-151",
+            id: "products-firma-nom151",
+            label: "Firma NOM-151",
             href: "/firma-electronica-nom-151",
+            description: "Firma electrónica con validez legal",
+            icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
             status: "active",
             visibility: { desktop: true, mobile: true },
           },
           {
-            id: "platform-firma-efirma",
-            label: "e.firma (SAT)",
-            href: "/firma-electronica-efirma",
-            status: "active",
-            visibility: { desktop: true, mobile: true },
-          },
-          {
-            id: "platform-firma-sello-tiempo",
-            label: "Sello de Tiempo",
-            href: "/firma-certificada-sello-tiempo",
-            status: "active",
-            visibility: { desktop: true, mobile: true },
-          },
-          {
-            id: "platform-firma-biometrica",
-            label: "Firma Digital NOM-151 + Biometría",
-            href: "/firma-electronica-biometrica",
-            status: "active",
-            visibility: { desktop: true, mobile: true },
-          },
-          {
-            id: "platform-firma-kyc",
-            label: "Firma Digital NOM-151 + KYC",
-            href: "/firma-electronica-kyc",
-            status: "active",
-            visibility: { desktop: true, mobile: true },
-          },
-          {
-            id: "platform-signa-calculadora",
-            label: "Calculadora de precios (Signa)",
-            href: "/signa/calculadora",
-            status: "active",
-            visibility: { desktop: true, mobile: true },
-          },
-          {
-            id: "platform-signa-comparacion",
-            label: "Comparación de planes (Signa)",
-            href: "/signa/comparacion",
-            status: "active",
-            visibility: { desktop: true, mobile: true },
-          },
-          {
-            id: "platform-gestion-evidencia",
+            id: "products-gestion-evidencia",
             label: "Gestión de evidencia",
             href: "/plataforma/gestion-evidencia",
             description: "Auditoría y trazabilidad completa",
@@ -213,25 +194,24 @@ export const megaMenus: MegaMenuConfig[] = [
             status: "active",
             visibility: { desktop: true, mobile: true },
           },
+          {
+            id: "products-signa-comparacion",
+            label: "Comparación de planes (Signa)",
+            href: "/signa/comparacion",
+            description: "Compara niveles de firma y precio",
+            icon: "M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z",
+            status: "active",
+            visibility: { desktop: true, mobile: true },
+          },
         ],
       },
       {
-        type: "badges",
-        id: "platform-certificaciones",
-        heading: "Certificaciones",
-        items: [
-          { name: "ISO 27001", caption: "Seguridad de información" },
-          { name: "ISO 9001", caption: "Gestión de calidad" },
-          { name: "iBeta", caption: "Prueba de vida certificada" },
-        ],
+        type: "links",
+        id: "products-riesgo",
+        heading: "Listas de riesgo",
+        items: [listasRiesgoLink],
       },
     ],
-    cta: {
-      heading: "¿Necesitas una evaluación?",
-      description: "En 15 minutos te decimos si JAAK cumple lo que tu regulación exige.",
-      ctaLabel: "Solicitar revisión regulatoria",
-      ctaHref: "/contacto",
-    },
   },
   {
     id: "solutions",
@@ -327,10 +307,7 @@ export const megaMenus: MegaMenuConfig[] = [
             description: "Alta de clientes 100% remoto",
             icon: "M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z",
             status: "active",
-            // Gap preexistente: el acordeón móvil actual no incluye este enlace
-            // (sí está en Footer). Se conserva tal cual para no introducir un
-            // cambio visible en Fase 1A. Candidato a corregir en Fase 1B.
-            visibility: { desktop: true, mobile: false },
+            visibility: { desktop: true, mobile: true },
           },
           {
             id: "sol-firma-contratos",
@@ -339,7 +316,7 @@ export const megaMenus: MegaMenuConfig[] = [
             description: "Contratos con validez legal",
             icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4",
             status: "active",
-            visibility: { desktop: true, mobile: false }, // ver nota arriba
+            visibility: { desktop: true, mobile: true },
           },
           {
             id: "sol-prevencion-fraude",
@@ -348,7 +325,7 @@ export const megaMenus: MegaMenuConfig[] = [
             description: "Detección en tiempo real",
             icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
             status: "active",
-            visibility: { desktop: true, mobile: false }, // ver nota arriba
+            visibility: { desktop: true, mobile: true },
           },
         ],
       },
@@ -364,12 +341,6 @@ export const megaMenus: MegaMenuConfig[] = [
         ],
       },
     ],
-    cta: {
-      heading: "¿Tu proceso resistiría una auditoría?",
-      description: "Diseñado para organizaciones sujetas a supervisión regulatoria.",
-      ctaLabel: "Solicitar revisión regulatoria",
-      ctaHref: "/contacto",
-    },
   },
   {
     id: "compliance",
@@ -391,10 +362,10 @@ export const megaMenus: MegaMenuConfig[] = [
             visibility: { desktop: true, mobile: true },
           },
           {
-            id: "comp-pld-aml",
-            label: "PLD / AML",
+            id: "comp-marco-pld",
+            label: "Marco regulatorio PLD/FT",
             href: "/cumplimiento/actividades-vulnerables",
-            description: "Umbrales y simulador 2026",
+            description: "Obligaciones, umbrales y actividades vulnerables.",
             icon: "M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z",
             status: "active",
             visibility: { desktop: true, mobile: true },
@@ -408,27 +379,6 @@ export const megaMenus: MegaMenuConfig[] = [
             status: "active",
             visibility: { desktop: true, mobile: true },
           },
-          {
-            id: "comp-listas-riesgo",
-            label: "Listas de riesgo PLD/AML",
-            href: "/listas-de-riesgo-pld-aml",
-            description: "Screening AML: OFAC, PEP y SAT 69-B",
-            icon: "M21 21l-4.35-4.35M17 10a7 7 0 11-14 0 7 7 0 0114 0z",
-            status: "active",
-            visibility: { desktop: true, mobile: true },
-            // Fase 1B: este mismo ítem (mismo id, mismo href) se referenciará
-            // también desde una futura categoría "Productos → Listas de
-            // riesgo PLD/AML". No se duplica contenido: ambos accesos deben
-            // apuntar a este único NavLink / a /listas-de-riesgo-pld-aml.
-            relatedTo: ["pending:productos-listas-riesgo"],
-          },
-        ],
-      },
-      {
-        type: "links",
-        // Columna sin heading visible en el original (usa un "&nbsp;" como spacer).
-        id: "compliance-mas-regulaciones",
-        items: [
           {
             id: "comp-uif",
             label: "UIF",
@@ -447,13 +397,6 @@ export const megaMenus: MegaMenuConfig[] = [
             status: "active",
             visibility: { desktop: true, mobile: true },
           },
-        ],
-      },
-      {
-        type: "links",
-        id: "compliance-informacion",
-        heading: "Información",
-        items: [
           {
             id: "comp-ver-todo",
             label: "Ver todo",
@@ -470,19 +413,19 @@ export const megaMenus: MegaMenuConfig[] = [
             description: "ISO 27001 y protección de datos",
             icon: "M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z",
             status: "active",
-            // Gap preexistente: no está en el acordeón móvil actual (sí en
-            // Footer). Conservado tal cual en Fase 1A — ver nota de arriba.
-            visibility: { desktop: true, mobile: false },
+            visibility: { desktop: true, mobile: true },
           },
         ],
       },
+      {
+        // Mismo objeto que la columna "Listas de riesgo" de Productos — no
+        // se redefine label/href/descripción/id/icono, solo se referencia.
+        type: "links",
+        id: "compliance-producto-relacionado",
+        heading: "Producto relacionado",
+        items: [listasRiesgoLink],
+      },
     ],
-    cta: {
-      heading: "¿Necesitas cumplir regulación?",
-      description: "En 15 minutos te decimos si JAAK cumple lo que tu regulación exige.",
-      ctaLabel: "Solicitar revisión regulatoria",
-      ctaHref: "/contacto",
-    },
   },
   {
     id: "resources",
@@ -521,6 +464,15 @@ export const megaMenus: MegaMenuConfig[] = [
             status: "active",
             visibility: { desktop: true, mobile: true },
           },
+          {
+            id: "res-demos",
+            label: "Ver demos",
+            href: "/#demos",
+            description: "Video demos por producto y sector",
+            icon: "M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z",
+            status: "active",
+            visibility: { desktop: true, mobile: true },
+          },
         ],
       },
       {
@@ -535,9 +487,7 @@ export const megaMenus: MegaMenuConfig[] = [
             description: "Nuestra misión y equipo",
             icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z",
             status: "active",
-            // Gap preexistente: no está en el acordeón móvil actual (sí en
-            // Footer). Conservado tal cual en Fase 1A.
-            visibility: { desktop: true, mobile: false },
+            visibility: { desktop: true, mobile: true },
           },
           {
             id: "res-contacto",
@@ -550,14 +500,7 @@ export const megaMenus: MegaMenuConfig[] = [
           },
         ],
       },
-      { type: "spacer", id: "resources-spacer" },
     ],
-    cta: {
-      heading: "¿Tienes preguntas?",
-      description: "Nuestro equipo está listo para ayudarte con tu proyecto de identidad.",
-      ctaLabel: "Contactar equipo",
-      ctaHref: "/contacto",
-    },
   },
 ];
 
@@ -578,15 +521,12 @@ export const simpleNavLinks: SimpleNavLink[] = [
 /* CTA globales del header (fuera de los mega menús)                      */
 /* ────────────────────────────────────────────────────────────────────── */
 /*
- * "Agendar demo" NO vive aquí: sigue siendo responsabilidad exclusiva de
- * UrgentBanner.tsx (banner fijo superior). El botón compacto "Demo" que
- * duplicaba ese CTA en Header.tsx se eliminó en Fase 1A.
- *
- * "Solicitar revisión regulatoria" tampoco se agrega como CTA global de
- * este cluster por instrucción explícita: no debe convertirse en un cuarto
- * CTA global. Sigue existiendo dentro de los mega menús y en el panel
- * móvil exactamente como antes — ver docs/fase-1a-report.md para el
- * inventario completo de dónde aparece.
+ * Únicas 3 acciones comerciales permanentes del header: Agendar demo
+ * (banner superior, UrgentBanner.tsx — no vive en este archivo), Comprar
+ * e Iniciar sesión. "Solicitar revisión", "Ver demos", "Hablar con un
+ * especialista" y "Cuéntanos tu proyecto" quedaron retirados del primer
+ * nivel del header en Fase 1B — sus páginas/componentes siguen intactos,
+ * solo dejaron de ser opciones globales.
  */
 export const globalCTAs: GlobalCTA[] = [
   {
@@ -603,39 +543,5 @@ export const globalCTAs: GlobalCTA[] = [
     href: "/autoservicio",
     variant: "primary",
     visibility: { desktop: true, mobile: true },
-  },
-];
-
-/* ────────────────────────────────────────────────────────────────────── */
-/* Categorías pendientes (Fase 1B) — NO se renderizan en Fase 1A           */
-/* ────────────────────────────────────────────────────────────────────── */
-/*
- * Preparado internamente para que la Fase 1B pueda reorganizar "Plataforma"
- * en las 4 categorías comerciales del brief sin rediseñar el esquema de
- * datos. `status: "pending"` + `href: null` garantizan que ningún
- * componente de Fase 1A renderice esto como enlace público, cumpliendo la
- * instrucción de no publicar enlaces vacíos, "#", ni "próximamente".
- */
-export const pendingCategories: MegaMenuConfig[] = [
-  {
-    id: "platform", // ocupará una columna dentro de "Productos" en Fase 1B
-    triggerLabel: "Consultas oficiales",
-    status: "pending",
-    columns: [
-      {
-        type: "links",
-        id: "pending-consultas-oficiales",
-        items: [
-          {
-            id: "pending:consultas-oficiales",
-            label: "Consultas oficiales",
-            href: null,
-            description: "INE, RENAPO/CURP — landing en preparación",
-            status: "pending",
-            visibility: { desktop: false, mobile: false },
-          },
-        ],
-      },
-    ],
   },
 ];

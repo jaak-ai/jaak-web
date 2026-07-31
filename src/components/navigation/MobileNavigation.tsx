@@ -1,236 +1,159 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { gtmEvent } from "@/components/GoogleTagManager";
-import { getWhatsAppUrl } from "@/lib/whatsapp";
-import { SCHEDULE_DEMO_URL } from "@/lib/scheduling";
-import { KYC_GENERAL_DEMO, sectorDemos } from "@/lib/sectorDemos";
-import { megaMenus, simpleNavLinks, type MegaMenuId, type NavLink } from "@/config/navigation";
-import NavigationCTA from "./NavigationCTA";
+import {
+  megaMenus,
+  simpleNavLinks,
+  globalCTAs,
+  isPublished,
+  type MegaMenuConfig,
+  type MegaMenuId,
+  type NavLink,
+} from "@/config/navigation";
 
-/** Orden de las secciones del acordeón móvil — coincide con el orden que
- *  ya existía en Header.tsx (distinto del orden de triggers de escritorio,
- *  lo cual ya era así antes de este refactor). */
-const MOBILE_SECTION_ORDER: { id: MegaMenuId; heading: string }[] = [
-  { id: "platform", heading: "Plataforma" },
-  { id: "solutions", heading: "Soluciones" },
-  { id: "compliance", heading: "Cumplimiento" },
-  { id: "resources", heading: "Recursos" },
-];
+/** Orden de las filas del acordeón móvil (Fase 1B): 4 categorías + Precios
+ *  + Iniciar sesión, todas colapsadas al abrir el menú. "Comprar" no se
+ *  repite aquí — ya está visible en la barra superior móvil. */
+const MOBILE_SECTION_ORDER: MegaMenuId[] = ["products", "solutions", "compliance", "resources"];
 
-function flattenMobileLinks(menuId: MegaMenuId): NavLink[] {
-  const menu = megaMenus.find((m) => m.id === menuId);
-  if (!menu) return [];
-  const links: NavLink[] = [];
-  for (const column of menu.columns) {
-    if (column.type !== "links") continue;
-    for (const item of column.items) {
-      if (item.visibility.mobile) links.push(item);
-    }
-  }
-  return links;
+function flattenColumnLinks(menu: MegaMenuConfig): { heading?: string; items: NavLink[] }[] {
+  return menu.columns
+    .filter((c) => c.type === "links" && isPublished(c))
+    .map((c) => ({
+      heading: c.type === "links" ? c.heading : undefined,
+      items: c.type === "links" ? c.items.filter((i) => i.visibility.mobile && isPublished(i)) : [],
+    }))
+    .filter((group) => group.items.length > 0);
 }
 
-function MobileLink({ item, onClose }: { item: NavLink; onClose: () => void }) {
-  if (!item.href) return null;
-  const isSub = !item.icon && !item.description;
+function trackLinkClick(menu: MegaMenuConfig, item: NavLink) {
+  gtmEvent("nav_link_click", {
+    menu: menu.id,
+    item: item.id,
+    label: item.label,
+    page_path: window.location.pathname,
+  });
+}
+
+function AccordionSection({
+  menu,
+  open,
+  onToggle,
+  onNavigate,
+}: {
+  menu: MegaMenuConfig;
+  open: boolean;
+  onToggle: () => void;
+  onNavigate: () => void;
+}) {
+  const groups = flattenColumnLinks(menu);
+  const panelId = `mobile-menu-panel-${menu.id}`;
+
   return (
-    <Link
-      href={item.href}
-      className={isSub ? "block text-sm text-gray-500 hover:text-[#0066ff]" : "block text-gray-700 hover:text-[#0066ff]"}
-      onClick={onClose}
-    >
-      {item.label}
-    </Link>
+    <div className="border-b border-gray-100">
+      <button
+        type="button"
+        aria-expanded={open}
+        aria-controls={panelId}
+        onClick={onToggle}
+        className="w-full flex items-center justify-between py-3.5 text-left text-[15px] font-semibold text-gray-900"
+      >
+        {menu.triggerLabel}
+        <svg
+          className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      {open ? (
+        <div id={panelId} className="pb-4 space-y-4">
+          {groups.map((group, i) => (
+            <div key={group.heading ?? i}>
+              {group.heading ? (
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">{group.heading}</p>
+              ) : null}
+              <div className="space-y-2.5">
+                {group.items.map((item) =>
+                  item.href ? (
+                    <Link
+                      key={item.id}
+                      href={item.href}
+                      onClick={() => {
+                        trackLinkClick(menu, item);
+                        onNavigate();
+                      }}
+                      className="block text-sm text-gray-700 hover:text-[#0066ff]"
+                    >
+                      {item.label}
+                    </Link>
+                  ) : null
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : null}
+    </div>
   );
 }
 
 export default function MobileNavigation({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const [openSection, setOpenSection] = useState<MegaMenuId | null>(null);
+
   if (!open) return null;
 
-  const platformMenu = megaMenus.find((m) => m.id === "platform")!;
-  const identidadColumn = platformMenu.columns.find((c) => c.id === "platform-identidad");
-  const firmaColumn = platformMenu.columns.find((c) => c.id === "platform-firma");
-
-  const identidadItems: NavLink[] =
-    identidadColumn?.type === "links" ? identidadColumn.items.filter((i) => i.visibility.mobile) : [];
-  const firmaItems: NavLink[] = firmaColumn?.type === "links" ? firmaColumn.items.filter((i) => i.visibility.mobile) : [];
-  // El primer y último ítem de la columna "Firma" son los bloques con icono
-  // ("Firma electrónica" y "Gestión de evidencia"); todo lo intermedio son
-  // las variantes de firma que van en la sub-lista con indent.
-  const firmaLead = firmaItems[0];
-  const firmaTail = firmaItems[firmaItems.length - 1];
-  const firmaSub = firmaItems.slice(1, -1);
+  const iniciarSesion = globalCTAs.find((cta) => cta.id === "iniciar-sesion");
 
   return (
     <div className="lg:hidden bg-white border-t border-gray-200 max-h-[calc(100vh-114px)] overflow-y-auto">
-      <div className="px-4 py-6 space-y-6">
-        {/* Demos Section — sigue leyendo de src/lib/sectorDemos.ts / demoCards.ts,
-            sin cambios respecto al Header.tsx original (solo se relocalizó el JSX). */}
-        <div>
-          <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Demos</h3>
-          <div className="space-y-3">
-            <Link
-              href="/firma-nom151-demo-autoservicio"
-              onClick={() => {
-                gtmEvent("demo_firma_nom151_click", {
-                  source: "header",
-                  destination: "firma_nom151",
-                  page_path: window.location.pathname,
-                });
-                onClose();
-              }}
-              data-cta="demo-firma-nom151"
-              data-source="header"
-              className="block text-gray-700 hover:text-[#0066ff]"
-            >
-              Firma Digital NOM-151
-            </Link>
-            <Link
-              href={KYC_GENERAL_DEMO.href}
-              onClick={() => {
-                gtmEvent("demo_kyc_click", {
-                  source: "header",
-                  destination: "kyc_general",
-                  page_path: window.location.pathname,
-                });
-                onClose();
-              }}
-              data-cta="demo-kyc"
-              data-source="header"
-              className="block text-gray-700 hover:text-[#0066ff]"
-            >
-              KYC
-            </Link>
-            <div className="pl-4">
-              <span className="text-xs font-bold uppercase tracking-wide text-gray-400">Elegir por sector</span>
-              <div className="flex flex-wrap gap-2 mt-2">
-                {sectorDemos.map((s) => (
-                  <Link
-                    key={s.trackingId}
-                    href={s.href}
-                    onClick={() => {
-                      gtmEvent(
-                        s.trackingId === "kyc_inmobiliario" ? "demo_kyc_inmobiliario_click" : "demo_kyc_sector_click",
-                        { source: "header", destination: s.trackingId, page_path: window.location.pathname }
-                      );
-                      onClose();
-                    }}
-                    data-cta={`demo-${s.trackingId}`}
-                    data-source="header"
-                    className="text-xs font-semibold px-2.5 py-1 rounded-full bg-gray-100 text-gray-700"
-                  >
-                    {s.sector}
-                  </Link>
-                ))}
-              </div>
-            </div>
-            <a
-              href={SCHEDULE_DEMO_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => {
-                gtmEvent("schedule_demo_click", {
-                  source: "header",
-                  destination: "meetings_hubspot",
-                  page_path: window.location.pathname,
-                });
-                onClose();
-              }}
-              data-cta="agendar-demo"
-              data-source="header"
-              className="block text-gray-700 hover:text-[#0066ff]"
-            >
-              Agendar demo con un especialista
-            </a>
-            <Link
-              href="/contacto"
-              onClick={() => {
-                gtmEvent("contact_click", { source: "header", destination: "contacto", page_path: window.location.pathname });
-                onClose();
-              }}
-              data-cta="ayuda-elegir"
-              data-source="header"
-              className="block text-gray-700 hover:text-[#0066ff]"
-            >
-              Formulario de contacto
-            </Link>
-            <a
-              href={getWhatsAppUrl("header")}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => {
-                gtmEvent("whatsapp_click", { source: "header", destination: "whatsapp", page_path: window.location.pathname });
-                onClose();
-              }}
-              data-cta="whatsapp"
-              data-source="header"
-              className="block text-gray-700 hover:text-[#0066ff]"
-            >
-              WhatsApp
-            </a>
-          </div>
-        </div>
+      <div className="px-4 py-2">
+        {MOBILE_SECTION_ORDER.map((id) => {
+          const menu = megaMenus.find((m) => m.id === id);
+          if (!menu) return null;
+          return (
+            <AccordionSection
+              key={menu.id}
+              menu={menu}
+              open={openSection === menu.id}
+              onToggle={() => setOpenSection((prev) => (prev === menu.id ? null : menu.id))}
+              onNavigate={onClose}
+            />
+          );
+        })}
 
-        {/* Plataforma: caso especial — reproduce el agrupamiento visual
-            original (líder "Firma electrónica" + sub-lista con indent +
-            "Gestión de evidencia" y las 2 herramientas de Signa al final). */}
-        <div>
-          <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Plataforma</h3>
-          <div className="space-y-3">
-            {identidadItems.map((item) => (
-              <MobileLink key={item.id} item={item} onClose={onClose} />
-            ))}
-            {firmaLead ? <MobileLink item={firmaLead} onClose={onClose} /> : null}
-            <div className="ml-4 space-y-2 border-l-2 border-gray-100 pl-3">
-              {firmaSub.map((item) => (
-                <MobileLink key={item.id} item={item} onClose={onClose} />
-              ))}
-            </div>
-            {firmaTail ? <MobileLink item={firmaTail} onClose={onClose} /> : null}
-          </div>
-        </div>
-
-        {/* Soluciones / Cumplimiento / Recursos — genéricas, impulsadas por config. */}
-        {MOBILE_SECTION_ORDER.filter((s) => s.id !== "platform").map((section) => (
-          <div key={section.id}>
-            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">{section.heading}</h3>
-            <div className="space-y-3">
-              {flattenMobileLinks(section.id).map((item) => (
-                <MobileLink key={item.id} item={item} onClose={onClose} />
-              ))}
-            </div>
-          </div>
-        ))}
-
-        {/* Autoservicio (Comprar) */}
-        <div>
-          <NavigationCTA context="mobile" only="comprar" onNavigate={onClose} />
-        </div>
-
-        {/* Precios */}
-        <div>
-          {simpleNavLinks
-            .filter((link) => link.visibility.mobile)
-            .map((link) => (
-              <Link key={link.id} href={link.href} className="block text-[#0066ff] font-semibold" onClick={onClose}>
+        {simpleNavLinks
+          .filter((link) => link.visibility.mobile)
+          .map((link) => (
+            <div key={link.id} className="border-b border-gray-100">
+              <Link
+                href={link.href}
+                className="block py-3.5 text-[15px] font-semibold text-gray-900"
+                onClick={onClose}
+              >
                 {link.label}
               </Link>
-            ))}
-        </div>
+            </div>
+          ))}
 
-        <div className="pt-4 border-t border-gray-200">
-          <NavigationCTA context="mobile" only="iniciar-sesion" onNavigate={onClose} />
-          {/* "Solicitar revisión regulatoria" tal como en el original — no
-              forma parte del set de CTA globales (ver navigation.ts). */}
-          <Link
-            href="/contacto"
-            className="block w-full text-center px-5 py-3 bg-[#0066ff] text-white font-semibold rounded-lg"
-            onClick={onClose}
-          >
-            Solicitar revisión regulatoria
-          </Link>
-        </div>
+        {iniciarSesion && iniciarSesion.visibility.mobile ? (
+          <div>
+            <Link
+              href={iniciarSesion.href}
+              className="block py-3.5 text-[15px] font-semibold text-gray-900"
+              onClick={() => {
+                gtmEvent("login_click", { source: "mobile_nav", page_path: window.location.pathname });
+                onClose();
+              }}
+            >
+              {iniciarSesion.label}
+            </Link>
+          </div>
+        ) : null}
       </div>
     </div>
   );

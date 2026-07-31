@@ -4,10 +4,14 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import UrgentBanner from "./UrgentBanner";
-import DemoSelector from "./DemoSelector";
 import DesktopNavigation from "./navigation/DesktopNavigation";
 import MobileNavigation from "./navigation/MobileNavigation";
 import NavigationCTA from "./navigation/NavigationCTA";
+
+/** Nombre del evento custom que avisa a widgets flotantes independientes
+ *  (FloatingDemoWidget, MobileStickyCTA) que el menú móvil está abierto,
+ *  para que se oculten temporalmente y no se superpongan con el panel. */
+export const MOBILE_NAV_STATE_EVENT = "jaak:mobile-nav-open-change";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -20,6 +24,10 @@ export default function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    window.dispatchEvent(new CustomEvent(MOBILE_NAV_STATE_EVENT, { detail: { open: mobileMenuOpen } }));
+  }, [mobileMenuOpen]);
 
   return (
     <>
@@ -49,21 +57,12 @@ export default function Header() {
               />
             </Link>
 
-            {/* Desktop Navigation */}
-            <DesktopNavigation>
-              <DemoSelector />
-            </DesktopNavigation>
+            {/* Desktop Navigation: Productos, Soluciones, Precios, Recursos, Cumplimiento */}
+            <DesktopNavigation />
 
-            {/* Right side buttons */}
+            {/* Right side buttons: Iniciar sesión, Comprar */}
             <div className="flex items-center gap-1.5 sm:gap-4 flex-shrink-0">
-              <NavigationCTA context="desktop" only="iniciar-sesion" />
-              <Link
-                href="/contacto"
-                className="hidden md:block px-4 py-2.5 font-semibold text-[15px] rounded-lg border border-gray-300 text-[#212A45] hover:border-[#212A45] transition-all"
-              >
-                Solicitar revisión
-              </Link>
-              <NavigationCTA context="desktop" only="comprar" />
+              <NavigationCTA />
 
               {/* Mobile menu button */}
               <button

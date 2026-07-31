@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { gtmEvent } from "./GoogleTagManager";
 import { SCHEDULE_DEMO_URL } from "@/lib/scheduling";
+import { MOBILE_NAV_STATE_EVENT } from "./Header";
 
 const TEAL = "#1ECAD3";
 const NAVY = "#202945";
@@ -16,11 +17,23 @@ export default function MobileStickyCTA() {
   const [revealed, setRevealed] = useState(false);
   const [dismissed, setDismissed] = useState(false);
   const [obscured, setObscured] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   useEffect(() => {
     if (sessionStorage.getItem(DISMISS_KEY) === "1") {
       setDismissed(true);
     }
+  }, []);
+
+  // Se oculta temporalmente mientras el menú móvil esté abierto para no
+  // superponerse con el panel (Fase 1B) — no afecta su funcionalidad ni
+  // su lógica de aparición/descarte fuera de ese estado.
+  useEffect(() => {
+    const handleMobileNavChange = (e: Event) => {
+      setMobileNavOpen(Boolean((e as CustomEvent<{ open: boolean }>).detail?.open));
+    };
+    window.addEventListener(MOBILE_NAV_STATE_EVENT, handleMobileNavChange);
+    return () => window.removeEventListener(MOBILE_NAV_STATE_EVENT, handleMobileNavChange);
   }, []);
 
   useEffect(() => {
@@ -67,7 +80,7 @@ export default function MobileStickyCTA() {
     gtmEvent("mobile_sticky_cta_dismiss", { page_path: window.location.pathname });
   };
 
-  if (!revealed || dismissed || obscured) return null;
+  if (!revealed || dismissed || obscured || mobileNavOpen) return null;
 
   return (
     <div
