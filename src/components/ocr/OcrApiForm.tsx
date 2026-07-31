@@ -50,12 +50,20 @@ function buildStructuredMessage(form: FormState): string {
   return lines.join("\n");
 }
 
+type RequiredField = "phone" | "company";
+
+const REQUIRED_FIELD_ERRORS: Record<RequiredField, string> = {
+  phone: "El teléfono es obligatorio.",
+  company: "La empresa es obligatoria.",
+};
+
 export default function OcrApiForm() {
   const [form, setForm] = useState<FormState>(INITIAL);
   const [turnstileToken, setTurnstileToken] = useState("");
   const [turnstileKey, setTurnstileKey] = useState(0);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<Partial<Record<RequiredField, string>>>({});
 
   const handleTurnstileVerify = useCallback((token: string) => setTurnstileToken(token), []);
   const handleTurnstileError = useCallback(() => setErrorMessage("Error de verificación. Por favor, recarga la página."), []);
@@ -63,12 +71,30 @@ export default function OcrApiForm() {
 
   const field = (name: keyof FormState) => ({
     value: form[name],
-    onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
-      setForm((prev) => ({ ...prev, [name]: e.target.value })),
+    onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+      setForm((prev) => ({ ...prev, [name]: e.target.value }));
+      if (name === "phone" || name === "company") {
+        setFieldErrors((prev) => ({ ...prev, [name]: undefined }));
+      }
+    },
   });
+
+  function validateRequiredFields(): boolean {
+    const errors: Partial<Record<RequiredField, string>> = {};
+    if (!form.phone.trim()) errors.phone = REQUIRED_FIELD_ERRORS.phone;
+    if (!form.company.trim()) errors.company = REQUIRED_FIELD_ERRORS.company;
+    setFieldErrors(errors);
+    return Object.keys(errors).length === 0;
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+
+    if (!validateRequiredFields()) {
+      setStatus("error");
+      setErrorMessage("Revisa los campos marcados antes de continuar.");
+      return;
+    }
 
     if (!turnstileToken) {
       setStatus("error");
@@ -92,7 +118,6 @@ export default function OcrApiForm() {
           role: "Contacto Web",
           message: buildStructuredMessage(form),
           turnstile_token: turnstileToken,
-          formContext: "ocr-documental",
           ...getUtmParams(),
         }),
       });
@@ -167,11 +192,40 @@ export default function OcrApiForm() {
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label className={labelClass} htmlFor="ocr-company">Empresa *</label>
-                  <input id="ocr-company" required placeholder="Nombre de la empresa" className={inputClass} {...field("company")} />
+                  <input
+                    id="ocr-company"
+                    required
+                    aria-required="true"
+                    aria-invalid={fieldErrors.company ? "true" : undefined}
+                    aria-describedby={fieldErrors.company ? "ocr-company-error" : undefined}
+                    placeholder="Nombre de la empresa"
+                    className={`${inputClass} ${fieldErrors.company ? "border-red-400 focus:border-red-400 focus:ring-red-400" : ""}`}
+                    {...field("company")}
+                  />
+                  {fieldErrors.company && (
+                    <p id="ocr-company-error" role="alert" className="text-red-300 text-[11.5px] mt-1.5">
+                      {fieldErrors.company}
+                    </p>
+                  )}
                 </div>
                 <div>
-                  <label className={labelClass} htmlFor="ocr-phone">Teléfono (opcional)</label>
-                  <input id="ocr-phone" type="tel" placeholder="+52 55 0000 0000" className={inputClass} {...field("phone")} />
+                  <label className={labelClass} htmlFor="ocr-phone">Teléfono *</label>
+                  <input
+                    id="ocr-phone"
+                    type="tel"
+                    required
+                    aria-required="true"
+                    aria-invalid={fieldErrors.phone ? "true" : undefined}
+                    aria-describedby={fieldErrors.phone ? "ocr-phone-error" : undefined}
+                    placeholder="+52 55 0000 0000"
+                    className={`${inputClass} ${fieldErrors.phone ? "border-red-400 focus:border-red-400 focus:ring-red-400" : ""}`}
+                    {...field("phone")}
+                  />
+                  {fieldErrors.phone && (
+                    <p id="ocr-phone-error" role="alert" className="text-red-300 text-[11.5px] mt-1.5">
+                      {fieldErrors.phone}
+                    </p>
+                  )}
                 </div>
               </div>
 

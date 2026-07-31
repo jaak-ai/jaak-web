@@ -10,28 +10,15 @@ export async function POST(request: Request) {
   let kairosForward: Promise<boolean> | undefined;
   try {
     const body = await request.json();
-    const { name, firstname: firstnameInput, lastname: lastnameInput, email, company, phone, role, message, formContext } = body;
+    const { name, firstname: firstnameInput, lastname: lastnameInput, email, company, phone, role, message } = body;
 
-    // Callers can send either a single `name` (split below, original
-    // behavior) or `firstname`/`lastname` directly (e.g. OcrApiForm, which
-    // collects them as separate fields).
-    //
-    // Phone stays required for every caller except the OCR landing, which
-    // doesn't collect it and identifies itself explicitly via
-    // `formContext: "ocr-documental"` — no other caller sets this field, so
-    // ContactForm and any other existing/future caller keep the original
-    // "phone required" behavior unchanged.
-    const isOcrForm = formContext === "ocr-documental";
-
-    if (!isOcrForm && !phone) {
+    // Callers can send either a single `name` (original behavior, split
+    // below) or `firstname`/`lastname` directly (e.g. OcrApiForm, which
+    // collects them as separate fields). Phone is required for every
+    // caller — no exceptions.
+    if (!(name || firstnameInput) || !email || !phone || !role) {
       return NextResponse.json(
         { error: "Nombre, correo electrónico, teléfono y función son requeridos" },
-        { status: 400 }
-      );
-    }
-    if (!(name || firstnameInput) || !email || !role) {
-      return NextResponse.json(
-        { error: "Nombre, correo electrónico y función son requeridos" },
         { status: 400 }
       );
     }
@@ -68,7 +55,7 @@ export async function POST(request: Request) {
       { name: "firstname", value: firstname },
       { name: "lastname", value: lastname },
       { name: "email", value: email },
-      { name: "phone", value: phone || "" },
+      { name: "phone", value: phone },
       { name: "cual_es_tu_funcion_en_la_empresa_", value: role },
     ];
 
