@@ -69,6 +69,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.85,
     },
+    {
+      url: `${baseUrl}/guia-captura-kyc`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
     // Signa - Firma Electrónica
     {
       url: `${baseUrl}/signa`,

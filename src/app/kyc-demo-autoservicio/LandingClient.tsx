@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import GuiaCapturaTab from "@/components/kyc-demo/GuiaCapturaTab";
 import { gtmEvent } from "@/components/GoogleTagManager";
 import { getUtmParams } from "@/components/CloudflareTurnstile";
 import { productos, buildCheckoutUrl } from "@/data/autoservicio-catalogo";
@@ -1108,6 +1109,7 @@ export default function KycDemoAutoservicioLandingClient({
   return (
     <div style={{ fontFamily: "var(--font-montserrat, 'Montserrat'), sans-serif" }}>
       <LandingHeader />
+      <GuiaCapturaTab />
 
       <main>
         {/* ── 1-4. Hero + video protagonista ─────────────────────────────── */}

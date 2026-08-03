@@ -37,6 +37,7 @@ export default function Footer() {
     resources: {
       title: "Recursos",
       links: [
+        { name: "Guía de captura KYC", href: "/guia-captura-kyc" },
         { name: "Documentación", href: "/documentacion" },
         { name: "Blog", href: "/blog" },
         { name: "RSS Feed", href: "/rss.xml" },
