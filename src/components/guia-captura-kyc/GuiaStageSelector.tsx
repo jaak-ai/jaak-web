@@ -53,10 +53,6 @@ export default function GuiaStageSelector() {
             </a>
           ))}
         </div>
-        <p className="text-xs mt-2.5" style={{ color: "var(--text-muted)" }}>
-          Funcionan como enlaces directos aunque JavaScript no cargue; el rol de tabs solo mejora la navegación por
-          teclado (flechas ← →, Home, End).
-        </p>
       </div>
     </section>
   );
