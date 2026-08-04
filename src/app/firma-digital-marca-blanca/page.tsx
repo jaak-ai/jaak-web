@@ -4,6 +4,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
 import VideoDemo from "./VideoDemo";
+import BrandingPreview from "./BrandingPreview";
+import SectorSelector from "./SectorSelector";
 
 export const metadata: Metadata = {
   title: "Firma Digital Marca Blanca y Personalizada | JAAK",
@@ -127,11 +129,21 @@ export default function FirmaDigitalMarcaBlancaPage() {
         {/* ── HERO ──────────────────────────────────────────────── */}
         <section
           id="hero"
-          className="pt-32 pb-20"
+          className="pt-32 pb-20 relative overflow-hidden"
           style={{ background: "linear-gradient(135deg, #071020 0%, #071A28 100%)" }}
           aria-labelledby="hero-heading"
         >
-          <div data-sr className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div
+            className="absolute -top-24 -right-24 w-[28rem] h-[28rem] rounded-full opacity-20 blur-3xl pointer-events-none"
+            aria-hidden="true"
+            style={{ background: "linear-gradient(135deg, #1ECAD3, #2AD796)" }}
+          />
+          <div
+            className="absolute bottom-0 -left-32 w-80 h-80 rounded-full opacity-10 blur-3xl pointer-events-none"
+            aria-hidden="true"
+            style={{ background: "#8B5CF6" }}
+          />
+          <div data-sr className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <nav className="flex items-center gap-2 text-xs text-gray-600 mb-8" aria-label="Navegación">
               <Link href="/firma-electronica" className="hover:text-[#1ECAD3] transition-colors">
                 Firma Electrónica
@@ -191,7 +203,7 @@ export default function FirmaDigitalMarcaBlancaPage() {
               ].map((item) => (
                 <div
                   key={item.text}
-                  className="flex items-center gap-3 p-4 rounded-xl"
+                  className="flex items-center gap-3 p-4 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(30,202,211,0.35)]"
                   style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}
                 >
                   <span className="text-xl flex-shrink-0" aria-hidden="true">{item.icon}</span>
@@ -225,7 +237,7 @@ export default function FirmaDigitalMarcaBlancaPage() {
               ].map((item) => (
                 <div
                   key={item.title}
-                  className="flex gap-4 p-5 rounded-2xl"
+                  className="flex gap-4 p-5 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(255,255,255,0.16)]"
                   style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}
                 >
                   <span className="text-xl flex-shrink-0" aria-hidden="true">{item.icon}</span>
@@ -240,8 +252,18 @@ export default function FirmaDigitalMarcaBlancaPage() {
         </section>
 
         {/* ── PROPUESTA DE VALOR ────────────────────────────────── */}
-        <section id="propuesta-valor" className="py-20" style={{ background: "#0A1628" }} aria-labelledby="propuesta-heading">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <section
+          id="propuesta-valor"
+          className="py-20 relative overflow-hidden"
+          style={{ background: "#0A1628" }}
+          aria-labelledby="propuesta-heading"
+        >
+          <div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[36rem] h-[36rem] rounded-full opacity-[0.07] blur-3xl pointer-events-none"
+            aria-hidden="true"
+            style={{ background: "linear-gradient(135deg, #1ECAD3, #2AD796)" }}
+          />
+          <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div data-sr>
               <h2 id="propuesta-heading" className="text-2xl sm:text-3xl font-black text-white mb-6">
                 La experiencia de firma también{" "}
@@ -278,7 +300,17 @@ export default function FirmaDigitalMarcaBlancaPage() {
                 Sección Branding
               </div>
               <h2 id="funcionalidades-heading" className="text-2xl sm:text-3xl font-black text-white mb-4">
-                Todo lo que puedes personalizar
+                Todo lo que puedes{" "}
+                <span
+                  style={{
+                    background: "linear-gradient(135deg, #1ECAD3, #2AD796)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
+                  personalizar
+                </span>
               </h2>
               <p className="text-gray-400 text-sm leading-relaxed">
                 Desde un solo lugar, configuras la identidad visual y el tono de comunicación de toda la experiencia
@@ -346,7 +378,7 @@ export default function FirmaDigitalMarcaBlancaPage() {
               ].map((item) => (
                 <div
                   key={item.title}
-                  className="rounded-2xl p-6"
+                  className="rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(30,202,211,0.35)]"
                   style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}
                 >
                   <span className="text-2xl mb-3 block" aria-hidden="true">{item.icon}</span>
@@ -356,6 +388,40 @@ export default function FirmaDigitalMarcaBlancaPage() {
                   <p className="text-xs text-gray-500 leading-relaxed italic">{item.example}</p>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── PRUÉBALO TÚ MISMO ─────────────────────────────────── */}
+        <section
+          id="pruebalo"
+          className="py-20 relative overflow-hidden"
+          style={{ background: "linear-gradient(135deg, #0A1628 0%, #0E1F35 100%)" }}
+          aria-labelledby="pruebalo-heading"
+        >
+          <div
+            className="absolute -top-20 left-1/2 -translate-x-1/2 w-[40rem] h-72 rounded-full opacity-[0.08] blur-3xl pointer-events-none"
+            aria-hidden="true"
+            style={{ background: "linear-gradient(90deg, #1ECAD3, #2AD796, #8B5CF6)" }}
+          />
+          <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div data-sr className="text-center mb-12 max-w-2xl mx-auto">
+              <div
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-5"
+                style={{ background: "rgba(139,92,246,0.1)", border: "1px solid rgba(139,92,246,0.25)", color: "#A78BFA" }}
+              >
+                Interactivo
+              </div>
+              <h2 id="pruebalo-heading" className="text-2xl sm:text-3xl font-black text-white mb-4">
+                Pruébalo tú mismo
+              </h2>
+              <p className="text-gray-400 text-sm leading-relaxed">
+                Elige un color y escribe el nombre de tu empresa. Así de rápido cambia la experiencia que ve tu
+                firmante.
+              </p>
+            </div>
+            <div data-sr>
+              <BrandingPreview />
             </div>
           </div>
         </section>
@@ -381,7 +447,7 @@ export default function FirmaDigitalMarcaBlancaPage() {
               ].map((item) => (
                 <div
                   key={item.step}
-                  className="flex items-start gap-5 p-5 rounded-2xl"
+                  className="flex items-start gap-5 p-5 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(30,202,211,0.35)]"
                   style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}
                 >
                   <span
@@ -419,8 +485,8 @@ export default function FirmaDigitalMarcaBlancaPage() {
             </div>
             <div
               data-sr
-              className="max-w-xl mx-auto rounded-2xl overflow-hidden"
-              style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(42,215,150,0.2)" }}
+              className="max-w-xl mx-auto rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1"
+              style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(42,215,150,0.2)", boxShadow: "0 0 40px rgba(42,215,150,0.05)" }}
             >
               <div className="px-6 py-4" style={{ background: "rgba(42,215,150,0.08)", borderBottom: "1px solid rgba(42,215,150,0.15)" }}>
                 <div className="text-[11px] uppercase tracking-wider text-gray-500 mb-1">Asunto</div>
@@ -489,26 +555,8 @@ export default function FirmaDigitalMarcaBlancaPage() {
                 La personalización es la misma capacidad para todos, pero cada sector la usa a su manera.
               </p>
             </div>
-            <div data-sr-grid className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-              {[
-                { icon: "🏦", title: "Servicios financieros", desc: "Mensajes de seguridad más visibles y fecha límite clara para procesos regulados." },
-                { icon: "🏠", title: "Inmobiliario", desc: "Mensajes que identifican al asesor o inmobiliaria y el tipo de contrato enviado." },
-                { icon: "🚗", title: "Automotriz", desc: "Personalización por agencia o marca del vehículo en el contrato de compra o financiamiento." },
-                { icon: "🏗️", title: "Construcción", desc: "Textos adaptados a contratos de obra, anticipos y convenios con proveedores." },
-                { icon: "🧑‍💼", title: "Recursos Humanos", desc: "Saludo cercano y mensajes claros para contratos laborales y avisos internos." },
-                { icon: "🩺", title: "Salud", desc: "Mensajes cuidadosos para consentimientos informados y correo de soporte visible." },
-                { icon: "📋", title: "Servicios profesionales", desc: "Mensaje adaptado a propuestas, contratos de servicio o acuerdos de confidencialidad." },
-              ].map((item) => (
-                <div
-                  key={item.title}
-                  className="rounded-2xl p-5"
-                  style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}
-                >
-                  <span className="text-2xl mb-3 block" aria-hidden="true">{item.icon}</span>
-                  <h3 className="text-sm font-bold text-white mb-2">{item.title}</h3>
-                  <p className="text-xs text-gray-400 leading-relaxed">{item.desc}</p>
-                </div>
-              ))}
+            <div data-sr>
+              <SectorSelector />
             </div>
           </div>
         </section>
@@ -534,7 +582,7 @@ export default function FirmaDigitalMarcaBlancaPage() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-sm font-semibold px-4 py-2.5 rounded-xl transition-all hover:bg-white/10"
+                  className="text-sm font-semibold px-4 py-2.5 rounded-xl transition-all hover:bg-white/10 hover:-translate-y-0.5"
                   style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "#1ECAD3" }}
                 >
                   {link.label}
@@ -545,8 +593,18 @@ export default function FirmaDigitalMarcaBlancaPage() {
         </section>
 
         {/* ── MARCA BLANCA ──────────────────────────────────────── */}
-        <section id="marca-blanca" className="py-20" style={{ background: "#0A1628" }} aria-labelledby="whitelabel-heading">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section
+          id="marca-blanca"
+          className="py-20 relative overflow-hidden"
+          style={{ background: "#0A1628" }}
+          aria-labelledby="whitelabel-heading"
+        >
+          <div
+            className="absolute top-10 right-0 w-96 h-96 rounded-full opacity-[0.08] blur-3xl pointer-events-none"
+            aria-hidden="true"
+            style={{ background: "linear-gradient(135deg, #1ECAD3, #2AD796)" }}
+          />
+          <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div data-sr className="text-center mb-12 max-w-2xl mx-auto">
               <h2 id="whitelabel-heading" className="text-2xl sm:text-3xl font-black text-white mb-4">
                 ¿Para quién es útil una experiencia marca blanca?
@@ -567,7 +625,7 @@ export default function FirmaDigitalMarcaBlancaPage() {
               ].map((item) => (
                 <div
                   key={item.label}
-                  className="flex flex-col items-center text-center gap-2 p-5 rounded-2xl"
+                  className="flex flex-col items-center text-center gap-2 p-5 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(30,202,211,0.35)]"
                   style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}
                 >
                   <span className="text-xl" aria-hidden="true">{item.icon}</span>
@@ -577,7 +635,10 @@ export default function FirmaDigitalMarcaBlancaPage() {
             </div>
 
             <div data-sr className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="rounded-2xl p-6" style={{ background: "rgba(30,202,211,0.06)", border: "1px solid rgba(30,202,211,0.2)" }}>
+              <div
+                className="rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1"
+                style={{ background: "rgba(30,202,211,0.06)", border: "1px solid rgba(30,202,211,0.2)" }}
+              >
                 <div className="text-xs font-bold uppercase tracking-widest mb-2" style={{ color: "#1ECAD3" }}>
                   Personalización desde plataforma
                 </div>
@@ -586,7 +647,10 @@ export default function FirmaDigitalMarcaBlancaPage() {
                   necesidad de desarrollo. Ideal para empezar a personalizar tu experiencia de firma de inmediato.
                 </p>
               </div>
-              <div className="rounded-2xl p-6" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)" }}>
+              <div
+                className="rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1"
+                style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)" }}
+              >
                 <div className="text-xs font-bold uppercase tracking-widest mb-2 text-gray-400">
                   Experiencia integrada / enterprise
                 </div>
@@ -601,8 +665,18 @@ export default function FirmaDigitalMarcaBlancaPage() {
         </section>
 
         {/* ── VIDEO DEMO ────────────────────────────────────────── */}
-        <section id="video" className="py-20" style={{ background: "#070E1A" }} aria-labelledby="video-heading">
-          <div data-sr className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <section
+          id="video"
+          className="py-20 relative overflow-hidden"
+          style={{ background: "#070E1A" }}
+          aria-labelledby="video-heading"
+        >
+          <div
+            className="absolute top-0 left-1/2 -translate-x-1/2 w-[32rem] h-56 rounded-full opacity-[0.08] blur-3xl pointer-events-none"
+            aria-hidden="true"
+            style={{ background: "linear-gradient(90deg, #1ECAD3, #2AD796)" }}
+          />
+          <div data-sr className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 id="video-heading" className="text-2xl sm:text-3xl font-black text-white mb-4">
               Mira cómo personalizar tu experiencia de firma
             </h2>
@@ -626,7 +700,17 @@ export default function FirmaDigitalMarcaBlancaPage() {
         <section id="beneficios" className="py-20" style={{ background: "#0A1628" }} aria-labelledby="beneficios-heading">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 data-sr id="beneficios-heading" className="text-2xl sm:text-3xl font-black text-white mb-10 text-center">
-              Beneficios de personalizar tu firma digital
+              Beneficios de{" "}
+              <span
+                style={{
+                  background: "linear-gradient(135deg, #1ECAD3, #2AD796)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
+              >
+                personalizar tu firma digital
+              </span>
             </h2>
             <div data-sr-grid className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
               {[
@@ -641,7 +725,7 @@ export default function FirmaDigitalMarcaBlancaPage() {
               ].map((item) => (
                 <div
                   key={item.title}
-                  className="rounded-2xl p-5"
+                  className="rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1 hover:border-[rgba(30,202,211,0.35)]"
                   style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}
                 >
                   <span className="text-xl mb-3 block" aria-hidden="true">{item.icon}</span>
@@ -696,9 +780,20 @@ export default function FirmaDigitalMarcaBlancaPage() {
               style={{ background: "linear-gradient(135deg, #202945, #071426)", border: "1px solid rgba(30,202,211,0.15)", boxShadow: "0 0 80px rgba(30,202,211,0.07)" }}
             >
               <div className="absolute top-0 right-0 w-64 h-64 rounded-full opacity-10 blur-3xl pointer-events-none" aria-hidden="true" style={{ background: "#1ECAD3" }} />
+              <div className="absolute bottom-0 left-0 w-56 h-56 rounded-full opacity-10 blur-3xl pointer-events-none" aria-hidden="true" style={{ background: "#8B5CF6" }} />
 
               <h2 id="cta-heading" className="text-3xl sm:text-4xl font-black text-white mb-4">
-                Haz que cada firma también represente a tu empresa
+                Haz que cada firma también{" "}
+                <span
+                  style={{
+                    background: "linear-gradient(135deg, #1ECAD3, #2AD796)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
+                  represente a tu empresa
+                </span>
               </h2>
               <p className="text-gray-400 max-w-xl mx-auto mb-10">
                 Configura colores, logotipo, mensajes y portal de firma desde la sección Branding de JAAK.
