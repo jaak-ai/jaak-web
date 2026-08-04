@@ -478,6 +478,7 @@ export default function FirmaElectronicaPage() {
                 { href: "/firma-electronica-efirma", label: "e.firma SAT →" },
                 { href: "/firma-electronica-biometrica", label: "Firma Digital NOM-151 + Biometría →" },
                 { href: "/firma-electronica-kyc", label: "Firma Digital NOM-151 + KYC →" },
+                { href: "/firma-digital-marca-blanca", label: "Firma con Marca Blanca →" },
               ].map((link) => (
                 <Link
                   key={link.href}
