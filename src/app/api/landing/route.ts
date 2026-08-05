@@ -29,9 +29,10 @@ export async function POST(request: Request) {
       utm_content,
     } = body;
 
-    // El ebook de listas de riesgo pide teléfono opcional (ver brief de la
-    // landing); el resto de las landings lo siguen requiriendo.
-    const phoneRequired = source !== "landing-listas-riesgo-ebook";
+    // El ebook de listas de riesgo y la guía de KYC gaming piden teléfono
+    // opcional (ver brief de cada landing); el resto lo siguen requiriendo.
+    const PHONE_OPTIONAL_SOURCES = ["landing-listas-riesgo-ebook", "landing-kyc-igaming-mexico-guia"];
+    const phoneRequired = !PHONE_OPTIONAL_SOURCES.includes(source);
     if (!name || !email || (phoneRequired && !telefono)) {
       return NextResponse.json(
         { error: "Nombre y correo son requeridos" },
@@ -140,6 +141,7 @@ export async function POST(request: Request) {
           "landing-bancos": "Bancos",
           "landing-efisys-lab-connect": "EFISYS Lab Connect",
           "landing-listas-riesgo-ebook": "Ebook Listas de Riesgo PLD/AML",
+          "landing-kyc-igaming-mexico-guia": "Guía KYC Gaming/iGaming México",
         };
         const label = sourceLabel[source] || source || "Landing";
 

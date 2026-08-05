@@ -293,6 +293,15 @@ export const megaMenus: MegaMenuConfig[] = [
             status: "active",
             visibility: { desktop: true, mobile: true },
           },
+          {
+            id: "sol-kyc-igaming",
+            label: "Gaming e iGaming",
+            href: "/soluciones/kyc-igaming-mexico",
+            description: "KYC y PLD para casinos y apuestas",
+            icon: "M14.25 9.75L16.5 12l-2.25 2.25m-4.5 0L7.5 12l2.25-2.25M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z",
+            status: "active",
+            visibility: { desktop: true, mobile: true },
+          },
         ],
       },
       {
