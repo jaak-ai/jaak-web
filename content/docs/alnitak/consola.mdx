@@ -49,8 +49,8 @@ mueva.
 
 | KPI | Qué muestra | Cuándo preocuparse |
 |---|---|---|
-| **Latencia p95 · extremo a extremo** | p95 real frente al objetivo de ≤ 400 ms, con etiqueta dentro / fuera de objetivo | Cuando la barra se acerca al límite o la etiqueta cambia |
-| **Throughput sostenido** | Peticiones por segundo frente al piso contratado | *bajo el mínimo* con tráfico real esperado indica un problema de admisión; con tráfico bajo es simplemente que no hay carga |
+| **Latencia p95 · extremo a extremo** | p95 de las consultas recientes, en milisegundos | Cuando sube de forma sostenida o se aleja del régimen habitual |
+| **Throughput sostenido** | Peticiones por segundo que el servicio está atendiendo | Caída brusca con tráfico real esperado; con poco tráfico el valor bajo es normal |
 | **Galería indexada** | Vectores en el índice, con dimensiones y cuantificación | Un salto o caída brusca sin operación planificada |
 | **Disponibilidad · 30 días** | Disponibilidad medida de la ventana móvil | Aparece con guion (`—`) mientras no haya ventana de observación suficiente: el servicio no inventa una cifra que no ha medido |
 
@@ -64,7 +64,7 @@ carga.
 
 El reparto de los milisegundos entre las cinco etapas del pipeline —recepción y
 decodificación, detección y alineación, vectorización, búsqueda kNN,
-orquestación— y la **holgura frente a los 400 ms**.
+orquestación— y el total de la consulta.
 
 Es el panel que dice *dónde* se va el tiempo:
 

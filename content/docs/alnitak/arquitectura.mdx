@@ -57,9 +57,8 @@ Cinco etapas, todas medidas con reloj real en cada petición:
 
 <Callout type="tip" title="Latencia por consulta, no solo promedios">
 Cada respuesta de `/identify` incluye el array `stages` con los milisegundos
-reales de cada etapa, el `took_ms` total y `slack_ms` — la holgura frente al
-objetivo de 400 ms. Se puede ver consulta a consulta si el tiempo se va a
-detección, vectorización o búsqueda.
+reales de cada etapa, el `took_ms` total y `slack_ms`. Se ve consulta a
+consulta si el tiempo se va a detección, vectorización o búsqueda.
 </Callout>
 
 La etapa de búsqueda crece con el tamaño de la galería; el resto del pipeline
@@ -129,7 +128,7 @@ segmentos, memoria residente, número de candidatos explorados).
 
 | Mecanismo | Efecto |
 |---|---|
-| Timeout de 250 ms al vectorizador con un reintento | Absorbe fallos transitorios sin comprometer el presupuesto de latencia |
+| Timeout de 250 ms al vectorizador con un reintento | Absorbe fallos transitorios sin alargar en exceso la consulta |
 | Rechazo explícito por calidad | Una imagen sin rostro no genera una identificación dudosa: se rechaza y queda en auditoría |
 | Marcado de consultas multirrostro | La consulta se resuelve con el rostro mayor y queda señalada para revisión |
 | API sin estado tras balanceador | Cualquier réplica atiende cualquier consulta |
