@@ -88,8 +88,29 @@ Solicítalos al equipo de JAAK asignado al proyecto.
 | Tamaño de galería | > **50 millones** de vectores de 512 dimensiones |
 | Disponibilidad mensual (objetivo de diseño) | **99.9 % – 99.95 %** |
 
-Las cifras medidas que respaldan los tres primeros, con su corpus y entorno de
-medición, están en [Rendimiento y SLA](/docs/alnitak/rendimiento).
+Las cifras medidas que respaldan los tres primeros —**servicio completo con
+caras reales** y, por separado, mediciones de laboratorio acotadas— están en
+[Rendimiento y SLA](/docs/alnitak/rendimiento). El compromiso de caudal y
+latencia se refiere siempre a la cadena imagen → API → GPU → galería, no a la
+búsqueda vectorial aislada.
+
+### Evidencia de un vistazo (caras reales, galería 50 M)
+
+Corrida instrumentada 2026-08-05: `identify` vía API de servicio, corpus
+webface LFW 112×112. Detalle, tablas y más gráficas en
+[Rendimiento y SLA](/docs/alnitak/rendimiento).
+
+![Resumen del bench R/W 1:N: escenarios a 60–150 rps con veredicto CUMPLE o NO CUMPLE frente al SLA](/docs/alnitak/bench-resumen.png)
+
+| Escenario | Resultado |
+|---|---|
+| Identify a **60 rps** | **CUMPLE** — p95 **204 ms**, 3.600/3.600, 0 % error |
+| Mixto 50 % identify + 50 % enroll a 60 rps | **CUMPLE** — p95 **202 ms** |
+| Escalera de caudal | **120 rps CUMPLE** (p95 215 ms); quiebre ~**150 rps** por 429 |
+
+![Presupuesto de latencia: p95 medido a 60 rps (~204 ms) dentro de los 400 ms contractuales](/docs/alnitak/bench-presupuesto-400ms.png)
+
+![Punto de quiebre: latencia y caudal en la escalera 60–150 rps](/docs/alnitak/bench-punto-de-quiebre.png)
 
 ## Soporte
 

@@ -63,9 +63,11 @@ para saber si una consulta concreta consumió más presupuesto del debido.
 </Callout>
 
 La etapa de búsqueda crece con el tamaño de la galería; el resto del pipeline
-no depende de él. El coste dominante es la **GPU**: en la medición end-to-end
-de referencia la vectorización supone el 87 % del total (ver
-[Rendimiento](/docs/alnitak/rendimiento)).
+no depende de él. Dentro del servidor, el coste de trabajo lo dominan
+**detección + vectorización (GPU)**; la búsqueda kNN se mantiene en el orden
+de ~10 ms p50 a 50 M. El reloj del integrador añade además red y TLS hasta la
+API (ver [Rendimiento](/docs/alnitak/rendimiento): p95 de servicio completo
+con caras reales ~200 ms a 60 rps frente a un presupuesto de 400 ms).
 
 ## Score y veredicto de tres estados
 
