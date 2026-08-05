@@ -5,11 +5,11 @@ import { useEffect, useState } from "react";
 const TEAL = "#1ECAD3";
 
 const layers = [
-  { num: "01", title: "Prueba de vida pasiva", short: "Persona real", desc: "Confirma que existe una persona real frente al dispositivo y detecta fotografías, videos o pantallas." },
+  { num: "01", title: "Prueba de vida pasiva", short: "Persona presente", desc: "Confirma que existe una persona real frente al dispositivo y detecta fotografías, videos o pantallas." },
   { num: "02", title: "Comparación facial 1:1", short: "Rostro", desc: "Compara el rostro capturado durante la sesión con la fotografía del documento oficial." },
-  { num: "03", title: "Verificación documental y OCR", short: "Documento", desc: "Analiza el documento presentado, extrae sus datos y valida vigencia y consistencia." },
-  { num: "04", title: "Fuentes oficiales mexicanas", short: "Fuentes oficiales", desc: "Contrasta la información con fuentes nominales como INE y RENAPO, según configuración." },
-  { num: "05", title: "Consulta de listas de riesgo", short: "Riesgo", desc: "Consulta OFAC, INTERPOL y SAT 69-B; puede ampliarse con el paquete AML." },
+  { num: "03", title: "Verificación documental y OCR", short: "Documento", desc: "Captura el documento, extrae sus datos y valida su autenticidad y vigencia." },
+  { num: "04", title: "Fuentes oficiales mexicanas", short: "Fuentes oficiales", desc: "Contrasta la información con fuentes como INE y RENAPO, según la configuración y el paquete contratado." },
+  { num: "05", title: "Consulta de listas de riesgo", short: "Riesgo", desc: "Consulta las fuentes y listas de riesgo configuradas para tu operación (por ejemplo OFAC, INTERPOL o SAT 69-B), según el paquete contratado." },
   { num: "06", title: "Geolocalización", short: "Ubicación", desc: "Registra la ubicación asociada al proceso como señal contextual adicional." },
 ];
 
@@ -75,7 +75,7 @@ export default function LayersExplorer() {
           style={{ background: "rgba(42,215,150,0.08)", border: "1px solid rgba(42,215,150,0.3)" }}
         >
           <p className="text-sm font-black tracking-wide" style={{ color: "#2AD796" }}>IDENTIDAD VERIFICADA</p>
-          <p className="text-xs text-white/50 mt-1">6 controles · 1 resultado · 1 expediente</p>
+          <p className="text-xs text-white/50 mt-1">Seis controles. Un resultado estructurado. Un expediente de evidencia.</p>
         </div>
       )}
     </div>

@@ -59,74 +59,50 @@ const faqSchema = {
   mainEntity: [
     {
       "@type": "Question",
-      name: "¿Qué valida JAAK durante el onboarding de un jugador?",
+      name: "¿La prueba de vida requiere movimientos?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "JAAK puede ejecutar prueba de vida pasiva, comparación facial 1:1, análisis y extracción de información documental, consultas a fuentes oficiales, revisión de listas de riesgo y geolocalización.",
+        text: "No. El flujo utiliza prueba de vida pasiva para confirmar presencia sin pedir al usuario que gire la cabeza o realice gestos.",
       },
     },
     {
       "@type": "Question",
-      name: "¿JAAK ayuda a comprobar la mayoría de edad?",
+      name: "¿Qué ocurre si una validación no se completa?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "El flujo permite extraer y validar la fecha de nacimiento contenida en el documento. El operador puede utilizar el resultado para aplicar su regla de mayoría de edad conforme a la jurisdicción y modalidad correspondiente.",
+        text: "La operación recibe el resultado del control correspondiente para decidir si solicita un nuevo intento, detiene el flujo o envía el caso a revisión.",
       },
     },
     {
       "@type": "Question",
-      name: "¿Qué documentos pueden utilizarse?",
+      name: "¿Puede conectarse con una plataforma existente?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "La configuración puede contemplar documentos como INE y pasaporte. La cobertura final debe establecerse durante el diseño del flujo.",
+        text: "Sí. JAAK puede implementarse mediante API, SDK o una experiencia de marca blanca, según el alcance acordado.",
       },
     },
     {
       "@type": "Question",
-      name: "¿Qué fuentes mexicanas consulta?",
+      name: "¿Incluye fuentes oficiales y listas de riesgo?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Dependiendo del paquete contratado, el proceso puede incluir Lista Nominal INE, RENAPO y fuentes fiscales como SAT 69-B.",
+        text: "El flujo puede configurarse con las fuentes y consultas contratadas para cada operación.",
       },
     },
     {
       "@type": "Question",
-      name: "¿Qué listas están incluidas en el KYC?",
+      name: "¿Se conserva evidencia?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "El paquete descrito para KYC contempla OFAC, INTERPOL y SAT 69-B. Para un análisis más amplio se puede integrar el paquete AML con más de 40 listas de riesgo.",
+        text: "La verificación genera un resultado estructurado y la trazabilidad de los controles ejecutados.",
       },
     },
     {
       "@type": "Question",
-      name: "¿La plataforma puede personalizarse?",
+      name: "¿JAAK sustituye el análisis legal del operador?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Sí. El flujo web puede configurarse en marca blanca con logotipo, colores y mensajes del operador.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "¿JAAK monitorea apuestas, depósitos y retiros?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "JAAK se concentra en la verificación de identidad y el onboarding. El monitoreo transaccional, la acumulación de montos y la presentación de Avisos deben resolverse mediante los sistemas y procedimientos del operador.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "¿JAAK elimina por sí solo el abuso de bonos o las multicuentas?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "La verificación de identidad reduce la posibilidad de operar con identidades falsas, prestadas o inconsistentes. La detección integral de multicuentas y abuso de bonos requiere señales y controles adicionales del operador.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "¿Cómo se integra?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "La solución puede consumirse mediante API, SDK o un flujo web de marca blanca. También existe un entorno sandbox para pruebas de integración.",
+        text: "No. JAAK aporta tecnología de identidad, validaciones y evidencia. Las obligaciones y reglas aplicables deben definirse por cada operador conforme a su permiso, actividad y marco regulatorio.",
       },
     },
   ],

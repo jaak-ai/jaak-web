@@ -13,7 +13,9 @@ const NAVY_DARK = "#071426";
 
 // La landing de listas de riesgo y su thank-you page tienen su propio
 // MobileStickyCTA (Agendar demo + Descargar guía) — evita duplicar barras.
-const HIDDEN_PREFIXES = ["/autoservicio", "/contacto", "/listas-de-riesgo-pld-aml", "/gracias"];
+// La landing de KYC gaming tiene su propio botón flotante de WhatsApp con
+// número y mensaje precargado específicos de esa campaña.
+const HIDDEN_PREFIXES = ["/autoservicio", "/contacto", "/listas-de-riesgo-pld-aml", "/gracias", "/soluciones/kyc-igaming-mexico"];
 const DISMISS_STORAGE_KEY = "jaak_floating_demo_dismissed_until";
 const DISMISS_DAYS = 7;
 const SCROLL_RATIO_TRIGGER = 0.27;

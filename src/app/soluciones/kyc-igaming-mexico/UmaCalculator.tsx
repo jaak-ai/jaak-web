@@ -121,9 +121,12 @@ export default function UmaCalculator() {
       </div>
 
       <p className="text-[11px] text-white/40 leading-relaxed mt-5">
-        Cálculo orientativo con UMA 2026 = {currency.format(UMA_2026)} MXN diarios. Los valores deben analizarse conforme a
-        la modalidad de operación, la acumulación y los criterios aplicables de la LFPIORPI. Esta calculadora no
-        sustituye el análisis legal de un especialista.
+        Fuente: Portal de Prevención de Lavado de Dinero del SAT. Valores 2026 (UMA = {currency.format(UMA_2026)} MXN
+        diarios).
+      </p>
+      <p className="text-[11px] text-white/40 leading-relaxed mt-2">
+        Herramienta orientativa. La aplicación de los umbrales y obligaciones debe revisarse según la modalidad,
+        acumulación, permisos y características de cada operación. No sustituye asesoría legal.
       </p>
     </div>
   );
