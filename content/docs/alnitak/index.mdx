@@ -81,24 +81,24 @@ equipos del proyecto, junto con el resto de artefactos de la entrega:
 
 Solicítalos al equipo de JAAK asignado al proyecto.
 
-## Capacidad del servicio
+## Lo que hemos medido
 
-En un despliegue de referencia con galería de **50 M** de vectores y caras
-reales en la entrada, el servicio de punta a punta:
+Galería de **50 M** de vectores y caras reales en la entrada. Cadena
+completa: API + GPU + almacén.
 
-| Qué hace | Qué se observa |
+| | Medido |
 |---|---|
-| Identify sostenido a **60 rps** | p50 ~**120 ms**, p95 ~**200 ms**, p99 ~**370 ms**; 0 % error en 3.600 peticiones |
-| Mixto identify + enroll a 60 rps | p95 ~**200 ms** en ambas operaciones |
-| Subir caudal de identify | Estable al menos hasta **120 rps** (p95 ~215 ms); techos posteriores suelen ser 429 de capas frontales |
-| Desglose por etapa en la API | ~**10 ms** de búsqueda kNN; el resto es detección, vectorización y red del cliente |
+| **Identify a 60 rps** | p50 ~**120 ms**, p95 ~**200 ms**, p99 ~**370 ms** · 3.600/3.600 correctas |
+| **Identify + enroll a 60 rps** | p95 ~**200 ms** en lectura y en escritura |
+| **Caudal alto** | Estable al menos hasta **120 rps** (p95 ~215 ms) |
+| **Búsqueda en 50 M** | ~**10 ms** de la etapa kNN; el resto es detección, vectorización y red |
 
-Más detalle y gráficas en
+Detalle y más gráficas en
 [Rendimiento y capacidad](/docs/alnitak/rendimiento).
 
 ![Resumen de escenarios de carga con caras reales sobre galería de 50 M](/docs/alnitak/bench-resumen.png)
 
-![Latencia p50, p95 y p99 del identify a 60 rps](/docs/alnitak/bench-presupuesto-400ms.png)
+![Latencia p50, p95 y p99 del identify a 60 rps](/docs/alnitak/bench-latencia-percentiles.png)
 
 ![Escalera de carga: latencia y caudal](/docs/alnitak/bench-punto-de-quiebre.png)
 
