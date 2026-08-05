@@ -6,6 +6,9 @@ import { CodeBlock } from './CodeBlock'
 import { Mermaid } from './Mermaid'
 import { Tabs, CodeTabs } from './Tabs'
 import { Endpoint, ParamsTable, ResponseSchema, HttpMethod } from './api'
+import { Metric, MetricGrid } from './Metric'
+import { Figure, FigureGrid } from './Figure'
+import { Highlight } from './Highlight'
 
 function extractCodeText(node: unknown): string {
   if (typeof node === 'string') return node
@@ -27,6 +30,11 @@ export const mdxComponents: MDXComponents = {
   ParamsTable,
   ResponseSchema,
   HttpMethod,
+  Metric,
+  MetricGrid,
+  Figure,
+  FigureGrid,
+  Highlight,
   h1: ({ children }) => (
     <h1 className="mb-4 text-4xl font-black text-gray-900">{children}</h1>
   ),
@@ -116,4 +124,17 @@ export const mdxComponents: MDXComponents = {
     <td className="px-4 py-3 text-gray-600">{children}</td>
   ),
   hr: () => <hr className="my-8 border-gray-200" />,
+  // Imágenes markdown: marco suave (las <Figure> explícitas llevan pie de foto).
+  img: ({ src, alt }) => (
+    <span className="my-8 block overflow-hidden rounded-xl border border-gray-200 bg-white shadow-[0_1px_0_rgba(15,23,42,0.04)]">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={typeof src === 'string' ? src : undefined}
+        alt={alt ?? ''}
+        loading="lazy"
+        decoding="async"
+        className="mx-auto h-auto w-full max-w-full object-contain"
+      />
+    </span>
+  ),
 }
