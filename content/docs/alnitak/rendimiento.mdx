@@ -58,6 +58,8 @@ Medición open-loop del arnés de carga sobre el despliegue de servicio
 **faces_webface** (LFW, JPG 112×112 prefiltrado a caras que no devuelven
 `low_quality`).
 
+![Resumen de escenarios del bench R/W 1:N con caras reales webface — veredictos CUMPLE / NO CUMPLE a 60–150 rps](/docs/alnitak/bench-resumen.png)
+
 ### Identify a 60 rps — CUMPLE
 
 | Percentil (éxitos) | ms |
@@ -74,6 +76,8 @@ Medición open-loop del arnés de carga sobre el despliegue de servicio
 | Tasa de error | **0 %** |
 | Holgura vs 400 ms (p95) | **~196 ms** (~51 % del presupuesto) |
 
+![Presupuesto de 400 ms: p95 medido a 60 rps (~204 ms) y holgura restante](/docs/alnitak/bench-presupuesto-400ms.png)
+
 Desglose **p50 de etapas del API** en la misma corrida (lo que reporta
 `stages[]` en cada respuesta):
 
@@ -86,10 +90,16 @@ Desglose **p50 de etapas del API** en la misma corrida (lo que reporta
 | Orquestación | 3 |
 | **Suma p50 etapas** | **~31** |
 
+![Desglose p50 por etapa del pipeline identify a 60 rps frente al e2e del cliente](/docs/alnitak/bench-etapas-pipeline.png)
+
 La diferencia entre ~31 ms de etapas y ~121 ms de p50 en el cliente es
 **red, TLS y túnel** hasta el endpoint de servicio. El pipeline interno se
 queda muy por debajo del presupuesto; el reloj del integrador incluye el
 viaje de red.
+
+![Comparativa de latencia p50/p95/p99 a 60 rps: identify filtrado, sin filtrar y mixto R/W](/docs/alnitak/bench-sla-latencia.png)
+
+![Comparativa de caudal sostenido y tasa de error a 60 rps en los mismos escenarios](/docs/alnitak/bench-sla-caudal.png)
 
 ### Mixto lectura + escritura a 60 rps
 
@@ -100,6 +110,10 @@ viaje de red.
 | rps éxito | **60,00** |
 | p95 e2e | **202 ms** (CUMPLE) |
 | p95 identify / enroll | 206 / 199 ms |
+
+![Latencia por operación en el mixto 50 % identify + 50 % enroll a 60 rps](/docs/alnitak/bench-mixed-latencia.png)
+
+![Códigos HTTP del mixto: 200 de éxito y 409 de antiduplicado al re-enrolar la misma cara](/docs/alnitak/bench-mixed-codigos.png)
 
 Al reutilizar las mismas caras, el antiduplicado de `enroll` devuelve
 **409** tras el primer alta de cada rostro (comportamiento esperado). Para
@@ -118,6 +132,8 @@ una prueba de **escritura continua** hace falta un corpus de caras únicas
 
 \*p95 del peldaño de 60 rps en la escalera (ventana corta); la corrida
 dedicada de 60 s a 60 rps da p95 **204 ms** (tabla anterior).
+
+![Escalera de carga 60–150 rps: latencia p50/p95/p99, rps de éxito y tasa de error hasta el punto de quiebre](/docs/alnitak/bench-punto-de-quiebre.png)
 
 **Conclusión de capacidad en esta topología:** el compromiso de 60 rps se
 cumple con holgura; el sistema sostiene **120 rps** E2E sin errores; el
