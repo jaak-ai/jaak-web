@@ -7,10 +7,12 @@ unlisted: true
 ---
 
 **JAAK Alnitak** identifica a una persona a partir de una fotografía facial,
-comparándola contra una galería de **más de 50 millones de vectores** y
-devolviendo una lista Top-N ordenada por score junto con un veredicto de tres
-estados, dentro de un presupuesto de **400 ms extremo a extremo con
-vectorización incluida**.
+comparándola contra una galería de **decenas de millones de vectores** (512-D)
+y devolviendo una lista Top-N ordenada por score con un veredicto de tres
+estados. La cadena incluye decodificación, detección, vectorización en GPU y
+búsqueda kNN; en servicio completo con caras reales las latencias de identify
+se sitúan en el orden de **~200 ms p95** a decenas de rps (detalle en
+[Rendimiento y capacidad](/docs/alnitak/rendimiento)).
 
 Esta documentación está dirigida al equipo técnico y de operación del cliente:
 cómo se instala, cómo se configura, cómo se consume y cómo se opera el día a
@@ -29,7 +31,7 @@ documentación se comparte por enlace directo con los equipos del proyecto.
 |---|---|
 | **Identificar** a una persona desconocida contra toda la galería | `POST /api/v1/identify` — búsqueda 1:N, devuelve Top-N con score y veredicto |
 | **Dar de alta** una identidad nueva, sin admitir duplicados | `POST /api/v1/enroll` — ejecuta una 1:N previa y rechaza el alta si el rostro ya existe |
-| **Vigilar** el cumplimiento del SLA consulta a consulta | Consola de operación + métricas Prometheus + desglose de latencia por etapa en cada respuesta |
+| **Vigilar** latencia y caudal en tiempo real | Consola de operación + métricas Prometheus + desglose por etapa en cada respuesta |
 | **Auditar** quién consultó qué y cuándo | Auditoría encadenada por hash, con actor, veredicto y huella de imagen |
 
 ## Los dos motores
@@ -58,7 +60,7 @@ para referirse a la solución completa.
 | [Arquitectura](/docs/alnitak/arquitectura) | Arquitectura, seguridad | Pipeline de una consulta, score y veredicto, resiliencia |
 | [API](/docs/alnitak/api) | Integradores | Autenticación, endpoints, esquemas de petición y respuesta, códigos de error |
 | [Consola de operación](/docs/alnitak/consola) | Operación, analistas | Guía de la interfaz web, pantalla por pantalla |
-| [Rendimiento y SLA](/docs/alnitak/rendimiento) | Arquitectura, compras | Compromisos, cifras medidas y su contexto, dimensionado |
+| [Rendimiento y capacidad](/docs/alnitak/rendimiento) | Arquitectura, operaciones | Latencia, caudal, mediciones y dimensionado |
 | [Seguridad](/docs/alnitak/seguridad) | Seguridad, cumplimiento | Credenciales, scopes, auditoría, custodia de biometría |
 
 ### Manual de despliegue y operación
@@ -79,38 +81,26 @@ equipos del proyecto, junto con el resto de artefactos de la entrega:
 
 Solicítalos al equipo de JAAK asignado al proyecto.
 
-## Compromisos del servicio
+## Lo que hemos medido
 
-| Compromiso | Valor |
+Galería de **50 M** de vectores y caras reales en la entrada. Cadena
+completa: API + GPU + almacén.
+
+| | Medido |
 |---|---|
-| Latencia extremo a extremo (vectorización incluida) | ≤ **400 ms** |
-| Caudal sostenido | ≥ **60 peticiones/segundo** |
-| Tamaño de galería | > **50 millones** de vectores de 512 dimensiones |
-| Disponibilidad mensual (objetivo de diseño) | **99.9 % – 99.95 %** |
+| **Identify a 60 rps** | p50 ~**120 ms**, p95 ~**200 ms**, p99 ~**370 ms** · 3.600/3.600 correctas |
+| **Identify + enroll a 60 rps** | p95 ~**200 ms** en lectura y en escritura |
+| **Caudal alto** | Estable al menos hasta **120 rps** (p95 ~215 ms) |
+| **Búsqueda en 50 M** | ~**10 ms** de la etapa kNN; el resto es detección, vectorización y red |
 
-Las cifras medidas que respaldan los tres primeros —**servicio completo con
-caras reales** y, por separado, mediciones de laboratorio acotadas— están en
-[Rendimiento y SLA](/docs/alnitak/rendimiento). El compromiso de caudal y
-latencia se refiere siempre a la cadena imagen → API → GPU → galería, no a la
-búsqueda vectorial aislada.
+Detalle y más gráficas en
+[Rendimiento y capacidad](/docs/alnitak/rendimiento).
 
-### Evidencia de un vistazo (caras reales, galería 50 M)
+![Resumen de escenarios de carga con caras reales sobre galería de 50 M](/docs/alnitak/bench-resumen.png)
 
-Corrida instrumentada 2026-08-05: `identify` vía API de servicio, corpus
-webface LFW 112×112. Detalle, tablas y más gráficas en
-[Rendimiento y SLA](/docs/alnitak/rendimiento).
+![Latencia p50, p95 y p99 del identify a 60 rps](/docs/alnitak/bench-latencia-percentiles.png)
 
-![Resumen del bench R/W 1:N: escenarios a 60–150 rps con veredicto CUMPLE o NO CUMPLE frente al SLA](/docs/alnitak/bench-resumen.png)
-
-| Escenario | Resultado |
-|---|---|
-| Identify a **60 rps** | **CUMPLE** — p95 **204 ms**, 3.600/3.600, 0 % error |
-| Mixto 50 % identify + 50 % enroll a 60 rps | **CUMPLE** — p95 **202 ms** |
-| Escalera de caudal | **120 rps CUMPLE** (p95 215 ms); quiebre ~**150 rps** por 429 |
-
-![Presupuesto de latencia: p95 medido a 60 rps (~204 ms) dentro de los 400 ms contractuales](/docs/alnitak/bench-presupuesto-400ms.png)
-
-![Punto de quiebre: latencia y caudal en la escalera 60–150 rps](/docs/alnitak/bench-punto-de-quiebre.png)
+![Escalera de carga: latencia y caudal](/docs/alnitak/bench-punto-de-quiebre.png)
 
 ## Soporte
 

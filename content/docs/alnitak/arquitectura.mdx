@@ -14,7 +14,7 @@ tecnológicas principales.
 
 | Componente | Función |
 |---|---|
-| **Consola de operación** | Interfaz para operadores autorizados: consulta manual 1:N, KPIs contra el SLA, alertas y trazabilidad. Acceso por SSO corporativo. |
+| **Consola de operación** | Interfaz para operadores autorizados: consulta manual 1:N, KPIs de latencia y caudal, alertas y trazabilidad. Acceso por SSO corporativo. |
 | **API orquestadora** | Punto de entrada de todos los canales. Autentica, valida la imagen, orquesta el pipeline, aplica el veredicto, registra la auditoría y expone métricas por etapa. Sin estado, escalable horizontalmente. |
 | **Servicio de vectorización facial** (GPU) | Detecta y alinea el rostro y produce el vector de 512 dimensiones. Ejecución acelerada por GPU. |
 | **Almacén vectorial** | Guarda la galería como vectores de 512 dimensiones con cuantificación a 8 bits sobre grafo HNSW. Resuelve la búsqueda kNN y aplica los filtros de metadatos dentro de la misma consulta. |
@@ -55,19 +55,17 @@ Cinco etapas, todas medidas con reloj real en cada petición:
    umbral y el veredicto, arma la lista Top-N y registra el evento de
    auditoría.
 
-<Callout type="tip" title="El SLA se vigila consulta a consulta">
+<Callout type="tip" title="Latencia por consulta, no solo promedios">
 Cada respuesta de `/identify` incluye el array `stages` con los milisegundos
-reales de cada etapa, el `took_ms` total y `slack_ms` — la holgura restante
-frente al presupuesto de 400 ms. No hace falta esperar a un promedio diario
-para saber si una consulta concreta consumió más presupuesto del debido.
+reales de cada etapa, el `took_ms` total y `slack_ms`. Se ve consulta a
+consulta si el tiempo se va a detección, vectorización o búsqueda.
 </Callout>
 
 La etapa de búsqueda crece con el tamaño de la galería; el resto del pipeline
 no depende de él. Dentro del servidor, el coste de trabajo lo dominan
 **detección + vectorización (GPU)**; la búsqueda kNN se mantiene en el orden
 de ~10 ms p50 a 50 M. El reloj del integrador añade además red y TLS hasta la
-API (ver [Rendimiento](/docs/alnitak/rendimiento): p95 de servicio completo
-con caras reales ~200 ms a 60 rps frente a un presupuesto de 400 ms).
+API (ver [Rendimiento y capacidad](/docs/alnitak/rendimiento)).
 
 ## Score y veredicto de tres estados
 
@@ -108,7 +106,8 @@ Es un control doble:
 ## Criterios del almacén vectorial
 
 La galería vive en un almacén vectorial que cumple cuatro condiciones, y esas
-condiciones —no el producto concreto— son las que sostienen el SLA:
+condiciones —no el producto concreto— son las que sostienen la latencia y el
+caudal en régimen:
 
 - **Búsqueda kNN aproximada sobre grafo HNSW**, madura y en versión estable, no
   experimental.
@@ -121,15 +120,15 @@ condiciones —no el producto concreto— son las que sostienen el SLA:
 - **Replicación y redistribución de datos** nativas, que dan redundancia y
   capacidad de lectura sin componentes adicionales.
 
-El cuello de botella del SLA no está en el motor vectorial: está en la GPU de
-vectorización y en la disciplina de operación del índice (compactación de
+El cuello de botella de latencia no está en el motor vectorial: está en la GPU
+de vectorización y en la disciplina de operación del índice (compactación de
 segmentos, memoria residente, número de candidatos explorados).
 
 ## Resiliencia
 
 | Mecanismo | Efecto |
 |---|---|
-| Timeout de 250 ms al vectorizador con un reintento | Absorbe fallos transitorios sin comprometer el presupuesto de latencia |
+| Timeout de 250 ms al vectorizador con un reintento | Absorbe fallos transitorios sin alargar en exceso la consulta |
 | Rechazo explícito por calidad | Una imagen sin rostro no genera una identificación dudosa: se rechaza y queda en auditoría |
 | Marcado de consultas multirrostro | La consulta se resuelve con el rostro mayor y queda señalada para revisión |
 | API sin estado tras balanceador | Cualquier réplica atiende cualquier consulta |
