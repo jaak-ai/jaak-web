@@ -82,6 +82,12 @@ Solo dos valores son entrada del instalador: `JAAK_LICENSE_KEY` y `ORACLE_DSN` (
 incluye el password de la base). El resto (`JWT_SECRET`, `API_KEY`, `SERVICE_KEY`) los
 genera el propio instalador; no hace falta guardarlos en el Vault.
 
+`LAB_MASTER_KEY` es la excepción entre los generados: **sí conviene guardarla en el
+Vault** e inyectarla como el resto. No es efímera — si reinstalas sobre una base de datos
+existente (VM nueva, backup restaurado) y no repones la misma clave, las sesiones de
+laboratorio de esa base quedan indescifrables. Ver
+[Clave del modo laboratorio](#clave-del-modo-laboratorio-lab_master_key).
+
 Opcionalmente, `ADMIN_PASSWORD` también puede inyectarse desde Vault si se desea un
 valor gestionado (en lugar del password autogenerado).
 
@@ -143,7 +149,8 @@ sudo bash get-pulse.sh
 2. Escribe `/opt/jaak-pulse/.env` (permisos `0600`) con tu configuración y secretos
    efímeros (`JWT_SECRET`, `API_KEY`, `SERVICE_KEY` y `ADMIN_PASSWORD` generados
    con `openssl` o aportados por env/flag; `ADMIN_EMAIL` por flag/env/prompt,
-   default `admin@pulse.local`).
+   default `admin@pulse.local`), más la clave del modo laboratorio
+   `LAB_MASTER_KEY` (ver más abajo).
 3. Descarga **pulse-api** y **pulse-web** firmados desde licensing-api y los verifica
    (minisign + sha256).
 4. Ejecuta las migraciones (`migrate` + `seed`) contra tu Oracle. El **seed** crea el
@@ -155,6 +162,57 @@ sudo bash get-pulse.sh
 Es **idempotente**: es seguro re-ejecutarlo. Las actualizaciones posteriores las aplica
 automáticamente `jaak-pulse-updater.timer` (cada 30 minutos), no este script — detalle
 en [Actualizaciones (OTA)](/docs/pulse/actualizaciones).
+
+## Clave del modo laboratorio (`LAB_MASTER_KEY`)
+
+El [modo laboratorio](/docs/pulse/guia-cliente) cifra cada sesión con su propia clave, y
+esas claves van envueltas con una **clave maestra** del despliegue: `LAB_MASTER_KEY`
+(AES-256 en base64 de 32 bytes). El instalador la genera con `openssl` y la escribe en el
+`.env`; no hay que aportarla.
+
+Dos propiedades que conviene conocer antes de operar la instalación:
+
+- **No se rota en las re-ejecuciones.** A diferencia de `JWT_SECRET` y del password del
+  admin, el instalador **preserva** la clave que ya esté en el `.env`. Rotarla dejaría
+  ilegibles las fotos y los vectores de todas las sesiones de laboratorio ya creadas, sin
+  vía de recuperación: no es un secreto que se pueda "refrescar por higiene".
+- **Sin ella el modo laboratorio no arranca.** La API es *fail-closed*: si falta o tiene
+  un formato inválido, crear una sesión devuelve error en vez de guardar datos biométricos
+  cifrados con una clave conocida. El resto de Pulse (métricas agregadas,
+  reidentificación) no se ve afectado.
+
+Respáldala junto con la base de datos. Si restauras un backup de la base en otra VM,
+copia también el valor de `LAB_MASTER_KEY` del `.env` original — sin él, las sesiones de
+laboratorio restauradas quedan indescifrables. Para verificar que está presente:
+
+```bash
+sudo grep -c '^LAB_MASTER_KEY=' /opt/jaak-pulse/.env   # 1 = presente
+```
+
+Instalaciones creadas con una versión anterior del script no la tienen. Añadirla es
+seguro (no había sesiones cifradas antes) y no requiere reinstalar:
+
+```bash
+sudo sh -c 'printf "LAB_MASTER_KEY=\"%s\"\n" "$(openssl rand -base64 32)" >> /opt/jaak-pulse/.env'
+sudo systemctl restart jaak-pulse-api
+```
+
+## Almacenamiento de las fotos de laboratorio
+
+Los recortes de rostro del modo laboratorio se guardan **cifrados en tu base de datos**
+(modo BLOB). Es el modo por defecto y no requiere configuración.
+
+Opcionalmente se pueden mandar a un bucket S3-compatible definiendo las cinco variables
+`MEDIA_S3_ENDPOINT`, `MEDIA_S3_REGION`, `MEDIA_S3_BUCKET`, `MEDIA_S3_ACCESS_KEY_ID` y
+`MEDIA_S3_SECRET_KEY` en el `.env`. Si falta cualquiera de las cinco, la API se queda en
+modo BLOB y lo deja dicho al arrancar:
+
+```
+store: MEDIA_S3_* not fully configured — face photos stored as BLOB (Oracle mode)
+```
+
+Cambiar de modo no migra lo ya guardado: las fotos que estén en la base se siguen
+sirviendo desde ahí.
 
 ## Primer inicio de sesión
 
