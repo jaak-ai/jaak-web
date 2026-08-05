@@ -32,7 +32,7 @@ Una barra superior común y **dos pestañas**:
 
 | Pestaña | Para qué |
 |---|---|
-| **Datos y operación** | Salud del servicio frente al SLA. Es la vista de guardia. |
+| **Datos y operación** | Salud del servicio: latencia, caudal y alertas. Vista de operación. |
 | **Búsqueda 1:N** | Consulta manual y trazabilidad. Es la vista de analista. |
 
 En la barra superior, el control **Flujo en vivo / Pausar** congela la
@@ -43,13 +43,13 @@ mueva.
 
 ## Pestaña: Datos y operación
 
-![Consola JAAK Alnitak — pestaña Datos y operación con KPIs contra el SLA, carga y latencia de 24 horas, presupuesto de latencia por etapa, estado de infraestructura y alertas del turno](/docs/alnitak/consola-dashboard.png)
+![Consola JAAK Alnitak — pestaña Datos y operación con KPIs de latencia y caudal, carga de 24 horas, desglose por etapa, infraestructura y alertas](/docs/alnitak/consola-dashboard.png)
 
 ### Los cuatro KPIs
 
 | KPI | Qué muestra | Cuándo preocuparse |
 |---|---|---|
-| **Latencia p95 · extremo a extremo** | p95 real frente al requisito de ≤ 400 ms, con la etiqueta *dentro de SLA* / fuera | Cuando la barra se acerca al límite o la etiqueta cambia |
+| **Latencia p95 · extremo a extremo** | p95 real frente al objetivo de ≤ 400 ms, con etiqueta dentro / fuera de objetivo | Cuando la barra se acerca al límite o la etiqueta cambia |
 | **Throughput sostenido** | Peticiones por segundo frente al piso contratado | *bajo el mínimo* con tráfico real esperado indica un problema de admisión; con tráfico bajo es simplemente que no hay carga |
 | **Galería indexada** | Vectores en el índice, con dimensiones y cuantificación | Un salto o caída brusca sin operación planificada |
 | **Disponibilidad · 30 días** | Disponibilidad medida de la ventana móvil | Aparece con guion (`—`) mientras no haya ventana de observación suficiente: el servicio no inventa una cifra que no ha medido |
@@ -174,14 +174,15 @@ búsqueda, saturación de los pools (colas y rechazos), indexación, JVM/GC, y C
 y disco por nodo. Se entrega como definición JSON versionada para desplegar en
 el Grafana del cliente.
 
-Reparto de responsabilidades: la **consola** responde "¿cumplimos el SLA y qué
-pasó con esta consulta?"; **Grafana** responde "¿cómo está el clúster?".
+Reparto de responsabilidades: la **consola** responde "¿vamos bien de
+latencia y caudal, y qué pasó con esta consulta?"; **Grafana** responde
+"¿cómo está el clúster?".
 
 ## Qué hacer desde la consola, y qué no
 
 | Sí | No |
 |---|---|
-| Vigilar el SLA y las alertas del turno | Dar de alta identidades en masa (eso es la API) |
+| Vigilar latencia, caudal y alertas del turno | Dar de alta identidades en masa (eso es la API) |
 | Resolver casos de revisión manual | Cambiar configuración del servicio |
 | Investigar una consulta concreta | Re-vectorizar la galería o conmutar el alias: son operaciones privilegiadas y van por API |
 | Comprobar el estado del índice y del vectorizador | Sustituir a la observabilidad del clúster |

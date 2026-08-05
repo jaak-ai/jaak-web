@@ -1,68 +1,53 @@
 ---
-title: Rendimiento y SLA
-description: Compromisos de latencia, caudal y capacidad de JAAK Alnitak, cifras medidas con su corpus y entorno, y dimensionado de memoria.
+title: Rendimiento y capacidad
+description: Latencia, caudal y dimensionado de JAAK Alnitak — cómo se mide y qué cifras se han observado en distintos caminos.
 category: concepto
 order: 11
 unlisted: true
 ---
 
-Compromisos de rendimiento de **JAAK Alnitak** y las mediciones que los
-respaldan, cada una con el corpus y el entorno en que se obtuvo.
+Cómo se comporta **JAAK Alnitak** bajo carga: latencia, caudal, memoria y
+cómo escalar. Las cifras de esta página llevan siempre el **corpus**, el
+**camino medido** y el **tamaño de galería**; sin eso, un número de
+milisegundos no se puede interpretar.
 
-<Callout type="info" title="Cómo leer este documento">
-Toda cifra de esta página procede de una corrida instrumentada. Se indica
-siempre el **corpus**, el **camino medido** (solo búsqueda, cadena lab o
-servicio completo) y el **tamaño de galería**: una cifra de latencia sin esas
-tres cosas no significa nada. Lo que **no** está medido se dice explícitamente.
+<Callout type="info" title="Cómo leer las cifras">
+Hay tres caminos de medición distintos. No se suman ni se intercambian:
+
+1. **Servicio completo** — cliente → API → vectorizador GPU → galería
+   (lo que ve un integrador).
+2. **Laboratorio de inferencia** — generador → GPU → índice, sin la API.
+3. **Solo búsqueda** — kNN sobre vectores ya listos, sin imagen ni GPU.
 </Callout>
 
-## Los tres compromisos
+## Objetivos de diseño del servicio
 
-| Compromiso | Valor contractual |
+La solución está pensada para operar, de forma sostenida, en este entorno:
+
+| Magnitud | Objetivo de diseño |
 |---|---|
-| Galería | \> **50 millones** de vectores de 512 dimensiones |
-| Caudal sostenido | ≥ **60 peticiones/segundo** en la cadena de servicio (imagen → candidatos) |
-| Latencia extremo a extremo | ≤ **400 ms** con vectorización incluida (p95 de éxitos) |
+| Tamaño de galería | Del orden de **decenas de millones** de vectores (512-D); validado a **50 M** |
+| Latencia extremo a extremo | **Por debajo de 400 ms** (p95 de respuestas correctas), con vectorización incluida |
+| Caudal | Del orden de **decenas de peticiones por segundo** por despliegue de referencia; validado a **60 rps** y por encima |
 
-Los compromisos son de la **cadena de servicio**: API orquestadora +
-vectorización + búsqueda sobre la galería. No se cumplen citando solo la
-búsqueda vectorial ni una cadena de laboratorio sin la orquestación.
-
-### Evidencia que respalda los compromisos
-
-| Evidencia | Qué mide | Resultado | ¿Cubre el compromiso? |
-|---|---|---|:---:|
-| **Servicio completo, caras reales (2026-08-05)** | `POST /identify` vía API, galería 50 M, corpus webface LFW 112×112 | **60 rps CUMPLE**, p95 **204 ms**, 3600/3600, 0 % error | **Sí** |
-| Escalera de caudal E2E, mismo corpus | Identify open-loop 60→150 rps | **120 rps CUMPLE** (p95 215 ms); quiebre ~**150 rps** por 429 de capa frontal | Sí (margen **2×**) |
-| Laboratorio: cadena generador→GPU→índice | Variantes de **una** foto, sin orquestación | p99 **60 ms** a 60 rps | Parcial — no incluye API ni caras diversas |
-| Laboratorio: solo búsqueda kNN | Vectores ya listos, sin imagen | **120 rps**, p99 9,7 ms | No — no es el compromiso E2E |
-
-<Callout type="warning" title="No mezclar caminos de medición">
-- **120 rps / p99 9,7 ms** es **solo la búsqueda** en el almacén vectorial:
-  no incluye decodificar la imagen ni la GPU. No se puede presentar como
-  «el sistema hace 120 rps del SLA».
-- **p99 60 ms** es cadena lab **sin** la API orquestadora y con un corpus de
-  200 variantes de la misma fotografía. Sirve para acotar el coste de
-  inferencia; **no** es la latencia que ve el integrador por el endpoint de
-  servicio.
-- La cifra que responde al compromiso contractual es la del **servicio
-  completo con caras reales**: p95 ≤ 400 ms a ≥ 60 rps.
-</Callout>
+El reloj relevante es el de la **petición de servicio** (`identify` /
+`enroll`): imagen de entrada hasta candidatos o alta. No el de una
+subconsulta aislada al almacén vectorial.
 
 ---
 
-## Servicio completo con caras reales (evidencia 2026-08-05)
+## Medición en servicio completo (caras reales)
 
-Medición open-loop del arnés de carga sobre el despliegue de servicio
-(`identify` autenticado), galería de **50 millones**, corpus
-**faces_webface** (LFW, JPG 112×112 prefiltrado a caras que no devuelven
-`low_quality`).
+Corrida open-loop sobre un despliegue con API, vectorizador y galería de
+**50 millones** de vectores. Corpus: fotografías faciales reales
+(webface/LFW, 112×112), prefiltradas para excluir imágenes sin rostro
+usable (`422 low_quality`).
 
-![Resumen de escenarios del bench R/W 1:N con caras reales webface — veredictos CUMPLE / NO CUMPLE a 60–150 rps](/docs/alnitak/bench-resumen.png)
+![Resumen de escenarios de carga con caras reales sobre galería de 50 M](/docs/alnitak/bench-resumen.png)
 
-### Identify a 60 rps — CUMPLE
+### Identify a 60 rps
 
-| Percentil (éxitos) | ms |
+| Percentil (respuestas correctas) | ms |
 |---|---:|
 | p50 | 121 |
 | **p95** | **204** |
@@ -71,15 +56,13 @@ Medición open-loop del arnés de carga sobre el despliegue de servicio
 
 | Resultado | Valor |
 |---|---|
-| Peticiones medidas | 3.600 / 3.600 correctas |
-| rps sostenido de éxitos | **60,00** |
+| Peticiones en ventana de medición | 3.600 / 3.600 correctas |
+| Caudal sostenido de éxitos | **60 rps** |
 | Tasa de error | **0 %** |
-| Holgura vs 400 ms (p95) | **~196 ms** (~51 % del presupuesto) |
 
-![Presupuesto de 400 ms: p95 medido a 60 rps (~204 ms) y holgura restante](/docs/alnitak/bench-presupuesto-400ms.png)
+![p95 a 60 rps respecto al objetivo de diseño de 400 ms](/docs/alnitak/bench-presupuesto-400ms.png)
 
-Desglose **p50 de etapas del API** en la misma corrida (lo que reporta
-`stages[]` en cada respuesta):
+#### Tiempo por etapa (p50, reportado por la API)
 
 | Etapa | ms |
 |---|---:|
@@ -90,113 +73,92 @@ Desglose **p50 de etapas del API** en la misma corrida (lo que reporta
 | Orquestación | 3 |
 | **Suma p50 etapas** | **~31** |
 
-![Desglose p50 por etapa del pipeline identify a 60 rps frente al e2e del cliente](/docs/alnitak/bench-etapas-pipeline.png)
+![Reparto del tiempo interno del pipeline frente al e2e medido en el cliente](/docs/alnitak/bench-etapas-pipeline.png)
 
 La diferencia entre ~31 ms de etapas y ~121 ms de p50 en el cliente es
-**red, TLS y túnel** hasta el endpoint de servicio. El pipeline interno se
-queda muy por debajo del presupuesto; el reloj del integrador incluye el
-viaje de red.
+**red, TLS y proxy** hasta el endpoint. El trabajo del servidor cabe
+holgadamente en el objetivo de latencia; el integrador debe contar también
+el viaje de red.
 
-![Comparativa de latencia p50/p95/p99 a 60 rps: identify filtrado, sin filtrar y mixto R/W](/docs/alnitak/bench-sla-latencia.png)
+![Latencia p50 / p95 / p99 a 60 rps en distintos escenarios de entrada](/docs/alnitak/bench-sla-latencia.png)
 
-![Comparativa de caudal sostenido y tasa de error a 60 rps en los mismos escenarios](/docs/alnitak/bench-sla-caudal.png)
+![Caudal sostenido y tasa de error a 60 rps en los mismos escenarios](/docs/alnitak/bench-sla-caudal.png)
 
-### Mixto lectura + escritura a 60 rps
+### Lectura y escritura a la vez
 
-50 % `identify` + 50 % `enroll`, mismo corpus:
+Mixto 50 % `identify` + 50 % `enroll` a 60 rps, mismo corpus:
 
 | Métrica | Valor |
 |---|---|
-| rps éxito | **60,00** |
-| p95 e2e | **202 ms** (CUMPLE) |
+| Caudal de respuestas correctas | **60 rps** |
+| p95 e2e | **202 ms** |
 | p95 identify / enroll | 206 / 199 ms |
 
-![Latencia por operación en el mixto 50 % identify + 50 % enroll a 60 rps](/docs/alnitak/bench-mixed-latencia.png)
+![Latencia de identify frente a enroll en tráfico mixto](/docs/alnitak/bench-mixed-latencia.png)
 
-![Códigos HTTP del mixto: 200 de éxito y 409 de antiduplicado al re-enrolar la misma cara](/docs/alnitak/bench-mixed-codigos.png)
+![Distribución de códigos HTTP: altas correctas y rechazos por rostro ya presente](/docs/alnitak/bench-mixed-codigos.png)
 
-Al reutilizar las mismas caras, el antiduplicado de `enroll` devuelve
-**409** tras el primer alta de cada rostro (comportamiento esperado). Para
-una prueba de **escritura continua** hace falta un corpus de caras únicas
-≥ `rps × duración`.
+Si se reutilizan las mismas caras, `enroll` devuelve **409** tras el primer
+alta de cada rostro (control antiduplicado). Para una prueba de escritura
+continua hace falta un conjunto de caras distintas ≥ `rps × duración`.
 
-### Punto de quiebre (solo identify)
+### Escalera de caudal (identify)
 
-| rps objetivo | rps éxito | p95 | Error | Veredicto |
-|---:|---:|---:|---:|:---|
-| 60 | 60 | 339\* | 0 % | CUMPLE |
-| 80 | 80 | 201 | 0 % | CUMPLE |
-| 100 | 100 | 198 | 0 % | CUMPLE |
-| **120** | **120** | **215** | **0 %** | **CUMPLE** |
-| 150 | 137 | 213 | **8,6 % 429** | NO CUMPLE |
+| rps enviado | rps de éxito | p95 | Error | Observación |
+|---:|---:|---:|---:|---|
+| 60 | 60 | ~200–340\* | 0 % | Régimen estable |
+| 80 | 80 | 201 | 0 % | Estable |
+| 100 | 100 | 198 | 0 % | Estable |
+| **120** | **120** | **215** | **0 %** | Estable |
+| 150 | 137 | 213 | **8,6 %** (429) | Saturación de capa frontal |
 
-\*p95 del peldaño de 60 rps en la escalera (ventana corta); la corrida
-dedicada de 60 s a 60 rps da p95 **204 ms** (tabla anterior).
+\*En ventanas cortas de escalera el p95 a 60 rps varía; la corrida dedicada
+de 60 s da **p95 204 ms**.
 
-![Escalera de carga 60–150 rps: latencia p50/p95/p99, rps de éxito y tasa de error hasta el punto de quiebre](/docs/alnitak/bench-punto-de-quiebre.png)
+![Escalera de carga: latencia, caudal y errores hasta el primer techo](/docs/alnitak/bench-punto-de-quiebre.png)
 
-**Conclusión de capacidad en esta topología:** el compromiso de 60 rps se
-cumple con holgura; el sistema sostiene **120 rps** E2E sin errores; el
-primer quiebre observado es ~**150 rps** por **429** de una capa frontal
-(limitador/gateway), no por p95 > 400 ms. Margen de caudal sobre el
-mínimo contractual: **2×**.
+En esta topología el servicio se mantiene estable al menos hasta **120 rps**
+E2E. El primer techo observado (~**150 rps**) viene de **429** en un
+limitador o gateway delante de la API, no de un p95 que supere 400 ms.
 
-<Callout type="info" title="Corpus y condiciones de esta evidencia">
-- **Caras reales** distintas (webface/LFW 112×112), no 200 reencodes de la
-  misma foto.
-- Camino **completo**: cliente → API orquestadora → vectorizador GPU →
-  almacén vectorial 50 M.
-- Generador **open-loop** con concurrencia acotada; 0 descartes del
-  cliente en las corridas CUMPLE.
-- Sin filtrar el corpus, ~2 % de `422 low_quality` (sin rostro usable)
-  pueden tumbar el umbral de error aunque la latencia cumpla: el arnés de
-  entrega prefiltra o reporta esos códigos aparte.
+<Callout type="info" title="Condiciones de la corrida">
+- Caras **reales y distintas**, no reencodes de una sola foto.
+- Camino **completo** (API + GPU + índice 50 M).
+- Generador **open-loop** con concurrencia acotada; sin descartes del
+  propio generador en las ventanas estables.
+- Un ~2 % de `422` aparece si el corpus no se filtra (imágenes sin rostro
+  usable). Conviene prefiltrar o tratar esos códigos aparte del error de
+  infraestructura.
 </Callout>
-
-### Precisión bajo carga
-
-La latencia del camino de calidad (enroll de control + identify de la
-pareja) se mantiene dentro de presupuesto. **No se publican FAR/FRR** a
-partir de esta corrida: el índice de evidencia de 50 M es de operación de
-capacidad; la calibración de umbral y la precisión de dominio se hacen con
-el conjunto etiquetado del cliente (ver sección *Precisión biométrica*).
 
 ---
 
-## Laboratorio: latencia de la cadena de inferencia
+## Laboratorio: coste de inferencia y búsqueda
 
-Medición de referencia del coste **GPU + búsqueda**, a 60 rps, galería de
-50 millones, **sin** la capa de orquestación del servicio y con un corpus
-acotado (200 variantes de una fotografía, 480–2160 px, JPEG 60–97):
+Útil para dimensionar GPU e índice. **No** sustituye la latencia que ve el
+integrador.
+
+### Cadena GPU + índice (sin API orquestadora)
+
+60 rps, galería 50 M, 200 variantes de una fotografía (480–2160 px):
 
 | Percentil | ms |
 |---|---:|
-| p50 | 34,963 |
-| p95 | 50,925 |
-| **p99** | **60,022** |
-| máximo (la peor de 18.000) | 146,018 |
+| p50 | 35 |
+| p95 | 51 |
+| **p99** | **60** |
+| máximo | 146 |
 
-18.000/18.000 correctas en ese corpus. Útil para acotar inferencia; **no
-sustituye** la medición de servicio completo de la sección anterior.
+En ese camino el tiempo lo domina la GPU. No incluye orquestación, auth ni
+red del servicio.
 
-```
-presupuesto:  400 ms
-  vectorización (GPU)  ████ ~52 ms   (lab)
-  búsqueda             █ ~10 ms
-  orquestación+red     (no en esta corrida lab)
-  holgura típica E2E   ████████████  (ver p95 204 ms servicio completo)
-```
+### Solo búsqueda kNN
 
-<Callout type="warning" title="Tres etiquetas al citar los 60 ms de laboratorio">
-1. **Corpus de 200 variantes de una fotografía.** No cubre rostros
-   múltiples, encuadres difíciles ni detecciones fallidas.
-2. **Cadena directa** generador → motor de vectorización → almacén
-   vectorial. La API orquestadora **no** está en el reloj.
-3. En ese camino el coste lo domina la GPU. Si el tráfico real lleva
-   imágenes más pesadas o varias caras, ese lado crece.
-</Callout>
+Con vectores ya materializados, sin decodificar imagen ni llamar al
+vectorizador: del orden de **120 rps** con p99 de búsqueda ~**10 ms** sobre
+50 M. Es capacidad del almacén, no del producto de punta a punta.
 
-### Desglose por etapa (lab, galería 5 M, A10)
+### Desglose de etapas (lab, 5 M, GPU A10)
 
 | Etapa | ms |
 |---|---:|
@@ -204,124 +166,89 @@ presupuesto:  400 ms
 | Detección y alineación | 12 |
 | Vectorización | 3 |
 | Búsqueda kNN | 12 |
-| Orquestación y resolución | 4 |
+| Orquestación | 4 |
 | **Total** | **31** |
 
-Coincide en orden de magnitud con el p50 de etapas del servicio completo
-(~31 ms). La etapa de búsqueda crece con el tamaño de la galería; el resto
-no depende de él.
+Mismo orden de magnitud que el p50 de etapas en servicio completo. La
+búsqueda crece con el tamaño de galería; el resto casi no.
 
-### Latencias que NO responden al compromiso
+### Qué no es latencia de régimen
 
-| Cifra | Qué es | ¿Es el compromiso? |
-|---:|---|:---:|
-| **p95 204 ms @ 60 rps** (servicio, caras reales) | Identify E2E con API + GPU + 50 M | **Sí** |
-| p99 60 ms @ 60 rps (lab) | Cadena sin orquestación, 1 foto en 200 variantes | Parcial |
-| 9,7 ms @ 120 rps | Solo búsqueda vectorial | No |
-| ~5.000 ms | Primera consulta con caché vacía | No |
-| p95 ~215 ms @ 120 rps | Escalera E2E caras reales | Sí (margen) |
+| Cifra | Significado |
+|---|---|
+| p95 ~204 ms @ 60 rps (servicio, caras reales) | Latencia de producto E2E de referencia |
+| p99 ~60 ms (lab, sin API) | Coste de inferencia + búsqueda en lab |
+| ~10 ms @ 120 rps (solo kNN) | Solo el almacén vectorial |
+| Segundos en la primera consulta | Arranque en frío / caché fría del índice |
 
-## Caudal
+## Caudal y dimensionado
 
-| Escenario | Caudal sostenido | Latencia | Camino |
-|---|---|---|---|
-| **Identify E2E, 50 M, caras reales** | **60 rps** CUMPLE; **120 rps** CUMPLE | p95 204 ms (60); 215 ms (120) | Servicio completo |
-| Identify E2E, quiebre observado | ~**150 rps** (429 frontal) | p95 aún ~213 ms | Servicio completo |
-| Solo búsqueda sobre 50 M | **120 rps**, 36.000/36.000 | p99 9,744 ms | Sin imagen / sin GPU |
-| Cadena lab sobre 5 M, alta concurrencia | **361 rps** | p95 ~360 ms | Lab, no open-loop 50 M |
-| Vectorización aislada, 1× A10 | **291 rps** | p95 337 ms | Solo GPU |
-
-Corolario de dimensionado: el mínimo contractual de **60 rps E2E** se alcanza
-con holgura en la topología de referencia. El número de GPU se elige por
-**redundancia y crecimiento**, no porque 60 rps exija un rack de
-aceleradores. Las cifras de «casi 6×» del motor aislado **no** se trasladan
-1:1 al servicio completo a 50 M en open-loop: el techo observado E2E en la
-evidencia de caras reales está en torno a **120 rps limpios** y ~150 rps
-antes del 429 de capa frontal.
-
-## Memoria y disco con 50 M de vectores
-
-Huella medida del índice int8 con los 50 millones cargados:
-
-| Magnitud | Valor | Qué es |
+| Escenario | Caudal | Latencia (orientativa) |
 |---|---|---|
-| Tamaño en disco (shards primarios) | ~126 GB | Persistencia. Incluye los float32 crudos (~102 GB), que **solo se leen al rescorear** unos pocos candidatos. |
-| **Conjunto de trabajo caliente** | **~30 GB por copia** | Lo que la búsqueda recorre en memoria: vectores cuantificados (~26 GB) más el grafo. |
+| Identify E2E, 50 M, caras reales | **60–120 rps** estable | p95 ~200–215 ms |
+| Techo observado E2E (misma topología) | ~**150 rps** (429 frontal) | p95 aún ~210 ms |
+| Solo kNN, 50 M | **120 rps** | p99 ~10 ms |
+| Vectorizador aislado (1× A10) | Cientos de rps | Depende del batch y el modelo |
 
-La cuantificación int8 es la decisión que hace viable el SLA: lo que debe residir
-en memoria son ~30 GB por copia, no los ~250 GB de un escenario float32 sin
-cuantificar. El coste en recall se compensa con `num_candidates` entre 500 y
-1000 por shard y rescoring sobre los float32.
+Para subir tráfico: más réplicas de **vectorizador (GPU)** y de **API**.
+Para subir galería: más **nodos de datos** del almacén vectorial. Los
+techos por **429** se resuelven en limitadores y gateways, no en el motor
+biométrico.
 
-<Callout type="danger" title="No fuerces los float32 a caché">
-La huella real se dispara si se preconfiguran los ficheros de vectores crudos
-para precarga en caché de páginas: eso arrastra ~102 GB por copia a memoria sin
-necesidad. Es **configuración corregible, no una limitación del cuantizador**.
-La degradación observada de p50 de 7 a 184 ms con dos índices abiertos se
-explica por ahí.
+## Memoria y disco a 50 M de vectores
+
+| Magnitud | Valor | Notas |
+|---|---|---|
+| Disco (shards primarios) | ~126 GB | Incluye float32 crudos (~102 GB) usados solo al rescorear |
+| Trabajo en caliente | **~30 GB por copia** | int8 cuantificado + grafo HNSW |
+
+La cuantificación int8 mantiene el conjunto caliente en decenas de GB en
+lugar de cientos. El recall se sostiene con `num_candidates` alto y
+rescoring en float32 sobre un subconjunto.
+
+<Callout type="danger" title="No precargar los float32 en caché de páginas">
+Forzar en memoria los vectores crudos multiplica la huella (~102 GB extra
+por copia) sin beneficio en el camino caliente. Es un ajuste de
+configuración, no un límite del cuantizador.
 </Callout>
 
-**Pico de migración:** durante un cambio de modelo conviven dos índices físicos,
-así que el **disco** se dimensiona para ~250 GB de primarios en el pico. La
-memoria no: solo el índice activo se sirve caliente.
-
-## Ley de escalamiento
-
-En el camino de servicio el coste de GPU sigue dominando el trabajo del
-pipeline (detección + vectorización). La búsqueda kNN, en las corridas de
-50 M, se mantiene en el orden de **~10 ms p50** y no es el primer cuello
-cuando se sube de 60 a 120 rps.
-
-| Para crecer en… | Se agrega |
-|---|---|
-| Tráfico | Réplicas de vectorización (GPU) y de la API orquestadora |
-| Galería | Nodos de datos del almacén vectorial |
-| Techos 429 / admisión | Revisión de limitadores y gateways delante del servicio |
+En un cambio de modelo conviven dos índices en disco (~250 GB de
+primarios en el pico); en memoria solo el índice activo debe estar caliente.
 
 ## Arranque en frío
 
-La primera consulta tras preparar un índice, con la caché vacía, es del orden de
-segundos, no de milisegundos. **No es la latencia de régimen** y no debe usarse
-para dimensionar. Se mitiga con un calentamiento tras cada despliegue o
-conmutación de alias.
+La primera consulta tras cargar un índice con caché vacía puede ir a
+**segundos**. No se usa para dimensionar el régimen. Tras un despliegue o
+cambio de alias conviene un calentamiento controlado.
 
-## Arnés de carga reproducible
+## Cómo reproducir las mediciones
 
-La entrega incluye generadores de carga para reproducir estas mediciones en el
-entorno del cliente:
+La entrega incluye generadores de carga:
 
-- **Identify (Go / k6):** ritmo fijo open-loop, warmup descartado, p50/p95/p99,
-  caudal de éxitos, veredicto CUMPLE/NO CUMPLE frente a 400 ms y 60 rps.
-  Parámetros típicos: `--url --images --rps --duration --concurrency --warmup --out`.
-- **Lectura + escritura con caras reales:** mixto `identify`/`enroll`, escalera
-  de punto de quiebre y modo quality (pares etiquetados). Misma regla: si el
-  generador descarta envíos, la corrida es **inválida**.
+- **Identify** (ritmo fijo open-loop, warmup fuera de métricas, p50/p95/p99,
+  caudal de éxitos).
+- **Lectura + escritura** con imágenes reales (mixto `identify`/`enroll`,
+  escalera de caudal, pares etiquetados).
 
-<Callout type="warning" title="Un generador sin cota de concurrencia mide su propio desbordamiento">
-Si el generador no acota la concurrencia, lo que se observa a tasas altas es su
-propio encolamiento, no el del servidor. El arnés acota la concurrencia
-(`--concurrency` / VUs) y reporta saturación del cliente. Una corrida saturada
-es **inválida**, no un fallo del servicio.
-</Callout>
+Si el generador se satura y deja de enviar al ritmo pedido, la corrida no
+es válida: mide el cliente, no el servicio. Hay que acotar concurrencia y
+comprobar que no hay descartes del propio arnés.
 
 ## Precisión biométrica
 
-<Callout type="danger" title="No se publican cifras de precisión">
-Las mediciones de precisión sobre **vectores sintéticos** no son un punto de
-operación biométrico y **no se citan**: cualquier FAR/FRR derivado de ese
-material sería una afirmación sin respaldo.
-
-La medición de precisión sobre población real y la acreditación independiente
-son trabajo en curso, y se comunicarán como resultados propios cuando existan.
-La calibración del umbral para un despliegue concreto se hace con el conjunto
-etiquetado del cliente, como parte de la puesta en marcha.
+<Callout type="danger" title="Sin FAR/FRR publicados a partir de material sintético">
+Las corridas de capacidad sobre vectores sintéticos **no** se usan para
+citar tasas de error biométrico. La calibración del umbral y la evaluación
+de precisión se hacen con el conjunto etiquetado del cliente en la puesta
+en marcha. Resultados de población real y acreditaciones se publicarán
+cuando existan como medición propia.
 </Callout>
 
 ## Hardware de referencia
 
-| Componente | Propuesta | Base |
-|---|---|---|
-| Vectorización | 2 × GPU NVIDIA A10 (24 GB VRAM) tras balanceador | Evidencia E2E y lab con una GPU de referencia |
-| Almacén vectorial — nodos de datos | 3 nodos: 16 vCPU, 100 GB RAM, ≥ 400 GB NVMe, hosts físicos distintos | Búsqueda a 120 rps con CPU del almacén en 8–12 % en la corrida de lab |
-| Almacén vectorial — nodos de coordinación | 3 nodos dedicados, 4 GB RAM | Quórum separado de la ruta de datos |
-| API orquestadora | 2+ réplicas sin estado tras balanceador | Servicio ligero; entra en el reloj E2E del integrador |
+| Componente | Orientación de dimensionado |
+|---|---|
+| Vectorización | 2 × GPU tipo NVIDIA A10 (24 GB) tras balanceador (HA); las cifras E2E de referencia se tomaron con una GPU |
+| Almacén vectorial — datos | 3 nodos, ~16 vCPU, ~100 GB RAM, NVMe ≥ 400 GB, hosts distintos |
+| Almacén vectorial — coordinación | 3 nodos ligeros para quórum |
+| API orquestadora | 2+ réplicas sin estado tras balanceador |
