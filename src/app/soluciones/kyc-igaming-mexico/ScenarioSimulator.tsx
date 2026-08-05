@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 const TEAL = "#1ECAD3";
+const NAVY_MED = "#0B1E3F";
 
 type Scenario = {
   id: string;
@@ -80,11 +81,12 @@ export default function ScenarioSimulator() {
               onClick={() => setActiveId(s.id)}
               role="tab"
               aria-selected={isActive}
-              className="text-left px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300"
+              className="text-left px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5"
               style={{
-                background: isActive ? "rgba(30,202,211,0.1)" : "rgba(255,255,255,0.03)",
+                background: NAVY_MED,
                 border: `1px solid ${isActive ? TEAL : "rgba(255,255,255,0.08)"}`,
-                color: isActive ? "#fff" : "#94A3B8",
+                boxShadow: isActive ? "0 10px 30px rgba(0,0,0,0.18)" : "none",
+                color: isActive ? "#fff" : "#A8B6C8",
               }}
             >
               {s.label}
@@ -98,7 +100,7 @@ export default function ScenarioSimulator() {
         className="max-w-xl mx-auto rounded-2xl p-6 sm:p-8 text-center animate-fade-in-up"
         style={{ background: style.bg, border: `1px solid ${style.border}` }}
       >
-        <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: "#94A3B8" }}>
+        <p className="text-xs font-semibold uppercase tracking-wide mb-3" style={{ color: "#A8B6C8" }}>
           Capa que interviene
         </p>
         <p className="text-lg font-bold text-white mb-5">{active.layer}</p>

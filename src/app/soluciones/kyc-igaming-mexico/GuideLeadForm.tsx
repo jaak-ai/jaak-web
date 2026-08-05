@@ -62,11 +62,15 @@ export default function GuideLeadForm() {
     }
   };
 
+  const inputStyle = { background: "#F8FAFC", border: "1px solid #D9E2EC", color: "#0F172A" };
+  const labelClass = "block text-xs font-semibold mb-1.5";
+  const labelStyle = { color: "#64748B" };
+
   return (
-    <form onSubmit={handleSubmit} className="rounded-2xl p-6 sm:p-8 space-y-4" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)" }}>
+    <form onSubmit={handleSubmit} className="rounded-2xl p-6 sm:p-8 space-y-4 bg-white" style={{ border: "1px solid #D9E2EC", boxShadow: "0 10px 30px rgba(2,19,45,0.06)" }}>
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="guia-nombre" className="block text-xs font-semibold text-white/60 mb-1.5">Nombre *</label>
+          <label htmlFor="guia-nombre" className={labelClass} style={labelStyle}>Nombre *</label>
           <input
             id="guia-nombre"
             type="text"
@@ -74,12 +78,12 @@ export default function GuideLeadForm() {
             autoComplete="given-name"
             value={formData.nombre}
             onChange={(e) => setFormData({ ...formData, nombre: e.target.value })}
-            className="w-full px-4 py-2.5 rounded-lg text-sm text-white outline-none"
-            style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.15)" }}
+            className="w-full px-4 py-2.5 rounded-lg text-sm outline-none focus:border-[#1ECAD3]"
+            style={inputStyle}
           />
         </div>
         <div>
-          <label htmlFor="guia-apellido" className="block text-xs font-semibold text-white/60 mb-1.5">Apellido *</label>
+          <label htmlFor="guia-apellido" className={labelClass} style={labelStyle}>Apellido *</label>
           <input
             id="guia-apellido"
             type="text"
@@ -87,14 +91,14 @@ export default function GuideLeadForm() {
             autoComplete="family-name"
             value={formData.apellido}
             onChange={(e) => setFormData({ ...formData, apellido: e.target.value })}
-            className="w-full px-4 py-2.5 rounded-lg text-sm text-white outline-none"
-            style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.15)" }}
+            className="w-full px-4 py-2.5 rounded-lg text-sm outline-none focus:border-[#1ECAD3]"
+            style={inputStyle}
           />
         </div>
       </div>
 
       <div>
-        <label htmlFor="guia-email" className="block text-xs font-semibold text-white/60 mb-1.5">Correo corporativo *</label>
+        <label htmlFor="guia-email" className={labelClass} style={labelStyle}>Correo corporativo *</label>
         <input
           id="guia-email"
           type="email"
@@ -103,14 +107,14 @@ export default function GuideLeadForm() {
           value={formData.email}
           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
           placeholder="tu@empresa.com"
-          className="w-full px-4 py-2.5 rounded-lg text-sm text-white outline-none"
-          style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.15)" }}
+          className="w-full px-4 py-2.5 rounded-lg text-sm outline-none focus:border-[#1ECAD3]"
+          style={inputStyle}
         />
       </div>
 
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="guia-empresa" className="block text-xs font-semibold text-white/60 mb-1.5">Empresa *</label>
+          <label htmlFor="guia-empresa" className={labelClass} style={labelStyle}>Empresa *</label>
           <input
             id="guia-empresa"
             type="text"
@@ -118,12 +122,12 @@ export default function GuideLeadForm() {
             autoComplete="organization"
             value={formData.empresa}
             onChange={(e) => setFormData({ ...formData, empresa: e.target.value })}
-            className="w-full px-4 py-2.5 rounded-lg text-sm text-white outline-none"
-            style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.15)" }}
+            className="w-full px-4 py-2.5 rounded-lg text-sm outline-none focus:border-[#1ECAD3]"
+            style={inputStyle}
           />
         </div>
         <div>
-          <label htmlFor="guia-cargo" className="block text-xs font-semibold text-white/60 mb-1.5">Cargo *</label>
+          <label htmlFor="guia-cargo" className={labelClass} style={labelStyle}>Cargo *</label>
           <input
             id="guia-cargo"
             type="text"
@@ -131,38 +135,38 @@ export default function GuideLeadForm() {
             autoComplete="organization-title"
             value={formData.cargo}
             onChange={(e) => setFormData({ ...formData, cargo: e.target.value })}
-            className="w-full px-4 py-2.5 rounded-lg text-sm text-white outline-none"
-            style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.15)" }}
+            className="w-full px-4 py-2.5 rounded-lg text-sm outline-none focus:border-[#1ECAD3]"
+            style={inputStyle}
           />
         </div>
       </div>
 
       <div className="grid sm:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="guia-tipo" className="block text-xs font-semibold text-white/60 mb-1.5">Tipo de operación</label>
+          <label htmlFor="guia-tipo" className={labelClass} style={labelStyle}>Tipo de operación</label>
           <select
             id="guia-tipo"
             value={formData.tipoOperacion}
             onChange={(e) => setFormData({ ...formData, tipoOperacion: e.target.value })}
-            className="w-full px-4 py-2.5 rounded-lg text-sm text-white outline-none"
-            style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.15)" }}
+            className="w-full px-4 py-2.5 rounded-lg text-sm outline-none focus:border-[#1ECAD3]"
+            style={inputStyle}
           >
             {TIPOS_OPERACION.map((t) => (
-              <option key={t} value={t} style={{ color: "#000" }}>{t}</option>
+              <option key={t} value={t}>{t}</option>
             ))}
           </select>
         </div>
         <div>
-          <label htmlFor="guia-volumen" className="block text-xs font-semibold text-white/60 mb-1.5">Volumen mensual de registros</label>
+          <label htmlFor="guia-volumen" className={labelClass} style={labelStyle}>Volumen mensual de registros</label>
           <select
             id="guia-volumen"
             value={formData.volumen}
             onChange={(e) => setFormData({ ...formData, volumen: e.target.value })}
-            className="w-full px-4 py-2.5 rounded-lg text-sm text-white outline-none"
-            style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.15)" }}
+            className="w-full px-4 py-2.5 rounded-lg text-sm outline-none focus:border-[#1ECAD3]"
+            style={inputStyle}
           >
             {VOLUMENES.map((v) => (
-              <option key={v} value={v} style={{ color: "#000" }}>{v}</option>
+              <option key={v} value={v}>{v}</option>
             ))}
           </select>
         </div>
@@ -171,14 +175,14 @@ export default function GuideLeadForm() {
       <button
         type="submit"
         disabled={status === "loading"}
-        className="w-full px-6 py-3.5 min-h-[48px] rounded-lg font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full px-6 py-3.5 min-h-[48px] rounded-lg font-bold transition-all hover:bg-[#19B8C0] disabled:opacity-50 disabled:cursor-not-allowed"
         style={{ background: TEAL, color: "#02132D" }}
       >
         {status === "loading" ? "Enviando…" : "Descargar la guía"}
       </button>
 
       {status === "error" && (
-        <p role="alert" className="text-red-400 text-sm text-center">{errorMessage}</p>
+        <p role="alert" className="text-red-600 text-sm text-center">{errorMessage}</p>
       )}
     </form>
   );

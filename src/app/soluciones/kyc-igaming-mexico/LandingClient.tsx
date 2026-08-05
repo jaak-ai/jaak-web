@@ -14,11 +14,29 @@ import LayersExplorer from "./LayersExplorer";
 import VideoDemo from "./VideoDemo";
 import GuideLeadForm from "./GuideLeadForm";
 
+// ── Paleta ──────────────────────────────────────────────────────────────
 const NAVY = "#02132D";
-const NAVY_LIGHT = "#0B1D3A";
+const NAVY_MED_1 = "#0B1E3F";
+const NAVY_MED_2 = "#10264D";
 const TEAL = "#1ECAD3";
 const GREEN = "#2AD796";
-const OFFWHITE = "#F5F5F3";
+const OFFWHITE = "#F7F9FC";
+const LIGHT_GRAY = "#EEF3F7";
+const BORDER_DARK = "rgba(255,255,255,0.10)";
+const BORDER_LIGHT = "#D9E2EC";
+
+// Texto por tipo de fondo
+const T = {
+  darkTitle: "#FFFFFF",
+  darkBody: "#D6E0EE",
+  darkSecondary: "#A8B6C8",
+  lightTitle: "#02132D",
+  lightBody: "#334155",
+  lightSecondary: "#64748B",
+};
+
+const PRIMARY_BTN = "inline-flex items-center justify-center gap-2 rounded-xl px-7 py-3.5 text-[15px] font-bold transition-all hover:-translate-y-px bg-[#1ECAD3] hover:bg-[#19B8C0] text-[#02132D]";
+const SECONDARY_BTN_DARK = "inline-flex items-center justify-center gap-2 rounded-xl px-7 py-3.5 text-[15px] font-semibold text-white transition-all hover:bg-white/10 bg-transparent";
 
 const COBRE_PACKAGE = CATALOG_PRODUCTS.find((p) => p.id === "kyc")!.paquetes.find((p) => p.id === "cobre")!;
 const COBRE_CHECKOUT_URL = "https://platform.jaak.ai/#/onboarding/user-info?plan=cobre";
@@ -64,6 +82,39 @@ function FloatingWhatsApp() {
       </svg>
       Hablar por WhatsApp
     </a>
+  );
+}
+
+/** Card sobre fondo oscuro. `accent` agrega una línea superior teal sutil (usar solo en tarjetas clave). */
+function DarkCard({ children, accent }: { children: React.ReactNode; accent?: boolean }) {
+  return (
+    <div
+      className="rounded-2xl p-6 transition-all duration-300 hover:-translate-y-0.5"
+      style={{
+        background: NAVY_MED_1,
+        border: `1px solid ${BORDER_DARK}`,
+        boxShadow: "0 10px 30px rgba(0,0,0,0.18)",
+        ...(accent ? { borderTop: `3px solid rgba(30,202,211,0.5)` } : {}),
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+/** Card sobre fondo claro. `accent` agrega una línea superior teal sutil. */
+function LightCard({ children, accent }: { children: React.ReactNode; accent?: boolean }) {
+  return (
+    <div
+      className="rounded-2xl p-6 bg-white transition-all duration-300 hover:-translate-y-0.5"
+      style={{
+        border: `1px solid ${BORDER_LIGHT}`,
+        boxShadow: "0 10px 30px rgba(2,19,45,0.05)",
+        ...(accent ? { borderTop: `3px solid ${TEAL}` } : {}),
+      }}
+    >
+      {children}
+    </div>
   );
 }
 
@@ -156,10 +207,12 @@ export default function KycIgamingMexicoLandingClient() {
       <Header />
       <FloatingWhatsApp />
       <main style={{ background: NAVY }}>
-        {/* ── 1. Hero ─────────────────────────────────────────────────────── */}
+        {/* ── 1. Hero (oscuro) ──────────────────────────────────────────────── */}
         <section
           className="pt-32 pb-20 relative overflow-hidden"
-          style={{ background: `linear-gradient(160deg, ${NAVY} 0%, ${NAVY_LIGHT} 100%)` }}
+          style={{
+            background: `radial-gradient(1100px 700px at 15% 30%, #0A2045 0%, transparent 60%), linear-gradient(160deg, ${NAVY} 0%, ${NAVY_MED_1} 100%)`,
+          }}
           aria-labelledby="hero-heading"
         >
           <div
@@ -192,11 +245,11 @@ export default function KycIgamingMexicoLandingClient() {
                   </span>
                 </h1>
 
-                <p className="text-lg md:text-xl text-white/70 mb-4 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                <p className="text-lg md:text-xl mb-4 leading-relaxed max-w-2xl mx-auto lg:mx-0" style={{ color: "#D8E2F0" }}>
                   Verifica quién se registra en tu plataforma, confirma la vigencia de su documento y conecta rostro,
                   prueba de vida pasiva, fuentes oficiales, riesgo y ubicación dentro de un solo flujo.
                 </p>
-                <p className="text-lg md:text-xl font-semibold mb-10 leading-relaxed max-w-2xl mx-auto lg:mx-0" style={{ color: TEAL }}>
+                <p className="text-lg md:text-xl font-semibold mb-10 leading-relaxed max-w-2xl mx-auto lg:mx-0" style={{ color: "#43D8DE" }}>
                   Tu operación recibe un resultado estructurado y la evidencia de cada validación.
                 </p>
 
@@ -204,8 +257,7 @@ export default function KycIgamingMexicoLandingClient() {
                   <Link
                     href="#video"
                     onClick={() => gtmEvent("click_ver_video_60s", { location: "hero", page: "kyc-igaming-mexico" })}
-                    className="inline-flex items-center justify-center rounded-xl px-7 py-3.5 text-[15px] font-bold transition-all hover:-translate-y-px"
-                    style={{ background: TEAL, color: NAVY }}
+                    className={PRIMARY_BTN}
                   >
                     Ver el flujo en 60 segundos
                   </Link>
@@ -214,14 +266,14 @@ export default function KycIgamingMexicoLandingClient() {
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => gtmEvent("whatsapp_click", { source: "hero", page_path: "/soluciones/kyc-igaming-mexico" })}
-                    className="inline-flex items-center justify-center rounded-xl px-7 py-3.5 text-[15px] font-semibold text-white transition-all hover:bg-white/10"
-                    style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)" }}
+                    className={SECONDARY_BTN_DARK}
+                    style={{ border: "1px solid rgba(255,255,255,0.18)" }}
                   >
                     Hablar con un especialista
                   </a>
                 </div>
 
-                <p className="text-sm text-white/40 max-w-2xl mx-auto lg:mx-0">
+                <p className="text-sm max-w-2xl mx-auto lg:mx-0" style={{ color: T.darkSecondary }}>
                   Para casinos en línea, apuestas deportivas, sorteos, plataformas de gaming y operadores que necesitan
                   conocer a sus jugadores sin convertir la verificación en una barrera.
                 </p>
@@ -238,7 +290,7 @@ export default function KycIgamingMexicoLandingClient() {
           </div>
         </section>
 
-        {/* ── 2. El problema ──────────────────────────────────────────────── */}
+        {/* ── 2. El problema (oscuro) ───────────────────────────────────────── */}
         <section id="problema" className="py-20" aria-labelledby="problema-heading">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-10 items-center mb-14">
@@ -249,10 +301,10 @@ export default function KycIgamingMexicoLandingClient() {
                 />
               </div>
               <div data-sr className="text-center lg:text-left">
-                <h2 id="problema-heading" className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-4">
+                <h2 id="problema-heading" className="text-2xl sm:text-3xl md:text-4xl font-black mb-4" style={{ color: T.darkTitle }}>
                   Un registro completo no siempre significa una identidad verificada.
                 </h2>
-                <p className="text-white/60 leading-relaxed">
+                <p className="leading-relaxed" style={{ color: T.darkBody }}>
                   Un correo, un teléfono y una fotografía de una identificación pueden llenar un formulario. No
                   necesariamente demuestran quién está detrás de la cuenta. En gaming, una validación incompleta puede
                   permitir que el riesgo entre desde el primer punto de contacto.
@@ -261,25 +313,25 @@ export default function KycIgamingMexicoLandingClient() {
             </div>
             <div data-sr-grid className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {PROBLEMS.map((p) => (
-                <div key={p.title} className="rounded-2xl p-6" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}>
-                  <h3 className="text-base font-bold text-white mb-3">{p.title}</h3>
-                  <p className="text-sm text-white/60 leading-relaxed mb-4">{p.scenario}</p>
+                <DarkCard key={p.title} accent>
+                  <h3 className="text-base font-bold mb-3" style={{ color: T.darkTitle }}>{p.title}</h3>
+                  <p className="text-sm leading-relaxed mb-4" style={{ color: T.darkBody }}>{p.scenario}</p>
                   <p className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: TEAL }}>Riesgo operativo</p>
-                  <p className="text-xs text-white/50 leading-relaxed">{p.risk}</p>
-                </div>
+                  <p className="text-xs leading-relaxed" style={{ color: T.darkSecondary }}>{p.risk}</p>
+                </DarkCard>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ── 3. Simulador interactivo ─────────────────────────────────────── */}
-        <section className="py-20" style={{ background: NAVY_LIGHT }} aria-labelledby="simulador-heading">
+        {/* ── 3. Simulador interactivo (oscuro) ─────────────────────────────── */}
+        <section className="py-20" style={{ background: NAVY_MED_2 }} aria-labelledby="simulador-heading">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div data-sr className="text-center mb-10 max-w-2xl mx-auto">
-              <h2 id="simulador-heading" className="text-2xl sm:text-3xl font-black text-white mb-4">
+              <h2 id="simulador-heading" className="text-2xl sm:text-3xl font-black mb-4" style={{ color: T.darkTitle }}>
                 ¿Qué está intentando pasar?
               </h2>
-              <p className="text-white/60 text-sm leading-relaxed">
+              <p className="text-sm leading-relaxed" style={{ color: T.darkBody }}>
                 Elige un escenario y descubre qué capa de JAAK interviene y qué resultado esperar.
               </p>
             </div>
@@ -289,15 +341,15 @@ export default function KycIgamingMexicoLandingClient() {
           </div>
         </section>
 
-        {/* ── 4. La solución: seis capas ───────────────────────────────────── */}
+        {/* ── 4. La solución: seis capas (oscuro) ───────────────────────────── */}
         <section id="solucion" className="py-20" aria-labelledby="solucion-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-10 items-center mb-12">
               <div data-sr className="text-center lg:text-left order-2 lg:order-1">
-                <h2 id="solucion-heading" className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-4">
+                <h2 id="solucion-heading" className="text-2xl sm:text-3xl md:text-4xl font-black mb-4" style={{ color: T.darkTitle }}>
                   Seis capas para conocer a cada jugador.
                 </h2>
-                <p className="text-white/60 text-sm leading-relaxed">
+                <p className="text-sm leading-relaxed" style={{ color: T.darkBody }}>
                   JAAK conecta seis controles de identidad dentro de una misma experiencia. El jugador realiza un solo
                   recorrido. Tu operación recibe un resultado estructurado y la evidencia de cada validación.
                 </p>
@@ -312,20 +364,20 @@ export default function KycIgamingMexicoLandingClient() {
             <div data-sr>
               <LayersExplorer />
             </div>
-            <p className="text-center text-xs text-white/40 mt-8 max-w-lg mx-auto">
+            <p className="text-center text-xs mt-8 max-w-lg mx-auto" style={{ color: T.darkSecondary }}>
               Las fuentes y listas disponibles dependen de la configuración o el paquete contratado para tu operación.
             </p>
           </div>
         </section>
 
-        {/* ── 5. Video de 60 segundos ───────────────────────────────────────── */}
-        <section id="video" className="py-20" style={{ background: NAVY_LIGHT }} aria-labelledby="video-heading">
+        {/* ── 5. Video de 60 segundos (claro) ───────────────────────────────── */}
+        <section id="video" className="py-20" style={{ background: OFFWHITE }} aria-labelledby="video-heading">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <div data-sr className="text-center mb-10">
-              <h2 id="video-heading" className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-4">
+              <h2 id="video-heading" className="text-2xl sm:text-3xl md:text-4xl font-black mb-4" style={{ color: T.lightTitle }}>
                 Mira cómo funciona el onboarding
               </h2>
-              <p className="text-white/60 text-sm leading-relaxed">
+              <p className="text-sm leading-relaxed" style={{ color: T.lightSecondary }}>
                 Un recorrido para el jugador. Un resultado claro para tu operación.
               </p>
             </div>
@@ -339,8 +391,12 @@ export default function KycIgamingMexicoLandingClient() {
                 "Sin mostrar datos reales.",
                 "Disponible para integrar en la experiencia del operador.",
               ].map((item) => (
-                <div key={item} className="flex items-center gap-2.5 text-sm text-white/60 px-4 py-3 rounded-xl" style={{ background: "rgba(255,255,255,0.03)" }}>
-                  <svg className="w-3.5 h-3.5 flex-shrink-0" style={{ color: TEAL }} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <div
+                  key={item}
+                  className="flex items-center gap-2.5 text-sm px-4 py-3 rounded-xl bg-white"
+                  style={{ color: T.lightBody, border: `1px solid ${BORDER_LIGHT}` }}
+                >
+                  <svg className="w-3.5 h-3.5 flex-shrink-0" style={{ color: "#0F8E96" }} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                   </svg>
                   {item}
@@ -350,64 +406,64 @@ export default function KycIgamingMexicoLandingClient() {
           </div>
         </section>
 
-        {/* ── 6. Qué recibe tu operación ────────────────────────────────────── */}
+        {/* ── 6. Qué recibe tu operación (oscuro) ───────────────────────────── */}
         <section className="py-20" aria-labelledby="recibe-heading">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div data-sr className="text-center mb-14 max-w-2xl mx-auto">
-              <h2 id="recibe-heading" className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-4">
+              <h2 id="recibe-heading" className="text-2xl sm:text-3xl md:text-4xl font-black mb-4" style={{ color: T.darkTitle }}>
                 No recibes solamente un &ldquo;aprobado&rdquo; o &ldquo;rechazado&rdquo;.
               </h2>
-              <p className="text-white/60 text-sm leading-relaxed">
+              <p className="text-sm leading-relaxed" style={{ color: T.darkBody }}>
                 Cada verificación genera información estructurada para que tu equipo aplique sus propias reglas de
                 decisión.
               </p>
             </div>
             <div data-sr-grid className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
               {RECEIVES.map((item) => (
-                <div key={item.title} className="rounded-2xl p-6" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}>
-                  <h3 className="text-sm font-bold text-white mb-2">{item.title}</h3>
-                  <p className="text-xs text-white/60 leading-relaxed">{item.desc}</p>
-                </div>
+                <DarkCard key={item.title}>
+                  <h3 className="text-sm font-bold mb-2" style={{ color: T.darkTitle }}>{item.title}</h3>
+                  <p className="text-xs leading-relaxed" style={{ color: T.darkSecondary }}>{item.desc}</p>
+                </DarkCard>
               ))}
             </div>
-            <p className="text-center text-sm font-semibold" style={{ color: TEAL }}>
+            <p className="text-center text-sm font-semibold" style={{ color: "#43D8DE" }}>
               Un jugador realiza un solo recorrido. Tu operación recibe información para decidir.
             </p>
           </div>
         </section>
 
-        {/* ── 7. Momentos de uso ────────────────────────────────────────────── */}
-        <section className="py-20" style={{ background: NAVY_LIGHT }} aria-labelledby="momentos-heading">
+        {/* ── 7. Momentos de uso (oscuro) ───────────────────────────────────── */}
+        <section className="py-20" style={{ background: NAVY_MED_2 }} aria-labelledby="momentos-heading">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div data-sr className="text-center mb-14 max-w-2xl mx-auto">
-              <h2 id="momentos-heading" className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-4">
+              <h2 id="momentos-heading" className="text-2xl sm:text-3xl md:text-4xl font-black mb-4" style={{ color: T.darkTitle }}>
                 Activa la verificación donde tu operación la necesita.
               </h2>
             </div>
             <div data-sr-grid className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
               {MOMENTS.map((m) => (
-                <div key={m.title} className="rounded-2xl p-6" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}>
-                  <h3 className="text-base font-bold text-white mb-2">{m.title}</h3>
-                  <p className="text-sm text-white/60 leading-relaxed">{m.desc}</p>
-                </div>
+                <DarkCard key={m.title}>
+                  <h3 className="text-base font-bold mb-2" style={{ color: T.darkTitle }}>{m.title}</h3>
+                  <p className="text-sm leading-relaxed" style={{ color: T.darkBody }}>{m.desc}</p>
+                </DarkCard>
               ))}
             </div>
-            <p className="text-center text-xs text-white/40 max-w-lg mx-auto">
+            <p className="text-center text-xs max-w-lg mx-auto" style={{ color: T.darkSecondary }}>
               El momento exacto y las reglas de cada validación dependen de la configuración y las políticas de cada
               operación.
             </p>
           </div>
         </section>
 
-        {/* ── 8. Cumplimiento en México ─────────────────────────────────────── */}
-        <section id="cumplimiento" className="py-20" aria-labelledby="cumplimiento-heading">
+        {/* ── 8. Cumplimiento en México (claro) ─────────────────────────────── */}
+        <section id="cumplimiento" className="py-20" style={{ background: OFFWHITE }} aria-labelledby="cumplimiento-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-10 items-center mb-10">
               <div data-sr className="text-center lg:text-left order-2 lg:order-1">
-                <h2 id="cumplimiento-heading" className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-4">
+                <h2 id="cumplimiento-heading" className="text-2xl sm:text-3xl md:text-4xl font-black mb-4" style={{ color: T.lightTitle }}>
                   En gaming, el onboarding también forma parte del control regulatorio.
                 </h2>
-                <p className="text-white/60 text-sm leading-relaxed">
+                <p className="text-sm leading-relaxed" style={{ color: T.lightBody }}>
                   Para las operaciones de apuestas por Internet, el sistema de control debe registrar la identidad del
                   apostador. Además, los juegos con apuesta, concursos y sorteos pueden generar obligaciones de
                   identificación y presentación de avisos conforme a la LFPIORPI.
@@ -423,40 +479,40 @@ export default function KycIgamingMexicoLandingClient() {
 
             <blockquote
               data-sr
-              className="rounded-2xl p-5 mb-10 text-sm italic text-white/70 leading-relaxed max-w-3xl mx-auto"
-              style={{ background: "rgba(255,255,255,0.03)", borderLeft: `3px solid ${TEAL}` }}
+              className="rounded-2xl p-5 mb-10 text-sm italic leading-relaxed max-w-3xl mx-auto bg-white"
+              style={{ color: T.lightBody, borderLeft: `3px solid ${TEAL}`, boxShadow: "0 10px 30px rgba(2,19,45,0.05)" }}
             >
               &ldquo;El artículo 85 del Reglamento establece que, en apuestas captadas por Internet, vía telefónica o
               electrónica, el sistema de control debe registrar, entre otros elementos, el número de cuenta y la
               identidad del apostador.&rdquo;
-              <footer className="mt-2 text-xs not-italic text-white/40">— Art. 85 del Reglamento</footer>
+              <footer className="mt-2 text-xs not-italic" style={{ color: T.lightSecondary }}>— Art. 85 del Reglamento</footer>
             </blockquote>
 
             <div data-sr-grid className="grid sm:grid-cols-2 gap-5 mb-10">
-              <div className="rounded-2xl p-6" style={{ background: "rgba(30,202,211,0.06)", border: "1px solid rgba(30,202,211,0.25)" }}>
-                <p className="text-3xl font-black" style={{ color: TEAL }}>325 UMA</p>
-                <p className="text-lg font-bold text-white mt-1">$38,125.75 MXN</p>
-                <p className="text-xs text-white/50 mt-2">Umbral asociado con la identificación en juegos con apuesta, concursos y sorteos.</p>
-              </div>
-              <div className="rounded-2xl p-6" style={{ background: "rgba(245,158,11,0.06)", border: "1px solid rgba(245,158,11,0.25)" }}>
-                <p className="text-3xl font-black" style={{ color: "#F59E0B" }}>645 UMA</p>
-                <p className="text-lg font-bold text-white mt-1">$75,664.95 MXN</p>
-                <p className="text-xs text-white/50 mt-2">Umbral asociado con la presentación de Aviso.</p>
-              </div>
+              <LightCard>
+                <p className="text-3xl font-black" style={{ color: "#0F8E96" }}>325 UMA</p>
+                <p className="text-lg font-bold mt-1" style={{ color: T.lightTitle }}>$38,125.75 MXN</p>
+                <p className="text-xs mt-2" style={{ color: T.lightSecondary }}>Umbral asociado con la identificación en juegos con apuesta, concursos y sorteos.</p>
+              </LightCard>
+              <LightCard>
+                <p className="text-3xl font-black" style={{ color: "#B8842A" }}>645 UMA</p>
+                <p className="text-lg font-bold mt-1" style={{ color: T.lightTitle }}>$75,664.95 MXN</p>
+                <p className="text-xs mt-2" style={{ color: T.lightSecondary }}>Umbral asociado con la presentación de Aviso.</p>
+              </LightCard>
             </div>
 
-            <p className="text-xs text-white/40 text-center max-w-2xl mx-auto mb-12">
+            <p className="text-xs text-center max-w-2xl mx-auto mb-12" style={{ color: T.lightSecondary }}>
               Fuente: Portal de Prevención de Lavado de Dinero del SAT. Valores 2026. Los valores deben actualizarse
               conforme cambie la UMA y deben analizarse de acuerdo con la modalidad de operación, acumulación y
               criterios aplicables.
             </p>
 
             <div data-sr className="mb-12">
-              <p className="text-center text-sm font-semibold text-white/70 mb-6">Calcula el umbral orientativo para tu operación</p>
+              <p className="text-center text-sm font-semibold mb-6" style={{ color: T.lightBody }}>Calcula el umbral orientativo para tu operación</p>
               <UmaCalculator />
             </div>
 
-            <p data-sr className="text-sm text-white/70 leading-relaxed text-center max-w-2xl mx-auto">
+            <p data-sr className="text-sm leading-relaxed text-center max-w-2xl mx-auto" style={{ color: T.lightBody }}>
               JAAK apoya la implementación de controles de identidad y la generación de evidencia dentro del proceso.
               La definición del momento de verificación, el seguimiento de operaciones, la acumulación de montos, el
               monitoreo transaccional y la presentación de Avisos permanecen bajo responsabilidad del operador y de
@@ -465,8 +521,8 @@ export default function KycIgamingMexicoLandingClient() {
           </div>
         </section>
 
-        {/* ── 9. Implementación simplificada ───────────────────────────────── */}
-        <section id="implementacion" className="py-20" style={{ background: NAVY_LIGHT }} aria-labelledby="implementacion-heading">
+        {/* ── 9. Implementación simplificada (oscuro) ───────────────────────── */}
+        <section id="implementacion" className="py-20" style={{ background: NAVY_MED_2 }} aria-labelledby="implementacion-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-10 items-center">
               <div data-sr="left" className="order-2 lg:order-1">
@@ -475,82 +531,86 @@ export default function KycIgamingMexicoLandingClient() {
                   alt="Desarrollador integrando el flujo de verificación de identidad JAAK mediante API"
                 />
               </div>
-              <div data-sr className="text-center lg:text-left order-1 lg:order-2">
-                <h2 id="implementacion-heading" className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-4">
-                  Integra JAAK en la experiencia que ya tienes
-                </h2>
-                <p className="text-white/60 text-sm leading-relaxed mb-5">
-                  Implementa el flujo de verificación mediante la modalidad que mejor se adapte a tu plataforma y a tu
-                  equipo.
-                </p>
-                <div className="flex flex-wrap gap-2 justify-center lg:justify-start mb-6">
-                  {["API", "SDK", "Marca blanca"].map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-3 py-1.5 rounded-full text-xs font-bold"
-                      style={{ background: "rgba(30,202,211,0.1)", border: "1px solid rgba(30,202,211,0.3)", color: "#7FE8EC" }}
+              <div data-sr className="order-1 lg:order-2">
+                <div
+                  className="rounded-2xl p-6 sm:p-8 text-center lg:text-left"
+                  style={{ background: NAVY_MED_1, border: `1px solid ${BORDER_DARK}`, borderTop: "3px solid rgba(30,202,211,0.5)", boxShadow: "0 10px 30px rgba(0,0,0,0.18)" }}
+                >
+                  <h2 id="implementacion-heading" className="text-2xl sm:text-3xl md:text-4xl font-black mb-4" style={{ color: T.darkTitle }}>
+                    Integra JAAK en la experiencia que ya tienes
+                  </h2>
+                  <p className="text-sm leading-relaxed mb-5" style={{ color: T.darkBody }}>
+                    Implementa el flujo de verificación mediante la modalidad que mejor se adapte a tu plataforma y a
+                    tu equipo.
+                  </p>
+                  <div className="flex flex-wrap gap-2 justify-center lg:justify-start mb-6">
+                    {["API", "SDK", "Marca blanca"].map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-3 py-1.5 rounded-full text-xs font-bold"
+                        style={{ background: "rgba(30,202,211,0.1)", border: "1px solid rgba(30,202,211,0.3)", color: "#7FE8EC" }}
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <p className="text-sm leading-relaxed mb-8" style={{ color: T.darkBody }}>
+                    Un especialista de JAAK puede ayudarte a definir qué validaciones necesita tu operación, cómo
+                    recibirá los resultados y qué modalidad de implementación es la más conveniente.
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
+                    <a
+                      href={WHATSAPP_URL_GAMING}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => gtmEvent("whatsapp_click", { source: "implementacion", page_path: "/soluciones/kyc-igaming-mexico" })}
+                      className="inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-bold transition-all hover:-translate-y-px bg-[#1ECAD3] hover:bg-[#19B8C0] text-[#02132D]"
                     >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <p className="text-white/60 text-sm leading-relaxed mb-8">
-                  Un especialista de JAAK puede ayudarte a definir qué validaciones necesita tu operación, cómo
-                  recibirá los resultados y qué modalidad de implementación es la más conveniente.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
-                  <a
-                    href={WHATSAPP_URL_GAMING}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => gtmEvent("whatsapp_click", { source: "implementacion", page_path: "/soluciones/kyc-igaming-mexico" })}
-                    className="inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-bold transition-all hover:-translate-y-px"
-                    style={{ background: TEAL, color: NAVY }}
-                  >
-                    Hablar con un especialista
-                  </a>
-                  <a
-                    href={DEMO_ANDRES_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => gtmEvent("click_agendar_demo_andres", { location: "implementacion", page: "kyc-igaming-mexico" })}
-                    className="inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-white/10"
-                    style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)" }}
-                  >
-                    Agendar demo con Andrés
-                  </a>
+                      Hablar con un especialista
+                    </a>
+                    <a
+                      href={DEMO_ANDRES_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => gtmEvent("click_agendar_demo_andres", { location: "implementacion", page: "kyc-igaming-mexico" })}
+                      className="inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-white/10 bg-transparent"
+                      style={{ border: "1px solid rgba(255,255,255,0.18)" }}
+                    >
+                      Agendar demo con Andrés
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* ── 10. Confianza y certificaciones ──────────────────────────────── */}
-        <section className="py-20" aria-labelledby="confianza-heading">
+        {/* ── 10. Confianza y certificaciones (claro) ───────────────────────── */}
+        <section className="py-20" style={{ background: LIGHT_GRAY }} aria-labelledby="confianza-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div data-sr className="text-center mb-12 max-w-2xl mx-auto">
-              <h2 id="confianza-heading" className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-4">
+              <h2 id="confianza-heading" className="text-2xl sm:text-3xl md:text-4xl font-black mb-4" style={{ color: T.lightTitle }}>
                 Tecnología de identidad respaldada por controles evaluados.
               </h2>
             </div>
             <div data-sr-grid className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {TRUST_ITEMS.map((item) => (
-                <div key={item.title} className="rounded-2xl p-6" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}>
-                  <h3 className="text-sm font-bold mb-2" style={{ color: TEAL }}>{item.title}</h3>
-                  <p className="text-xs text-white/60 leading-relaxed">{item.desc}</p>
-                </div>
+                <LightCard key={item.title} accent>
+                  <h3 className="text-sm font-bold mb-2" style={{ color: "#0F8E96" }}>{item.title}</h3>
+                  <p className="text-xs leading-relaxed" style={{ color: T.lightBody }}>{item.desc}</p>
+                </LightCard>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ── 11. FAQ ────────────────────────────────────────────────────────── */}
+        {/* ── 11. FAQ (claro) ───────────────────────────────────────────────── */}
         <section className="py-20" style={{ background: OFFWHITE }} aria-labelledby="faq-heading">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 id="faq-heading" className="text-2xl sm:text-3xl md:text-4xl font-black text-center mb-10" style={{ color: NAVY }}>
+            <h2 id="faq-heading" className="text-2xl sm:text-3xl md:text-4xl font-black text-center mb-10" style={{ color: T.lightTitle }}>
               Preguntas frecuentes
             </h2>
-            <div className="rounded-2xl overflow-hidden" style={{ border: "1px solid #E2E8EF" }}>
+            <div className="rounded-2xl overflow-hidden" style={{ border: `1px solid ${BORDER_LIGHT}` }}>
               {FAQ_ITEMS.map((item, i) => (
                 <details
                   key={item.q}
@@ -565,23 +625,23 @@ export default function KycIgamingMexicoLandingClient() {
                     >
                       +
                     </span>
-                    <span className="flex-1 font-semibold text-[15px] leading-snug" style={{ color: NAVY }}>{item.q}</span>
+                    <span className="flex-1 font-semibold text-[15px] leading-snug" style={{ color: T.lightTitle }}>{item.q}</span>
                   </summary>
-                  <p className="px-6 pb-6 pl-16 text-[14px] leading-relaxed" style={{ color: "#6B7686" }}>{item.a}</p>
+                  <p className="px-6 pb-6 pl-16 text-[14px] leading-relaxed" style={{ color: T.lightSecondary }}>{item.a}</p>
                 </details>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ── 12. Plan Cobre (alternativa secundaria) ──────────────────────── */}
-        <section id="prueba" className="py-20" style={{ background: NAVY_LIGHT }} aria-labelledby="prueba-heading">
+        {/* ── 12. Plan Cobre (alternativa secundaria, oscuro) ───────────────── */}
+        <section id="prueba" className="py-20" style={{ background: NAVY_MED_2 }} aria-labelledby="prueba-heading">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div data-sr>
-              <h2 id="prueba-heading" className="text-2xl sm:text-3xl font-black text-white mb-4">
+              <h2 id="prueba-heading" className="text-2xl sm:text-3xl font-black mb-4" style={{ color: T.darkTitle }}>
                 Prueba el flujo antes de escalar.
               </h2>
-              <p className="text-white/60 text-sm leading-relaxed mb-10 max-w-xl mx-auto">
+              <p className="text-sm leading-relaxed mb-10 max-w-xl mx-auto" style={{ color: T.darkBody }}>
                 Realiza cinco verificaciones para conocer la experiencia del jugador y revisar los resultados que
                 recibe tu operación.
               </p>
@@ -589,13 +649,13 @@ export default function KycIgamingMexicoLandingClient() {
             <div
               data-sr
               className="rounded-2xl p-8 mb-6 inline-flex flex-col items-center gap-4"
-              style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.1)" }}
+              style={{ background: NAVY_MED_1, border: `1px solid ${BORDER_DARK}`, boxShadow: "0 10px 30px rgba(0,0,0,0.18)" }}
             >
-              <span className="text-sm font-bold text-white/70">Plan Cobre</span>
-              <p className="text-3xl font-black text-white">
-                {formatMXN(COBRE_PACKAGE.precio)} <span className="text-base font-semibold text-white/50">MXN + IVA</span>
+              <span className="text-sm font-bold" style={{ color: T.darkSecondary }}>Plan Cobre</span>
+              <p className="text-3xl font-black" style={{ color: T.darkTitle }}>
+                {formatMXN(COBRE_PACKAGE.precio)} <span className="text-base font-semibold" style={{ color: T.darkSecondary }}>MXN + IVA</span>
               </p>
-              <p className="text-sm text-white/60">
+              <p className="text-sm" style={{ color: T.darkBody }}>
                 {COBRE_PACKAGE.cantidad} verificaciones para probar el recorrido completo
               </p>
               <a
@@ -603,13 +663,12 @@ export default function KycIgamingMexicoLandingClient() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => gtmEvent("click_probar_flujo_cobre", { location: "prueba", page: "kyc-igaming-mexico" })}
-                className="inline-flex items-center justify-center gap-2 rounded-xl px-7 py-3.5 text-[15px] font-bold transition-all hover:-translate-y-px"
-                style={{ background: TEAL, color: NAVY }}
+                className={PRIMARY_BTN}
               >
                 Probar el flujo
               </a>
             </div>
-            <p className="text-sm text-white/50">
+            <p className="text-sm" style={{ color: T.darkSecondary }}>
               Para pruebas técnicas, configuraciones especiales o mayores volúmenes,{" "}
               <a
                 href={WHATSAPP_URL_GAMING}
@@ -626,18 +685,21 @@ export default function KycIgamingMexicoLandingClient() {
           </div>
         </section>
 
-        {/* ── 13. Recurso descargable (secundario) ─────────────────────────── */}
-        <section id="guia" className="py-14" aria-labelledby="guia-heading">
+        {/* ── 13. Recurso descargable (secundario, claro) ───────────────────── */}
+        <section id="guia" className="py-16" style={{ background: OFFWHITE }} aria-labelledby="guia-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-10 items-start rounded-2xl p-8" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)" }}>
+            <div
+              className="grid lg:grid-cols-2 gap-10 items-start rounded-2xl p-8 bg-white"
+              style={{ border: `1px solid ${BORDER_LIGHT}`, borderTop: `3px solid ${TEAL}`, boxShadow: "0 10px 30px rgba(2,19,45,0.05)" }}
+            >
               <div data-sr>
-                <span className="text-xs font-bold uppercase tracking-wider text-white/40">
+                <span className="text-xs font-bold uppercase tracking-wider" style={{ color: T.lightSecondary }}>
                   Recurso descargable
                 </span>
-                <h2 id="guia-heading" className="text-xl sm:text-2xl font-black text-white mt-2 mb-4">
+                <h2 id="guia-heading" className="text-xl sm:text-2xl font-black mt-2 mb-4" style={{ color: T.lightTitle }}>
                   Guía KYC para Gaming en México
                 </h2>
-                <p className="text-white/50 text-sm leading-relaxed mb-4">
+                <p className="text-sm leading-relaxed mb-4" style={{ color: T.lightSecondary }}>
                   Una guía práctica sobre identificación de jugadores, umbrales LFPIORPI 2026, diferencia entre KYC y
                   AML, y preguntas para evaluar a un proveedor de KYC.
                 </p>
@@ -649,13 +711,13 @@ export default function KycIgamingMexicoLandingClient() {
           </div>
         </section>
 
-        {/* ── 14. Cierre ────────────────────────────────────────────────────── */}
-        <section className="py-24" style={{ background: `linear-gradient(135deg, ${NAVY_LIGHT} 0%, ${NAVY} 100%)` }}>
+        {/* ── 14. Cierre (oscuro) ───────────────────────────────────────────── */}
+        <section className="py-24" style={{ background: `linear-gradient(135deg, ${NAVY_MED_1} 0%, ${NAVY} 100%)` }}>
           <div data-sr className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-4 leading-tight">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-4 leading-tight" style={{ color: T.darkTitle }}>
               Conoce a cada jugador antes de dejarlo avanzar.
             </h2>
-            <p className="text-white/60 mb-10 max-w-xl mx-auto">
+            <p className="mb-10 max-w-xl mx-auto" style={{ color: T.darkBody }}>
               Revisa con un especialista cómo combinar documento, prueba de vida pasiva, comparación facial, fuentes
               oficiales, riesgo y geolocalización dentro de tu onboarding.
             </p>
@@ -665,9 +727,12 @@ export default function KycIgamingMexicoLandingClient() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => gtmEvent("whatsapp_click", { source: "cta_final", page_path: "/soluciones/kyc-igaming-mexico" })}
-                className="inline-flex items-center justify-center gap-2 rounded-xl px-7 py-3.5 text-[15px] font-bold text-white transition-all hover:-translate-y-px"
-                style={{ background: "#25D366" }}
+                className="inline-flex items-center justify-center gap-2 rounded-xl px-7 py-3.5 text-[15px] font-bold transition-all hover:-translate-y-px bg-white hover:bg-gray-50"
+                style={{ color: NAVY }}
               >
+                <svg className="h-4 w-4 flex-shrink-0" fill="#25D366" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.71.45 3.38 1.3 4.86L2.05 22l5.36-1.4a9.9 9.9 0 004.63 1.18h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.86 9.86 0 0012.04 2zm5.83 14.14c-.24.68-1.4 1.3-1.93 1.38-.5.08-1.12.11-1.81-.11-.42-.13-.96-.31-1.65-.6-2.9-1.25-4.8-4.17-4.94-4.36-.14-.19-1.18-1.57-1.18-3 0-1.42.75-2.12 1.01-2.41.27-.29.58-.36.78-.36l.56.01c.18.01.42-.07.65.5.24.58.82 2 .89 2.15.07.15.12.32.02.51-.09.19-.14.31-.28.48-.14.16-.29.36-.42.49-.14.14-.28.29-.12.57.16.28.72 1.19 1.55 1.93 1.06.95 1.96 1.24 2.24 1.38.28.14.44.12.6-.07.16-.19.68-.79.87-1.06.18-.28.36-.23.6-.14.24.09 1.53.72 1.79.85.26.13.44.19.5.3.06.11.06.63-.18 1.31z" />
+                </svg>
                 Hablar por WhatsApp
               </a>
               <a
@@ -675,13 +740,13 @@ export default function KycIgamingMexicoLandingClient() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => gtmEvent("click_agendar_demo_andres", { location: "cta_final", page: "kyc-igaming-mexico" })}
-                className="inline-flex items-center justify-center gap-2 rounded-xl px-7 py-3.5 text-[15px] font-semibold text-white transition-all hover:bg-white/10"
-                style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)" }}
+                className={SECONDARY_BTN_DARK}
+                style={{ border: "1px solid rgba(255,255,255,0.18)" }}
               >
                 Agendar una demo con Andrés
               </a>
             </div>
-            <p className="text-sm text-white/40 max-w-lg mx-auto">
+            <p className="text-sm max-w-lg mx-auto" style={{ color: T.darkSecondary }}>
               No necesitas compartir datos de jugadores para una primera revisión. Podemos comenzar únicamente con la
               estructura de tu flujo actual.
             </p>

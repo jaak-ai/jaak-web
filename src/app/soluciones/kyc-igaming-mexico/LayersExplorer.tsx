@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 const TEAL = "#1ECAD3";
+const NAVY_MED = "#0B1E3F";
 
 const layers = [
   { num: "01", title: "Prueba de vida pasiva", short: "Persona presente", desc: "Confirma que existe una persona real frente al dispositivo y detecta fotografías, videos o pantallas." },
@@ -36,10 +37,11 @@ export default function LayersExplorer() {
               key={layer.num}
               type="button"
               onClick={() => setActiveIndex(i)}
-              className="flex flex-col items-center gap-2 p-4 rounded-xl transition-all duration-500"
+              className="flex flex-col items-center gap-2 p-4 rounded-xl transition-all duration-500 hover:-translate-y-0.5"
               style={{
-                background: isActive ? "rgba(30,202,211,0.12)" : "rgba(255,255,255,0.03)",
+                background: NAVY_MED,
                 border: `1px solid ${isActive ? TEAL : isDone ? "rgba(30,202,211,0.3)" : "rgba(255,255,255,0.08)"}`,
+                boxShadow: isActive ? "0 10px 30px rgba(0,0,0,0.18)" : "none",
               }}
               aria-current={isActive}
             >
@@ -52,7 +54,7 @@ export default function LayersExplorer() {
               >
                 {layer.num}
               </span>
-              <span className="text-[11px] font-semibold text-center leading-tight" style={{ color: isActive ? "#fff" : "#94A3B8" }}>
+              <span className="text-[11px] font-semibold text-center leading-tight" style={{ color: isActive ? "#fff" : "#A8B6C8" }}>
                 {layer.short}
               </span>
             </button>
@@ -63,7 +65,7 @@ export default function LayersExplorer() {
       <div
         key={activeIndex}
         className="max-w-2xl mx-auto rounded-2xl p-6 sm:p-8 text-center animate-fade-in-up"
-        style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(30,202,211,0.25)" }}
+        style={{ background: NAVY_MED, border: "1px solid rgba(30,202,211,0.25)", boxShadow: "0 10px 30px rgba(0,0,0,0.18)" }}
       >
         <h3 className="text-xl font-bold text-white mb-3">{layers[activeIndex].title}</h3>
         <p className="text-sm text-white/60 leading-relaxed">{layers[activeIndex].desc}</p>

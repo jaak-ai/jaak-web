@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 
-const TEAL = "#1ECAD3";
+const NAVY = "#02132D";
 
 const UMA_2026 = 117.31;
 const IDENTIFICACION_UMA = 325;
@@ -28,23 +28,23 @@ const BRACKET_COPY: Record<Bracket, { label: string; desc: string; color: string
   debajo: {
     label: "Debajo del umbral",
     desc: "El monto analizado no alcanza el umbral de identificación reforzada del Art. 17 LFPIORPI. Revisa siempre la acumulación mensual y tus propias políticas internas.",
-    color: "#2AD796",
-    bg: "rgba(42,215,150,0.08)",
-    border: "rgba(42,215,150,0.25)",
+    color: "#16A34A",
+    bg: "#F0FDF6",
+    border: "#BBF3D3",
   },
   identificacion: {
     label: "Umbral de identificación",
     desc: "A partir de 325 UMA aplica la obligación de identificación reforzada para juegos con apuesta, concursos y sorteos.",
-    color: TEAL,
+    color: "#0F8E96",
     bg: "rgba(30,202,211,0.08)",
     border: "rgba(30,202,211,0.3)",
   },
   aviso: {
     label: "Umbral de Aviso",
     desc: "A partir de 645 UMA se suma la obligación de presentar Aviso ante la autoridad, conforme al Art. 17 LFPIORPI.",
-    color: "#F59E0B",
-    bg: "rgba(245,158,11,0.08)",
-    border: "rgba(245,158,11,0.3)",
+    color: "#B8842A",
+    bg: "rgba(245,185,66,0.12)",
+    border: "rgba(245,185,66,0.4)",
   },
 };
 
@@ -63,10 +63,10 @@ export default function UmaCalculator() {
   const copy = result ? BRACKET_COPY[result.bracket] : null;
 
   return (
-    <div className="rounded-2xl p-6 sm:p-8" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)" }}>
+    <div className="rounded-2xl p-6 sm:p-8 bg-white" style={{ border: "1px solid #D9E2EC", boxShadow: "0 10px 30px rgba(2,19,45,0.06)" }}>
       <div className="grid sm:grid-cols-2 gap-4 mb-6">
         <div>
-          <label htmlFor="uma-individual" className="block text-xs font-semibold text-white/60 mb-2">
+          <label htmlFor="uma-individual" className="block text-xs font-semibold mb-2" style={{ color: "#64748B" }}>
             Monto individual (MXN)
           </label>
           <input
@@ -76,12 +76,12 @@ export default function UmaCalculator() {
             value={individual}
             onChange={(e) => setIndividual(e.target.value.replace(/[^0-9.]/g, ""))}
             placeholder="0.00"
-            className="w-full px-4 py-2.5 rounded-xl text-sm text-white outline-none transition-colors"
-            style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.15)" }}
+            className="w-full px-4 py-2.5 rounded-xl text-sm outline-none transition-colors focus:border-[#1ECAD3]"
+            style={{ background: "#F8FAFC", border: "1px solid #D9E2EC", color: NAVY }}
           />
         </div>
         <div>
-          <label htmlFor="uma-acumulado" className="block text-xs font-semibold text-white/60 mb-2">
+          <label htmlFor="uma-acumulado" className="block text-xs font-semibold mb-2" style={{ color: "#64748B" }}>
             Acumulado mensual (MXN)
           </label>
           <input
@@ -91,8 +91,8 @@ export default function UmaCalculator() {
             value={acumulado}
             onChange={(e) => setAcumulado(e.target.value.replace(/[^0-9.]/g, ""))}
             placeholder="0.00"
-            className="w-full px-4 py-2.5 rounded-xl text-sm text-white outline-none transition-colors"
-            style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.15)" }}
+            className="w-full px-4 py-2.5 rounded-xl text-sm outline-none transition-colors focus:border-[#1ECAD3]"
+            style={{ background: "#F8FAFC", border: "1px solid #D9E2EC", color: NAVY }}
           />
         </div>
       </div>
@@ -103,28 +103,28 @@ export default function UmaCalculator() {
             <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: copy.color }} />
             <span className="text-sm font-bold" style={{ color: copy.color }}>{copy.label}</span>
           </div>
-          <p className="text-sm text-white/70 leading-relaxed">{copy.desc}</p>
+          <p className="text-sm leading-relaxed" style={{ color: "#334155" }}>{copy.desc}</p>
         </div>
       ) : (
-        <div className="rounded-xl p-5 text-center" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)" }}>
-          <p className="text-sm text-white/50">Ingresa un monto para ver el resultado orientativo.</p>
+        <div className="rounded-xl p-5 text-center" style={{ background: "#F8FAFC", border: "1px solid #D9E2EC" }}>
+          <p className="text-sm" style={{ color: "#64748B" }}>Ingresa un monto para ver el resultado orientativo.</p>
         </div>
       )}
 
-      <div className="grid sm:grid-cols-2 gap-3 mt-5 text-xs text-white/50">
-        <div className="p-3 rounded-lg" style={{ background: "rgba(255,255,255,0.03)" }}>
-          <span className="font-semibold" style={{ color: TEAL }}>Identificación:</span> 325 UMA ({currency.format(IDENTIFICACION_MXN)})
+      <div className="grid sm:grid-cols-2 gap-3 mt-5 text-xs" style={{ color: "#64748B" }}>
+        <div className="p-3 rounded-lg" style={{ background: "#F8FAFC", border: "1px solid #EEF3F7" }}>
+          <span className="font-semibold" style={{ color: "#0F8E96" }}>Identificación:</span> 325 UMA ({currency.format(IDENTIFICACION_MXN)})
         </div>
-        <div className="p-3 rounded-lg" style={{ background: "rgba(255,255,255,0.03)" }}>
-          <span className="font-semibold" style={{ color: "#F59E0B" }}>Aviso:</span> 645 UMA ({currency.format(AVISO_MXN)})
+        <div className="p-3 rounded-lg" style={{ background: "#F8FAFC", border: "1px solid #EEF3F7" }}>
+          <span className="font-semibold" style={{ color: "#B8842A" }}>Aviso:</span> 645 UMA ({currency.format(AVISO_MXN)})
         </div>
       </div>
 
-      <p className="text-[11px] text-white/40 leading-relaxed mt-5">
+      <p className="text-[11px] leading-relaxed mt-5" style={{ color: "#94A3B8" }}>
         Fuente: Portal de Prevención de Lavado de Dinero del SAT. Valores 2026 (UMA = {currency.format(UMA_2026)} MXN
         diarios).
       </p>
-      <p className="text-[11px] text-white/40 leading-relaxed mt-2">
+      <p className="text-[11px] leading-relaxed mt-2" style={{ color: "#94A3B8" }}>
         Herramienta orientativa. La aplicación de los umbrales y obligaciones debe revisarse según la modalidad,
         acumulación, permisos y características de cada operación. No sustituye asesoría legal.
       </p>

@@ -11,7 +11,7 @@ export default function VideoDemo() {
   return (
     <div
       className="relative w-full rounded-2xl overflow-hidden"
-      style={{ background: "#000", paddingBottom: "56.25%", border: "1px solid rgba(30,202,211,0.25)" }}
+      style={{ background: "#02132D", paddingBottom: "56.25%", border: "1px solid rgba(30,202,211,0.25)" }}
     >
       {playing ? (
         <iframe

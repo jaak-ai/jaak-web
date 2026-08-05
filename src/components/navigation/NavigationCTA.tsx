@@ -1,6 +1,13 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { gtmEvent } from "@/components/GoogleTagManager";
 import { globalCTAs } from "@/config/navigation";
+
+// Landings de campaña con su propia jerarquía de CTA (WhatsApp / demo con
+// especialista) donde "Comprar" del header solo compite y distrae.
+const HIDE_COMPRAR_ROUTES = ["/soluciones/kyc-igaming-mexico"];
 
 /**
  * Cluster de CTA globales del header: "Iniciar sesión" y "Comprar" — las
@@ -10,8 +17,10 @@ import { globalCTAs } from "@/config/navigation";
  * estos dos botones.
  */
 export default function NavigationCTA() {
+  const pathname = usePathname();
   const iniciarSesion = globalCTAs.find((cta) => cta.id === "iniciar-sesion");
   const comprar = globalCTAs.find((cta) => cta.id === "comprar");
+  const hideComprar = HIDE_COMPRAR_ROUTES.includes(pathname);
 
   return (
     <>
@@ -24,7 +33,7 @@ export default function NavigationCTA() {
           {iniciarSesion.label}
         </Link>
       ) : null}
-      {comprar && comprar.visibility.desktop ? (
+      {comprar && comprar.visibility.desktop && !hideComprar ? (
         <Link
           href={comprar.href}
           onClick={() => gtmEvent("purchase_click", { source: "header", page_path: window.location.pathname })}
