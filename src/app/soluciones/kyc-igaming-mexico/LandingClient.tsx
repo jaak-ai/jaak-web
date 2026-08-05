@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -8,6 +9,7 @@ import ScrollReveal from "@/components/ScrollReveal";
 import { gtmEvent } from "@/components/GoogleTagManager";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
 import { SCHEDULE_DEMO_URL } from "@/lib/scheduling";
+import { productos as CATALOG_PRODUCTS, IVA, formatMXN } from "@/data/autoservicio-catalogo";
 import UmaCalculator from "./UmaCalculator";
 import ScenarioSimulator from "./ScenarioSimulator";
 import LayersExplorer from "./LayersExplorer";
@@ -20,6 +22,36 @@ const NAVY_LIGHT = "#0B1D3A";
 const TEAL = "#1ECAD3";
 const GREEN = "#2AD796";
 const OFFWHITE = "#F5F5F3";
+
+const KYC_PRODUCT = CATALOG_PRODUCTS.find((p) => p.id === "kyc")!;
+const KYC_CHECKOUT_URLS: Record<string, string> = {
+  cobre: "https://platform.jaak.ai/#/onboarding/user-info?plan=cobre",
+  bronce: "https://platform.jaak.ai/#/onboarding/plans/bronce",
+  plata: "https://platform.jaak.ai/#/onboarding/plans/plata",
+  oro: "https://platform.jaak.ai/#/onboarding/plans/oro",
+  platino: "https://platform.jaak.ai/#/onboarding/plans/platino1",
+};
+const COBRE_PACKAGE = KYC_PRODUCT.paquetes.find((p) => p.id === "cobre")!;
+const OTHER_PACKAGES = KYC_PRODUCT.paquetes.filter((p) => p.id !== "cobre");
+
+/** Envoltura con degradado teal→verde JAAK detrás de una imagen enmarcada. */
+function FramedImage({ src, alt, priority }: { src: string; alt: string; priority?: boolean }) {
+  return (
+    <div className="relative">
+      <div
+        className="pointer-events-none absolute -inset-4 rounded-[2rem] opacity-30 blur-2xl"
+        style={{ background: `linear-gradient(135deg, ${TEAL}, ${GREEN})` }}
+        aria-hidden="true"
+      />
+      <div
+        className="relative rounded-2xl overflow-hidden"
+        style={{ border: "1px solid rgba(30,202,211,0.25)", boxShadow: "0 20px 60px rgba(0,0,0,0.35)" }}
+      >
+        <Image src={src} alt={alt} width={1600} height={900} className="w-full h-auto" priority={priority} sizes="(min-width: 1024px) 50vw, 100vw" />
+      </div>
+    </div>
+  );
+}
 
 const PROBLEMS = [
   {
@@ -164,54 +196,66 @@ export default function KycIgamingMexicoLandingClient() {
             aria-hidden="true"
           />
 
-          <div data-sr className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-6"
-              style={{ background: "rgba(30,202,211,0.1)", border: "1px solid rgba(30,202,211,0.3)", color: "#7FE8EC" }}
-            >
-              KYC para Gaming e iGaming en México
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <div data-sr className="text-center lg:text-left">
+                <div
+                  className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold mb-6"
+                  style={{ background: "rgba(30,202,211,0.1)", border: "1px solid rgba(30,202,211,0.3)", color: "#7FE8EC" }}
+                >
+                  KYC para Gaming e iGaming en México
+                </div>
+
+                <h1 id="hero-heading" className="text-4xl md:text-5xl lg:text-[3.2rem] font-black text-white mb-6 leading-tight">
+                  Detrás de cada jugada,{" "}
+                  <span
+                    style={{ backgroundImage: `linear-gradient(90deg, ${TEAL}, ${GREEN})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}
+                  >
+                    debe haber una identidad real.
+                  </span>
+                </h1>
+
+                <p className="text-lg md:text-xl text-white/70 mb-8 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                  Verifica quién se registra en tu plataforma, confirma que su documento esté vigente y conecta rostro,
+                  identidad, fuentes oficiales, ubicación y riesgo dentro de un solo flujo de onboarding.
+                </p>
+
+                <p className="text-sm text-white/50 mb-10">
+                  Prueba de vida pasiva · Comparación facial 1:1 · Documento y vigencia · INE y RENAPO · Listas de riesgo · Geolocalización
+                </p>
+
+                <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-10">
+                  <Link
+                    href="/contacto"
+                    onClick={() => gtmEvent("click_diseñar_flujo_kyc", { location: "hero", page: "kyc-igaming-mexico" })}
+                    className="inline-flex items-center justify-center rounded-xl px-7 py-3.5 text-[15px] font-bold transition-all hover:-translate-y-px"
+                    style={{ background: TEAL, color: NAVY }}
+                  >
+                    Diseñar mi flujo KYC
+                  </Link>
+                  <Link
+                    href="#flujo"
+                    className="inline-flex items-center justify-center rounded-xl px-7 py-3.5 text-[15px] font-semibold text-white transition-all hover:bg-white/10"
+                    style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)" }}
+                  >
+                    Ver cómo funciona
+                  </Link>
+                </div>
+
+                <p className="text-sm text-white/40 max-w-2xl mx-auto lg:mx-0">
+                  Para casinos en línea, apuestas deportivas, sorteos, plataformas de gaming y operadores que necesitan
+                  conocer a sus jugadores sin convertir la verificación en una barrera.
+                </p>
+              </div>
+
+              <div data-sr="right" className="hidden lg:block">
+                <FramedImage
+                  src="/images/kyc-igaming/hero.jpg"
+                  alt="Verificación de identidad KYC durante el onboarding de un jugador en una plataforma de apuestas deportivas"
+                  priority
+                />
+              </div>
             </div>
-
-            <h1 id="hero-heading" className="text-4xl md:text-5xl lg:text-[3.2rem] font-black text-white mb-6 leading-tight">
-              Detrás de cada jugada,{" "}
-              <span
-                style={{ backgroundImage: `linear-gradient(90deg, ${TEAL}, ${GREEN})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}
-              >
-                debe haber una identidad real.
-              </span>
-            </h1>
-
-            <p className="text-lg md:text-xl text-white/70 mb-8 leading-relaxed max-w-2xl mx-auto">
-              Verifica quién se registra en tu plataforma, confirma que su documento esté vigente y conecta rostro,
-              identidad, fuentes oficiales, ubicación y riesgo dentro de un solo flujo de onboarding.
-            </p>
-
-            <p className="text-sm text-white/50 mb-10">
-              Prueba de vida pasiva · Comparación facial 1:1 · Documento y vigencia · INE y RENAPO · Listas de riesgo · Geolocalización
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-3 justify-center mb-10">
-              <Link
-                href="/contacto"
-                onClick={() => gtmEvent("click_diseñar_flujo_kyc", { location: "hero", page: "kyc-igaming-mexico" })}
-                className="inline-flex items-center justify-center rounded-xl px-7 py-3.5 text-[15px] font-bold transition-all hover:-translate-y-px"
-                style={{ background: TEAL, color: NAVY }}
-              >
-                Diseñar mi flujo KYC
-              </Link>
-              <Link
-                href="#flujo"
-                className="inline-flex items-center justify-center rounded-xl px-7 py-3.5 text-[15px] font-semibold text-white transition-all hover:bg-white/10"
-                style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)" }}
-              >
-                Ver cómo funciona
-              </Link>
-            </div>
-
-            <p className="text-sm text-white/40 max-w-2xl mx-auto">
-              Para casinos en línea, apuestas deportivas, sorteos, plataformas de gaming y operadores que necesitan
-              conocer a sus jugadores sin convertir la verificación en una barrera.
-            </p>
           </div>
         </section>
 
@@ -232,15 +276,23 @@ export default function KycIgamingMexicoLandingClient() {
         {/* ── 3. El problema ──────────────────────────────────────────────── */}
         <section id="problema" className="py-20" aria-labelledby="problema-heading">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div data-sr className="text-center mb-14 max-w-2xl mx-auto">
-              <h2 id="problema-heading" className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-4">
-                Un registro completo no siempre significa una identidad verificada.
-              </h2>
-              <p className="text-white/60 leading-relaxed">
-                Un correo, un teléfono y una fotografía de una identificación pueden llenar un formulario. No
-                necesariamente demuestran quién está detrás de la cuenta. En gaming, una validación incompleta puede
-                permitir que el riesgo entre desde el primer punto de contacto.
-              </p>
+            <div className="grid lg:grid-cols-2 gap-10 items-center mb-14">
+              <div data-sr="left">
+                <FramedImage
+                  src="/images/kyc-igaming/riesgo-identificacion-prestada.jpg"
+                  alt="Comparación facial que detecta que el rostro capturado no coincide con la fotografía del documento"
+                />
+              </div>
+              <div data-sr className="text-center lg:text-left">
+                <h2 id="problema-heading" className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-4">
+                  Un registro completo no siempre significa una identidad verificada.
+                </h2>
+                <p className="text-white/60 leading-relaxed">
+                  Un correo, un teléfono y una fotografía de una identificación pueden llenar un formulario. No
+                  necesariamente demuestran quién está detrás de la cuenta. En gaming, una validación incompleta puede
+                  permitir que el riesgo entre desde el primer punto de contacto.
+                </p>
+              </div>
             </div>
             <div data-sr-grid className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {PROBLEMS.map((p) => (
@@ -275,14 +327,22 @@ export default function KycIgamingMexicoLandingClient() {
         {/* ── 5. La solución: seis capas ───────────────────────────────────── */}
         <section id="solucion" className="py-20" aria-labelledby="solucion-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div data-sr className="text-center mb-12 max-w-2xl mx-auto">
-              <h2 id="solucion-heading" className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-4">
-                Seis capas para conocer a cada jugador.
-              </h2>
-              <p className="text-white/60 text-sm leading-relaxed">
-                JAAK conecta seis controles de identidad dentro de una misma experiencia. El jugador realiza un solo
-                recorrido. Tu operación recibe un resultado estructurado y la evidencia de cada validación.
-              </p>
+            <div className="grid lg:grid-cols-2 gap-10 items-center mb-12">
+              <div data-sr className="text-center lg:text-left order-2 lg:order-1">
+                <h2 id="solucion-heading" className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-4">
+                  Seis capas para conocer a cada jugador.
+                </h2>
+                <p className="text-white/60 text-sm leading-relaxed">
+                  JAAK conecta seis controles de identidad dentro de una misma experiencia. El jugador realiza un solo
+                  recorrido. Tu operación recibe un resultado estructurado y la evidencia de cada validación.
+                </p>
+              </div>
+              <div data-sr="right" className="order-1 lg:order-2">
+                <FramedImage
+                  src="/images/kyc-igaming/seis-capas.jpg"
+                  alt="Documento oficial y rostro conectados a un flujo de validación de identidad, ubicación y fuentes oficiales"
+                />
+              </div>
             </div>
             <div data-sr>
               <LayersExplorer />
@@ -293,10 +353,22 @@ export default function KycIgamingMexicoLandingClient() {
         {/* ── 6. Flujo ─────────────────────────────────────────────────────── */}
         <section id="flujo" className="py-20" style={{ background: NAVY_LIGHT }} aria-labelledby="flujo-heading">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div data-sr className="text-center mb-14">
-              <h2 id="flujo-heading" className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-4">
-                Del registro a una identidad verificada.
-              </h2>
+            <div className="grid lg:grid-cols-2 gap-10 items-center mb-14">
+              <div data-sr="left">
+                <FramedImage
+                  src="/images/kyc-igaming/expediente-evidencia.jpg"
+                  alt="Panel con el resultado estructurado de las validaciones de identidad completadas durante el onboarding"
+                />
+              </div>
+              <div data-sr className="text-center lg:text-left">
+                <h2 id="flujo-heading" className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-4">
+                  Del registro a una identidad verificada.
+                </h2>
+                <p className="text-white/60 text-sm leading-relaxed">
+                  Un solo recorrido para el jugador. Un resultado estructurado, con evidencia de cada validación, para
+                  tu operación.
+                </p>
+              </div>
             </div>
             <div data-sr-grid className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
               {FLOW_STEPS.map((step) => (
@@ -357,14 +429,22 @@ export default function KycIgamingMexicoLandingClient() {
         {/* ── 9. Cumplimiento en México ─────────────────────────────────────── */}
         <section id="cumplimiento" className="py-20" aria-labelledby="cumplimiento-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div data-sr className="text-center mb-12 max-w-2xl mx-auto">
-              <h2 id="cumplimiento-heading" className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-4">
-                En gaming, el onboarding también es parte del control regulatorio.
-              </h2>
-              <p className="text-white/60 text-sm leading-relaxed">
-                La práctica de juegos con apuesta, concursos y sorteos se encuentra contemplada como Actividad
-                Vulnerable por la LFPIORPI. Para 2026, el portal oficial del SAT señala los siguientes umbrales:
-              </p>
+            <div className="grid lg:grid-cols-2 gap-10 items-center mb-12">
+              <div data-sr className="text-center lg:text-left order-2 lg:order-1">
+                <h2 id="cumplimiento-heading" className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-4">
+                  En gaming, el onboarding también es parte del control regulatorio.
+                </h2>
+                <p className="text-white/60 text-sm leading-relaxed">
+                  La práctica de juegos con apuesta, concursos y sorteos se encuentra contemplada como Actividad
+                  Vulnerable por la LFPIORPI. Para 2026, el portal oficial del SAT señala los siguientes umbrales:
+                </p>
+              </div>
+              <div data-sr="right" className="order-1 lg:order-2">
+                <FramedImage
+                  src="/images/kyc-igaming/validacion-fuentes-oficiales.jpg"
+                  alt="Especialista de cumplimiento revisando en su laptop el resultado de validaciones de identidad contra fuentes oficiales"
+                />
+              </div>
             </div>
 
             <div data-sr-grid className="grid sm:grid-cols-2 gap-5 mb-10">
@@ -527,13 +607,97 @@ export default function KycIgamingMexicoLandingClient() {
           </div>
         </section>
 
+        {/* ── 13.5. Prueba el KYC ──────────────────────────────────────────────── */}
+        <section id="prueba" className="py-20" style={{ background: NAVY_LIGHT }} aria-labelledby="prueba-heading">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div data-sr className="text-center mb-12 max-w-2xl mx-auto">
+              <span className="text-xs font-bold uppercase tracking-wider" style={{ color: TEAL }}>
+                Prueba el KYC
+              </span>
+              <h2 id="prueba-heading" className="text-2xl sm:text-3xl md:text-4xl font-black text-white mt-3 mb-4">
+                Empieza con el plan Cobre antes de integrar a producción.
+              </h2>
+              <p className="text-white/60 text-sm leading-relaxed">
+                El plan Cobre es el paquete de prueba de JAAK: {COBRE_PACKAGE.cantidad} {KYC_PRODUCT.unidad} con 40%
+                de descuento de bienvenida, para validar el flujo completo antes de escalar tu operación de gaming.
+              </p>
+            </div>
+
+            <div
+              data-sr
+              className="rounded-2xl p-8 mb-8 flex flex-col sm:flex-row items-center justify-between gap-6"
+              style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.3)" }}
+            >
+              <div className="text-center sm:text-left">
+                <span
+                  className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold mb-3"
+                  style={{ background: TEAL, color: NAVY }}
+                >
+                  Plan Cobre · 40% de descuento
+                </span>
+                <p className="text-3xl font-black text-white">
+                  {formatMXN(COBRE_PACKAGE.precio)} <span className="text-base font-semibold text-white/50">MXN + IVA</span>
+                </p>
+                <p className="text-sm text-white/60 mt-1">
+                  {COBRE_PACKAGE.cantidad} {KYC_PRODUCT.unidad} para probar el flujo completo de onboarding
+                </p>
+              </div>
+              <a
+                href={KYC_CHECKOUT_URLS.cobre}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => gtmEvent("click_comprar_cobre", { location: "prueba", page: "kyc-igaming-mexico" })}
+                className="inline-flex items-center justify-center gap-2 rounded-xl px-7 py-3.5 text-[15px] font-bold whitespace-nowrap transition-all hover:-translate-y-px"
+                style={{ background: TEAL, color: NAVY }}
+              >
+                Comprar Plan Cobre
+              </a>
+            </div>
+
+            <p className="text-center text-xs font-semibold uppercase tracking-wide text-white/40 mb-5">
+              ¿Necesitas más volumen? Elige tu paquete
+            </p>
+            <div data-sr-grid className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {OTHER_PACKAGES.map((pkg) => (
+                <a
+                  key={pkg.id}
+                  href={KYC_CHECKOUT_URLS[pkg.id]}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => gtmEvent("click_comprar_paquete", { tier: pkg.id, location: "prueba", page: "kyc-igaming-mexico" })}
+                  className="rounded-2xl p-5 text-center transition-all hover:-translate-y-1"
+                  style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)" }}
+                >
+                  <p className="text-sm font-bold text-white mb-1">{pkg.nombre}</p>
+                  <p className="text-xs text-white/50 mb-3">{pkg.cantidad} {KYC_PRODUCT.unidad}</p>
+                  <p className="text-lg font-black" style={{ color: TEAL }}>{formatMXN(pkg.precio)}</p>
+                  <p className="text-[11px] text-white/40">MXN + IVA</p>
+                </a>
+              ))}
+            </div>
+            <p className="text-center text-[11px] text-white/40 mt-8 max-w-lg mx-auto">
+              Precios en pesos mexicanos, sin IVA ({(IVA * 100).toFixed(0)}%). Los paquetes vencen a los 12 meses de
+              la compra y no son reembolsables. Para más de 1,000 verificaciones al mes, contáctanos para una
+              cotización Enterprise.
+            </p>
+          </div>
+        </section>
+
         {/* ── 14. Integración ────────────────────────────────────────────────── */}
         <section id="integracion" className="py-20" style={{ background: NAVY_LIGHT }} aria-labelledby="integracion-heading">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div data-sr className="text-center mb-12 max-w-2xl mx-auto">
-              <h2 id="integracion-heading" className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-4">
-                Conecta JAAK con la experiencia que ya tienes.
-              </h2>
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid lg:grid-cols-2 gap-10 items-center mb-12">
+              <div data-sr="left">
+                <FramedImage
+                  src="/images/kyc-igaming/api-sdk.jpg"
+                  alt="Desarrollador integrando el flujo de verificación de identidad JAAK mediante API"
+                />
+              </div>
+              <div data-sr className="text-center lg:text-left">
+                <h2 id="integracion-heading" className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-4">
+                  Conecta JAAK con la experiencia que ya tienes.
+                </h2>
+              </div>
             </div>
             <div data-sr>
               <IntegrationTimeline />

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { gtmEvent } from "@/components/GoogleTagManager";
 import { getUtmParams } from "@/components/CloudflareTurnstile";
 
@@ -10,6 +11,7 @@ const TIPOS_OPERACION = ["Casino en línea", "Apuestas deportivas", "Sorteos y c
 const VOLUMENES = ["Menos de 1,000", "1,000 – 10,000", "10,000 – 50,000", "Más de 50,000"];
 
 export default function GuideLeadForm() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     nombre: "",
     apellido: "",
@@ -19,7 +21,7 @@ export default function GuideLeadForm() {
     tipoOperacion: TIPOS_OPERACION[0],
     volumen: VOLUMENES[0],
   });
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -47,7 +49,8 @@ export default function GuideLeadForm() {
 
       if (res.ok) {
         gtmEvent("form_success", { form_type: "guia_kyc_gaming", source: "guia_section", page_path: window.location.pathname });
-        setStatus("success");
+        gtmEvent("ebook_download", { source: "guia_section", page_path: window.location.pathname });
+        router.push("/gracias/guia-kyc-igaming-mexico");
       } else {
         const data = await res.json().catch(() => ({}));
         setStatus("error");
@@ -58,17 +61,6 @@ export default function GuideLeadForm() {
       setErrorMessage("Error de conexión. Intenta de nuevo.");
     }
   };
-
-  if (status === "success") {
-    return (
-      <div className="rounded-2xl p-8 text-center" style={{ background: "rgba(42,215,150,0.08)", border: "1px solid rgba(42,215,150,0.3)" }}>
-        <p className="text-lg font-bold text-white mb-2">Gracias, {formData.nombre || "recibimos tu solicitud"}.</p>
-        <p className="text-sm text-white/70 leading-relaxed">
-          Nuestro equipo te enviará la guía KYC para Gaming en México a tu correo en las próximas horas.
-        </p>
-      </div>
-    );
-  }
 
   return (
     <form onSubmit={handleSubmit} className="rounded-2xl p-6 sm:p-8 space-y-4" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)" }}>
