@@ -104,11 +104,11 @@ curl -X POST https://alnitak.interno/api/v1/identify \
     }
   ],
   "stages": [
-    { "name": "decode",        "ms": 0 },
-    { "name": "detect_align",  "ms": 12 },
-    { "name": "vectorize",     "ms": 16 },
-    { "name": "knn_search",    "ms": 9 },
-    { "name": "resolve",       "ms": 4 }
+    { "name": "Recepción y decodificación", "ms": 0 },
+    { "name": "Detección y alineación",     "ms": 12 },
+    { "name": "Vectorización",              "ms": 16 },
+    { "name": "Búsqueda kNN",               "ms": 9 },
+    { "name": "Orquestación",               "ms": 4 }
   ],
   "slack_ms": 359,
   "multi_face": false,
@@ -122,8 +122,8 @@ curl -X POST https://alnitak.interno/api/v1/identify \
 |---|---|
 | `query_id` | Identificador de la consulta. Es la clave para buscarla en la auditoría y en `/events/{id}`. |
 | `took_ms` | Tiempo total extremo a extremo, medido con un solo reloj. |
-| `stages[]` | Milisegundos reales de cada etapa del pipeline en **esta** consulta. |
-| `slack_ms` | Holgura frente al presupuesto: `latency_ms − took_ms`. Negativo significa SLA incumplido en esa consulta. |
+| `stages[]` | Milisegundos reales de cada etapa del pipeline en **esta** consulta. Los `name` son los literales en español del servicio (`Recepción y decodificación`, `Detección y alineación`, `Vectorización`, `Búsqueda kNN`, `Orquestación`). |
+| `slack_ms` | Holgura frente al presupuesto de 400 ms: `400 − took_ms`. Negativo significa SLA incumplido en esa consulta. |
 | `scanned` | Candidatos efectivamente explorados. |
 | `quality` | Puntuaciones ICAO y de vivacidad, en [0, 1]. |
 | `candidates[].score` | Similitud coseno **normalizada a [0, 1]**, en la misma escala que `threshold`. |
