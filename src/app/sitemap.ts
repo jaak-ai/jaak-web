@@ -208,6 +208,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: `${baseUrl}/soluciones/kyc-igaming-mexico`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
       url: `${baseUrl}/salud`,
       lastModified: now,
       changeFrequency: "monthly",
