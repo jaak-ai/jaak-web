@@ -1,0 +1,99 @@
+---
+title: JAAK ID
+description: Aplicación Android para enrolamiento KYC en campo, offline-first, con captura cifrada en el dispositivo y sincronización con checkpoints.
+category: concepto
+order: 6
+---
+
+Tiempo estimado de lectura: 12-15 minutos
+
+## ¿Qué es JAAK ID?
+
+**JAAK ID** es una aplicación Android para que un operador de campo realice enrolamientos KYC de varias personas **sin conexión a internet**. Replica el flujo del KYC web de JAAK, pero pensado para brigadas que trabajan en zonas con mala cobertura: sucursales, comunidades rurales, eventos masivos o cualquier punto de atención donde no siempre hay red.
+
+El operador captura documentos, comprobante de domicilio, prueba de vida y ubicación de cada persona; todo se guarda **cifrado dentro del teléfono**. Cuando el equipo recupera conexión, la app reproduce contra el servidor el mismo pipeline de verificación que el KYC en línea (OCR, verificación documental, listas de control, liveness y comparación 1:1), y una vez confirmado, borra los datos del dispositivo de forma irrecuperable.
+
+> **En integración.** La captura de documento y prueba de vida usa los SDK nativos de JAAK (Stamps y Visage); la vinculación de operador y dispositivo se apoya en el servicio `jaak-operator-rest`, expuesto por el API Gateway. Ambas piezas están en fase de integración con la app.
+
+## El problema que resuelve
+
+El KYC en línea necesita conexión en cada paso: el servidor hace el OCR, valida el documento, corre las listas de riesgo y analiza el liveness. En campo sin señal eso no funciona. JAAK ID resuelve el corte de conexión guardando la evidencia de forma segura y difiriendo la verificación hasta que haya red, sin perder capturas ni bloquear al operador.
+
+## Cómo funciona: el ciclo completo
+
+| Fase | Conexión | Qué ocurre |
+| :--- | :--- | :--- |
+| 1. Inicio de sesión del operador | Requerida (una vez) | El operador entra con su usuario; la sesión dura **7 días** y se revalida al reconectar. |
+| 2. Vinculación del dispositivo | Requerida (una vez) | El equipo queda asignado a una empresa mediante código o QR; todos los enrolamientos de la jornada van a su expediente. |
+| 3. Enrolamiento en campo | **Sin conexión** | Se capturan N personas; cada expediente se cifra en el dispositivo con una clave única. |
+| 4. Sincronización | Requerida | Al recuperar red, la app reproduce el pipeline de verificación con checkpoints por paso. |
+| 5. Purga | — | Tras confirmar el servidor, la evidencia se destruye del teléfono; solo queda la bitácora sin datos personales. |
+
+## Inicio de sesión del operador
+
+El operador se autentica una sola vez con conexión. La sesión dura siete días y se revalida sola cuando hay red disponible, de modo que el resto de la jornada trabaja sin conexión. La pantalla muestra la empresa a la que está vinculado el dispositivo y ofrece desbloqueo biométrico para las siguientes aperturas.
+
+![Pantalla de inicio de sesión de JAAK ID con la empresa vinculada](/images/jaak-id/01-login.png)
+
+## Vinculación del dispositivo a una empresa
+
+Antes de operar, el equipo se vincula a una empresa. Esto se hace una sola vez, con conexión. Hay dos vías: **escanear el código QR** que genera el administrador desde JAAK Console (caduca a los 15 minutos) o **teclear el código de empresa** con formato `XXXX-XXXX`. Al reconocer la empresa se muestran las listas de control asociadas (OFAC, SAT, RENAPO, INE, Interpol) antes de confirmar.
+
+![Pantalla de vinculación de dispositivo con código de empresa y empresa detectada](/images/jaak-id/16-org-link.png)
+
+## La cola de enrolamientos
+
+Es la pantalla principal de la jornada. Muestra al operador, la brigada, los días de sesión restantes y tres métricas: capturados hoy, por sincronizar y los que requieren revisión. Una franja permanente confirma que todo está **cifrado en el dispositivo** y en **modo sin conexión**. Cada expediente aparece con su folio legible (por ejemplo `ENR-0001`), la persona y su estado.
+
+![Cola de enrolamientos con métricas de brigada y expedientes pendientes](/images/jaak-id/02-queue.png)
+
+## Captura del documento
+
+La captura usa el SDK de detección de documentos con guía en tiempo real: encuadre, detección del documento y condiciones de luz. El operador captura frente y reverso; el fondo oscuro y el anillo de progreso indican el avance. Todo el procesamiento de encuadre es local.
+
+![Captura del frente del documento con guías de calidad](/images/jaak-id/04-capture-front.png)
+
+## Verificación de datos
+
+Tras la captura, un OCR local (ML Kit, en el dispositivo) rellena de forma provisional los campos del documento —nombre, CURP, clave de elector, fecha de nacimiento y domicilio— para que el operador los confirme contra el documento físico. Esta lectura es local; al sincronizar, el servidor vuelve a extraer los datos y ambas versiones se comparan.
+
+![Formulario de verificación de datos extraídos por OCR local](/images/jaak-id/06-verify-data.png)
+
+## Revisar y guardar
+
+Antes de cerrar el enrolamiento, la app resume las piezas capturadas (frente, reverso, comprobante, prueba de vida) y la ubicación GPS. Al guardar, todo se cifra con una clave única para esa persona y queda en espera de sincronización.
+
+![Pantalla de revisar y guardar con piezas capturadas y ubicación](/images/jaak-id/09-review-save.png)
+
+## Confirmación
+
+Cada enrolamiento cerrado recibe un folio legible y queda cifrado en el dispositivo, listo para enviarse cuando haya señal. El operador puede continuar con la siguiente persona sin interrupción.
+
+![Pantalla de enrolamiento guardado y cifrado con su folio](/images/jaak-id/10-saved.png)
+
+## Seguridad: qué protege y cómo
+
+JAAK ID está construido para que **nada legible** salga del teléfono hasta que se descifra contra el servidor de JAAK.
+
+| Mecanismo | Para qué |
+| :--- | :--- |
+| **AES-256-GCM por enrolamiento** | Cada persona se cifra con una clave de datos (DEK) propia. |
+| **SQLCipher** | La base de datos local (estado, datos, checkpoints) va cifrada; la passphrase se protege con el Android Keystore. |
+| **Purga criptográfica** | Al confirmar el servidor, se destruye la clave del enrolamiento: la evidencia se vuelve irrecuperable. |
+| **Entitlement Ed25519** | Licencia offline firmada que habilita los SDK sin conexión, verificada localmente por la app. |
+| **Bitácora sin PII** | Tras la purga solo queda un registro de auditoría con folio, hora, operador y resultado. |
+
+## Sincronización con checkpoints
+
+Cuando hay red, la app reproduce el pipeline de verificación por enrolamiento: crear sesión, OCR de servidor, verificación del documento, listas de control, prueba de vida, comparación 1:1 y cierre. Cada paso se marca con un **checkpoint**; si la conexión se corta a la mitad, la sincronización se reanuda en el último paso confirmado, sin repetir lo ya enviado. Los enrolamientos que el servidor rechaza (por ejemplo una comparación 1:1 por debajo del umbral) pasan a una bandeja de revisión con el motivo y las acciones disponibles.
+
+## Soporte para tablets y orientación
+
+La interfaz se adapta a teléfono y tablet, en vertical y horizontal. En tablets el flujo se reorganiza en un panel lateral permanente con la cola y un panel principal para la captura, aprovechando el espacio sin estirar el contenido.
+
+![JAAK ID en tablet con panel lateral de cola y panel de jornada](/images/jaak-id/12-tablet-queue-rail.png)
+
+## Siguientes pasos
+
+* [Referencia de API de JAAK ID](/docs/productos/jaak-id-api): los endpoints de sesión de operador, vinculación de dispositivo y entitlements.
+* [Document Verify](/docs/productos/document-verify), [Liveness](/docs/productos/liveness), [BlackLists](/docs/productos/blacklist) y [OTO](/docs/productos/one-to-one): los productos que componen el pipeline de verificación que JAAK ID reproduce al sincronizar.
