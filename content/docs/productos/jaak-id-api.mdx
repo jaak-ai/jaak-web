@@ -1,0 +1,202 @@
+---
+title: JAAK ID — Referencia de API
+description: Endpoints de sesión de operador, vinculación de dispositivo y entitlements offline que dan soporte a la app JAAK ID.
+category: api
+order: 7
+---
+
+Esta referencia describe los endpoints que dan soporte a la aplicación [JAAK ID](/docs/productos/jaak-id): la sesión del operador de campo, la vinculación del dispositivo a una empresa y la emisión de entitlements offline. Todos se exponen a través del **JAAK API Gateway** bajo el prefijo `/api/v1`.
+
+> **En integración.** El servicio está desplegándose; los ejemplos reflejan el contrato real pero las URLs de entorno y credenciales se confirmarán durante la integración.
+
+## Autenticación
+
+El operador obtiene un token JWT en el inicio de sesión. Ese token (de 7 días) se envía como `Authorization: Bearer <token>` en el resto de las llamadas. El endpoint de login y el de claves públicas son públicos; los demás requieren token.
+
+## Formato de errores
+
+Todos los errores devuelven el mismo cuerpo JSON:
+
+```json
+{
+  "eventId": "57845ce0-9360-4f00-8711-c9fe1a59824e",
+  "statusCode": 401,
+  "errorCode": "0101",
+  "message": "invalid credentials"
+}
+```
+
+| Código | HTTP | Significado |
+| :--- | :--- | :--- |
+| `0002` | 400 | Solicitud inválida |
+| `0101` | 401 | Credenciales inválidas o operador inactivo |
+| `0102` | 401 | Token ausente, malformado, expirado o revocado |
+| `0103` | 409 | Dispositivo no vinculado (al pedir entitlement) |
+| `0104` | 404 | Código de empresa desconocido |
+| `0105` | 404 | Token QR inexistente |
+| `0106` | 410 | Token QR expirado |
+| `0107` | 409 | Token QR ya utilizado |
+
+---
+
+## Sesión del operador
+
+### POST /api/v1/operator/login
+
+Público. Autentica al operador y emite el token de sesión (7 días).
+
+**Request**
+
+```json
+{
+  "username": "operador.gutierrez",
+  "password": "••••••••••",
+  "device_id": "BRG-14"
+}
+```
+
+**Response** `201`
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "ttl_millis": 604800000,
+  "server_epoch_millis": 1786060816265,
+  "operator": {
+    "id": "6f1e8a2c-0000-4000-8000-000000000001",
+    "username": "operador.gutierrez",
+    "display_name": "A. Gutiérrez",
+    "brigade": "Brigada Xochimilco"
+  },
+  "org": { "code": "BNRT-4K9M", "name": "Banorte Servicios", "initials": "BN" }
+}
+```
+
+`ttl_millis` y `server_epoch_millis` permiten a la app anclar la validez de la sesión al reloj del servidor y no al del dispositivo.
+
+### POST /api/v1/operator/session/refresh
+
+Requiere Bearer. Re-emite el token vigente (revalidación sliding, sin volver a pedir credenciales). Devuelve el mismo cuerpo que el login.
+
+---
+
+## Sesión KYC
+
+### POST /api/v1/operator/kyc/session
+
+Requiere Bearer. Crea la sesión KYC de un enrolamiento capturado en campo. Es **idempotente por `enrollment_id`**: repetir la llamada devuelve la misma sesión.
+
+**Request**
+
+```json
+{ "enrollment_id": "6deb3231-719e-4230-bd45-bc761a69f2c1", "folio": "ENR-0001" }
+```
+
+**Response** `201`
+
+```json
+{
+  "session_id": "ba73c331-fc0f-48f1-8976-bb190022ea3c",
+  "trace_id": "4d0b27ddf6a534849969b96a971bf6ed"
+}
+```
+
+El `trace_id` es el identificador con el que se correlaciona el resto del pipeline de verificación al sincronizar.
+
+---
+
+## Vinculación del dispositivo
+
+### POST /api/v1/devices/qr
+
+Requiere Bearer. El operador (o el administrador desde JAAK Console) emite un token QR de un solo uso, válido **15 minutos**, para vincular un dispositivo a la empresa.
+
+**Response** `201`
+
+```json
+{
+  "qr_token": "c5c910da83640cbb1a933e47",
+  "org_code": "BNRT-4K9M",
+  "expires_at_epoch_millis": 1786062428253,
+  "qr_payload": "jaak-org:c5c910da83640cbb1a933e47"
+}
+```
+
+`qr_payload` es exactamente lo que la app codifica en el QR y lee al escanear.
+
+### POST /api/v1/devices/link
+
+Requiere Bearer. Vincula el dispositivo a la empresa. Acepta **código de empresa** o **token QR**.
+
+**Request (por código)**
+
+```json
+{ "code": "BNRT-4K9M", "device_id": "BRG-14", "platform": "android", "model": "Pixel 7" }
+```
+
+**Request (por QR)**
+
+```json
+{ "qr_token": "c5c910da83640cbb1a933e47", "device_id": "BRG-99", "platform": "android" }
+```
+
+**Response** `200`
+
+```json
+{
+  "org": {
+    "code": "BNRT-4K9M",
+    "name": "Banorte Servicios",
+    "initials": "BN",
+    "control_lists": ["OFAC", "SAT", "RENAPO", "INE", "Interpol"]
+  },
+  "linked_at": "2026-08-07T00:12:08Z"
+}
+```
+
+Un token QR ya utilizado devuelve `0107`; uno expirado, `0106`.
+
+---
+
+## Entitlements offline
+
+### POST /api/v1/devices/entitlement
+
+Requiere Bearer y dispositivo vinculado. Emite una licencia offline firmada que habilita los SDK de captura sin conexión. Si el dispositivo no está vinculado devuelve `0103`.
+
+**Request**
+
+```json
+{ "device_id": "BRG-14" }
+```
+
+**Response** `201`
+
+```json
+{
+  "entitlement": {
+    "payload_b64": "YmFub3J0ZXxCUkctMTR8MTc4NjY2NTYzNzQxMA==",
+    "signature_b64": "AqDBbBwzcN+rsF27zsJpK0mRtZ9RdwWL93GxKelYeZo...",
+    "key_id": "2dc5eaef",
+    "tenant_id": "banorte",
+    "device_id": "BRG-14",
+    "expires_at_epoch_millis": 1786665637410
+  }
+}
+```
+
+El `payload_b64` decodifica al texto canónico **`tenantId|deviceId|expiresAtEpochMillis`** (por ejemplo `banorte|BRG-14|1786665637410`). La app verifica la firma **Ed25519** localmente con la clave pública correspondiente antes de confiar en el entitlement.
+
+### GET /api/v1/operator/keys
+
+Público. Devuelve las claves públicas Ed25519 con las que verificar los entitlements.
+
+```json
+{
+  "keys": [
+    { "key_id": "2dc5eaef", "public_key_b64": "Xb5JC9Yhnog0uEPtea6k2ntsyk36eAjctnGoT/gbOYo=", "alg": "Ed25519" }
+  ]
+}
+```
+
+Se identifica la clave por `key_id` (presente también en el entitlement) para permitir rotación.
