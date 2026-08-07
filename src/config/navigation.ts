@@ -143,22 +143,36 @@ export const megaMenus: MegaMenuConfig[] = [
         ],
       },
       {
-        // Fase 1B: preparada pero no publicada. `status:"pending"` a nivel
-        // de columna hace que MegaMenu / MobileNavigation la omitan por
-        // completo sin necesitar cambios de código cuando se active — solo
-        // cambiar este `status` a "active" y completar `href`.
         type: "links",
         id: "products-consultas-oficiales",
         heading: "Consultas oficiales",
-        status: "pending",
         items: [
           {
-            id: "pending:consultas-oficiales",
+            id: "products-consultas-oficiales",
             label: "Consultas oficiales",
-            href: null,
-            description: "INE, RENAPO/CURP — landing en preparación",
-            status: "pending",
-            visibility: { desktop: false, mobile: false },
+            href: "/consultas-oficiales",
+            description: "INE, RENAPO/CURP y listas oficiales",
+            icon: "M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
+            status: "active",
+            visibility: { desktop: true, mobile: true },
+          },
+          {
+            id: "products-validar-curp",
+            label: "Validar CURP / RENAPO",
+            href: "/validar-curp-renapo",
+            description: "Valida una CURP contra RENAPO vía API",
+            icon: "M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25",
+            status: "active",
+            visibility: { desktop: true, mobile: true },
+          },
+          {
+            id: "products-validar-ine",
+            label: "Validar INE",
+            href: "/validar-ine",
+            description: "Valida una credencial INE dentro de tu proceso",
+            icon: "M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-9-13.5h18a1.5 1.5 0 011.5 1.5v13.5a1.5 1.5 0 01-1.5 1.5h-18a1.5 1.5 0 01-1.5-1.5V4.5a1.5 1.5 0 011.5-1.5z",
+            status: "active",
+            visibility: { desktop: true, mobile: true },
           },
         ],
       },
