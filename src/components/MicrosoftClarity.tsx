@@ -4,10 +4,10 @@ import Script from "next/script";
 
 /**
  * Microsoft Clarity — heatmaps, session replay, rage clicks.
- * Free. Set NEXT_PUBLIC_CLARITY_ID from https://clarity.microsoft.com/
+ * Free. Override with NEXT_PUBLIC_CLARITY_ID from https://clarity.microsoft.com/
  * Also tag sessions via clarity('set', ...) in useLpFunnel.
  */
-const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_ID;
+const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_ID || "y0ai5tghy8";
 
 export function MicrosoftClarity() {
   if (!CLARITY_ID) return null;
