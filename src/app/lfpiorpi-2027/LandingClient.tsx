@@ -347,7 +347,7 @@ const TIMELINE_SECONDARY = [
 ];
 
 /* ─────────────────────────────────────────────────────────────────────────
- * Sección 05: Qué puede automatizar JAAK
+ * Sección 05: Qué puede automatizar JAAK — 4 bloques (no 5 tarjetas)
  * ───────────────────────────────────────────────────────────────────────── */
 const JAAK_MODULES: Array<{
   num: string;
@@ -356,12 +356,16 @@ const JAAK_MODULES: Array<{
   href?: string;
   eventName?: string;
 }> = [
-  { num: "01", titulo: "KYC Biométrico", texto: "Documento + prueba de vida pasiva + comparación facial.", href: "/plataforma/verificacion-identidad", eventName: "product_kyc_click" },
-  { num: "02", titulo: "Fuentes Oficiales", texto: "Validaciones relacionadas con identidad y documentos." },
-  { num: "03", titulo: "AML Screening", texto: "PEP y listas de riesgo.", href: "/listas-de-riesgo-pld-aml", eventName: "product_aml_click" },
-  { num: "04", titulo: "Firma Digital", texto: "Consentimientos, declaraciones y documentos.", href: "/plataforma/firma-electronica" },
-  { num: "05", titulo: "Evidencia y Trazabilidad", texto: "Trazabilidad estructurada de las validaciones realizadas.", href: "/plataforma/gestion-evidencia" },
+  { num: "01", titulo: "Identidad", texto: "KYC biométrico + fuentes oficiales.", href: "/plataforma/verificacion-identidad", eventName: "product_kyc_click" },
+  { num: "02", titulo: "Riesgo", texto: "PEP + listas AML.", href: "/listas-de-riesgo-pld-aml", eventName: "product_aml_click" },
+  { num: "03", titulo: "Formalización", texto: "Firma Digital.", href: "/plataforma/firma-electronica" },
+  { num: "04", titulo: "Evidencia", texto: "Trazabilidad del proceso.", href: "/plataforma/gestion-evidencia" },
 ];
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * Sección intermedia — KYC continuo (statement visual, sin cards)
+ * ───────────────────────────────────────────────────────────────────────── */
+const KYC_FLOW = ["Identificación", "Riesgo", "Perfil", "Monitoreo", "Alertas", "Histórico"];
 
 /* ─────────────────────────────────────────────────────────────────────────
  * Sección 06: Checklist inteligente
@@ -678,9 +682,9 @@ function SmartChecklist({
       </div>
 
       {touched && (
-        <div className="rounded-2xl p-6 mb-8 animate-fade-in-up" style={{ background: WHITE, border: "1px solid #E2E8EF" }}>
-          <p className="uppercase font-black text-[15px] mb-4" style={{ color: NAVY }}>
-            Identificamos {activeCapas.length} {activeCapas.length === 1 ? "capa" : "capas"} que podrías revisar
+        <div className="rounded-2xl p-6 mb-8 animate-fade-in-up" style={{ background: WHITE, border: `1px solid ${TEAL}55` }}>
+          <p className="uppercase font-black text-2xl mb-4" style={{ color: NAVY }}>
+            {activeCapas.length} {activeCapas.length === 1 ? "capa identificada" : "capas identificadas"}
           </p>
 
           <div className="space-y-3 mb-5">
@@ -717,7 +721,7 @@ function SmartChecklist({
           className="inline-flex items-center gap-2 rounded-xl px-7 py-3.5 text-[15px] font-bold text-white transition-transform hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
           style={{ background: NAVY, outlineColor: NAVY }}
         >
-          {touched ? "Quiero revisar estas capas" : "Revisar mi operación"}
+          {touched ? `Revisar ${activeCapas.length > 1 ? `estas ${activeCapas.length} capas` : "esta capa"} →` : "Revisar mi operación"}
         </button>
       </div>
     </div>
@@ -1114,7 +1118,7 @@ export default function Lfpiorpi2027LandingClient() {
       <main>
         {/* ── 01. Hero ─────────────────────────────────────────────────── */}
         <section
-          className="pt-28 pb-20 relative overflow-hidden"
+          className="relative overflow-hidden"
           style={{ background: `linear-gradient(155deg, ${NAVY} 0%, ${NAVY_SOFT} 70%, #122544 100%)` }}
           aria-labelledby="hero-heading"
         >
@@ -1124,74 +1128,86 @@ export default function Lfpiorpi2027LandingClient() {
             aria-hidden="true"
           />
 
-          <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div>
-                <SectionEyebrow dark>Nuevas Reglas LFPIORPI · 2026–2027</SectionEyebrow>
+          {/* Fotografía a sangre — solo desktop, corte editorial ~45% con fade a navy */}
+          <div className="hidden lg:block absolute inset-y-0 right-0 w-[45%]" aria-hidden="true">
+            <div className="relative h-full w-full">
+              <Image
+                src="/images/lfpiorpi-2027/hero-compliance.jpg"
+                alt=""
+                fill
+                sizes="45vw"
+                className="object-cover"
+                priority
+              />
+              <div className="absolute inset-0" style={{ background: `linear-gradient(90deg, ${NAVY} 0%, ${NAVY}CC 18%, transparent 42%)` }} />
+            </div>
+          </div>
 
-                <h1 id="hero-heading" className="uppercase text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
-                  <span className="block">El cumplimiento evoluciona.</span>
-                  <span
-                    className="block mt-2"
-                    style={{ backgroundImage: `linear-gradient(90deg, ${TEAL}, #7FE8EC)`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}
-                  >
-                    ¿Tu operación está preparada?
-                  </span>
-                </h1>
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:pl-8">
+            <div className="lg:max-w-[54%] pt-28 pb-10 lg:pb-24">
+              <SectionEyebrow dark>Nuevas Reglas LFPIORPI · 2026–2027</SectionEyebrow>
 
-                <p className="text-lg text-white/70 mb-6 leading-relaxed">
-                  Las nuevas disposiciones fortalecen el enfoque basado en riesgo, el conocimiento del Cliente o
-                  Usuario, el Beneficiario Controlador y el uso de mecanismos automatizados para quienes realizan
-                  Actividades Vulnerables.
-                </p>
+              <h1 id="hero-heading" className="uppercase text-5xl md:text-6xl font-black text-white mb-6 leading-[1.05]">
+                <span className="block">El cumplimiento evoluciona.</span>
+                <span
+                  className="block mt-2"
+                  style={{ backgroundImage: `linear-gradient(90deg, ${TEAL}, #7FE8EC)`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}
+                >
+                  ¿Tu operación está preparada?
+                </span>
+              </h1>
 
-                <div className="flex flex-wrap items-center gap-x-3 gap-y-2 mb-3 text-[12.5px] font-semibold uppercase tracking-wide text-white/55">
-                  <span>Identidad</span>
-                  <span aria-hidden="true" style={{ color: TEAL }}>·</span>
-                  <span>AML Screening</span>
-                  <span aria-hidden="true" style={{ color: TEAL }}>·</span>
-                  <span>Firma Digital</span>
-                  <span aria-hidden="true" style={{ color: TEAL }}>·</span>
-                  <span>Evidencia</span>
-                </div>
-                <p className="text-[13.5px] text-white/50 mb-8 leading-relaxed max-w-md">
-                  JAAK automatiza capas críticas de identidad, screening y evidencia dentro de procesos digitales de
-                  cumplimiento.
-                </p>
+              <p className="text-lg text-white/70 mb-6 leading-relaxed">
+                Las nuevas disposiciones fortalecen el enfoque basado en riesgo, el conocimiento del Cliente o
+                Usuario y los mecanismos automatizados para quienes realizan Actividades Vulnerables.
+              </p>
 
-                <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-4">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      gtmEvent("cta_review_process", { location: "hero", page: PAGE });
-                      scrollToId("mi-actividad");
-                    }}
-                    className="inline-flex items-center justify-center rounded-xl px-7 py-3.5 text-[14.5px] font-bold transition-transform hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                    style={{ background: TEAL, color: NAVY }}
-                  >
-                    Revisar qué cambia para mi operación
-                  </button>
-                  <SourceLink
-                    href={DOF_URL}
-                    kind="dof"
-                    label="Consultar DOF"
-                    context="hero"
-                    className="inline-flex items-center justify-center text-[13px] font-semibold text-white/55 hover:text-white/85 transition-colors"
-                  />
-                </div>
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-2 mb-3 text-[12.5px] font-semibold uppercase tracking-wide text-white/55">
+                <span>KYC Biométrico</span>
+                <span aria-hidden="true" style={{ color: TEAL }}>·</span>
+                <span>AML Screening</span>
+                <span aria-hidden="true" style={{ color: TEAL }}>·</span>
+                <span>Firma Digital</span>
+                <span aria-hidden="true" style={{ color: TEAL }}>·</span>
+                <span>Evidencia</span>
+              </div>
+              <p className="text-[13.5px] text-white/50 mb-8 leading-relaxed max-w-md">
+                JAAK automatiza capas críticas de identidad, screening y evidencia dentro de procesos digitales de
+                cumplimiento.
+              </p>
 
-                <p className="text-[12.5px] text-white/40">DOF · Acuerdo 115/2026 · 7 de agosto de 2026</p>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    gtmEvent("cta_review_process", { location: "hero", page: PAGE });
+                    scrollToId("mi-actividad");
+                  }}
+                  className="inline-flex items-center justify-center rounded-xl px-7 py-3.5 text-[14.5px] font-bold transition-transform hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                  style={{ background: TEAL, color: NAVY }}
+                >
+                  Revisar qué cambia para mi operación
+                </button>
+                <SourceLink
+                  href={DOF_URL}
+                  kind="dof"
+                  label="Consultar publicación oficial"
+                  context="hero"
+                  className="inline-flex items-center justify-center text-[13px] font-semibold text-white/55 hover:text-white/85 transition-colors"
+                />
               </div>
 
-              <div className="relative rounded-3xl overflow-hidden" style={{ border: "1px solid rgba(255,255,255,0.12)", boxShadow: "0 30px 80px rgba(0,0,0,0.35)" }}>
+              <p className="text-[12.5px] text-white/40">DOF · Acuerdo 115/2026 · 7 de agosto de 2026</p>
+
+              {/* Fotografía contenida — mobile/tablet, no se derrama */}
+              <div className="lg:hidden relative rounded-3xl overflow-hidden mt-10" style={{ border: "1px solid rgba(255,255,255,0.12)", boxShadow: "0 30px 80px rgba(0,0,0,0.35)" }}>
                 <Image
                   src="/images/lfpiorpi-2027/hero-compliance.jpg"
                   alt="Profesional revisando su identidad y expediente digital desde el celular"
                   width={1600}
                   height={900}
-                  sizes="(min-width: 1024px) 480px, 100vw"
+                  sizes="100vw"
                   className="w-full h-auto"
-                  priority
                 />
               </div>
             </div>
@@ -1199,7 +1215,7 @@ export default function Lfpiorpi2027LandingClient() {
         </section>
 
         {/* ── 02. ¿Tu actividad está contemplada? ──────────────────────── */}
-        <section id="mi-actividad" className="py-20 scroll-mt-20" style={{ background: OFF_WHITE }} aria-labelledby="actividad-heading">
+        <section id="mi-actividad" className="py-20 bg-white scroll-mt-20" aria-labelledby="actividad-heading">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12 max-w-3xl mx-auto">
               <SectionEyebrow>Actividades vulnerables</SectionEyebrow>
@@ -1217,7 +1233,7 @@ export default function Lfpiorpi2027LandingClient() {
         </section>
 
         {/* ── 03. Qué cambió ────────────────────────────────────────────── */}
-        <section id="que-cambia" className="py-20 bg-white scroll-mt-20" aria-labelledby="enfoque-heading">
+        <section id="que-cambia" className="py-20 scroll-mt-20" style={{ background: OFF_WHITE }} aria-labelledby="enfoque-heading">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14 max-w-3xl mx-auto">
               <SectionEyebrow>Nuevo enfoque</SectionEyebrow>
@@ -1286,6 +1302,40 @@ export default function Lfpiorpi2027LandingClient() {
                 Identificar qué puedo automatizar →
               </button>
             </div>
+          </div>
+        </section>
+
+        {/* ── KYC continuo — statement visual, sin cards ─────────────────── */}
+        <section id="conocimiento-continuo" className="py-20 bg-white" aria-labelledby="kyc-continuo-heading">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <SectionEyebrow>Conocimiento continuo</SectionEyebrow>
+            <h2 id="kyc-continuo-heading" className="uppercase text-4xl md:text-5xl font-black mb-10 leading-tight max-w-2xl mx-auto" style={{ color: NAVY }}>
+              El KYC no termina cuando el cliente entra
+            </h2>
+
+            <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-3 mb-8">
+              {KYC_FLOW.map((step, i) => (
+                <div key={step} className="flex items-center gap-2">
+                  <span className="text-[15px] sm:text-[17px] font-black uppercase tracking-wide" style={{ color: i === 0 ? NAVY : TEXT_MUTED }}>
+                    {step}
+                  </span>
+                  {i < KYC_FLOW.length - 1 && (
+                    <span aria-hidden="true" className="text-lg font-black" style={{ color: TEAL }}>
+                      →
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <SourceLink
+              href={DOF_URL}
+              kind="dof"
+              label="Fuente: DOF · Arts. 23 Ter a 23 Ter 5 y Art. 41"
+              context="kyc_continuo"
+              className="text-[13px] font-semibold"
+              style={{ color: "#0E7C82" }}
+            />
           </div>
         </section>
 
@@ -1399,7 +1449,7 @@ export default function Lfpiorpi2027LandingClient() {
               Cliente → KYC Biométrico → Fuentes Oficiales → AML Screening → Firma Digital → Evidencia y Trazabilidad → Tu proceso de cumplimiento
             </p>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-5 mb-10">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
               {JAAK_MODULES.map((mod) => (
                 <div key={mod.num} className="rounded-2xl p-6 h-full flex flex-col" style={{ background: GRAY_LIGHT, border: "1px solid #E2E8EF" }}>
                   <div className="text-3xl font-black mb-3" style={{ color: "rgba(2,19,45,0.15)" }}>
@@ -1450,10 +1500,13 @@ export default function Lfpiorpi2027LandingClient() {
         <section id="autoevaluacion" className="py-20 scroll-mt-20" style={{ background: OFF_WHITE }} aria-labelledby="autoeval-heading">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <SectionEyebrow>Revisa tu operación</SectionEyebrow>
-              <h2 id="autoeval-heading" className="uppercase text-3xl md:text-4xl font-black" style={{ color: NAVY }}>
+              <SectionEyebrow>Evalúa tu operación</SectionEyebrow>
+              <h2 id="autoeval-heading" className="uppercase text-3xl md:text-4xl font-black mb-3" style={{ color: NAVY }}>
                 ¿Qué parte de tu proceso sigue siendo manual?
               </h2>
+              <p className="text-[13px] font-semibold uppercase tracking-wide" style={{ color: TEXT_MUTED }}>
+                {CHECKLIST_ITEMS.length} preguntas · menos de 60 segundos
+              </p>
             </div>
             <SmartChecklist checked={checklistChecked} onToggle={handleChecklistToggle} />
           </div>
@@ -1464,7 +1517,7 @@ export default function Lfpiorpi2027LandingClient() {
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-4">
               <span className="inline-block text-[11px] font-bold uppercase tracking-wide px-3 py-1 rounded-full" style={{ background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.6)" }}>
-                Requerimiento regulatorio
+                Lo que contempla la regulación
               </span>
             </div>
             <div className="text-center mb-14 max-w-2xl mx-auto">
@@ -1477,7 +1530,7 @@ export default function Lfpiorpi2027LandingClient() {
               </p>
             </div>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
               {AUTOMATION_NODES.map((node, i) => (
                 <div key={node.titulo} className="rounded-2xl p-6" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}>
                   <div className="w-8 h-8 rounded-full flex items-center justify-center text-[12px] font-black mb-4" style={{ background: TEAL, color: NAVY }}>
@@ -1489,18 +1542,31 @@ export default function Lfpiorpi2027LandingClient() {
               ))}
             </div>
 
-            <p className="text-[12px] text-center max-w-2xl mx-auto mb-8" style={{ color: "rgba(255,255,255,0.4)" }}>
-              Estos mecanismos son un requerimiento regulatorio, distinto de las{" "}
-              <button
-                type="button"
-                onClick={() => scrollToId("que-automatiza-jaak")}
-                className="underline underline-offset-2 hover:text-white transition-colors"
-              >
-                capacidades JAAK
-              </button>{" "}
-              descritas arriba: no implican que JAAK cubra actualmente todas las funciones previstas en el
-              Artículo 41.
-            </p>
+            {/* Separación visual deliberada: esto NO es "JAAK cubre el Art. 41" */}
+            <div className="max-w-2xl mx-auto rounded-2xl p-6 mb-8" style={{ background: "rgba(30,202,211,0.06)", border: `1px solid ${TEAL}33` }}>
+              <p className="text-[11px] font-bold uppercase tracking-wide mb-3" style={{ color: "#7FE8EC" }}>
+                Dónde participa JAAK
+              </p>
+              <div className="flex flex-wrap gap-2 mb-4">
+                {["KYC", "Screening", "Firma", "Evidencia"].map((cap) => (
+                  <span key={cap} className="text-[12px] font-semibold px-3 py-1.5 rounded-full" style={{ background: "rgba(30,202,211,0.14)", color: "#7FE8EC" }}>
+                    {cap}
+                  </span>
+                ))}
+              </div>
+              <p className="text-[12px] leading-relaxed" style={{ color: "rgba(255,255,255,0.5)" }}>
+                Estos mecanismos son un requerimiento regulatorio, distinto de las{" "}
+                <button
+                  type="button"
+                  onClick={() => scrollToId("que-automatiza-jaak")}
+                  className="underline underline-offset-2 hover:text-white transition-colors"
+                >
+                  capacidades JAAK
+                </button>{" "}
+                descritas arriba: no implican que JAAK cubra actualmente todas las funciones previstas en el
+                Artículo 41.
+              </p>
+            </div>
 
             <div className="text-center">
               <p className="text-[13px] mb-5">
@@ -1584,12 +1650,15 @@ export default function Lfpiorpi2027LandingClient() {
                 />
                 <div className="absolute inset-0" style={{ background: "linear-gradient(0deg, rgba(2,19,45,0.92) 10%, rgba(2,19,45,0.55) 60%, rgba(2,19,45,0.25) 100%)" }} />
                 <div className="relative z-10 h-full flex flex-col justify-end p-7">
+                  <p className="text-[13px] font-bold uppercase tracking-wide mb-2" style={{ color: "#7FE8EC" }}>
+                    Antes de 2027
+                  </p>
                   <h2 id="cta-final-heading" className="uppercase text-2xl sm:text-3xl font-black text-white mb-4 leading-snug">
-                    Identifica qué puedes automatizar antes de 2027
+                    Identifica qué puedes automatizar hoy
                   </h2>
                   <p className="text-[14.5px] text-white/70 mb-6 leading-relaxed">
-                    Cuéntanos tu sector y revisamos contigo qué capas de identidad, screening, firma y evidencia
-                    puedes integrar a tu operación.
+                    Revisa con nuestro equipo qué capas de identidad, screening, firma y evidencia pueden integrarse
+                    a tu operación.
                   </p>
                   <Link
                     href="/"
