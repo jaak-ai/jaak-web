@@ -6,6 +6,8 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 import { gtmEvent } from "@/components/GoogleTagManager";
 import { getUtmParams } from "@/components/CloudflareTurnstile";
+import { SCHEDULE_DEMO_URL } from "@/lib/scheduling";
+import { WHATSAPP_NUMBER } from "@/lib/whatsapp";
 
 /* ─────────────────────────────────────────────────────────────────────────
  * Marca e identidad visual
@@ -42,6 +44,16 @@ const SOURCE_EVENTS: Record<SourceKind, string> = {
  * ───────────────────────────────────────────────────────────────────────── */
 function scrollToId(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * Demos ya existentes en el sitio — nunca se inventan rutas nuevas
+ * ───────────────────────────────────────────────────────────────────────── */
+const KYC_DEMO_URL = "/kyc-demo-autoservicio";
+const FIRMA_DEMO_URL = "/firma-nom151-demo-autoservicio";
+
+function buildWhatsAppUrl(message: string) {
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -423,12 +435,13 @@ const JAAK_MODULES: Array<{
   titulo: string;
   texto: string;
   href?: string;
+  ctaLabel?: string;
   eventName?: string;
 }> = [
-  { num: "01", titulo: "Identidad", texto: "KYC biométrico + fuentes oficiales.", href: "/plataforma/verificacion-identidad", eventName: "product_kyc_click" },
-  { num: "02", titulo: "Riesgo", texto: "PEP + listas AML.", href: "/listas-de-riesgo-pld-aml", eventName: "product_aml_click" },
-  { num: "03", titulo: "Formalización", texto: "Firma Digital.", href: "/plataforma/firma-electronica" },
-  { num: "04", titulo: "Evidencia", texto: "Trazabilidad del proceso.", href: "/plataforma/gestion-evidencia" },
+  { num: "01", titulo: "Identidad", texto: "KYC biométrico + fuentes oficiales.", href: "/plataforma/verificacion-identidad", ctaLabel: "Ver KYC", eventName: "product_kyc_click" },
+  { num: "02", titulo: "Riesgo", texto: "PEP + listas AML.", href: "/listas-de-riesgo-pld-aml", ctaLabel: "Conocer AML Screening", eventName: "product_aml_click" },
+  { num: "03", titulo: "Formalización", texto: "Firma Digital.", href: "/plataforma/firma-electronica", ctaLabel: "Ver Firma Digital" },
+  { num: "04", titulo: "Evidencia", texto: "Trazabilidad del proceso.", href: "/plataforma/gestion-evidencia", ctaLabel: "Conocer Evidencia" },
 ];
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -454,20 +467,15 @@ const CAPA_INFO: Record<Capa, { label: string; needEvent: string }> = {
   evidencia: { label: "Evidencia", needEvent: "need_evidence_selected" },
 };
 
-// Nota: el prompt original no incluye una pregunta que dispare la capa
-// "formalización" dentro de las 8 originales, aunque la lógica de resultados
-// sí la contempla — se agrega esta novena pregunta para que ese resultado
-// sea alcanzable.
+// 5 preguntas (antes 9): para tráfico frío, cada obligación de clasificación,
+// históricos y mecanismos automatizados ya queda explicada en Art. 41 — no
+// hace falta convertir cada obligación regulatoria en un checkbox.
 const CHECKLIST_ITEMS: Array<{ text: string; capa: Capa }> = [
-  { text: "¿Integras un expediente único por Cliente?", capa: "identidad" },
-  { text: "¿Validas digitalmente la identidad?", capa: "identidad" },
-  { text: "¿Identificas Beneficiario Controlador cuando corresponde?", capa: "identidad" },
+  { text: "¿Validas digitalmente la identidad de tus clientes?", capa: "identidad" },
   { text: "¿Consultas PEP y listas de riesgo?", capa: "riesgo" },
-  { text: "¿Formalizas contratos o declaraciones con firma electrónica?", capa: "formalizacion" },
-  { text: "¿Clasificas Clientes conforme a su riesgo?", capa: "riesgo" },
-  { text: "¿Conservas históricos?", capa: "riesgo" },
-  { text: "¿Cuentas con mecanismos automatizados?", capa: "riesgo" },
-  { text: "¿Puedes demostrar qué validaciones fueron realizadas?", capa: "evidencia" },
+  { text: "¿Tienes procesos para Beneficiario Controlador cuando aplica?", capa: "identidad" },
+  { text: "¿Formalizas declaraciones o documentos digitalmente?", capa: "formalizacion" },
+  { text: "¿Puedes demostrar posteriormente qué validaciones realizaste?", capa: "evidencia" },
 ];
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -760,28 +768,32 @@ function ActivityGroups({
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
- * Sección 03 — Tarjeta progresiva de "Qué cambió"
- * Estado normal: etiqueta, título, línea JAAK, fuente — primera lectura en
- * segundos. "Ver detalle +" revela la explicación regulatoria completa
- * (texto, disclaimer, microcopy).
+ * Sección 03 — Fila editorial de "Qué cambió" (sin caja individual)
+ * Primera lectura: número, etiqueta, título, línea JAAK. "Ver detalle +"
+ * revela la explicación regulatoria completa (texto, disclaimer, microcopy).
  * ───────────────────────────────────────────────────────────────────────── */
-function EnfoqueCard({ card }: { card: (typeof ENFOQUE_CARDS)[number] }) {
+function EnfoqueRow({ num, card }: { num: string; card: (typeof ENFOQUE_CARDS)[number] }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="rounded-2xl p-6 bg-white hover:shadow-lg transition-shadow flex flex-col" style={{ border: "1px solid #E2E8EF" }}>
-      <span className="inline-block text-[11px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full mb-4 self-start" style={{ background: `${TEAL}14`, color: "#0E7C82" }}>
-        {card.etiqueta}
-      </span>
-      <h3 className="text-[16px] font-bold mb-3" style={{ color: NAVY }}>
+    <div className="py-6" style={{ borderBottom: "1px solid #E2E8EF" }}>
+      <div className="flex items-baseline gap-3 mb-2">
+        <span className="text-[12px] font-black flex-shrink-0" style={{ color: "rgba(2,19,45,0.25)" }}>
+          {num}
+        </span>
+        <span className="text-[11px] font-bold uppercase tracking-wide" style={{ color: "#0E7C82" }}>
+          {card.etiqueta}
+        </span>
+      </div>
+      <h3 className="text-[17px] font-bold mb-2 pl-7" style={{ color: NAVY }}>
         {card.titulo}
       </h3>
-      <p className="text-[13px] font-semibold mb-4" style={{ color: NAVY }}>
+      <p className="text-[13.5px] font-semibold mb-3 pl-7" style={{ color: NAVY }}>
         {card.jaakLabel || "JAAK"} → {card.jaakApoya.join(" + ")}
       </p>
 
       {expanded && (
-        <div className="mb-4 pt-4 animate-fade-in-up" style={{ borderTop: "1px solid #EEF2F5" }}>
+        <div className="pl-7 mb-3 animate-fade-in-up">
           <p className="text-[13px] leading-relaxed mb-2" style={{ color: TEXT_MUTED }}>
             {card.texto}
           </p>
@@ -798,7 +810,7 @@ function EnfoqueCard({ card }: { card: (typeof ENFOQUE_CARDS)[number] }) {
         </div>
       )}
 
-      <div className="mt-auto pt-3 flex items-center justify-between gap-3" style={{ borderTop: expanded ? "none" : "1px solid #EEF2F5" }}>
+      <div className="pl-7 flex items-center gap-4">
         <SourceLink
           href={DOF_URL}
           kind="dof"
@@ -840,9 +852,9 @@ function SmartChecklist({
 
   const touched = checked.some(Boolean);
 
-  const handleReviewClick = () => {
+  const handleViewSolutions = () => {
     gtmEvent("cta_after_checklist", { capas: activeCapas, page: PAGE });
-    scrollToId("hablemos");
+    scrollToId("que-automatiza-jaak");
   };
 
   return (
@@ -904,16 +916,28 @@ function SmartChecklist({
         </div>
       )}
 
-      <div className="text-center">
-        <button
-          type="button"
-          onClick={handleReviewClick}
-          className="inline-flex items-center gap-2 rounded-xl px-7 py-3.5 text-[15px] font-bold text-white transition-transform hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-          style={{ background: NAVY, outlineColor: NAVY }}
-        >
-          {touched ? `Revisar ${activeCapas.length > 1 ? `estas ${activeCapas.length} capas` : "esta capa"} →` : "Revisar mi operación"}
-        </button>
-      </div>
+      {touched && (
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
+          <button
+            type="button"
+            onClick={handleViewSolutions}
+            className="inline-flex items-center gap-2 rounded-xl px-7 py-3.5 text-[15px] font-bold text-white transition-transform hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+            style={{ background: NAVY, outlineColor: NAVY }}
+          >
+            Ver soluciones JAAK
+          </button>
+          <a
+            href={SCHEDULE_DEMO_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => gtmEvent("cta_agendar_demo", { location: "checklist_result", page: PAGE })}
+            className="text-[13.5px] font-semibold transition-colors"
+            style={{ color: TEXT_MUTED }}
+          >
+            Hablar con un especialista →
+          </a>
+        </div>
+      )}
     </div>
   );
 }
@@ -1213,6 +1237,103 @@ function ContactFormMini({
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
+ * Sección 10 — Tres rutas de conversión + una cuarta que revela el
+ * formulario. El formulario deja de ser protagonista absoluto: es una
+ * opción más entre agendar, ver demo o escribir por WhatsApp.
+ * ───────────────────────────────────────────────────────────────────────── */
+function FinalCtaPaths({
+  defaultSector,
+  needFlags,
+  whatsappMessage,
+}: {
+  defaultSector: string;
+  needFlags: { need_kyc: boolean; need_aml: boolean; need_signature: boolean; need_evidence: boolean };
+  whatsappMessage: string;
+}) {
+  const [showForm, setShowForm] = useState(false);
+
+  const paths: Array<{
+    label: string;
+    desc: string;
+    action: "link" | "scroll" | "form";
+    href?: string;
+    target?: string;
+    event: string;
+  }> = [
+    { label: "Agendar una demo", desc: "Revisa tu caso con un especialista.", action: "link", href: SCHEDULE_DEMO_URL, event: "cta_agendar_demo" },
+    { label: "Ver una demo de producto", desc: "Conoce KYC y Firma Digital en operación.", action: "scroll", target: "ver-en-accion", event: "cta_ver_demo" },
+    { label: "Escríbenos por WhatsApp", desc: "Resuelve una duda directamente con nuestro equipo.", action: "link", href: buildWhatsAppUrl(whatsappMessage), event: "cta_whatsapp_click" },
+    { label: "Quiero que me contacten", desc: "Comparte tus datos y te buscamos nosotros.", action: "form", event: "cta_contact_form_open" },
+  ];
+
+  return (
+    <div>
+      <div className="grid sm:grid-cols-2 gap-4 mb-8 max-w-2xl mx-auto">
+        {paths.map((p) => {
+          const isForm = p.action === "form";
+          const isActive = isForm && showForm;
+          const className =
+            "text-left rounded-xl p-5 transition-all hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white";
+          const style: CSSProperties = {
+            background: isActive ? TEAL : "rgba(255,255,255,0.06)",
+            border: `1px solid ${isActive ? TEAL : "rgba(255,255,255,0.15)"}`,
+          };
+          const content = (
+            <>
+              <p className="font-bold text-[14.5px] mb-1" style={{ color: isActive ? NAVY : WHITE }}>
+                {p.label}
+              </p>
+              <p className="text-[12.5px] leading-relaxed" style={{ color: isActive ? "rgba(2,19,45,0.7)" : "rgba(255,255,255,0.55)" }}>
+                {p.desc}
+              </p>
+            </>
+          );
+
+          if (p.action === "link") {
+            return (
+              <a
+                key={p.label}
+                href={p.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => gtmEvent(p.event, { location: "cta_final", page: PAGE })}
+                className={className}
+                style={style}
+              >
+                {content}
+              </a>
+            );
+          }
+
+          return (
+            <button
+              key={p.label}
+              type="button"
+              onClick={() => {
+                gtmEvent(p.event, { location: "cta_final", page: PAGE });
+                if (p.action === "scroll" && p.target) scrollToId(p.target);
+                if (isForm) setShowForm((v) => !v);
+              }}
+              aria-pressed={isForm ? showForm : undefined}
+              className={className}
+              style={style}
+            >
+              {content}
+            </button>
+          );
+        })}
+      </div>
+
+      {showForm && (
+        <div className="max-w-lg mx-auto animate-fade-in-up">
+          <ContactFormMini defaultSector={defaultSector} needFlags={needFlags} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
  * Barra sticky discreta en mobile, tras el primer scroll
  * ───────────────────────────────────────────────────────────────────────── */
 function MobileStickyCta() {
@@ -1240,6 +1361,30 @@ function MobileStickyCta() {
         Revisar mi operación
       </button>
     </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * Botón flotante discreto de WhatsApp — blanco/navy, no el globo verde
+ * tradicional. Encima de la barra sticky en mobile, esquina inferior
+ * derecha en desktop.
+ * ───────────────────────────────────────────────────────────────────────── */
+function WhatsAppFloatingButton({ message }: { message: string }) {
+  return (
+    <a
+      href={buildWhatsAppUrl(message)}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={() => gtmEvent("cta_whatsapp_click", { location: "floating_button", page: PAGE })}
+      aria-label="¿Tienes una duda? Escríbenos por WhatsApp (abre en una pestaña nueva)"
+      className="fixed z-40 bottom-24 right-4 lg:bottom-6 lg:right-6 inline-flex items-center gap-2 rounded-full px-4 py-3 text-[13px] font-bold shadow-lg transition-transform hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+      style={{ background: WHITE, color: NAVY, border: "1px solid #E2E8EF" }}
+    >
+      <svg className="w-4 h-4 flex-shrink-0" fill="#25D366" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.71.45 3.38 1.3 4.86L2.05 22l5.36-1.4a9.9 9.9 0 004.63 1.18h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.86 9.86 0 0012.04 2zm5.83 14.14c-.24.68-1.4 1.3-1.93 1.38-.5.08-1.12.11-1.81-.11-.42-.13-.96-.31-1.65-.6-2.9-1.25-4.8-4.17-4.94-4.36-.14-.19-1.18-1.57-1.18-3 0-1.42.75-2.12 1.01-2.41.27-.29.58-.36.78-.36l.56.01c.18.01.42-.07.65.5.24.58.82 2 .89 2.15.07.15.12.32.02.51-.09.19-.14.31-.28.48-.14.16-.29.36-.42.49-.14.14-.28.29-.12.57.16.28.72 1.19 1.55 1.93 1.06.95 1.96 1.24 2.24 1.38.28.14.44.12.6-.07.16-.19.68-.79.87-1.06.18-.28.36-.23.6-.14.24.09 1.53.72 1.79.85.26.13.44.19.5.3.06.11.06.63-.18 1.31z" />
+      </svg>
+      <span className="hidden sm:inline">¿Tienes una duda?</span> WhatsApp
+    </a>
   );
 }
 
@@ -1277,6 +1422,14 @@ export default function Lfpiorpi2027LandingClient() {
   const campaignGroup = campaignInfo?.group ?? null;
   const defaultFormSector = campaignInfo?.formOption ?? (manualSector ? GROUP_TO_FORM_OPTION[manualSector] ?? "" : "");
 
+  // Mensaje de WhatsApp dinámico: si ya identificamos un sector (por campaña
+  // o por selección manual), lo incluye para que el equipo tenga contexto
+  // desde el primer mensaje.
+  const activeSectorGroup = campaignGroup ?? manualSector;
+  const whatsappMessage = activeSectorGroup
+    ? `Hola, vi la información sobre LFPIORPI para el sector ${SECTOR_GROUP_LABEL[activeSectorGroup]} y quiero revisar qué podemos automatizar.`
+    : "Hola, vi la información sobre las nuevas Reglas LFPIORPI 2026–2027 y quiero revisar cómo JAAK puede ayudarme.";
+
   const needFlags = useMemo(() => {
     const active = new Set<Capa>();
     CHECKLIST_ITEMS.forEach((item, i) => {
@@ -1312,6 +1465,7 @@ export default function Lfpiorpi2027LandingClient() {
     <>
       <CampaignHeader />
       <MobileStickyCta />
+      <WhatsAppFloatingButton message={whatsappMessage} />
       <main>
         {/* ── 01. Hero — 100% UI nativa, sin fotografía ──────────────────── */}
         <section
@@ -1374,7 +1528,7 @@ export default function Lfpiorpi2027LandingClient() {
               Usuario y los mecanismos automatizados para quienes realizan Actividades Vulnerables.
             </p>
 
-            <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 mb-10 text-[12.5px] font-semibold uppercase tracking-wide text-white/55">
+            <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 mb-4 text-[12.5px] font-semibold uppercase tracking-wide text-white/55">
               <span>KYC Biométrico</span>
               <span aria-hidden="true" style={{ color: TEAL }}>·</span>
               <span>AML Screening</span>
@@ -1383,6 +1537,17 @@ export default function Lfpiorpi2027LandingClient() {
               <span aria-hidden="true" style={{ color: TEAL }}>·</span>
               <span>Evidencia</span>
             </div>
+
+            <a
+              href={SCHEDULE_DEMO_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => gtmEvent("cta_agendar_demo", { location: "hero", page: PAGE })}
+              className="inline-block text-[13px] font-semibold mb-10 transition-colors"
+              style={{ color: TEAL }}
+            >
+              ¿Ya sabes qué necesitas? Agenda una demo →
+            </a>
 
             <div className="flex flex-col sm:flex-row sm:items-center justify-center gap-4 mb-4">
               <button
@@ -1394,16 +1559,28 @@ export default function Lfpiorpi2027LandingClient() {
                 className="inline-flex items-center justify-center rounded-xl px-7 py-3.5 text-[14.5px] font-bold transition-transform hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                 style={{ background: TEAL, color: NAVY }}
               >
-                Revisar qué cambia para mi operación
+                Revisar qué cambió
               </button>
-              <SourceLink
-                href={DOF_URL}
-                kind="dof"
-                label="Consultar publicación oficial"
-                context="hero"
-                className="inline-flex items-center justify-center text-[13px] font-semibold text-white/55 hover:text-white/85 transition-colors"
-              />
+              <button
+                type="button"
+                onClick={() => {
+                  gtmEvent("cta_ver_demo", { location: "hero", page: PAGE });
+                  scrollToId("ver-en-accion");
+                }}
+                className="inline-flex items-center justify-center rounded-xl px-7 py-3.5 text-[14.5px] font-bold text-white transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                style={{ border: "1px solid rgba(255,255,255,0.3)" }}
+              >
+                Ver JAAK en acción →
+              </button>
             </div>
+
+            <SourceLink
+              href={DOF_URL}
+              kind="dof"
+              label="Consultar publicación oficial"
+              context="hero"
+              className="inline-flex items-center justify-center text-[13px] font-semibold text-white/55 hover:text-white/85 transition-colors mb-3"
+            />
 
             <p className="text-[12.5px] text-white/40">DOF · Acuerdo 115/2026 · 7 de agosto de 2026</p>
           </div>
@@ -1437,24 +1614,44 @@ export default function Lfpiorpi2027LandingClient() {
               </h2>
             </div>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-              {ENFOQUE_CARDS.map((card) => (
-                <EnfoqueCard key={card.titulo} card={card} />
+            <div className="grid sm:grid-cols-2 gap-x-10">
+              {ENFOQUE_CARDS.map((card, i) => (
+                <EnfoqueRow key={card.titulo} num={String(i + 1).padStart(2, "0")} card={card} />
               ))}
             </div>
+          </div>
+        </section>
 
-            <div className="text-center">
+        {/* ── CTA comercial 1 — sin formulario, tráfico apenas a 1/3 de página ── */}
+        <section className="py-14" style={{ background: NAVY }} aria-label="¿Necesitas automatizar estas validaciones?">
+          <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 className="uppercase text-2xl sm:text-3xl font-black text-white mb-4 leading-snug">
+              ¿Necesitas automatizar estas validaciones?
+            </h2>
+            <p className="text-[12.5px] font-semibold uppercase tracking-wide text-white/45 mb-8">
+              KYC biométrico · PEP y listas · Firma Digital · Evidencia
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
               <button
                 type="button"
                 onClick={() => {
-                  gtmEvent("cta_review_process", { location: "que_cambio", page: PAGE });
-                  scrollToId("autoevaluacion");
+                  gtmEvent("cta_ver_demo", { location: "post_que_cambio", page: PAGE });
+                  scrollToId("ver-en-accion");
                 }}
-                className="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-[14px] font-bold transition-colors hover:bg-black/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-                style={{ color: NAVY, border: "1px solid #E2E8EF" }}
+                className="inline-flex items-center justify-center rounded-xl px-7 py-3.5 text-[14.5px] font-bold transition-transform hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                style={{ background: TEAL, color: NAVY }}
               >
-                Identificar qué puedo automatizar →
+                Ver JAAK en acción
               </button>
+              <a
+                href={SCHEDULE_DEMO_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => gtmEvent("cta_agendar_demo", { location: "post_que_cambio", page: PAGE })}
+                className="text-[13px] font-semibold text-white/60 hover:text-white transition-colors"
+              >
+                Hablar con un especialista →
+              </a>
             </div>
           </div>
         </section>
@@ -1499,14 +1696,14 @@ export default function Lfpiorpi2027LandingClient() {
               </h2>
             </div>
 
-            <div className="grid gap-5 md:grid-cols-3 mb-6">
+            <div className="grid gap-8 md:grid-cols-3 mb-10">
               {TIMELINE_PRIMARY.map((hito) => (
                 <ImpressionTracker
                   key={hito.id}
                   eventName="timeline_interaction"
                   payload={{ milestone: hito.id, page: PAGE }}
-                  className="text-left rounded-2xl p-6 transition-all hover:-translate-y-1"
-                  style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)" }}
+                  className="text-left pt-5"
+                  style={{ borderTop: `2px solid ${TEAL}` }}
                 >
                   <p className="text-2xl font-black leading-none" style={{ color: TEAL }}>
                     {hito.dateTop}
@@ -1526,14 +1723,14 @@ export default function Lfpiorpi2027LandingClient() {
               ))}
             </div>
 
-            <div className="grid gap-5 sm:grid-cols-2 max-w-3xl mx-auto mb-10">
+            <div className="grid gap-8 sm:grid-cols-2 max-w-3xl mx-auto mb-10">
               {TIMELINE_SECONDARY.map((hito) => (
                 <ImpressionTracker
                   key={hito.id}
                   eventName="timeline_interaction"
                   payload={{ milestone: hito.id, page: PAGE }}
-                  className="text-left rounded-2xl p-5 transition-all hover:-translate-y-1"
-                  style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)" }}
+                  className="text-left pt-4"
+                  style={{ borderTop: "1px solid rgba(255,255,255,0.25)" }}
                 >
                   <p className="text-lg font-black mb-2" style={{ color: "rgba(30,202,211,0.6)" }}>
                     {hito.dateTop}
@@ -1552,22 +1749,43 @@ export default function Lfpiorpi2027LandingClient() {
               ))}
             </div>
 
-            <p className="text-[13px] text-white/45 text-center max-w-2xl mx-auto mb-6 leading-relaxed">
+            <p className="text-[13px] text-white/45 text-center max-w-2xl mx-auto leading-relaxed">
               La adaptación puede requerir cambios tecnológicos, operativos y documentales.
             </p>
+          </div>
+        </section>
 
-            <div className="text-center">
-              <button
-                type="button"
-                onClick={() => {
-                  gtmEvent("cta_review_process", { location: "timeline", page: PAGE });
-                  scrollToId("autoevaluacion");
-                }}
-                className="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-[14px] font-bold text-white transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                style={{ border: "1px solid rgba(255,255,255,0.3)" }}
+        {/* ── CTA comercial 2 — el usuario ya sabe qué cambió, si le aplica y cuándo ── */}
+        <section className="py-16" style={{ background: NAVY_SOFT }} aria-label="¿Ya estás preparando tu operación?">
+          <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 className="uppercase text-2xl sm:text-3xl font-black text-white mb-3 leading-snug">
+              ¿Ya estás preparando tu operación?
+            </h2>
+            <p className="text-[14px] text-white/60 mb-8 leading-relaxed">
+              Revisa en una sesión de 20 minutos cómo integrar identidad, screening, firma y evidencia.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
+              <a
+                href={SCHEDULE_DEMO_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => gtmEvent("cta_agendar_demo", { location: "post_timeline", page: PAGE })}
+                className="inline-flex items-center justify-center rounded-xl px-7 py-3.5 text-[14.5px] font-bold transition-transform hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                style={{ background: TEAL, color: NAVY }}
               >
-                Revisar mi operación
-              </button>
+                Agendar una demo
+              </a>
+              <a
+                href={buildWhatsAppUrl(
+                  "Hola, vi la información sobre las nuevas Reglas LFPIORPI 2026–2027 y quiero revisar cómo JAAK puede ayudarme."
+                )}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => gtmEvent("cta_whatsapp_click", { location: "post_timeline", page: PAGE })}
+                className="text-[13px] font-semibold text-white/60 hover:text-white transition-colors"
+              >
+                Prefiero escribir por WhatsApp →
+              </a>
             </div>
           </div>
         </section>
@@ -1587,50 +1805,36 @@ export default function Lfpiorpi2027LandingClient() {
 
             <ProcessFlow steps={JAAK_FLOW} background={OFF_WHITE} />
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
               {JAAK_MODULES.map((mod) => (
-                <div key={mod.num} className="rounded-2xl p-6 h-full flex flex-col" style={{ background: WHITE, border: "1px solid #E2E8EF" }}>
-                  <div className="text-3xl font-black mb-3" style={{ color: "rgba(2,19,45,0.15)" }}>
+                <div key={mod.num} className="flex flex-col">
+                  <div className="text-2xl font-black mb-2" style={{ color: "rgba(2,19,45,0.2)" }}>
                     {mod.num}
                   </div>
                   <h3 className="text-[14.5px] font-bold mb-2" style={{ color: NAVY }}>
                     {mod.titulo}
                   </h3>
-                  <p className="text-[13px] leading-relaxed flex-1" style={{ color: TEXT_MUTED }}>
+                  <p className="text-[13px] leading-relaxed flex-1 mb-3" style={{ color: TEXT_MUTED }}>
                     {mod.texto}
                   </p>
                   {mod.href && (
                     <Link
                       href={mod.href}
                       onClick={() => mod.eventName && gtmEvent(mod.eventName, { page: PAGE, module: mod.titulo })}
-                      className="inline-flex items-center gap-1 mt-4 text-[12px] font-bold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                      className="inline-flex items-center gap-1 text-[12.5px] font-bold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
                       style={{ color: "#0E7C82" }}
                     >
-                      Conocer más →
+                      {mod.ctaLabel} →
                     </Link>
                   )}
                 </div>
               ))}
             </div>
 
-            <p className="text-[13px] leading-relaxed max-w-3xl mx-auto text-center p-5 rounded-xl mb-10" style={{ color: TEXT_MUTED, background: GRAY_LIGHT, border: "1px solid #E2E8EF" }}>
+            <p className="text-[13px] leading-relaxed max-w-3xl mx-auto text-center p-5 rounded-xl" style={{ color: TEXT_MUTED, background: GRAY_LIGHT, border: "1px solid #E2E8EF" }}>
               JAAK automatiza componentes tecnológicos dentro de procesos de cumplimiento. La determinación de
               obligaciones y controles aplicables corresponde a cada organización.
             </p>
-
-            <div className="text-center">
-              <button
-                type="button"
-                onClick={() => {
-                  gtmEvent("cta_review_process", { location: "que_automatiza_jaak", page: PAGE });
-                  scrollToId("autoevaluacion");
-                }}
-                className="inline-flex items-center gap-2 rounded-xl px-7 py-3.5 text-[15px] font-bold text-white transition-transform hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-                style={{ background: NAVY, outlineColor: NAVY }}
-              >
-                Conocer qué capas puedo integrar
-              </button>
-            </div>
           </div>
         </section>
 
@@ -1668,14 +1872,16 @@ export default function Lfpiorpi2027LandingClient() {
               </p>
             </div>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
+            <div className="max-w-3xl mx-auto grid sm:grid-cols-2 gap-x-10 mb-10">
               {AUTOMATION_NODES.map((node, i) => (
-                <div key={node.titulo} className="rounded-2xl p-6" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}>
-                  <div className="w-8 h-8 rounded-full flex items-center justify-center text-[12px] font-black mb-4" style={{ background: TEAL, color: NAVY }}>
-                    {i + 1}
+                <div key={node.titulo} className="flex items-start gap-4 py-4" style={{ borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
+                  <span className="text-[12px] font-black flex-shrink-0" style={{ color: TEAL }}>
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div>
+                    <h3 className="text-[14.5px] font-bold text-white mb-1">{node.titulo}</h3>
+                    <p className="text-[13px] text-white/55 leading-relaxed">{node.texto}</p>
                   </div>
-                  <h3 className="text-[15px] font-bold text-white mb-2">{node.titulo}</h3>
-                  <p className="text-[13.5px] text-white/60 leading-relaxed">{node.texto}</p>
                 </div>
               ))}
             </div>
@@ -1740,6 +1946,52 @@ export default function Lfpiorpi2027LandingClient() {
           </div>
         </section>
 
+        {/* ── ¿Prefieres verlo en operación? — demos ya existentes en el sitio ── */}
+        <section id="ver-en-accion" className="py-20 bg-white scroll-mt-20" aria-labelledby="demo-heading">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-14">
+              <SectionEyebrow>Producto en operación</SectionEyebrow>
+              <h2 id="demo-heading" className="uppercase text-3xl md:text-4xl font-black" style={{ color: NAVY }}>
+                ¿Prefieres verlo en operación?
+              </h2>
+            </div>
+            <div className="grid sm:grid-cols-2 gap-10">
+              <div>
+                <h3 className="text-[17px] font-bold mb-2" style={{ color: NAVY }}>
+                  KYC Biométrico
+                </h3>
+                <p className="text-[13px] leading-relaxed mb-4" style={{ color: TEXT_MUTED }}>
+                  Identidad · Documento · Biometría · Fuentes · Screening
+                </p>
+                <Link
+                  href={KYC_DEMO_URL}
+                  onClick={() => gtmEvent("cta_ver_demo", { product: "kyc", location: "ver_en_accion", page: PAGE })}
+                  className="inline-flex items-center gap-1.5 text-[13.5px] font-bold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                  style={{ color: "#0E7C82" }}
+                >
+                  Ver demo KYC →
+                </Link>
+              </div>
+              <div>
+                <h3 className="text-[17px] font-bold mb-2" style={{ color: NAVY }}>
+                  Firma Digital
+                </h3>
+                <p className="text-[13px] leading-relaxed mb-4" style={{ color: TEXT_MUTED }}>
+                  Identidad · Firma · NOM-151 · Evidencia
+                </p>
+                <Link
+                  href={FIRMA_DEMO_URL}
+                  onClick={() => gtmEvent("cta_ver_demo", { product: "firma", location: "ver_en_accion", page: PAGE })}
+                  className="inline-flex items-center gap-1.5 text-[13.5px] font-bold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                  style={{ color: "#0E7C82" }}
+                >
+                  Ver demo Firma →
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* ── 09. Fuentes oficiales ─────────────────────────────────────── */}
         <section className="py-20" style={{ background: GRAY_LIGHT }} aria-labelledby="fuentes-heading">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1774,29 +2026,26 @@ export default function Lfpiorpi2027LandingClient() {
           </div>
         </section>
 
-        {/* ── 10. CTA final — navy + tipografía + formulario, sin fotografía ── */}
+        {/* ── 10. CTA final — tres rutas de conversión, no un formulario único ── */}
         <section id="hablemos" className="py-20 scroll-mt-20" style={{ background: NAVY }} aria-labelledby="cta-final-heading">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div>
-                <SectionEyebrow dark>Próximos hitos · 2026–2027</SectionEyebrow>
-                <h2 id="cta-final-heading" className="uppercase text-4xl sm:text-5xl font-black text-white mb-5 leading-[1.05]">
-                  Identifica qué puedes automatizar desde hoy
-                </h2>
-                <p className="text-[15px] text-white/65 mb-6 leading-relaxed max-w-md">
-                  Revisa qué capas de identidad, screening, firma y evidencia puedes integrar a tu operación.
-                </p>
-                <Link
-                  href="/"
-                  className="inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-[13.5px] font-semibold text-white transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                  style={{ border: "1px solid rgba(255,255,255,0.3)" }}
-                >
-                  Conocer JAAK
-                </Link>
-              </div>
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <SectionEyebrow dark>Próximos hitos · 2026–2027</SectionEyebrow>
+            <h2 id="cta-final-heading" className="uppercase text-4xl sm:text-5xl font-black text-white mb-5 leading-[1.05]">
+              Elige cómo quieres avanzar
+            </h2>
+            <p className="text-[15px] text-white/65 mb-12 leading-relaxed max-w-md mx-auto">
+              Revisa qué capas de identidad, screening, firma y evidencia puedes integrar a tu operación.
+            </p>
 
-              <ContactFormMini defaultSector={defaultFormSector} needFlags={needFlags} />
-            </div>
+            <FinalCtaPaths defaultSector={defaultFormSector} needFlags={needFlags} whatsappMessage={whatsappMessage} />
+
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 rounded-xl px-5 py-2.5 mt-10 text-[13.5px] font-semibold text-white transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+              style={{ border: "1px solid rgba(255,255,255,0.3)" }}
+            >
+              Conocer JAAK
+            </Link>
           </div>
         </section>
 
