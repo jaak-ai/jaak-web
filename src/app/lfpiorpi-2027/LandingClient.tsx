@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { ReactNode, CSSProperties } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { gtmEvent } from "@/components/GoogleTagManager";
 import { getUtmParams } from "@/components/CloudflareTurnstile";
@@ -37,6 +37,13 @@ const SOURCE_EVENTS: Record<SourceKind, string> = {
   lfpiorpi: "source_click_lfpiorpi",
   sat: "source_click_sat",
 };
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * Utilidad: scroll suave a una sección por id
+ * ───────────────────────────────────────────────────────────────────────── */
+function scrollToId(id: string) {
+  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
 
 /* ─────────────────────────────────────────────────────────────────────────
  * Iconografía lineal mínima
@@ -92,54 +99,208 @@ function SourceLink({
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
- * Datos de contenido — Sección 02: Cambio de enfoque
+ * Rastreo de impresión — dispara un evento una sola vez cuando el elemento
+ * entra en viewport. Nunca un <button>/<a>: evita anidar interactivos.
+ * ───────────────────────────────────────────────────────────────────────── */
+function ImpressionTracker({
+  eventName,
+  payload,
+  threshold = 0.4,
+  className,
+  style,
+  children,
+}: {
+  eventName: string;
+  payload: Record<string, unknown>;
+  threshold?: number;
+  className?: string;
+  style?: CSSProperties;
+  children: ReactNode;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const firedRef = useRef(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting && !firedRef.current) {
+            firedRef.current = true;
+            gtmEvent(eventName, payload);
+          }
+        }
+      },
+      { threshold }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [eventName]);
+
+  return (
+    <div ref={ref} className={className} style={style}>
+      {children}
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * Encabezado de sección reutilizable
+ * ───────────────────────────────────────────────────────────────────────── */
+function SectionEyebrow({ children, dark }: { children: ReactNode; dark?: boolean }) {
+  return (
+    <div
+      className="inline-flex items-center gap-2 px-3 py-1 rounded-full mb-5"
+      style={{ background: dark ? "rgba(30,202,211,0.1)" : `${TEAL}14`, border: `1px solid ${TEAL}55` }}
+    >
+      <span className="w-1.5 h-1.5 rounded-full" style={{ background: TEAL }} />
+      <span className="text-[12px] font-semibold uppercase tracking-wide" style={{ color: dark ? "#7FE8EC" : "#0E7C82" }}>
+        {children}
+      </span>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * Taxonomía sectorial — 6 grupos (sección 02 y 08) + personalización UTM
+ * ───────────────────────────────────────────────────────────────────────── */
+type SectorGroupId =
+  | "inmobiliario"
+  | "credito-financiero"
+  | "juegos-activos"
+  | "bienes-alto-valor"
+  | "servicios-profesionales"
+  | "otras-actividades";
+
+const SECTOR_GROUPS: Array<{
+  id: SectorGroupId;
+  num: string;
+  titulo: string;
+  subcategorias: string[];
+  microcopy?: string;
+}> = [
+  {
+    id: "inmobiliario",
+    num: "01",
+    titulo: "Inmobiliario",
+    subcategorias: ["Construcción", "Desarrollo inmobiliario", "Intermediación", "Arrendamiento", "Operaciones relacionadas con inmuebles"],
+  },
+  {
+    id: "credito-financiero",
+    num: "02",
+    titulo: "Crédito y servicios financieros no financieros",
+    subcategorias: ["Préstamos", "Crédito", "Mutuo", "Tarjetas", "Instrumentos de valor"],
+    microcopy: "La aplicabilidad depende del tipo de entidad y actividad realizada.",
+  },
+  {
+    id: "juegos-activos",
+    num: "03",
+    titulo: "Juegos y activos digitales",
+    subcategorias: ["Gaming", "Juegos con apuesta", "Concursos", "Sorteos", "Activos virtuales"],
+  },
+  {
+    id: "bienes-alto-valor",
+    num: "04",
+    titulo: "Bienes de alto valor",
+    subcategorias: ["Vehículos", "Joyería", "Relojes", "Metales preciosos", "Piedras preciosas", "Obras de arte"],
+  },
+  {
+    id: "servicios-profesionales",
+    num: "05",
+    titulo: "Servicios profesionales",
+    subcategorias: ["Legal", "Contable", "Corporativo", "Fe pública", "Operaciones por cuenta de clientes"],
+  },
+  {
+    id: "otras-actividades",
+    num: "06",
+    titulo: "Otras actividades",
+    subcategorias: ["Blindaje", "Traslado o custodia de valores", "Donativos", "Comercio exterior", "Otras actividades previstas por la LFPIORPI"],
+  },
+];
+
+const SECTOR_GROUP_LABEL: Record<SectorGroupId, string> = Object.fromEntries(
+  SECTOR_GROUPS.map((g) => [g.id, g.titulo])
+) as Record<SectorGroupId, string>;
+
+/** ?sector= de campaña → grupo + copy de CTA personalizado. Incluye alias
+ * heredados (fintech/gaming) para no romper enlaces de campañas ya enviadas. */
+const CAMPAIGN_PARAM_MAP: Record<string, { group: SectorGroupId; ctaLabel: string; formOption: string }> = {
+  inmobiliario: { group: "inmobiliario", ctaLabel: "Revisar mi expediente", formOption: "Inmobiliario" },
+  "activos-virtuales": { group: "juegos-activos", ctaLabel: "Revisar identidad y riesgo", formOption: "Activos virtuales" },
+  automotriz: { group: "bienes-alto-valor", ctaLabel: "Revisar mi proceso", formOption: "Automotriz" },
+  joyeria: { group: "bienes-alto-valor", ctaLabel: "Revisar mi proceso", formOption: "Joyería" },
+  "servicios-profesionales": { group: "servicios-profesionales", ctaLabel: "Revisar identidad y evidencia", formOption: "Servicios profesionales" },
+  // Alias heredados de la versión anterior de la landing
+  fintech: { group: "credito-financiero", ctaLabel: "Revisar mi onboarding", formOption: "Crédito / Lending" },
+  gaming: { group: "juegos-activos", ctaLabel: "Revisar mi proceso KYC", formOption: "Gaming / Sorteos" },
+};
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * Sección 03: Qué cambió — 6 tarjetas regulatorias + conexión a tecnología
  * ───────────────────────────────────────────────────────────────────────── */
 const ENFOQUE_CARDS: Array<{
   etiqueta: string;
   titulo: string;
   texto: string;
   fuenteLabel: string;
+  jaakLabel?: string;
+  jaakApoya: string[];
+  disclaimer?: string;
+  microcopy?: string;
 }> = [
   {
     etiqueta: "Identificación",
     titulo: "Expediente del Cliente o Usuario",
     texto: "Integración, conservación y actualización de la información utilizada para conocer al Cliente o Usuario.",
     fuenteLabel: "Fuente: DOF · Reglas de Carácter General",
+    jaakApoya: ["KYC biométrico", "Validación documental", "Fuentes oficiales"],
   },
   {
     etiqueta: "Beneficiario Controlador",
     titulo: "Identificar quién ejerce el control",
     texto: "Procesos para identificar y documentar a la persona física que finalmente ejerce control cuando corresponda.",
     fuenteLabel: "Fuente: DOF · Reglas de Carácter General",
+    jaakApoya: ["KYC", "AML Screening", "Firma Digital", "Evidencia"],
+    disclaimer: "JAAK no determina automáticamente al Beneficiario Controlador: apoya la identificación y documentación del proceso.",
   },
   {
     etiqueta: "Riesgo",
     titulo: "Clasificación del Cliente",
     texto: "Evaluación y clasificación de Clientes o Usuarios conforme a niveles de riesgo, con controles diferenciados según el resultado.",
     fuenteLabel: "Fuente: DOF · Reglas de Carácter General",
+    jaakLabel: "Señales que pueden integrarse:",
+    jaakApoya: ["Identidad", "PEP", "Listas de riesgo", "Fuentes", "Geografía"],
+    disclaimer: "JAAK no reemplaza el modelo interno de riesgo del sujeto obligado: aporta señales que pueden integrarse a él.",
   },
   {
     etiqueta: "PEP y señales de riesgo",
     titulo: "Conocer más que una identidad",
     texto: "Las nuevas Reglas incorporan controles relacionados con Personas Políticamente Expuestas, Clientes de alto riesgo y otros factores relevantes para la evaluación y monitoreo.",
     fuenteLabel: "Fuente: DOF · Arts. 23 Bis 3, 23 Bis 4, 23 Ter y 41",
+    jaakApoya: ["AML Screening"],
   },
   {
     etiqueta: "Automatización",
     titulo: "Mecanismos automatizados",
     texto: "Herramientas capaces de apoyar la gestión de expedientes, consolidación de operaciones, clasificación de riesgo, monitoreo, históricos y sistemas de alertas.",
     fuenteLabel: "Fuente: DOF · Art. 41",
+    jaakLabel: "JAAK puede automatizar capas de:",
+    jaakApoya: ["Identidad", "Screening", "Firma", "Evidencia"],
+    microcopy: "Otros componentes, como perfil transaccional o modelos internos de riesgo, pueden integrarse dentro de la arquitectura de cumplimiento de cada organización.",
   },
   {
     etiqueta: "Evidencia",
     titulo: "Poder demostrar",
     texto: "Conservar información, históricos y evidencia que permita sustentar los procesos y controles realizados.",
     fuenteLabel: "Fuente: DOF · Reglas de Carácter General",
+    jaakApoya: ["Trazabilidad", "Registro de validaciones", "Firma", "Evidencia digital"],
   },
 ];
 
 /* ─────────────────────────────────────────────────────────────────────────
- * Sección 03: Timeline regulatorio
+ * Sección 04: Timeline regulatorio
  * ───────────────────────────────────────────────────────────────────────── */
 const TIMELINE_PRIMARY = [
   {
@@ -162,7 +323,7 @@ const TIMELINE_PRIMARY = [
     id: "automatizacion",
     dateTop: "01 JUN",
     dateBottom: "2027",
-    titulo: "Mecanismos automatizados",
+    titulo: "Fecha límite para mecanismos automatizados",
     texto: "Quienes realicen Actividades Vulnerables deberán contar con los mecanismos automatizados previstos en las nuevas Reglas a más tardar en esta fecha.",
     fuenteLabel: "Fuente: DOF · Transitorio Noveno",
   },
@@ -186,12 +347,58 @@ const TIMELINE_SECONDARY = [
 ];
 
 /* ─────────────────────────────────────────────────────────────────────────
- * Sección 04: Conocimiento continuo del cliente
+ * Sección 05: Qué puede automatizar JAAK
  * ───────────────────────────────────────────────────────────────────────── */
-const KYC_FLOW = ["Identificación", "Clasificación de riesgo", "Perfil transaccional", "Monitoreo", "Alertas", "Histórico"];
+const JAAK_MODULES: Array<{
+  num: string;
+  titulo: string;
+  texto: string;
+  href?: string;
+  eventName?: string;
+}> = [
+  { num: "01", titulo: "KYC Biométrico", texto: "Documento + prueba de vida pasiva + comparación facial.", href: "/plataforma/verificacion-identidad", eventName: "product_kyc_click" },
+  { num: "02", titulo: "Fuentes Oficiales", texto: "Validaciones relacionadas con identidad y documentos." },
+  { num: "03", titulo: "AML Screening", texto: "PEP y listas de riesgo.", href: "/listas-de-riesgo-pld-aml", eventName: "product_aml_click" },
+  { num: "04", titulo: "Firma Digital", texto: "Consentimientos, declaraciones y documentos.", href: "/plataforma/firma-electronica" },
+  { num: "05", titulo: "Evidencia y Trazabilidad", texto: "Trazabilidad estructurada de las validaciones realizadas.", href: "/plataforma/gestion-evidencia" },
+];
 
 /* ─────────────────────────────────────────────────────────────────────────
- * Sección 05: Mecanismos automatizados
+ * Sección 06: Checklist inteligente
+ * ───────────────────────────────────────────────────────────────────────── */
+type Capa = "identidad" | "screening" | "firma" | "evidencia" | "riesgo";
+
+const CAPA_ORDER: Capa[] = ["identidad", "screening", "firma", "evidencia", "riesgo"];
+
+const CAPA_INFO: Record<Capa, { label: string; texto: string; producto: string; needEvent?: string }> = {
+  identidad: { label: "Identidad", texto: "Esta capa puede automatizarse con JAAK KYC.", producto: "JAAK KYC", needEvent: "need_kyc_selected" },
+  screening: { label: "Screening", texto: "Puedes integrar AML Screening dentro del onboarding.", producto: "AML Screening", needEvent: "need_aml_selected" },
+  firma: { label: "Firma", texto: "JAAK puede digitalizar declaraciones y documentos.", producto: "Firma Digital JAAK", needEvent: "need_signature_selected" },
+  evidencia: { label: "Evidencia", texto: "Puedes conservar trazabilidad de las validaciones realizadas.", producto: "JAAK Evidence", needEvent: "need_evidence_selected" },
+  riesgo: {
+    label: "Gestión de riesgo",
+    texto: "Estas funciones deben integrarse a la arquitectura de cumplimiento de tu organización. JAAK puede aportar señales de identidad y screening.",
+    producto: "Señales JAAK (KYC + Screening)",
+  },
+};
+
+// Nota: el prompt no incluye una pregunta que dispare la capa "firma" dentro
+// de las 8 originales, aunque la lógica de resultados sí la contempla — se
+// agrega esta novena pregunta para que ese resultado sea alcanzable.
+const CHECKLIST_ITEMS: Array<{ text: string; capa: Capa }> = [
+  { text: "¿Integras un expediente único por Cliente?", capa: "identidad" },
+  { text: "¿Validas digitalmente la identidad?", capa: "identidad" },
+  { text: "¿Identificas Beneficiario Controlador cuando corresponde?", capa: "identidad" },
+  { text: "¿Consultas PEP y listas de riesgo?", capa: "screening" },
+  { text: "¿Formalizas contratos o declaraciones con firma electrónica?", capa: "firma" },
+  { text: "¿Clasificas Clientes conforme a su riesgo?", capa: "riesgo" },
+  { text: "¿Conservas históricos?", capa: "riesgo" },
+  { text: "¿Cuentas con mecanismos automatizados?", capa: "riesgo" },
+  { text: "¿Puedes demostrar qué validaciones fueron realizadas?", capa: "evidencia" },
+];
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * Sección 07: Mecanismos automatizados (Art. 41)
  * ───────────────────────────────────────────────────────────────────────── */
 const AUTOMATION_NODES = [
   { titulo: "Expediente", texto: "Conservar y actualizar información del Cliente o Usuario." },
@@ -203,124 +410,42 @@ const AUTOMATION_NODES = [
 ];
 
 /* ─────────────────────────────────────────────────────────────────────────
- * Sección 06: Autoevaluación
+ * Sección 08: Aplicación por industria — detalle por grupo sectorial
  * ───────────────────────────────────────────────────────────────────────── */
-const CHECKLIST_ITEMS = [
-  "¿Integras un expediente único por Cliente o Usuario?",
-  "¿Validas digitalmente la identidad?",
-  "¿Tienes un proceso para identificar Beneficiario Controlador cuando corresponde?",
-  "¿Realizas screening de PEP y listas relevantes?",
-  "¿Clasificas Clientes conforme a riesgo?",
-  "¿Conservas históricos de cambios relevantes?",
-  "¿Cuentas con mecanismos automatizados para apoyar controles?",
-  "¿Puedes reconstruir posteriormente qué validaciones fueron realizadas?",
-];
+type IndustryBlock = { titulo?: string; necesidades: string[]; jaak: string[] };
+type IndustryDetail = { blocks: IndustryBlock[]; fuente: { kind: SourceKind; label: string; url: string } };
 
-/* ─────────────────────────────────────────────────────────────────────────
- * Sección 07: Módulos JAAK
- * ───────────────────────────────────────────────────────────────────────── */
-const JAAK_MODULES: Array<{
-  num: string;
-  titulo: string;
-  texto: string;
-  href?: string;
-  eventName?: string;
-  microcopy?: string;
-  fuente?: { kind: SourceKind; label: string; url: string };
-}> = [
-  {
-    num: "01",
-    titulo: "KYC Biométrico",
-    texto: "Verificación documental, prueba de vida pasiva y comparación facial para fortalecer procesos de identificación remota.",
-    href: "/plataforma/verificacion-identidad",
-    eventName: "product_kyc_click",
-  },
-  {
-    num: "02",
-    titulo: "Fuentes Oficiales",
-    texto: "Validaciones contra fuentes disponibles para corroborar información relacionada con identidad y documentos.",
-  },
-  {
-    num: "03",
-    titulo: "AML Screening",
-    texto: "Consulta de Personas Políticamente Expuestas y listas relevantes de riesgo para fortalecer procesos de conocimiento del Cliente.",
-    href: "/listas-de-riesgo-pld-aml",
-    eventName: "product_aml_click",
-  },
-  {
-    num: "04",
-    titulo: "Firma Digital",
-    texto: "Formalización de consentimientos, declaraciones, cuestionarios y documentos dentro de procesos digitales.",
-    href: "/plataforma/firma-electronica",
-    microcopy: "Las nuevas Reglas contemplan el uso de Firma Electrónica en determinados procesos y documentos digitales.",
-    fuente: { kind: "dof", label: "Fuente: DOF · Reglas de Carácter General", url: DOF_URL },
-  },
-  {
-    num: "05",
-    titulo: "Evidencia y Trazabilidad",
-    texto: "Conservación estructurada de información y evidencia generada durante las validaciones realizadas.",
-    href: "/plataforma/gestion-evidencia",
-  },
-];
-
-/* ─────────────────────────────────────────────────────────────────────────
- * Sección 08: Sectores
- * ───────────────────────────────────────────────────────────────────────── */
-type SectorId = "inmobiliario" | "activos-virtuales" | "fintech" | "gaming";
-
-const SECTOR_ORDER: SectorId[] = ["inmobiliario", "activos-virtuales", "fintech", "gaming"];
-
-const SECTOR_TABS: Record<
-  SectorId,
-  {
-    label: string;
-    headline: string;
-    texto: string;
-    fuente?: { kind: SourceKind; label: string; url: string };
-    notaLegal?: string;
-    defaultCta: { label: string; kind: "internal" | "scroll" | "source"; href: string; sourceKind?: SourceKind };
-    campaignCtaLabel: string;
-  }
-> = {
+const INDUSTRY_DETAILS: Record<SectorGroupId, IndustryDetail> = {
   inmobiliario: {
-    label: "Inmobiliario",
-    headline: "Identidad + Beneficiario Controlador + Riesgo + Expediente",
-    texto: "Fortalece los procesos digitales relacionados con identificación, conocimiento del Cliente y conservación de evidencia en operaciones inmobiliarias.",
+    blocks: [{ necesidades: ["Identidad", "Beneficiario Controlador", "PEP/Listas", "Firma", "Expediente"], jaak: ["KYC", "AML Screening", "Firma Digital", "Evidencia"] }],
     fuente: { kind: "sat", label: "SAT · Inmuebles", url: SAT_INMUEBLES_URL },
-    defaultCta: { label: "Conocer KYC para inmobiliario", kind: "internal", href: "/kyc-inmobiliario-lfpiorpi" },
-    campaignCtaLabel: "Revisar mi expediente PLD",
   },
-  "activos-virtuales": {
-    label: "Activos virtuales",
-    headline: "Identidad + Screening + Riesgo + Evidencia",
-    texto: "Conecta la verificación de identidad con consultas de riesgo y conserva evidencia estructurada desde el onboarding.",
-    fuente: { kind: "sat", label: "SAT · Activos Virtuales", url: SAT_ACTIVOS_URL },
-    defaultCta: { label: "Revisar mi proceso", kind: "scroll", href: "#autoevaluacion" },
-    campaignCtaLabel: "Revisar identidad y riesgo",
-  },
-  fintech: {
-    label: "Fintech / Lending / Crédito digital",
-    headline: "Identidad + Screening + Evidencia",
-    texto: "Automatiza validaciones dentro del onboarding digital y conecta identidad, fuentes y riesgo sin añadir fricción innecesaria al usuario.",
-    notaLegal: "El marco regulatorio aplicable depende del tipo de entidad, actividad y operación realizada. No todas las empresas Fintech o de crédito están sujetas a las mismas obligaciones de la LFPIORPI.",
-    defaultCta: { label: "Consultar Actividades Vulnerables", kind: "source", href: SAT_ACTIVIDADES_URL, sourceKind: "sat" },
-    campaignCtaLabel: "Revisar mi onboarding",
-  },
-  gaming: {
-    label: "Gaming / Sorteos",
-    headline: "Identidad + Riesgo + Trazabilidad",
-    texto: "Fortalece procesos de identificación y screening en operaciones digitales de alto volumen.",
+  "credito-financiero": {
+    blocks: [{ necesidades: ["Identidad", "Beneficiario Controlador", "PEP/Listas", "Expediente", "Evidencia"], jaak: ["KYC", "AML Screening", "Evidencia"] }],
     fuente: { kind: "sat", label: "SAT · Actividades Vulnerables", url: SAT_ACTIVIDADES_URL },
-    defaultCta: { label: "Revisar mi proceso", kind: "scroll", href: "#autoevaluacion" },
-    campaignCtaLabel: "Revisar mi proceso KYC",
   },
-};
-
-const SECTOR_PARAM_TO_ID: Record<string, SectorId> = {
-  inmobiliario: "inmobiliario",
-  "activos-virtuales": "activos-virtuales",
-  fintech: "fintech",
-  gaming: "gaming",
+  "juegos-activos": {
+    blocks: [
+      { titulo: "Gaming / Sorteos", necesidades: ["Identidad", "Riesgo", "Trazabilidad"], jaak: ["KYC", "AML Screening", "Evidencia"] },
+      { titulo: "Activos virtuales", necesidades: ["Identidad", "Screening", "Riesgo", "Trazabilidad"], jaak: ["KYC", "AML Screening", "Evidencia"] },
+    ],
+    fuente: { kind: "sat", label: "SAT · Activos Virtuales", url: SAT_ACTIVOS_URL },
+  },
+  "bienes-alto-valor": {
+    blocks: [
+      { titulo: "Automotriz", necesidades: ["Identidad", "PEP/Listas", "Evidencia", "Formalización"], jaak: ["KYC", "AML Screening", "Firma", "Evidencia"] },
+      { titulo: "Joyería", necesidades: ["Identidad", "Riesgo", "Screening", "Evidencia"], jaak: ["KYC", "AML Screening", "Evidencia"] },
+    ],
+    fuente: { kind: "sat", label: "SAT · Actividades Vulnerables", url: SAT_ACTIVIDADES_URL },
+  },
+  "servicios-profesionales": {
+    blocks: [{ necesidades: ["Identidad", "Beneficiario Controlador", "Declaraciones", "Firma", "Evidencia"], jaak: ["KYC", "AML Screening", "Firma Digital", "Evidencia"] }],
+    fuente: { kind: "sat", label: "SAT · Actividades Vulnerables", url: SAT_ACTIVIDADES_URL },
+  },
+  "otras-actividades": {
+    blocks: [{ necesidades: ["Identidad", "PEP/Listas", "Expediente", "Evidencia"], jaak: ["KYC", "AML Screening", "Evidencia"] }],
+    fuente: { kind: "sat", label: "SAT · Actividades Vulnerables", url: SAT_ACTIVIDADES_URL },
+  },
 };
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -371,77 +496,155 @@ const FUENTES_OFICIALES: Array<{
 const SECTOR_SELECT_OPTIONS = [
   "Inmobiliario",
   "Activos virtuales",
-  "Fintech / Lending",
   "Gaming / Sorteos",
-  "Servicios profesionales",
+  "Crédito / Lending",
   "Automotriz",
   "Joyería",
+  "Servicios profesionales",
+  "Donativos",
+  "Blindaje / Valores",
   "Otro",
 ];
 
 /* ─────────────────────────────────────────────────────────────────────────
- * Utilidad: scroll suave a una sección por id
+ * Header de campaña — sin mega menú, dos acciones únicas
  * ───────────────────────────────────────────────────────────────────────── */
-function scrollToId(id: string) {
-  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+function CampaignHeader() {
+  return (
+    <header
+      className="fixed top-0 inset-x-0 z-50 h-16 flex items-center"
+      style={{ background: "rgba(2,19,45,0.92)", backdropFilter: "blur(10px)", borderBottom: "1px solid rgba(255,255,255,0.08)" }}
+    >
+      <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
+        <Link href="/" aria-label="Ir a jaak.ai" className="flex-shrink-0 rounded-lg bg-white px-2.5 py-1.5 inline-flex items-center">
+          <Image src="/images/logos/jaak-logo-azul.png" alt="JAAK" width={90} height={36} className="h-5 sm:h-6 w-auto" priority />
+        </Link>
+
+        <div className="flex items-center gap-3 sm:gap-5">
+          <SourceLink
+            href={DOF_URL}
+            kind="dof"
+            label="Fuente oficial"
+            context="campaign_header"
+            className="hidden sm:inline-flex items-center text-[13px] font-semibold text-white/70 hover:text-white transition-colors"
+          />
+          <button
+            type="button"
+            onClick={() => {
+              gtmEvent("cta_review_process", { location: "campaign_header", page: PAGE });
+              scrollToId("autoevaluacion");
+            }}
+            className="inline-flex items-center rounded-lg px-4 py-2 text-[13px] font-bold transition-transform hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            style={{ background: TEAL, color: NAVY }}
+          >
+            Revisar mi operación
+          </button>
+        </div>
+      </div>
+    </header>
+  );
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
- * Tarjeta del timeline — nunca un <button>/<a> exterior (evita anidar
- * elementos interactivos sobre el SourceLink interno); el evento de
- * analítica se dispara al entrar en viewport, no al hacer click.
+ * Sección 02 — ¿Tu actividad está contemplada?
  * ───────────────────────────────────────────────────────────────────────── */
-function TimelineCard({ id, className, style, children }: { id: string; className?: string; style?: CSSProperties; children: ReactNode }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const firedRef = useRef(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting && !firedRef.current) {
-            firedRef.current = true;
-            gtmEvent("timeline_interaction", { milestone: id, page: PAGE });
-          }
-        }
-      },
-      { threshold: 0.5 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [id]);
+function ActivityGroups({
+  campaignGroup,
+  onSelectGroup,
+}: {
+  campaignGroup: SectorGroupId | null;
+  onSelectGroup: (id: SectorGroupId) => void;
+}) {
+  const orderedGroups = useMemo(() => {
+    if (!campaignGroup) return SECTOR_GROUPS;
+    const match = SECTOR_GROUPS.find((g) => g.id === campaignGroup);
+    if (!match) return SECTOR_GROUPS;
+    return [match, ...SECTOR_GROUPS.filter((g) => g.id !== campaignGroup)];
+  }, [campaignGroup]);
 
   return (
-    <div ref={ref} className={className} style={style}>
-      {children}
+    <div>
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
+        {orderedGroups.map((group) => {
+          const isCampaignMatch = group.id === campaignGroup;
+          return (
+            <button
+              key={group.id}
+              type="button"
+              onClick={() => {
+                gtmEvent("sector_card_click", { group: group.id, page: PAGE });
+                onSelectGroup(group.id);
+                scrollToId("aplicacion-industria");
+              }}
+              className="text-left rounded-2xl p-6 bg-white transition-all hover:-translate-y-1 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+              style={{ border: `1px solid ${isCampaignMatch ? TEAL : "#E2E8EF"}`, outlineColor: NAVY }}
+            >
+              <div className="flex items-start justify-between gap-3 mb-3">
+                <span className="text-[12px] font-black" style={{ color: "rgba(2,19,45,0.25)" }}>
+                  {group.num}
+                </span>
+                {isCampaignMatch && (
+                  <span className="text-[10px] font-bold uppercase tracking-wide px-2 py-1 rounded-full" style={{ background: `${TEAL}1A`, color: "#0E7C82" }}>
+                    Tu sector
+                  </span>
+                )}
+              </div>
+              <h3 className="text-[16px] font-bold mb-3" style={{ color: NAVY }}>
+                {group.titulo}
+              </h3>
+              <div className="flex flex-wrap gap-1.5 mb-3">
+                {group.subcategorias.map((sub) => (
+                  <span key={sub} className="text-[11.5px] px-2 py-1 rounded-full" style={{ background: GRAY_LIGHT, color: TEXT_MUTED }}>
+                    {sub}
+                  </span>
+                ))}
+              </div>
+              {group.microcopy && (
+                <p className="text-[12px] leading-relaxed" style={{ color: TEXT_MUTED }}>
+                  {group.microcopy}
+                </p>
+              )}
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="text-center">
+        <SourceLink
+          href={SAT_ACTIVIDADES_URL}
+          kind="sat"
+          label="Consultar clasificación oficial del SAT"
+          context="actividad_contemplada"
+          className="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-[14px] font-bold transition-colors hover:bg-black/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+          style={{ color: NAVY, border: "1px solid #E2E8EF" }}
+        />
+      </div>
     </div>
   );
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
- * Sección de checklist interactivo
+ * Sección 06 — Checklist inteligente
  * ───────────────────────────────────────────────────────────────────────── */
-function AutoevaluacionChecklist() {
-  const [checked, setChecked] = useState<boolean[]>(() => Array(CHECKLIST_ITEMS.length).fill(false));
-  const [touched, setTouched] = useState(false);
-
-  const toggle = (i: number) => {
-    setChecked((prev) => {
-      const next = [...prev];
-      next[i] = !next[i];
-      gtmEvent("checklist_interaction", { item_index: i, checked: next[i], page: PAGE });
-      return next;
+function SmartChecklist({
+  checked,
+  onToggle,
+}: {
+  checked: boolean[];
+  onToggle: (index: number) => void;
+}) {
+  const activeCapas = useMemo(() => {
+    const set = new Set<Capa>();
+    CHECKLIST_ITEMS.forEach((item, i) => {
+      if (checked[i]) set.add(item.capa);
     });
-    setTouched(true);
-  };
+    return CAPA_ORDER.filter((c) => set.has(c));
+  }, [checked]);
 
-  const checkedCount = checked.filter(Boolean).length;
-  const allChecked = checkedCount === CHECKLIST_ITEMS.length;
+  const touched = checked.some(Boolean);
 
   const handleReviewClick = () => {
-    gtmEvent("cta_review_process", { location: "autoevaluacion", page: PAGE });
+    gtmEvent("cta_after_checklist", { capas: activeCapas, page: PAGE });
     scrollToId("hablemos");
   };
 
@@ -452,59 +655,57 @@ function AutoevaluacionChecklist() {
           const isChecked = checked[i];
           return (
             <button
-              key={item}
+              key={item.text}
               type="button"
-              onClick={() => toggle(i)}
+              onClick={() => onToggle(i)}
               aria-pressed={isChecked}
               className="flex items-start gap-3 text-left rounded-xl p-4 bg-white transition-all hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
               style={{ border: `1px solid ${isChecked ? TEAL : "#E2E8EF"}`, outlineColor: TEAL }}
             >
               <span
                 className="flex-shrink-0 w-5 h-5 rounded-md flex items-center justify-center mt-0.5 transition-colors"
-                style={{
-                  background: isChecked ? TEAL : "transparent",
-                  border: `1.5px solid ${isChecked ? TEAL : "#CBD5E1"}`,
-                  color: NAVY,
-                }}
+                style={{ background: isChecked ? TEAL : "transparent", border: `1.5px solid ${isChecked ? TEAL : "#CBD5E1"}`, color: NAVY }}
                 aria-hidden="true"
               >
                 {isChecked && <CheckIcon />}
               </span>
               <span className="text-[14.5px] leading-relaxed" style={{ color: NAVY }}>
-                {item}
+                {item.text}
               </span>
             </button>
           );
         })}
       </div>
 
-      <div className="mb-6">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-[13px] font-semibold" style={{ color: TEXT_MUTED }}>
-            {checkedCount} de {CHECKLIST_ITEMS.length} controles marcados
-          </span>
-        </div>
-        <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "#E2E8EF" }}>
-          <div
-            className="h-full rounded-full transition-all"
-            style={{ width: `${(checkedCount / CHECKLIST_ITEMS.length) * 100}%`, background: TEAL }}
-          />
-        </div>
-      </div>
-
       {touched && (
-        <div
-          className="rounded-2xl p-6 mb-8 animate-fade-in-up"
-          style={{ background: `${TEAL}0F`, border: `1px solid ${TEAL}55` }}
-        >
-          <p className="font-semibold text-[15px] mb-1" style={{ color: NAVY }}>
-            {allChecked
-              ? "Tu proceso ya cubre los controles listados."
-              : "Identificaste procesos que podrían beneficiarse de mayor automatización."}
+        <div className="rounded-2xl p-6 mb-8 animate-fade-in-up" style={{ background: WHITE, border: "1px solid #E2E8EF" }}>
+          <p className="uppercase font-black text-[15px] mb-4" style={{ color: NAVY }}>
+            Identificamos {activeCapas.length} {activeCapas.length === 1 ? "capa" : "capas"} que podrías revisar
           </p>
-          <p className="text-[13.5px] leading-relaxed" style={{ color: TEXT_MUTED }}>
-            Este ejercicio es orientativo y no constituye una determinación sobre el cumplimiento de tu
-            organización. Un especialista puede ayudarte a revisar el detalle de tu operación.
+
+          <div className="space-y-3 mb-5">
+            {activeCapas.map((capa) => (
+              <div key={capa} className="flex items-start gap-3 p-3 rounded-xl" style={{ background: GRAY_LIGHT }}>
+                <span className="text-[11px] font-bold uppercase tracking-wide px-2 py-1 rounded-full flex-shrink-0" style={{ background: `${TEAL}1A`, color: "#0E7C82" }}>
+                  {CAPA_INFO[capa].label}
+                </span>
+                <span className="text-[13.5px] leading-relaxed" style={{ color: TEXT_MUTED }}>
+                  {CAPA_INFO[capa].texto}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex flex-wrap gap-x-4 gap-y-1 text-[12.5px] mb-2" style={{ color: TEXT_MUTED }}>
+            {activeCapas.map((capa) => (
+              <span key={capa}>
+                {CAPA_INFO[capa].label} → <strong style={{ color: NAVY }}>{CAPA_INFO[capa].producto}</strong>
+              </span>
+            ))}
+          </div>
+
+          <p className="text-[12px] leading-relaxed mt-4" style={{ color: TEXT_MUTED }}>
+            Este ejercicio es orientativo y no constituye una determinación sobre el cumplimiento de tu organización.
           </p>
         </div>
       )}
@@ -516,7 +717,7 @@ function AutoevaluacionChecklist() {
           className="inline-flex items-center gap-2 rounded-xl px-7 py-3.5 text-[15px] font-bold text-white transition-transform hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
           style={{ background: NAVY, outlineColor: NAVY }}
         >
-          Revisar mi proceso
+          {touched ? "Quiero revisar estas capas" : "Revisar mi operación"}
         </button>
       </div>
     </div>
@@ -524,163 +725,144 @@ function AutoevaluacionChecklist() {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
- * Sección de sectores (tabs, con soporte de ?sector= en la URL)
+ * Sección 08 — Aplicación por industria
  * ───────────────────────────────────────────────────────────────────────── */
-function SectorTabs() {
-  const [activeId, setActiveId] = useState<SectorId>("inmobiliario");
-  const [campaignSector, setCampaignSector] = useState<SectorId | null>(null);
-
-  useEffect(() => {
-    try {
-      const params = new URLSearchParams(window.location.search);
-      const raw = params.get("sector");
-      const matched = raw ? SECTOR_PARAM_TO_ID[raw] : undefined;
-      if (matched) {
-        setActiveId(matched);
-        setCampaignSector(matched);
-        gtmEvent("sector_selected", { sector: matched, source: "url_param", page: PAGE });
-      }
-    } catch {
-      // sessionStorage/URL inaccesibles: se pierde la personalización, no la página.
-    }
-  }, []);
-
-  const handleTabClick = (id: SectorId) => {
-    setActiveId(id);
-    gtmEvent("sector_selected", { sector: id, source: "manual_click", page: PAGE });
-  };
-
-  const active = SECTOR_TABS[activeId];
-  const isCampaignMatch = campaignSector === activeId;
+function IndustryGroups({
+  selectedGroup,
+  onSelectGroup,
+  campaignGroup,
+  campaignCtaLabel,
+}: {
+  selectedGroup: SectorGroupId;
+  onSelectGroup: (id: SectorGroupId) => void;
+  campaignGroup: SectorGroupId | null;
+  campaignCtaLabel: string | null;
+}) {
+  const detail = INDUSTRY_DETAILS[selectedGroup];
+  const isCampaignMatch = selectedGroup === campaignGroup;
 
   const handleCtaClick = () => {
-    if (isCampaignMatch) {
-      gtmEvent("cta_review_process", { location: "sector_tab_campaign", sector: activeId, page: PAGE });
-      scrollToId("autoevaluacion");
-      return;
-    }
-    if (active.defaultCta.kind === "scroll") {
-      gtmEvent("cta_review_process", { location: "sector_tab", sector: activeId, page: PAGE });
-      scrollToId(active.defaultCta.href.replace("#", ""));
-    }
+    gtmEvent("cta_review_process", { location: "aplicacion_industria", group: selectedGroup, page: PAGE });
+    scrollToId("autoevaluacion");
   };
 
   return (
-    <div>
+    <ImpressionTracker eventName="product_mapping_view" payload={{ page: PAGE }}>
       <div
         className="flex flex-wrap gap-2 mb-8 p-1.5 rounded-2xl justify-center"
         style={{ background: GRAY_LIGHT, border: "1px solid #E2E8EF" }}
         role="tablist"
-        aria-label="Seleccionar sector"
+        aria-label="Seleccionar grupo sectorial"
       >
-        {SECTOR_ORDER.map((id) => {
-          const isActive = id === activeId;
+        {SECTOR_GROUPS.map((group) => {
+          const isActive = group.id === selectedGroup;
           return (
             <button
-              key={id}
+              key={group.id}
               type="button"
-              onClick={() => handleTabClick(id)}
+              onClick={() => {
+                onSelectGroup(group.id);
+                gtmEvent("sector_selected", { group: group.id, source: "manual_click", page: PAGE });
+              }}
               role="tab"
               aria-selected={isActive}
-              aria-controls={`sector-panel-${id}`}
-              id={`sector-tab-${id}`}
-              className="px-4 py-2.5 rounded-xl text-[13px] sm:text-sm font-semibold transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-              style={{
-                background: isActive ? NAVY : "transparent",
-                color: isActive ? WHITE : TEXT_MUTED,
-                outlineColor: NAVY,
-              }}
+              aria-controls={`industry-panel-${group.id}`}
+              id={`industry-tab-${group.id}`}
+              className="px-3.5 py-2.5 rounded-xl text-[12.5px] sm:text-[13px] font-semibold transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+              style={{ background: isActive ? NAVY : "transparent", color: isActive ? WHITE : TEXT_MUTED, outlineColor: NAVY }}
             >
-              {SECTOR_TABS[id].label}
+              {group.titulo}
             </button>
           );
         })}
       </div>
 
       <div
-        key={activeId}
-        id={`sector-panel-${activeId}`}
+        key={selectedGroup}
+        id={`industry-panel-${selectedGroup}`}
         role="tabpanel"
-        aria-labelledby={`sector-tab-${activeId}`}
-        className="max-w-3xl mx-auto rounded-2xl p-8 animate-fade-in-up"
+        aria-labelledby={`industry-tab-${selectedGroup}`}
+        className="max-w-4xl mx-auto rounded-2xl p-8 animate-fade-in-up"
         style={{ background: GRAY_LIGHT, border: "1px solid #E2E8EF" }}
       >
-        <h3 className="text-xl sm:text-2xl font-black mb-4" style={{ color: NAVY }}>
-          {active.headline}
+        <h3 className="text-xl sm:text-2xl font-black mb-6" style={{ color: NAVY }}>
+          {SECTOR_GROUP_LABEL[selectedGroup]}
         </h3>
-        <p className="text-[15px] leading-relaxed mb-6" style={{ color: TEXT_MUTED }}>
-          {active.texto}
+
+        <div className="grid sm:grid-cols-2 gap-5 mb-6">
+          {detail.blocks.map((block) => (
+            <div key={block.titulo || "default"} className="rounded-xl p-5 bg-white" style={{ border: "1px solid #E2E8EF" }}>
+              {block.titulo && (
+                <p className="text-[12px] font-bold uppercase tracking-wide mb-3" style={{ color: "#0E7C82" }}>
+                  {block.titulo}
+                </p>
+              )}
+              <p className="text-[11px] font-bold uppercase tracking-wide mb-2" style={{ color: TEXT_MUTED }}>
+                Necesidades operativas
+              </p>
+              <div className="flex flex-wrap gap-1.5 mb-4">
+                {block.necesidades.map((n) => (
+                  <span key={n} className="text-[12px] px-2.5 py-1 rounded-full" style={{ background: GRAY_LIGHT, color: NAVY }}>
+                    {n}
+                  </span>
+                ))}
+              </div>
+              <p className="text-[11px] font-bold uppercase tracking-wide mb-2" style={{ color: TEXT_MUTED }}>
+                Capacidades JAAK relevantes
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {block.jaak.map((n) => (
+                  <span key={n} className="text-[12px] px-2.5 py-1 rounded-full" style={{ background: `${TEAL}14`, color: "#0E7C82" }}>
+                    {n}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <p className="text-[13px] mb-6">
+          <SourceLink
+            href={detail.fuente.url}
+            kind={detail.fuente.kind}
+            label={`Fuente sectorial: ${detail.fuente.label}`}
+            context={`industria_${selectedGroup}`}
+            className="font-semibold underline underline-offset-2"
+            style={{ color: NAVY }}
+          />
         </p>
 
-        {active.notaLegal && (
-          <p className="text-[13px] leading-relaxed mb-6 p-4 rounded-xl" style={{ color: TEXT_MUTED, background: WHITE, border: "1px solid #E2E8EF" }}>
-            {active.notaLegal}
-          </p>
-        )}
-
-        {active.fuente && (
-          <p className="text-[13px] mb-6">
-            <SourceLink
-              href={active.fuente.url}
-              kind={active.fuente.kind}
-              label={`Fuente sectorial: ${active.fuente.label}`}
-              context={`sector_${activeId}`}
-              className="font-semibold underline underline-offset-2"
-              style={{ color: NAVY }}
-            />
-          </p>
-        )}
-
-        {isCampaignMatch ? (
-          <button
-            type="button"
-            onClick={handleCtaClick}
-            className="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-[14px] font-bold text-white transition-transform hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-            style={{ background: TEAL, color: NAVY, outlineColor: TEAL }}
-          >
-            {active.campaignCtaLabel}
-          </button>
-        ) : active.defaultCta.kind === "internal" ? (
-          <Link
-            href={active.defaultCta.href}
-            onClick={() => gtmEvent("cta_review_process", { location: "sector_tab", sector: activeId, page: PAGE })}
-            className="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-[14px] font-bold text-white transition-transform hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-            style={{ background: TEAL, color: NAVY, outlineColor: TEAL }}
-          >
-            {active.defaultCta.label}
-          </Link>
-        ) : active.defaultCta.kind === "source" ? (
-          <SourceLink
-            href={active.defaultCta.href}
-            kind={active.defaultCta.sourceKind || "sat"}
-            label={active.defaultCta.label}
-            context={`sector_tab_${activeId}`}
-            className="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-[14px] font-bold text-white transition-transform hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-            style={{ background: TEAL, color: NAVY, outlineColor: TEAL }}
-          />
-        ) : (
-          <button
-            type="button"
-            onClick={handleCtaClick}
-            className="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-[14px] font-bold text-white transition-transform hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-            style={{ background: TEAL, color: NAVY, outlineColor: TEAL }}
-          >
-            {active.defaultCta.label}
-          </button>
-        )}
+        <button
+          type="button"
+          onClick={handleCtaClick}
+          className="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-[14px] font-bold text-white transition-transform hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+          style={{ background: TEAL, color: NAVY, outlineColor: TEAL }}
+        >
+          {isCampaignMatch && campaignCtaLabel ? campaignCtaLabel : "Identificar qué puedo automatizar"}
+        </button>
       </div>
-    </div>
+    </ImpressionTracker>
   );
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
- * Formulario mínimo de contacto (sección 10)
+ * Formulario final (sección 10)
  * ───────────────────────────────────────────────────────────────────────── */
-function ContactFormMini() {
-  const [formData, setFormData] = useState({ name: "", empresa: "", email: "", sector: "" });
+function ContactFormMini({
+  defaultSector,
+  needFlags,
+}: {
+  defaultSector: string;
+  needFlags: { need_kyc: boolean; need_aml: boolean; need_signature: boolean; need_evidence: boolean };
+}) {
+  const [formData, setFormData] = useState({ name: "", empresa: "", email: "", sector: defaultSector });
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const startedRef = useRef(false);
+
+  useEffect(() => {
+    if (defaultSector) setFormData((prev) => (prev.sector ? prev : { ...prev, sector: defaultSector }));
+  }, [defaultSector]);
 
   const markStarted = () => {
     if (startedRef.current) return;
@@ -693,6 +875,8 @@ function ContactFormMini() {
     setStatus("loading");
     setErrorMessage("");
 
+    const needsSummary = `Necesidades: KYC=${needFlags.need_kyc}, AML=${needFlags.need_aml}, Firma=${needFlags.need_signature}, Evidencia=${needFlags.need_evidence}`;
+
     try {
       const res = await fetch("/api/landing", {
         method: "POST",
@@ -701,8 +885,10 @@ function ContactFormMini() {
           name: formData.name,
           empresa: formData.empresa,
           email: formData.email,
-          mensaje: formData.sector ? `Sector: ${formData.sector}` : undefined,
+          mensaje: `Sector: ${formData.sector || "No especificado"} | ${needsSummary}`,
           source: "landing-lfpiorpi-2027",
+          sector: formData.sector,
+          ...needFlags,
           ...getUtmParams(),
           page_url: window.location.href,
         }),
@@ -710,7 +896,7 @@ function ContactFormMini() {
 
       if (res.ok) {
         setStatus("success");
-        gtmEvent("form_completed", { page: PAGE, form: "lfpiorpi_2027_contacto", sector: formData.sector });
+        gtmEvent("form_completed", { page: PAGE, form: "lfpiorpi_2027_contacto", sector: formData.sector, ...needFlags });
         setFormData({ name: "", empresa: "", email: "", sector: "" });
       } else {
         const data = await res.json().catch(() => ({}));
@@ -727,9 +913,7 @@ function ContactFormMini() {
     return (
       <div className="rounded-2xl p-8 text-center" style={{ background: "rgba(255,255,255,0.06)", border: `1px solid ${TEAL}55` }}>
         <p className="text-white font-bold text-lg mb-2">Gracias.</p>
-        <p className="text-white/70 text-[15px]">
-          Nuestro equipo revisará contigo qué capacidades pueden integrarse a tu proceso.
-        </p>
+        <p className="text-white/70 text-[15px]">Un especialista de JAAK revisará contigo las capacidades que pueden integrarse a tu proceso.</p>
       </div>
     );
   }
@@ -787,7 +971,7 @@ function ContactFormMini() {
 
       <div>
         <label htmlFor="lfp-sector" className="block text-[13px] font-medium text-white/80 mb-1.5">
-          Sector *
+          ¿En qué sector operas? *
         </label>
         <select
           id="lfp-sector"
@@ -814,7 +998,7 @@ function ContactFormMini() {
         className="w-full rounded-xl px-6 py-4 text-[15px] font-bold transition-transform hover:-translate-y-px disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
         style={{ background: TEAL, color: NAVY }}
       >
-        {status === "loading" ? "Enviando..." : "Revisar mi proceso con un especialista"}
+        {status === "loading" ? "Enviando..." : "Revisar mi operación"}
       </button>
 
       {status === "error" && (
@@ -854,33 +1038,13 @@ function MobileStickyCta() {
         type="button"
         onClick={() => {
           gtmEvent("cta_review_process", { location: "mobile_sticky", page: PAGE });
-          scrollToId("hablemos");
+          scrollToId("autoevaluacion");
         }}
         className="w-full rounded-xl px-5 py-3 text-[14px] font-bold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
         style={{ background: TEAL, color: NAVY }}
       >
-        Revisar mi proceso
+        Revisar mi operación
       </button>
-    </div>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────────────────────
- * Encabezado de sección reutilizable
- * ───────────────────────────────────────────────────────────────────────── */
-function SectionEyebrow({ children, dark }: { children: ReactNode; dark?: boolean }) {
-  return (
-    <div
-      className="inline-flex items-center gap-2 px-3 py-1 rounded-full mb-5"
-      style={{
-        background: dark ? "rgba(30,202,211,0.1)" : `${TEAL}14`,
-        border: `1px solid ${TEAL}55`,
-      }}
-    >
-      <span className="w-1.5 h-1.5 rounded-full" style={{ background: TEAL }} />
-      <span className="text-[12px] font-semibold uppercase tracking-wide" style={{ color: dark ? "#7FE8EC" : "#0E7C82" }}>
-        {children}
-      </span>
     </div>
   );
 }
@@ -889,18 +1053,68 @@ function SectionEyebrow({ children, dark }: { children: ReactNode; dark?: boolea
  * Página principal
  * ───────────────────────────────────────────────────────────────────────── */
 export default function Lfpiorpi2027LandingClient() {
+  const [selectedGroup, setSelectedGroup] = useState<SectorGroupId>("inmobiliario");
+  const [campaignParam, setCampaignParam] = useState<string | null>(null);
+  const [checklistChecked, setChecklistChecked] = useState<boolean[]>(() => Array(CHECKLIST_ITEMS.length).fill(false));
+
   useEffect(() => {
     gtmEvent("landing_view", { page: PAGE });
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const raw = params.get("sector");
+      const match = raw ? CAMPAIGN_PARAM_MAP[raw] : undefined;
+      if (raw && match) {
+        setCampaignParam(raw);
+        setSelectedGroup(match.group);
+        gtmEvent("sector_auto_selected", { sector: raw, group: match.group, page: PAGE });
+      }
+    } catch {
+      // sessionStorage/URL inaccesibles: se pierde la personalización, no la página.
+    }
   }, []);
+
+  const campaignInfo = campaignParam ? CAMPAIGN_PARAM_MAP[campaignParam] : null;
+  const campaignGroup = campaignInfo?.group ?? null;
+
+  const needFlags = useMemo(() => {
+    const active = new Set<Capa>();
+    CHECKLIST_ITEMS.forEach((item, i) => {
+      if (checklistChecked[i]) active.add(item.capa);
+    });
+    return {
+      need_kyc: active.has("identidad"),
+      need_aml: active.has("screening"),
+      need_signature: active.has("firma"),
+      need_evidence: active.has("evidencia"),
+    };
+  }, [checklistChecked]);
+
+  const resultGeneratedRef = useRef(false);
+  const handleChecklistToggle = (index: number) => {
+    setChecklistChecked((prev) => {
+      const next = [...prev];
+      next[index] = !next[index];
+      const item = CHECKLIST_ITEMS[index];
+      gtmEvent("checklist_interaction", { item_index: index, checked: next[index], capa: item.capa, page: PAGE });
+      if (next[index] && CAPA_INFO[item.capa].needEvent) {
+        gtmEvent(CAPA_INFO[item.capa].needEvent as string, { page: PAGE });
+      }
+      if (!resultGeneratedRef.current && next.some(Boolean)) {
+        resultGeneratedRef.current = true;
+        gtmEvent("checklist_result_generated", { page: PAGE });
+      }
+      return next;
+    });
+  };
 
   return (
     <>
-      <Header />
+      <CampaignHeader />
       <MobileStickyCta />
       <main>
         {/* ── 01. Hero ─────────────────────────────────────────────────── */}
         <section
-          className="pt-32 pb-24 relative overflow-hidden"
+          className="pt-28 pb-20 relative overflow-hidden"
           style={{ background: `linear-gradient(155deg, ${NAVY} 0%, ${NAVY_SOFT} 70%, #122544 100%)` }}
           aria-labelledby="hero-heading"
         >
@@ -909,83 +1123,113 @@ export default function Lfpiorpi2027LandingClient() {
             style={{ background: "rgba(30,202,211,0.10)" }}
             aria-hidden="true"
           />
-          <div
-            className="pointer-events-none absolute inset-0 opacity-[0.06]"
-            style={{
-              backgroundImage:
-                "radial-gradient(circle at 20% 30%, rgba(255,255,255,0.4) 0.5px, transparent 0.5px), radial-gradient(circle at 70% 65%, rgba(255,255,255,0.4) 0.5px, transparent 0.5px)",
-              backgroundSize: "64px 64px, 88px 88px",
-            }}
-            aria-hidden="true"
-          />
 
-          <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <SectionEyebrow dark>Nuevas Reglas LFPIORPI · 2026–2027</SectionEyebrow>
+          <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <div>
+                <SectionEyebrow dark>Nuevas Reglas LFPIORPI · 2026–2027</SectionEyebrow>
 
-            <h1 id="hero-heading" className="uppercase text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
-              <span className="block">El cumplimiento evoluciona.</span>
-              <span
-                className="block mt-2"
-                style={{
-                  backgroundImage: `linear-gradient(90deg, ${TEAL}, #7FE8EC)`,
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}
-              >
-                ¿Tu operación está preparada?
-              </span>
-            </h1>
+                <h1 id="hero-heading" className="uppercase text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
+                  <span className="block">El cumplimiento evoluciona.</span>
+                  <span
+                    className="block mt-2"
+                    style={{ backgroundImage: `linear-gradient(90deg, ${TEAL}, #7FE8EC)`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}
+                  >
+                    ¿Tu operación está preparada?
+                  </span>
+                </h1>
 
-            <p className="text-lg md:text-xl text-white/70 mb-10 leading-relaxed max-w-3xl mx-auto">
-              Nuevas disposiciones fortalecen el enfoque basado en riesgo, el conocimiento del Cliente o Usuario, la
-              identificación del Beneficiario Controlador y los mecanismos automatizados para quienes realizan
-              Actividades Vulnerables.
-            </p>
+                <p className="text-lg text-white/70 mb-6 leading-relaxed">
+                  Las nuevas disposiciones fortalecen el enfoque basado en riesgo, el conocimiento del Cliente o
+                  Usuario, el Beneficiario Controlador y el uso de mecanismos automatizados para quienes realizan
+                  Actividades Vulnerables.
+                </p>
 
-            <div className="flex flex-col sm:flex-row gap-3 justify-center mb-6">
-              <button
-                type="button"
-                onClick={() => scrollToId("que-cambia")}
-                className="inline-flex items-center justify-center rounded-xl px-7 py-3.5 text-[14.5px] font-bold transition-transform hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                style={{ background: TEAL, color: NAVY }}
-              >
-                Conoce qué cambia
-              </button>
-              <SourceLink
-                href={DOF_URL}
-                kind="dof"
-                label="Consultar DOF"
-                context="hero"
-                className="inline-flex items-center justify-center rounded-xl px-7 py-3.5 text-[14.5px] font-bold text-white transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                style={{ border: "1px solid rgba(255,255,255,0.3)" }}
-              />
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-2 mb-3 text-[12.5px] font-semibold uppercase tracking-wide text-white/55">
+                  <span>Identidad</span>
+                  <span aria-hidden="true" style={{ color: TEAL }}>·</span>
+                  <span>AML Screening</span>
+                  <span aria-hidden="true" style={{ color: TEAL }}>·</span>
+                  <span>Firma Digital</span>
+                  <span aria-hidden="true" style={{ color: TEAL }}>·</span>
+                  <span>Evidencia</span>
+                </div>
+                <p className="text-[13.5px] text-white/50 mb-8 leading-relaxed max-w-md">
+                  JAAK automatiza capas críticas de identidad, screening y evidencia dentro de procesos digitales de
+                  cumplimiento.
+                </p>
+
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-4">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      gtmEvent("cta_review_process", { location: "hero", page: PAGE });
+                      scrollToId("mi-actividad");
+                    }}
+                    className="inline-flex items-center justify-center rounded-xl px-7 py-3.5 text-[14.5px] font-bold transition-transform hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                    style={{ background: TEAL, color: NAVY }}
+                  >
+                    Revisar qué cambia para mi operación
+                  </button>
+                  <SourceLink
+                    href={DOF_URL}
+                    kind="dof"
+                    label="Consultar DOF"
+                    context="hero"
+                    className="inline-flex items-center justify-center text-[13px] font-semibold text-white/55 hover:text-white/85 transition-colors"
+                  />
+                </div>
+
+                <p className="text-[12.5px] text-white/40">DOF · Acuerdo 115/2026 · 7 de agosto de 2026</p>
+              </div>
+
+              <div className="relative rounded-3xl overflow-hidden" style={{ border: "1px solid rgba(255,255,255,0.12)", boxShadow: "0 30px 80px rgba(0,0,0,0.35)" }}>
+                <Image
+                  src="/images/lfpiorpi-2027/hero-compliance.jpg"
+                  alt="Profesional revisando su identidad y expediente digital desde el celular"
+                  width={1600}
+                  height={900}
+                  sizes="(min-width: 1024px) 480px, 100vw"
+                  className="w-full h-auto"
+                  priority
+                />
+              </div>
             </div>
-
-            <p className="text-[13px] text-white/45">DOF · Acuerdo 115/2026 · 7 de agosto de 2026</p>
           </div>
         </section>
 
-        {/* ── 02. Cambio de enfoque ────────────────────────────────────── */}
-        <section id="que-cambia" className="py-20" style={{ background: OFF_WHITE }} aria-labelledby="enfoque-heading">
+        {/* ── 02. ¿Tu actividad está contemplada? ──────────────────────── */}
+        <section id="mi-actividad" className="py-20 scroll-mt-20" style={{ background: OFF_WHITE }} aria-labelledby="actividad-heading">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12 max-w-3xl mx-auto">
+              <SectionEyebrow>Actividades vulnerables</SectionEyebrow>
+              <h2 id="actividad-heading" className="uppercase text-3xl md:text-4xl font-black mb-5 leading-snug" style={{ color: NAVY }}>
+                ¿Estos cambios pueden aplicar a tu sector?
+              </h2>
+              <p className="text-[16px] leading-relaxed" style={{ color: TEXT_MUTED }}>
+                La LFPIORPI contempla distintas actividades económicas, profesionales y de servicios. Identifica tu
+                sector y revisa qué capas de tu operación podrían requerir atención.
+              </p>
+            </div>
+
+            <ActivityGroups campaignGroup={campaignGroup} onSelectGroup={setSelectedGroup} />
+          </div>
+        </section>
+
+        {/* ── 03. Qué cambió ────────────────────────────────────────────── */}
+        <section id="que-cambia" className="py-20 bg-white scroll-mt-20" aria-labelledby="enfoque-heading">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14 max-w-3xl mx-auto">
               <SectionEyebrow>Nuevo enfoque</SectionEyebrow>
               <h2 id="enfoque-heading" className="uppercase text-3xl md:text-4xl font-black mb-5 leading-snug" style={{ color: NAVY }}>
                 De identificar al cliente a conocer y gestionar su riesgo
               </h2>
-              <p className="text-[16px] leading-relaxed" style={{ color: TEXT_MUTED }}>
-                Las nuevas Reglas fortalecen un modelo de cumplimiento que no se limita a integrar información
-                inicial del Cliente o Usuario. Incorporan elementos relacionados con clasificación de riesgo,
-                conocimiento continuo, Beneficiario Controlador, automatización, monitoreo y conservación de
-                evidencia.
-              </p>
             </div>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
               {ENFOQUE_CARDS.map((card) => (
-                <div key={card.titulo} className="rounded-2xl p-6 bg-white hover:shadow-lg transition-shadow" style={{ border: "1px solid #E2E8EF" }}>
-                  <span className="inline-block text-[11px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full mb-4" style={{ background: `${TEAL}14`, color: "#0E7C82" }}>
+                <div key={card.titulo} className="rounded-2xl p-6 bg-white hover:shadow-lg transition-shadow flex flex-col" style={{ border: "1px solid #E2E8EF" }}>
+                  <span className="inline-block text-[11px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full mb-4 self-start" style={{ background: `${TEAL}14`, color: "#0E7C82" }}>
                     {card.etiqueta}
                   </span>
                   <h3 className="text-[16px] font-bold mb-2" style={{ color: NAVY }}>
@@ -994,21 +1238,58 @@ export default function Lfpiorpi2027LandingClient() {
                   <p className="text-[14px] leading-relaxed mb-4" style={{ color: TEXT_MUTED }}>
                     {card.texto}
                   </p>
-                  <SourceLink
-                    href={DOF_URL}
-                    kind="dof"
-                    label={card.fuenteLabel}
-                    context={`enfoque_${card.etiqueta}`}
-                    className="text-[12px] font-semibold"
-                    style={{ color: "#0E7C82" }}
-                  />
+
+                  <div className="mt-auto pt-4" style={{ borderTop: "1px solid #EEF2F5" }}>
+                    <p className="text-[10.5px] font-bold uppercase tracking-wide mb-2" style={{ color: TEXT_MUTED }}>
+                      {card.jaakLabel || "JAAK puede apoyar con:"}
+                    </p>
+                    <div className="flex flex-wrap gap-1.5 mb-3">
+                      {card.jaakApoya.map((item) => (
+                        <span key={item} className="text-[11.5px] px-2 py-1 rounded-full" style={{ background: GRAY_LIGHT, color: NAVY }}>
+                          {item}
+                        </span>
+                      ))}
+                    </div>
+                    {card.disclaimer && (
+                      <p className="text-[11.5px] leading-relaxed italic mb-2" style={{ color: TEXT_MUTED }}>
+                        {card.disclaimer}
+                      </p>
+                    )}
+                    {card.microcopy && (
+                      <p className="text-[11.5px] leading-relaxed mb-2" style={{ color: TEXT_MUTED }}>
+                        {card.microcopy}
+                      </p>
+                    )}
+                    <SourceLink
+                      href={DOF_URL}
+                      kind="dof"
+                      label={card.fuenteLabel}
+                      context={`enfoque_${card.etiqueta}`}
+                      className="text-[12px] font-semibold"
+                      style={{ color: "#0E7C82" }}
+                    />
+                  </div>
                 </div>
               ))}
+            </div>
+
+            <div className="text-center">
+              <button
+                type="button"
+                onClick={() => {
+                  gtmEvent("cta_review_process", { location: "que_cambio", page: PAGE });
+                  scrollToId("autoevaluacion");
+                }}
+                className="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-[14px] font-bold transition-colors hover:bg-black/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                style={{ color: NAVY, border: "1px solid #E2E8EF" }}
+              >
+                Identificar qué puedo automatizar →
+              </button>
             </div>
           </div>
         </section>
 
-        {/* ── 03. Timeline regulatorio ─────────────────────────────────── */}
+        {/* ── 04. Fechas clave / Timeline ───────────────────────────────── */}
         <section className="py-20" style={{ background: NAVY }} aria-labelledby="timeline-heading">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14 max-w-2xl mx-auto">
@@ -1016,17 +1297,14 @@ export default function Lfpiorpi2027LandingClient() {
               <h2 id="timeline-heading" className="uppercase text-3xl md:text-4xl font-black text-white mb-5">
                 2027 no empieza en 2027
               </h2>
-              <p className="text-[16px] text-white/60 leading-relaxed">
-                La preparación tecnológica, operativa y documental requiere tiempo. Estas son algunas de las fechas
-                relevantes previstas en las disposiciones transitorias.
-              </p>
             </div>
 
             <div className="grid gap-5 md:grid-cols-3 mb-6">
               {TIMELINE_PRIMARY.map((hito) => (
-                <TimelineCard
+                <ImpressionTracker
                   key={hito.id}
-                  id={hito.id}
+                  eventName="timeline_interaction"
+                  payload={{ milestone: hito.id, page: PAGE }}
                   className="text-left rounded-2xl p-6 transition-all hover:-translate-y-1"
                   style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)" }}
                 >
@@ -1044,15 +1322,16 @@ export default function Lfpiorpi2027LandingClient() {
                     className="text-[11.5px] font-semibold"
                     style={{ color: "#7FE8EC" }}
                   />
-                </TimelineCard>
+                </ImpressionTracker>
               ))}
             </div>
 
-            <div className="grid gap-5 sm:grid-cols-2 max-w-3xl mx-auto">
+            <div className="grid gap-5 sm:grid-cols-2 max-w-3xl mx-auto mb-10">
               {TIMELINE_SECONDARY.map((hito) => (
-                <TimelineCard
+                <ImpressionTracker
                   key={hito.id}
-                  id={hito.id}
+                  eventName="timeline_interaction"
+                  payload={{ milestone: hito.id, page: PAGE }}
                   className="text-left rounded-2xl p-5 transition-all hover:-translate-y-1"
                   style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)" }}
                 >
@@ -1069,78 +1348,126 @@ export default function Lfpiorpi2027LandingClient() {
                     className="text-[11px] font-semibold"
                     style={{ color: "#7FE8EC" }}
                   />
-                </TimelineCard>
+                </ImpressionTracker>
               ))}
             </div>
 
-            <p className="text-[13px] text-white/45 text-center max-w-2xl mx-auto mt-10 mb-6 leading-relaxed">
-              Las fechas y obligaciones aplicables dependen de la actividad, características y situación específica
-              de cada sujeto obligado. Consulta siempre el texto oficial.
+            <p className="text-[13px] text-white/45 text-center max-w-2xl mx-auto mb-6 leading-relaxed">
+              La adaptación puede requerir cambios tecnológicos, operativos y documentales.
             </p>
 
             <div className="text-center">
-              <SourceLink
-                href={DOF_URL}
-                kind="dof"
-                label="Ver publicación oficial"
-                context="timeline_cta"
+              <button
+                type="button"
+                onClick={() => {
+                  gtmEvent("cta_review_process", { location: "timeline", page: PAGE });
+                  scrollToId("autoevaluacion");
+                }}
                 className="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-[14px] font-bold text-white transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                 style={{ border: "1px solid rgba(255,255,255,0.3)" }}
-              />
+              >
+                Revisar mi operación
+              </button>
             </div>
           </div>
         </section>
 
-        {/* ── 04. Conocimiento continuo del cliente ────────────────────── */}
-        <section className="py-20 bg-white" aria-labelledby="kyc-heading">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <SectionEyebrow>Conocer al cliente</SectionEyebrow>
-            <h2 id="kyc-heading" className="uppercase text-3xl md:text-4xl font-black mb-5" style={{ color: NAVY }}>
-              El KYC no termina cuando el cliente entra
-            </h2>
-            <p className="text-[16px] leading-relaxed max-w-2xl mx-auto mb-14" style={{ color: TEXT_MUTED }}>
-              Las nuevas disposiciones fortalecen procesos relacionados con el perfil del Cliente o Usuario, su
-              clasificación de riesgo y el monitoreo de cambios relevantes durante la relación.
+        {/* ── 05. Qué puede automatizar JAAK ────────────────────────────── */}
+        <section id="que-automatiza-jaak" className="py-20 bg-white scroll-mt-20" aria-labelledby="jaak-heading">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12 max-w-2xl mx-auto">
+              <SectionEyebrow>Infraestructura de confianza</SectionEyebrow>
+              <h2 id="jaak-heading" className="uppercase text-3xl md:text-4xl font-black mb-5" style={{ color: NAVY }}>
+                Automatiza capas de identidad, riesgo y evidencia
+              </h2>
+              <p className="text-[16px] leading-relaxed" style={{ color: TEXT_MUTED }}>
+                JAAK conecta capacidades de identidad, screening, firma y evidencia dentro de procesos digitales.
+              </p>
+            </div>
+
+            <div className="rounded-2xl overflow-hidden mb-4 max-w-4xl mx-auto" style={{ border: "1px solid #E2E8EF", background: OFF_WHITE }}>
+              <Image
+                src="/images/lfpiorpi-2027/flujo-identidad-riesgo-evidencia.png"
+                alt="Flujo: Cliente → KYC Biométrico → Fuentes Oficiales → AML Screening → Firma Digital → Evidencia y Trazabilidad → Proceso de cumplimiento"
+                width={1600}
+                height={900}
+                sizes="(min-width: 1024px) 900px, 100vw"
+                className="w-full h-auto"
+              />
+            </div>
+            <p className="text-center text-[12px] mb-12" style={{ color: TEXT_MUTED }}>
+              Cliente → KYC Biométrico → Fuentes Oficiales → AML Screening → Firma Digital → Evidencia y Trazabilidad → Tu proceso de cumplimiento
             </p>
 
-            <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-4 mb-10">
-              {KYC_FLOW.map((step, i) => (
-                <div key={step} className="flex items-center gap-2">
-                  <span
-                    className="px-4 py-2.5 rounded-full text-[13px] font-bold"
-                    style={{ background: GRAY_LIGHT, color: NAVY, border: "1px solid #E2E8EF" }}
-                  >
-                    {step}
-                  </span>
-                  {i < KYC_FLOW.length - 1 && (
-                    <span aria-hidden="true" className="text-lg" style={{ color: TEAL }}>
-                      →
-                    </span>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-5 mb-10">
+              {JAAK_MODULES.map((mod) => (
+                <div key={mod.num} className="rounded-2xl p-6 h-full flex flex-col" style={{ background: GRAY_LIGHT, border: "1px solid #E2E8EF" }}>
+                  <div className="text-3xl font-black mb-3" style={{ color: "rgba(2,19,45,0.15)" }}>
+                    {mod.num}
+                  </div>
+                  <h3 className="text-[14.5px] font-bold mb-2" style={{ color: NAVY }}>
+                    {mod.titulo}
+                  </h3>
+                  <p className="text-[13px] leading-relaxed flex-1" style={{ color: TEXT_MUTED }}>
+                    {mod.texto}
+                  </p>
+                  {mod.href && (
+                    <Link
+                      href={mod.href}
+                      onClick={() => mod.eventName && gtmEvent(mod.eventName, { page: PAGE, module: mod.titulo })}
+                      className="inline-flex items-center gap-1 mt-4 text-[12px] font-bold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                      style={{ color: "#0E7C82" }}
+                    >
+                      Conocer más →
+                    </Link>
                   )}
                 </div>
               ))}
             </div>
 
-            <p className="text-[14.5px] leading-relaxed max-w-2xl mx-auto mb-4" style={{ color: TEXT_MUTED }}>
-              El conocimiento del cliente evoluciona de una validación inicial hacia procesos continuos de
-              seguimiento y evaluación conforme al nivel de riesgo.
+            <p className="text-[13px] leading-relaxed max-w-3xl mx-auto text-center p-5 rounded-xl mb-10" style={{ color: TEXT_MUTED, background: GRAY_LIGHT, border: "1px solid #E2E8EF" }}>
+              JAAK automatiza componentes tecnológicos dentro de procesos de cumplimiento. La determinación de
+              obligaciones y controles aplicables corresponde a cada organización.
             </p>
-            <SourceLink
-              href={DOF_URL}
-              kind="dof"
-              label="Fuente: DOF · Arts. 23 Ter a 23 Ter 5 y Art. 41"
-              context="kyc_continuo"
-              className="text-[13px] font-semibold"
-              style={{ color: "#0E7C82" }}
-            />
+
+            <div className="text-center">
+              <button
+                type="button"
+                onClick={() => {
+                  gtmEvent("cta_review_process", { location: "que_automatiza_jaak", page: PAGE });
+                  scrollToId("autoevaluacion");
+                }}
+                className="inline-flex items-center gap-2 rounded-xl px-7 py-3.5 text-[15px] font-bold text-white transition-transform hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                style={{ background: NAVY, outlineColor: NAVY }}
+              >
+                Conocer qué capas puedo integrar
+              </button>
+            </div>
           </div>
         </section>
 
-        {/* ── 05. Mecanismos automatizados ─────────────────────────────── */}
-        <section className="py-20" style={{ background: NAVY }} aria-labelledby="automatizacion-heading">
+        {/* ── 06. Autoevaluación / checklist inteligente ───────────────── */}
+        <section id="autoevaluacion" className="py-20 scroll-mt-20" style={{ background: OFF_WHITE }} aria-labelledby="autoeval-heading">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <SectionEyebrow>Revisa tu operación</SectionEyebrow>
+              <h2 id="autoeval-heading" className="uppercase text-3xl md:text-4xl font-black" style={{ color: NAVY }}>
+                ¿Qué parte de tu proceso sigue siendo manual?
+              </h2>
+            </div>
+            <SmartChecklist checked={checklistChecked} onToggle={handleChecklistToggle} />
+          </div>
+        </section>
+
+        {/* ── 07. Mecanismos automatizados (Art. 41) ───────────────────── */}
+        <section id="mecanismos-automatizados" className="py-20 scroll-mt-20" style={{ background: NAVY }} aria-labelledby="automatizacion-heading">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-4">
+              <span className="inline-block text-[11px] font-bold uppercase tracking-wide px-3 py-1 rounded-full" style={{ background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.6)" }}>
+                Requerimiento regulatorio
+              </span>
+            </div>
             <div className="text-center mb-14 max-w-2xl mx-auto">
-              <SectionEyebrow dark>Automatización</SectionEyebrow>
               <h2 id="automatizacion-heading" className="uppercase text-3xl md:text-4xl font-black text-white mb-5">
                 Del expediente al monitoreo
               </h2>
@@ -1150,13 +1477,10 @@ export default function Lfpiorpi2027LandingClient() {
               </p>
             </div>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
               {AUTOMATION_NODES.map((node, i) => (
                 <div key={node.titulo} className="rounded-2xl p-6" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}>
-                  <div
-                    className="w-8 h-8 rounded-full flex items-center justify-center text-[12px] font-black mb-4"
-                    style={{ background: TEAL, color: NAVY }}
-                  >
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center text-[12px] font-black mb-4" style={{ background: TEAL, color: NAVY }}>
                     {i + 1}
                   </div>
                   <h3 className="text-[15px] font-bold text-white mb-2">{node.titulo}</h3>
@@ -1165,8 +1489,21 @@ export default function Lfpiorpi2027LandingClient() {
               ))}
             </div>
 
+            <p className="text-[12px] text-center max-w-2xl mx-auto mb-8" style={{ color: "rgba(255,255,255,0.4)" }}>
+              Estos mecanismos son un requerimiento regulatorio, distinto de las{" "}
+              <button
+                type="button"
+                onClick={() => scrollToId("que-automatiza-jaak")}
+                className="underline underline-offset-2 hover:text-white transition-colors"
+              >
+                capacidades JAAK
+              </button>{" "}
+              descritas arriba: no implican que JAAK cubra actualmente todas las funciones previstas en el
+              Artículo 41.
+            </p>
+
             <div className="text-center">
-              <p className="text-[13px] text-white/45 mb-5">
+              <p className="text-[13px] mb-5">
                 <SourceLink href={DOF_URL} kind="dof" label="Fuente: DOF · Artículo 41" context="automatizacion" className="font-semibold" style={{ color: "#7FE8EC" }} />
               </p>
               <SourceLink
@@ -1181,98 +1518,21 @@ export default function Lfpiorpi2027LandingClient() {
           </div>
         </section>
 
-        {/* ── 06. Autoevaluación ────────────────────────────────────────── */}
-        <section id="autoevaluacion" className="py-20" style={{ background: OFF_WHITE }} aria-labelledby="autoeval-heading">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <SectionEyebrow>Revisa tu operación</SectionEyebrow>
-              <h2 id="autoeval-heading" className="uppercase text-3xl md:text-4xl font-black" style={{ color: NAVY }}>
-                ¿Qué parte de tu proceso sigue siendo manual?
-              </h2>
-            </div>
-            <AutoevaluacionChecklist />
-          </div>
-        </section>
-
-        {/* ── 07. JAAK ──────────────────────────────────────────────────── */}
-        <section className="py-20" style={{ background: NAVY }} aria-labelledby="jaak-heading">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-14 max-w-2xl mx-auto">
-              <SectionEyebrow dark>Infraestructura de confianza</SectionEyebrow>
-              <h2 id="jaak-heading" className="uppercase text-3xl md:text-4xl font-black text-white mb-5">
-                Automatiza capas de identidad, riesgo y evidencia
-              </h2>
-              <p className="text-[16px] text-white/60 leading-relaxed">
-                JAAK integra capacidades tecnológicas que pueden fortalecer distintas etapas de los procesos
-                digitales de identificación y conocimiento del Cliente.
-              </p>
-            </div>
-
-            <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-5 mb-10">
-              {JAAK_MODULES.map((mod) => (
-                // Nunca envolver la tarjeta completa en un <Link>: el módulo de Firma
-                // Digital también lleva un SourceLink interno y un <a> no puede anidar
-                // otro <a> (rompe la hidratación). El enlace de exploración, cuando
-                // existe, vive como elemento propio al pie de la tarjeta.
-                <div
-                  key={mod.num}
-                  className="rounded-2xl p-6 h-full flex flex-col"
-                  style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
-                >
-                  <div className="text-3xl font-black mb-3" style={{ color: "rgba(30,202,211,0.3)" }}>
-                    {mod.num}
-                  </div>
-                  <h3 className="text-[14.5px] font-bold text-white mb-2">{mod.titulo}</h3>
-                  <p className="text-[13px] text-white/60 leading-relaxed flex-1">{mod.texto}</p>
-                  {mod.microcopy && (
-                    <p className="text-[11.5px] text-white/45 leading-relaxed mt-3 pt-3" style={{ borderTop: "1px solid rgba(255,255,255,0.1)" }}>
-                      {mod.microcopy}
-                    </p>
-                  )}
-                  {mod.fuente && (
-                    <p className="mt-2">
-                      <SourceLink
-                        href={mod.fuente.url}
-                        kind={mod.fuente.kind}
-                        label={mod.fuente.label}
-                        context={`jaak_modulo_${mod.num}`}
-                        className="text-[11px] font-semibold"
-                        style={{ color: "#7FE8EC" }}
-                      />
-                    </p>
-                  )}
-                  {mod.href && (
-                    <Link
-                      href={mod.href}
-                      onClick={() => mod.eventName && gtmEvent(mod.eventName, { page: PAGE, module: mod.titulo })}
-                      className="inline-flex items-center gap-1 mt-4 text-[12px] font-bold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                      style={{ color: TEAL }}
-                    >
-                      Conocer más →
-                    </Link>
-                  )}
-                </div>
-              ))}
-            </div>
-
-            <p className="text-[13px] leading-relaxed max-w-3xl mx-auto text-center p-5 rounded-xl" style={{ color: "rgba(255,255,255,0.55)", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)" }}>
-              Las soluciones tecnológicas de JAAK apoyan componentes de procesos de identificación, conocimiento del
-              Cliente y gestión de evidencia. La determinación de las obligaciones aplicables y del cumplimiento
-              regulatorio corresponde a cada organización conforme a su actividad y marco jurídico.
-            </p>
-          </div>
-        </section>
-
-        {/* ── 08. Sectores ──────────────────────────────────────────────── */}
-        <section className="py-20 bg-white" aria-labelledby="sectores-heading">
+        {/* ── 08. Aplicación por industria ──────────────────────────────── */}
+        <section id="aplicacion-industria" className="py-20 bg-white scroll-mt-20" aria-labelledby="sectores-heading">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14 max-w-2xl mx-auto">
               <SectionEyebrow>Aplicación por industria</SectionEyebrow>
               <h2 id="sectores-heading" className="uppercase text-3xl md:text-4xl font-black" style={{ color: NAVY }}>
-                Un mismo cambio. Distintos retos operativos
+                ¿Cómo se traduce en tu operación?
               </h2>
             </div>
-            <SectorTabs />
+            <IndustryGroups
+              selectedGroup={selectedGroup}
+              onSelectGroup={setSelectedGroup}
+              campaignGroup={campaignGroup}
+              campaignCtaLabel={campaignInfo?.ctaLabel ?? null}
+            />
           </div>
         </section>
 
@@ -1303,14 +1563,7 @@ export default function Lfpiorpi2027LandingClient() {
                   <p className="text-[13px] leading-relaxed mb-5 flex-1" style={{ color: TEXT_MUTED }}>
                     {f.descripcion}
                   </p>
-                  <SourceLink
-                    href={f.url}
-                    kind={f.kind}
-                    label={f.ctaLabel}
-                    context="fuentes_oficiales"
-                    className="text-[13px] font-bold"
-                    style={{ color: NAVY }}
-                  />
+                  <SourceLink href={f.url} kind={f.kind} label={f.ctaLabel} context="fuentes_oficiales" className="text-[13px] font-bold" style={{ color: NAVY }} />
                 </div>
               ))}
             </div>
@@ -1318,26 +1571,37 @@ export default function Lfpiorpi2027LandingClient() {
         </section>
 
         {/* ── 10. CTA final ─────────────────────────────────────────────── */}
-        <section id="hablemos" className="py-20" style={{ background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY_SOFT} 100%)` }} aria-labelledby="cta-final-heading">
+        <section id="hablemos" className="py-20 scroll-mt-20" style={{ background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY_SOFT} 100%)` }} aria-labelledby="cta-final-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-12 items-start">
-              <div>
-                <h2 id="cta-final-heading" className="uppercase text-3xl md:text-4xl font-black text-white mb-5 leading-snug">
-                  Preparar tu operación empieza por saber qué necesitas cambiar
-                </h2>
-                <p className="text-[16px] text-white/65 mb-8 leading-relaxed">
-                  Conoce cómo integrar identidad, screening y evidencia dentro de tus procesos digitales.
-                </p>
-                <Link
-                  href="/"
-                  className="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-[14px] font-semibold text-white transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                  style={{ border: "1px solid rgba(255,255,255,0.25)" }}
-                >
-                  Conocer JAAK
-                </Link>
+            <div className="grid lg:grid-cols-2 gap-8 items-stretch">
+              <div className="relative rounded-2xl overflow-hidden min-h-[320px]" style={{ border: "1px solid rgba(255,255,255,0.12)" }}>
+                <Image
+                  src="/images/lfpiorpi-2027/cierre-trazabilidad.jpg"
+                  alt="Profesional revisando un expediente digital ya documentado"
+                  fill
+                  sizes="(min-width: 1024px) 500px, 100vw"
+                  className="object-cover"
+                />
+                <div className="absolute inset-0" style={{ background: "linear-gradient(0deg, rgba(2,19,45,0.92) 10%, rgba(2,19,45,0.55) 60%, rgba(2,19,45,0.25) 100%)" }} />
+                <div className="relative z-10 h-full flex flex-col justify-end p-7">
+                  <h2 id="cta-final-heading" className="uppercase text-2xl sm:text-3xl font-black text-white mb-4 leading-snug">
+                    Identifica qué puedes automatizar antes de 2027
+                  </h2>
+                  <p className="text-[14.5px] text-white/70 mb-6 leading-relaxed">
+                    Cuéntanos tu sector y revisamos contigo qué capas de identidad, screening, firma y evidencia
+                    puedes integrar a tu operación.
+                  </p>
+                  <Link
+                    href="/"
+                    className="inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-[13.5px] font-semibold text-white transition-colors hover:bg-white/10 self-start focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                    style={{ border: "1px solid rgba(255,255,255,0.3)" }}
+                  >
+                    Conocer JAAK
+                  </Link>
+                </div>
               </div>
 
-              <ContactFormMini />
+              <ContactFormMini defaultSector={campaignInfo?.formOption ?? ""} needFlags={needFlags} />
             </div>
           </div>
         </section>
