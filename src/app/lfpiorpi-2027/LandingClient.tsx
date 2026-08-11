@@ -1303,9 +1303,9 @@ export default function Lfpiorpi2027LandingClient() {
       <CampaignHeader />
       <MobileStickyCta />
       <main>
-        {/* ── 01. Hero ─────────────────────────────────────────────────── */}
+        {/* ── 01. Hero — 100% UI nativa, sin fotografía ──────────────────── */}
         <section
-          className="relative overflow-hidden"
+          className="relative overflow-hidden py-28 lg:py-36"
           style={{ background: `linear-gradient(155deg, ${NAVY} 0%, ${NAVY_SOFT} 70%, #122544 100%)` }}
           aria-labelledby="hero-heading"
         >
@@ -1314,87 +1314,88 @@ export default function Lfpiorpi2027LandingClient() {
             style={{ background: "rgba(30,202,211,0.10)" }}
             aria-hidden="true"
           />
+          <div
+            className="pointer-events-none absolute -bottom-40 -left-40 h-[420px] w-[420px] rounded-full blur-[130px]"
+            style={{ background: "rgba(30,202,211,0.07)" }}
+            aria-hidden="true"
+          />
 
-          {/* Fotografía a sangre — solo desktop, ~38% con fade a navy, sin marco */}
-          <div className="hidden lg:block absolute inset-y-0 right-0 w-[38%]" aria-hidden="true">
-            <div className="relative h-full w-full">
-              <Image
-                src="/images/lfpiorpi-2027/hero-compliance.jpg"
-                alt=""
-                fill
-                sizes="38vw"
-                className="object-cover"
-                priority
+          {/* Red de nodos ambiental — vectorial, nunca se pixela, identidad JAAK */}
+          <svg className="pointer-events-none absolute inset-0 w-full h-full" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <g stroke={TEAL} strokeOpacity="0.22" strokeWidth="1">
+              <line x1="50" y1="80" x2="170" y2="145" />
+              <line x1="170" y1="145" x2="130" y2="255" />
+              <line x1="170" y1="145" x2="290" y2="110" />
+              <line x1="130" y1="255" x2="70" y2="350" />
+              <line x1="1150" y1="610" x2="1030" y2="545" />
+              <line x1="1030" y1="545" x2="1065" y2="435" />
+              <line x1="1030" y1="545" x2="905" y2="585" />
+              <line x1="1065" y1="435" x2="1125" y2="335" />
+            </g>
+            <g fill={TEAL} fillOpacity="0.55">
+              <circle cx="50" cy="80" r="3" />
+              <circle cx="170" cy="145" r="4" />
+              <circle cx="290" cy="110" r="3" />
+              <circle cx="130" cy="255" r="3" />
+              <circle cx="70" cy="350" r="3" />
+              <circle cx="1150" cy="610" r="3" />
+              <circle cx="1030" cy="545" r="4" />
+              <circle cx="905" cy="585" r="3" />
+              <circle cx="1065" cy="435" r="3" />
+              <circle cx="1125" cy="335" r="3" />
+            </g>
+          </svg>
+
+          <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <SectionEyebrow dark>Nuevas Reglas LFPIORPI · 2026–2027</SectionEyebrow>
+
+            <h1 id="hero-heading" className="uppercase text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 leading-[1.05]">
+              <span className="block">El cumplimiento evoluciona.</span>
+              <span
+                className="block mt-2"
+                style={{ backgroundImage: `linear-gradient(90deg, ${TEAL}, #7FE8EC)`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}
+              >
+                ¿Tu operación está preparada?
+              </span>
+            </h1>
+
+            <p className="text-lg text-white/70 mb-8 leading-relaxed max-w-2xl mx-auto">
+              Las nuevas disposiciones fortalecen el enfoque basado en riesgo, el conocimiento del Cliente o
+              Usuario y los mecanismos automatizados para quienes realizan Actividades Vulnerables.
+            </p>
+
+            <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 mb-10 text-[12.5px] font-semibold uppercase tracking-wide text-white/55">
+              <span>KYC Biométrico</span>
+              <span aria-hidden="true" style={{ color: TEAL }}>·</span>
+              <span>AML Screening</span>
+              <span aria-hidden="true" style={{ color: TEAL }}>·</span>
+              <span>Firma Digital</span>
+              <span aria-hidden="true" style={{ color: TEAL }}>·</span>
+              <span>Evidencia</span>
+            </div>
+
+            <div className="flex flex-col sm:flex-row sm:items-center justify-center gap-4 mb-4">
+              <button
+                type="button"
+                onClick={() => {
+                  gtmEvent("cta_review_process", { location: "hero", page: PAGE });
+                  scrollToId("mi-actividad");
+                }}
+                className="inline-flex items-center justify-center rounded-xl px-7 py-3.5 text-[14.5px] font-bold transition-transform hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                style={{ background: TEAL, color: NAVY }}
+              >
+                Revisar qué cambia para mi operación
+              </button>
+              <SourceLink
+                href={DOF_URL}
+                kind="dof"
+                label="Consultar publicación oficial"
+                context="hero"
+                className="inline-flex items-center justify-center text-[13px] font-semibold text-white/55 hover:text-white/85 transition-colors"
               />
-              <div className="absolute inset-0" style={{ background: `linear-gradient(90deg, ${NAVY} 0%, ${NAVY}CC 14%, transparent 38%)` }} />
             </div>
-          </div>
 
-          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:pl-8">
-            <div className="lg:max-w-[62%] pt-28 pb-10 lg:pb-24">
-              <SectionEyebrow dark>Nuevas Reglas LFPIORPI · 2026–2027</SectionEyebrow>
-
-              <h1 id="hero-heading" className="uppercase text-5xl md:text-6xl font-black text-white mb-6 leading-[1.05]">
-                <span className="block">El cumplimiento evoluciona.</span>
-                <span
-                  className="block mt-2"
-                  style={{ backgroundImage: `linear-gradient(90deg, ${TEAL}, #7FE8EC)`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}
-                >
-                  ¿Tu operación está preparada?
-                </span>
-              </h1>
-
-              <p className="text-lg text-white/70 mb-6 leading-relaxed">
-                Las nuevas disposiciones fortalecen el enfoque basado en riesgo, el conocimiento del Cliente o
-                Usuario y los mecanismos automatizados para quienes realizan Actividades Vulnerables.
-              </p>
-
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-2 mb-8 text-[12.5px] font-semibold uppercase tracking-wide text-white/55">
-                <span>KYC Biométrico</span>
-                <span aria-hidden="true" style={{ color: TEAL }}>·</span>
-                <span>AML Screening</span>
-                <span aria-hidden="true" style={{ color: TEAL }}>·</span>
-                <span>Firma Digital</span>
-                <span aria-hidden="true" style={{ color: TEAL }}>·</span>
-                <span>Evidencia</span>
-              </div>
-
-              <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-4">
-                <button
-                  type="button"
-                  onClick={() => {
-                    gtmEvent("cta_review_process", { location: "hero", page: PAGE });
-                    scrollToId("mi-actividad");
-                  }}
-                  className="inline-flex items-center justify-center rounded-xl px-7 py-3.5 text-[14.5px] font-bold transition-transform hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                  style={{ background: TEAL, color: NAVY }}
-                >
-                  Revisar qué cambia para mi operación
-                </button>
-                <SourceLink
-                  href={DOF_URL}
-                  kind="dof"
-                  label="Consultar publicación oficial"
-                  context="hero"
-                  className="inline-flex items-center justify-center text-[13px] font-semibold text-white/55 hover:text-white/85 transition-colors"
-                />
-              </div>
-
-              <p className="text-[12.5px] text-white/40">DOF · Acuerdo 115/2026 · 7 de agosto de 2026</p>
-
-              {/* Fotografía contenida — mobile/tablet, sin marco, con fade inferior */}
-              <div className="lg:hidden relative rounded-2xl overflow-hidden mt-10">
-                <Image
-                  src="/images/lfpiorpi-2027/hero-compliance.jpg"
-                  alt="Profesional de cumplimiento revisando un expediente digital"
-                  width={1600}
-                  height={900}
-                  sizes="100vw"
-                  className="w-full h-auto"
-                />
-                <div className="absolute inset-x-0 bottom-0 h-16" style={{ background: `linear-gradient(0deg, ${NAVY} 0%, transparent 100%)` }} aria-hidden="true" />
-              </div>
-            </div>
+            <p className="text-[12.5px] text-white/40">DOF · Acuerdo 115/2026 · 7 de agosto de 2026</p>
           </div>
         </section>
 
