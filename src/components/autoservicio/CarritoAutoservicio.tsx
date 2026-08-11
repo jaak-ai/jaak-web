@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   productos,
   IVA,
@@ -11,6 +11,8 @@ import {
 } from "@/data/autoservicio-catalogo";
 import { useCarrito } from "./CarritoContext";
 import { getUtmParams } from "@/components/CloudflareTurnstile";
+
+type FeaturedPromo = { code: string; type: "percent" | "fixed"; value: number };
 
 const NAVY = "#212A45";
 const TEAL = "#2DB6C1";
@@ -30,6 +32,27 @@ export default function CarritoAutoservicio() {
   const { cart, tierDe, quitar, pricingIndex } = useCarrito();
   const [abiertoMovil, setAbiertoMovil] = useState(false);
 
+  // Cupón (AUTO-4): el banner deep-linkea con ?coupon=CODE. Leemos el código de
+  // la URL y traemos el destacado para PREVISUALIZAR el descuento; el cobro real
+  // lo hace /register (autoritativo). Se propaga el código por el deep-link.
+  const [couponCode, setCouponCode] = useState<string | undefined>(undefined);
+  const [featured, setFeatured] = useState<FeaturedPromo | null>(null);
+  useEffect(() => {
+    const code = new URLSearchParams(window.location.search).get("coupon") ?? undefined;
+    setCouponCode(code);
+    if (!code) return;
+    let active = true;
+    fetch("/api/promo")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => {
+        if (active && d?.featured) setFeatured({ code: d.code, type: d.type, value: d.value });
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, []);
+
   const getPaquete = (p: Producto, id: Paquete["id"]) => p.paquetes.find((q) => q.id === id)!;
   const items = cart.map((id) => {
     const producto = productos.find((p) => p.id === id)!;
@@ -38,13 +61,31 @@ export default function CarritoAutoservicio() {
   const subtotal = items.reduce((s, i) => s + i.paquete.precio, 0);
   const iva = Math.round(subtotal * IVA);
   const total = subtotal + iva;
-  const checkoutHref = items.length ? buildCheckoutUrl(items, { pricingIndex, utm: getUtmParams() }) : "#";
+
+  // El descuento se previsualiza solo cuando el cupón de la URL coincide con el
+  // destacado vigente. Percent sobre el total (con IVA, como cobra el backend);
+  // fijo en pesos, acotado al total.
+  const couponApplies = !!(featured && couponCode && featured.code.toUpperCase() === couponCode.toUpperCase());
+  const descuento = couponApplies
+    ? featured!.type === "percent"
+      ? Math.round((total * featured!.value) / 100)
+      : Math.min(featured!.value, total)
+    : 0;
+  const totalFinal = total - descuento;
+
+  const checkoutHref = items.length
+    ? buildCheckoutUrl(items, {
+        pricingIndex,
+        utm: getUtmParams(),
+        coupon: couponApplies ? featured!.code : undefined,
+      })
+    : "#";
 
   return (
     <>
       {/* Desktop: panel sticky */}
       <aside className="hidden lg:block sticky top-[130px]">
-        <ResumenPanel items={items} subtotal={subtotal} iva={iva} total={total} checkoutHref={checkoutHref} onQuitar={quitar} />
+        <ResumenPanel items={items} subtotal={subtotal} iva={iva} total={total} descuento={descuento} couponLabel={couponApplies ? featured!.code : undefined} checkoutHref={checkoutHref} onQuitar={quitar} />
       </aside>
 
       {/* Móvil: barra fija con total */}
@@ -53,7 +94,7 @@ export default function CarritoAutoservicio() {
           <div className="flex items-center justify-between gap-3">
             <div>
               <div className="text-[12px]" style={{ color: "#64748B" }}>{items.length} producto(s)</div>
-              <div className="text-lg font-bold" style={{ color: NAVY }}>{formatMXN(total)} <span className="text-[12px] font-semibold" style={{ color: "#64748B" }}>MXN</span></div>
+              <div className="text-lg font-bold" style={{ color: NAVY }}>{formatMXN(totalFinal)} <span className="text-[12px] font-semibold" style={{ color: "#64748B" }}>MXN</span></div>
             </div>
             <button type="button" onClick={() => setAbiertoMovil(true)} className="inline-flex items-center gap-2 rounded-xl px-5 py-3 text-[14px] font-semibold text-white" style={{ background: TEAL }}>
               <CartIcon className="h-[18px] w-[18px]" />
@@ -68,7 +109,7 @@ export default function CarritoAutoservicio() {
         <div className="lg:hidden fixed inset-0 z-50 flex items-end bg-black/40" onClick={() => setAbiertoMovil(false)}>
           <div className="max-h-[85vh] w-full overflow-y-auto rounded-t-2xl bg-white p-5" onClick={(e) => e.stopPropagation()}>
             <div className="mx-auto mb-3 h-1 w-10 rounded-full" style={{ background: "#E2E5EC" }} />
-            <ResumenPanel items={items} subtotal={subtotal} iva={iva} total={total} checkoutHref={checkoutHref} onQuitar={quitar} />
+            <ResumenPanel items={items} subtotal={subtotal} iva={iva} total={total} descuento={descuento} couponLabel={couponApplies ? featured!.code : undefined} checkoutHref={checkoutHref} onQuitar={quitar} />
           </div>
         </div>
       )}
@@ -77,13 +118,15 @@ export default function CarritoAutoservicio() {
 }
 
 function ResumenPanel({
-  items, subtotal, iva, total, checkoutHref, onQuitar,
+  items, subtotal, iva, total, descuento = 0, couponLabel, checkoutHref, onQuitar,
 }: {
   items: { producto: Producto; paquete: Paquete }[];
   subtotal: number; iva: number; total: number;
+  descuento?: number; couponLabel?: string;
   checkoutHref: string;
   onQuitar: (productoId: string) => void;
 }) {
+  const totalFinal = total - descuento;
   return (
     <div className="rounded-2xl border bg-white p-5" style={{ borderColor: "#E6E8EF" }}>
       <div className="flex items-center gap-2" style={{ color: NAVY }}>
@@ -133,9 +176,15 @@ function ResumenPanel({
           <div className="mt-3 space-y-1.5 border-t pt-3 text-[13px]" style={{ borderColor: "#EEF0F4" }}>
             <Row label="Subtotal" value={formatMXN(subtotal)} />
             <Row label="IVA (16%)" value={formatMXN(iva)} muted />
+            {descuento > 0 && (
+              <div className="flex items-center justify-between">
+                <span style={{ color: "#16a34a" }}>Cupón {couponLabel}</span>
+                <span style={{ color: "#16a34a" }}>− {formatMXN(descuento)}</span>
+              </div>
+            )}
             <div className="flex items-center justify-between pt-1">
               <span className="text-[14px] font-bold" style={{ color: NAVY }}>Total</span>
-              <span className="text-[18px] font-bold" style={{ color: NAVY }}>{formatMXN(total)} <span className="text-[12px] font-semibold" style={{ color: "#64748B" }}>MXN</span></span>
+              <span className="text-[18px] font-bold" style={{ color: NAVY }}>{formatMXN(totalFinal)} <span className="text-[12px] font-semibold" style={{ color: "#64748B" }}>MXN</span></span>
             </div>
           </div>
 

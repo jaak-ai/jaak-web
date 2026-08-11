@@ -266,9 +266,12 @@ export function buildCheckoutUrl(
     /** Atribución first-party (utm_*) que viaja como query ANTES del hash
      *  para que platform.jaak.ai (analytics/checkout) la reciba. */
     utm?: Partial<import("@/lib/attribution").AttributionParams>;
+    /** Código de cupón (AUTO-4). Viaja DENTRO del hash (junto a `d`) para que la
+     *  ruta /register lo lea del query y lo pre-aplique. */
+    coupon?: string;
   } = {}
 ): string {
-  const { pricingIndex, base = "https://platform.jaak.ai/#/register/user-info", utm } = options;
+  const { pricingIndex, base = "https://platform.jaak.ai/#/register/user-info", utm, coupon } = options;
   const products = items.map(({ producto, paquete }) => {
     const nombre = producto.nombre.split(" — ")[0];
     return {
@@ -288,6 +291,10 @@ export function buildCheckoutUrl(
   };
   const d = btoa(encodeURIComponent(JSON.stringify(payload)));
   let url = `${base}?d=${d}`;
+  // Cupón (AUTO-4): dentro del hash, junto a `d`, para que /register lo lea.
+  if (coupon && coupon.trim()) {
+    url += `&coupon=${encodeURIComponent(coupon.trim())}`;
+  }
   // Inserta utm_* como query previa al hash (#) — los routers hash no ven
   // esa parte, pero analytics y el servidor de platform sí.
   const utmEntries = Object.entries(utm ?? {}).filter(
