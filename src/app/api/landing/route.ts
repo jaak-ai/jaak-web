@@ -29,9 +29,14 @@ export async function POST(request: Request) {
       utm_content,
     } = body;
 
-    // El ebook de listas de riesgo y la guía de KYC gaming piden teléfono
-    // opcional (ver brief de cada landing); el resto lo siguen requiriendo.
-    const PHONE_OPTIONAL_SOURCES = ["landing-listas-riesgo-ebook", "landing-kyc-igaming-mexico-guia"];
+    // El ebook de listas de riesgo, la guía de KYC gaming y la landing de
+    // LFPIORPI 2026-2027 piden teléfono opcional (ver brief de cada landing);
+    // el resto lo siguen requiriendo.
+    const PHONE_OPTIONAL_SOURCES = [
+      "landing-listas-riesgo-ebook",
+      "landing-kyc-igaming-mexico-guia",
+      "landing-lfpiorpi-2027",
+    ];
     const phoneRequired = !PHONE_OPTIONAL_SOURCES.includes(source);
     if (!name || !email || (phoneRequired && !telefono)) {
       return NextResponse.json(
@@ -142,6 +147,7 @@ export async function POST(request: Request) {
           "landing-efisys-lab-connect": "EFISYS Lab Connect",
           "landing-listas-riesgo-ebook": "Ebook Listas de Riesgo PLD/AML",
           "landing-kyc-igaming-mexico-guia": "Guía KYC Gaming/iGaming México",
+          "landing-lfpiorpi-2027": "LFPIORPI 2026-2027",
         };
         const label = sourceLabel[source] || source || "Landing";
 
