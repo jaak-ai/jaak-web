@@ -224,6 +224,35 @@ const SECTOR_GROUP_LABEL: Record<SectorGroupId, string> = Object.fromEntries(
   SECTOR_GROUPS.map((g) => [g.id, g.titulo])
 ) as Record<SectorGroupId, string>;
 
+/** Guía corta + capacidades JAAK relevantes por grupo, mostradas al
+ * seleccionar una tarjeta en "¿Tu actividad está contemplada?". */
+const SECTOR_GROUP_GUIDANCE: Record<SectorGroupId, { texto: string; tags: string[] }> = {
+  inmobiliario: {
+    texto: "Para estas actividades, revisa especialmente tus procesos de identificación, Beneficiario Controlador, firma y expediente.",
+    tags: ["KYC", "AML Screening", "Firma Digital", "Evidencia"],
+  },
+  "credito-financiero": {
+    texto: "Para estas actividades, revisa especialmente tus procesos de identificación, Beneficiario Controlador y conservación de evidencia.",
+    tags: ["KYC", "AML Screening", "Evidencia"],
+  },
+  "juegos-activos": {
+    texto: "Para estas actividades, revisa especialmente tus procesos de identificación, screening y trazabilidad.",
+    tags: ["KYC", "AML Screening", "Evidencia"],
+  },
+  "bienes-alto-valor": {
+    texto: "Para estas actividades, revisa especialmente tus procesos de identificación, screening y conservación de evidencia.",
+    tags: ["KYC", "AML Screening", "Evidencia"],
+  },
+  "servicios-profesionales": {
+    texto: "Para estas actividades, revisa especialmente tus procesos de identificación, Beneficiario Controlador, declaraciones y evidencia.",
+    tags: ["KYC", "AML Screening", "Firma Digital", "Evidencia"],
+  },
+  "otras-actividades": {
+    texto: "Para estas actividades, revisa especialmente tus procesos de identificación, screening y conservación de evidencia.",
+    tags: ["KYC", "AML Screening", "Evidencia"],
+  },
+};
+
 /** ?sector= de campaña → grupo + copy de CTA personalizado. Incluye alias
  * heredados (fintech/gaming) para no romper enlaces de campañas ya enviadas. */
 const CAMPAIGN_PARAM_MAP: Record<string, { group: SectorGroupId; ctaLabel: string; formOption: string }> = {
@@ -270,7 +299,7 @@ const ENFOQUE_CARDS: Array<{
     titulo: "Clasificación del Cliente",
     texto: "Evaluación y clasificación de Clientes o Usuarios conforme a niveles de riesgo, con controles diferenciados según el resultado.",
     fuenteLabel: "Fuente: DOF · Reglas de Carácter General",
-    jaakLabel: "Señales que pueden integrarse:",
+    jaakLabel: "Señales",
     jaakApoya: ["Identidad", "PEP", "Listas de riesgo", "Fuentes", "Geografía"],
     disclaimer: "JAAK no reemplaza el modelo interno de riesgo del sujeto obligado: aporta señales que pueden integrarse a él.",
   },
@@ -286,7 +315,6 @@ const ENFOQUE_CARDS: Array<{
     titulo: "Mecanismos automatizados",
     texto: "Herramientas capaces de apoyar la gestión de expedientes, consolidación de operaciones, clasificación de riesgo, monitoreo, históricos y sistemas de alertas.",
     fuenteLabel: "Fuente: DOF · Art. 41",
-    jaakLabel: "JAAK puede automatizar capas de:",
     jaakApoya: ["Identidad", "Screening", "Firma", "Evidencia"],
     microcopy: "Otros componentes, como perfil transaccional o modelos internos de riesgo, pueden integrarse dentro de la arquitectura de cumplimiento de cada organización.",
   },
@@ -370,31 +398,30 @@ const KYC_FLOW = ["Identificación", "Riesgo", "Perfil", "Monitoreo", "Alertas",
 /* ─────────────────────────────────────────────────────────────────────────
  * Sección 06: Checklist inteligente
  * ───────────────────────────────────────────────────────────────────────── */
-type Capa = "identidad" | "screening" | "firma" | "evidencia" | "riesgo";
+// Mismas 4 capas que la sección "Qué puede automatizar JAAK" (Identidad,
+// Riesgo, Formalización, Evidencia) — antes eran 5 categorías con nombres
+// distintos entre secciones, lo que generaba un modelo mental inconsistente.
+type Capa = "identidad" | "riesgo" | "formalizacion" | "evidencia";
 
-const CAPA_ORDER: Capa[] = ["identidad", "screening", "firma", "evidencia", "riesgo"];
+const CAPA_ORDER: Capa[] = ["identidad", "riesgo", "formalizacion", "evidencia"];
 
-const CAPA_INFO: Record<Capa, { label: string; texto: string; producto: string; needEvent?: string }> = {
-  identidad: { label: "Identidad", texto: "Esta capa puede automatizarse con JAAK KYC.", producto: "JAAK KYC", needEvent: "need_kyc_selected" },
-  screening: { label: "Screening", texto: "Puedes integrar AML Screening dentro del onboarding.", producto: "AML Screening", needEvent: "need_aml_selected" },
-  firma: { label: "Firma", texto: "JAAK puede digitalizar declaraciones y documentos.", producto: "Firma Digital JAAK", needEvent: "need_signature_selected" },
-  evidencia: { label: "Evidencia", texto: "Puedes conservar trazabilidad de las validaciones realizadas.", producto: "JAAK Evidence", needEvent: "need_evidence_selected" },
-  riesgo: {
-    label: "Gestión de riesgo",
-    texto: "Estas funciones deben integrarse a la arquitectura de cumplimiento de tu organización. JAAK puede aportar señales de identidad y screening.",
-    producto: "Señales JAAK (KYC + Screening)",
-  },
+const CAPA_INFO: Record<Capa, { label: string; texto: string; producto: string; needEvent: string }> = {
+  identidad: { label: "Identidad", texto: "Esta capa puede automatizarse con KYC Biométrico.", producto: "KYC Biométrico", needEvent: "need_kyc_selected" },
+  riesgo: { label: "Riesgo", texto: "Puedes integrar AML Screening y señales de riesgo dentro del onboarding.", producto: "AML Screening", needEvent: "need_aml_selected" },
+  formalizacion: { label: "Formalización", texto: "JAAK puede digitalizar declaraciones y documentos.", producto: "Firma Digital", needEvent: "need_signature_selected" },
+  evidencia: { label: "Evidencia", texto: "Puedes conservar trazabilidad de las validaciones realizadas.", producto: "Trazabilidad", needEvent: "need_evidence_selected" },
 };
 
-// Nota: el prompt no incluye una pregunta que dispare la capa "firma" dentro
-// de las 8 originales, aunque la lógica de resultados sí la contempla — se
-// agrega esta novena pregunta para que ese resultado sea alcanzable.
+// Nota: el prompt original no incluye una pregunta que dispare la capa
+// "formalización" dentro de las 8 originales, aunque la lógica de resultados
+// sí la contempla — se agrega esta novena pregunta para que ese resultado
+// sea alcanzable.
 const CHECKLIST_ITEMS: Array<{ text: string; capa: Capa }> = [
   { text: "¿Integras un expediente único por Cliente?", capa: "identidad" },
   { text: "¿Validas digitalmente la identidad?", capa: "identidad" },
   { text: "¿Identificas Beneficiario Controlador cuando corresponde?", capa: "identidad" },
-  { text: "¿Consultas PEP y listas de riesgo?", capa: "screening" },
-  { text: "¿Formalizas contratos o declaraciones con firma electrónica?", capa: "firma" },
+  { text: "¿Consultas PEP y listas de riesgo?", capa: "riesgo" },
+  { text: "¿Formalizas contratos o declaraciones con firma electrónica?", capa: "formalizacion" },
   { text: "¿Clasificas Clientes conforme a su riesgo?", capa: "riesgo" },
   { text: "¿Conservas históricos?", capa: "riesgo" },
   { text: "¿Cuentas con mecanismos automatizados?", capa: "riesgo" },
@@ -497,6 +524,16 @@ const FUENTES_OFICIALES: Array<{
   },
 ];
 
+/** Grupos con mapeo 1:1 claro hacia una opción del selector del formulario.
+ * Los grupos que agrupan sub-industrias distintas (juegos/activos, bienes de
+ * alto valor, otras actividades) se dejan sin precargar para no adivinar mal
+ * y afectar la calidad del lead — el usuario elige explícitamente. */
+const GROUP_TO_FORM_OPTION: Partial<Record<SectorGroupId, string>> = {
+  inmobiliario: "Inmobiliario",
+  "credito-financiero": "Crédito / Lending",
+  "servicios-profesionales": "Servicios profesionales",
+};
+
 const SECTOR_SELECT_OPTIONS = [
   "Inmobiliario",
   "Activos virtuales",
@@ -559,6 +596,12 @@ function ActivityGroups({
   campaignGroup: SectorGroupId | null;
   onSelectGroup: (id: SectorGroupId) => void;
 }) {
+  const [activeGroup, setActiveGroup] = useState<SectorGroupId | null>(campaignGroup);
+
+  useEffect(() => {
+    if (campaignGroup) setActiveGroup(campaignGroup);
+  }, [campaignGroup]);
+
   const orderedGroups = useMemo(() => {
     if (!campaignGroup) return SECTOR_GROUPS;
     const match = SECTOR_GROUPS.find((g) => g.id === campaignGroup);
@@ -566,22 +609,29 @@ function ActivityGroups({
     return [match, ...SECTOR_GROUPS.filter((g) => g.id !== campaignGroup)];
   }, [campaignGroup]);
 
+  const handleCardClick = (id: SectorGroupId) => {
+    gtmEvent("sector_card_click", { group: id, page: PAGE });
+    onSelectGroup(id);
+    setActiveGroup((prev) => (prev === id ? null : id));
+  };
+
+  const active = activeGroup ? SECTOR_GROUPS.find((g) => g.id === activeGroup) : null;
+  const guidance = activeGroup ? SECTOR_GROUP_GUIDANCE[activeGroup] : null;
+
   return (
     <div>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-8">
         {orderedGroups.map((group) => {
           const isCampaignMatch = group.id === campaignGroup;
+          const isActive = group.id === activeGroup;
           return (
             <button
               key={group.id}
               type="button"
-              onClick={() => {
-                gtmEvent("sector_card_click", { group: group.id, page: PAGE });
-                onSelectGroup(group.id);
-                scrollToId("aplicacion-industria");
-              }}
+              onClick={() => handleCardClick(group.id)}
+              aria-pressed={isActive}
               className="text-left rounded-2xl p-6 bg-white transition-all hover:-translate-y-1 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-              style={{ border: `1px solid ${isCampaignMatch ? TEAL : "#E2E8EF"}`, outlineColor: NAVY }}
+              style={{ border: `1.5px solid ${isActive ? TEAL : "#E2E8EF"}`, outlineColor: NAVY, boxShadow: isActive ? `0 0 0 3px ${TEAL}22` : "none" }}
             >
               <div className="flex items-start justify-between gap-3 mb-3">
                 <span className="text-[12px] font-black" style={{ color: "rgba(2,19,45,0.25)" }}>
@@ -613,6 +663,35 @@ function ActivityGroups({
         })}
       </div>
 
+      {active && guidance && (
+        <div className="max-w-2xl mx-auto rounded-2xl p-6 mb-8 animate-fade-in-up" style={{ background: WHITE, border: `1px solid ${TEAL}55` }}>
+          <p className="text-[11px] font-bold uppercase tracking-wide mb-2" style={{ color: "#0E7C82" }}>
+            {active.titulo}
+          </p>
+          <p className="text-[14px] leading-relaxed mb-4" style={{ color: TEXT_MUTED }}>
+            {guidance.texto}
+          </p>
+          <div className="flex flex-wrap gap-1.5 mb-5">
+            {guidance.tags.map((tag) => (
+              <span key={tag} className="text-[12px] font-semibold px-2.5 py-1 rounded-full" style={{ background: `${TEAL}14`, color: "#0E7C82" }}>
+                {tag}
+              </span>
+            ))}
+          </div>
+          <button
+            type="button"
+            onClick={() => {
+              gtmEvent("cta_review_process", { location: "actividad_contemplada", group: activeGroup, page: PAGE });
+              scrollToId("autoevaluacion");
+            }}
+            className="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-[14px] font-bold text-white transition-transform hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+            style={{ background: TEAL, color: NAVY, outlineColor: TEAL }}
+          >
+            Revisar estas capas →
+          </button>
+        </div>
+      )}
+
       <div className="text-center">
         <SourceLink
           href={SAT_ACTIVIDADES_URL}
@@ -622,6 +701,72 @@ function ActivityGroups({
           className="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-[14px] font-bold transition-colors hover:bg-black/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
           style={{ color: NAVY, border: "1px solid #E2E8EF" }}
         />
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * Sección 03 — Tarjeta progresiva de "Qué cambió"
+ * Estado normal: etiqueta, título, texto breve, línea JAAK, fuente.
+ * "Ver detalle +" revela el disclaimer/microcopy solo cuando existe.
+ * ───────────────────────────────────────────────────────────────────────── */
+function EnfoqueCard({ card }: { card: (typeof ENFOQUE_CARDS)[number] }) {
+  const [expanded, setExpanded] = useState(false);
+  const hasDetail = Boolean(card.disclaimer || card.microcopy);
+
+  return (
+    <div className="rounded-2xl p-6 bg-white hover:shadow-lg transition-shadow flex flex-col" style={{ border: "1px solid #E2E8EF" }}>
+      <span className="inline-block text-[11px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full mb-4 self-start" style={{ background: `${TEAL}14`, color: "#0E7C82" }}>
+        {card.etiqueta}
+      </span>
+      <h3 className="text-[16px] font-bold mb-2" style={{ color: NAVY }}>
+        {card.titulo}
+      </h3>
+      <p className="text-[14px] leading-relaxed mb-4" style={{ color: TEXT_MUTED }}>
+        {card.texto}
+      </p>
+
+      <div className="mt-auto pt-4" style={{ borderTop: "1px solid #EEF2F5" }}>
+        <p className="text-[12.5px] font-semibold mb-3" style={{ color: NAVY }}>
+          {card.jaakLabel || "JAAK"} → {card.jaakApoya.join(" + ")}
+        </p>
+
+        {hasDetail && expanded && (
+          <div className="mb-3 animate-fade-in-up">
+            {card.disclaimer && (
+              <p className="text-[11.5px] leading-relaxed italic mb-2" style={{ color: TEXT_MUTED }}>
+                {card.disclaimer}
+              </p>
+            )}
+            {card.microcopy && (
+              <p className="text-[11.5px] leading-relaxed mb-2" style={{ color: TEXT_MUTED }}>
+                {card.microcopy}
+              </p>
+            )}
+          </div>
+        )}
+
+        <div className="flex items-center justify-between gap-3">
+          <SourceLink
+            href={DOF_URL}
+            kind="dof"
+            label={card.fuenteLabel}
+            context={`enfoque_${card.etiqueta}`}
+            className="text-[12px] font-semibold"
+            style={{ color: "#0E7C82" }}
+          />
+          {hasDetail && (
+            <button
+              type="button"
+              onClick={() => setExpanded((v) => !v)}
+              className="text-[12px] font-semibold flex-shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+              style={{ color: TEXT_MUTED }}
+            >
+              {expanded ? "Ver menos −" : "Ver detalle +"}
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -683,32 +828,24 @@ function SmartChecklist({
 
       {touched && (
         <div className="rounded-2xl p-6 mb-8 animate-fade-in-up" style={{ background: WHITE, border: `1px solid ${TEAL}55` }}>
-          <p className="uppercase font-black text-2xl mb-4" style={{ color: NAVY }}>
-            {activeCapas.length} {activeCapas.length === 1 ? "capa identificada" : "capas identificadas"}
+          <p className="uppercase font-black text-2xl mb-5" style={{ color: NAVY }}>
+            Identificamos {activeCapas.length} {activeCapas.length === 1 ? "capa" : "capas"} a revisar
           </p>
 
-          <div className="space-y-3 mb-5">
+          <div className="grid sm:grid-cols-2 gap-3 mb-5">
             {activeCapas.map((capa) => (
-              <div key={capa} className="flex items-start gap-3 p-3 rounded-xl" style={{ background: GRAY_LIGHT }}>
-                <span className="text-[11px] font-bold uppercase tracking-wide px-2 py-1 rounded-full flex-shrink-0" style={{ background: `${TEAL}1A`, color: "#0E7C82" }}>
+              <div key={capa} className="p-3 rounded-xl" style={{ background: GRAY_LIGHT }}>
+                <p className="text-[11px] font-bold uppercase tracking-wide mb-1" style={{ color: TEXT_MUTED }}>
                   {CAPA_INFO[capa].label}
-                </span>
-                <span className="text-[13.5px] leading-relaxed" style={{ color: TEXT_MUTED }}>
-                  {CAPA_INFO[capa].texto}
-                </span>
+                </p>
+                <p className="text-[14px] font-bold" style={{ color: NAVY }}>
+                  → {CAPA_INFO[capa].producto}
+                </p>
               </div>
             ))}
           </div>
 
-          <div className="flex flex-wrap gap-x-4 gap-y-1 text-[12.5px] mb-2" style={{ color: TEXT_MUTED }}>
-            {activeCapas.map((capa) => (
-              <span key={capa}>
-                {CAPA_INFO[capa].label} → <strong style={{ color: NAVY }}>{CAPA_INFO[capa].producto}</strong>
-              </span>
-            ))}
-          </div>
-
-          <p className="text-[12px] leading-relaxed mt-4" style={{ color: TEXT_MUTED }}>
+          <p className="text-[12px] leading-relaxed" style={{ color: TEXT_MUTED }}>
             Este ejercicio es orientativo y no constituye una determinación sobre el cumplimiento de tu organización.
           </p>
         </div>
@@ -1058,8 +1195,14 @@ function MobileStickyCta() {
  * ───────────────────────────────────────────────────────────────────────── */
 export default function Lfpiorpi2027LandingClient() {
   const [selectedGroup, setSelectedGroup] = useState<SectorGroupId>("inmobiliario");
+  const [manualSector, setManualSector] = useState<SectorGroupId | null>(null);
   const [campaignParam, setCampaignParam] = useState<string | null>(null);
   const [checklistChecked, setChecklistChecked] = useState<boolean[]>(() => Array(CHECKLIST_ITEMS.length).fill(false));
+
+  const handleGroupSelect = (id: SectorGroupId) => {
+    setSelectedGroup(id);
+    setManualSector(id);
+  };
 
   useEffect(() => {
     gtmEvent("landing_view", { page: PAGE });
@@ -1079,6 +1222,7 @@ export default function Lfpiorpi2027LandingClient() {
 
   const campaignInfo = campaignParam ? CAMPAIGN_PARAM_MAP[campaignParam] : null;
   const campaignGroup = campaignInfo?.group ?? null;
+  const defaultFormSector = campaignInfo?.formOption ?? (manualSector ? GROUP_TO_FORM_OPTION[manualSector] ?? "" : "");
 
   const needFlags = useMemo(() => {
     const active = new Set<Capa>();
@@ -1087,8 +1231,8 @@ export default function Lfpiorpi2027LandingClient() {
     });
     return {
       need_kyc: active.has("identidad"),
-      need_aml: active.has("screening"),
-      need_signature: active.has("firma"),
+      need_aml: active.has("riesgo"),
+      need_signature: active.has("formalizacion"),
       need_evidence: active.has("evidencia"),
     };
   }, [checklistChecked]);
@@ -1100,8 +1244,8 @@ export default function Lfpiorpi2027LandingClient() {
       next[index] = !next[index];
       const item = CHECKLIST_ITEMS[index];
       gtmEvent("checklist_interaction", { item_index: index, checked: next[index], capa: item.capa, page: PAGE });
-      if (next[index] && CAPA_INFO[item.capa].needEvent) {
-        gtmEvent(CAPA_INFO[item.capa].needEvent as string, { page: PAGE });
+      if (next[index]) {
+        gtmEvent(CAPA_INFO[item.capa].needEvent, { page: PAGE });
       }
       if (!resultGeneratedRef.current && next.some(Boolean)) {
         resultGeneratedRef.current = true;
@@ -1162,7 +1306,7 @@ export default function Lfpiorpi2027LandingClient() {
                 Usuario y los mecanismos automatizados para quienes realizan Actividades Vulnerables.
               </p>
 
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-2 mb-3 text-[12.5px] font-semibold uppercase tracking-wide text-white/55">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-2 mb-8 text-[12.5px] font-semibold uppercase tracking-wide text-white/55">
                 <span>KYC Biométrico</span>
                 <span aria-hidden="true" style={{ color: TEAL }}>·</span>
                 <span>AML Screening</span>
@@ -1171,10 +1315,6 @@ export default function Lfpiorpi2027LandingClient() {
                 <span aria-hidden="true" style={{ color: TEAL }}>·</span>
                 <span>Evidencia</span>
               </div>
-              <p className="text-[13.5px] text-white/50 mb-8 leading-relaxed max-w-md">
-                JAAK automatiza capas críticas de identidad, screening y evidencia dentro de procesos digitales de
-                cumplimiento.
-              </p>
 
               <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-4">
                 <button
@@ -1228,7 +1368,7 @@ export default function Lfpiorpi2027LandingClient() {
               </p>
             </div>
 
-            <ActivityGroups campaignGroup={campaignGroup} onSelectGroup={setSelectedGroup} />
+            <ActivityGroups campaignGroup={campaignGroup} onSelectGroup={handleGroupSelect} />
           </div>
         </section>
 
@@ -1244,48 +1384,7 @@ export default function Lfpiorpi2027LandingClient() {
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
               {ENFOQUE_CARDS.map((card) => (
-                <div key={card.titulo} className="rounded-2xl p-6 bg-white hover:shadow-lg transition-shadow flex flex-col" style={{ border: "1px solid #E2E8EF" }}>
-                  <span className="inline-block text-[11px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full mb-4 self-start" style={{ background: `${TEAL}14`, color: "#0E7C82" }}>
-                    {card.etiqueta}
-                  </span>
-                  <h3 className="text-[16px] font-bold mb-2" style={{ color: NAVY }}>
-                    {card.titulo}
-                  </h3>
-                  <p className="text-[14px] leading-relaxed mb-4" style={{ color: TEXT_MUTED }}>
-                    {card.texto}
-                  </p>
-
-                  <div className="mt-auto pt-4" style={{ borderTop: "1px solid #EEF2F5" }}>
-                    <p className="text-[10.5px] font-bold uppercase tracking-wide mb-2" style={{ color: TEXT_MUTED }}>
-                      {card.jaakLabel || "JAAK puede apoyar con:"}
-                    </p>
-                    <div className="flex flex-wrap gap-1.5 mb-3">
-                      {card.jaakApoya.map((item) => (
-                        <span key={item} className="text-[11.5px] px-2 py-1 rounded-full" style={{ background: GRAY_LIGHT, color: NAVY }}>
-                          {item}
-                        </span>
-                      ))}
-                    </div>
-                    {card.disclaimer && (
-                      <p className="text-[11.5px] leading-relaxed italic mb-2" style={{ color: TEXT_MUTED }}>
-                        {card.disclaimer}
-                      </p>
-                    )}
-                    {card.microcopy && (
-                      <p className="text-[11.5px] leading-relaxed mb-2" style={{ color: TEXT_MUTED }}>
-                        {card.microcopy}
-                      </p>
-                    )}
-                    <SourceLink
-                      href={DOF_URL}
-                      kind="dof"
-                      label={card.fuenteLabel}
-                      context={`enfoque_${card.etiqueta}`}
-                      className="text-[12px] font-semibold"
-                      style={{ color: "#0E7C82" }}
-                    />
-                  </div>
-                </div>
+                <EnfoqueCard key={card.titulo} card={card} />
               ))}
             </div>
 
@@ -1427,11 +1526,11 @@ export default function Lfpiorpi2027LandingClient() {
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12 max-w-2xl mx-auto">
               <SectionEyebrow>Infraestructura de confianza</SectionEyebrow>
-              <h2 id="jaak-heading" className="uppercase text-3xl md:text-4xl font-black mb-5" style={{ color: NAVY }}>
-                Automatiza capas de identidad, riesgo y evidencia
+              <h2 id="jaak-heading" className="uppercase text-4xl md:text-5xl font-black mb-5" style={{ color: NAVY }}>
+                De la identidad a la evidencia
               </h2>
               <p className="text-[16px] leading-relaxed" style={{ color: TEXT_MUTED }}>
-                JAAK conecta capacidades de identidad, screening, firma y evidencia dentro de procesos digitales.
+                Automatiza capas de identidad, screening, firma y trazabilidad dentro de tu proceso.
               </p>
             </div>
 
@@ -1595,7 +1694,7 @@ export default function Lfpiorpi2027LandingClient() {
             </div>
             <IndustryGroups
               selectedGroup={selectedGroup}
-              onSelectGroup={setSelectedGroup}
+              onSelectGroup={handleGroupSelect}
               campaignGroup={campaignGroup}
               campaignCtaLabel={campaignInfo?.ctaLabel ?? null}
             />
@@ -1650,15 +1749,12 @@ export default function Lfpiorpi2027LandingClient() {
                 />
                 <div className="absolute inset-0" style={{ background: "linear-gradient(0deg, rgba(2,19,45,0.92) 10%, rgba(2,19,45,0.55) 60%, rgba(2,19,45,0.25) 100%)" }} />
                 <div className="relative z-10 h-full flex flex-col justify-end p-7">
-                  <p className="text-[13px] font-bold uppercase tracking-wide mb-2" style={{ color: "#7FE8EC" }}>
-                    Antes de 2027
-                  </p>
                   <h2 id="cta-final-heading" className="uppercase text-2xl sm:text-3xl font-black text-white mb-4 leading-snug">
-                    Identifica qué puedes automatizar hoy
+                    Identifica qué puedes automatizar desde hoy
                   </h2>
                   <p className="text-[14.5px] text-white/70 mb-6 leading-relaxed">
-                    Revisa con nuestro equipo qué capas de identidad, screening, firma y evidencia pueden integrarse
-                    a tu operación.
+                    Revisa qué capas de identidad, screening, firma y evidencia puedes preparar para los próximos
+                    hitos regulatorios.
                   </p>
                   <Link
                     href="/"
@@ -1670,7 +1766,7 @@ export default function Lfpiorpi2027LandingClient() {
                 </div>
               </div>
 
-              <ContactFormMini defaultSector={campaignInfo?.formOption ?? ""} needFlags={needFlags} />
+              <ContactFormMini defaultSector={defaultFormSector} needFlags={needFlags} />
             </div>
           </div>
         </section>
