@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { ReactNode, CSSProperties } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import { gtmEvent } from "@/components/GoogleTagManager";
@@ -600,8 +599,19 @@ function CampaignHeader() {
       style={{ background: "rgba(2,19,45,0.92)", backdropFilter: "blur(10px)", borderBottom: "1px solid rgba(255,255,255,0.08)" }}
     >
       <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
-        <Link href="/" aria-label="Ir a jaak.ai" className="flex-shrink-0 rounded-lg bg-white px-2.5 py-1.5 inline-flex items-center">
-          <Image src="/images/logos/jaak-logo-azul.png" alt="JAAK" width={90} height={36} className="h-5 sm:h-6 w-auto" priority />
+        <Link href="/" aria-label="Ir a jaak.ai" className="flex-shrink-0 inline-flex items-center gap-2 group">
+          {/* Marca de nodos — mismo lenguaje visual que la red del hero, nunca se pixela */}
+          <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true" className="transition-transform group-hover:scale-105">
+            <g stroke={TEAL} strokeWidth="1.3" strokeOpacity="0.9">
+              <line x1="5" y1="16.5" x2="11" y2="5.5" />
+              <line x1="11" y1="5.5" x2="17" y2="16.5" />
+              <line x1="5" y1="16.5" x2="17" y2="16.5" />
+            </g>
+            <circle cx="11" cy="5.5" r="2.2" fill={TEAL} />
+            <circle cx="5" cy="16.5" r="2.2" fill={NAVY} stroke={TEAL} strokeWidth="1.3" />
+            <circle cx="17" cy="16.5" r="2.2" fill={NAVY} stroke={TEAL} strokeWidth="1.3" />
+          </svg>
+          <span className="text-white font-black text-[16px] tracking-[0.08em]">JAAK</span>
         </Link>
 
         <div className="flex items-center gap-3 sm:gap-5">
