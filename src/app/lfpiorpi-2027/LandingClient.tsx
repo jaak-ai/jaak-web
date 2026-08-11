@@ -147,6 +147,48 @@ function ImpressionTracker({
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
+ * Diagrama de flujo nativo — nodos + línea teal, horizontal en desktop,
+ * vertical en mobile. Reemplaza la ilustración rasterizada del flujo JAAK:
+ * misma información, mayor velocidad y consistencia con la interfaz.
+ * ───────────────────────────────────────────────────────────────────────── */
+function ProcessFlow({ steps, background }: { steps: string[]; background: string }) {
+  const endpoints = new Set([0, steps.length - 1]);
+  return (
+    <div className="max-w-4xl mx-auto mb-12">
+      {/* Desktop: horizontal */}
+      <div className="hidden md:block relative">
+        <div className="absolute left-0 right-0 top-1.5 h-px" style={{ background: `${TEAL}55` }} aria-hidden="true" />
+        <div className="relative flex items-start justify-between">
+          {steps.map((step, i) => (
+            <div key={step} className="flex flex-col items-center gap-2.5 px-2" style={{ background }}>
+              <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ background: endpoints.has(i) ? NAVY : TEAL, border: `2px solid ${TEAL}` }} />
+              <span className="text-[11px] font-bold uppercase tracking-wide text-center whitespace-nowrap" style={{ color: endpoints.has(i) ? TEXT_MUTED : NAVY }}>
+                {step}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Mobile: vertical */}
+      <div className="md:hidden flex flex-col">
+        {steps.map((step, i) => (
+          <div key={step} className="flex items-center gap-3 relative">
+            {i < steps.length - 1 && (
+              <div className="absolute left-[5px] top-4 bottom-0 w-px" style={{ background: `${TEAL}55` }} aria-hidden="true" />
+            )}
+            <span className="w-3 h-3 rounded-full flex-shrink-0 relative z-10" style={{ background: endpoints.has(i) ? NAVY : TEAL, border: `2px solid ${TEAL}` }} />
+            <span className="text-[13px] font-bold uppercase tracking-wide py-2" style={{ color: endpoints.has(i) ? TEXT_MUTED : NAVY }}>
+              {step}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
  * Encabezado de sección reutilizable
  * ───────────────────────────────────────────────────────────────────────── */
 function SectionEyebrow({ children, dark }: { children: ReactNode; dark?: boolean }) {
@@ -284,14 +326,14 @@ const ENFOQUE_CARDS: Array<{
     titulo: "Expediente del Cliente o Usuario",
     texto: "Integración, conservación y actualización de la información utilizada para conocer al Cliente o Usuario.",
     fuenteLabel: "Fuente: DOF · Reglas de Carácter General",
-    jaakApoya: ["KYC biométrico", "Validación documental", "Fuentes oficiales"],
+    jaakApoya: ["KYC", "Fuentes"],
   },
   {
     etiqueta: "Beneficiario Controlador",
     titulo: "Identificar quién ejerce el control",
     texto: "Procesos para identificar y documentar a la persona física que finalmente ejerce control cuando corresponda.",
     fuenteLabel: "Fuente: DOF · Reglas de Carácter General",
-    jaakApoya: ["KYC", "AML Screening", "Firma Digital", "Evidencia"],
+    jaakApoya: ["Identidad", "Screening", "Evidencia"],
     disclaimer: "JAAK no determina automáticamente al Beneficiario Controlador: apoya la identificación y documentación del proceso.",
   },
   {
@@ -300,7 +342,7 @@ const ENFOQUE_CARDS: Array<{
     texto: "Evaluación y clasificación de Clientes o Usuarios conforme a niveles de riesgo, con controles diferenciados según el resultado.",
     fuenteLabel: "Fuente: DOF · Reglas de Carácter General",
     jaakLabel: "Señales",
-    jaakApoya: ["Identidad", "PEP", "Listas de riesgo", "Fuentes", "Geografía"],
+    jaakApoya: ["Identidad", "PEP", "Listas"],
     disclaimer: "JAAK no reemplaza el modelo interno de riesgo del sujeto obligado: aporta señales que pueden integrarse a él.",
   },
   {
@@ -323,7 +365,7 @@ const ENFOQUE_CARDS: Array<{
     titulo: "Poder demostrar",
     texto: "Conservar información, históricos y evidencia que permita sustentar los procesos y controles realizados.",
     fuenteLabel: "Fuente: DOF · Reglas de Carácter General",
-    jaakApoya: ["Trazabilidad", "Registro de validaciones", "Firma", "Evidencia digital"],
+    jaakApoya: ["Trazabilidad"],
   },
 ];
 
@@ -393,7 +435,8 @@ const JAAK_MODULES: Array<{
 /* ─────────────────────────────────────────────────────────────────────────
  * Sección intermedia — KYC continuo (statement visual, sin cards)
  * ───────────────────────────────────────────────────────────────────────── */
-const KYC_FLOW = ["Identificación", "Riesgo", "Perfil", "Monitoreo", "Alertas", "Histórico"];
+const KYC_FLOW = ["Identidad", "Riesgo", "Perfil", "Monitoreo", "Alertas", "Histórico"];
+const JAAK_FLOW = ["Cliente", "Identidad", "Fuentes", "Screening", "Firma", "Evidencia", "Tu proceso"];
 
 /* ─────────────────────────────────────────────────────────────────────────
  * Sección 06: Checklist inteligente
@@ -405,11 +448,11 @@ type Capa = "identidad" | "riesgo" | "formalizacion" | "evidencia";
 
 const CAPA_ORDER: Capa[] = ["identidad", "riesgo", "formalizacion", "evidencia"];
 
-const CAPA_INFO: Record<Capa, { label: string; texto: string; producto: string; needEvent: string }> = {
-  identidad: { label: "Identidad", texto: "Esta capa puede automatizarse con KYC Biométrico.", producto: "KYC Biométrico", needEvent: "need_kyc_selected" },
-  riesgo: { label: "Riesgo", texto: "Puedes integrar AML Screening y señales de riesgo dentro del onboarding.", producto: "AML Screening", needEvent: "need_aml_selected" },
-  formalizacion: { label: "Formalización", texto: "JAAK puede digitalizar declaraciones y documentos.", producto: "Firma Digital", needEvent: "need_signature_selected" },
-  evidencia: { label: "Evidencia", texto: "Puedes conservar trazabilidad de las validaciones realizadas.", producto: "Trazabilidad", needEvent: "need_evidence_selected" },
+const CAPA_INFO: Record<Capa, { label: string; needEvent: string }> = {
+  identidad: { label: "Identidad", needEvent: "need_kyc_selected" },
+  riesgo: { label: "Riesgo", needEvent: "need_aml_selected" },
+  formalizacion: { label: "Formalización", needEvent: "need_signature_selected" },
+  evidencia: { label: "Evidencia", needEvent: "need_evidence_selected" },
 };
 
 // Nota: el prompt original no incluye una pregunta que dispare la capa
@@ -708,65 +751,60 @@ function ActivityGroups({
 
 /* ─────────────────────────────────────────────────────────────────────────
  * Sección 03 — Tarjeta progresiva de "Qué cambió"
- * Estado normal: etiqueta, título, texto breve, línea JAAK, fuente.
- * "Ver detalle +" revela el disclaimer/microcopy solo cuando existe.
+ * Estado normal: etiqueta, título, línea JAAK, fuente — primera lectura en
+ * segundos. "Ver detalle +" revela la explicación regulatoria completa
+ * (texto, disclaimer, microcopy).
  * ───────────────────────────────────────────────────────────────────────── */
 function EnfoqueCard({ card }: { card: (typeof ENFOQUE_CARDS)[number] }) {
   const [expanded, setExpanded] = useState(false);
-  const hasDetail = Boolean(card.disclaimer || card.microcopy);
 
   return (
     <div className="rounded-2xl p-6 bg-white hover:shadow-lg transition-shadow flex flex-col" style={{ border: "1px solid #E2E8EF" }}>
       <span className="inline-block text-[11px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full mb-4 self-start" style={{ background: `${TEAL}14`, color: "#0E7C82" }}>
         {card.etiqueta}
       </span>
-      <h3 className="text-[16px] font-bold mb-2" style={{ color: NAVY }}>
+      <h3 className="text-[16px] font-bold mb-3" style={{ color: NAVY }}>
         {card.titulo}
       </h3>
-      <p className="text-[14px] leading-relaxed mb-4" style={{ color: TEXT_MUTED }}>
-        {card.texto}
+      <p className="text-[13px] font-semibold mb-4" style={{ color: NAVY }}>
+        {card.jaakLabel || "JAAK"} → {card.jaakApoya.join(" + ")}
       </p>
 
-      <div className="mt-auto pt-4" style={{ borderTop: "1px solid #EEF2F5" }}>
-        <p className="text-[12.5px] font-semibold mb-3" style={{ color: NAVY }}>
-          {card.jaakLabel || "JAAK"} → {card.jaakApoya.join(" + ")}
-        </p>
-
-        {hasDetail && expanded && (
-          <div className="mb-3 animate-fade-in-up">
-            {card.disclaimer && (
-              <p className="text-[11.5px] leading-relaxed italic mb-2" style={{ color: TEXT_MUTED }}>
-                {card.disclaimer}
-              </p>
-            )}
-            {card.microcopy && (
-              <p className="text-[11.5px] leading-relaxed mb-2" style={{ color: TEXT_MUTED }}>
-                {card.microcopy}
-              </p>
-            )}
-          </div>
-        )}
-
-        <div className="flex items-center justify-between gap-3">
-          <SourceLink
-            href={DOF_URL}
-            kind="dof"
-            label={card.fuenteLabel}
-            context={`enfoque_${card.etiqueta}`}
-            className="text-[12px] font-semibold"
-            style={{ color: "#0E7C82" }}
-          />
-          {hasDetail && (
-            <button
-              type="button"
-              onClick={() => setExpanded((v) => !v)}
-              className="text-[12px] font-semibold flex-shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-              style={{ color: TEXT_MUTED }}
-            >
-              {expanded ? "Ver menos −" : "Ver detalle +"}
-            </button>
+      {expanded && (
+        <div className="mb-4 pt-4 animate-fade-in-up" style={{ borderTop: "1px solid #EEF2F5" }}>
+          <p className="text-[13px] leading-relaxed mb-2" style={{ color: TEXT_MUTED }}>
+            {card.texto}
+          </p>
+          {card.disclaimer && (
+            <p className="text-[11.5px] leading-relaxed italic mb-2" style={{ color: TEXT_MUTED }}>
+              {card.disclaimer}
+            </p>
+          )}
+          {card.microcopy && (
+            <p className="text-[11.5px] leading-relaxed mb-2" style={{ color: TEXT_MUTED }}>
+              {card.microcopy}
+            </p>
           )}
         </div>
+      )}
+
+      <div className="mt-auto pt-3 flex items-center justify-between gap-3" style={{ borderTop: expanded ? "none" : "1px solid #EEF2F5" }}>
+        <SourceLink
+          href={DOF_URL}
+          kind="dof"
+          label={card.fuenteLabel}
+          context={`enfoque_${card.etiqueta}`}
+          className="text-[12px] font-semibold"
+          style={{ color: "#0E7C82" }}
+        />
+        <button
+          type="button"
+          onClick={() => setExpanded((v) => !v)}
+          className="text-[12px] font-semibold flex-shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+          style={{ color: TEXT_MUTED }}
+        >
+          {expanded ? "Ver menos −" : "Ver detalle +"}
+        </button>
       </div>
     </div>
   );
@@ -827,25 +865,30 @@ function SmartChecklist({
       </div>
 
       {touched && (
-        <div className="rounded-2xl p-6 mb-8 animate-fade-in-up" style={{ background: WHITE, border: `1px solid ${TEAL}55` }}>
-          <p className="uppercase font-black text-2xl mb-5" style={{ color: NAVY }}>
-            Identificamos {activeCapas.length} {activeCapas.length === 1 ? "capa" : "capas"} a revisar
+        <div className="max-w-sm mx-auto rounded-2xl p-6 sm:p-8 mb-8 animate-fade-in-up" style={{ background: OFF_WHITE, border: `1px solid ${TEAL}55` }}>
+          <p className="text-[11px] font-bold uppercase tracking-wide mb-4" style={{ color: TEXT_MUTED }}>
+            Tu revisión
           </p>
-
-          <div className="grid sm:grid-cols-2 gap-3 mb-5">
-            {activeCapas.map((capa) => (
-              <div key={capa} className="p-3 rounded-xl" style={{ background: GRAY_LIGHT }}>
-                <p className="text-[11px] font-bold uppercase tracking-wide mb-1" style={{ color: TEXT_MUTED }}>
-                  {CAPA_INFO[capa].label}
-                </p>
-                <p className="text-[14px] font-bold" style={{ color: NAVY }}>
-                  → {CAPA_INFO[capa].producto}
-                </p>
-              </div>
-            ))}
+          <div className="mb-6">
+            {CAPA_ORDER.map((capa) => {
+              const active = activeCapas.includes(capa);
+              return (
+                <div key={capa} className="flex items-center justify-between py-2.5" style={{ borderBottom: "1px solid #E2E8EF" }}>
+                  <span className="text-[13.5px] font-bold uppercase tracking-wide" style={{ color: active ? NAVY : TEXT_MUTED }}>
+                    {CAPA_INFO[capa].label}
+                  </span>
+                  <span className="text-[16px] font-black" style={{ color: active ? TEAL : "#CBD5E1" }} aria-hidden="true">
+                    {active ? "✓" : "—"}
+                  </span>
+                  <span className="sr-only">{active ? "sí" : "no"}</span>
+                </div>
+              );
+            })}
           </div>
-
-          <p className="text-[12px] leading-relaxed" style={{ color: TEXT_MUTED }}>
+          <p className="uppercase font-black text-xl mb-2" style={{ color: NAVY }}>
+            {activeCapas.length} {activeCapas.length === 1 ? "capa que puedes revisar" : "capas que puedes revisar"}
+          </p>
+          <p className="text-[11.5px] leading-relaxed" style={{ color: TEXT_MUTED }}>
             Este ejercicio es orientativo y no constituye una determinación sobre el cumplimiento de tu organización.
           </p>
         </div>
@@ -891,7 +934,7 @@ function IndustryGroups({
     <ImpressionTracker eventName="product_mapping_view" payload={{ page: PAGE }}>
       <div
         className="flex flex-wrap gap-2 mb-8 p-1.5 rounded-2xl justify-center"
-        style={{ background: GRAY_LIGHT, border: "1px solid #E2E8EF" }}
+        style={{ background: WHITE, border: "1px solid #E2E8EF" }}
         role="tablist"
         aria-label="Seleccionar grupo sectorial"
       >
@@ -924,7 +967,7 @@ function IndustryGroups({
         role="tabpanel"
         aria-labelledby={`industry-tab-${selectedGroup}`}
         className="max-w-4xl mx-auto rounded-2xl p-8 animate-fade-in-up"
-        style={{ background: GRAY_LIGHT, border: "1px solid #E2E8EF" }}
+        style={{ background: WHITE, border: "1px solid #E2E8EF" }}
       >
         <h3 className="text-xl sm:text-2xl font-black mb-6" style={{ color: NAVY }}>
           {SECTOR_GROUP_LABEL[selectedGroup]}
@@ -932,7 +975,7 @@ function IndustryGroups({
 
         <div className="grid sm:grid-cols-2 gap-5 mb-6">
           {detail.blocks.map((block) => (
-            <div key={block.titulo || "default"} className="rounded-xl p-5 bg-white" style={{ border: "1px solid #E2E8EF" }}>
+            <div key={block.titulo || "default"} className="rounded-xl p-5" style={{ background: OFF_WHITE, border: "1px solid #E2E8EF" }}>
               {block.titulo && (
                 <p className="text-[12px] font-bold uppercase tracking-wide mb-3" style={{ color: "#0E7C82" }}>
                   {block.titulo}
@@ -1272,23 +1315,23 @@ export default function Lfpiorpi2027LandingClient() {
             aria-hidden="true"
           />
 
-          {/* Fotografía a sangre — solo desktop, corte editorial ~45% con fade a navy */}
-          <div className="hidden lg:block absolute inset-y-0 right-0 w-[45%]" aria-hidden="true">
+          {/* Fotografía a sangre — solo desktop, ~38% con fade a navy, sin marco */}
+          <div className="hidden lg:block absolute inset-y-0 right-0 w-[38%]" aria-hidden="true">
             <div className="relative h-full w-full">
               <Image
                 src="/images/lfpiorpi-2027/hero-compliance.jpg"
                 alt=""
                 fill
-                sizes="45vw"
+                sizes="38vw"
                 className="object-cover"
                 priority
               />
-              <div className="absolute inset-0" style={{ background: `linear-gradient(90deg, ${NAVY} 0%, ${NAVY}CC 18%, transparent 42%)` }} />
+              <div className="absolute inset-0" style={{ background: `linear-gradient(90deg, ${NAVY} 0%, ${NAVY}CC 14%, transparent 38%)` }} />
             </div>
           </div>
 
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:pl-8">
-            <div className="lg:max-w-[54%] pt-28 pb-10 lg:pb-24">
+            <div className="lg:max-w-[62%] pt-28 pb-10 lg:pb-24">
               <SectionEyebrow dark>Nuevas Reglas LFPIORPI · 2026–2027</SectionEyebrow>
 
               <h1 id="hero-heading" className="uppercase text-5xl md:text-6xl font-black text-white mb-6 leading-[1.05]">
@@ -1339,23 +1382,24 @@ export default function Lfpiorpi2027LandingClient() {
 
               <p className="text-[12.5px] text-white/40">DOF · Acuerdo 115/2026 · 7 de agosto de 2026</p>
 
-              {/* Fotografía contenida — mobile/tablet, no se derrama */}
-              <div className="lg:hidden relative rounded-3xl overflow-hidden mt-10" style={{ border: "1px solid rgba(255,255,255,0.12)", boxShadow: "0 30px 80px rgba(0,0,0,0.35)" }}>
+              {/* Fotografía contenida — mobile/tablet, sin marco, con fade inferior */}
+              <div className="lg:hidden relative rounded-2xl overflow-hidden mt-10">
                 <Image
                   src="/images/lfpiorpi-2027/hero-compliance.jpg"
-                  alt="Profesional revisando su identidad y expediente digital desde el celular"
+                  alt="Profesional de cumplimiento revisando un expediente digital"
                   width={1600}
                   height={900}
                   sizes="100vw"
                   className="w-full h-auto"
                 />
+                <div className="absolute inset-x-0 bottom-0 h-16" style={{ background: `linear-gradient(0deg, ${NAVY} 0%, transparent 100%)` }} aria-hidden="true" />
               </div>
             </div>
           </div>
         </section>
 
         {/* ── 02. ¿Tu actividad está contemplada? ──────────────────────── */}
-        <section id="mi-actividad" className="py-20 bg-white scroll-mt-20" aria-labelledby="actividad-heading">
+        <section id="mi-actividad" className="py-20 scroll-mt-20" style={{ background: OFF_WHITE }} aria-labelledby="actividad-heading">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12 max-w-3xl mx-auto">
               <SectionEyebrow>Actividades vulnerables</SectionEyebrow>
@@ -1373,7 +1417,7 @@ export default function Lfpiorpi2027LandingClient() {
         </section>
 
         {/* ── 03. Qué cambió ────────────────────────────────────────────── */}
-        <section id="que-cambia" className="py-20 scroll-mt-20" style={{ background: OFF_WHITE }} aria-labelledby="enfoque-heading">
+        <section id="que-cambia" className="py-20 bg-white scroll-mt-20" aria-labelledby="enfoque-heading">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14 max-w-3xl mx-auto">
               <SectionEyebrow>Nuevo enfoque</SectionEyebrow>
@@ -1404,25 +1448,21 @@ export default function Lfpiorpi2027LandingClient() {
           </div>
         </section>
 
-        {/* ── KYC continuo — statement visual, sin cards ─────────────────── */}
-        <section id="conocimiento-continuo" className="py-20 bg-white" aria-labelledby="kyc-continuo-heading">
+        {/* ── KYC continuo — pausa editorial, sin cards ni imagen ────────── */}
+        <section id="conocimiento-continuo" className="py-24" style={{ background: NAVY }} aria-labelledby="kyc-continuo-heading">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <SectionEyebrow>Conocimiento continuo</SectionEyebrow>
-            <h2 id="kyc-continuo-heading" className="uppercase text-4xl md:text-5xl font-black mb-10 leading-tight max-w-2xl mx-auto" style={{ color: NAVY }}>
+            <SectionEyebrow dark>Conocimiento continuo</SectionEyebrow>
+            <h2 id="kyc-continuo-heading" className="uppercase text-4xl md:text-5xl font-black text-white mb-12 leading-tight max-w-2xl mx-auto">
               El KYC no termina cuando el cliente entra
             </h2>
 
-            <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-3 mb-8">
+            <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-4 mb-10">
               {KYC_FLOW.map((step, i) => (
-                <div key={step} className="flex items-center gap-2">
-                  <span className="text-[15px] sm:text-[17px] font-black uppercase tracking-wide" style={{ color: i === 0 ? NAVY : TEXT_MUTED }}>
-                    {step}
+                <div key={step} className="flex items-center gap-3">
+                  <span className="text-[13px] sm:text-[15px] font-black uppercase tracking-wide whitespace-nowrap text-white">
+                    <span style={{ color: "rgba(255,255,255,0.35)" }}>{String(i + 1).padStart(2, "0")}</span> {step}
                   </span>
-                  {i < KYC_FLOW.length - 1 && (
-                    <span aria-hidden="true" className="text-lg font-black" style={{ color: TEAL }}>
-                      →
-                    </span>
-                  )}
+                  {i < KYC_FLOW.length - 1 && <span aria-hidden="true" className="w-6 sm:w-10 h-px flex-shrink-0" style={{ background: TEAL }} />}
                 </div>
               ))}
             </div>
@@ -1433,7 +1473,7 @@ export default function Lfpiorpi2027LandingClient() {
               label="Fuente: DOF · Arts. 23 Ter a 23 Ter 5 y Art. 41"
               context="kyc_continuo"
               className="text-[13px] font-semibold"
-              style={{ color: "#0E7C82" }}
+              style={{ color: "#7FE8EC" }}
             />
           </div>
         </section>
@@ -1522,7 +1562,7 @@ export default function Lfpiorpi2027LandingClient() {
         </section>
 
         {/* ── 05. Qué puede automatizar JAAK ────────────────────────────── */}
-        <section id="que-automatiza-jaak" className="py-20 bg-white scroll-mt-20" aria-labelledby="jaak-heading">
+        <section id="que-automatiza-jaak" className="py-20 scroll-mt-20" style={{ background: OFF_WHITE }} aria-labelledby="jaak-heading">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12 max-w-2xl mx-auto">
               <SectionEyebrow>Infraestructura de confianza</SectionEyebrow>
@@ -1534,23 +1574,11 @@ export default function Lfpiorpi2027LandingClient() {
               </p>
             </div>
 
-            <div className="rounded-2xl overflow-hidden mb-4 max-w-4xl mx-auto" style={{ border: "1px solid #E2E8EF", background: OFF_WHITE }}>
-              <Image
-                src="/images/lfpiorpi-2027/flujo-identidad-riesgo-evidencia.png"
-                alt="Flujo: Cliente → KYC Biométrico → Fuentes Oficiales → AML Screening → Firma Digital → Evidencia y Trazabilidad → Proceso de cumplimiento"
-                width={1600}
-                height={900}
-                sizes="(min-width: 1024px) 900px, 100vw"
-                className="w-full h-auto"
-              />
-            </div>
-            <p className="text-center text-[12px] mb-12" style={{ color: TEXT_MUTED }}>
-              Cliente → KYC Biométrico → Fuentes Oficiales → AML Screening → Firma Digital → Evidencia y Trazabilidad → Tu proceso de cumplimiento
-            </p>
+            <ProcessFlow steps={JAAK_FLOW} background={OFF_WHITE} />
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
               {JAAK_MODULES.map((mod) => (
-                <div key={mod.num} className="rounded-2xl p-6 h-full flex flex-col" style={{ background: GRAY_LIGHT, border: "1px solid #E2E8EF" }}>
+                <div key={mod.num} className="rounded-2xl p-6 h-full flex flex-col" style={{ background: WHITE, border: "1px solid #E2E8EF" }}>
                   <div className="text-3xl font-black mb-3" style={{ color: "rgba(2,19,45,0.15)" }}>
                     {mod.num}
                   </div>
@@ -1596,7 +1624,7 @@ export default function Lfpiorpi2027LandingClient() {
         </section>
 
         {/* ── 06. Autoevaluación / checklist inteligente ───────────────── */}
-        <section id="autoevaluacion" className="py-20 scroll-mt-20" style={{ background: OFF_WHITE }} aria-labelledby="autoeval-heading">
+        <section id="autoevaluacion" className="py-20 bg-white scroll-mt-20" aria-labelledby="autoeval-heading">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <SectionEyebrow>Evalúa tu operación</SectionEyebrow>
@@ -1684,7 +1712,7 @@ export default function Lfpiorpi2027LandingClient() {
         </section>
 
         {/* ── 08. Aplicación por industria ──────────────────────────────── */}
-        <section id="aplicacion-industria" className="py-20 bg-white scroll-mt-20" aria-labelledby="sectores-heading">
+        <section id="aplicacion-industria" className="py-20 scroll-mt-20" style={{ background: OFF_WHITE }} aria-labelledby="sectores-heading">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14 max-w-2xl mx-auto">
               <SectionEyebrow>Aplicación por industria</SectionEyebrow>
@@ -1735,35 +1763,25 @@ export default function Lfpiorpi2027LandingClient() {
           </div>
         </section>
 
-        {/* ── 10. CTA final ─────────────────────────────────────────────── */}
-        <section id="hablemos" className="py-20 scroll-mt-20" style={{ background: `linear-gradient(135deg, ${NAVY} 0%, ${NAVY_SOFT} 100%)` }} aria-labelledby="cta-final-heading">
+        {/* ── 10. CTA final — navy + tipografía + formulario, sin fotografía ── */}
+        <section id="hablemos" className="py-20 scroll-mt-20" style={{ background: NAVY }} aria-labelledby="cta-final-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-8 items-stretch">
-              <div className="relative rounded-2xl overflow-hidden min-h-[320px]" style={{ border: "1px solid rgba(255,255,255,0.12)" }}>
-                <Image
-                  src="/images/lfpiorpi-2027/cierre-trazabilidad.jpg"
-                  alt="Profesional revisando un expediente digital ya documentado"
-                  fill
-                  sizes="(min-width: 1024px) 500px, 100vw"
-                  className="object-cover"
-                />
-                <div className="absolute inset-0" style={{ background: "linear-gradient(0deg, rgba(2,19,45,0.92) 10%, rgba(2,19,45,0.55) 60%, rgba(2,19,45,0.25) 100%)" }} />
-                <div className="relative z-10 h-full flex flex-col justify-end p-7">
-                  <h2 id="cta-final-heading" className="uppercase text-2xl sm:text-3xl font-black text-white mb-4 leading-snug">
-                    Identifica qué puedes automatizar desde hoy
-                  </h2>
-                  <p className="text-[14.5px] text-white/70 mb-6 leading-relaxed">
-                    Revisa qué capas de identidad, screening, firma y evidencia puedes preparar para los próximos
-                    hitos regulatorios.
-                  </p>
-                  <Link
-                    href="/"
-                    className="inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-[13.5px] font-semibold text-white transition-colors hover:bg-white/10 self-start focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                    style={{ border: "1px solid rgba(255,255,255,0.3)" }}
-                  >
-                    Conocer JAAK
-                  </Link>
-                </div>
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <div>
+                <SectionEyebrow dark>Próximos hitos · 2026–2027</SectionEyebrow>
+                <h2 id="cta-final-heading" className="uppercase text-4xl sm:text-5xl font-black text-white mb-5 leading-[1.05]">
+                  Identifica qué puedes automatizar desde hoy
+                </h2>
+                <p className="text-[15px] text-white/65 mb-6 leading-relaxed max-w-md">
+                  Revisa qué capas de identidad, screening, firma y evidencia puedes integrar a tu operación.
+                </p>
+                <Link
+                  href="/"
+                  className="inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-[13.5px] font-semibold text-white transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                  style={{ border: "1px solid rgba(255,255,255,0.3)" }}
+                >
+                  Conocer JAAK
+                </Link>
               </div>
 
               <ContactFormMini defaultSector={defaultFormSector} needFlags={needFlags} />
