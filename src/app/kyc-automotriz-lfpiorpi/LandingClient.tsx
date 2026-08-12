@@ -12,7 +12,10 @@ import { WHATSAPP_NUMBER } from "@/lib/whatsapp";
 import { automotiveLfpiorpi2026, formatMxn, formatUma } from "@/lib/automotiveLfpiorpi";
 
 /* ─────────────────────────────────────────────────────────────────────────
- * Marca e identidad visual — mismos tokens que /lfpiorpi-2027
+ * Marca e identidad visual — mismos tokens que /lfpiorpi-2027, más un
+ * acento cálido "sectorial" (ignición/cromo) reservado para esta landing:
+ * señala contenido regulatorio y las acciones de mayor intención, sin
+ * reemplazar el teal como color de marca en el resto del sitio.
  * ───────────────────────────────────────────────────────────────────────── */
 const NAVY = "#02132D";
 const NAVY_SOFT = "#0B1E3C";
@@ -20,6 +23,19 @@ const TEAL = "#1ECAD3";
 const OFF_WHITE = "#F5F5F3";
 const GRAY_LIGHT = "#EEF2F5";
 const TEXT_MUTED = "#5B6472";
+
+const AUTO_ORANGE = "#FF6B35";
+const AUTO_AMBER = "#FFB020";
+const AUTO_GRADIENT = `linear-gradient(135deg, ${AUTO_ORANGE} 0%, ${AUTO_AMBER} 100%)`;
+const BRAND_AUTO_GRADIENT = `linear-gradient(90deg, ${TEAL} 0%, ${AUTO_ORANGE} 100%)`;
+const ROAD_LINE = `repeating-linear-gradient(90deg, ${AUTO_ORANGE} 0px, ${AUTO_ORANGE} 26px, transparent 26px, transparent 54px)`;
+
+const gradientTextStyle: CSSProperties = {
+  backgroundImage: AUTO_GRADIENT,
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+  backgroundClip: "text",
+};
 
 const PAGE = "kyc-automotriz-lfpiorpi";
 
@@ -198,16 +214,28 @@ function SourceLink({
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
- * Encabezado de sección reutilizable
+ * Encabezado de sección reutilizable — el tono distingue de un vistazo el
+ * texto de la ley ("reg", acento ámbar/ignición) del producto JAAK
+ * ("product", teal de marca). Es señal funcional, no solo decoración.
  * ───────────────────────────────────────────────────────────────────────── */
-function SectionEyebrow({ children, dark }: { children: ReactNode; dark?: boolean }) {
+function SectionEyebrow({
+  children,
+  dark,
+  tone = "product",
+}: {
+  children: ReactNode;
+  dark?: boolean;
+  tone?: "reg" | "product";
+}) {
+  const accent = tone === "reg" ? AUTO_ORANGE : TEAL;
+  const textColor = tone === "reg" ? (dark ? "#FFC98A" : "#B45309") : dark ? "#7FE8EC" : "#0E7C82";
   return (
     <div
       className="inline-flex items-center gap-2 px-3 py-1 rounded-full mb-5"
-      style={{ background: dark ? "rgba(30,202,211,0.1)" : `${TEAL}14`, border: `1px solid ${TEAL}55` }}
+      style={{ background: dark ? `${accent}1A` : `${accent}14`, border: `1px solid ${accent}55` }}
     >
-      <span className="w-1.5 h-1.5 rounded-full" style={{ background: TEAL }} />
-      <span className="text-[12px] font-semibold uppercase tracking-wide" style={{ color: dark ? "#7FE8EC" : "#0E7C82" }}>
+      <span className="w-1.5 h-1.5 rounded-full" style={{ background: accent }} />
+      <span className="text-[12px] font-semibold uppercase tracking-wide" style={{ color: textColor }}>
         {children}
       </span>
     </div>
@@ -232,6 +260,62 @@ function WhatsAppFloatingButton() {
         <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.71.45 3.38 1.3 4.86L2.05 22l5.36-1.4a9.9 9.9 0 004.63 1.18h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.86 9.86 0 0012.04 2zm5.83 14.14c-.24.68-1.4 1.3-1.93 1.38-.5.08-1.12.11-1.81-.11-.42-.13-.96-.31-1.65-.6-2.9-1.25-4.8-4.17-4.94-4.36-.14-.19-1.18-1.57-1.18-3 0-1.42.75-2.12 1.01-2.41.27-.29.58-.36.78-.36l.56.01c.18.01.42-.07.65.5.24.58.82 2 .89 2.15.07.15.12.32.02.51-.09.19-.14.31-.28.48-.14.16-.29.36-.42.49-.14.14-.28.29-.12.57.16.28.72 1.19 1.55 1.93 1.06.95 1.96 1.24 2.24 1.38.28.14.44.12.6-.07.16-.19.68-.79.87-1.06.18-.28.36-.23.6-.14.24.09 1.53.72 1.79.85.26.13.44.19.5.3.06.11.06.63-.18 1.31z" />
       </svg>
     </a>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+ * RevealOnScroll — anima entrada (fade + slide) la primera vez que el
+ * bloque entra en viewport. Siempre visible por defecto (SSR/no-JS friendly)
+ * y respeta prefers-reduced-motion vía la variante motion-safe de Tailwind.
+ * ───────────────────────────────────────────────────────────────────────── */
+function RevealOnScroll({
+  children,
+  className,
+  style,
+  delayMs = 0,
+}: {
+  children: ReactNode;
+  className?: string;
+  style?: CSSProperties;
+  delayMs?: number;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [armed, setArmed] = useState(false);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const raf = requestAnimationFrame(() => setArmed(true));
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !armed) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setVisible(true);
+            observer.disconnect();
+          }
+        }
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [armed]);
+
+  return (
+    <div
+      ref={ref}
+      className={`motion-safe:transition-all motion-safe:duration-700 motion-safe:ease-out ${
+        armed && !visible ? "motion-safe:opacity-0 motion-safe:translate-y-4" : "opacity-100 translate-y-0"
+      } ${className ?? ""}`}
+      style={{ transitionDelay: `${delayMs}ms`, ...style }}
+    >
+      {children}
+    </div>
   );
 }
 
@@ -324,18 +408,20 @@ const RESPONSABILIDAD_ORGANIZACION = [
   "Definir el tratamiento jurídico/regulatorio de cada operación",
 ];
 
-const TIMELINE_ITEMS: Array<{ id: string; fecha: string; titulo: string; texto: string; destacados?: string[] }> = [
+const TIMELINE_ITEMS: Array<{ id: string; fecha: string; titulo: string; texto: string; color: string; destacados?: string[] }> = [
   {
     id: "2012",
     fecha: "2012–2013",
     titulo: "LFPIORPI + Reglamento + Reglas de Carácter General",
     texto: "Entra en vigor el marco original: la ley, su reglamento y las reglas que hoy siguen rigiendo el padrón de Actividades Vulnerables.",
+    color: "#94A3B8",
   },
   {
     id: "2025",
     fecha: "Julio 2025",
     titulo: "Reforma de la LFPIORPI",
     texto: "Fortalece identificación y conocimiento del cliente, incorpora al Beneficiario Controlador, refuerza la conservación de evidencia, el enfoque basado en riesgo, la capacitación, los mecanismos automatizados y la auditoría.",
+    color: TEAL,
     destacados: [
       "Fortalecimiento de identificación y conocimiento del cliente",
       "Beneficiario Controlador",
@@ -351,6 +437,7 @@ const TIMELINE_ITEMS: Array<{ id: string; fecha: string; titulo: string; texto: 
     fecha: "Marzo 2026",
     titulo: "Reforma al Reglamento de la LFPIORPI",
     texto: "Precisa reglas para la determinación de montos, la acumulación de operaciones, Personas Políticamente Expuestas y la armonización con la reforma legal y los procedimientos de Actividades Vulnerables.",
+    color: AUTO_ORANGE,
     destacados: [
       "Reglas para determinación de montos",
       "Acumulación",
@@ -480,8 +567,68 @@ function FAQAccordion() {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
+ * ThresholdBars — comparación visual animada de los tres montos, con
+ * degradado de marca a acento sectorial. Se anima una sola vez al entrar
+ * en viewport (misma mecánica que RevealOnScroll, sin duplicar lógica).
+ * ───────────────────────────────────────────────────────────────────────── */
+function ThresholdBars() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setVisible(true);
+            observer.disconnect();
+          }
+        }
+      },
+      { threshold: 0.25 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  const max = automotiveLfpiorpi2026.noticeMxn;
+  const bars = [
+    { label: "Identificación", value: automotiveLfpiorpi2026.identificationMxn, gradient: `linear-gradient(90deg, ${TEAL}, ${TEAL})` },
+    { label: "Aviso", value: automotiveLfpiorpi2026.noticeMxn, gradient: BRAND_AUTO_GRADIENT },
+    { label: "Restricción de efectivo", value: automotiveLfpiorpi2026.cashRestrictionMxn, gradient: AUTO_GRADIENT },
+  ];
+
+  return (
+    <div ref={ref} className="space-y-5">
+      {bars.map((bar) => (
+        <div key={bar.label}>
+          <div className="flex items-baseline justify-between mb-1.5">
+            <span className="text-[12.5px] font-semibold" style={{ color: NAVY }}>
+              {bar.label}
+            </span>
+            <span className="text-[12.5px] font-bold" style={{ color: TEXT_MUTED }}>
+              {formatMxn(bar.value)}
+            </span>
+          </div>
+          <div className="h-2.5 rounded-full overflow-hidden" style={{ background: GRAY_LIGHT }}>
+            <div
+              className="h-full rounded-full motion-safe:transition-[width] motion-safe:duration-1000 motion-safe:ease-out"
+              style={{ width: visible ? `${Math.max((bar.value / max) * 100, 4)}%` : "0%", background: bar.gradient }}
+            />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
  * Simulador de umbrales — nunca dice CUMPLE/NO CUMPLE
  * ───────────────────────────────────────────────────────────────────────── */
+const SIMULATOR_PRESETS = [250000, 500000, 800000];
+
 function ThresholdSimulator() {
   const [rawValue, setRawValue] = useState("");
   const trackedRef = useRef(false);
@@ -491,12 +638,21 @@ function ThresholdSimulator() {
     return Number.isFinite(parsed) ? parsed : 0;
   }, [rawValue]);
 
-  const handleChange = (value: string) => {
-    setRawValue(value);
-    if (!trackedRef.current && value.trim() !== "") {
+  const track = () => {
+    if (!trackedRef.current) {
       trackedRef.current = true;
       gtmEvent("automotive_lfpiorpi_threshold_use", { page: PAGE });
     }
+  };
+
+  const handleChange = (value: string) => {
+    setRawValue(value);
+    if (value.trim() !== "") track();
+  };
+
+  const handlePreset = (value: number) => {
+    setRawValue(String(value));
+    track();
   };
 
   const hasValue = rawValue.trim() !== "" && amount > 0;
@@ -515,12 +671,18 @@ function ThresholdSimulator() {
     }
   }
 
+  const gaugeMax = automotiveLfpiorpi2026.noticeMxn * 1.25;
+  const gaugePct = Math.min((amount / gaugeMax) * 100, 100);
+  const identificationPct = (automotiveLfpiorpi2026.identificationMxn / gaugeMax) * 100;
+  const noticePct = (automotiveLfpiorpi2026.noticeMxn / gaugeMax) * 100;
+  const gaugeColor = meetsNotice ? AUTO_GRADIENT : meetsIdentification ? BRAND_AUTO_GRADIENT : `linear-gradient(90deg, ${TEAL}, ${TEAL})`;
+
   return (
     <div className="rounded-2xl p-6 sm:p-8 bg-white" style={{ border: "1px solid #E2E8EF" }}>
       <label htmlFor="sim-monto" className="block text-[13px] font-semibold mb-2" style={{ color: NAVY }}>
         Valor de la operación (MXN)
       </label>
-      <div className="flex items-center gap-2 mb-6">
+      <div className="flex items-center gap-2 mb-4">
         <span className="text-lg font-bold" style={{ color: TEXT_MUTED }}>
           $
         </span>
@@ -531,9 +693,50 @@ function ThresholdSimulator() {
           value={rawValue}
           onChange={(e) => handleChange(e.target.value)}
           placeholder="500,000"
-          className="w-full px-4 py-3 rounded-lg text-[16px] outline-none"
-          style={{ border: "1px solid #CBD5E1", color: NAVY }}
+          className="w-full px-4 py-3 rounded-lg text-[16px] outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+          style={{ border: "1px solid #CBD5E1", color: NAVY, outlineColor: AUTO_ORANGE }}
         />
+      </div>
+
+      <div className="flex flex-wrap gap-2 mb-6">
+        {SIMULATOR_PRESETS.map((preset) => {
+          const isActive = amount === preset;
+          return (
+            <button
+              key={preset}
+              type="button"
+              onClick={() => handlePreset(preset)}
+              className="rounded-full px-3.5 py-1.5 text-[12.5px] font-semibold transition-all hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+              style={
+                isActive
+                  ? { background: AUTO_GRADIENT, color: "white", outlineColor: AUTO_ORANGE }
+                  : { background: GRAY_LIGHT, color: NAVY, outlineColor: AUTO_ORANGE }
+              }
+            >
+              {formatMxn(preset).replace(".00", "")}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Gauge visual — posiciona el monto frente a los dos umbrales */}
+      <div className="mb-6">
+        <div className="relative h-3 rounded-full overflow-hidden" style={{ background: GRAY_LIGHT }}>
+          <div
+            className="h-full rounded-full motion-safe:transition-all motion-safe:duration-500 motion-safe:ease-out"
+            style={{ width: `${gaugePct}%`, background: gaugeColor }}
+          />
+          <div className="absolute top-0 bottom-0 w-px" style={{ left: `${identificationPct}%`, background: NAVY }} aria-hidden="true" />
+          <div className="absolute top-0 bottom-0 w-px" style={{ left: `${noticePct}%`, background: NAVY }} aria-hidden="true" />
+        </div>
+        <div className="relative h-4 mt-1 text-[10.5px] font-semibold" style={{ color: TEXT_MUTED }}>
+          <span className="absolute -translate-x-1/2" style={{ left: `${identificationPct}%` }}>
+            Identificación
+          </span>
+          <span className="absolute -translate-x-1/2" style={{ left: `${noticePct}%` }}>
+            Aviso
+          </span>
+        </div>
       </div>
 
       {hasValue && (
@@ -727,8 +930,8 @@ function AutomotrizContactForm() {
       <button
         type="submit"
         disabled={status === "loading"}
-        className="w-full rounded-xl px-6 py-4 text-[15px] font-bold transition-transform hover:-translate-y-px disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-        style={{ background: TEAL, color: NAVY }}
+        className="w-full rounded-xl px-6 py-4 text-[15px] font-bold text-white transition-all hover:-translate-y-px hover:shadow-[0_8px_24px_rgba(255,107,53,0.35)] disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+        style={{ background: AUTO_GRADIENT }}
       >
         {status === "loading" ? "Enviando..." : "Revisar mi proceso"}
       </button>
@@ -765,7 +968,7 @@ export default function KycAutomotrizLfpiorpiLandingClient() {
       <main>
         {/* ── 02. Hero ────────────────────────────────────────────────────── */}
         <section
-          className="pt-32 pb-20 relative overflow-hidden"
+          className="pt-32 pb-16 relative overflow-hidden"
           style={{ background: `linear-gradient(150deg, ${NAVY} 0%, ${NAVY_SOFT} 65%, #122544 100%)` }}
           aria-labelledby="hero-heading"
         >
@@ -774,19 +977,25 @@ export default function KycAutomotrizLfpiorpiLandingClient() {
             style={{ background: "rgba(30,202,211,0.1)" }}
             aria-hidden="true"
           />
+          <div
+            className="pointer-events-none absolute -bottom-32 -left-32 h-[420px] w-[420px] rounded-full blur-[130px]"
+            style={{ background: "rgba(255,107,53,0.12)" }}
+            aria-hidden="true"
+          />
           <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div
               className="inline-flex items-center gap-2 px-3 py-1 rounded-full mb-6"
-              style={{ background: "rgba(30,202,211,0.1)", border: "1px solid rgba(30,202,211,0.3)" }}
+              style={{ background: `${AUTO_ORANGE}1A`, border: `1px solid ${AUTO_ORANGE}55` }}
             >
-              <span className="w-2 h-2 rounded-full" style={{ background: TEAL }} />
-              <span className="text-[12px] sm:text-sm font-medium" style={{ color: "#7FE8EC" }}>
+              <span className="w-2 h-2 rounded-full" style={{ background: AUTO_ORANGE }} />
+              <span className="text-[12px] sm:text-sm font-medium" style={{ color: "#FFC98A" }}>
                 LFPIORPI · Art. 17 Fracción VIII · Sector automotriz
               </span>
             </div>
 
             <h1 id="hero-heading" className="text-4xl md:text-5xl lg:text-[3.2rem] font-black text-white mb-6 leading-tight">
-              Vender un vehículo también implica saber quién lo compra.
+              Vender un vehículo también implica{" "}
+              <span style={gradientTextStyle}>saber quién lo compra.</span>
             </h1>
 
             <p className="text-lg sm:text-xl text-white/75 mb-4 max-w-2xl mx-auto leading-relaxed">
@@ -805,8 +1014,8 @@ export default function KycAutomotrizLfpiorpiLandingClient() {
                   gtmEvent("automotive_lfpiorpi_hero_demo", { location: "hero", page: PAGE });
                   scrollToId("expediente-integrado");
                 }}
-                className="inline-flex items-center justify-center rounded-xl px-6 py-3.5 text-[14.5px] font-bold text-center transition-all hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                style={{ background: TEAL, color: NAVY }}
+                className="inline-flex items-center justify-center rounded-xl px-6 py-3.5 text-[14.5px] font-bold text-center text-white transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(255,107,53,0.35)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                style={{ background: AUTO_GRADIENT }}
               >
                 Conoce cómo integrar tu expediente
               </button>
@@ -815,7 +1024,7 @@ export default function KycAutomotrizLfpiorpiLandingClient() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => gtmEvent("automotive_lfpiorpi_kyc_cta", { location: "hero", page: PAGE })}
-                className="inline-flex items-center justify-center rounded-xl px-6 py-3.5 text-[14.5px] font-bold text-center text-white transition-all hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                className="inline-flex items-center justify-center rounded-xl px-6 py-3.5 text-[14.5px] font-bold text-center text-white transition-all hover:-translate-y-0.5 hover:border-white/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                 style={{ border: "1px solid rgba(255,255,255,0.3)" }}
               >
                 Hablar con un especialista
@@ -827,13 +1036,19 @@ export default function KycAutomotrizLfpiorpiLandingClient() {
               cumplimiento de las obligaciones regulatorias corresponde al sujeto obligado.
             </p>
           </div>
+
+          <div
+            className="relative z-10 mt-14 h-[3px] w-full opacity-70"
+            style={{ backgroundImage: ROAD_LINE, backgroundSize: "54px 3px" }}
+            aria-hidden="true"
+          />
         </section>
 
         {/* ── 03. Por qué aplica al sector (Fracción VIII) ──────────────────── */}
         <section className="py-20 bg-white scroll-mt-20" id="fraccion-viii" aria-labelledby="fraccion-heading">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <SectionEyebrow>Artículo 17, fracción VIII</SectionEyebrow>
+              <SectionEyebrow tone="reg">Artículo 17, fracción VIII</SectionEyebrow>
               <h2 id="fraccion-heading" className="text-3xl md:text-4xl font-black mb-5" style={{ color: NAVY }}>
                 ¿Por qué una agencia automotriz debe conocer la LFPIORPI?
               </h2>
@@ -858,7 +1073,7 @@ export default function KycAutomotrizLfpiorpiLandingClient() {
         <section className="py-20 scroll-mt-20" id="umbrales" style={{ background: OFF_WHITE }} aria-labelledby="umbrales-heading">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12 max-w-2xl mx-auto">
-              <SectionEyebrow>Montos 2026</SectionEyebrow>
+              <SectionEyebrow tone="reg">Montos 2026</SectionEyebrow>
               <h2 id="umbrales-heading" className="text-3xl md:text-4xl font-black mb-5" style={{ color: NAVY }}>
                 Tres conceptos distintos, tres umbrales distintos
               </h2>
@@ -868,51 +1083,80 @@ export default function KycAutomotrizLfpiorpiLandingClient() {
               </p>
             </div>
 
-            <div className="grid sm:grid-cols-3 gap-5 mb-8">
-              <div className="rounded-2xl p-6 bg-white" style={{ border: `2px solid ${TEAL}` }}>
-                <p className="text-[11px] font-bold uppercase tracking-wide mb-3" style={{ color: "#0E7C82" }}>
-                  Identificación
-                </p>
-                <p className="text-2xl font-black mb-1" style={{ color: NAVY }}>
-                  {formatUma(automotiveLfpiorpi2026.identificationUma)}
-                </p>
-                <p className="text-lg font-bold mb-3" style={{ color: TEAL }}>
-                  {formatMxn(automotiveLfpiorpi2026.identificationMxn)}
-                </p>
-                <p className="text-[13px] leading-relaxed" style={{ color: TEXT_MUTED }}>
-                  A partir de este supuesto surge la obligación de identificar al cliente conforme a la LFPIORPI.
-                </p>
+            <div className="grid sm:grid-cols-3 gap-5 mb-10">
+              <div
+                className="rounded-2xl bg-white overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                style={{ border: `1px solid ${TEAL}55` }}
+              >
+                <div className="h-1.5" style={{ background: TEAL }} aria-hidden="true" />
+                <div className="p-6">
+                  <p className="text-[11px] font-bold uppercase tracking-wide mb-3" style={{ color: "#0E7C82" }}>
+                    Identificación
+                  </p>
+                  <p className="text-2xl font-black mb-1" style={{ color: NAVY }}>
+                    {formatUma(automotiveLfpiorpi2026.identificationUma)}
+                  </p>
+                  <p className="text-lg font-bold mb-3" style={{ color: TEAL }}>
+                    {formatMxn(automotiveLfpiorpi2026.identificationMxn)}
+                  </p>
+                  <p className="text-[13px] leading-relaxed" style={{ color: TEXT_MUTED }}>
+                    A partir de este supuesto surge la obligación de identificar al cliente conforme a la LFPIORPI.
+                  </p>
+                </div>
               </div>
-              <div className="rounded-2xl p-6 bg-white" style={{ border: "1px solid #E2E8EF" }}>
-                <p className="text-[11px] font-bold uppercase tracking-wide mb-3" style={{ color: TEXT_MUTED }}>
-                  Aviso
-                </p>
-                <p className="text-2xl font-black mb-1" style={{ color: NAVY }}>
-                  {formatUma(automotiveLfpiorpi2026.noticeUma)}
-                </p>
-                <p className="text-lg font-bold mb-3" style={{ color: NAVY }}>
-                  {formatMxn(automotiveLfpiorpi2026.noticeMxn)}
-                </p>
-                <p className="text-[13px] leading-relaxed" style={{ color: TEXT_MUTED }}>
-                  El aviso corresponde presentarlo al sujeto obligado. JAAK no presenta el aviso; ayuda a organizar la
-                  información que lo respalda.
-                </p>
+              <div
+                className="rounded-2xl bg-white overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                style={{ border: "1px solid #E2E8EF" }}
+              >
+                <div className="h-1.5" style={{ background: BRAND_AUTO_GRADIENT }} aria-hidden="true" />
+                <div className="p-6">
+                  <p className="text-[11px] font-bold uppercase tracking-wide mb-3" style={{ color: TEXT_MUTED }}>
+                    Aviso
+                  </p>
+                  <p className="text-2xl font-black mb-1" style={{ color: NAVY }}>
+                    {formatUma(automotiveLfpiorpi2026.noticeUma)}
+                  </p>
+                  <p className="text-lg font-bold mb-3" style={{ color: NAVY }}>
+                    {formatMxn(automotiveLfpiorpi2026.noticeMxn)}
+                  </p>
+                  <p className="text-[13px] leading-relaxed" style={{ color: TEXT_MUTED }}>
+                    El aviso corresponde presentarlo al sujeto obligado. JAAK no presenta el aviso; ayuda a organizar
+                    la información que lo respalda.
+                  </p>
+                </div>
               </div>
-              <div className="rounded-2xl p-6 bg-white" style={{ border: "1px solid #E2E8EF" }}>
-                <p className="text-[11px] font-bold uppercase tracking-wide mb-3" style={{ color: TEXT_MUTED }}>
-                  Restricción de efectivo
-                </p>
-                <p className="text-2xl font-black mb-1" style={{ color: NAVY }}>
-                  {formatUma(automotiveLfpiorpi2026.cashRestrictionUma)}
-                </p>
-                <p className="text-lg font-bold mb-3" style={{ color: NAVY }}>
-                  {formatMxn(automotiveLfpiorpi2026.cashRestrictionMxn)}
-                </p>
-                <p className="text-[13px] leading-relaxed" style={{ color: TEXT_MUTED }}>
-                  Concepto distinto del umbral de identificación, aplicable al pago en efectivo (Art. 32).
-                </p>
+              <div
+                className="rounded-2xl bg-white overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                style={{ border: `1px solid ${AUTO_ORANGE}55` }}
+              >
+                <div className="h-1.5" style={{ background: AUTO_GRADIENT }} aria-hidden="true" />
+                <div className="p-6">
+                  <p className="text-[11px] font-bold uppercase tracking-wide mb-3" style={{ color: "#B45309" }}>
+                    Restricción de efectivo
+                  </p>
+                  <p className="text-2xl font-black mb-1" style={{ color: NAVY }}>
+                    {formatUma(automotiveLfpiorpi2026.cashRestrictionUma)}
+                  </p>
+                  <p className="text-lg font-bold mb-3" style={{ color: AUTO_ORANGE }}>
+                    {formatMxn(automotiveLfpiorpi2026.cashRestrictionMxn)}
+                  </p>
+                  <p className="text-[13px] leading-relaxed" style={{ color: TEXT_MUTED }}>
+                    Concepto distinto del umbral de identificación, aplicable al pago en efectivo (Art. 32).
+                  </p>
+                </div>
               </div>
             </div>
+
+            <RevealOnScroll
+              className="max-w-2xl mx-auto rounded-2xl p-6 sm:p-8 mb-8 bg-white"
+              style={{ border: "1px solid #E2E8EF" }}
+              delayMs={150}
+            >
+              <p className="text-[11px] font-bold uppercase tracking-wide mb-4" style={{ color: TEXT_MUTED }}>
+                Comparación a escala
+              </p>
+              <ThresholdBars />
+            </RevealOnScroll>
 
             <p className="text-[12.5px] text-center leading-relaxed" style={{ color: TEXT_MUTED }}>
               Valores calculados con la UMA 2026 de {formatMxn(automotiveLfpiorpi2026.umaDaily)} diarios, vigente
@@ -957,7 +1201,7 @@ export default function KycAutomotrizLfpiorpiLandingClient() {
         {/* ── 06. Acumulación de operaciones ────────────────────────────────── */}
         <section className="py-20 scroll-mt-20" id="acumulacion" style={{ background: OFF_WHITE }} aria-labelledby="acumulacion-heading">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <SectionEyebrow>Acumulación</SectionEyebrow>
+            <SectionEyebrow tone="reg">Acumulación</SectionEyebrow>
             <h2 id="acumulacion-heading" className="text-3xl md:text-4xl font-black mb-6" style={{ color: NAVY }}>
               No siempre se trata de una sola operación
             </h2>
@@ -975,19 +1219,25 @@ export default function KycAutomotrizLfpiorpiLandingClient() {
                 <div key={op} className="flex items-center gap-2 sm:gap-2">
                   <span className="hidden sm:inline text-xl" style={{ color: TEAL }} aria-hidden="true">→</span>
                   <span className="sm:hidden text-xl" style={{ color: TEAL }} aria-hidden="true">↓</span>
-                  <div className="rounded-xl px-4 py-2.5 text-[13px] font-medium" style={{ background: GRAY_LIGHT, color: TEXT_MUTED, border: "1px solid #E2E8EF" }}>
+                  <div
+                    className="rounded-xl px-4 py-2.5 text-[13px] font-medium transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md"
+                    style={{ background: GRAY_LIGHT, color: TEXT_MUTED, border: "1px solid #E2E8EF" }}
+                  >
                     {op}
                   </div>
                 </div>
               ))}
-              <span className="hidden sm:inline text-xl" style={{ color: TEAL }} aria-hidden="true">→</span>
-              <span className="sm:hidden text-xl" style={{ color: TEAL }} aria-hidden="true">↓</span>
-              <div className="rounded-xl px-4 py-2.5 text-[13px] font-bold" style={{ background: `${TEAL}22`, color: "#0E7C82", border: `1px solid ${TEAL}` }}>
+              <span className="hidden sm:inline text-xl" style={{ color: AUTO_ORANGE }} aria-hidden="true">→</span>
+              <span className="sm:hidden text-xl" style={{ color: AUTO_ORANGE }} aria-hidden="true">↓</span>
+              <div
+                className="rounded-xl px-4 py-2.5 text-[13px] font-bold text-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
+                style={{ background: AUTO_GRADIENT }}
+              >
                 Acumulación
               </div>
-              <span className="hidden sm:inline text-xl" style={{ color: TEAL }} aria-hidden="true">→</span>
-              <span className="sm:hidden text-xl" style={{ color: TEAL }} aria-hidden="true">↓</span>
-              <div className="rounded-xl px-4 py-2.5 text-[13px] font-bold text-white" style={{ background: NAVY }}>
+              <span className="hidden sm:inline text-xl" style={{ color: AUTO_ORANGE }} aria-hidden="true">→</span>
+              <span className="sm:hidden text-xl" style={{ color: AUTO_ORANGE }} aria-hidden="true">↓</span>
+              <div className="rounded-xl px-4 py-2.5 text-[13px] font-bold text-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg" style={{ background: NAVY }}>
                 Umbral de aviso
               </div>
             </div>
@@ -1003,16 +1253,21 @@ export default function KycAutomotrizLfpiorpiLandingClient() {
         <section className="py-20" style={{ background: NAVY }} aria-labelledby="timeline-heading">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14 max-w-2xl mx-auto">
-              <SectionEyebrow dark>De dónde vienen los cambios</SectionEyebrow>
+              <SectionEyebrow dark tone="reg">De dónde vienen los cambios</SectionEyebrow>
               <h2 id="timeline-heading" className="text-3xl md:text-4xl font-black text-white mb-4">
                 La regulación antilavado está evolucionando. El expediente también.
               </h2>
             </div>
 
             <div className="grid gap-8 md:grid-cols-3">
-              {TIMELINE_ITEMS.map((hito) => (
-                <div key={hito.id} className="text-left pt-5" style={{ borderTop: `2px solid ${TEAL}` }}>
-                  <p className="text-xl font-black mb-3" style={{ color: TEAL }}>
+              {TIMELINE_ITEMS.map((hito, i) => (
+                <RevealOnScroll
+                  key={hito.id}
+                  delayMs={i * 120}
+                  className="text-left pt-5 rounded-b-xl transition-all duration-300 hover:-translate-y-1"
+                  style={{ borderTop: `3px solid ${hito.color}` }}
+                >
+                  <p className="text-xl font-black mb-3" style={{ color: hito.color }}>
                     {hito.fecha}
                   </p>
                   <h3 className="text-[15px] font-bold text-white mb-2 leading-snug">{hito.titulo}</h3>
@@ -1021,13 +1276,13 @@ export default function KycAutomotrizLfpiorpiLandingClient() {
                     <ul className="space-y-1.5">
                       {hito.destacados.map((d) => (
                         <li key={d} className="flex items-start gap-2 text-[12.5px] text-white/55">
-                          <DotIcon style={{ background: TEAL }} />
+                          <DotIcon style={{ background: hito.color }} />
                           {d}
                         </li>
                       ))}
                     </ul>
                   )}
-                </div>
+                </RevealOnScroll>
               ))}
             </div>
 
@@ -1057,7 +1312,10 @@ export default function KycAutomotrizLfpiorpiLandingClient() {
             </div>
 
             <div className="grid md:grid-cols-2 gap-8 items-start">
-              <div className="rounded-2xl p-6 sm:p-8" style={{ background: GRAY_LIGHT, border: "1px solid #E2E8EF" }}>
+              <div
+                className="rounded-2xl p-6 sm:p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                style={{ background: GRAY_LIGHT, border: "1px solid #E2E8EF" }}
+              >
                 <p className="text-[12px] font-bold uppercase tracking-wide mb-4" style={{ color: TEXT_MUTED }}>
                   Una agencia recibe
                 </p>
@@ -1070,14 +1328,17 @@ export default function KycAutomotrizLfpiorpiLandingClient() {
                   ))}
                 </ul>
               </div>
-              <div className="rounded-2xl p-6 sm:p-8" style={{ background: NAVY, border: "1px solid rgba(255,255,255,0.1)" }}>
-                <p className="text-[12px] font-bold uppercase tracking-wide mb-4" style={{ color: "#7FE8EC" }}>
+              <div
+                className="rounded-2xl p-6 sm:p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                style={{ background: NAVY, border: `1px solid ${AUTO_ORANGE}40` }}
+              >
+                <p className="text-[12px] font-bold uppercase tracking-wide mb-4" style={{ color: "#FFC98A" }}>
                   Pero posteriormente necesita demostrar
                 </p>
                 <ul className="space-y-2.5">
                   {IDENTIFICACION_ITEMS.map((item) => (
                     <li key={item} className="flex items-start gap-3 text-[13.5px] text-white/80">
-                      <DotIcon style={{ background: TEAL }} />
+                      <DotIcon style={{ background: AUTO_ORANGE }} />
                       {item}
                     </li>
                   ))}
@@ -1106,7 +1367,10 @@ export default function KycAutomotrizLfpiorpiLandingClient() {
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
-              <div className="rounded-2xl p-6 sm:p-8 bg-white" style={{ border: "1px solid #E2E8EF" }}>
+              <div
+                className="rounded-2xl p-6 sm:p-8 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                style={{ border: "1px solid #E2E8EF" }}
+              >
                 <p className="text-[12px] font-bold uppercase tracking-wide mb-5" style={{ color: TEXT_MUTED }}>
                   Proceso tradicional
                 </p>
@@ -1135,7 +1399,10 @@ export default function KycAutomotrizLfpiorpiLandingClient() {
                 </ul>
               </div>
 
-              <div className="rounded-2xl p-6 sm:p-8" style={{ background: NAVY, border: "1px solid rgba(255,255,255,0.1)" }}>
+              <div
+                className="rounded-2xl p-6 sm:p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                style={{ background: NAVY, border: "1px solid rgba(255,255,255,0.1)" }}
+              >
                 <p className="text-[12px] font-bold uppercase tracking-wide mb-5" style={{ color: "#7FE8EC" }}>
                   Proceso digital
                 </p>
@@ -1179,8 +1446,12 @@ export default function KycAutomotrizLfpiorpiLandingClient() {
                 { num: "03", title: "Consultas", desc: "Consulta de fuentes de identidad disponibles y screening de listas de riesgo configurado." },
                 { num: "04", title: "Expediente", desc: "Los resultados se organizan y conservan en un expediente digital auditable." },
               ].map((step) => (
-                <div key={step.num} className="rounded-2xl p-6" style={{ background: GRAY_LIGHT, border: "1px solid #E2E8EF" }}>
-                  <div className="text-3xl font-black mb-3" style={{ color: `${TEAL}88` }}>{step.num}</div>
+                <div
+                  key={step.num}
+                  className="rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                  style={{ background: GRAY_LIGHT, border: "1px solid #E2E8EF" }}
+                >
+                  <div className="text-3xl font-black mb-3" style={gradientTextStyle}>{step.num}</div>
                   <h3 className="text-[15px] font-bold mb-2" style={{ color: NAVY }}>{step.title}</h3>
                   <p className="text-[13px] leading-relaxed" style={{ color: TEXT_MUTED }}>{step.desc}</p>
                 </div>
@@ -1211,7 +1482,10 @@ export default function KycAutomotrizLfpiorpiLandingClient() {
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
-              <div className="rounded-2xl p-6 sm:p-8 bg-white" style={{ border: `2px solid ${TEAL}` }}>
+              <div
+                className="rounded-2xl p-6 sm:p-8 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                style={{ border: `2px solid ${TEAL}` }}
+              >
                 <p className="text-[11px] font-bold uppercase tracking-wide mb-2" style={{ color: "#0E7C82" }}>
                   01 · Identidad
                 </p>
@@ -1235,7 +1509,10 @@ export default function KycAutomotrizLfpiorpiLandingClient() {
                 </p>
               </div>
 
-              <div className="rounded-2xl p-6 sm:p-8 bg-white" style={{ border: "1px solid #E2E8EF" }}>
+              <div
+                className="rounded-2xl p-6 sm:p-8 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                style={{ border: "1px solid #E2E8EF" }}
+              >
                 <p className="text-[11px] font-bold uppercase tracking-wide mb-2" style={{ color: TEXT_MUTED }}>
                   02 · Riesgo
                 </p>
@@ -1291,7 +1568,7 @@ export default function KycAutomotrizLfpiorpiLandingClient() {
               </div>
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px" style={{ background: "#E2E8EF" }}>
                 {EXPEDIENTE_GROUPS.map((group) => (
-                  <div key={group.titulo} className="bg-white p-5">
+                  <div key={group.titulo} className="bg-white p-5 transition-colors duration-300 hover:bg-[#FFF6F0]">
                     <p className="text-[12px] font-bold uppercase tracking-wide mb-3" style={{ color: "#0E7C82" }}>
                       {group.titulo}
                     </p>
@@ -1318,8 +1595,8 @@ export default function KycAutomotrizLfpiorpiLandingClient() {
               <Link
                 href={KYC_DEMO_URL}
                 onClick={() => gtmEvent("automotive_lfpiorpi_kyc_cta", { location: "expediente", page: PAGE })}
-                className="inline-flex items-center justify-center rounded-xl px-6 py-3.5 text-[14.5px] font-bold text-center transition-all hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                style={{ background: TEAL, color: NAVY }}
+                className="inline-flex items-center justify-center rounded-xl px-6 py-3.5 text-[14.5px] font-bold text-center text-white transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(255,107,53,0.35)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                style={{ background: AUTO_GRADIENT }}
               >
                 Ver un ejemplo de expediente
               </Link>
@@ -1330,7 +1607,7 @@ export default function KycAutomotrizLfpiorpiLandingClient() {
         {/* ── 13. Conservación / trazabilidad ────────────────────────────────── */}
         <section className="py-20 scroll-mt-20" id="conservacion" style={{ background: OFF_WHITE }} aria-labelledby="conservacion-heading">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <SectionEyebrow>Conservación</SectionEyebrow>
+            <SectionEyebrow tone="reg">Conservación</SectionEyebrow>
             <h2 id="conservacion-heading" className="text-3xl md:text-4xl font-black mb-6" style={{ color: NAVY }}>
               Evidencia que debe seguir disponible años después
             </h2>
@@ -1343,9 +1620,9 @@ export default function KycAutomotrizLfpiorpiLandingClient() {
               {["Hoy · Identificación", "+1 año", "+5 años", "+10 años", "Auditoría / requerimiento"].map((step, i, arr) => (
                 <div key={step} className="flex items-center gap-3">
                   <div
-                    className="rounded-xl px-4 py-2.5 text-[13px] font-semibold"
+                    className="rounded-xl px-4 py-2.5 text-[13px] font-semibold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
                     style={{
-                      background: i === arr.length - 1 ? NAVY : "white",
+                      background: i === arr.length - 1 ? AUTO_GRADIENT : "white",
                       color: i === arr.length - 1 ? "white" : NAVY,
                       border: i === arr.length - 1 ? "none" : "1px solid #E2E8EF",
                     }}
@@ -1396,7 +1673,7 @@ export default function KycAutomotrizLfpiorpiLandingClient() {
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
-              <div className="rounded-2xl p-6 sm:p-8" style={{ background: NAVY }}>
+              <div className="rounded-2xl p-6 sm:p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl" style={{ background: NAVY }}>
                 <h3 className="text-[15px] font-bold text-white mb-5">JAAK puede ayudarte a</h3>
                 <ul className="space-y-3">
                   {JAAK_PUEDE_AYUDAR.map((item) => (
@@ -1407,7 +1684,10 @@ export default function KycAutomotrizLfpiorpiLandingClient() {
                   ))}
                 </ul>
               </div>
-              <div className="rounded-2xl p-6 sm:p-8" style={{ background: GRAY_LIGHT, border: "1px solid #E2E8EF" }}>
+              <div
+                className="rounded-2xl p-6 sm:p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                style={{ background: GRAY_LIGHT, border: "1px solid #E2E8EF" }}
+              >
                 <h3 className="text-[15px] font-bold mb-5" style={{ color: NAVY }}>
                   La organización sigue siendo responsable de
                 </h3>
@@ -1438,16 +1718,26 @@ export default function KycAutomotrizLfpiorpiLandingClient() {
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-2 mb-10">
-              {["Identidad", "Validación", "Contrato", "Firma", "Evidencia", "Expediente"].map((step, i, arr) => (
-                <div key={step} className="flex items-center gap-2">
-                  <div className="rounded-xl px-4 py-2.5 text-[13px] font-bold bg-white" style={{ border: "1px solid #E2E8EF", color: NAVY }}>
-                    {step}
+              {["Identidad", "Validación", "Contrato", "Firma", "Evidencia", "Expediente"].map((step, i, arr) => {
+                const isPayoff = step === "Firma" || step === "Evidencia";
+                return (
+                  <div key={step} className="flex items-center gap-2">
+                    <div
+                      className="rounded-xl px-4 py-2.5 text-[13px] font-bold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md"
+                      style={
+                        isPayoff
+                          ? { background: AUTO_GRADIENT, color: "white" }
+                          : { background: "white", border: "1px solid #E2E8EF", color: NAVY }
+                      }
+                    >
+                      {step}
+                    </div>
+                    {i < arr.length - 1 && (
+                      <span className="text-lg" style={{ color: TEAL }} aria-hidden="true">→</span>
+                    )}
                   </div>
-                  {i < arr.length - 1 && (
-                    <span className="text-lg" style={{ color: TEAL }} aria-hidden="true">→</span>
-                  )}
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             <p className="text-[12.5px] leading-relaxed max-w-xl mx-auto mb-8" style={{ color: TEXT_MUTED }}>
@@ -1470,7 +1760,7 @@ export default function KycAutomotrizLfpiorpiLandingClient() {
         <section className="py-20 bg-white scroll-mt-20" id="simulador" aria-labelledby="simulador-heading">
           <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
-              <SectionEyebrow>Simulador</SectionEyebrow>
+              <SectionEyebrow tone="reg">Simulador</SectionEyebrow>
               <h2 id="simulador-heading" className="text-3xl md:text-4xl font-black mb-4" style={{ color: NAVY }}>
                 ¿Qué obligación puede activarse según el monto?
               </h2>
@@ -1489,24 +1779,31 @@ export default function KycAutomotrizLfpiorpiLandingClient() {
               </h2>
             </div>
             <div className="grid md:grid-cols-3 gap-6">
-              {PROFILE_CARDS.map((card) => (
-                <div key={card.id} className="rounded-2xl p-6 sm:p-8 bg-white" style={{ border: "1px solid #E2E8EF" }}>
-                  <h3 className="text-lg font-bold mb-2" style={{ color: NAVY }}>
-                    {card.titulo}
-                  </h3>
-                  <p className="text-[13.5px] leading-relaxed mb-5" style={{ color: TEXT_MUTED }}>
-                    {card.texto}
-                  </p>
-                  <ul className="space-y-2">
-                    {card.items.map((item) => (
-                      <li key={item} className="flex items-start gap-2.5 text-[13px]" style={{ color: NAVY }}>
-                        <CheckIcon style={{ color: TEAL }} />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
+              {PROFILE_CARDS.map((card) => {
+                const isRisk = card.id === "riesgo";
+                return (
+                  <div
+                    key={card.id}
+                    className="rounded-2xl p-6 sm:p-8 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                    style={{ border: isRisk ? `1px solid ${AUTO_ORANGE}55` : "1px solid #E2E8EF" }}
+                  >
+                    <h3 className="text-lg font-bold mb-2" style={{ color: NAVY }}>
+                      {card.titulo}
+                    </h3>
+                    <p className="text-[13.5px] leading-relaxed mb-5" style={{ color: TEXT_MUTED }}>
+                      {card.texto}
+                    </p>
+                    <ul className="space-y-2">
+                      {card.items.map((item) => (
+                        <li key={item} className="flex items-start gap-2.5 text-[13px]" style={{ color: NAVY }}>
+                          <CheckIcon style={{ color: isRisk ? AUTO_ORANGE : TEAL }} />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -1532,7 +1829,7 @@ export default function KycAutomotrizLfpiorpiLandingClient() {
                     gtmEvent("automotive_lfpiorpi_kyc_cta", { location: "cta_paths_low", page: PAGE });
                     scrollToId("expediente-integrado");
                   }}
-                  className="w-full text-left rounded-2xl p-5 transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                  className="w-full text-left rounded-2xl p-5 transition-all hover:bg-white/10 hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                   style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)" }}
                 >
                   <p className="text-[11px] font-bold uppercase tracking-wide mb-1" style={{ color: "#7FE8EC" }}>
@@ -1544,7 +1841,7 @@ export default function KycAutomotrizLfpiorpiLandingClient() {
                 <Link
                   href={KYC_DEMO_URL}
                   onClick={() => gtmEvent("automotive_lfpiorpi_kyc_cta", { location: "cta_paths_medium", page: PAGE })}
-                  className="block rounded-2xl p-5 transition-colors hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                  className="block rounded-2xl p-5 transition-all hover:bg-white/10 hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                   style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)" }}
                 >
                   <p className="text-[11px] font-bold uppercase tracking-wide mb-1" style={{ color: "#7FE8EC" }}>
@@ -1558,10 +1855,10 @@ export default function KycAutomotrizLfpiorpiLandingClient() {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => gtmEvent("automotive_lfpiorpi_kyc_cta", { location: "cta_paths_high", page: PAGE })}
-                  className="block rounded-2xl p-5 transition-colors hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-                  style={{ background: TEAL, color: NAVY }}
+                  className="block rounded-2xl p-5 text-white transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(255,107,53,0.35)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                  style={{ background: AUTO_GRADIENT }}
                 >
-                  <p className="text-[11px] font-bold uppercase tracking-wide mb-1" style={{ color: "#0B4A4E" }}>
+                  <p className="text-[11px] font-bold uppercase tracking-wide mb-1 text-white/80">
                     Intención alta
                   </p>
                   <p className="font-bold text-[15px]">Hablar con un especialista</p>
@@ -1601,7 +1898,7 @@ export default function KycAutomotrizLfpiorpiLandingClient() {
         <section className="py-20" style={{ background: GRAY_LIGHT }} aria-labelledby="fuentes-heading">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14 max-w-2xl mx-auto">
-              <SectionEyebrow>Fuentes oficiales</SectionEyebrow>
+              <SectionEyebrow tone="reg">Fuentes oficiales</SectionEyebrow>
               <h2 id="fuentes-heading" className="text-3xl md:text-4xl font-black mb-5" style={{ color: NAVY }}>
                 Fuentes oficiales consultadas
               </h2>
@@ -1614,7 +1911,11 @@ export default function KycAutomotrizLfpiorpiLandingClient() {
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
               {FUENTES_OFICIALES.map((f) => (
-                <div key={f.titulo} className="rounded-2xl p-6 bg-white flex flex-col" style={{ border: "1px solid #E2E8EF" }}>
+                <div
+                  key={f.titulo}
+                  className="rounded-2xl p-6 bg-white flex flex-col transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                  style={{ border: "1px solid #E2E8EF" }}
+                >
                   <p className="text-[11px] font-bold uppercase tracking-wide mb-3" style={{ color: "#0E7C82" }}>
                     {f.eyebrow}
                   </p>
