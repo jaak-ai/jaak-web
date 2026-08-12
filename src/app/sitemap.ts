@@ -268,6 +268,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.85,
     },
     {
+      url: `${baseUrl}/kyc-automotriz-lfpiorpi`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
+    {
       url: `${baseUrl}/autoservicio`,
       lastModified: now,
       changeFrequency: "monthly",
