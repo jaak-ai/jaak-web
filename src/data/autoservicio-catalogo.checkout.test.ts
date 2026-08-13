@@ -33,3 +33,18 @@ describe("buildCheckoutUrl UTM passthrough", () => {
     expect(postHash).toMatch(/^\/register\/user-info\?d=.+/);
   });
 });
+
+describe("buildCheckoutUrl coupon (AUTO-4)", () => {
+  it("carries the coupon inside the hash next to d", () => {
+    const url = buildCheckoutUrl(items, { coupon: "promo20" });
+    const postHash = url.split("#")[1];
+    expect(postHash).toContain("&coupon=promo20");
+    // stays inside the hash route (readable by /register), not before the hash
+    expect(url.split("#")[0]).not.toContain("coupon=");
+  });
+
+  it("omits the coupon when empty/whitespace", () => {
+    expect(buildCheckoutUrl(items, { coupon: "" })).not.toContain("coupon=");
+    expect(buildCheckoutUrl(items, { coupon: "   " })).not.toContain("coupon=");
+  });
+});

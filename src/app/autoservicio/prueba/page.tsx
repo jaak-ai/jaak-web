@@ -13,13 +13,28 @@ const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent
 // (TO-809 Fase 3 / AUTO-20).
 const KYC_REGISTER_URL = buildKycRegisterUrl("gratis");
 
+// Agrega el cupón (AUTO-4) a un deep-link ya construido, dentro del hash para que
+// /register o /onboarding lo lean del query. Vacío = deja el link igual.
+function withCoupon(url: string, coupon?: string): string {
+  const code = (coupon ?? "").trim();
+  return code ? `${url}&coupon=${encodeURIComponent(code)}` : url;
+}
+
 export const metadata: Metadata = {
   title: "Paquetes de Prueba JAAK Autoservicio | Empieza hoy",
   description:
     "Elige tu paquete de prueba único y empieza a usar JAAK en producción de inmediato. Sin contrato, sin setup fee, activación automática.",
 };
 
-export default async function AutoservicioPrueba() {
+export default async function AutoservicioPrueba({
+  searchParams,
+}: {
+  searchParams: Promise<{ coupon?: string }>;
+}) {
+  // Cupón del banner (AUTO-4): llega como ?coupon=CODE y se propaga a cada
+  // deep-link de compra para que el checkout lo pre-aplique.
+  const { coupon } = await searchParams;
+
   // IDs de pricing reales (por producto+tier) para hidratar el checkout, igual
   // que /autoservicio — nunca un snapshot hardcodeado que pueda desactualizarse.
   const { productos, pricingIndex, productKeys } = await getAutoservicioCatalog();
@@ -27,7 +42,7 @@ export default async function AutoservicioPrueba() {
     const producto = productos.find((p) => p.id === catalogId);
     const paquete = producto?.paquetes.find((q) => q.id === "cobre");
     if (!producto || !paquete) return "/autoservicio";
-    return buildCheckoutUrl([{ producto, paquete }], { pricingIndex, productKeys });
+    return buildCheckoutUrl([{ producto, paquete }], { pricingIndex, productKeys, coupon });
   };
 
   const valueBadges = [
@@ -62,7 +77,7 @@ export default async function AutoservicioPrueba() {
       color: "#2DB6C1",
       qty: "5 verificaciones",
       price: "$99",
-      link: KYC_REGISTER_URL,
+      link: withCoupon(KYC_REGISTER_URL, coupon),
     },
     {
       icon: "✍️",
