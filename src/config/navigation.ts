@@ -308,6 +308,15 @@ export const megaMenus: MegaMenuConfig[] = [
             visibility: { desktop: true, mobile: true },
           },
           {
+            id: "sol-automotriz",
+            label: "Automotriz",
+            href: "/kyc-automotriz-lfpiorpi",
+            description: "Identificación de clientes LFPIORPI",
+            icon: "M5 17h14M5 17a2 2 0 104 0m-4 0a2 2 0 11-4 0m14 0a2 2 0 104 0m-4 0a2 2 0 11-4 0M4 17V10a1 1 0 01.4-.8l2.1-1.575A2 2 0 018 7h8a2 2 0 011.5.675L19.6 9.2a1 1 0 01.4.8v7",
+            status: "active",
+            visibility: { desktop: true, mobile: true },
+          },
+          {
             id: "sol-kyc-igaming",
             label: "Gaming e iGaming",
             href: "/soluciones/kyc-igaming-mexico",
