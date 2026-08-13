@@ -183,7 +183,7 @@ function ProcessFlow({ steps, background }: { steps: string[]; background: strin
           {steps.map((step, i) => (
             <div key={step} className="flex flex-col items-center gap-2.5 px-2" style={{ background }}>
               <span className="w-3 h-3 rounded-full flex-shrink-0" style={{ background: endpoints.has(i) ? NAVY : TEAL, border: `2px solid ${TEAL}` }} />
-              <span className="text-[11px] font-bold uppercase tracking-wide text-center whitespace-nowrap" style={{ color: endpoints.has(i) ? TEXT_MUTED : NAVY }}>
+              <span className="text-[11px] font-bold tracking-wide text-center whitespace-nowrap" style={{ color: endpoints.has(i) ? TEXT_MUTED : NAVY }}>
                 {step}
               </span>
             </div>
@@ -199,7 +199,7 @@ function ProcessFlow({ steps, background }: { steps: string[]; background: strin
               <div className="absolute left-[5px] top-4 bottom-0 w-px" style={{ background: `${TEAL}55` }} aria-hidden="true" />
             )}
             <span className="w-3 h-3 rounded-full flex-shrink-0 relative z-10" style={{ background: endpoints.has(i) ? NAVY : TEAL, border: `2px solid ${TEAL}` }} />
-            <span className="text-[13px] font-bold uppercase tracking-wide py-2" style={{ color: endpoints.has(i) ? TEXT_MUTED : NAVY }}>
+            <span className="text-[13px] font-bold tracking-wide py-2" style={{ color: endpoints.has(i) ? TEXT_MUTED : NAVY }}>
               {step}
             </span>
           </div>
@@ -231,7 +231,7 @@ function SectionEyebrow({
       style={{ background: dark ? `${accent}1a` : `${accent}14`, border: `1px solid ${accent}55` }}
     >
       <span className="w-1.5 h-1.5 rounded-full" style={{ background: accent }} />
-      <span className="text-[12px] font-semibold uppercase tracking-wide" style={{ color: dark ? darkText : lightText }}>
+      <span className="text-[12px] font-semibold tracking-wide" style={{ color: dark ? darkText : lightText }}>
         {children}
       </span>
     </div>
@@ -635,7 +635,7 @@ function CampaignHeader() {
             <Image src="/images/logos/jaak-logo-azul.png" alt="JAAK" width={492} height={254} className="h-4 sm:h-[18px] w-auto" priority />
           </span>
           <span
-            className="hidden sm:inline-flex items-center text-[10.5px] font-bold uppercase tracking-wide px-2.5 py-1 rounded-full"
+            className="hidden sm:inline-flex items-center text-[10.5px] font-bold tracking-wide px-2.5 py-1 rounded-full"
             style={{ background: `${LAW_BLUE}22`, color: LAW_BLUE_LIGHT, border: `1px solid ${LAW_BLUE}55` }}
           >
             LFPIORPI 2026–2027
@@ -720,7 +720,7 @@ function ActivityGroups({
                   {group.num}
                 </span>
                 {isCampaignMatch && (
-                  <span className="text-[10px] font-bold uppercase tracking-wide px-2 py-1 rounded-full" style={{ background: `${TEAL}1A`, color: "#0E7C82" }}>
+                  <span className="text-[10px] font-bold tracking-wide px-2 py-1 rounded-full" style={{ background: `${TEAL}1A`, color: "#0E7C82" }}>
                     Tu sector
                   </span>
                 )}
@@ -747,7 +747,7 @@ function ActivityGroups({
 
       {active && guidance && (
         <div className="max-w-2xl mx-auto rounded-2xl p-6 mb-8 animate-fade-in-up" style={{ background: WHITE, border: `1px solid ${TEAL}55` }}>
-          <p className="text-[11px] font-bold uppercase tracking-wide mb-2" style={{ color: LAW_BLUE_DARK }}>
+          <p className="text-[11px] font-bold tracking-wide mb-2" style={{ color: LAW_BLUE_DARK }}>
             {active.titulo}
           </p>
           <p className="text-[14px] leading-relaxed mb-4" style={{ color: TEXT_MUTED }}>
@@ -802,7 +802,7 @@ function EnfoqueRow({ num, card }: { num: string; card: (typeof ENFOQUE_CARDS)[n
         <span className="text-[12px] font-black flex-shrink-0" style={{ color: "rgba(2,19,45,0.25)" }}>
           {num}
         </span>
-        <span className="text-[11px] font-bold uppercase tracking-wide" style={{ color: LAW_BLUE_DARK }}>
+        <span className="text-[11px] font-bold tracking-wide" style={{ color: LAW_BLUE_DARK }}>
           {card.etiqueta}
         </span>
       </div>
@@ -909,7 +909,7 @@ function SmartChecklist({
 
       {touched && (
         <div className="max-w-sm mx-auto rounded-2xl p-6 sm:p-8 mb-8 animate-fade-in-up" style={{ background: OFF_WHITE, border: `1px solid ${TEAL}55` }}>
-          <p className="text-[11px] font-bold uppercase tracking-wide mb-4" style={{ color: TEXT_MUTED }}>
+          <p className="text-[11px] font-bold tracking-wide mb-4" style={{ color: TEXT_MUTED }}>
             Tu revisión
           </p>
           <div className="mb-6">
@@ -917,7 +917,7 @@ function SmartChecklist({
               const active = activeCapas.includes(capa);
               return (
                 <div key={capa} className="flex items-center justify-between py-2.5" style={{ borderBottom: "1px solid #E2E8EF" }}>
-                  <span className="text-[13.5px] font-bold uppercase tracking-wide" style={{ color: active ? NAVY : TEXT_MUTED }}>
+                  <span className="text-[13.5px] font-bold tracking-wide" style={{ color: active ? NAVY : TEXT_MUTED }}>
                     {CAPA_INFO[capa].label}
                   </span>
                   <span className="text-[16px] font-black" style={{ color: active ? TEAL : "#CBD5E1" }} aria-hidden="true">
@@ -928,7 +928,7 @@ function SmartChecklist({
               );
             })}
           </div>
-          <p className="uppercase font-black text-xl mb-2" style={{ color: NAVY }}>
+          <p className="font-black text-xl mb-2" style={{ color: NAVY }}>
             {activeCapas.length} {activeCapas.length === 1 ? "capa que puedes revisar" : "capas que puedes revisar"}
           </p>
           <p className="text-[11.5px] leading-relaxed" style={{ color: TEXT_MUTED }}>
@@ -1032,11 +1032,11 @@ function IndustryGroups({
           {detail.blocks.map((block) => (
             <div key={block.titulo || "default"} className="rounded-xl p-5" style={{ background: OFF_WHITE, border: "1px solid #E2E8EF" }}>
               {block.titulo && (
-                <p className="text-[12px] font-bold uppercase tracking-wide mb-3" style={{ color: LAW_BLUE_DARK }}>
+                <p className="text-[12px] font-bold tracking-wide mb-3" style={{ color: LAW_BLUE_DARK }}>
                   {block.titulo}
                 </p>
               )}
-              <p className="text-[11px] font-bold uppercase tracking-wide mb-2" style={{ color: TEXT_MUTED }}>
+              <p className="text-[11px] font-bold tracking-wide mb-2" style={{ color: TEXT_MUTED }}>
                 Necesidades operativas
               </p>
               <div className="flex flex-wrap gap-1.5 mb-4">
@@ -1046,7 +1046,7 @@ function IndustryGroups({
                   </span>
                 ))}
               </div>
-              <p className="text-[11px] font-bold uppercase tracking-wide mb-2" style={{ color: TEXT_MUTED }}>
+              <p className="text-[11px] font-bold tracking-wide mb-2" style={{ color: TEXT_MUTED }}>
                 Capacidades JAAK relevantes
               </p>
               <div className="flex flex-wrap gap-1.5">
@@ -1534,7 +1534,7 @@ export default function Lfpiorpi2027LandingClient() {
           <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <SectionEyebrow dark variant="law">Nuevas Reglas LFPIORPI · 2026–2027</SectionEyebrow>
 
-            <h1 id="hero-heading" className="uppercase text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 leading-[1.05]">
+            <h1 id="hero-heading" className="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-6 leading-[1.05]">
               <span className="block">El cumplimiento evoluciona.</span>
               <span
                 className="block mt-2"
@@ -1549,7 +1549,7 @@ export default function Lfpiorpi2027LandingClient() {
               Usuario y los mecanismos automatizados para quienes realizan Actividades Vulnerables.
             </p>
 
-            <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 mb-4 text-[12.5px] font-semibold uppercase tracking-wide text-white/55">
+            <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 mb-4 text-[12.5px] font-semibold tracking-wide text-white/55">
               <span>KYC Biométrico</span>
               <span aria-hidden="true" style={{ color: TEAL }}>·</span>
               <span>AML Screening</span>
@@ -1612,7 +1612,7 @@ export default function Lfpiorpi2027LandingClient() {
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12 max-w-3xl mx-auto">
               <SectionEyebrow variant="law">Actividades vulnerables</SectionEyebrow>
-              <h2 id="actividad-heading" className="uppercase text-3xl md:text-4xl font-black mb-5 leading-snug" style={{ color: NAVY }}>
+              <h2 id="actividad-heading" className="text-3xl md:text-4xl font-black mb-5 leading-snug" style={{ color: NAVY }}>
                 ¿Estos cambios pueden aplicar a tu sector?
               </h2>
               <p className="text-[16px] leading-relaxed" style={{ color: TEXT_MUTED }}>
@@ -1630,7 +1630,7 @@ export default function Lfpiorpi2027LandingClient() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14 max-w-3xl mx-auto">
               <SectionEyebrow variant="law">Nuevo enfoque</SectionEyebrow>
-              <h2 id="enfoque-heading" className="uppercase text-3xl md:text-4xl font-black mb-5 leading-snug" style={{ color: NAVY }}>
+              <h2 id="enfoque-heading" className="text-3xl md:text-4xl font-black mb-5 leading-snug" style={{ color: NAVY }}>
                 De identificar al cliente a conocer y gestionar su riesgo
               </h2>
             </div>
@@ -1646,10 +1646,10 @@ export default function Lfpiorpi2027LandingClient() {
         {/* ── CTA comercial 1 — sin formulario, tráfico apenas a 1/3 de página ── */}
         <section className="py-14" style={{ background: NAVY }} aria-label="¿Necesitas automatizar estas validaciones?">
           <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="uppercase text-2xl sm:text-3xl font-black text-white mb-4 leading-snug">
+            <h2 className="text-2xl sm:text-3xl font-black text-white mb-4 leading-snug">
               ¿Necesitas automatizar estas validaciones?
             </h2>
-            <p className="text-[12.5px] font-semibold uppercase tracking-wide text-white/45 mb-8">
+            <p className="text-[12.5px] font-semibold tracking-wide text-white/45 mb-8">
               KYC biométrico · PEP y listas · Firma Digital · Evidencia
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
@@ -1681,14 +1681,14 @@ export default function Lfpiorpi2027LandingClient() {
         <section id="conocimiento-continuo" className="py-24" style={{ background: NAVY }} aria-labelledby="kyc-continuo-heading">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <SectionEyebrow dark>Conocimiento continuo</SectionEyebrow>
-            <h2 id="kyc-continuo-heading" className="uppercase text-4xl md:text-5xl font-black text-white mb-12 leading-tight max-w-2xl mx-auto">
+            <h2 id="kyc-continuo-heading" className="text-4xl md:text-5xl font-black text-white mb-12 leading-tight max-w-2xl mx-auto">
               El KYC no termina cuando el cliente entra
             </h2>
 
             <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-4 mb-10">
               {KYC_FLOW.map((step, i) => (
                 <div key={step} className="flex items-center gap-3">
-                  <span className="text-[13px] sm:text-[15px] font-black uppercase tracking-wide whitespace-nowrap text-white">
+                  <span className="text-[13px] sm:text-[15px] font-black tracking-wide whitespace-nowrap text-white">
                     <span style={{ color: "rgba(255,255,255,0.35)" }}>{String(i + 1).padStart(2, "0")}</span> {step}
                   </span>
                   {i < KYC_FLOW.length - 1 && <span aria-hidden="true" className="w-6 sm:w-10 h-px flex-shrink-0" style={{ background: TEAL }} />}
@@ -1712,7 +1712,7 @@ export default function Lfpiorpi2027LandingClient() {
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14 max-w-2xl mx-auto">
               <SectionEyebrow dark variant="law">Fechas clave</SectionEyebrow>
-              <h2 id="timeline-heading" className="uppercase text-3xl md:text-4xl font-black text-white mb-5">
+              <h2 id="timeline-heading" className="text-3xl md:text-4xl font-black text-white mb-5">
                 2027 no empieza en 2027
               </h2>
             </div>
@@ -1779,7 +1779,7 @@ export default function Lfpiorpi2027LandingClient() {
         {/* ── CTA comercial 2 — el usuario ya sabe qué cambió, si le aplica y cuándo ── */}
         <section className="py-16" style={{ background: NAVY_SOFT }} aria-label="¿Ya estás preparando tu operación?">
           <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="uppercase text-2xl sm:text-3xl font-black text-white mb-3 leading-snug">
+            <h2 className="text-2xl sm:text-3xl font-black text-white mb-3 leading-snug">
               ¿Ya estás preparando tu operación?
             </h2>
             <p className="text-[14px] text-white/60 mb-8 leading-relaxed">
@@ -1816,7 +1816,7 @@ export default function Lfpiorpi2027LandingClient() {
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12 max-w-2xl mx-auto">
               <SectionEyebrow>Infraestructura de confianza</SectionEyebrow>
-              <h2 id="jaak-heading" className="uppercase text-4xl md:text-5xl font-black mb-5" style={{ color: NAVY }}>
+              <h2 id="jaak-heading" className="text-4xl md:text-5xl font-black mb-5" style={{ color: NAVY }}>
                 De la identidad a la evidencia
               </h2>
               <p className="text-[16px] leading-relaxed" style={{ color: TEXT_MUTED }}>
@@ -1864,10 +1864,10 @@ export default function Lfpiorpi2027LandingClient() {
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <SectionEyebrow>Evalúa tu operación</SectionEyebrow>
-              <h2 id="autoeval-heading" className="uppercase text-3xl md:text-4xl font-black mb-3" style={{ color: NAVY }}>
+              <h2 id="autoeval-heading" className="text-3xl md:text-4xl font-black mb-3" style={{ color: NAVY }}>
                 ¿Qué parte de tu proceso sigue siendo manual?
               </h2>
-              <p className="text-[13px] font-semibold uppercase tracking-wide" style={{ color: TEXT_MUTED }}>
+              <p className="text-[13px] font-semibold tracking-wide" style={{ color: TEXT_MUTED }}>
                 {CHECKLIST_ITEMS.length} preguntas · menos de 60 segundos
               </p>
             </div>
@@ -1880,14 +1880,14 @@ export default function Lfpiorpi2027LandingClient() {
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-4">
               <span
-                className="inline-block text-[11px] font-bold uppercase tracking-wide px-3 py-1 rounded-full"
+                className="inline-block text-[11px] font-bold tracking-wide px-3 py-1 rounded-full"
                 style={{ background: `${LAW_BLUE}1a`, color: LAW_BLUE_LIGHT, border: `1px solid ${LAW_BLUE}55` }}
               >
                 Lo que contempla la regulación
               </span>
             </div>
             <div className="text-center mb-14 max-w-2xl mx-auto">
-              <h2 id="automatizacion-heading" className="uppercase text-3xl md:text-4xl font-black text-white mb-5">
+              <h2 id="automatizacion-heading" className="text-3xl md:text-4xl font-black text-white mb-5">
                 Del expediente al monitoreo
               </h2>
               <p className="text-[16px] text-white/60 leading-relaxed">
@@ -1912,7 +1912,7 @@ export default function Lfpiorpi2027LandingClient() {
 
             {/* Separación visual deliberada: esto NO es "JAAK cubre el Art. 41" */}
             <div className="max-w-2xl mx-auto rounded-2xl p-6 mb-8" style={{ background: "rgba(30,202,211,0.06)", border: `1px solid ${TEAL}33` }}>
-              <p className="text-[11px] font-bold uppercase tracking-wide mb-3" style={{ color: "#7FE8EC" }}>
+              <p className="text-[11px] font-bold tracking-wide mb-3" style={{ color: "#7FE8EC" }}>
                 Dónde participa JAAK
               </p>
               <div className="flex flex-wrap gap-2 mb-4">
@@ -1957,7 +1957,7 @@ export default function Lfpiorpi2027LandingClient() {
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14 max-w-2xl mx-auto">
               <SectionEyebrow>Aplicación por industria</SectionEyebrow>
-              <h2 id="sectores-heading" className="uppercase text-3xl md:text-4xl font-black" style={{ color: NAVY }}>
+              <h2 id="sectores-heading" className="text-3xl md:text-4xl font-black" style={{ color: NAVY }}>
                 ¿Cómo se traduce en tu operación?
               </h2>
             </div>
@@ -1975,7 +1975,7 @@ export default function Lfpiorpi2027LandingClient() {
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14">
               <SectionEyebrow>Producto en operación</SectionEyebrow>
-              <h2 id="demo-heading" className="uppercase text-3xl md:text-4xl font-black" style={{ color: NAVY }}>
+              <h2 id="demo-heading" className="text-3xl md:text-4xl font-black" style={{ color: NAVY }}>
                 ¿Prefieres verlo en operación?
               </h2>
             </div>
@@ -2021,7 +2021,7 @@ export default function Lfpiorpi2027LandingClient() {
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-14 max-w-2xl mx-auto">
               <SectionEyebrow variant="law">Fuentes oficiales</SectionEyebrow>
-              <h2 id="fuentes-heading" className="uppercase text-3xl md:text-4xl font-black mb-5" style={{ color: NAVY }}>
+              <h2 id="fuentes-heading" className="text-3xl md:text-4xl font-black mb-5" style={{ color: NAVY }}>
                 Verifica directamente la regulación
               </h2>
               <p className="text-[15px] leading-relaxed" style={{ color: TEXT_MUTED }}>
@@ -2034,7 +2034,7 @@ export default function Lfpiorpi2027LandingClient() {
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
               {FUENTES_OFICIALES.map((f) => (
                 <div key={f.titulo} className="rounded-2xl p-6 bg-white flex flex-col" style={{ border: "1px solid #E2E8EF" }}>
-                  <p className="text-[11px] font-bold uppercase tracking-wide mb-3" style={{ color: LAW_BLUE_DARK }}>
+                  <p className="text-[11px] font-bold tracking-wide mb-3" style={{ color: LAW_BLUE_DARK }}>
                     {f.eyebrow}
                   </p>
                   <h3 className="text-[15px] font-bold mb-2" style={{ color: NAVY }}>
@@ -2054,7 +2054,7 @@ export default function Lfpiorpi2027LandingClient() {
         <section id="hablemos" className="py-20 scroll-mt-20" style={{ background: NAVY }} aria-labelledby="cta-final-heading">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <SectionEyebrow dark variant="law">Próximos hitos · 2026–2027</SectionEyebrow>
-            <h2 id="cta-final-heading" className="uppercase text-4xl sm:text-5xl font-black text-white mb-5 leading-[1.05]">
+            <h2 id="cta-final-heading" className="text-4xl sm:text-5xl font-black text-white mb-5 leading-[1.05]">
               Elige cómo quieres avanzar
             </h2>
             <p className="text-[15px] text-white/65 mb-12 leading-relaxed max-w-md mx-auto">
@@ -2077,7 +2077,7 @@ export default function Lfpiorpi2027LandingClient() {
         <section className="py-10 bg-white" aria-label="Aviso legal">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="rounded-xl p-5" style={{ background: GRAY_LIGHT, border: "1px solid #E2E8EF" }}>
-              <p className="text-[11px] font-bold uppercase tracking-wide mb-2" style={{ color: TEXT_MUTED }}>
+              <p className="text-[11px] font-bold tracking-wide mb-2" style={{ color: TEXT_MUTED }}>
                 Aviso
               </p>
               <p className="text-[13px] leading-relaxed" style={{ color: TEXT_MUTED }}>
