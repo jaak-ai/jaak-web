@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react";
 import {
-  productos,
   formatMXN,
   tierEstilos,
+  buildKycRegisterUrl,
+  KYC_PLAN_CODE_BY_TIER,
   type CategoriaId,
   type Producto,
   type Paquete,
@@ -38,12 +39,10 @@ type NecesidadId = "identidad" | "firma" | "validar" | "listas" | "ocr";
 const necesidades: { id: NecesidadId; cat: CategoriaId; titulo: string; desc: string; recomendados: string[] }[] = [
   { id: "identidad", cat: "identidad", titulo: "Verificar la identidad de tus clientes", desc: "KYC biométrico con prueba de vida y consulta de listas.", recomendados: ["kyc"] },
   { id: "firma", cat: "firma", titulo: "Firmar documentos con validez legal", desc: "Desde firma simple hasta NOM-151 con biometría o KYC.", recomendados: ["firma-nom151"] },
-  { id: "validar", cat: "validaciones", titulo: "Validar datos contra padrones oficiales", desc: "Consulta de INE y CURP en segundos.", recomendados: ["ine", "curp"] },
+  { id: "validar", cat: "validaciones", titulo: "Validar datos contra padrones oficiales", desc: "Consulta de INE y CURP en segundos.", recomendados: ["consulta-ine", "consulta-curp"] },
   { id: "listas", cat: "listas-negras", titulo: "Detectar sancionados, buscados o deudores fiscales", desc: "Consulta simultánea en OFAC, INTERPOL y SAT-69B.", recomendados: ["listas-negras"] },
   { id: "ocr", cat: "ocr", titulo: "Leer y extraer datos de documentos", desc: "OCR inteligente para identificaciones y documentos.", recomendados: ["ocr-inteligente"] },
 ];
-
-const productosDe = (cat: CategoriaId) => productos.filter((p) => p.categoria === cat);
 
 const volumenes: { id: Paquete["id"]; label: string; rec?: boolean }[] = [
   { id: "cobre", label: "Hasta 10" },
@@ -54,7 +53,8 @@ const volumenes: { id: Paquete["id"]; label: string; rec?: boolean }[] = [
 ];
 
 export default function ConfiguradorAutoservicio() {
-  const { enCarrito, tierDe, setTier, toggle, aplicarVolumen, comprable } = useCarrito();
+  const { productos, enCarrito, tierDe, setTier, toggle, aplicarVolumen, comprable } = useCarrito();
+  const productosDe = (cat: CategoriaId) => productos.filter((p) => p.categoria === cat);
   const [seleccionadas, setSeleccionadas] = useState<Set<NecesidadId>>(new Set());
   const [volumen, setVolumen] = useState<Paquete["id"]>("plata");
   // true cuando ya se leyeron `nec`/`vol` de la URL; hasta entonces no se escribe.
@@ -218,7 +218,11 @@ export default function ConfiguradorAutoservicio() {
                                   </p>
                                 </div>
                               </div>
-                              {activo ? (
+                              {producto.checkoutUrl ? (
+                                // KYC/suscripción: se compra por el flujo de planes.
+                                // Deep-link con el tier seleccionado, no el fijo del catálogo.
+                                <a href={buildKycRegisterUrl(KYC_PLAN_CODE_BY_TIER[tierDe(producto.id)] ?? "plata")} className="flex-shrink-0 rounded-lg px-3 py-1.5 text-[12px] font-semibold text-white transition-colors" style={{ background: TEAL }}>Comprar</a>
+                              ) : activo ? (
                                 <button type="button" onClick={() => toggle(producto.id)} className="flex-shrink-0 text-[12px]" style={{ color: "#64748B" }}>Quitar</button>
                               ) : (
                                 <button type="button"

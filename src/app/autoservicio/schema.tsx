@@ -1,10 +1,8 @@
 // Structured Data (JSON-LD) para SEO de /autoservicio.
 // Se genera desde el catálogo (fuente única) para no duplicar precios/nombres.
-import { productos, categorias } from "@/data/autoservicio-catalogo";
+import type { Categoria, Producto } from "@/data/autoservicio-catalogo";
 
 const BASE = "https://jaak.ai";
-
-const categoriaNombre = (id: string) => categorias.find((c) => c.id === id)?.nombre ?? "";
 
 // Imagen por categoría (Google recomienda `image` en Product). Fallback al logo.
 const LOGO = "/images/logos/jaak-logo-azul.png";
@@ -30,7 +28,9 @@ export const autoservicioBreadcrumbSchema = {
 // Catálogo de productos como ItemList → Product + AggregateOffer.
 // Precio = el que se muestra en la card (sin IVA, "+ IVA" en el sitio) para que
 // el dato estructurado COINCIDA con el precio visible (requisito de Google).
-export const autoservicioProductsSchema = {
+export function buildAutoservicioProductsSchema(productos: Producto[], categorias: Categoria[]) {
+  const categoriaNombre = (id: string) => categorias.find((c) => c.id === id)?.nombre ?? "";
+  return {
   "@context": "https://schema.org",
   "@type": "ItemList",
   name: "Catálogo de Autoservicio JAAK",
@@ -58,4 +58,5 @@ export const autoservicioProductsSchema = {
       },
     };
   }),
-};
+  };
+}

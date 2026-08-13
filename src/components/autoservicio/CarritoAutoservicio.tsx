@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import {
-  productos,
   IVA,
   formatMXN,
   buildCheckoutUrl,
@@ -27,7 +26,7 @@ function CartIcon({ className }: { className?: string }) {
 // siempre refleja lo agregado, independiente del modo o de los filtros de cada
 // vista. Incluye panel desktop (sticky) + barra fija y hoja inferior en móvil.
 export default function CarritoAutoservicio() {
-  const { cart, tierDe, quitar, pricingIndex } = useCarrito();
+  const { productos, cart, tierDe, quitar, pricingIndex, productKeys } = useCarrito();
   const [abiertoMovil, setAbiertoMovil] = useState(false);
 
   const getPaquete = (p: Producto, id: Paquete["id"]) => p.paquetes.find((q) => q.id === id)!;
@@ -38,7 +37,7 @@ export default function CarritoAutoservicio() {
   const subtotal = items.reduce((s, i) => s + i.paquete.precio, 0);
   const iva = Math.round(subtotal * IVA);
   const total = subtotal + iva;
-  const checkoutHref = items.length ? buildCheckoutUrl(items, { pricingIndex, utm: getUtmParams() }) : "#";
+  const checkoutHref = items.length ? buildCheckoutUrl(items, { pricingIndex, productKeys, utm: getUtmParams() }) : "#";
 
   return (
     <>

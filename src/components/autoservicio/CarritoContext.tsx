@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import { productos, type Paquete } from "@/data/autoservicio-catalogo";
+import { type Categoria, type Paquete, type Producto } from "@/data/autoservicio-catalogo";
 import { escribirParamsUrl, leerParamUrl } from "./urlEstado";
 
 type Tier = Paquete["id"];
@@ -14,6 +14,8 @@ type Tier = Paquete["id"];
 type PricingIndex = Record<string, Record<string, string>>;
 
 interface CarritoStore {
+  productos: Producto[];
+  categorias: Categoria[];
   cart: string[];
   enCarrito: (id: string) => boolean;
   tierDe: (id: string) => Tier;
@@ -27,6 +29,7 @@ interface CarritoStore {
   // (tiene renglón de pricing en prod). Si el índice viene vacío (falló el
   // fetch), `comprable` devuelve true para no ocultar el catálogo.
   pricingIndex: PricingIndex;
+  productKeys: Record<string, string>;
   comprable: (id: string) => boolean;
 }
 
@@ -34,10 +37,16 @@ const Ctx = createContext<CarritoStore | null>(null);
 
 export function CarritoProvider({
   children,
+  productos,
+  categorias,
   pricingIndex = {},
+  productKeys = {},
 }: {
   children: ReactNode;
+  productos: Producto[];
+  categorias: Categoria[];
   pricingIndex?: PricingIndex;
+  productKeys?: Record<string, string>;
 }) {
   const [tierByProduct, setTierByProduct] = useState<Record<string, Tier>>(() =>
     Object.fromEntries(productos.map((p) => [p.id, p.recomendado ?? "plata"]))
@@ -73,7 +82,7 @@ export function CarritoProvider({
       }
     }
     setHidratado(true);
-  }, []);
+  }, [productos]);
 
   // Refleja el carrito en la URL en cada cambio (producto agregado/quitado o
   // tier ajustado), para que un refresh conserve la selección.
@@ -123,7 +132,7 @@ export function CarritoProvider({
 
   return (
     <Ctx.Provider
-      value={{ cart, enCarrito, tierDe, setTier, toggle, quitar, aplicarVolumen, pricingIndex, comprable }}
+      value={{ productos, categorias, cart, enCarrito, tierDe, setTier, toggle, quitar, aplicarVolumen, pricingIndex, productKeys, comprable }}
     >
       {children}
     </Ctx.Provider>
