@@ -4,8 +4,6 @@ import { useEffect, useState } from "react";
 import {
   formatMXN,
   tierEstilos,
-  buildKycRegisterUrl,
-  KYC_PLAN_CODE_BY_TIER,
   type CategoriaId,
   type Producto,
   type Paquete,
@@ -185,26 +183,13 @@ export default function CatalogoAutoservicio() {
               </span>
             </div>
           </div>
-          {producto.checkoutUrl ? (
-            // KYC/suscripción: se compra por el flujo de planes, no por el carrito.
-            // El deep-link lleva el tier seleccionado en la card (no el fijo del
-            // catálogo) para que /register preseleccione el plan correcto.
-            <a
-              href={buildKycRegisterUrl(KYC_PLAN_CODE_BY_TIER[tierDe(producto.id)] ?? "plata")}
-              className="rounded-xl px-4 py-2.5 text-[13px] font-semibold transition-colors"
-              style={{ background: TEAL, color: "#fff" }}
-            >
-              Comprar
-            </a>
-          ) : (
-            <button type="button"
-              onClick={() => toggle(producto.id)}
-              className="rounded-xl px-4 py-2.5 text-[13px] font-semibold transition-colors"
-              style={agregado ? { background: "#F1FAFB", color: TEAL_DARK, border: `1px solid ${TEAL}` } : { background: TEAL, color: "#fff" }}
-            >
-              {agregado ? "Quitar" : "Agregar"}
-            </button>
-          )}
+          <button type="button"
+            onClick={() => toggle(producto.id)}
+            className="rounded-xl px-4 py-2.5 text-[13px] font-semibold transition-colors"
+            style={agregado ? { background: "#F1FAFB", color: TEAL_DARK, border: `1px solid ${TEAL}` } : { background: TEAL, color: "#fff" }}
+          >
+            {agregado ? "Quitar" : "Agregar"}
+          </button>
         </div>
       </article>
     );

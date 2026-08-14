@@ -29,10 +29,10 @@ export interface Producto {
   incluye: string[];
   recomendado?: Paquete["id"];
   paquetes: Paquete[];
-  // Si está presente, el producto NO va por el carrito de /register sino que su
-  // CTA enlaza aquí (ej. KYC/suscripción → /register con plan pre-seleccionado,
-  // TO-809 Fase 3 / AUTO-20). Lo maneja la card.
-  checkoutUrl?: string;
+  // KYC/suscripción: se compra como PLAN (va al slot `k` del deep-link), no como
+  // producto de pago único. Igual que todo, entra al carrito; `buildCheckoutUrl`
+  // lo rutea al plan del checkout unificado (TO-809 / AUTO-20).
+  plan?: boolean;
 }
 
 export const IVA = 0.16;
@@ -99,7 +99,7 @@ export const productos: Producto[] = [
     ],
     recomendado: "plata",
     paquetes: tiers(99, 1500, 2800, 6625, 12500, 5, 50, 100, 250, 500),
-    checkoutUrl: buildKycRegisterUrl(KYC_PLAN_CODE_BY_TIER["plata"]),
+    plan: true,
   },
   {
     id: "firma-simple",
@@ -306,23 +306,45 @@ export function buildCheckoutUrl(
   } = {}
 ): string {
   const { pricingIndex, productKeys: productKeysOverride, base = "https://platform.jaak.ai/#/register/user-info", utm, coupon } = options;
-  const products = items.map(({ producto, paquete }) => {
-    const nombre = producto.nombre.split(" — ")[0];
-    return {
-      i: pricingIndex?.[producto.id]?.[paquete.id] ?? "",
-      k: productKeysOverride?.[producto.id] ?? productKeys[producto.id] ?? producto.id,
-      n: nombre,
-      pr: Math.round(paquete.precio * (1 + IVA) * 100) / 100,
-      c: "MXN",
-      s: 0,
-      d: `${nombre} ${paquete.nombre} ${paquete.cantidad}`,
-      q: paquete.cantidad,
-    };
-  });
-  const payload = {
+  // KYC/suscripciones van al slot de PLAN (`k`), no a `products`: el checkout
+  // unificado los cobra como plan (modo "once"), no como producto de pago único.
+  const products = items
+    .filter(({ producto }) => !producto.plan)
+    .map(({ producto, paquete }) => {
+      const nombre = producto.nombre.split(" — ")[0];
+      return {
+        i: pricingIndex?.[producto.id]?.[paquete.id] ?? "",
+        k: productKeysOverride?.[producto.id] ?? productKeys[producto.id] ?? producto.id,
+        n: nombre,
+        pr: Math.round(paquete.precio * (1 + IVA) * 100) / 100,
+        c: "MXN",
+        s: 0,
+        d: `${nombre} ${paquete.nombre} ${paquete.cantidad}`,
+        q: paquete.cantidad,
+      };
+    });
+  const payload: {
+    pk: string[];
+    products: typeof products;
+    k?: { pc: string; pn: string; pr: number; c: string; q: number; m: string };
+  } = {
     pk: products.map((p) => p.i).filter(Boolean),
     products,
   };
+  // El plan (KYC) es único: /register tiene un solo slot `k`. Si hubiera más de
+  // uno en el carrito, se toma el primero.
+  const planItem = items.find(({ producto }) => producto.plan);
+  if (planItem) {
+    const nombre = planItem.producto.nombre.split(" — ")[0];
+    payload.k = {
+      pc: KYC_PLAN_CODE_BY_TIER[planItem.paquete.id] ?? "plata",
+      pn: nombre,
+      pr: Math.round(planItem.paquete.precio * (1 + IVA) * 100) / 100,
+      c: "MXN",
+      q: planItem.paquete.cantidad,
+      m: "once",
+    };
+  }
   const d = btoa(encodeURIComponent(JSON.stringify(payload)));
   let url = `${base}?d=${d}`;
   // Cupón (AUTO-4): dentro del hash, junto a `d`, para que /register lo lea.

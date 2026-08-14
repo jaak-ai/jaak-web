@@ -17,7 +17,6 @@ import {
   IVA,
   categorias as fallbackCategorias,
   productos as fallbackProductos,
-  buildKycRegisterUrl,
   type Categoria,
   type CategoriaId,
   type Paquete,
@@ -118,13 +117,13 @@ export function mapProducto(p: CatalogProduct): Producto | null {
     incluye: p.incluye || [],
     recomendado: isTier(p.recommendedTier) ? p.recommendedTier : undefined,
     paquetes,
-    checkoutUrl: p.billingType === "recurring" ? buildKycRegisterUrl("plata") : undefined,
+    plan: p.billingType === "recurring",
   };
 }
 
 export function mapCatalog(data: CatalogResponse): Producto[] {
-  // KYC y demás recurrentes SÍ se muestran (SD-283), pero con `checkoutUrl` al
-  // checkout unificado /register/products (lo maneja la card).
+  // KYC y demás recurrentes SÍ se muestran (SD-283); entran al carrito como todo,
+  // marcados `plan: true` para rutearlos al slot de plan del checkout unificado.
   return (data.products || [])
     .map(mapProducto)
     .filter((p): p is Producto => p !== null);

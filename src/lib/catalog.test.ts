@@ -45,14 +45,14 @@ describe("mapProducto", () => {
     expect(p.unidad).toBe("checadas");
   });
 
-  it("productos one_time no llevan checkoutUrl (van por el carrito)", () => {
+  it("productos one_time no son plan (van por el carrito como producto)", () => {
     const p = mapProducto(consultaIne)!;
-    expect(p.checkoutUrl).toBeUndefined();
+    expect(p.plan).toBeFalsy();
   });
 
-  it("recurring (KYC) lleva checkoutUrl a /register/products", () => {
+  it("recurring (KYC) se marca plan: true (va al carrito, al slot de plan)", () => {
     const p = mapProducto({ ...consultaIne, slug: "kyc", billingType: "recurring" })!;
-    expect(p.checkoutUrl).toContain("/register/products");
+    expect(p.plan).toBe(true);
   });
 
   it("unidad cae al mapa por categoría si el endpoint no la trae y el slug no está", () => {
