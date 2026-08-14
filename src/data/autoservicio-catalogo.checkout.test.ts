@@ -84,4 +84,16 @@ describe("buildCheckoutUrl KYC/plan routing", () => {
     const p = decodePayload(buildCheckoutUrl([{ producto: kyc, paquete: kycOro }]));
     expect(p.k.pc).toBe(KYC_PLAN_CODE_BY_TIER["oro"]);
   });
+
+  it("KYC platino1 manda el code 'platino1' (no 'platino' del plan archived)", () => {
+    const platino1 = { id: "platino1", nombre: "PLATINO", cantidad: 500, precio: 12500 };
+    const p = decodePayload(buildCheckoutUrl([{ producto: kyc, paquete: platino1 }]));
+    expect(p.k.pc).toBe("platino1");
+  });
+
+  it("un tier nuevo desconocido manda su propio id como code (fallback identidad)", () => {
+    const amatista = { id: "amatista", nombre: "Amatista", cantidad: 750, precio: 18000 };
+    const p = decodePayload(buildCheckoutUrl([{ producto: kyc, paquete: amatista }]));
+    expect(p.k.pc).toBe("amatista");
+  });
 });
