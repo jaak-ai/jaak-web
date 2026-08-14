@@ -51,9 +51,6 @@ const UNIDAD_BY_GROUP: Record<string, string> = {
   ocr: "tokens",
 };
 
-const TIER_IDS: Paquete["id"][] = ["cobre", "bronce", "plata", "oro", "platino"];
-const isTier = (t: string): t is Paquete["id"] => (TIER_IDS as string[]).includes(t);
-
 // ── Forma (parcial) de la respuesta del endpoint ──────────────────────────────
 export interface CatalogTier {
   id: string;
@@ -90,7 +87,7 @@ function sinIVA(conIVA: number): number {
 }
 
 function mapPaquete(t: CatalogTier): Paquete | null {
-  if (!isTier(t.tier)) return null;
+  if (!t.tier) return null;
   return {
     id: t.tier,
     nombre: t.tierName || t.tier,
@@ -102,10 +99,11 @@ function mapPaquete(t: CatalogTier): Paquete | null {
 // Mapea un producto del endpoint al modelo `Producto` de la UI. Devuelve null si
 // no tiene paquetes válidos (no se puede comprar).
 export function mapProducto(p: CatalogProduct): Producto | null {
-  const paquetes = (p.tiers || [])
+  // Orden desde el backend (tierOrder), no una lista fija en el front.
+  const paquetes = [...(p.tiers || [])]
+    .sort((a, b) => a.tierOrder - b.tierOrder)
     .map(mapPaquete)
-    .filter((q): q is Paquete => q !== null)
-    .sort((a, b) => TIER_IDS.indexOf(a.id) - TIER_IDS.indexOf(b.id));
+    .filter((q): q is Paquete => q !== null);
   if (paquetes.length === 0) return null;
 
   return {
@@ -115,7 +113,7 @@ export function mapProducto(p: CatalogProduct): Producto | null {
     unidad: p.unidad || UNIDAD_BY_SLUG[p.slug] || UNIDAD_BY_GROUP[p.group] || "unidades",
     tagline: p.tagline || "",
     incluye: p.incluye || [],
-    recomendado: isTier(p.recommendedTier) ? p.recommendedTier : undefined,
+    recomendado: p.recommendedTier || undefined,
     paquetes,
     plan: p.billingType === "recurring",
   };
@@ -134,7 +132,7 @@ export function buildPricingIndex(data: CatalogResponse): PricingIndex {
   const index: PricingIndex = {};
   for (const p of data.products || []) {
     for (const t of p.tiers || []) {
-      if (isTier(t.tier) && t.id) (index[p.slug] ??= {})[t.tier] = t.id;
+      if (t.tier && t.id) (index[p.slug] ??= {})[t.tier] = t.id;
     }
   }
   return index;

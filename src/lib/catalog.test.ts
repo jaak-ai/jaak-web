@@ -32,12 +32,22 @@ describe("mapProducto", () => {
     expect(p.paquetes.find((q) => q.id === "plata")!.cantidad).toBe(100);
   });
 
-  it("descarta productos sin tiers válidos", () => {
+  it("descarta productos sin tiers válidos (tier vacío)", () => {
     const bare: CatalogProduct = {
       ...consultaIne,
-      tiers: [{ id: "x", tier: "n/a", tierName: "", tierOrder: 0, price: 0, quota: { value: 0 } }],
+      tiers: [{ id: "x", tier: "", tierName: "", tierOrder: 0, price: 0, quota: { value: 0 } }],
     };
     expect(mapProducto(bare)).toBeNull();
+  });
+
+  it("acepta un tier nuevo desconocido (sin allowlist): amatista se mapea", () => {
+    const nuevo: CatalogProduct = {
+      ...consultaIne,
+      tiers: [{ id: "z1", tier: "amatista", tierName: "Amatista", tierOrder: 5, price: 116, quota: { value: 50 } }],
+    };
+    const p = mapProducto(nuevo)!;
+    expect(p.paquetes.map((q) => q.id)).toEqual(["amatista"]);
+    expect(p.paquetes[0].nombre).toBe("Amatista");
   });
 
   it("prefiere unidad del endpoint cuando viene", () => {

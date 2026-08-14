@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import {
   formatMXN,
-  tierEstilos,
+  tierEstilo,
   type CategoriaId,
   type Producto,
   type Paquete,
@@ -240,7 +240,7 @@ export default function ConfiguradorAutoservicio() {
                               <div className="flex flex-wrap gap-1.5">
                                 {producto.paquetes.map((q) => {
                                   const sel = q.id === tierDe(producto.id);
-                                  const est = tierEstilos[q.id];
+                                  const est = tierEstilo(q.id);
                                   return (
                                     <button type="button"
                                       key={q.id}

@@ -14,7 +14,9 @@ export interface Categoria {
 }
 
 export interface Paquete {
-  id: "cobre" | "bronce" | "plata" | "oro" | "platino";
+  // Código de tier del backend (cobre/bronce/plata/oro/platino y cualquiera que
+  // se cree en god). No es un enum fijo: el catálogo es fuente única de verdad.
+  id: string;
   nombre: string;
   cantidad: number; // unidades incluidas
   precio: number; // MXN, sin IVA
@@ -256,13 +258,19 @@ export const productos: Producto[] = [
 // - text: texto sobre el tinte claro
 // - on:   texto sobre el metal sólido (contraste legible)
 export interface TierEstilo { base: string; soft: string; text: string; on: string; }
-export const tierEstilos: Record<Paquete["id"], TierEstilo> = {
+const tierEstilos: Record<string, TierEstilo> = {
   cobre:   { base: "#C77B45", soft: "#F8EDE4", text: "#9A5A2C", on: "#3A2410" },
   bronce:  { base: "#7E4F28", soft: "#EFE7DF", text: "#6E441F", on: "#FFFFFF" },
   plata:   { base: "#AEB6C2", soft: "#F1F2F5", text: "#525B68", on: "#1F2937" },
   oro:     { base: "#D4AF37", soft: "#FAF3DA", text: "#8A6D12", on: "#3A2F08" },
   platino: { base: "#59677A", soft: "#EBEEF2", text: "#475264", on: "#FFFFFF" },
 };
+// Estilo neutro para tiers sin paleta curada (uno nuevo creado en god): se muestra
+// con look genérico en vez de desaparecer. El backend es la fuente de verdad.
+const DEFAULT_TIER_ESTILO: TierEstilo = { base: "#64748B", soft: "#F1F5F9", text: "#475569", on: "#FFFFFF" };
+export function tierEstilo(id: string): TierEstilo {
+  return tierEstilos[id] ?? DEFAULT_TIER_ESTILO;
+}
 
 export function formatMXN(n: number): string {
   return new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 0 }).format(n);
