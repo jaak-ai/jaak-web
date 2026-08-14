@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { buildKycRegisterUrl, KYC_PLAN_CODE_BY_TIER } from "@/data/autoservicio-catalogo";
 
 interface Plan {
   name: string;
@@ -44,11 +45,11 @@ const PRODUCTS: Product[] = [
     ],
     idealFor: ["Fintechs", "Apps de crédito", "Plataformas digitales", "E-commerce regulado"],
     plans: [
-      {name:"Cobre",   qty:"5 verificaciones",   price:"$99",     link:"https://platform.jaak.ai/#/onboarding/user-info?plan=cobre"},
-      {name:"Bronce",  qty:"50 verificaciones",  price:"$1,500",  link:"https://platform.jaak.ai/#/onboarding/plans/bronce"},
-      {name:"Plata",   qty:"100 verificaciones", price:"$2,800",  link:"https://platform.jaak.ai/#/onboarding/plans/plata"},
-      {name:"Oro",     qty:"250 verificaciones", price:"$6,625",  link:"https://platform.jaak.ai/#/onboarding/plans/oro"},
-      {name:"Platino", qty:"500 verificaciones", price:"$12,500", link:"https://platform.jaak.ai/#/onboarding/plans/platino1"},
+      {name:"Cobre",   qty:"5 verificaciones",   price:"$99",     link:buildKycRegisterUrl(KYC_PLAN_CODE_BY_TIER["cobre"])},
+      {name:"Bronce",  qty:"50 verificaciones",  price:"$1,500",  link:buildKycRegisterUrl(KYC_PLAN_CODE_BY_TIER["bronce"])},
+      {name:"Plata",   qty:"100 verificaciones", price:"$2,800",  link:buildKycRegisterUrl(KYC_PLAN_CODE_BY_TIER["plata"])},
+      {name:"Oro",     qty:"250 verificaciones", price:"$6,625",  link:buildKycRegisterUrl(KYC_PLAN_CODE_BY_TIER["oro"])},
+      {name:"Platino", qty:"500 verificaciones", price:"$12,500", link:buildKycRegisterUrl(KYC_PLAN_CODE_BY_TIER["platino1"])},
     ],
   },
   {

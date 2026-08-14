@@ -29,6 +29,10 @@ export interface Producto {
   incluye: string[];
   recomendado?: Paquete["id"];
   paquetes: Paquete[];
+  // Si está presente, el producto NO va por el carrito de /register sino que su
+  // CTA enlaza aquí (ej. KYC/suscripción → /register con plan pre-seleccionado,
+  // TO-809 Fase 3 / AUTO-20). Lo maneja la card.
+  checkoutUrl?: string;
 }
 
 export const IVA = 0.16;
@@ -52,6 +56,32 @@ const tiers = (
   { id: "platino", nombre: "Platino", cantidad: qpl, precio: pl },
 ];
 
+// Deep-link a la selección unificada de /register con el plan KYC pre-seleccionado
+// (checkout unificado TO-809 Fase 3 / AUTO-20). Reemplaza los CTAs viejos a
+// /onboarding/*. El register reconstruye precio/nombre del plan en vivo; aquí solo
+// viaja el código de plan + modo "once".
+export const KYC_PLAN_CODE_BY_TIER: Record<string, string> = {
+  cobre: "gratis", bronce: "bronce", plata: "plata", oro: "oro", platino: "platino", platino1: "platino",
+};
+export function buildKycRegisterUrl(
+  planCode: string,
+  options: { base?: string; utm?: Partial<import("@/lib/attribution").AttributionParams> } = {}
+): string {
+  const { base = "https://platform.jaak.ai/#/register/products", utm } = options;
+  const d = btoa(encodeURIComponent(JSON.stringify({ k: { pc: planCode, m: "once" } })));
+  let url = `${base}?d=${d}`;
+  // utm_* como query ANTES del hash (mismo patrón que buildCheckoutUrl)
+  const utmEntries = Object.entries(utm ?? {}).filter(
+    (e): e is [string, string] => e[0].startsWith("utm_") && typeof e[1] === "string" && e[1] !== ""
+  );
+  if (utmEntries.length) {
+    const qs = new URLSearchParams(utmEntries).toString();
+    const hashIdx = url.indexOf("#");
+    url = hashIdx === -1 ? `${url}&${qs}` : `${url.slice(0, hashIdx)}?${qs}${url.slice(hashIdx)}`;
+  }
+  return url;
+}
+
 export const productos: Producto[] = [
   {
     id: "kyc",
@@ -69,6 +99,7 @@ export const productos: Producto[] = [
     ],
     recomendado: "plata",
     paquetes: tiers(99, 1500, 2800, 6625, 12500, 5, 50, 100, 250, 500),
+    checkoutUrl: buildKycRegisterUrl(KYC_PLAN_CODE_BY_TIER["plata"]),
   },
   {
     id: "firma-simple",
@@ -262,18 +293,24 @@ export function buildCheckoutUrl(
   items: { producto: Producto; paquete: Paquete }[],
   options: {
     pricingIndex?: Record<string, Record<string, string>>;
+    /** productKey por producto (del endpoint). Si no se pasa, usa el mapa local
+     *  (fallback cuando el catálogo viene del hardcode). */
+    productKeys?: Record<string, string>;
     base?: string;
     /** Atribución first-party (utm_*) que viaja como query ANTES del hash
      *  para que platform.jaak.ai (analytics/checkout) la reciba. */
     utm?: Partial<import("@/lib/attribution").AttributionParams>;
+    /** Código de cupón (AUTO-4). Viaja DENTRO del hash (junto a `d`) para que la
+     *  ruta /register lo lea del query y lo pre-aplique. */
+    coupon?: string;
   } = {}
 ): string {
-  const { pricingIndex, base = "https://platform.jaak.ai/#/register/user-info", utm } = options;
+  const { pricingIndex, productKeys: productKeysOverride, base = "https://platform.jaak.ai/#/register/user-info", utm, coupon } = options;
   const products = items.map(({ producto, paquete }) => {
     const nombre = producto.nombre.split(" — ")[0];
     return {
       i: pricingIndex?.[producto.id]?.[paquete.id] ?? "",
-      k: productKeys[producto.id] ?? producto.id,
+      k: productKeysOverride?.[producto.id] ?? productKeys[producto.id] ?? producto.id,
       n: nombre,
       pr: Math.round(paquete.precio * (1 + IVA) * 100) / 100,
       c: "MXN",
@@ -288,6 +325,10 @@ export function buildCheckoutUrl(
   };
   const d = btoa(encodeURIComponent(JSON.stringify(payload)));
   let url = `${base}?d=${d}`;
+  // Cupón (AUTO-4): dentro del hash, junto a `d`, para que /register lo lea.
+  if (coupon && coupon.trim()) {
+    url += `&coupon=${encodeURIComponent(coupon.trim())}`;
+  }
   // Inserta utm_* como query previa al hash (#) — los routers hash no ven
   // esa parte, pero analytics y el servidor de platform sí.
   const utmEntries = Object.entries(utm ?? {}).filter(

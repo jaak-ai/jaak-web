@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 import {
-  productos,
-  categorias,
   formatMXN,
   tierEstilos,
+  buildKycRegisterUrl,
+  KYC_PLAN_CODE_BY_TIER,
   type CategoriaId,
   type Producto,
   type Paquete,
@@ -34,7 +34,7 @@ function CategoryIcon({ categoria, className }: { categoria: CategoriaId; classN
 }
 
 export default function CatalogoAutoservicio() {
-  const { enCarrito, tierDe, setTier, toggle, comprable } = useCarrito();
+  const { productos, categorias, enCarrito, tierDe, setTier, toggle, comprable } = useCarrito();
   // Solo categorías con al menos un producto comprable (con renglón de pricing).
   const categoriasVisibles = categorias.filter((c) =>
     productos.some((p) => p.categoria === c.id && comprable(p.id))
@@ -61,7 +61,7 @@ export default function CatalogoAutoservicio() {
       if (el) obs.observe(el);
     });
     return () => obs.disconnect();
-  }, []);
+  }, [categorias]);
 
   const irA = (id: CategoriaId) => {
     setActiveCat(id);
@@ -185,13 +185,26 @@ export default function CatalogoAutoservicio() {
               </span>
             </div>
           </div>
-          <button type="button"
-            onClick={() => toggle(producto.id)}
-            className="rounded-xl px-4 py-2.5 text-[13px] font-semibold transition-colors"
-            style={agregado ? { background: "#F1FAFB", color: TEAL_DARK, border: `1px solid ${TEAL}` } : { background: TEAL, color: "#fff" }}
-          >
-            {agregado ? "Quitar" : "Agregar"}
-          </button>
+          {producto.checkoutUrl ? (
+            // KYC/suscripción: se compra por el flujo de planes, no por el carrito.
+            // El deep-link lleva el tier seleccionado en la card (no el fijo del
+            // catálogo) para que /register preseleccione el plan correcto.
+            <a
+              href={buildKycRegisterUrl(KYC_PLAN_CODE_BY_TIER[tierDe(producto.id)] ?? "plata")}
+              className="rounded-xl px-4 py-2.5 text-[13px] font-semibold transition-colors"
+              style={{ background: TEAL, color: "#fff" }}
+            >
+              Comprar
+            </a>
+          ) : (
+            <button type="button"
+              onClick={() => toggle(producto.id)}
+              className="rounded-xl px-4 py-2.5 text-[13px] font-semibold transition-colors"
+              style={agregado ? { background: "#F1FAFB", color: TEAL_DARK, border: `1px solid ${TEAL}` } : { background: TEAL, color: "#fff" }}
+            >
+              {agregado ? "Quitar" : "Agregar"}
+            </button>
+          )}
         </div>
       </article>
     );
