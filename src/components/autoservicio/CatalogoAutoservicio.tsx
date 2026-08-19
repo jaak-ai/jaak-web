@@ -3,9 +3,7 @@
 import { useEffect, useState } from "react";
 import {
   formatMXN,
-  tierEstilos,
-  buildKycRegisterUrl,
-  KYC_PLAN_CODE_BY_TIER,
+  tierEstilo,
   type CategoriaId,
   type Producto,
   type Paquete,
@@ -123,7 +121,7 @@ export default function CatalogoAutoservicio() {
           <div className="mt-2 flex flex-wrap gap-1.5 pb-1">
             {producto.paquetes.map((q) => {
               const sel = q.id === tierDe(producto.id);
-              const est = tierEstilos[q.id];
+              const est = tierEstilo(q.id);
               return (
                 <button type="button"
                   key={q.id}
@@ -160,7 +158,7 @@ export default function CatalogoAutoservicio() {
                 {producto.paquetes.map((q) => (
                   <tr key={q.id} style={{ background: q.id === tierDe(producto.id) ? "#F1FAFB" : "#fff" }}>
                     <td className="px-2.5 py-1.5 font-medium" style={{ color: NAVY }}>
-                      <span className="mr-1.5 inline-block h-2 w-2 flex-shrink-0 rounded-full align-middle ring-1 ring-black/10" style={{ background: tierEstilos[q.id].base }} />
+                      <span className="mr-1.5 inline-block h-2 w-2 flex-shrink-0 rounded-full align-middle ring-1 ring-black/10" style={{ background: tierEstilo(q.id).base }} />
                       {q.nombre}{producto.recomendado === q.id && <span className="ml-1 text-[10px] font-bold" style={{ color: TEAL_DARK }}>· Recomendado</span>}
                     </td>
                     <td className="px-2.5 py-1.5 text-right whitespace-nowrap" style={{ color: "#4A5568" }}>{q.cantidad.toLocaleString("es-MX")}</td>
@@ -185,26 +183,13 @@ export default function CatalogoAutoservicio() {
               </span>
             </div>
           </div>
-          {producto.checkoutUrl ? (
-            // KYC/suscripción: se compra por el flujo de planes, no por el carrito.
-            // El deep-link lleva el tier seleccionado en la card (no el fijo del
-            // catálogo) para que /register preseleccione el plan correcto.
-            <a
-              href={buildKycRegisterUrl(KYC_PLAN_CODE_BY_TIER[tierDe(producto.id)] ?? "plata")}
-              className="rounded-xl px-4 py-2.5 text-[13px] font-semibold transition-colors"
-              style={{ background: TEAL, color: "#fff" }}
-            >
-              Comprar
-            </a>
-          ) : (
-            <button type="button"
-              onClick={() => toggle(producto.id)}
-              className="rounded-xl px-4 py-2.5 text-[13px] font-semibold transition-colors"
-              style={agregado ? { background: "#F1FAFB", color: TEAL_DARK, border: `1px solid ${TEAL}` } : { background: TEAL, color: "#fff" }}
-            >
-              {agregado ? "Quitar" : "Agregar"}
-            </button>
-          )}
+          <button type="button"
+            onClick={() => toggle(producto.id)}
+            className="rounded-xl px-4 py-2.5 text-[13px] font-semibold transition-colors"
+            style={agregado ? { background: "#F1FAFB", color: TEAL_DARK, border: `1px solid ${TEAL}` } : { background: TEAL, color: "#fff" }}
+          >
+            {agregado ? "Quitar" : "Agregar"}
+          </button>
         </div>
       </article>
     );

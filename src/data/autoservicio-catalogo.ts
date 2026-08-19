@@ -14,7 +14,9 @@ export interface Categoria {
 }
 
 export interface Paquete {
-  id: "cobre" | "bronce" | "plata" | "oro" | "platino";
+  // Código de tier del backend (cobre/bronce/plata/oro/platino y cualquiera que
+  // se cree en god). No es un enum fijo: el catálogo es fuente única de verdad.
+  id: string;
   nombre: string;
   cantidad: number; // unidades incluidas
   precio: number; // MXN, sin IVA
@@ -29,10 +31,10 @@ export interface Producto {
   incluye: string[];
   recomendado?: Paquete["id"];
   paquetes: Paquete[];
-  // Si está presente, el producto NO va por el carrito de /register sino que su
-  // CTA enlaza aquí (ej. KYC/suscripción → /register con plan pre-seleccionado,
-  // TO-809 Fase 3 / AUTO-20). Lo maneja la card.
-  checkoutUrl?: string;
+  // KYC/suscripción: se compra como PLAN (va al slot `k` del deep-link), no como
+  // producto de pago único. Igual que todo, entra al carrito; `buildCheckoutUrl`
+  // lo rutea al plan del checkout unificado (TO-809 / AUTO-20).
+  plan?: boolean;
 }
 
 export const IVA = 0.16;
@@ -60,8 +62,13 @@ const tiers = (
 // (checkout unificado TO-809 Fase 3 / AUTO-20). Reemplaza los CTAs viejos a
 // /onboarding/*. El register reconstruye precio/nombre del plan en vivo; aquí solo
 // viaja el código de plan + modo "once".
+// Remaps SOLO cuando el `code` del plan difiere del id de tier del catálogo. El
+// único caso real es el tier libre (Cobre), que el backend guarda como "gratis".
+// Todo lo demás es identidad: el id de tier del endpoint YA es el code del plan
+// (p.ej. "platino1"). Cualquier tier no listado cae a su propio id (data-driven),
+// para no inventar un code que el webhook resolvería mal (GetPlanByCode es exacto).
 export const KYC_PLAN_CODE_BY_TIER: Record<string, string> = {
-  cobre: "gratis", bronce: "bronce", plata: "plata", oro: "oro", platino: "platino", platino1: "platino",
+  cobre: "gratis", bronce: "bronce", plata: "plata", oro: "oro", platino: "platino", platino1: "platino1",
 };
 export function buildKycRegisterUrl(
   planCode: string,
@@ -99,7 +106,7 @@ export const productos: Producto[] = [
     ],
     recomendado: "plata",
     paquetes: tiers(99, 1500, 2800, 6625, 12500, 5, 50, 100, 250, 500),
-    checkoutUrl: buildKycRegisterUrl(KYC_PLAN_CODE_BY_TIER["plata"]),
+    plan: true,
   },
   {
     id: "firma-simple",
@@ -256,13 +263,19 @@ export const productos: Producto[] = [
 // - text: texto sobre el tinte claro
 // - on:   texto sobre el metal sólido (contraste legible)
 export interface TierEstilo { base: string; soft: string; text: string; on: string; }
-export const tierEstilos: Record<Paquete["id"], TierEstilo> = {
+const tierEstilos: Record<string, TierEstilo> = {
   cobre:   { base: "#C77B45", soft: "#F8EDE4", text: "#9A5A2C", on: "#3A2410" },
   bronce:  { base: "#7E4F28", soft: "#EFE7DF", text: "#6E441F", on: "#FFFFFF" },
   plata:   { base: "#AEB6C2", soft: "#F1F2F5", text: "#525B68", on: "#1F2937" },
   oro:     { base: "#D4AF37", soft: "#FAF3DA", text: "#8A6D12", on: "#3A2F08" },
   platino: { base: "#59677A", soft: "#EBEEF2", text: "#475264", on: "#FFFFFF" },
 };
+// Estilo neutro para tiers sin paleta curada (uno nuevo creado en god): se muestra
+// con look genérico en vez de desaparecer. El backend es la fuente de verdad.
+const DEFAULT_TIER_ESTILO: TierEstilo = { base: "#64748B", soft: "#F1F5F9", text: "#475569", on: "#FFFFFF" };
+export function tierEstilo(id: string): TierEstilo {
+  return tierEstilos[id] ?? DEFAULT_TIER_ESTILO;
+}
 
 export function formatMXN(n: number): string {
   return new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 0 }).format(n);
@@ -306,23 +319,45 @@ export function buildCheckoutUrl(
   } = {}
 ): string {
   const { pricingIndex, productKeys: productKeysOverride, base = "https://platform.jaak.ai/#/register/user-info", utm, coupon } = options;
-  const products = items.map(({ producto, paquete }) => {
-    const nombre = producto.nombre.split(" — ")[0];
-    return {
-      i: pricingIndex?.[producto.id]?.[paquete.id] ?? "",
-      k: productKeysOverride?.[producto.id] ?? productKeys[producto.id] ?? producto.id,
-      n: nombre,
-      pr: Math.round(paquete.precio * (1 + IVA) * 100) / 100,
-      c: "MXN",
-      s: 0,
-      d: `${nombre} ${paquete.nombre} ${paquete.cantidad}`,
-      q: paquete.cantidad,
-    };
-  });
-  const payload = {
+  // KYC/suscripciones van al slot de PLAN (`k`), no a `products`: el checkout
+  // unificado los cobra como plan (modo "once"), no como producto de pago único.
+  const products = items
+    .filter(({ producto }) => !producto.plan)
+    .map(({ producto, paquete }) => {
+      const nombre = producto.nombre.split(" — ")[0];
+      return {
+        i: pricingIndex?.[producto.id]?.[paquete.id] ?? "",
+        k: productKeysOverride?.[producto.id] ?? productKeys[producto.id] ?? producto.id,
+        n: nombre,
+        pr: Math.round(paquete.precio * (1 + IVA) * 100) / 100,
+        c: "MXN",
+        s: 0,
+        d: `${nombre} ${paquete.nombre} ${paquete.cantidad}`,
+        q: paquete.cantidad,
+      };
+    });
+  const payload: {
+    pk: string[];
+    products: typeof products;
+    k?: { pc: string; pn: string; pr: number; c: string; q: number; m: string };
+  } = {
     pk: products.map((p) => p.i).filter(Boolean),
     products,
   };
+  // El plan (KYC) es único: /register tiene un solo slot `k`. Si hubiera más de
+  // uno en el carrito, se toma el primero.
+  const planItem = items.find(({ producto }) => producto.plan);
+  if (planItem) {
+    const nombre = planItem.producto.nombre.split(" — ")[0];
+    payload.k = {
+      pc: KYC_PLAN_CODE_BY_TIER[planItem.paquete.id] ?? planItem.paquete.id,
+      pn: nombre,
+      pr: Math.round(planItem.paquete.precio * (1 + IVA) * 100) / 100,
+      c: "MXN",
+      q: planItem.paquete.cantidad,
+      m: "once",
+    };
+  }
   const d = btoa(encodeURIComponent(JSON.stringify(payload)));
   let url = `${base}?d=${d}`;
   // Cupón (AUTO-4): dentro del hash, junto a `d`, para que /register lo lea.

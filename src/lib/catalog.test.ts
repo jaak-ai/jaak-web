@@ -32,12 +32,22 @@ describe("mapProducto", () => {
     expect(p.paquetes.find((q) => q.id === "plata")!.cantidad).toBe(100);
   });
 
-  it("descarta productos sin tiers válidos", () => {
+  it("descarta productos sin tiers válidos (tier vacío)", () => {
     const bare: CatalogProduct = {
       ...consultaIne,
-      tiers: [{ id: "x", tier: "n/a", tierName: "", tierOrder: 0, price: 0, quota: { value: 0 } }],
+      tiers: [{ id: "x", tier: "", tierName: "", tierOrder: 0, price: 0, quota: { value: 0 } }],
     };
     expect(mapProducto(bare)).toBeNull();
+  });
+
+  it("acepta un tier nuevo desconocido (sin allowlist): amatista se mapea", () => {
+    const nuevo: CatalogProduct = {
+      ...consultaIne,
+      tiers: [{ id: "z1", tier: "amatista", tierName: "Amatista", tierOrder: 5, price: 116, quota: { value: 50 } }],
+    };
+    const p = mapProducto(nuevo)!;
+    expect(p.paquetes.map((q) => q.id)).toEqual(["amatista"]);
+    expect(p.paquetes[0].nombre).toBe("Amatista");
   });
 
   it("prefiere unidad del endpoint cuando viene", () => {
@@ -45,14 +55,14 @@ describe("mapProducto", () => {
     expect(p.unidad).toBe("checadas");
   });
 
-  it("productos one_time no llevan checkoutUrl (van por el carrito)", () => {
+  it("productos one_time no son plan (van por el carrito como producto)", () => {
     const p = mapProducto(consultaIne)!;
-    expect(p.checkoutUrl).toBeUndefined();
+    expect(p.plan).toBeFalsy();
   });
 
-  it("recurring (KYC) lleva checkoutUrl a /register/products", () => {
+  it("recurring (KYC) se marca plan: true (va al carrito, al slot de plan)", () => {
     const p = mapProducto({ ...consultaIne, slug: "kyc", billingType: "recurring" })!;
-    expect(p.checkoutUrl).toContain("/register/products");
+    expect(p.plan).toBe(true);
   });
 
   it("unidad cae al mapa por categoría si el endpoint no la trae y el slug no está", () => {

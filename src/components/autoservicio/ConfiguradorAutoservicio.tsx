@@ -3,9 +3,7 @@
 import { useEffect, useState } from "react";
 import {
   formatMXN,
-  tierEstilos,
-  buildKycRegisterUrl,
-  KYC_PLAN_CODE_BY_TIER,
+  tierEstilo,
   type CategoriaId,
   type Producto,
   type Paquete,
@@ -218,11 +216,7 @@ export default function ConfiguradorAutoservicio() {
                                   </p>
                                 </div>
                               </div>
-                              {producto.checkoutUrl ? (
-                                // KYC/suscripción: se compra por el flujo de planes.
-                                // Deep-link con el tier seleccionado, no el fijo del catálogo.
-                                <a href={buildKycRegisterUrl(KYC_PLAN_CODE_BY_TIER[tierDe(producto.id)] ?? "plata")} className="flex-shrink-0 rounded-lg px-3 py-1.5 text-[12px] font-semibold text-white transition-colors" style={{ background: TEAL }}>Comprar</a>
-                              ) : activo ? (
+                              {activo ? (
                                 <button type="button" onClick={() => toggle(producto.id)} className="flex-shrink-0 text-[12px]" style={{ color: "#64748B" }}>Quitar</button>
                               ) : (
                                 <button type="button"
@@ -246,7 +240,7 @@ export default function ConfiguradorAutoservicio() {
                               <div className="flex flex-wrap gap-1.5">
                                 {producto.paquetes.map((q) => {
                                   const sel = q.id === tierDe(producto.id);
-                                  const est = tierEstilos[q.id];
+                                  const est = tierEstilo(q.id);
                                   return (
                                     <button type="button"
                                       key={q.id}
