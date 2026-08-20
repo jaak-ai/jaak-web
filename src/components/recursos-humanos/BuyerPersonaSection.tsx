@@ -9,6 +9,9 @@ const TEAL = "#1ECAD3";
 const BORDER = "#E3E8EE";
 const LIGHT = "#EEF2F5";
 const TEXT_BODY = "#4B5768";
+// Acento cálido del sector RH (ver LandingClient.tsx).
+const RH_ACCENT = "#FF6B4A";
+const RH_ACCENT_DARK = "#C2410C";
 
 /**
  * Cinco bloques por buyer persona, cada uno con su propio anchor
@@ -45,20 +48,20 @@ export default function BuyerPersonaSection() {
         <section
           key={persona.id}
           id={persona.anchor}
-          className="scroll-mt-28 rounded-2xl p-7"
-          style={{ background: LIGHT, border: `1px solid ${BORDER}` }}
+          className="scroll-mt-28 rounded-2xl p-7 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+          style={{ background: LIGHT, borderTop: `1px solid ${BORDER}`, borderRight: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}`, borderLeft: `3px solid ${RH_ACCENT}` }}
           aria-labelledby={`${persona.anchor}-heading`}
         >
           <span
             className="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider mb-4"
-            style={{ background: "rgba(30,202,211,0.14)", color: "#0A6870" }}
+            style={{ background: "rgba(255,107,74,0.14)", color: RH_ACCENT_DARK }}
           >
             {persona.audience}
           </span>
           <h3 id={`${persona.anchor}-heading`} className="text-xl font-black mb-1" style={{ color: NAVY }}>
             {persona.title}
           </h3>
-          <p className="text-sm font-semibold mb-3" style={{ color: "#0A6870" }}>
+          <p className="text-sm font-semibold mb-3" style={{ color: RH_ACCENT_DARK }}>
             {persona.subtitle}
           </p>
           <p className="text-[15px] leading-relaxed" style={{ color: TEXT_BODY }}>

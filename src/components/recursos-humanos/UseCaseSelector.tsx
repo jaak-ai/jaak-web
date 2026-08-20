@@ -5,15 +5,16 @@ import { gtmEvent } from "@/components/GoogleTagManager";
 import { signatureOptions } from "./data";
 
 const NAVY = "#02132D";
-const TEAL = "#1ECAD3";
 const BORDER = "#E3E8EE";
 const LIGHT = "#EEF2F5";
 const TEXT_BODY = "#4B5768";
 const TEXT_MUTED = "#5C6B7A";
+// Acento cálido del sector RH (ver LandingClient.tsx).
+const RH_ACCENT = "#FF6B4A";
 
 function CheckIcon() {
   return (
-    <svg className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" fill="none" stroke={TEAL} viewBox="0 0 24 24" aria-hidden="true">
+    <svg className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" fill="none" stroke={RH_ACCENT} viewBox="0 0 24 24" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
     </svg>
   );
@@ -50,8 +51,9 @@ export default function UseCaseSelector() {
               id={`option-tab-${option.id}`}
               className="px-4 py-2.5 rounded-xl text-sm font-semibold transition-all flex-1"
               style={{
-                background: isActive ? TEAL : "transparent",
-                color: isActive ? NAVY : TEXT_MUTED,
+                background: isActive ? RH_ACCENT : "transparent",
+                color: isActive ? "#fff" : TEXT_MUTED,
+                boxShadow: isActive ? "0 4px 14px rgba(255,107,74,0.3)" : "none",
               }}
             >
               {option.label}
@@ -87,7 +89,7 @@ export default function UseCaseSelector() {
         role="tabpanel"
         aria-labelledby={`option-tab-${active.id}`}
         className="rounded-2xl p-6 sm:p-8 animate-fade-in-up"
-        style={{ background: "#fff", border: `1px solid ${BORDER}`, boxShadow: "0 20px 50px rgba(2,19,45,0.06)" }}
+        style={{ background: "#fff", border: `1px solid rgba(255,107,74,0.25)`, boxShadow: "0 20px 50px rgba(255,107,74,0.08)" }}
       >
         <h3 className="text-xl font-black mb-5" style={{ color: NAVY }}>
           {active.panelTitle}
@@ -105,8 +107,8 @@ export default function UseCaseSelector() {
         <a
           href={`#casos-de-uso`}
           onClick={() => gtmEvent("rh_use_case_flow_click", { option: active.id, page: "recursos-humanos" })}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all hover:opacity-90"
-          style={{ background: NAVY, color: "#fff" }}
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all hover:opacity-90 hover:scale-105"
+          style={{ background: RH_ACCENT, color: "#fff" }}
         >
           Ver este flujo
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">

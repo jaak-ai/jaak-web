@@ -19,6 +19,12 @@ const LIGHT = "#EEF2F5";
 const BORDER = "#E3E8EE";
 const TEXT_BODY = "#4B5768";
 const TEXT_MUTED = "#5C6B7A";
+// Color característico del sector RH: cálido y humano, distinto del teal
+// (identidad/evidencia) y del violeta (banca) ya usados en otras verticales.
+// Se usa como acento secundario — el teal se mantiene en los CTA de
+// conversión para no diluir el reconocimiento de marca de JAAK.
+const RH_ACCENT = "#FF6B4A";
+const RH_ACCENT_DARK = "#C2410C";
 
 const VIDEO_ID = "q0Iliu1wK-g";
 const MEETING_URL = "https://meetings.hubspot.com/jose-andres-yllescas-lira?uuid=996cf1ff-68fa-42ac-9bc6-c03c8aa7aee6";
@@ -110,17 +116,45 @@ function HeroTalkMenu() {
   );
 }
 
+const HERO_TIMELINE = [
+  { label: "Documento enviado", value: "Completado" },
+  { label: "Identidad", value: "Verificada" },
+  { label: "Firma", value: "Completada" },
+  { label: "Evidencia", value: "Generada" },
+];
+
 function HeroVisual() {
+  const [step, setStep] = useState(1);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setStep((s) => (s + 1) % (HERO_TIMELINE.length + 1));
+    }, 1800);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="relative mx-auto w-full max-w-sm">
+      <div
+        className="absolute -top-8 -left-8 w-40 h-40 rounded-full -z-10 animate-float"
+        style={{ background: RH_ACCENT, opacity: 0.18, filter: "blur(50px)" }}
+        aria-hidden="true"
+      />
       <div className="rounded-[28px] p-3" style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.14)" }}>
         <div className="rounded-[20px] p-6" style={{ background: "#FFFFFF" }}>
           <div className="flex items-center justify-between mb-5">
             <span className="text-[11px] font-bold uppercase tracking-wider" style={{ color: TEXT_MUTED }}>
               Contrato laboral
             </span>
-            <span className="text-[10px] font-bold px-2 py-1 rounded-full" style={{ background: "rgba(30,202,211,0.14)", color: "#0A6870" }}>
-              Firmado
+            <span
+              className="text-[10px] font-bold px-2 py-1 rounded-full transition-colors duration-500"
+              style={
+                step >= HERO_TIMELINE.length
+                  ? { background: "rgba(255,107,74,0.14)", color: RH_ACCENT_DARK }
+                  : { background: LIGHT, color: TEXT_MUTED }
+              }
+            >
+              {step >= HERO_TIMELINE.length ? "Firmado" : "En proceso"}
             </span>
           </div>
           <div className="rounded-xl p-4 mb-3" style={{ background: LIGHT }}>
@@ -128,20 +162,43 @@ function HeroVisual() {
             <p className="text-xs" style={{ color: TEXT_MUTED }}>Colaboradora</p>
           </div>
           <div className="space-y-2.5">
-            {[
-              { label: "Fecha", value: "20 AGO 2026" },
-              { label: "Hora", value: "11:34 h" },
-              { label: "Verificación", value: "Completada" },
-            ].map((row) => (
-              <div key={row.label} className="flex items-center justify-between px-4 py-2.5 rounded-lg" style={{ background: LIGHT }}>
-                <span className="text-xs font-medium" style={{ color: TEXT_MUTED }}>{row.label}</span>
-                <span className="text-xs font-bold" style={{ color: NAVY }}>{row.value}</span>
-              </div>
-            ))}
+            {HERO_TIMELINE.map((row, i) => {
+              const done = i < step;
+              return (
+                <div
+                  key={row.label}
+                  className="flex items-center justify-between px-4 py-2.5 rounded-lg transition-all duration-500"
+                  style={{
+                    background: done ? "rgba(30,202,211,0.08)" : LIGHT,
+                    border: `1px solid ${done ? "rgba(30,202,211,0.25)" : "transparent"}`,
+                  }}
+                >
+                  <span className="flex items-center gap-2 text-xs font-medium" style={{ color: done ? NAVY : TEXT_MUTED }}>
+                    <span
+                      className="flex-shrink-0 w-4 h-4 rounded-full flex items-center justify-center transition-colors duration-500"
+                      style={{ background: done ? TEAL : "#E5E9EF" }}
+                    >
+                      {done && <CheckIcon color={NAVY} />}
+                    </span>
+                    {row.label}
+                  </span>
+                  <span className="text-xs font-bold" style={{ color: done ? "#0A6870" : TEXT_MUTED }}>
+                    {done ? row.value : "—"}
+                  </span>
+                </div>
+              );
+            })}
           </div>
-          <div className="mt-4 flex items-center gap-2 px-4 py-2.5 rounded-lg" style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.2)" }}>
-            <CheckIcon color="#0A6870" />
-            <span className="text-xs font-bold" style={{ color: "#0A6870" }}>Expediente digital disponible</span>
+          <div
+            className="mt-4 flex items-center gap-2 px-4 py-2.5 rounded-lg transition-opacity duration-500"
+            style={{
+              background: "rgba(255,107,74,0.08)",
+              border: `1px solid rgba(255,107,74,0.25)`,
+              opacity: step >= HERO_TIMELINE.length ? 1 : 0.4,
+            }}
+          >
+            <CheckIcon color={RH_ACCENT_DARK} />
+            <span className="text-xs font-bold" style={{ color: RH_ACCENT_DARK }}>Expediente digital disponible</span>
           </div>
         </div>
       </div>
@@ -169,14 +226,37 @@ function Hero() {
           backgroundSize: "60px 60px",
         }}
       />
+      <div
+        className="absolute top-10 right-[8%] w-72 h-72 rounded-full opacity-[0.16] blur-[110px] pointer-events-none animate-float"
+        aria-hidden="true"
+        style={{ background: RH_ACCENT }}
+      />
+      <div
+        className="absolute bottom-0 left-[4%] w-56 h-56 rounded-full opacity-[0.1] blur-[90px] pointer-events-none animate-float"
+        aria-hidden="true"
+        style={{ background: TEAL, animationDelay: "1.5s" }}
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div data-sr>
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-6" style={{ background: "rgba(30,202,211,0.1)", border: "1px solid rgba(30,202,211,0.3)", color: TEAL }}>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-6" style={{ background: "rgba(255,107,74,0.12)", border: `1px solid rgba(255,107,74,0.35)`, color: RH_ACCENT }}>
+              <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: RH_ACCENT }} aria-hidden="true" />
               Firma digital para Recursos Humanos
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-[1.1] mb-6">
-              Firma documentos laborales. Conserva la evidencia.
+              Firma documentos laborales.
+              <br className="hidden sm:block" /> Conserva{" "}
+              <span
+                style={{
+                  background: `linear-gradient(135deg, ${RH_ACCENT}, ${TEAL})`,
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
+              >
+                la evidencia
+              </span>
+              .
             </h1>
             <p className="text-lg sm:text-xl text-gray-300 leading-relaxed mb-8 max-w-xl">
               Contratos, anexos, políticas y documentación laboral en un flujo digital que permite saber quién
@@ -226,7 +306,7 @@ function ProcessComparison() {
           </p>
         </div>
 
-        <div data-sr-grid className="grid md:grid-cols-2 gap-6">
+        <div data-sr-grid className="relative grid md:grid-cols-2 gap-6">
           <div className="rounded-2xl p-7" style={{ background: LIGHT, border: `1px solid ${BORDER}` }}>
             <p className="text-xs font-bold uppercase tracking-wider mb-5" style={{ color: TEXT_MUTED }}>Antes</p>
             <ol className="space-y-2.5">
@@ -241,12 +321,22 @@ function ProcessComparison() {
             </ol>
           </div>
 
+          <div
+            className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full items-center justify-center animate-pulse"
+            style={{ background: RH_ACCENT, boxShadow: `0 0 0 8px ${OFF_WHITE}, 0 8px 24px rgba(255,107,74,0.35)` }}
+            aria-hidden="true"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="#fff" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </div>
+
           <div className="rounded-2xl p-7" style={{ background: NAVY, border: `1px solid ${BORDER}` }}>
-            <p className="text-xs font-bold uppercase tracking-wider mb-5" style={{ color: TEAL }}>Con JAAK</p>
+            <p className="text-xs font-bold uppercase tracking-wider mb-5" style={{ color: RH_ACCENT }}>Con JAAK</p>
             <ol className="space-y-2.5">
               {AFTER_STEPS.map((step, i) => (
                 <li key={step} className="flex items-center gap-3">
-                  <span className="w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0" style={{ background: TEAL, color: NAVY }}>
+                  <span className="w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0" style={{ background: RH_ACCENT, color: "#fff" }}>
                     {i + 1}
                   </span>
                   <span className="text-sm font-semibold text-white">{step}</span>
@@ -276,9 +366,19 @@ function UseCaseGrid() {
             <div
               key={useCase.id}
               id={useCase.id}
-              className="rounded-2xl p-7 bg-white transition-all hover:shadow-lg scroll-mt-24"
+              className="group rounded-2xl p-7 bg-white transition-all duration-300 hover:shadow-xl hover:-translate-y-1 scroll-mt-24"
               style={{ border: `1px solid ${BORDER}` }}
+              onMouseEnter={(e) => (e.currentTarget.style.borderColor = `${RH_ACCENT}55`)}
+              onMouseLeave={(e) => (e.currentTarget.style.borderColor = BORDER)}
             >
+              <div
+                className="w-11 h-11 rounded-xl flex items-center justify-center mb-5 transition-colors duration-300"
+                style={{ background: "rgba(255,107,74,0.1)" }}
+              >
+                <svg className="w-5 h-5" fill="none" stroke={RH_ACCENT} viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={useCase.icon} />
+                </svg>
+              </div>
               <h3 className="text-lg font-bold mb-2.5" style={{ color: NAVY }}>{useCase.title}</h3>
               <p className="text-sm leading-relaxed mb-4" style={{ color: TEXT_BODY }}>{useCase.text}</p>
               {useCase.microflow && (
@@ -324,12 +424,25 @@ function EvidenceLevelsSection() {
             No todos los documentos necesitan el mismo nivel de evidencia
           </h2>
         </div>
-        <div data-sr-grid className="grid md:grid-cols-3 gap-6 mb-6">
+        <div data-sr-grid className="relative grid md:grid-cols-3 gap-6 mb-6">
+          <div
+            className="hidden md:block absolute top-[2.6rem] left-[16.5%] right-[16.5%] h-0.5 -z-0"
+            style={{ background: `linear-gradient(90deg, rgba(255,107,74,0.25), ${RH_ACCENT})` }}
+            aria-hidden="true"
+          />
           {evidenceLevels.map((lvl) => (
-            <div key={lvl.id} className="rounded-2xl p-7 bg-white" style={{ border: `1px solid ${BORDER}` }}>
+            <div
+              key={lvl.id}
+              className="relative rounded-2xl p-7 bg-white transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+              style={{ border: `1px solid ${BORDER}` }}
+            >
               <span
-                className="inline-flex items-center justify-center w-9 h-9 rounded-full text-sm font-black mb-5"
-                style={{ background: "rgba(30,202,211,0.14)", color: "#0A6870" }}
+                className="relative inline-flex items-center justify-center w-9 h-9 rounded-full text-sm font-black mb-5"
+                style={{
+                  background: `rgba(255,107,74,${0.14 + lvl.level * 0.08})`,
+                  color: lvl.level === 3 ? "#fff" : RH_ACCENT_DARK,
+                  backgroundColor: lvl.level === 3 ? RH_ACCENT : undefined,
+                }}
               >
                 {lvl.level}
               </span>
@@ -372,8 +485,14 @@ function JaakDifferentiator() {
         </div>
         <div data-sr-grid className="grid grid-cols-2 md:grid-cols-4 gap-5 mb-12">
           {DIFFERENTIATOR_BLOCKS.map((block) => (
-            <div key={block.label} className="rounded-2xl p-6" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}>
-              <p className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: TEAL }}>{block.label}</p>
+            <div
+              key={block.label}
+              className="rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1"
+              style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
+              onMouseEnter={(e) => (e.currentTarget.style.borderColor = `${RH_ACCENT}66`)}
+              onMouseLeave={(e) => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)")}
+            >
+              <p className="text-xs font-black uppercase tracking-widest mb-3" style={{ color: RH_ACCENT }}>{block.label}</p>
               <p className="text-sm font-medium text-white">{block.text}</p>
             </div>
           ))}
@@ -417,7 +536,11 @@ function DigitalRecordPreview() {
           <div className="rounded-2xl p-6 sm:p-7" style={{ background: LIGHT, border: `1px solid ${BORDER}` }}>
             <div className="flex items-center justify-between mb-5">
               <h3 className="text-base font-bold" style={{ color: NAVY }}>Contrato laboral</h3>
-              <span className="text-[10px] font-bold px-2.5 py-1 rounded-full" style={{ background: "rgba(30,202,211,0.14)", color: "#0A6870" }}>
+              <span
+                className="inline-flex items-center gap-1.5 text-[10px] font-bold px-2.5 py-1 rounded-full"
+                style={{ background: "rgba(255,107,74,0.14)", color: RH_ACCENT_DARK }}
+              >
+                <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: RH_ACCENT }} aria-hidden="true" />
                 Firmado
               </span>
             </div>
@@ -533,7 +656,11 @@ function IntegrationSection() {
         </div>
         <div data-sr-grid className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {INTEGRATION_OPTIONS.map((option) => (
-            <div key={option.title} className="rounded-2xl p-6 bg-white" style={{ border: `1px solid ${BORDER}` }}>
+            <div
+              key={option.title}
+              className="rounded-2xl p-6 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+              style={{ borderTop: `3px solid ${RH_ACCENT}`, borderLeft: `1px solid ${BORDER}`, borderRight: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}` }}
+            >
               <h3 className="text-base font-bold mb-2" style={{ color: NAVY }}>{option.title}</h3>
               <p className="text-sm leading-relaxed" style={{ color: TEXT_BODY }}>{option.text}</p>
             </div>
@@ -546,7 +673,14 @@ function IntegrationSection() {
                 {step}
               </span>
               {i < INTEGRATION_FLOW.length - 1 && (
-                <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke={TEXT_MUTED} viewBox="0 0 24 24" aria-hidden="true">
+                <svg
+                  className="w-4 h-4 flex-shrink-0 animate-pulse"
+                  fill="none"
+                  stroke={RH_ACCENT}
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                  style={{ animationDelay: `${i * 0.25}s` }}
+                >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
               )}
@@ -651,8 +785,8 @@ function VideoPlayer() {
             backgroundPosition: "center",
           }}
         >
-          <span className="flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-full transition-transform hover:scale-105" style={{ background: TEAL, boxShadow: "0 0 0 10px rgba(30,202,211,0.16)" }}>
-            <svg className="h-7 w-7 sm:h-8 sm:w-8 translate-x-0.5" fill={NAVY} viewBox="0 0 24 24" aria-hidden="true">
+          <span className="flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-full transition-transform hover:scale-105" style={{ background: RH_ACCENT, boxShadow: "0 0 0 10px rgba(255,107,74,0.18)" }}>
+            <svg className="h-7 w-7 sm:h-8 sm:w-8 translate-x-0.5" fill="#fff" viewBox="0 0 24 24" aria-hidden="true">
               <path d="M8 5v14l11-7z" />
             </svg>
           </span>
