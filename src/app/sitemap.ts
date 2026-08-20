@@ -145,6 +145,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    {
+      url: `${baseUrl}/soluciones/recursos-humanos`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
     // Compliance
     {
       url: `${baseUrl}/cumplimiento`,
