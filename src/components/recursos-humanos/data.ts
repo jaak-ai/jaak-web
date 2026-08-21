@@ -66,18 +66,51 @@ export const useCases: UseCase[] = [
   },
 ];
 
-export interface SignatureLayer {
-  label: string;
+/**
+ * Portafolio real de modalidades de firma de JAAK (mismos nombres y rutas
+ * que ya usa el resto del sitio, ej. /firma-electronica). No inventar
+ * nombres nuevos: cualquier modalidad adicional debe mapear a una página
+ * de producto existente.
+ */
+export interface ModalityRef {
+  name: string;
   note: string;
-  /** true = capa que "puede incorporar" según proceso/riesgo, no incluida por defecto. */
-  conditional?: boolean;
+  href: string;
 }
+
+export const MODALITY_HREF = {
+  simple: "/firma-electronica-simple",
+  nom151: "/firma-electronica-nom-151",
+  biometria: "/firma-electronica-biometrica",
+  kyc: "/firma-electronica-kyc",
+  efirma: "/firma-electronica-efirma",
+  sello: "/firma-certificada-sello-tiempo",
+} as const;
+
+/** Modalidades especializadas: no se fuerzan en cada caso de uso, se ofrecen aparte. */
+export const specializedModalities: ModalityRef[] = [
+  {
+    name: "e.firma",
+    note: "Para procesos donde la organización requiere una firma basada en certificado digital.",
+    href: MODALITY_HREF.efirma,
+  },
+  {
+    name: "Firma certificada con sellos de tiempo",
+    note: "Para operaciones donde se busca una capa reforzada de evidencia y temporalidad.",
+    href: MODALITY_HREF.sello,
+  },
+];
 
 export interface SignatureOption {
   id: string;
   label: string;
   panelTitle: string;
-  layers: SignatureLayer[];
+  /** Modalidad base recomendada para este tipo de documento. */
+  base: ModalityRef;
+  /** Mejoras opcionales sobre la base ("+ Biometría", "+ KYC"), según riesgo. */
+  addOns?: ModalityRef[];
+  /** Para documentos que parten de Firma simple: a qué modalidad pueden escalar. */
+  escalation?: ModalityRef;
   useCaseId: string;
 }
 
@@ -86,12 +119,10 @@ export const signatureOptions: SignatureOption[] = [
     id: "contrato",
     label: "Contrato",
     panelTitle: "Contrato laboral",
-    layers: [
-      { label: "Firma digital", note: "Base del proceso de aceptación documental." },
-      { label: "Evidencia del evento", note: "Puede incorporar registro de fecha, hora y participantes." },
-      { label: "Integridad documental", note: "Huella del documento firmado, según el nivel elegido." },
-      { label: "Sello de tiempo cuando corresponda", note: "Refuerza temporalidad conforme al riesgo del contrato.", conditional: true },
-      { label: "Verificación de identidad cuando el nivel de riesgo lo requiera", note: "Capa opcional, no obligatoria por defecto.", conditional: true },
+    base: { name: "Firma digital + NOM-151", note: "Recomendación habitual para contratos laborales.", href: MODALITY_HREF.nom151 },
+    addOns: [
+      { name: "+ Biometría", note: "Cuando se quiere elevar la certeza sobre el firmante.", href: MODALITY_HREF.biometria },
+      { name: "+ KYC", note: "Cuando además se requiere un proceso reforzado de verificación de identidad.", href: MODALITY_HREF.kyc },
     ],
     useCaseId: "contratacion",
   },
@@ -99,10 +130,9 @@ export const signatureOptions: SignatureOption[] = [
     id: "anexo",
     label: "Anexo",
     panelTitle: "Anexo o modificación laboral",
-    layers: [
-      { label: "Firma digital", note: "Agiliza aceptación de cambios de puesto, salario o jornada." },
-      { label: "Evidencia del evento", note: "Puede incorporar trazabilidad sobre quién y cuándo aceptó." },
-      { label: "Integridad documental", note: "Según el nivel de evidencia requerido por el anexo." },
+    base: { name: "Firma digital + NOM-151", note: "Agiliza aceptación de cambios de puesto, salario o jornada.", href: MODALITY_HREF.nom151 },
+    addOns: [
+      { name: "+ Biometría", note: "Para cambios sensibles.", href: MODALITY_HREF.biometria },
     ],
     useCaseId: "anexos",
   },
@@ -110,43 +140,34 @@ export const signatureOptions: SignatureOption[] = [
     id: "teletrabajo",
     label: "Teletrabajo",
     panelTitle: "Convenio de teletrabajo",
-    layers: [
-      { label: "Firma digital", note: "Para convenios y modificaciones del esquema remoto." },
-      { label: "Evidencia del evento", note: "Puede incorporar registro de fecha y participantes." },
-      { label: "Sello de tiempo cuando corresponda", note: "Cuando el proceso busca fortalecer temporalidad.", conditional: true },
-    ],
+    base: { name: "Firma digital + NOM-151", note: "Ideal para formalizar documentos completamente a distancia.", href: MODALITY_HREF.nom151 },
     useCaseId: "teletrabajo",
   },
   {
     id: "politica",
     label: "Política",
     panelTitle: "Política interna o acuse",
-    layers: [
-      { label: "Firma digital", note: "Para aceptación de códigos de conducta y políticas internas." },
-      { label: "Evidencia del evento", note: "Registro de quién aceptó y cuándo, según se configure." },
-      { label: "Integridad documental", note: "Útil cuando se actualizan versiones de la política." },
-    ],
+    base: { name: "Firma simple", note: "Aceptación electrónica y trazabilidad básica del proceso.", href: MODALITY_HREF.simple },
+    escalation: { name: "Firma digital + NOM-151", note: "Escala si la empresa necesita mayor evidencia.", href: MODALITY_HREF.nom151 },
     useCaseId: "politicas",
   },
   {
     id: "confidencialidad",
     label: "Confidencialidad",
     panelTitle: "Confidencialidad y propiedad intelectual",
-    layers: [
-      { label: "Firma digital", note: "Para acuerdos de confidencialidad y propiedad intelectual." },
-      { label: "Evidencia del evento", note: "Puede incorporar trazabilidad reforzada por el valor del documento." },
-      { label: "Integridad documental", note: "Huella del documento según el nivel de evidencia requerido." },
-      { label: "Sello de tiempo cuando corresponda", note: "Para documentos con mayor sensibilidad.", conditional: true },
+    base: { name: "Firma digital + NOM-151", note: "Para acuerdos de confidencialidad y propiedad intelectual.", href: MODALITY_HREF.nom151 },
+    addOns: [
+      { name: "+ Biometría", note: "Para documentos sensibles.", href: MODALITY_HREF.biometria },
     ],
     useCaseId: "confidencialidad",
   },
   {
     id: "compensacion",
     label: "Bono / comisión",
-    panelTitle: "Bono, comisión o autorización",
-    layers: [
-      { label: "Firma digital", note: "Para documentación complementaria de compensación." },
-      { label: "Evidencia del evento", note: "Trazabilidad sobre la aceptación, cuando se requiera." },
+    panelTitle: "Bono, comisión o modificación salarial",
+    base: { name: "Firma digital + NOM-151", note: "Recomendación habitual para documentación de compensación.", href: MODALITY_HREF.nom151 },
+    addOns: [
+      { name: "+ Biometría", note: "Para modificaciones relevantes.", href: MODALITY_HREF.biometria },
     ],
     useCaseId: "compensacion",
   },
@@ -154,46 +175,47 @@ export const signatureOptions: SignatureOption[] = [
     id: "activos",
     label: "Entrega de equipo",
     panelTitle: "Entrega de equipo y herramientas",
-    layers: [
-      { label: "Firma digital", note: "Para el acuse de entrega y responsabilidad del colaborador." },
-      { label: "Evidencia del evento", note: "Puede incorporar fecha, hora y responsable de la entrega." },
-    ],
+    base: { name: "Firma simple", note: "Modalidad habitual para el acuse de entrega y responsabilidad.", href: MODALITY_HREF.simple },
+    escalation: { name: "Firma digital + NOM-151", note: "Puede elevarse si la política interna lo requiere.", href: MODALITY_HREF.nom151 },
     useCaseId: "activos",
   },
 ];
 
-export interface EvidenceLevel {
+/** Los tres grupos de "Elige el nivel de firma según el documento". */
+export interface FirmaGroup {
   id: string;
-  level: number;
+  eyebrow: string;
   name: string;
   text: string;
+  examples: string[];
+  href: string;
+  addOns?: ModalityRef[];
+  featured?: boolean;
 }
 
-export const evidenceLevels: EvidenceLevel[] = [
+export const firmaGroups: FirmaGroup[] = [
   {
-    id: "nivel-1",
-    level: 1,
-    name: "Firma digital",
-    text: "Para procesos de aceptación documental donde se busca agilizar la firma y mantener trazabilidad.",
+    id: "cotidianos",
+    eyebrow: "Para procesos cotidianos",
+    name: "Firma simple",
+    text: "Aceptación electrónica y trazabilidad básica del proceso.",
+    examples: ["Políticas", "Acuses", "Entrega de equipo", "Autorizaciones de bajo riesgo"],
+    href: MODALITY_HREF.simple,
   },
   {
-    id: "nivel-2",
-    level: 2,
-    name: "Firma + evidencia reforzada",
-    text: "Agrega información sobre el evento de firma, integridad y trazabilidad del documento.",
-  },
-  {
-    id: "nivel-3",
-    level: 3,
-    name: "Firma + sello digital de tiempo",
-    text: "Para procesos donde la organización busca fortalecer evidencia de integridad y temporalidad mediante mecanismos como NOM-151 cuando corresponda.",
+    id: "laboral",
+    eyebrow: "Para documentación laboral",
+    name: "Firma digital + NOM-151",
+    text: "Firma con conservación, integridad y evidencia temporal del documento.",
+    examples: ["Contratos laborales", "Anexos", "Teletrabajo", "Modificaciones"],
+    href: MODALITY_HREF.nom151,
+    addOns: [
+      { name: "+ Biometría", note: "Mayor certeza sobre el firmante.", href: MODALITY_HREF.biometria },
+      { name: "+ KYC", note: "Proceso reforzado de verificación de identidad.", href: MODALITY_HREF.kyc },
+    ],
+    featured: true,
   },
 ];
-
-export const identityLayer = {
-  name: "+ Identidad",
-  text: "Cuando el nivel de riesgo requiere mayor certeza sobre quién está firmando, JAAK puede incorporar verificación de identidad.",
-};
 
 export interface BuyerPersona {
   id: string;

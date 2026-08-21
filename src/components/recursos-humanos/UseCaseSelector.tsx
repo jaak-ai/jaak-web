@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { gtmEvent } from "@/components/GoogleTagManager";
-import { signatureOptions } from "./data";
+import { signatureOptions, specializedModalities } from "./data";
 
 const NAVY = "#02132D";
 const BORDER = "#E3E8EE";
@@ -93,7 +94,7 @@ export default function UseCaseSelector() {
         style={{ background: "#fff", border: `1px solid rgba(255,107,74,0.25)`, boxShadow: "0 20px 50px rgba(255,107,74,0.08)" }}
       >
         <p className="text-[11px] font-black uppercase tracking-widest mb-1.5" style={{ color: RH_ACCENT }}>
-          Tu flujo recomendado
+          Recomendación habitual
         </p>
         <h3 className="text-xl font-black mb-7" style={{ color: NAVY }}>
           {active.panelTitle}
@@ -112,35 +113,58 @@ export default function UseCaseSelector() {
             <span className="text-sm font-bold" style={{ color: NAVY }}>Documento</span>
           </div>
 
-          {active.layers.map((layer) => (
-            <div key={layer.label} className="relative flex items-start gap-3.5 mb-4">
-              <span
-                className="relative z-10 flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center mt-0.5"
-                style={
-                  layer.conditional
-                    ? { background: "#fff", border: `1.5px dashed ${RH_ACCENT}` }
-                    : { background: RH_ACCENT }
-                }
-              >
-                {layer.conditional ? (
-                  <span className="w-1.5 h-1.5 rounded-full" style={{ background: RH_ACCENT }} aria-hidden="true" />
-                ) : (
-                  <CheckIcon white />
-                )}
+          {/* Modalidad base */}
+          <div className="relative flex items-start gap-3.5 mb-4">
+            <span className="relative z-10 flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center mt-0.5" style={{ background: RH_ACCENT }}>
+              <CheckIcon white />
+            </span>
+            <span className="text-sm">
+              <Link href={active.base.href} className="font-bold underline decoration-dotted" style={{ color: NAVY }}>
+                {active.base.name}
+              </Link>
+              <span style={{ color: TEXT_BODY }}> — {active.base.note}</span>
+            </span>
+          </div>
+
+          {/* Add-ons opcionales */}
+          {active.addOns?.map((addOn) => (
+            <div key={addOn.name} className="relative flex items-start gap-3.5 mb-4">
+              <span className="relative z-10 flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center mt-0.5" style={{ background: "#fff", border: `1.5px dashed ${RH_ACCENT}` }}>
+                <span className="w-1.5 h-1.5 rounded-full" style={{ background: RH_ACCENT }} aria-hidden="true" />
               </span>
               <span className="text-sm">
                 <span className="flex items-center gap-2 flex-wrap">
-                  <strong style={{ color: NAVY }}>{layer.label}</strong>
-                  {layer.conditional && (
-                    <span className="text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full" style={{ background: "rgba(255,107,74,0.12)", color: RH_ACCENT_DARK }}>
-                      Según proceso
-                    </span>
-                  )}
+                  <Link href={addOn.href} className="font-bold underline decoration-dotted" style={{ color: NAVY }}>
+                    {addOn.name}
+                  </Link>
+                  <span className="text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full" style={{ background: "rgba(255,107,74,0.12)", color: RH_ACCENT_DARK }}>
+                    Opcional
+                  </span>
                 </span>
-                <span style={{ color: TEXT_BODY }}> {layer.note}</span>
+                <span style={{ color: TEXT_BODY }}> {addOn.note}</span>
               </span>
             </div>
           ))}
+
+          {/* Escalamiento (documentos que parten de Firma simple) */}
+          {active.escalation && (
+            <div className="relative flex items-start gap-3.5 mb-4">
+              <span className="relative z-10 flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center mt-0.5" style={{ background: "#fff", border: `1.5px dashed ${RH_ACCENT}` }}>
+                <span className="w-1.5 h-1.5 rounded-full" style={{ background: RH_ACCENT }} aria-hidden="true" />
+              </span>
+              <span className="text-sm">
+                <span className="flex items-center gap-2 flex-wrap">
+                  <Link href={active.escalation.href} className="font-bold underline decoration-dotted" style={{ color: NAVY }}>
+                    Escalar a {active.escalation.name}
+                  </Link>
+                  <span className="text-[10px] font-bold uppercase tracking-wide px-2 py-0.5 rounded-full" style={{ background: "rgba(255,107,74,0.12)", color: RH_ACCENT_DARK }}>
+                    Si se requiere
+                  </span>
+                </span>
+                <span style={{ color: TEXT_BODY }}> {active.escalation.note}</span>
+              </span>
+            </div>
+          )}
 
           <div className="relative flex items-center gap-3.5">
             <span className="relative z-10 flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center" style={{ background: NAVY }}>
@@ -150,16 +174,52 @@ export default function UseCaseSelector() {
           </div>
         </div>
 
+        <div className="flex flex-wrap gap-3 mt-7">
+          <Link
+            href={active.base.href}
+            onClick={() => gtmEvent("rh_use_case_flow_click", { option: active.id, page: "recursos-humanos", modality: active.base.name })}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all hover:opacity-90 hover:scale-105"
+            style={{ background: RH_ACCENT, color: "#fff" }}
+          >
+            Conocer {active.base.name}
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </Link>
+          <a
+            href="#casos-de-uso"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all hover:bg-gray-50"
+            style={{ border: `1px solid ${BORDER}`, color: NAVY }}
+          >
+            Ver caso de uso
+          </a>
+        </div>
+      </div>
+
+      {/* ¿Tu proceso requiere un nivel distinto de firma? */}
+      <div className="mt-6 rounded-2xl p-6 sm:p-7" style={{ background: LIGHT, border: `1px solid ${BORDER}` }}>
+        <h4 className="text-base font-bold mb-1" style={{ color: NAVY }}>¿Tu proceso requiere un nivel distinto de firma?</h4>
+        <p className="text-sm mb-5" style={{ color: TEXT_BODY }}>JAAK también permite trabajar con:</p>
+        <div className="grid sm:grid-cols-2 gap-4 mb-5">
+          {specializedModalities.map((modality) => (
+            <Link
+              key={modality.name}
+              href={modality.href}
+              className="block rounded-xl p-4 bg-white transition-colors hover:bg-gray-50"
+              style={{ border: `1px solid ${BORDER}` }}
+            >
+              <p className="text-sm font-bold mb-1" style={{ color: NAVY }}>{modality.name}</p>
+              <p className="text-xs leading-relaxed" style={{ color: TEXT_BODY }}>{modality.note}</p>
+            </Link>
+          ))}
+        </div>
         <a
-          href={`#casos-de-uso`}
-          onClick={() => gtmEvent("rh_use_case_flow_click", { option: active.id, page: "recursos-humanos" })}
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all hover:opacity-90 hover:scale-105 mt-7"
-          style={{ background: RH_ACCENT, color: "#fff" }}
+          href="#contacto"
+          onClick={() => gtmEvent("rh_specialist_click", { source: "selector_specialized_modalities", page: "recursos-humanos" })}
+          className="inline-flex items-center gap-1.5 text-sm font-bold"
+          style={{ color: "#0A6870" }}
         >
-          Ver este flujo
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
+          Hablar con un especialista →
         </a>
       </div>
     </div>

@@ -9,7 +9,7 @@ import { gtmEvent } from "@/components/GoogleTagManager";
 import { getUtmParams } from "@/components/CloudflareTurnstile";
 import UseCaseSelector from "@/components/recursos-humanos/UseCaseSelector";
 import BuyerPersonaSection from "@/components/recursos-humanos/BuyerPersonaSection";
-import { useCases, evidenceLevels, identityLayer, DOCUMENTO_OPTIONS } from "@/components/recursos-humanos/data";
+import { useCases, firmaGroups, specializedModalities, DOCUMENTO_OPTIONS } from "@/components/recursos-humanos/data";
 
 const NAVY = "#02132D";
 const NAVY_SECONDARY = "#202945";
@@ -459,49 +459,107 @@ function SelectorSection() {
   );
 }
 
-/* ── NIVELES DE FIRMA / EVIDENCIA ──────────────────────────────────── */
+/* ── NIVELES DE FIRMA ──────────────────────────────────────────────── */
 
-function EvidenceLevelsSection() {
+function FirmaLevelsSection() {
+  const [cotidianos, laboral] = firmaGroups;
+
   return (
     <section id="niveles-evidencia" className="py-20 scroll-mt-20" style={{ background: LIGHT }} aria-labelledby="niveles-heading">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div data-sr className="text-center mb-14">
-          <h2 id="niveles-heading" className="text-3xl sm:text-4xl font-black mb-5" style={{ color: NAVY }}>
-            No todos los documentos necesitan el mismo nivel de evidencia
+          <h2 id="niveles-heading" className="text-3xl sm:text-4xl font-black mb-4" style={{ color: NAVY }}>
+            No todos los documentos necesitan el mismo tipo de firma.
           </h2>
+          <p className="text-lg max-w-2xl mx-auto" style={{ color: TEXT_BODY }}>
+            JAAK permite adaptar el nivel de firma, evidencia e identidad al riesgo y naturaleza de cada documento.
+          </p>
         </div>
-        <div data-sr-grid className="relative grid md:grid-cols-3 gap-6 mb-6">
-          <div
-            className="hidden md:block absolute top-[2.6rem] left-[16.5%] right-[16.5%] h-0.5 -z-0"
-            style={{ background: `linear-gradient(90deg, rgba(255,107,74,0.25), ${RH_ACCENT})` }}
-            aria-hidden="true"
-          />
-          {evidenceLevels.map((lvl) => (
-            <div
-              key={lvl.id}
-              className="relative rounded-2xl p-7 bg-white transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
-              style={{ border: `1px solid ${BORDER}` }}
-            >
-              <span
-                className="relative inline-flex items-center justify-center w-9 h-9 rounded-full text-sm font-black mb-5"
-                style={{
-                  background: `rgba(255,107,74,${0.14 + lvl.level * 0.08})`,
-                  color: lvl.level === 3 ? "#fff" : RH_ACCENT_DARK,
-                  backgroundColor: lvl.level === 3 ? RH_ACCENT : undefined,
-                }}
-              >
-                {lvl.level}
-              </span>
-              <h3 className="text-lg font-bold mb-2.5" style={{ color: NAVY }}>{lvl.name}</h3>
-              <p className="text-sm leading-relaxed" style={{ color: TEXT_BODY }}>{lvl.text}</p>
+
+        <div data-sr-grid className="grid md:grid-cols-5 gap-6 mb-6">
+          {/* Firma simple */}
+          <div className="md:col-span-2 rounded-2xl p-7 bg-white flex flex-col" style={{ border: `1px solid ${BORDER}` }}>
+            <p className="text-[11px] font-bold uppercase tracking-wider mb-3" style={{ color: TEXT_MUTED }}>{cotidianos.eyebrow}</p>
+            <h3 className="text-xl font-black mb-2.5" style={{ color: NAVY }}>{cotidianos.name}</h3>
+            <p className="text-sm leading-relaxed mb-5" style={{ color: TEXT_BODY }}>{cotidianos.text}</p>
+            <div className="flex flex-wrap gap-2 mb-6">
+              {cotidianos.examples.map((ex) => (
+                <span key={ex} className="px-2.5 py-1 rounded-full text-xs font-semibold" style={{ background: LIGHT, color: TEXT_MUTED }}>{ex}</span>
+              ))}
             </div>
-          ))}
+            <Link
+              href={cotidianos.href}
+              className="mt-auto inline-flex items-center gap-1.5 text-sm font-bold"
+              style={{ color: "#0A6870" }}
+            >
+              Conocer Firma simple →
+            </Link>
+          </div>
+
+          {/* Firma digital + NOM-151 — protagonista */}
+          <div
+            className="md:col-span-3 rounded-2xl p-7 sm:p-8 flex flex-col relative overflow-hidden"
+            style={{ background: NAVY, border: `1px solid rgba(255,107,74,0.3)`, boxShadow: "0 20px 50px rgba(255,107,74,0.1)" }}
+          >
+            <span
+              className="inline-flex items-center self-start px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider mb-4"
+              style={{ background: RH_ACCENT, color: "#fff" }}
+            >
+              Producto protagonista para RH
+            </span>
+            <p className="text-[11px] font-bold uppercase tracking-wider mb-2" style={{ color: RH_ACCENT }}>{laboral.eyebrow}</p>
+            <h3 className="text-2xl font-black text-white mb-2.5">{laboral.name}</h3>
+            <p className="text-sm leading-relaxed mb-5" style={{ color: "rgba(255,255,255,0.7)" }}>{laboral.text}</p>
+            <div className="flex flex-wrap gap-2 mb-6">
+              {laboral.examples.map((ex) => (
+                <span key={ex} className="px-2.5 py-1 rounded-full text-xs font-semibold" style={{ background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.8)" }}>{ex}</span>
+              ))}
+            </div>
+            {laboral.addOns && (
+              <div className="grid sm:grid-cols-2 gap-3 mb-6">
+                {laboral.addOns.map((addOn) => (
+                  <Link
+                    key={addOn.name}
+                    href={addOn.href}
+                    className="rounded-xl p-3.5 transition-colors hover:bg-white/10"
+                    style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)" }}
+                  >
+                    <p className="text-sm font-bold text-white mb-0.5">{addOn.name}</p>
+                    <p className="text-xs" style={{ color: "rgba(255,255,255,0.6)" }}>{addOn.note}</p>
+                  </Link>
+                ))}
+              </div>
+            )}
+            <Link
+              href={laboral.href}
+              className="mt-auto inline-flex items-center gap-1.5 text-sm font-bold"
+              style={{ color: RH_ACCENT }}
+            >
+              Conocer Firma digital + NOM-151 →
+            </Link>
+          </div>
         </div>
-        <div data-sr className="rounded-2xl p-6 sm:p-7 flex flex-col sm:flex-row sm:items-center gap-4" style={{ background: "rgba(255,255,255,0.6)", border: `1px dashed ${TEAL}` }}>
-          <span className="inline-flex items-center justify-center px-3 py-1.5 rounded-full text-xs font-black flex-shrink-0" style={{ background: TEAL, color: NAVY }}>
-            {identityLayer.name}
-          </span>
-          <p className="text-sm leading-relaxed" style={{ color: TEXT_BODY }}>{identityLayer.text}</p>
+
+        {/* Modalidades especializadas */}
+        <div data-sr className="rounded-2xl p-6 sm:p-7 bg-white" style={{ border: `1px dashed ${RH_ACCENT}` }}>
+          <p className="text-[11px] font-bold uppercase tracking-wider mb-4" style={{ color: TEXT_MUTED }}>
+            Para procesos que requieren un mecanismo reforzado
+          </p>
+          <div className="grid sm:grid-cols-2 gap-4">
+            {specializedModalities.map((modality) => (
+              <Link
+                key={modality.name}
+                href={modality.href}
+                className="flex items-start gap-3 rounded-xl p-4 transition-colors hover:bg-gray-50"
+                style={{ border: `1px solid ${BORDER}` }}
+              >
+                <div>
+                  <p className="text-sm font-bold mb-1" style={{ color: NAVY }}>{modality.name}</p>
+                  <p className="text-xs leading-relaxed" style={{ color: TEXT_BODY }}>{modality.note}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -1202,8 +1260,8 @@ export default function RecursosHumanosLandingClient() {
         <ProcessComparison />
         <TrustBar />
         <UseCaseGrid />
+        <FirmaLevelsSection />
         <SelectorSection />
-        <EvidenceLevelsSection />
         <JaakDifferentiator />
         <DigitalRecordPreview />
         <BuyerPersonaBlock />
