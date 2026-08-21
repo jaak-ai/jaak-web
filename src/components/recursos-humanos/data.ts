@@ -11,6 +11,8 @@ export interface UseCase {
   microflow?: string;
   /** Atributo `d` de un <path> SVG, viewBox 0 0 24 24, strokeWidth 1.5. */
   icon: string;
+  /** true = tarjeta protagonista (más peso visual); el resto se agrupa como "otros casos de uso". */
+  featured?: boolean;
 }
 
 export const useCases: UseCase[] = [
@@ -20,12 +22,15 @@ export const useCases: UseCase[] = [
     text: "Formaliza contratos a distancia y conserva evidencia asociada al proceso de firma.",
     microflow: "Contrato → firma → evidencia → expediente",
     icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4",
+    featured: true,
   },
   {
     id: "anexos",
     title: "Anexos y modificaciones",
     text: "Gestiona cambios de puesto, salario, jornada, ubicación o condiciones laborales sin regresar al papel.",
+    microflow: "Cambio → anexo → firma → expediente",
     icon: "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z",
+    featured: true,
   },
   {
     id: "teletrabajo",
@@ -49,7 +54,9 @@ export const useCases: UseCase[] = [
     id: "compensacion",
     title: "Bonos, comisiones y autorizaciones",
     text: "Digitaliza documentación complementaria de compensación y conserva trazabilidad sobre las aceptaciones.",
+    microflow: "Autorización → firma → trazabilidad",
     icon: "M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
+    featured: true,
   },
   {
     id: "activos",
@@ -62,6 +69,8 @@ export const useCases: UseCase[] = [
 export interface SignatureLayer {
   label: string;
   note: string;
+  /** true = capa que "puede incorporar" según proceso/riesgo, no incluida por defecto. */
+  conditional?: boolean;
 }
 
 export interface SignatureOption {
@@ -81,8 +90,8 @@ export const signatureOptions: SignatureOption[] = [
       { label: "Firma digital", note: "Base del proceso de aceptación documental." },
       { label: "Evidencia del evento", note: "Puede incorporar registro de fecha, hora y participantes." },
       { label: "Integridad documental", note: "Huella del documento firmado, según el nivel elegido." },
-      { label: "Sello de tiempo cuando corresponda", note: "Refuerza temporalidad conforme al riesgo del contrato." },
-      { label: "Verificación de identidad cuando el nivel de riesgo lo requiera", note: "Capa opcional, no obligatoria por defecto." },
+      { label: "Sello de tiempo cuando corresponda", note: "Refuerza temporalidad conforme al riesgo del contrato.", conditional: true },
+      { label: "Verificación de identidad cuando el nivel de riesgo lo requiera", note: "Capa opcional, no obligatoria por defecto.", conditional: true },
     ],
     useCaseId: "contratacion",
   },
@@ -104,7 +113,7 @@ export const signatureOptions: SignatureOption[] = [
     layers: [
       { label: "Firma digital", note: "Para convenios y modificaciones del esquema remoto." },
       { label: "Evidencia del evento", note: "Puede incorporar registro de fecha y participantes." },
-      { label: "Sello de tiempo cuando corresponda", note: "Cuando el proceso busca fortalecer temporalidad." },
+      { label: "Sello de tiempo cuando corresponda", note: "Cuando el proceso busca fortalecer temporalidad.", conditional: true },
     ],
     useCaseId: "teletrabajo",
   },
@@ -127,7 +136,7 @@ export const signatureOptions: SignatureOption[] = [
       { label: "Firma digital", note: "Para acuerdos de confidencialidad y propiedad intelectual." },
       { label: "Evidencia del evento", note: "Puede incorporar trazabilidad reforzada por el valor del documento." },
       { label: "Integridad documental", note: "Huella del documento según el nivel de evidencia requerido." },
-      { label: "Sello de tiempo cuando corresponda", note: "Para documentos con mayor sensibilidad." },
+      { label: "Sello de tiempo cuando corresponda", note: "Para documentos con mayor sensibilidad.", conditional: true },
     ],
     useCaseId: "confidencialidad",
   },
@@ -189,52 +198,66 @@ export const identityLayer = {
 export interface BuyerPersona {
   id: string;
   anchor: string;
+  /** Etiqueta corta para el tab (barra de navegación de buyers). */
+  shortLabel: string;
   audience: string;
   title: string;
   subtitle: string;
   text: string;
+  /** Caso de uso más relevante para este buyer (useCases[].id) — CTA "Ver cómo funciona". */
+  relatedUseCaseId: string;
 }
 
 export const buyerPersonas: BuyerPersona[] = [
   {
     id: "chro",
     anchor: "direccion-rh",
+    shortLabel: "Dirección RH",
     audience: "CHRO / Dirección de RH",
     title: "Dirección de Recursos Humanos",
     subtitle: "Estandarización y transformación digital",
     text: "Reduce procesos manuales y crea una experiencia consistente para colaboradores, independientemente de ubicación, sucursal o área.",
+    relatedUseCaseId: "contratacion",
   },
   {
     id: "hr-operations",
     anchor: "operaciones",
+    shortLabel: "Operaciones",
     audience: "HR Operations / People Operations",
     title: "HR Operations",
     subtitle: "Menos seguimiento manual",
     text: "Gestiona contratos, anexos y políticas dentro de un flujo trazable, sin depender de correos, hojas de cálculo y carpetas dispersas.",
+    relatedUseCaseId: "anexos",
   },
   {
     id: "relaciones-laborales",
     anchor: "evidencia",
+    shortLabel: "Legal",
     audience: "Relaciones Laborales / Legal Laboral",
     title: "Relaciones Laborales",
     subtitle: "Más claridad documental",
     text: "Fortalece la evidencia disponible alrededor de documentos laborales mediante trazabilidad, integridad y temporalidad.",
+    relatedUseCaseId: "confidencialidad",
   },
   {
     id: "hris",
     anchor: "integraciones",
+    shortLabel: "HR Tech",
     audience: "HRIS / HR Technology",
     title: "HR Technology / HRIS",
     subtitle: "Firma dentro del flujo",
     text: "Integra la firma a los procesos y sistemas que la organización ya utiliza, evitando exportaciones, cargas manuales y pasos desconectados.",
+    relatedUseCaseId: "contratacion",
   },
   {
     id: "nomina",
     anchor: "compensacion",
+    shortLabel: "Nómina",
     audience: "Nómina / Compensación",
     title: "Nómina y Compensación",
     subtitle: "Documentación complementaria",
     text: "Gestiona bonos, comisiones, modificaciones salariales, autorizaciones y documentación asociada sin alterar el proceso del CFDI de nómina.",
+    relatedUseCaseId: "compensacion",
   },
 ];
 

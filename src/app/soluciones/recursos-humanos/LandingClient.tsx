@@ -116,21 +116,24 @@ function HeroTalkMenu() {
   );
 }
 
-const HERO_TIMELINE = [
-  { label: "Documento enviado", value: "Completado" },
-  { label: "Identidad", value: "Verificada" },
-  { label: "Firma", value: "Completada" },
-  { label: "Evidencia", value: "Generada" },
+// Documentos del expediente laboral de ejemplo. El progreso (3/4) se anima
+// al entrar en viewport para reforzar que esto es "RH", no sólo firma.
+const HERO_DOCS = [
+  { label: "Contrato laboral", status: "Firmado" as const },
+  { label: "Anexo salarial", status: "Firmado" as const },
+  { label: "Política de seguridad", status: "Pendiente" as const },
+  { label: "Equipo asignado", status: "Aceptado" as const },
 ];
+const HERO_PROGRESS_TARGET = Math.round(
+  (HERO_DOCS.filter((d) => d.status !== "Pendiente").length / HERO_DOCS.length) * 100
+);
 
 function HeroVisual() {
-  const [step, setStep] = useState(1);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setStep((s) => (s + 1) % (HERO_TIMELINE.length + 1));
-    }, 1800);
-    return () => clearInterval(interval);
+    const timeout = setTimeout(() => setProgress(HERO_PROGRESS_TARGET), 500);
+    return () => clearTimeout(timeout);
   }, []);
 
   return (
@@ -142,63 +145,59 @@ function HeroVisual() {
       />
       <div className="rounded-[28px] p-3" style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.14)" }}>
         <div className="rounded-[20px] p-6" style={{ background: "#FFFFFF" }}>
-          <div className="flex items-center justify-between mb-5">
-            <span className="text-[11px] font-bold uppercase tracking-wider" style={{ color: TEXT_MUTED }}>
-              Contrato laboral
-            </span>
+          <div className="flex items-center gap-3 mb-5">
             <span
-              className="text-[10px] font-bold px-2 py-1 rounded-full transition-colors duration-500"
-              style={
-                step >= HERO_TIMELINE.length
-                  ? { background: "rgba(255,107,74,0.14)", color: RH_ACCENT_DARK }
-                  : { background: LIGHT, color: TEXT_MUTED }
-              }
+              className="flex-shrink-0 w-11 h-11 rounded-full flex items-center justify-center text-sm font-black"
+              style={{ background: LIGHT, color: NAVY }}
+              aria-hidden="true"
             >
-              {step >= HERO_TIMELINE.length ? "Firmado" : "En proceso"}
+              AG
             </span>
+            <div>
+              <p className="text-[14.5px] font-bold" style={{ color: NAVY }}>Ana García</p>
+              <p className="text-xs" style={{ color: TEXT_MUTED }}>Coordinadora de Operaciones</p>
+            </div>
           </div>
-          <div className="rounded-xl p-4 mb-3" style={{ background: LIGHT }}>
-            <p className="text-[13.5px] font-bold" style={{ color: NAVY }}>Ana García</p>
-            <p className="text-xs" style={{ color: TEXT_MUTED }}>Colaboradora</p>
-          </div>
-          <div className="space-y-2.5">
-            {HERO_TIMELINE.map((row, i) => {
-              const done = i < step;
+
+          <div className="space-y-2">
+            {HERO_DOCS.map((doc) => {
+              const isPending = doc.status === "Pendiente";
               return (
                 <div
-                  key={row.label}
-                  className="flex items-center justify-between px-4 py-2.5 rounded-lg transition-all duration-500"
-                  style={{
-                    background: done ? "rgba(30,202,211,0.08)" : LIGHT,
-                    border: `1px solid ${done ? "rgba(30,202,211,0.25)" : "transparent"}`,
-                  }}
+                  key={doc.label}
+                  className="flex items-center justify-between px-4 py-2.5 rounded-lg"
+                  style={{ background: isPending ? "rgba(255,107,74,0.06)" : LIGHT }}
                 >
-                  <span className="flex items-center gap-2 text-xs font-medium" style={{ color: done ? NAVY : TEXT_MUTED }}>
+                  <span className="flex items-center gap-2 text-xs font-semibold" style={{ color: NAVY }}>
                     <span
-                      className="flex-shrink-0 w-4 h-4 rounded-full flex items-center justify-center transition-colors duration-500"
-                      style={{ background: done ? TEAL : "#E5E9EF" }}
+                      className="flex-shrink-0 w-4 h-4 rounded-full flex items-center justify-center"
+                      style={{ background: isPending ? "#fff" : TEAL, border: isPending ? `1.5px dashed ${RH_ACCENT}` : "none" }}
                     >
-                      {done && <CheckIcon color={NAVY} />}
+                      {!isPending && <CheckIcon color={NAVY} />}
                     </span>
-                    {row.label}
+                    {doc.label}
                   </span>
-                  <span className="text-xs font-bold" style={{ color: done ? "#0A6870" : TEXT_MUTED }}>
-                    {done ? row.value : "—"}
+                  <span className="text-[11px] font-bold" style={{ color: isPending ? RH_ACCENT_DARK : "#0A6870" }}>
+                    {doc.status}
                   </span>
                 </div>
               );
             })}
           </div>
-          <div
-            className="mt-4 flex items-center gap-2 px-4 py-2.5 rounded-lg transition-opacity duration-500"
-            style={{
-              background: "rgba(255,107,74,0.08)",
-              border: `1px solid rgba(255,107,74,0.25)`,
-              opacity: step >= HERO_TIMELINE.length ? 1 : 0.4,
-            }}
-          >
-            <CheckIcon color={RH_ACCENT_DARK} />
-            <span className="text-xs font-bold" style={{ color: RH_ACCENT_DARK }}>Expediente digital disponible</span>
+
+          <div className="mt-5 pt-4" style={{ borderTop: `1px solid ${BORDER}` }}>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[11px] font-bold uppercase tracking-wider" style={{ color: TEXT_MUTED }}>
+                Expediente laboral
+              </span>
+              <span className="text-xs font-black" style={{ color: NAVY }}>{progress}%</span>
+            </div>
+            <div className="h-1.5 rounded-full overflow-hidden" style={{ background: LIGHT }}>
+              <div
+                className="h-full rounded-full transition-all duration-1000 ease-out"
+                style={{ width: `${progress}%`, background: `linear-gradient(90deg, ${RH_ACCENT}, ${TEAL})` }}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -350,9 +349,34 @@ function ProcessComparison() {
   );
 }
 
+/* ── TRUST BAR ─────────────────────────────────────────────────────── */
+
+const TRUST_BAR_ITEMS = ["Firma electrónica", "NOM-151 cuando aplica", "Trazabilidad", "Sellos de tiempo", "ISO 27001"];
+
+function TrustBar() {
+  return (
+    <section className="py-6" style={{ background: NAVY_SECONDARY }} aria-label="Respaldo técnico y regulatorio">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+          {TRUST_BAR_ITEMS.map((item, i) => (
+            <span key={item} className="flex items-center gap-2 text-xs sm:text-sm font-semibold" style={{ color: "rgba(255,255,255,0.85)" }}>
+              {i > 0 && <span className="hidden sm:inline opacity-30">·</span>}
+              <CheckIcon color={TEAL} />
+              {item}
+            </span>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ── CASOS DE USO ──────────────────────────────────────────────────── */
 
 function UseCaseGrid() {
+  const featured = useCases.filter((u) => u.featured);
+  const others = useCases.filter((u) => !u.featured);
+
   return (
     <section id="casos-de-uso" className="py-20 scroll-mt-20" style={{ background: LIGHT }} aria-labelledby="casos-uso-heading">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -361,8 +385,9 @@ function UseCaseGrid() {
             Una firma para cada momento de la relación laboral
           </h2>
         </div>
-        <div data-sr-grid className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {useCases.map((useCase) => (
+
+        <div data-sr-grid className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+          {featured.map((useCase) => (
             <div
               key={useCase.id}
               id={useCase.id}
@@ -386,6 +411,27 @@ function UseCaseGrid() {
               )}
             </div>
           ))}
+        </div>
+
+        <div data-sr className="rounded-2xl p-6 sm:p-7 bg-white" style={{ border: `1px solid ${BORDER}` }}>
+          <p className="text-xs font-bold uppercase tracking-wider mb-4" style={{ color: TEXT_MUTED }}>
+            + Otros casos de uso
+          </p>
+          <div className="grid sm:grid-cols-2 gap-x-8 gap-y-4">
+            {others.map((useCase) => (
+              <div key={useCase.id} id={useCase.id} className="flex items-start gap-3 scroll-mt-24">
+                <span className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "rgba(255,107,74,0.1)" }}>
+                  <svg className="w-4 h-4" fill="none" stroke={RH_ACCENT} viewBox="0 0 24 24" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={useCase.icon} />
+                  </svg>
+                </span>
+                <div>
+                  <p className="text-sm font-bold" style={{ color: NAVY }}>{useCase.title}</p>
+                  <p className="text-xs leading-relaxed" style={{ color: TEXT_BODY }}>{useCase.text}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -520,35 +566,41 @@ const RECORD_ROWS = [
 
 function DigitalRecordPreview() {
   return (
-    <section className="py-20 bg-white" aria-labelledby="expediente-heading">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div data-sr className="grid lg:grid-cols-2 gap-12 items-center">
+    <section className="py-20" style={{ background: NAVY_SECONDARY }} aria-labelledby="expediente-heading">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div data-sr className="grid lg:grid-cols-2 gap-14 items-center">
           <div>
-            <h2 id="expediente-heading" className="text-3xl sm:text-4xl font-black mb-5" style={{ color: NAVY }}>
+            <p className="text-xs font-black uppercase tracking-widest mb-4" style={{ color: RH_ACCENT }}>
+              Al final no recibes sólo un PDF
+            </p>
+            <h2 id="expediente-heading" className="text-3xl sm:text-4xl font-black text-white mb-5">
               Lo importante no es sólo firmarlo.
               <br /> Es poder encontrarlo y demostrarlo después.
             </h2>
-            <p className="text-lg" style={{ color: TEXT_BODY }}>
+            <p className="text-lg" style={{ color: "rgba(255,255,255,0.7)" }}>
               Cada documento firmado queda asociado a un expediente digital con la evidencia disponible para
               consultarla cuando se necesite.
             </p>
           </div>
-          <div className="rounded-2xl p-6 sm:p-7" style={{ background: LIGHT, border: `1px solid ${BORDER}` }}>
-            <div className="flex items-center justify-between mb-5">
-              <h3 className="text-base font-bold" style={{ color: NAVY }}>Contrato laboral</h3>
+          <div className="rounded-2xl p-6 sm:p-8" style={{ background: "#fff", boxShadow: "0 30px 70px rgba(0,0,0,0.35)" }}>
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-lg font-bold" style={{ color: NAVY }}>Contrato laboral</h3>
               <span
-                className="inline-flex items-center gap-1.5 text-[10px] font-bold px-2.5 py-1 rounded-full"
+                className="inline-flex items-center gap-1.5 text-[11px] font-bold px-3 py-1.5 rounded-full"
                 style={{ background: "rgba(255,107,74,0.14)", color: RH_ACCENT_DARK }}
               >
                 <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: RH_ACCENT }} aria-hidden="true" />
                 Firmado
               </span>
             </div>
-            <dl className="space-y-2 mb-6">
+            <dl className="grid grid-cols-2 gap-2 mb-6">
               {RECORD_ROWS.map((row) => (
-                <div key={row.label} className="flex items-center justify-between px-4 py-2.5 rounded-lg bg-white">
-                  <dt className="text-xs font-medium" style={{ color: TEXT_MUTED }}>{row.label}</dt>
-                  <dd className="text-xs font-bold" style={{ color: NAVY }}>{row.value}</dd>
+                <div key={row.label} className="px-4 py-3 rounded-lg" style={{ background: LIGHT }}>
+                  <dt className="text-[10px] font-semibold uppercase tracking-wide mb-0.5" style={{ color: TEXT_MUTED }}>{row.label}</dt>
+                  <dd className="flex items-center gap-1.5 text-xs font-bold" style={{ color: NAVY }}>
+                    <CheckIcon color={TEAL} />
+                    {row.value}
+                  </dd>
                 </div>
               ))}
             </dl>
@@ -556,7 +608,7 @@ function DigitalRecordPreview() {
               <span className="flex-1 text-center text-sm font-bold px-4 py-3 rounded-lg" style={{ background: NAVY, color: "#fff" }}>
                 Ver evidencia
               </span>
-              <span className="flex-1 text-center text-sm font-bold px-4 py-3 rounded-lg bg-white" style={{ border: `1px solid ${BORDER}`, color: NAVY }}>
+              <span className="flex-1 text-center text-sm font-bold px-4 py-3 rounded-lg" style={{ border: `1px solid ${BORDER}`, color: NAVY }}>
                 Consultar documento
               </span>
             </div>
@@ -591,7 +643,7 @@ function BuyerPersonaBlock() {
 
 function BrandedExperience() {
   return (
-    <section className="py-20 bg-white" aria-labelledby="marca-heading">
+    <section className="py-20" style={{ background: LIGHT }} aria-labelledby="marca-heading">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div data-sr className="grid lg:grid-cols-2 gap-12 items-center">
           <div>
@@ -698,20 +750,14 @@ const SUSTAINABILITY_ITEMS = ["Menos impresiones", "Menos copias", "Menos archiv
 
 function SustainabilitySection() {
   return (
-    <section className="py-16 bg-white" aria-labelledby="sustentabilidad-heading">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div data-sr>
-          <h2 id="sustentabilidad-heading" className="text-2xl sm:text-3xl font-black mb-4" style={{ color: NAVY }}>
-            Digitalizar también significa dejar de imprimir
-          </h2>
-          <p className="text-base max-w-2xl mx-auto mb-8" style={{ color: TEXT_BODY }}>
-            Un proceso digital puede ayudar a reducir el uso de papel mientras simplifica la operación de Recursos
-            Humanos.
-          </p>
-        </div>
-        <div data-sr-grid className="flex flex-wrap items-center justify-center gap-3">
+    <section className="py-8 bg-white border-t border-b" style={{ borderColor: BORDER }} aria-label="Sustentabilidad">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center gap-4 sm:gap-8">
+        <p className="text-sm font-semibold flex-shrink-0" style={{ color: TEXT_BODY }}>
+          Digitalizar también significa dejar de imprimir — puede ayudar a reducir:
+        </p>
+        <div className="flex flex-wrap items-center justify-center gap-2">
           {SUSTAINABILITY_ITEMS.map((item) => (
-            <span key={item} className="px-4 py-2 rounded-full text-sm font-semibold" style={{ background: LIGHT, color: TEXT_BODY }}>
+            <span key={item} className="px-3 py-1 rounded-full text-xs font-semibold" style={{ background: LIGHT, color: TEXT_MUTED }}>
               {item}
             </span>
           ))}
@@ -817,6 +863,85 @@ function VideoSection() {
             style={{ background: NAVY, color: "#fff" }}
           >
             Quiero verlo aplicado a mi proceso
+            <ArrowIcon />
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── CALCULADORA DE VOLUMEN ────────────────────────────────────────── */
+
+function VolumeCalculator() {
+  const [colaboradores, setColaboradores] = useState("");
+  const [documentosPorPersona, setDocumentosPorPersona] = useState("");
+
+  const n1 = parseInt(colaboradores, 10);
+  const n2 = parseInt(documentosPorPersona, 10);
+  const total = Number.isFinite(n1) && Number.isFinite(n2) && n1 > 0 && n2 > 0 ? n1 * n2 : null;
+
+  return (
+    <section className="py-20 bg-white" aria-labelledby="calculadora-heading">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div data-sr className="text-center mb-10">
+          <h2 id="calculadora-heading" className="text-3xl sm:text-4xl font-black mb-4" style={{ color: NAVY }}>
+            ¿Cuánto trabajo documental mueve tu RH?
+          </h2>
+          <p className="text-lg" style={{ color: TEXT_BODY }}>
+            Una estimación simple a partir de tus propios números — no de promedios de industria.
+          </p>
+        </div>
+        <div data-sr className="rounded-2xl p-6 sm:p-9" style={{ background: LIGHT, border: `1px solid ${BORDER}` }}>
+          <div className="grid sm:grid-cols-2 gap-6 mb-7">
+            <div>
+              <label htmlFor="rh-calc-colaboradores" className="block text-sm font-medium mb-1.5" style={{ color: NAVY }}>
+                Colaboradores
+              </label>
+              <input
+                id="rh-calc-colaboradores"
+                type="number"
+                min={0}
+                inputMode="numeric"
+                value={colaboradores}
+                onChange={(e) => setColaboradores(e.target.value)}
+                placeholder="Ej. 1,000"
+                className="w-full px-4 py-3 bg-white border rounded-lg focus:ring-2 focus:ring-[#1ECAD3] focus:border-transparent outline-none text-[15px]"
+                style={{ borderColor: BORDER, color: NAVY }}
+              />
+            </div>
+            <div>
+              <label htmlFor="rh-calc-documentos" className="block text-sm font-medium mb-1.5" style={{ color: NAVY }}>
+                Documentos que requieren firma por persona/año
+              </label>
+              <input
+                id="rh-calc-documentos"
+                type="number"
+                min={0}
+                inputMode="numeric"
+                value={documentosPorPersona}
+                onChange={(e) => setDocumentosPorPersona(e.target.value)}
+                placeholder="Ej. 4"
+                className="w-full px-4 py-3 bg-white border rounded-lg focus:ring-2 focus:ring-[#1ECAD3] focus:border-transparent outline-none text-[15px]"
+                style={{ borderColor: BORDER, color: NAVY }}
+              />
+            </div>
+          </div>
+
+          <div className="rounded-xl p-5 mb-7 flex items-center justify-between" style={{ background: "#fff", border: `1px dashed ${RH_ACCENT}` }}>
+            <span className="text-sm font-semibold" style={{ color: TEXT_BODY }}>Total estimado de eventos de firma / año</span>
+            <span className="text-2xl font-black" style={{ color: total !== null ? RH_ACCENT_DARK : TEXT_MUTED }}>
+              {total !== null ? total.toLocaleString("es-MX") : "—"}
+            </span>
+          </div>
+
+          <a
+            href="#contacto-form"
+            onClick={() => gtmEvent("rh_volume_calc_cta_click", { page: "recursos-humanos", colaboradores: n1 || null, documentos_por_persona: n2 || null })}
+            className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3.5 rounded-xl text-sm font-bold transition-all hover:opacity-90 hover:scale-105"
+            style={{ background: RH_ACCENT, color: "#fff" }}
+          >
+            Quiero revisar este volumen con JAAK
             <ArrowIcon />
           </a>
         </div>
@@ -1075,6 +1200,7 @@ export default function RecursosHumanosLandingClient() {
       <main style={{ background: OFF_WHITE }}>
         <Hero />
         <ProcessComparison />
+        <TrustBar />
         <UseCaseGrid />
         <SelectorSection />
         <EvidenceLevelsSection />
@@ -1086,6 +1212,7 @@ export default function RecursosHumanosLandingClient() {
         <SustainabilitySection />
         <TrustLegalSection />
         <VideoSection />
+        <VolumeCalculator />
         <FinalCTA />
       </main>
       <Footer />
