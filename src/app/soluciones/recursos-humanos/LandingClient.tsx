@@ -129,12 +129,11 @@ const HERO_PROGRESS_TARGET = Math.round(
 );
 
 function HeroVisual() {
-  const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => setProgress(HERO_PROGRESS_TARGET), 500);
-    return () => clearTimeout(timeout);
-  }, []);
+  // Fijo en el valor real desde el primer pintado (SSR incluido): antes
+  // arrancaba en 0% y animaba hacia 75%, lo que por un instante contradecía
+  // el checklist (ya mostrando 3 de 4 documentos resueltos) — inconsistencia
+  // señalada en la revisión visual.
+  const progress = HERO_PROGRESS_TARGET;
 
   return (
     <div className="relative mx-auto w-full max-w-sm">
@@ -190,7 +189,9 @@ function HeroVisual() {
               <span className="text-[11px] font-bold uppercase tracking-wider" style={{ color: TEXT_MUTED }}>
                 Expediente laboral
               </span>
-              <span className="text-xs font-black" style={{ color: NAVY }}>{progress}%</span>
+              <span className="text-xs font-black" style={{ color: NAVY }}>
+                {HERO_DOCS.filter((d) => d.status !== "Pendiente").length} de {HERO_DOCS.length} · {progress}%
+              </span>
             </div>
             <div className="h-1.5 rounded-full overflow-hidden" style={{ background: LIGHT }}>
               <div
@@ -351,7 +352,7 @@ function ProcessComparison() {
 
 /* ── TRUST BAR ─────────────────────────────────────────────────────── */
 
-const TRUST_BAR_ITEMS = ["Firma electrónica", "NOM-151 cuando aplica", "Trazabilidad", "Sellos de tiempo", "ISO 27001"];
+const TRUST_BAR_ITEMS = ["Firma electrónica", "NOM-151 cuando aplica", "Trazabilidad", "Sellos de tiempo", "ISO 27001", "ISO 9001"];
 
 function TrustBar() {
   return (
@@ -561,6 +562,20 @@ function FirmaLevelsSection() {
             ))}
           </div>
         </div>
+
+        <div data-sr className="text-center mt-8">
+          <p className="text-sm font-semibold mb-1" style={{ color: NAVY }}>¿No sabes cuál necesitas?</p>
+          <p className="text-sm mb-4" style={{ color: TEXT_BODY }}>
+            Te ayudamos a definir el nivel de firma según el documento y el proceso de tu organización.
+          </p>
+          <a
+            href="#que-necesitas-firmar"
+            className="inline-flex items-center gap-1.5 text-sm font-bold"
+            style={{ color: "#0A6870" }}
+          >
+            Usar el selector de documentos →
+          </a>
+        </div>
       </div>
     </section>
   );
@@ -699,42 +714,90 @@ function BuyerPersonaBlock() {
 
 /* ── PERSONALIZACIÓN DE MARCA ──────────────────────────────────────── */
 
+const BRANDING_SCOPE = ["Logotipo", "Colores del portal y del botón", "Mensajes y textos", "Portal de firma"];
+
 function BrandedExperience() {
   return (
     <section className="py-20" style={{ background: LIGHT }} aria-labelledby="marca-heading">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div data-sr className="grid lg:grid-cols-2 gap-12 items-center">
+        <div data-sr className="text-center mb-12">
+          <h2 id="marca-heading" className="text-3xl sm:text-4xl font-black mb-4" style={{ color: NAVY }}>
+            Tu proceso de firma. Tu marca.
+          </h2>
+          <p className="text-lg max-w-2xl mx-auto" style={{ color: TEXT_BODY }}>
+            Personaliza la experiencia para que tus colaboradores reconozcan a tu organización durante todo el
+            proceso de firma — no la de un tercero.
+          </p>
+        </div>
+
+        <div data-sr-grid className="grid sm:grid-cols-2 gap-6 mb-8">
+          {/* Genérica */}
           <div>
-            <h2 id="marca-heading" className="text-3xl sm:text-4xl font-black mb-5" style={{ color: NAVY }}>
-              La experiencia puede sentirse como parte de tu empresa
-            </h2>
-            <p className="text-lg" style={{ color: TEXT_BODY }}>
-              Personaliza la experiencia de firma para mantener la identidad visual de tu organización durante todo
-              el proceso.
-            </p>
-          </div>
-          <div className="rounded-2xl overflow-hidden mx-auto w-full max-w-sm" style={{ border: `1px solid ${BORDER}`, boxShadow: "0 20px 50px rgba(2,19,45,0.08)" }}>
-            <div className="flex items-center gap-3 px-5 py-4" style={{ background: NAVY_SECONDARY }}>
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-black flex-shrink-0" style={{ background: TEAL, color: NAVY }}>
-                RH
+            <p className="text-xs font-bold uppercase tracking-wider mb-3 text-center" style={{ color: TEXT_MUTED }}>Experiencia genérica</p>
+            <div className="rounded-2xl overflow-hidden mx-auto w-full max-w-sm opacity-70" style={{ border: `1px solid ${BORDER}`, filter: "grayscale(1)" }}>
+              <div className="flex items-center gap-3 px-5 py-4 bg-gray-400">
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-black flex-shrink-0 bg-gray-300 text-gray-600">
+                  ?
+                </div>
+                <span className="text-sm font-bold text-white">Plataforma de firma</span>
               </div>
-              <span className="text-sm font-bold text-white">Tu Empresa (ejemplo)</span>
+              <div className="p-5 bg-white">
+                <p className="text-sm mb-4" style={{ color: TEXT_MUTED }}>
+                  Tienes un documento pendiente de firma.
+                </p>
+                <div className="rounded-lg p-4 mb-4 bg-gray-100">
+                  <p className="text-xs font-semibold" style={{ color: TEXT_MUTED }}>Documento — Sin identificar</p>
+                </div>
+                <span className="block text-center text-sm font-bold px-4 py-3 rounded-lg bg-gray-300" style={{ color: "#fff" }}>
+                  Revisar y firmar
+                </span>
+              </div>
             </div>
-            <div className="p-5 bg-white">
-              <p className="text-sm mb-4" style={{ color: TEXT_BODY }}>
-                Hola Ana, tienes un documento pendiente de firma.
-              </p>
-              <div className="rounded-lg p-4 mb-4" style={{ background: LIGHT }}>
-                <p className="text-xs font-semibold" style={{ color: NAVY }}>Contrato laboral — Anexo de puesto</p>
+          </div>
+
+          {/* Personalizada */}
+          <div>
+            <p className="text-xs font-bold uppercase tracking-wider mb-3 text-center" style={{ color: RH_ACCENT_DARK }}>Experiencia personalizada</p>
+            <div className="rounded-2xl overflow-hidden mx-auto w-full max-w-sm" style={{ border: `1px solid ${BORDER}`, boxShadow: "0 20px 50px rgba(2,19,45,0.1)" }}>
+              <div className="flex items-center gap-3 px-5 py-4" style={{ background: NAVY_SECONDARY }}>
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-black flex-shrink-0" style={{ background: TEAL, color: NAVY }}>
+                  RH
+                </div>
+                <span className="text-sm font-bold text-white">Tu Empresa (ejemplo)</span>
               </div>
-              <span className="block text-center text-sm font-bold px-4 py-3 rounded-lg mb-3" style={{ background: TEAL, color: NAVY }}>
-                Revisar y firmar
+              <div className="p-5 bg-white">
+                <p className="text-sm mb-4" style={{ color: TEXT_BODY }}>
+                  Hola Ana, tienes un documento pendiente de firma.
+                </p>
+                <div className="rounded-lg p-4 mb-4" style={{ background: LIGHT }}>
+                  <p className="text-xs font-semibold" style={{ color: NAVY }}>Contrato laboral — Anexo de puesto</p>
+                </div>
+                <span className="block text-center text-sm font-bold px-4 py-3 rounded-lg mb-3" style={{ background: TEAL, color: NAVY }}>
+                  Revisar y firmar
+                </span>
+                <div className="flex items-center gap-2 text-xs font-semibold" style={{ color: "#0A6870" }}>
+                  <CheckIcon color="#0A6870" /> Firma completada
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div data-sr className="flex flex-col items-center gap-5">
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            {BRANDING_SCOPE.map((item) => (
+              <span key={item} className="px-3 py-1.5 rounded-full text-xs font-semibold bg-white" style={{ border: `1px solid ${BORDER}`, color: TEXT_BODY }}>
+                {item}
               </span>
-              <div className="flex items-center gap-2 text-xs font-semibold" style={{ color: "#0A6870" }}>
-                <CheckIcon color="#0A6870" /> Firma completada
-              </div>
-            </div>
+            ))}
           </div>
+          <Link
+            href="/firma-digital-marca-blanca"
+            className="inline-flex items-center gap-1.5 text-sm font-bold"
+            style={{ color: "#0A6870" }}
+          >
+            Conocer personalización de marca →
+          </Link>
         </div>
       </div>
     </section>
@@ -744,10 +807,10 @@ function BrandedExperience() {
 /* ── INTEGRACIÓN ───────────────────────────────────────────────────── */
 
 const INTEGRATION_OPTIONS = [
-  { title: "API", text: "Integra la firma directamente a tus sistemas mediante API." },
-  { title: "Integración", text: "Conecta JAAK a los procesos y herramientas que ya utiliza tu organización." },
-  { title: "Autoservicio", text: "Empieza a firmar desde una experiencia web, sin integración previa." },
-  { title: "Flujo personalizado", text: "Configura el flujo de firma y evidencia según tu proceso de RH." },
+  { step: "01", title: "Autoservicio", text: "Empieza a firmar desde una experiencia web, sin integración previa." },
+  { step: "02", title: "Flujo personalizado", text: "Configura el flujo de firma y evidencia según tu proceso de RH." },
+  { step: "03", title: "Integración", text: "Conecta JAAK a los procesos y herramientas que ya utiliza tu organización." },
+  { step: null, title: "API", text: "Integra la firma directamente a tus sistemas mediante API." },
 ];
 
 const INTEGRATION_FLOW = ["HRIS", "JAAK", "Firma", "Evidencia", "Expediente"];
@@ -760,8 +823,11 @@ function IntegrationSection() {
           <h2 id="integracion-heading" className="text-3xl sm:text-4xl font-black mb-4" style={{ color: NAVY }}>
             Firma donde ya ocurre tu proceso
           </h2>
-          <p className="text-lg max-w-2xl mx-auto" style={{ color: TEXT_BODY }}>
+          <p className="text-lg max-w-2xl mx-auto mb-2" style={{ color: TEXT_BODY }}>
             Utiliza JAAK desde una experiencia web o intégralo a los procesos que ya utiliza tu organización.
+          </p>
+          <p className="text-sm max-w-2xl mx-auto" style={{ color: TEXT_MUTED }}>
+            Empieza como tenga sentido para tu operación — no son pasos obligatorios, son rutas.
           </p>
         </div>
         <div data-sr-grid className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
@@ -771,6 +837,9 @@ function IntegrationSection() {
               className="rounded-2xl p-6 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
               style={{ borderTop: `3px solid ${RH_ACCENT}`, borderLeft: `1px solid ${BORDER}`, borderRight: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}` }}
             >
+              {option.step && (
+                <span className="text-xs font-black mb-2 block" style={{ color: RH_ACCENT }}>{option.step}</span>
+              )}
               <h3 className="text-base font-bold mb-2" style={{ color: NAVY }}>{option.title}</h3>
               <p className="text-sm leading-relaxed" style={{ color: TEXT_BODY }}>{option.text}</p>
             </div>
@@ -797,6 +866,399 @@ function IntegrationSection() {
             </div>
           ))}
         </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── OPERACIÓN PARA RH ─────────────────────────────────────────────── */
+
+const RH_STATS = [
+  { label: "Documentos enviados", value: "126" },
+  { label: "Firmados", value: "104" },
+  { label: "Pendientes", value: "18" },
+  { label: "Rechazados / expirados", value: "4" },
+];
+
+const RH_TABLE_ROWS = [
+  { colaborador: "Ana García", documento: "Contrato", estado: "Firmado" },
+  { colaborador: "Juan Pérez", documento: "Anexo", estado: "Pendiente" },
+  { colaborador: "Laura Díaz", documento: "Política", estado: "Firmado" },
+];
+
+const RH_ESTADO_COLOR: Record<string, string> = {
+  Firmado: "#0A6870",
+  Pendiente: RH_ACCENT_DARK,
+};
+
+// Sólo funcionalidades confirmadas en la documentación de producto de JAAK
+// (plantillas, estados de envío, descarga de evidencia, roles y permisos) —
+// no se incluyen capacidades no verificadas como envío masivo o recordatorios.
+const RH_FEATURES = [
+  "Seguimiento de estado",
+  "Plantillas reutilizables",
+  "Descarga de evidencia y documento",
+  "Expediente centralizado",
+  "Roles y permisos por usuario",
+];
+
+function RHOperationsSection() {
+  return (
+    <section className="py-20 bg-white" aria-labelledby="operacion-heading">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div data-sr className="text-center mb-12">
+          <p className="text-[11px] font-black uppercase tracking-widest mb-3" style={{ color: RH_ACCENT }}>Para tu equipo de RH</p>
+          <h2 id="operacion-heading" className="text-3xl sm:text-4xl font-black mb-4" style={{ color: NAVY }}>
+            ¿Qué obtiene tu equipo de RH?
+          </h2>
+          <p className="text-lg max-w-2xl mx-auto" style={{ color: TEXT_BODY }}>
+            Además de la experiencia de firma del colaborador, un panel para dar seguimiento a la operación
+            documental.
+          </p>
+        </div>
+
+        <div data-sr className="rounded-2xl overflow-hidden" style={{ border: `1px solid ${BORDER}`, boxShadow: "0 20px 50px rgba(2,19,45,0.08)" }}>
+          <div className="p-6 sm:p-8" style={{ background: NAVY }}>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              {RH_STATS.map((stat) => (
+                <div key={stat.label} className="rounded-xl p-4" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}>
+                  <p className="text-2xl font-black text-white mb-1">{stat.value}</p>
+                  <p className="text-[11px] font-semibold" style={{ color: "rgba(255,255,255,0.6)" }}>{stat.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr style={{ background: LIGHT }}>
+                  <th className="text-left px-6 py-3 text-xs font-bold uppercase tracking-wide" style={{ color: TEXT_MUTED }}>Colaborador</th>
+                  <th className="text-left px-6 py-3 text-xs font-bold uppercase tracking-wide" style={{ color: TEXT_MUTED }}>Documento</th>
+                  <th className="text-left px-6 py-3 text-xs font-bold uppercase tracking-wide" style={{ color: TEXT_MUTED }}>Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                {RH_TABLE_ROWS.map((row) => (
+                  <tr key={row.colaborador} style={{ borderTop: `1px solid ${BORDER}` }}>
+                    <td className="px-6 py-3.5 font-semibold" style={{ color: NAVY }}>{row.colaborador}</td>
+                    <td className="px-6 py-3.5" style={{ color: TEXT_BODY }}>{row.documento}</td>
+                    <td className="px-6 py-3.5 font-bold" style={{ color: RH_ESTADO_COLOR[row.estado] }}>{row.estado}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <p className="text-[11px] text-center mt-3" style={{ color: TEXT_MUTED }}>Ejemplo ilustrativo. No refleja datos reales.</p>
+
+        <div data-sr-grid className="flex flex-wrap items-center justify-center gap-2 mt-8">
+          {RH_FEATURES.map((feature) => (
+            <span key={feature} className="px-3.5 py-1.5 rounded-full text-xs font-semibold" style={{ background: LIGHT, color: TEXT_BODY }}>
+              {feature}
+            </span>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── ¿YA TIENES PROVEEDOR? ─────────────────────────────────────────── */
+
+const SWITCH_REASONS = [
+  { subtitle: "Personalización", title: "Tu marca", text: "Mantén la experiencia alineada con tu organización." },
+  { subtitle: "Evidencia", title: "Tu evidencia", text: "No sólo captures la firma: conserva información alrededor del evento." },
+  { subtitle: "Identidad", title: "Tu nivel de identidad", text: "Incorpora biometría o KYC cuando el documento requiera mayor certeza sobre el firmante." },
+  { subtitle: "Integración", title: "Tu flujo", text: "Conecta la firma con los procesos que ya utiliza RH." },
+];
+
+const SWITCH_FLOW = ["Tu proceso actual", "JAAK", "Firma + identidad + evidencia", "Tu expediente"];
+
+const COMPARE_USES_OPTIONS = ["Firma electrónica", "Firma + NOM-151", "Firma biométrica", "e.firma", "Otro", "No estoy seguro"];
+const COMPARE_IMPROVE_OPTIONS = ["Costo", "Personalización", "Integración", "Evidencia", "Identidad", "Operación", "Experiencia del colaborador", "Otro"];
+
+interface CompareFormData {
+  nombre: string;
+  correo: string;
+  telefono: string;
+  usaActualmente: string;
+  mejorar: string[];
+  firmasPorMes: string;
+}
+
+const COMPARE_FORM_INITIAL: CompareFormData = {
+  nombre: "",
+  correo: "",
+  telefono: "",
+  usaActualmente: "",
+  mejorar: [],
+  firmasPorMes: "",
+};
+
+function CompareForm() {
+  const [form, setForm] = useState<CompareFormData>(COMPARE_FORM_INITIAL);
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [started, setStarted] = useState(false);
+
+  const markStarted = () => {
+    if (!started) {
+      setStarted(true);
+      gtmEvent("rh_compare_form_start", { page: "recursos-humanos" });
+    }
+  };
+
+  const toggleMejorar = (item: string) => {
+    markStarted();
+    setForm((prev) => ({
+      ...prev,
+      mejorar: prev.mejorar.includes(item) ? prev.mejorar.filter((m) => m !== item) : [...prev.mejorar, item],
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("loading");
+    setErrorMessage("");
+
+    try {
+      const res = await fetch("/api/landing", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.nombre,
+          email: form.correo,
+          telefono: form.telefono,
+          mensaje: [
+            form.usaActualmente && `Usa actualmente: ${form.usaActualmente}`,
+            form.mejorar.length > 0 && `Quiere mejorar: ${form.mejorar.join(", ")}`,
+            form.firmasPorMes && `Firmas aproximadas/mes: ${form.firmasPorMes}`,
+          ]
+            .filter(Boolean)
+            .join(" | "),
+          source: "landing-recursos-humanos-comparar",
+          ...getUtmParams(),
+          page_url: window.location.href,
+        }),
+      });
+
+      if (res.ok) {
+        setStatus("success");
+        gtmEvent("rh_compare_form_submit", { page: "recursos-humanos", usa_actualmente: form.usaActualmente });
+        setForm(COMPARE_FORM_INITIAL);
+      } else {
+        const data = await res.json().catch(() => ({}));
+        setStatus("error");
+        setErrorMessage(data.error || "Error al enviar. Intenta de nuevo.");
+      }
+    } catch {
+      setStatus("error");
+      setErrorMessage("Error de conexión. Intenta de nuevo.");
+    }
+  };
+
+  const inputClass =
+    "w-full px-4 py-3 bg-white border rounded-lg focus:ring-2 focus:ring-[#1ECAD3] focus:border-transparent outline-none text-[15px]";
+
+  if (status === "success") {
+    return (
+      <div className="py-6 text-center">
+        <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full" style={{ background: "rgba(255,107,74,0.14)" }}>
+          <CheckIcon color={RH_ACCENT_DARK} />
+        </div>
+        <h3 className="text-xl font-bold mb-2" style={{ color: NAVY }}>Solicitud enviada</h3>
+        <p style={{ color: TEXT_MUTED }}>Un especialista de JAAK te contacta para comparar tu proceso actual con JAAK.</p>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-5" aria-label="Comparar mi proceso actual de firma con JAAK">
+      <div className="grid sm:grid-cols-2 gap-5">
+        <div>
+          <label htmlFor="rh-cmp-nombre" className="block text-sm font-medium mb-1.5" style={{ color: NAVY }}>Nombre *</label>
+          <input id="rh-cmp-nombre" required type="text" value={form.nombre} onFocus={markStarted} onChange={(e) => setForm((p) => ({ ...p, nombre: e.target.value }))} placeholder="Tu nombre" className={inputClass} style={{ borderColor: BORDER, color: NAVY }} />
+        </div>
+        <div>
+          <label htmlFor="rh-cmp-correo" className="block text-sm font-medium mb-1.5" style={{ color: NAVY }}>Correo corporativo *</label>
+          <input id="rh-cmp-correo" required type="email" value={form.correo} onFocus={markStarted} onChange={(e) => setForm((p) => ({ ...p, correo: e.target.value }))} placeholder="tu@empresa.com" className={inputClass} style={{ borderColor: BORDER, color: NAVY }} />
+        </div>
+      </div>
+
+      <div className="grid sm:grid-cols-2 gap-5">
+        <div>
+          <label htmlFor="rh-cmp-usa" className="block text-sm font-medium mb-1.5" style={{ color: NAVY }}>¿Qué utilizas actualmente?</label>
+          <select id="rh-cmp-usa" value={form.usaActualmente} onFocus={markStarted} onChange={(e) => setForm((p) => ({ ...p, usaActualmente: e.target.value }))} className={inputClass} style={{ borderColor: BORDER, color: NAVY }}>
+            <option value="">Selecciona una opción</option>
+            {COMPARE_USES_OPTIONS.map((opt) => (
+              <option key={opt} value={opt}>{opt}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label htmlFor="rh-cmp-telefono" className="block text-sm font-medium mb-1.5" style={{ color: NAVY }}>Teléfono</label>
+          <input id="rh-cmp-telefono" type="tel" value={form.telefono} onFocus={markStarted} onChange={(e) => setForm((p) => ({ ...p, telefono: e.target.value }))} placeholder="+52 55 1234 5678" className={inputClass} style={{ borderColor: BORDER, color: NAVY }} />
+        </div>
+      </div>
+
+      <div>
+        <label htmlFor="rh-cmp-volumen" className="block text-sm font-medium mb-1.5" style={{ color: NAVY }}>Número aproximado de firmas/mes</label>
+        <input id="rh-cmp-volumen" type="text" value={form.firmasPorMes} onFocus={markStarted} onChange={(e) => setForm((p) => ({ ...p, firmasPorMes: e.target.value }))} placeholder="Ej. 150" className={inputClass} style={{ borderColor: BORDER, color: NAVY }} />
+      </div>
+
+      <div>
+        <p className="block text-sm font-medium mb-2" style={{ color: NAVY }}>¿Qué quieres mejorar?</p>
+        <div className="flex flex-wrap gap-2">
+          {COMPARE_IMPROVE_OPTIONS.map((opt) => {
+            const active = form.mejorar.includes(opt);
+            return (
+              <button
+                key={opt}
+                type="button"
+                onClick={() => toggleMejorar(opt)}
+                aria-pressed={active}
+                className="px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all"
+                style={active ? { background: RH_ACCENT, color: "#fff" } : { background: LIGHT, color: TEXT_BODY, border: `1px solid ${BORDER}` }}
+              >
+                {opt}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        disabled={status === "loading"}
+        className="w-full px-6 py-4 font-bold rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed text-lg"
+        style={{ background: RH_ACCENT, color: "#fff" }}
+      >
+        {status === "loading" ? "Enviando..." : "Quiero comparar opciones"}
+      </button>
+
+      {status === "error" && (
+        <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-center">
+          <p className="text-red-700 font-medium text-sm">{errorMessage}</p>
+        </div>
+      )}
+    </form>
+  );
+}
+
+function SwitchingProviderSection() {
+  return (
+    <section id="ya-tienes-proveedor" className="py-20 scroll-mt-20" style={{ background: NAVY_SECONDARY }} aria-labelledby="switching-heading">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div data-sr className="text-center mb-12">
+          <h2 id="switching-heading" className="text-3xl sm:text-4xl font-black text-white mb-4">
+            ¿Ya utilizas otra plataforma de firma?
+          </h2>
+          <p className="text-lg max-w-2xl mx-auto" style={{ color: "rgba(255,255,255,0.7)" }}>
+            No necesitas empezar de cero para evaluar JAAK. Podemos revisar tu flujo actual, identificar qué
+            funciona y detectar dónde necesitas mayor personalización, evidencia, identidad o integración.
+          </p>
+        </div>
+
+        <div data-sr-grid className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-12">
+          {SWITCH_REASONS.map((reason) => (
+            <div key={reason.title} className="rounded-2xl p-6" style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}>
+              <p className="text-[11px] font-bold uppercase tracking-widest mb-3" style={{ color: RH_ACCENT }}>{reason.subtitle}</p>
+              <h3 className="text-base font-black text-white mb-2">{reason.title}</h3>
+              <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.65)" }}>{reason.text}</p>
+            </div>
+          ))}
+        </div>
+
+        <div data-sr className="flex flex-wrap items-center justify-center gap-3 mb-12">
+          {SWITCH_FLOW.map((step, i) => (
+            <div key={step} className="flex items-center gap-3">
+              <span className="px-4 py-2.5 rounded-xl text-sm font-bold text-center" style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)", color: "#fff" }}>
+                {step}
+              </span>
+              {i < SWITCH_FLOW.length - 1 && (
+                <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke={RH_ACCENT} viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <div data-sr className="text-center max-w-2xl mx-auto mb-10">
+          <p className="text-white font-black text-xl mb-3">No tienes que transformar todo RH para probar JAAK.</p>
+          <p className="text-sm" style={{ color: "rgba(255,255,255,0.65)" }}>
+            JAAK puede utilizarse desde autoservicio o integrarse a procesos existentes, permitiendo evaluar
+            inicialmente un solo caso de uso antes de ampliar la operación.
+          </p>
+        </div>
+
+        <div data-sr className="text-center mb-14">
+          <a
+            href="#comparar-proceso"
+            onClick={() => gtmEvent("rh_compare_cta_click", { source: "switching_section", page: "recursos-humanos" })}
+            className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-bold text-base transition-all hover:opacity-90 hover:scale-105"
+            style={{ background: RH_ACCENT, color: "#fff", boxShadow: "0 0 30px rgba(255,107,74,0.3)" }}
+          >
+            Comparar mi proceso actual
+            <ArrowIcon />
+          </a>
+        </div>
+
+        <div id="comparar-proceso" data-sr className="scroll-mt-24 max-w-2xl mx-auto rounded-2xl p-6 sm:p-9" style={{ background: "#fff", boxShadow: "0 20px 50px rgba(0,0,0,0.25)" }}>
+          <h3 className="text-lg font-black mb-1" style={{ color: NAVY }}>¿Ya utilizas firma digital?</h3>
+          <p className="text-sm mb-6" style={{ color: TEXT_BODY }}>Cuéntanos tu situación actual y te ayudamos a comparar opciones.</p>
+          <CompareForm />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── TABLA DE EVALUACIÓN ───────────────────────────────────────────── */
+
+const EVALUATION_ROWS = [
+  { capacidad: "Firma", evaluar: "Distintos niveles según documento" },
+  { capacidad: "Identidad", evaluar: "Poder elevar certeza cuando lo requieras" },
+  { capacidad: "Evidencia", evaluar: "Saber quién, qué y cuándo" },
+  { capacidad: "NOM-151", evaluar: "Incorporarla cuando el proceso lo requiera" },
+  { capacidad: "Personalización", evaluar: "Mantener la experiencia de tu empresa" },
+  { capacidad: "Integración", evaluar: "Conectarla con HRIS/sistemas" },
+  { capacidad: "Expediente", evaluar: "Poder encontrar evidencia posteriormente" },
+  { capacidad: "Escalabilidad", evaluar: "Operar múltiples documentos y colaboradores" },
+];
+
+function ComparisonTableSection() {
+  return (
+    <section className="py-20" style={{ background: LIGHT }} aria-labelledby="evaluar-heading">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div data-sr className="text-center mb-10">
+          <h2 id="evaluar-heading" className="text-3xl sm:text-4xl font-black mb-4" style={{ color: NAVY }}>
+            ¿Qué revisar al elegir una plataforma de firma para RH?
+          </h2>
+        </div>
+        <div data-sr className="rounded-2xl overflow-hidden bg-white" style={{ border: `1px solid ${BORDER}` }}>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr style={{ background: NAVY }}>
+                  <th className="text-left px-6 py-3.5 text-xs font-bold uppercase tracking-wide text-white">Capacidad</th>
+                  <th className="text-left px-6 py-3.5 text-xs font-bold uppercase tracking-wide text-white">Lo que deberías evaluar</th>
+                </tr>
+              </thead>
+              <tbody>
+                {EVALUATION_ROWS.map((row) => (
+                  <tr key={row.capacidad} style={{ borderTop: `1px solid ${BORDER}` }}>
+                    <td className="px-6 py-3.5 font-bold whitespace-nowrap" style={{ color: NAVY }}>{row.capacidad}</td>
+                    <td className="px-6 py-3.5" style={{ color: TEXT_BODY }}>{row.evaluar}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <p className="text-center text-sm mt-6" style={{ color: TEXT_BODY }}>
+          JAAK reúne estas capas dentro de una misma infraestructura.
+        </p>
       </div>
     </section>
   );
@@ -1266,7 +1728,10 @@ export default function RecursosHumanosLandingClient() {
         <DigitalRecordPreview />
         <BuyerPersonaBlock />
         <BrandedExperience />
+        <RHOperationsSection />
         <IntegrationSection />
+        <SwitchingProviderSection />
+        <ComparisonTableSection />
         <SustainabilitySection />
         <TrustLegalSection />
         <VideoSection />
