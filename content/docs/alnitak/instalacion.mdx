@@ -676,9 +676,9 @@ Son dos ficheros y se copian de sus plantillas, como indica la sección 0.
 | Variable | Contenido |
 |---|---|
 | `kube_context` | **Nombre del contexto de kubectl contra el que se aplica todo.** Ver el aviso de abajo |
-| `imagen_api` | Referencia de la imagen de la API |
-| `imagen_vectorizador` | Referencia de la imagen del vectorizador |
-| `imagen_consola` | Referencia de la imagen de la consola |
+| `imagen_api` | Referencia completa de la imagen de la API, con su etiqueta |
+| `imagen_vectorizador` | Referencia completa de la imagen del vectorizador, con su etiqueta |
+| `imagen_consola` | Referencia completa de la imagen de la consola, con su etiqueta |
 | `registro_credenciales` | Credenciales de descarga del registro privado, en formato de configuración de Docker |
 | `es_storage_class` | Nombre de la StorageClass de la sección 3.1 |
 | `postgres` | Objeto con `host`, `dbname`, `user`, `password`; opcionalmente `port` (5432) y `sslmode` (`require`) |
@@ -686,6 +686,17 @@ Son dos ficheros y se copian de sus plantillas, como indica la sección 0.
 | `cropstore` | Objeto con `endpoint`, `region`, `bucket`, `access_key`, `secret_key`, `crop_key`; opcionalmente `use_ssl` (`true`) |
 | `host_publico` | Host único donde se publican consola y API |
 | `sso` | Objeto con `client_id`, `client_secret`, `dominios`, `operadores` |
+
+<Callout type="warning" title="Las referencias de las imágenes se entregan, no se deducen">
+  Las cuatro referencias, **con su etiqueta exacta**, forman parte de la entrega
+  y llegan junto con las credenciales del registro. No las deduzca del listado
+  de etiquetas del repositorio: conviven etiquetas de desarrollo, de validación
+  y de entrega, y la combinación correcta no es necesariamente la versión más
+  alta de cada repositorio ni una etiqueta común a todos.
+
+  Si no dispone de ellas, solicítelas antes de empezar: una referencia
+  equivocada puede desplegar un componente incompleto que arranca igual.
+</Callout>
 
 <Callout type="warning" title="kube_context no es el contexto activo de kubectl">
   Terraform **no** usa el contexto activo: usa el nombre que se indique en esta
@@ -790,11 +801,22 @@ diagnosticar, no porque haya que teclearlos uno a uno.
 ### 7.0 La secuencia y por qué son cuatro invocaciones
 
 ```bash
+cd terraform
+terraform init                             # 0) descarga los proveedores. Solo la primera vez
 terraform apply -target=helm_release.eck   # 1) solo el operador de Elasticsearch
 terraform apply                            # 2) el resto — TERMINA EN ERROR, es lo esperado
+
+cd ../ansible
 ansible-playbook site.yml                  # 3) lo que depende de que (2) esté desplegado
+
+cd ../terraform
 terraform apply                            # 4) deja el estado consistente
 ```
+
+Estos comandos son la forma desplegada de lo que hace `./install.sh`, que además comprueba entre
+etapas que el error de la segunda sea el esperado y no otro. Si los ejecuta a mano, tenga presentes
+los cambios de directorio y el `init`: sin él, la primera invocación falla porque los proveedores no
+están descargados.
 
 Tres cosas que conviene entender antes de ejecutar, porque las tres provocan dudas la primera vez:
 
