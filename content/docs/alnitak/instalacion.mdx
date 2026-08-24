@@ -1342,14 +1342,31 @@ revise sus registros.
 
 ```bash
 POD=$(kubectl get pod -n biometria-1n -l app=api-1n -o jsonpath='{.items[0].metadata.name}')
-kubectl exec -n biometria-1n "$POD" -- curl -s http://127.0.0.1:8080/readyz
+kubectl exec -n biometria-1n "$POD" -- wget -qO- http://127.0.0.1:8080/readyz
 ```
 
-Informa de Elasticsearch y del vectorizador por separado. Dos precauciones al ejecutarlo:
+Debe devolver algo así:
+
+```json
+{"checks":{"elasticsearch":true,"vectorizer":true},"status":"ready"}
+```
+
+Informa de Elasticsearch y del vectorizador por separado. Tres precauciones al ejecutarlo:
+
+Use **`wget`, no `curl`**. La imagen de la API no incluye `curl`; trae `wget`, `nc` y un intérprete
+de órdenes. La de Elasticsearch, en cambio, sí trae `curl` y no `wget`, por eso la comprobación
+anterior lo usa. Si ejecuta `curl` aquí, el error dice que el ejecutable no existe, no que el
+servicio falle.
 
 Use **`127.0.0.1`, no `localhost`**. `localhost` resuelve primero a `::1` y el proceso escucha solo
-en IPv4, de modo que devuelve *Connection refused* con el servicio en perfecto estado. La sonda del
-kubelet no se ve afectada porque usa la dirección del pod.
+en IPv4, de modo que con el servicio en perfecto estado responde:
+
+```
+wget: can't connect to remote host: Connection refused
+```
+
+La sonda del kubelet no se ve afectada porque usa la dirección del pod, así que el sistema está sano
+y solo falla la comprobación manual.
 
 Y tenga presente su alcance: la sonda cubre Elasticsearch y el vectorizador, **no** PostgreSQL, Redis
 ni el almacén de recortes. Puede responder afirmativamente con la base de datos inaccesible.
@@ -1358,7 +1375,13 @@ ni el almacén de recortes. Puede responder afirmativamente con la base de datos
 
 ```bash
 kubectl exec -n biometria-1n "$POD" -- \
-  curl -s http://vectorizador.biometria-1n-gpu.svc.cluster.local:8000/readyz
+  wget -qO- http://vectorizador.biometria-1n-gpu.svc.cluster.local:8000/readyz
+```
+
+Debe devolver algo así:
+
+```json
+{"inflight":0,"max_inflight":128,"status":"ready","workers":4}
 ```
 
 En el primer arranque con GPU puede tardar más de un minuto, según la sección 3.3.
@@ -1426,7 +1449,15 @@ inesperado.
 ### 8.6 Las métricas responden
 
 ```bash
-kubectl exec -n biometria-1n "$POD" -- curl -s http://127.0.0.1:8080/metrics | head -5
+kubectl exec -n biometria-1n "$POD" -- wget -qO- http://127.0.0.1:8080/metrics | head -5
+```
+
+Debe empezar así:
+
+```
+# HELP alnilam_gallery_vectors Vectores indexados en la galería biométrica.
+# TYPE alnilam_gallery_vectors gauge
+alnilam_gallery_vectors 0
 ```
 
 Este endpoint debe quedar protegido en la publicación: no requiere autenticación propia.
