@@ -47,14 +47,34 @@ ansible-galaxy collection install kubernetes.core
 ```
 
 La librería de Python hay que instalarla **donde Ansible la vaya a buscar**, que no siempre es el
-Python del sistema. Depende de cómo esté instalado Ansible:
+Python del sistema. Lo primero es averiguar qué intérprete usa: Ansible imprime su ruta al final de
+la línea `python version`.
 
-| Ansible instalado con | Comando |
+```bash
+PY=$(ansible --version | sed -n 's/.*python version = .*(\(.*\))/\1/p')
+echo "Ansible usa: $PY"
+```
+
+Con esa ruta, la instalación y la comprobación funcionan igual en cualquier sistema y con cualquier
+forma de haber instalado Ansible:
+
+```bash
+"$PY" -m pip install kubernetes
+"$PY" -c 'import kubernetes; print(kubernetes.__version__)'
+```
+
+Debe imprimir un número de versión.
+
+Se usa `-m pip` en lugar de invocar `pip` directamente porque **no siempre existe el ejecutable**:
+en algunas instalaciones el directorio del intérprete solo contiene enlaces a Python, y un `pip` a
+secas falla diciendo que no encuentra el fichero. Como módulo está disponible igualmente.
+
+Dos casos en los que este método no aplica:
+
+| Situación | Qué usar |
 |---|---|
-| Paquetes del sistema (Debian, Ubuntu) | `sudo apt install python3-kubernetes` |
-| `pipx` | `pipx inject ansible kubernetes` |
-| Homebrew | `/opt/homebrew/Cellar/ansible/*/libexec/bin/pip install kubernetes` |
-| Un entorno virtual | Actívelo y ejecute `pip install kubernetes` |
+| Ansible instalado con paquetes del sistema (Debian, Ubuntu) | `sudo apt install python3-kubernetes`. El Python del sistema suele impedir instalar con `pip`, y ahí el paquete es la vía correcta |
+| Ansible instalado con `pipx` | `pipx inject ansible kubernetes`, que es la forma que `pipx` documenta para añadir una dependencia al entorno de una aplicación |
 
 <Callout type="warning" title="Compruébelo con el intérprete de Ansible, no con el del PATH">
   Un `python3 -c 'import kubernetes'` a secas comprueba el Python del `PATH`,
@@ -63,17 +83,7 @@ Python del sistema. Depende de cómo esté instalado Ansible:
   que está cuando Ansible no la encontrará, con lo que el playbook se detiene
   igualmente veinte minutos después.
 
-  Ansible imprime la ruta de su intérprete al final de la línea `python version`.
-  Esta comprobación funciona con cualquier forma de instalación:
-
-  ```bash
-  PY=$(ansible --version | sed -n 's/.*python version = .*(\(.*\))/\1/p')
-  echo "Ansible usa: $PY"
-  "$PY" -c 'import kubernetes; print(kubernetes.__version__)'
-  ```
-
-  Debe imprimir un número de versión. Si responde `ModuleNotFoundError`,
-  instálela con el comando de la fila que corresponda a su instalación.
+  Por eso la comprobación de arriba usa `"$PY"` y no `python3`.
 </Callout>
 
 ### 0.2 Sobre el equipo desde el que se instala
