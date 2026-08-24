@@ -195,6 +195,7 @@ export const alnitakNavigation: NavItem[] = [
   { title: 'Arquitectura', href: '/docs/alnitak/arquitectura' },
   { title: 'Referencia de API', href: '/docs/alnitak/api' },
   { title: 'Consola de operación', href: '/docs/alnitak/consola' },
+  { title: 'Instalación', href: '/docs/alnitak/instalacion' },
   { title: 'Rendimiento y SLA', href: '/docs/alnitak/rendimiento' },
   { title: 'Seguridad y cumplimiento', href: '/docs/alnitak/seguridad' },
 ]
