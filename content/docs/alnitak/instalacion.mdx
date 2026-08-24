@@ -1197,11 +1197,15 @@ propio clúster.
   despliegan con los criterios de operación del cliente.
 </Callout>
 
-Aun siendo un entorno de prueba, los manifiestos fijan la versión exacta de cada imagen y declaran
-la clase de disco de forma explícita. Ambas cosas por el mismo motivo que el resto del documento
+Aun siendo un entorno de prueba, los manifiestos fijan la versión exacta de las tres imágenes y
+declaran la clase de disco de forma explícita. Ambas cosas por el mismo motivo que el resto del documento
 recomienda: una etiqueta móvil impide saber qué versión está en ejecución, y un volumen sin clase
 declarada toma la que esté marcada por omisión, que en algunos clústeres gestionados no es única
 (sección 3.0). Sustituya `CAMBIAR` por la clase de su clúster antes de aplicar.
+
+Fijar la versión de PostgreSQL tiene además un motivo inmediato: si el volumen sobrevive entre dos
+pruebas y la imagen ha saltado de versión mayor, el contenedor se niega a arrancar sobre un
+directorio de datos escrito por otra versión.
 
 Cree primero el namespace y genere las credenciales **en variables de shell**, para poder leerlas
 antes de usarlas:
@@ -1263,7 +1267,7 @@ spec:
     spec:
       containers:
         - name: postgres
-          image: postgres:16
+          image: postgres:16.15
           env:
             - name: POSTGRES_DB
               value: biometria
@@ -1306,10 +1310,21 @@ La instalación necesita **dos** credenciales de PostgreSQL: la administrativa, 
 aquí, y una de servicio con menos permisos. Cree la segunda una vez que el pod esté en marcha:
 
 ```bash
+# Usa la variable generada más arriba, para que la contraseña del rol y la que
+# se pone en la configuración no puedan divergir. Si abrió una terminal nueva,
+# recupere el valor antes de ejecutarlo.
 kubectl exec -n prerrequisitos statefulset/postgres -- \
   psql -U administrador -d biometria -c \
-  "CREATE ROLE app_runtime LOGIN PASSWORD 'la-que-elija';"
+  "CREATE ROLE app_runtime LOGIN PASSWORD '$RUNTIME_PASS';"
 ```
+
+<Callout type="warning" title="Si el rol y la configuración llevan contraseñas distintas, el error tarda en aparecer">
+  Este desajuste no impide el arranque. La API levanta, su sonda de
+  disponibilidad se pone en verde —no comprueba PostgreSQL, como indica la
+  sección 8.2— y el fallo solo se manifiesta en la primera operación que toca la
+  base de datos. Es el mismo patrón que el de los permisos descrito en el paso 3
+  de la sección 7.
+</Callout>
 
 No hace falta concederle permisos: eso lo hace el paso 3 de la sección 7, que además se los concede
 sobre las tablas que crearán las migraciones futuras.
@@ -1332,7 +1347,7 @@ spec:
     spec:
       containers:
         - name: redis
-          image: redis:7-alpine
+          image: redis:7.4.11-alpine
           ports:
             - containerPort: 6379
           readinessProbe:
@@ -1408,7 +1423,7 @@ Cree los dos contenedores que pide la sección 4.2:
 
 ```bash
 kubectl exec -n prerrequisitos statefulset/minio -- \
-  mc alias set local http://localhost:9000 administrador "<la contraseña>"
+  mc alias set local http://localhost:9000 administrador "$MINIO_PASS"
 kubectl exec -n prerrequisitos statefulset/minio -- mc mb local/recortes-biometricos
 kubectl exec -n prerrequisitos statefulset/minio -- mc mb local/respaldos-galeria
 ```
