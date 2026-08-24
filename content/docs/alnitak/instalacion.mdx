@@ -737,12 +737,40 @@ Y en `terraform/terraform.tfvars`, las que gobiernan la GPU y la generación de 
 
 | Variable | Por omisión | Para qué |
 |---|---|---|
-| `instalar_gpu_operator` | `false` | Instala el operador de NVIDIA. Con `false`, debe existir ya |
+| `instalar_gpu_operator` | `false` | Con `false` el operador debe existir ya en el clúster, como indica la sección 3. Actívelo solo si quiere que la instalación lo aporte |
 | `gpu_node_selector` | `{"nvidia.com/gpu.present": "true"}` | Cómo se seleccionan los nodos con GPU. Ajústelo a cómo etiquete sus nodos, o vacíelo con `{}` |
-| `gpu_tolerations` | `[]` | Los *taints* que hay que tolerar para programar en esos nodos |
+| `gpu_tolerations` | una tolerancia para `nvidia.com/gpu` con operador `Exists` y efecto `NoSchedule` | Los *taints* que hay que tolerar. El valor por omisión cubre el caso habitual: no hace falta añadirlo |
 | `gpu_runtime_class` | vacío | Clase de tiempo de ejecución de la GPU. En k3s suele ser `nvidia`. Ver 3.3 |
 | `sso.private_key_pem` | vacío | Llave de firma de sesiones. Vacío la genera la herramienta y **queda en el estado** |
 | `generar_password_pepper` | `false` | Con `true`, genera la pimienta de contraseñas y **queda en el estado** |
+
+Y las que gobiernan qué se instala y con qué tamaño. Los valores de esta tabla son los que se
+aplican si no se tocan:
+
+| Variable | Por omisión | Para qué |
+|---|---|---|
+| `instalar_eck` | `true` | Instala el operador de Elasticsearch. Con `false` debe existir ya |
+| `instalar_prometheus` | `false` | Instala el operador de Prometheus, solo si se quiere observabilidad |
+| `instalar_external_secrets` | `false` | Instala el gestor de secretos externo |
+| `es_version` | `9.5.2` | Versión de Elasticsearch que despliega el operador |
+| `indice` | `galeria-biometrica-v1` | Nombre del alias de la galería. Debe coincidir con el de Ansible |
+| `es_data_nodes` | `3` | Nodos de datos. Ver el apéndice A para validar en una máquina |
+| `es_master_nodes` | `3` | Nodos maestros |
+| `es_data_memoria` | `100Gi` | Memoria por nodo de datos |
+| `es_data_heap` | `16g` | Memoria de la máquina virtual de Java por nodo. Regla habitual: la mitad de la anterior |
+| `es_data_disco` | `400Gi` | Disco por nodo de datos |
+| `api_replicas` | `2` | Réplicas de la API |
+| `api_memoria_limite` | `1Gi` | Límite de memoria por réplica de la API |
+| `rate_limit_max` | `120` | Peticiones por minuto y credencial. `0` desactiva el límite |
+| `vectorizador_workers` | `2` | Réplicas de sesión de inferencia dentro del vectorizador |
+| `vectorizador_max_inflight` | `128` | Peticiones simultáneas admitidas por el vectorizador |
+
+<Callout type="warning" title="El dimensionado por omisión es de producción">
+  Los valores de Elasticsearch de esta tabla solicitan, entre los tres nodos de
+  datos, 300 GiB de memoria y 1,2 TiB de disco. En un equipo de trabajo los pods
+  quedarán en `Pending` sin explicación. Para validar en una sola máquina, use
+  los valores del apéndice A.
+</Callout>
 
 <Callout type="warning" title="El identificador de tenant no es configurable hoy">
   Aunque la variable existe, el valor efectivo con el que la API sella las
