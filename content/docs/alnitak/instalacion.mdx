@@ -593,7 +593,7 @@ postgres:
   dbname: biometria
   sslmode: require
 redis:
-  addr: "redis.prerrequisitos.svc.cluster.local:6379"
+  addr: "redis.ejemplo.interno:6379"
 cropstore:
   endpoint: s3.us-east-1.amazonaws.com
   region: us-east-1
@@ -1201,7 +1201,14 @@ Aun siendo un entorno de prueba, los manifiestos fijan la versión exacta de las
 declaran la clase de disco de forma explícita. Ambas cosas por el mismo motivo que el resto del documento
 recomienda: una etiqueta móvil impide saber qué versión está en ejecución, y un volumen sin clase
 declarada toma la que esté marcada por omisión, que en algunos clústeres gestionados no es única
-(sección 3.0). Sustituya `CAMBIAR` por la clase de su clúster antes de aplicar.
+(sección 3.0). Sustituya `CAMBIAR` por la clase de su clúster antes de aplicar; para verla:
+
+```bash
+kubectl get storageclass
+```
+
+La marcada `(default)` es la que se usaría si se omite el campo. Si hay más de una marcada, la
+elección deja de ser predecible: por eso conviene declararla.
 
 Fijar la versión de PostgreSQL tiene además un motivo inmediato: si el volumen sobrevive entre dos
 pruebas y la imagen ha saltado de versión mayor, el contenedor se niega a arrancar sobre un
@@ -1219,7 +1226,8 @@ PG_PASS=$(openssl rand -base64 24 | tr -d '/@"'"'"' ')
 MINIO_PASS=$(openssl rand -base64 24 | tr -d '/@"'"'"' ')
 RUNTIME_PASS=$(openssl rand -base64 24 | tr -d '/@"'"'"' ')
 
-# Clave de cifrado de los recortes: 32 bytes en hexadecimal.
+# Clave de cifrado de los recortes: 32 bytes. Se acepta en hexadecimal
+# (64 caracteres) o en base64 estándar; aquí se genera en hexadecimal.
 CROP_KEY=$(openssl rand -hex 32)
 
 # Anótelas antes de continuar: son valores de la sección 6.3.
@@ -1232,23 +1240,45 @@ FIN
 
 kubectl create secret generic credenciales -n prerrequisitos \
   --from-literal=postgres-password="$PG_PASS" \
-  --from-literal=minio-password="$MINIO_PASS"
+  --from-literal=minio-password="$MINIO_PASS" \
+  --from-literal=runtime-password="$RUNTIME_PASS"
 ```
 
-Si cerró la terminal sin anotarlas, las dos que quedaron en el secreto se recuperan así:
+**Si continúa en una terminal nueva**, vuelva a cargar las variables antes de ejecutar cualquier
+comando posterior. Estas órdenes las **reasignan**, no solo las muestran:
 
 ```bash
-kubectl get secret credenciales -n prerrequisitos \
-  -o go-template='{{index .data "postgres-password" | base64decode}}{{"\n"}}'
-kubectl get secret credenciales -n prerrequisitos \
-  -o go-template='{{index .data "minio-password" | base64decode}}{{"\n"}}'
+leer() {
+  kubectl get secret credenciales -n prerrequisitos \
+    -o go-template="{{index .data \"$1\" | base64decode}}"
+}
+PG_PASS=$(leer postgres-password)
+MINIO_PASS=$(leer minio-password)
+RUNTIME_PASS=$(leer runtime-password)
 ```
 
-La clave de cifrado de los recortes no se guarda en ese secreto. Si la pierde antes de instalar,
-genere otra; una vez instalado **no puede cambiarse** sin perder el acceso a los recortes ya
-almacenados.
+<Callout type="warning" title="Una variable vacía aquí no da error, y deja el sistema roto">
+  Si `RUNTIME_PASS` está vacía, el comando que crea el rol de servicio se
+  convierte en `CREATE ROLE app_runtime LOGIN PASSWORD ''` y **PostgreSQL lo
+  acepta**: el rol queda con contraseña vacía y la instalación no reporta nada.
+  El fallo aparece más tarde, en la primera operación contra la base de datos.
+  Compruebe que las tres variables tienen valor antes de seguir:
+
+  ```bash
+  for v in PG_PASS MINIO_PASS RUNTIME_PASS; do
+    [ -n "${!v}" ] && echo "$v: definida" || echo "$v: VACIA — revise el paso anterior"
+  done
+  ```
+</Callout>
+
+La clave de cifrado de los recortes **no se guarda en el secreto** a propósito, porque no la consume
+ningún componente de este apéndice: se transcribe a mano a la configuración. Si la pierde antes de
+instalar, genere otra; una vez instalado **no puede cambiarse** sin perder el acceso a los recortes
+ya almacenados.
 
 ### PostgreSQL
+
+Guarde este manifiesto como `postgres.yaml`:
 
 ```yaml
 apiVersion: apps/v1
@@ -1301,13 +1331,32 @@ metadata:
   name: postgres
   namespace: prerrequisitos
 spec:
+  # Sin dirección propia: es el servicio gobernante de un StatefulSet, y así
+  # cada pod obtiene su nombre DNS estable.
+  clusterIP: None
   selector: { app: postgres }
   ports:
     - port: 5432
 ```
 
-La instalación necesita **dos** credenciales de PostgreSQL: la administrativa, que es la que se crea
-aquí, y una de servicio con menos permisos. Cree la segunda una vez que el pod esté en marcha:
+Aplíquelo y espere a que la base de datos acepte conexiones:
+
+```bash
+kubectl apply -f postgres.yaml
+
+# Esperar el pod. Que esté en Running no basta: durante la inicialización de la
+# base, psql responde «the database system is starting up».
+kubectl wait --for=condition=ready pod/postgres-0 -n prerrequisitos --timeout=300s
+
+# Comprobar que acepta conexiones antes de continuar
+kubectl exec -n prerrequisitos postgres-0 -- pg_isready -U administrador -d biometria
+```
+
+Debe responder `accepting connections`. Si devuelve otra cosa, espere unos segundos y repita: la
+primera inicialización tarda.
+
+La instalación necesita **dos** credenciales de PostgreSQL: la administrativa, que es la que crea el
+manifiesto, y una de servicio con menos permisos. Cree la segunda ahora:
 
 ```bash
 # Usa la variable generada más arriba, para que la contraseña del rol y la que
@@ -1330,6 +1379,8 @@ No hace falta concederle permisos: eso lo hace el paso 3 de la sección 7, que a
 sobre las tablas que crearán las migraciones futuras.
 
 ### Redis
+
+Guarde este manifiesto como `redis.yaml`:
 
 ```yaml
 apiVersion: apps/v1
@@ -1364,10 +1415,17 @@ spec:
     - port: 6379
 ```
 
+```bash
+kubectl apply -f redis.yaml
+kubectl wait --for=condition=available deployment/redis -n prerrequisitos --timeout=180s
+```
+
 Sin persistencia a propósito: Redis guarda aquí estado compartido entre réplicas, no datos que haya
 que conservar.
 
 ### Almacén de objetos compatible con S3
+
+Guarde este manifiesto como `minio.yaml`:
 
 ```yaml
 apiVersion: apps/v1
@@ -1413,13 +1471,22 @@ metadata:
   name: minio
   namespace: prerrequisitos
 spec:
+  clusterIP: None
   selector: { app: minio }
   ports:
     - { name: api, port: 9000 }
     - { name: consola, port: 9001 }
 ```
 
-Cree los dos contenedores que pide la sección 4.2:
+Aplíquelo y espere:
+
+```bash
+kubectl apply -f minio.yaml
+kubectl wait --for=condition=ready pod/minio-0 -n prerrequisitos --timeout=300s
+```
+
+Cree los dos **buckets** que pide la sección 4.2. Si abrió una terminal nueva, recargue antes las
+variables como se indica más arriba:
 
 ```bash
 kubectl exec -n prerrequisitos statefulset/minio -- \
@@ -1430,8 +1497,11 @@ kubectl exec -n prerrequisitos statefulset/minio -- mc mb local/respaldos-galeri
 
 ### Valores que resultan para la configuración
 
-Con las tres desplegadas en este namespace, los objetos de configuración de la sección 6.3 quedan
-completos así. **En `terraform/terraform.tfvars`:**
+Con las tres desplegadas en este namespace, los campos de la sección 6.3 **que dependen de estas
+dependencias** quedan así. Los demás —imágenes, credenciales del registro, host público, identidad y
+las dos pimientas— no los cubre este apéndice y se rellenan según la sección 6.
+
+**En `terraform/terraform.tfvars`:**
 
 | Campo | Valor |
 |---|---|
@@ -1461,6 +1531,9 @@ completos así. **En `terraform/terraform.tfvars`:**
 | `postgres_admin.password` | la contraseña administrativa que anotó |
 | `postgres_admin.sslmode` | `disable` |
 | `postgres_runtime_user` | `app_runtime` |
+| `es_storage_class` | **el mismo valor que en Terraform** — este campo no se propaga entre los dos ficheros |
+| `indice` | el mismo valor que `indice` en Terraform |
+| `ns_api`, `ns_gpu`, `ns_datos` | los mismos que en Terraform |
 
 <Callout type="warning" title="Las dos credenciales de PostgreSQL no son intercambiables">
   La administrativa aplica las migraciones y crea las tablas; la de servicio es
