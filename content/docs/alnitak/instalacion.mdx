@@ -363,9 +363,25 @@ los dan servicios gestionados en vez de pods.
 **El aviso que ahorra media hora de desconcierto:** un EKS recién creado **no trae el driver de EBS**.
 Sin él, cualquier `PersistentVolumeClaim` se queda en `Pending` para siempre, y lo que se ve es que
 Elasticsearch no arranca —el pod nunca se programa— sin ningún error que apunte al disco. Hay que
-instalar el complemento `aws-ebs-csi-driver` **antes** de la sección 7. Y conviene dejar `gp3` como
-clase por omisión y quitarle esa marca al `gp2` que EKS trae puesto: dos clases marcadas como
-predeterminadas es un estado ambiguo y Kubernetes elige una arbitrariamente.
+instalar el complemento `aws-ebs-csi-driver` **antes** de la sección 7.
+
+**Y hay que dejar exactamente una clase de disco marcada como predeterminada, que debe ser la suya.**
+Compruébelo antes de instalar, porque el estado de partida varía según la versión de EKS:
+
+```bash
+kubectl get storageclass -o custom-columns=\
+'NOMBRE:.metadata.name,PREDETERMINADA:.metadata.annotations.storageclass\.kubernetes\.io/is-default-class'
+```
+
+En las versiones recientes el clúster viene con una clase `gp2` **sin marcar**, de modo que no hay
+ninguna predeterminada; en versiones anteriores venía marcada. Los dos extremos dan problemas: con
+ninguna, cualquier volumen que no declare su clase se queda en `Pending` sin decir por qué; con dos,
+Kubernetes elige una arbitrariamente.
+
+Cree su clase `gp3` con la marca puesta y verifique que es la única que la tiene. Y no se apoye en la
+`gp2` de fábrica aunque parezca cómodo: usa el antiguo provisionador integrado
+`kubernetes.io/aws-ebs`, no el driver `ebs.csi.aws.com` que se acaba de instalar, así que no cumpliría
+los requisitos de la sección 3.1.
 
 **Las imágenes tienen que estar en un registro que el clúster alcance.** Es obvio dicho así, y
 aun así es el fallo que más cuesta ver al pasar de una máquina a un clúster de verdad: en un k3s de
