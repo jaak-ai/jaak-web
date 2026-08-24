@@ -27,6 +27,24 @@ instalación no se hace dentro del clúster: se lanza desde una máquina que ten
 | `psql` | 16 o superior | Preparar la base de datos y su credencial de servicio |
 | `openssl` | cualquiera reciente | Generar los secretos de la sección 6 |
 
+<Callout type="warning" title="Si instala Ansible con pipx, use --include-deps">
+  `pipx install ansible` **no deja disponible `ansible-playbook`**. El paquete
+  `ansible` es un metapaquete cuyo único punto de entrada es
+  `ansible-community`, así que `pipx` expone solo ese y ninguno de los demás
+  ejecutables queda en el `PATH`. La instalación se detiene entonces en sus
+  comprobaciones previas, diciendo que falta un binario, aunque Ansible esté
+  perfectamente instalado.
+
+  ```bash
+  pipx install --include-deps ansible
+  ```
+
+  Si ya lo había instalado sin esa opción, reinstale con
+  `pipx install --include-deps --force ansible`. Las dependencias inyectadas con
+  `pipx inject` **se conservan** al forzar la reinstalación, así que no hay que
+  volver a inyectar la librería de Python.
+</Callout>
+
 <Callout type="warning" title="La versión de Terraform importa">
   Use la rama **1.11**. Las versiones 1.12 y posteriores cambian el tratamiento
   de la identidad de recursos del proveedor de Kubernetes y la secuencia de la
@@ -65,6 +83,10 @@ forma de haber instalado Ansible:
 
 Debe imprimir un número de versión.
 
+Las comillas de `"$PY"` no son decorativas: en algunas instalaciones la ruta del intérprete
+**contiene espacios** —con `pipx` en macOS vive bajo `Library/Application Support`—, y sin comillas
+el comando se parte y falla con un `No such file or directory` que señala media ruta.
+
 Se usa `-m pip` en lugar de invocar `pip` directamente porque **no siempre existe el ejecutable**:
 en algunas instalaciones el directorio del intérprete solo contiene enlaces a Python, y un `pip` a
 secas falla diciendo que no encuentra el fichero. Como módulo está disponible igualmente.
@@ -74,7 +96,7 @@ Dos casos en los que este método no aplica:
 | Situación | Qué usar |
 |---|---|
 | Ansible instalado con paquetes del sistema (Debian, Ubuntu) | `sudo apt install python3-kubernetes`. El Python del sistema suele impedir instalar con `pip`, y ahí el paquete es la vía correcta |
-| Ansible instalado con `pipx` | `pipx inject ansible kubernetes`, que es la forma que `pipx` documenta para añadir una dependencia al entorno de una aplicación |
+| Ansible instalado con `pipx` | `pipx inject ansible kubernetes`, que es la forma que `pipx` documenta para añadir una dependencia al entorno de una aplicación. Lea antes el aviso sobre `--include-deps` |
 
 <Callout type="warning" title="Compruébelo con el intérprete de Ansible, no con el del PATH">
   Un `python3 -c 'import kubernetes'` a secas comprueba el Python del `PATH`,
@@ -1067,6 +1089,37 @@ Si además se configuró contraseña para esa cuenta, un tercer Job la establece
 dentro del clúster. Requiere que `password_pepper` esté configurada en los dos ficheros; si falta, la
 instalación se detiene antes de crear nada, para no dejar una cuenta con una contraseña que no
 serviría para entrar.
+
+### Si un paso de la instalación falla
+
+Varios pasos de la instalación no los ejecuta Ansible directamente: lanza un **Job** dentro del
+clúster y espera su resultado. Cuando uno falla, el mensaje de Ansible dice qué se esperaba, pero la
+causa concreta está en el registro de ese Job.
+
+| Paso | Job | Ver el registro |
+|---|---|---|
+| Comprobación de PostgreSQL (preflight) | `preflight-postgres` | `kubectl logs job/preflight-postgres -n biometria-1n` |
+| Migraciones | `db-migrate` | `kubectl logs job/db-migrate -n biometria-1n` |
+| Permisos de la credencial de servicio | `permisos-runtime` | `kubectl logs job/permisos-runtime -n biometria-1n` |
+| Alta del primer administrador | `primer-admin` | `kubectl logs job/primer-admin -n biometria-1n` |
+| Contraseña del primer administrador | `primer-admin-password` | `kubectl logs job/primer-admin-password -n biometria-1n` |
+| Pruebas funcionales | `pruebas-de-humo` | `kubectl logs job/pruebas-de-humo -n biometria-1n` |
+
+<Callout type="warning" title="Mire el registro antes de relanzar la instalación">
+  Los Jobs se conservan una hora, pero **cada nuevo intento sustituye al
+  anterior**. Si relanza `install.sh` antes de consultar el registro, pierde la
+  evidencia de lo que falló, que es justo lo que suele hacerse cuando el fallo
+  parece transitorio.
+</Callout>
+
+Si el registro está vacío o el Job no aparece, es que no llegó a ejecutarse. Eso apunta al clúster y
+no a la configuración —lo más habitual es que no haya recursos asignables para programar el pod— y
+lo dicen los eventos:
+
+```bash
+kubectl describe job/<nombre> -n biometria-1n
+kubectl describe pod -l job-name=<nombre> -n biometria-1n
+```
 
 ### Paso 4 — Elasticsearch y su certificado
 
