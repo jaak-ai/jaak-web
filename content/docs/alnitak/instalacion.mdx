@@ -1183,7 +1183,7 @@ permanente, lo que es funcionalmente correcto pero conviene tenerlo en cuenta al
 
 ## Apéndice A. Dependencias en el clúster, para entornos de prueba
 
-Las cuatro dependencias de la sección 4.2 —PostgreSQL, Redis y el almacén de objetos— son
+Las tres dependencias de la sección 4.2 —PostgreSQL, Redis y el almacén de objetos— son
 responsabilidad del cliente, y en producción lo habitual es que sean servicios gestionados o
 instancias ya existentes. Pero para **validar la instalación en una sola máquina** puede no haber
 ninguna disponible, así que este apéndice da una configuración mínima que las levanta dentro del
@@ -1197,18 +1197,52 @@ propio clúster.
   despliegan con los criterios de operación del cliente.
 </Callout>
 
-Cree primero el namespace y el secreto con las credenciales que va a usar:
+Aun siendo un entorno de prueba, los manifiestos fijan la versión exacta de cada imagen y declaran
+la clase de disco de forma explícita. Ambas cosas por el mismo motivo que el resto del documento
+recomienda: una etiqueta móvil impide saber qué versión está en ejecución, y un volumen sin clase
+declarada toma la que esté marcada por omisión, que en algunos clústeres gestionados no es única
+(sección 3.0). Sustituya `CAMBIAR` por la clase de su clúster antes de aplicar.
+
+Cree primero el namespace y genere las credenciales **en variables de shell**, para poder leerlas
+antes de usarlas:
 
 ```bash
 kubectl create namespace prerrequisitos
 
+# En variables, para poder verlas y anotarlas. Se eliminan los caracteres
+# / @ " ' porque complican las cadenas de conexión.
+PG_PASS=$(openssl rand -base64 24 | tr -d '/@"'"'"' ')
+MINIO_PASS=$(openssl rand -base64 24 | tr -d '/@"'"'"' ')
+RUNTIME_PASS=$(openssl rand -base64 24 | tr -d '/@"'"'"' ')
+
+# Clave de cifrado de los recortes: 32 bytes en hexadecimal.
+CROP_KEY=$(openssl rand -hex 32)
+
+# Anótelas antes de continuar: son valores de la sección 6.3.
+cat <<FIN
+contraseña administrativa de PostgreSQL : $PG_PASS
+contraseña de servicio de PostgreSQL    : $RUNTIME_PASS
+clave secreta del almacén               : $MINIO_PASS
+clave de cifrado de recortes            : $CROP_KEY
+FIN
+
 kubectl create secret generic credenciales -n prerrequisitos \
-  --from-literal=postgres-password="$(openssl rand -base64 24 | tr -d '/@"'"'"' ')" \
-  --from-literal=minio-password="$(openssl rand -base64 24 | tr -d '/@"'"'"' ')"
+  --from-literal=postgres-password="$PG_PASS" \
+  --from-literal=minio-password="$MINIO_PASS"
 ```
 
-Guarde esos valores: son los que hay que poner en la configuración de la sección 6.3, como
-contraseña de PostgreSQL y como clave secreta del almacén.
+Si cerró la terminal sin anotarlas, las dos que quedaron en el secreto se recuperan así:
+
+```bash
+kubectl get secret credenciales -n prerrequisitos \
+  -o go-template='{{index .data "postgres-password" | base64decode}}{{"\n"}}'
+kubectl get secret credenciales -n prerrequisitos \
+  -o go-template='{{index .data "minio-password" | base64decode}}{{"\n"}}'
+```
+
+La clave de cifrado de los recortes no se guarda en ese secreto. Si la pierde antes de instalar,
+genere otra; una vez instalado **no puede cambiarse** sin perder el acceso a los recortes ya
+almacenados.
 
 ### PostgreSQL
 
@@ -1251,6 +1285,10 @@ spec:
     - metadata: { name: datos }
       spec:
         accessModes: ["ReadWriteOnce"]
+        # Declare la clase explícitamente. Si se omite, Kubernetes usa la que
+        # esté marcada por omisión, y en algunos clústeres gestionados hay más
+        # de una marcada: la elección deja de ser predecible. Ver 3.0.
+        storageClassName: CAMBIAR
         resources: { requests: { storage: 20Gi } }
 ---
 apiVersion: v1
@@ -1333,7 +1371,7 @@ spec:
     spec:
       containers:
         - name: minio
-          image: minio/minio:latest
+          image: minio/minio:RELEASE.2024-10-13T13-34-11Z
           args: ["server", "/datos", "--console-address", ":9001"]
           env:
             - name: MINIO_ROOT_USER
@@ -1351,6 +1389,7 @@ spec:
     - metadata: { name: datos }
       spec:
         accessModes: ["ReadWriteOnce"]
+        storageClassName: CAMBIAR
         resources: { requests: { storage: 50Gi } }
 ---
 apiVersion: v1
@@ -1376,17 +1415,41 @@ kubectl exec -n prerrequisitos statefulset/minio -- mc mb local/respaldos-galeri
 
 ### Valores que resultan para la configuración
 
-Con las tres desplegadas en este namespace, los valores de la sección 6.3 quedan así:
+Con las tres desplegadas en este namespace, los objetos de configuración de la sección 6.3 quedan
+completos así. **En `terraform/terraform.tfvars`:**
 
-| Variable | Valor |
+| Campo | Valor |
 |---|---|
 | `postgres.host` | `postgres.prerrequisitos.svc.cluster.local` |
+| `postgres.port` | `5432` |
 | `postgres.dbname` | `biometria` |
-| `postgres.user` | `app_runtime` (la de servicio) |
+| `postgres.user` | `app_runtime` — la credencial **de servicio**, no la administrativa |
+| `postgres.password` | la contraseña de servicio que anotó |
+| `postgres.sslmode` | `disable` — este despliegue no expone TLS |
 | `redis_addr` | `redis.prerrequisitos.svc.cluster.local:6379` |
-| `cropstore.endpoint` | `minio.prerrequisitos.svc.cluster.local:9000` |
-| `cropstore.use_ssl` | `false` (sin TLS dentro del clúster) |
+| `cropstore.endpoint` | `minio.prerrequisitos.svc.cluster.local:9000` — sin esquema |
+| `cropstore.region` | `us-east-1` — el almacén no la usa, pero el cliente de S3 exige un valor |
 | `cropstore.bucket` | `recortes-biometricos` |
+| `cropstore.access_key` | `administrador` — el usuario que fija el manifiesto en `MINIO_ROOT_USER` |
+| `cropstore.secret_key` | la clave secreta del almacén que anotó |
+| `cropstore.use_ssl` | `false` — sin TLS dentro del clúster |
+| `cropstore.crop_key` | la clave de cifrado de recortes que generó |
+| `es_storage_class` | la clase de disco del clúster, la misma que usan los volúmenes de este apéndice |
 
-En el fichero de Ansible, `postgres_admin` toma el usuario `administrador` y su contraseña, que es la
-credencial con la que se aplican las migraciones.
+**En `ansible/group_vars/all.yml`:**
+
+| Campo | Valor |
+|---|---|
+| `postgres_admin.host` | `postgres.prerrequisitos.svc.cluster.local` |
+| `postgres_admin.dbname` | `biometria` |
+| `postgres_admin.user` | `administrador` — la credencial **administrativa**, con la que se aplican las migraciones |
+| `postgres_admin.password` | la contraseña administrativa que anotó |
+| `postgres_admin.sslmode` | `disable` |
+| `postgres_runtime_user` | `app_runtime` |
+
+<Callout type="warning" title="Las dos credenciales de PostgreSQL no son intercambiables">
+  La administrativa aplica las migraciones y crea las tablas; la de servicio es
+  la que usa la API en su día a día y no debe poder modificar el esquema. Si se
+  pone la administrativa en `postgres.user` la instalación funciona, pero el
+  servicio queda ejecutándose con permisos que no necesita.
+</Callout>
