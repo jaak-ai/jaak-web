@@ -1418,6 +1418,16 @@ curl -si -X POST http://127.0.0.1:8080/auth/login \
 Que el correo inexistente y la contraseña incorrecta devuelvan exactamente lo mismo es deliberado:
 evita que se pueda averiguar qué cuentas existen probando direcciones.
 
+<Callout type="warning" title="Deje la prueba del bloqueo para el final">
+  La fila de los fallos seguidos **inutiliza durante quince minutos la cuenta con
+  la que se prueba**, y la verificación siguiente necesita entrar con la del
+  primer administrador. Si sigue esta sección en orden con esa cuenta, la
+  comprobación 8.5 fallará por culpa de esta.
+
+  Hágala **después de 8.5**, o con una cuenta invitada en lugar de la del
+  administrador. Si ya la ha ejecutado, más abajo está cómo desbloquear.
+</Callout>
+
 ### 8.5 El flujo funcional completo
 
 Es la comprobación que de verdad cierra la instalación, y está automatizada. Con `imagen_prueba`
@@ -1445,6 +1455,33 @@ qué esperaba.
 La respuesta de la búsqueda incluye el desglose por etapas y la consulta que se envió a
 Elasticsearch, lo que la convierte en el mejor punto de partida para diagnosticar un resultado
 inesperado.
+
+### Desbloquear una cuenta
+
+El bloqueo por intentos fallidos se libera solo a los quince minutos, y para una persona basta con
+esperar. Pero **si algo automático reintenta contra esa cuenta, cada intento renueva el plazo** y la
+cuenta no se libera nunca. Es lo que ocurre si se lanza repetidamente una comprobación que incluya
+un login fallido con ese mismo correo.
+
+Hoy no se puede desbloquear desde la consola: hay que hacerlo en la base de datos, con la credencial
+administrativa.
+
+```bash
+kubectl exec -n prerrequisitos statefulset/postgres -- \
+  psql -U administrador -d biometria -c \
+  "UPDATE users SET failed_login_attempts = 0, locked_until = NULL
+     WHERE email = 'admin@ejemplo.com';"
+```
+
+Si PostgreSQL es un servicio gestionado y no un pod, ejecute el mismo `UPDATE` con `psql` desde un
+equipo que alcance la base.
+
+Para comprobar el estado de una cuenta antes o después:
+
+```sql
+SELECT email, failed_login_attempts, locked_until, locked_until > now() AS bloqueada
+  FROM users WHERE email = 'admin@ejemplo.com';
+```
 
 ### 8.6 Las métricas responden
 
@@ -1536,7 +1573,12 @@ sección 3.3.
 resuelven con una invitación nueva emitida por un administrador. El bloqueo por intentos fallidos no
 se comunica al usuario de forma explícita —es una medida deliberada para no revelar qué cuentas
 existen—, por lo que el soporte debe saber que un usuario bloqueado ve el mismo mensaje que un
-usuario con credenciales incorrectas y solo necesita esperar.
+usuario con credenciales incorrectas.
+
+Para una persona basta con esperar quince minutos sin reintentar. **Pero cada intento fallido renueva
+el plazo**, así que si algo automático reintenta contra esa cuenta —una comprobación programada, un
+script de vigilancia— el bloqueo no expira nunca. En ese caso hay que desbloquearla en la base de
+datos, como indica la sección 8.
 
 **Estado del clúster de Elasticsearch.** El estado `green` requiere al menos tantos nodos de datos
 como réplicas configuradas. Un clúster con menos nodos permanecerá en `yellow` de forma
