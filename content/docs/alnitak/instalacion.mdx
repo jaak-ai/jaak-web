@@ -396,8 +396,27 @@ es el pod en `Pending` con `Insufficient cpu`, y añadir más máquinas del mism
 
 Medido sobre lo que el instalador pide de verdad: nodo de datos 4 vCPU, cada maestro 500m, el
 vectorizador 2, cada réplica de API y de consola 100m, el operador de ECK 100m, y el sistema de EKS
-—red, DNS, driver de EBS— unos 500m. Alrededor de **8,5 vCPU solicitadas** en total. En AWS eso
-significa instancias de 8 vCPU como mínimo para este dimensionado.
+—red, DNS, driver de EBS— unos 500m. Alrededor de **8,5 vCPU solicitadas** con un solo nodo de
+datos, y 16,5 con los tres del dimensionado de producción.
+
+Todas esas peticiones son configurables, así que para validar se pueden reducir: ver el apéndice A,
+que baja el total a 3,5 vCPU.
+
+<Callout type="warning" title="Compruebe la cuota de vCPU de su cuenta antes de empezar">
+  Una cuenta de AWS nueva trae por omisión una cuota de **8 vCPU bajo demanda**
+  para instancias estándar. Con el dimensionado de producción no alcanza, y no
+  se resuelve pagando: hasta que el aumento no se aprueba, no se pueden lanzar
+  más instancias.
+
+  ```bash
+  aws service-quotas get-service-quota --region <región> \
+    --service-code ec2 --quota-code L-1216C47A
+  ```
+
+  Si el valor es insuficiente, **solicite el aumento antes de empezar**: la
+  aprobación no es inmediata y no depende de quien instala. Es el tipo de
+  trámite que solo se descubre cuando ya se está dentro.
+</Callout>
 
 ### 3.1 La StorageClass de Elasticsearch
 
@@ -899,6 +918,9 @@ aplican si no se tocan:
 | `indice` | `galeria-biometrica-v1` | Nombre del alias de la galería. Debe coincidir con el de Ansible |
 | `es_data_nodes` | `3` | Nodos de datos. Ver el apéndice A para validar en una máquina |
 | `es_master_nodes` | `3` | Nodos maestros |
+| `es_data_cpu` | `4` | **CPU por nodo de datos.** La petición que más pesa de la instalación |
+| `es_master_cpu` | `500m` | CPU por nodo maestro |
+| `vectorizador_cpu` | `2` | CPU del vectorizador. No cambia con `vectorizador_provider` |
 | `es_data_memoria` | `100Gi` | Memoria por nodo de datos |
 | `es_data_heap` | `16g` | Memoria de la máquina virtual de Java por nodo. Regla habitual: la mitad de la anterior |
 | `es_data_disco` | `400Gi` | Disco por nodo de datos |
@@ -1808,11 +1830,39 @@ Estos son los valores con los que la instalación se ha validado completa en un 
 `terraform/terraform.tfvars`:
 
 ```hcl
+# Número y tamaño de los nodos
 es_data_nodes    = 1
+es_master_nodes  = 1
 es_data_memoria  = "4Gi"
 es_data_heap     = "2g"
 es_data_disco    = "20Gi"
+
+# CPU solicitada. Reducir memoria y disco no basta: estas peticiones son las
+# que deciden si el despliegue cabe, y con los valores de producción suman
+# más de lo que ofrece una máquina de 8 vCPU.
+es_data_cpu      = "1"
+es_master_cpu    = "500m"
+vectorizador_cpu = "1"
 ```
+
+Con esos valores la instalación solicita **3,5 vCPU** en total, frente a las 16,5 del dimensionado
+de producción y las 8,5 que resultaban de reducir solo memoria y disco:
+
+| Componente | Producción | Validación |
+|---|---|---|
+| Elasticsearch, maestros | 1,50 | 0,50 |
+| Elasticsearch, datos | 12,00 | 1,00 |
+| Vectorizador | 2,00 | 1,00 |
+| API y consola | 0,40 | 0,40 |
+| Operador de ECK | 0,10 | 0,10 |
+| Sistema del clúster | ~0,50 | ~0,50 |
+| **Total solicitado** | **16,50** | **3,50** |
+
+<Callout type="warning" title="El modo sin GPU no reduce la CPU solicitada">
+  `vectorizador_provider = "cpu"` evita reclamar `nvidia.com/gpu`, pero **pide
+  exactamente la misma CPU** que el modo con GPU. Para validar con recursos
+  escasos hay que bajar además `vectorizador_cpu`.
+</Callout>
 
 Dos consecuencias de reducirlo, ninguna impide validar:
 
