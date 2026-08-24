@@ -1444,16 +1444,19 @@ Aplíquelo y espere a que la base de datos acepte conexiones:
 ```bash
 kubectl apply -f postgres.yaml
 
-# Esperar el pod. Que esté en Running no basta: durante la inicialización de la
-# base, psql responde «the database system is starting up».
-kubectl wait --for=condition=ready pod/postgres-0 -n prerrequisitos --timeout=300s
+# Esperar sobre el StatefulSet, no sobre el pod: `kubectl wait` no aguarda a que
+# el recurso exista, así que si se lanza en el segundo que el controlador tarda
+# en crear el pod, devuelve «pods "postgres-0" not found» y corta. Es
+# intermitente y desconcierta. `rollout status` sí espera a que aparezca.
+kubectl rollout status statefulset/postgres -n prerrequisitos --timeout=300s
 
 # Comprobar que acepta conexiones antes de continuar
 kubectl exec -n prerrequisitos postgres-0 -- pg_isready -U administrador -d biometria
 ```
 
-Debe responder `accepting connections`. Si devuelve otra cosa, espere unos segundos y repita: la
-primera inicialización tarda.
+Debe responder `accepting connections`. Lo habitual es que responda a la primera, unos diez segundos
+después del `apply`; si devuelve otra cosa, espere unos segundos y repita, porque estar el pod listo
+no garantiza que la inicialización de la base haya terminado.
 
 La instalación necesita **dos** credenciales de PostgreSQL: la administrativa, que es la que crea el
 manifiesto, y una de servicio con menos permisos. Cree la segunda ahora:
@@ -1582,7 +1585,9 @@ Aplíquelo y espere:
 
 ```bash
 kubectl apply -f minio.yaml
-kubectl wait --for=condition=ready pod/minio-0 -n prerrequisitos --timeout=300s
+
+# Igual que con PostgreSQL: se espera sobre el StatefulSet, no sobre el pod.
+kubectl rollout status statefulset/minio -n prerrequisitos --timeout=300s
 ```
 
 Cree los dos **buckets** que pide la sección 4.2. Si abrió una terminal nueva, recargue antes las
