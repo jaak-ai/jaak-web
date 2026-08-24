@@ -375,12 +375,23 @@ mano el nodo no tiene ninguna etiqueta de GPU y el pod se queda **`Pending` para
 `Insufficient nvidia.com/gpu`. Hay que ajustar el selector a cómo etiquete el cliente sus nodos, o
 vaciarlo.
 
-**Y un aviso sobre tarjetas recientes.** Si la GPU es de una arquitectura posterior a la
-compilación de ONNX Runtime de la imagen, CUDA compila los kernels en el arranque. Funciona, pero
-el primer arranque tarda: en una tarjeta de generación reciente puede superar el minuto y medio. La
-sonda de disponibilidad
-del vectorizador tiene 60 segundos de espera inicial, así que **falla al menos una vez** antes de
-pasar. No es un fallo: el pod no está bloqueado, está compilando.
+**Y un aviso sobre tarjetas recientes.** Si la GPU es de una arquitectura posterior a la compilación
+de ONNX Runtime de la imagen, CUDA compila los kernels durante el arranque. Funciona, pero el primer
+arranque tarda: medido en una tarjeta de generación reciente, unos 100 segundos hasta que el
+servicio escucha y algo menos de dos minutos hasta que el pod queda listo. Durante ese tiempo el
+registro no emite nada entre la carga de los proveedores de ejecución y el final de la compilación.
+
+**La sonda de disponibilidad fallará varias veces, y es lo esperado.** En los eventos del pod
+aparecerá:
+
+```
+Readiness probe failed: Get "http://<ip>:8000/readyz": connect: connection refused
+```
+
+No hay que ajustar nada. La sonda espera 60 segundos antes de la primera comprobación y admite 30
+fallos consecutivos cada 10 segundos, de modo que tolera **seis minutos** de arranque: sobra margen.
+El pod **no se reinicia** por esos fallos, porque solo afectan a la sonda de disponibilidad, no a la
+de vitalidad. Que el contador de reinicios siga en cero confirma que el arranque va bien.
 
 **Sin GPU.** Hay un modo `cpu` (`vectorizador_provider = "cpu"`) que no pide recursos de GPU ni
 RuntimeClass. Sirve para validar el flujo en un entorno donde no hay tarjeta, y **no para medir**:
@@ -1340,9 +1351,10 @@ almacén de recortes. La supervisión de esas tres dependencias debe cubrirse co
 monitorización del cliente.
 
 **Primer arranque del vectorizador en GPUs recientes.** Si la arquitectura de la tarjeta es más
-nueva que los kernels precompilados de la imagen, CUDA los compila durante el primer arranque y el
-proceso puede superar el margen de la sonda de disponibilidad. La sección 3.3 indica cómo ajustar
-los márgenes.
+nueva que los kernels precompilados de la imagen, CUDA los compila durante el primer arranque, que
+pasa a durar en torno a dos minutos. La sonda de disponibilidad fallará varias veces mientras tanto
+y el pod no se reinicia: el margen configurado lo contempla y no hay que ajustar nada. Ver la
+sección 3.3.
 
 **Gestión de contraseñas de consola.** El cambio de contraseña y la recuperación de una olvidada se
 resuelven con una invitación nueva emitida por un administrador. El bloqueo por intentos fallidos no
