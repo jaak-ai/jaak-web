@@ -33,6 +33,10 @@ instalación no se hace dentro del clúster: se lanza desde una máquina que ten
   sección 7 falla al reaplicar.
 </Callout>
 
+**No hace falta el binario `helm`.** La etapa 1 de la sección 7 instala un chart, pero lo hace a
+través del proveedor de Helm de Terraform, que incorpora su propia implementación y no invoca ningún
+ejecutable externo.
+
 Instalación de la colección de Ansible, que no viene incluida:
 
 ```bash
@@ -51,6 +55,13 @@ kubectl get nodes
 Debe verse el contexto del clúster de destino y la lista de nodos en estado `Ready`. Si el contexto
 no es el correcto, cámbielo con `kubectl config use-context <nombre>`: **la instalación se aplica
 sobre el contexto activo**, y ese es el error más costoso de deshacer.
+
+Las dos órdenes son necesarias, y no es redundancia: un contexto puede estar configurado y no
+funcionar. `kubectl config current-context` lee el fichero de configuración local y devuelve un
+nombre aunque las credenciales hayan caducado o el clúster ya no exista. Solo `kubectl get nodes`
+demuestra que el clúster responde y que el acceso es válido. Si devuelve un error de autenticación o
+de conexión, resuélvalo antes de continuar: los pasos siguientes fallarían más adelante y con
+mensajes que no señalan esta causa.
 
 ### 0.3 Obtener el paquete de instalación
 
@@ -349,7 +360,8 @@ vaciarlo.
 
 **Y un aviso sobre tarjetas recientes.** Si la GPU es de una arquitectura posterior a la
 compilación de ONNX Runtime de la imagen, CUDA compila los kernels en el arranque. Funciona, pero
-el primer arranque tarda: medido en **77 segundos** sobre una RTX 5080. La sonda de disponibilidad
+el primer arranque tarda: en una tarjeta de generación reciente puede superar el minuto y medio. La
+sonda de disponibilidad
 del vectorizador tiene 60 segundos de espera inicial, así que **falla al menos una vez** antes de
 pasar. No es un fallo: el pod no está bloqueado, está compilando.
 
@@ -374,6 +386,14 @@ una migración de modelo. Un clúster que no pueda mantener eso caliente hará l
 ruta de la consulta y no sostendrá el objetivo.
 
 ### 4.2 Bases de datos y almacenamiento
+
+<Callout type="info" title="Si no dispone de estas dependencias">
+  Las tres son responsabilidad del cliente y en producción lo normal es que ya
+  existan o se contraten como servicios gestionados. Para validar la instalación
+  en una sola máquina, el **apéndice A** incluye una configuración mínima que las
+  levanta dentro del propio clúster.
+</Callout>
+
 
 Antes de instalar hay que tener:
 
@@ -1158,3 +1178,215 @@ usuario con credenciales incorrectas y solo necesita esperar.
 **Estado del clúster de Elasticsearch.** El estado `green` requiere al menos tantos nodos de datos
 como réplicas configuradas. Un clúster con menos nodos permanecerá en `yellow` de forma
 permanente, lo que es funcionalmente correcto pero conviene tenerlo en cuenta al dimensionar.
+
+---
+
+## Apéndice A. Dependencias en el clúster, para entornos de prueba
+
+Las cuatro dependencias de la sección 4.2 —PostgreSQL, Redis y el almacén de objetos— son
+responsabilidad del cliente, y en producción lo habitual es que sean servicios gestionados o
+instancias ya existentes. Pero para **validar la instalación en una sola máquina** puede no haber
+ninguna disponible, así que este apéndice da una configuración mínima que las levanta dentro del
+propio clúster.
+
+<Callout type="warning" title="Solo para entornos de prueba">
+  Esta configuración no tiene respaldos, ni replicación, ni cifrado en tránsito,
+  y usa credenciales en un único secreto. Sirve para comprobar que la
+  instalación funciona de extremo a extremo. **No debe usarse en producción**:
+  ahí las tres dependencias se contratan como servicios gestionados o se
+  despliegan con los criterios de operación del cliente.
+</Callout>
+
+Cree primero el namespace y el secreto con las credenciales que va a usar:
+
+```bash
+kubectl create namespace prerrequisitos
+
+kubectl create secret generic credenciales -n prerrequisitos \
+  --from-literal=postgres-password="$(openssl rand -base64 24 | tr -d '/@"'"'"' ')" \
+  --from-literal=minio-password="$(openssl rand -base64 24 | tr -d '/@"'"'"' ')"
+```
+
+Guarde esos valores: son los que hay que poner en la configuración de la sección 6.3, como
+contraseña de PostgreSQL y como clave secreta del almacén.
+
+### PostgreSQL
+
+```yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+  namespace: prerrequisitos
+spec:
+  serviceName: postgres
+  replicas: 1
+  selector:
+    matchLabels: { app: postgres }
+  template:
+    metadata:
+      labels: { app: postgres }
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16
+          env:
+            - name: POSTGRES_DB
+              value: biometria
+            - name: POSTGRES_USER
+              value: administrador
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef: { name: credenciales, key: postgres-password }
+            # Sin este subdirectorio, el contenedor falla al inicializar sobre
+            # un volumen que no está vacío.
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: datos
+              mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+    - metadata: { name: datos }
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources: { requests: { storage: 20Gi } }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  namespace: prerrequisitos
+spec:
+  selector: { app: postgres }
+  ports:
+    - port: 5432
+```
+
+La instalación necesita **dos** credenciales de PostgreSQL: la administrativa, que es la que se crea
+aquí, y una de servicio con menos permisos. Cree la segunda una vez que el pod esté en marcha:
+
+```bash
+kubectl exec -n prerrequisitos statefulset/postgres -- \
+  psql -U administrador -d biometria -c \
+  "CREATE ROLE app_runtime LOGIN PASSWORD 'la-que-elija';"
+```
+
+No hace falta concederle permisos: eso lo hace el paso 3 de la sección 7, que además se los concede
+sobre las tablas que crearán las migraciones futuras.
+
+### Redis
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: prerrequisitos
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: redis }
+  template:
+    metadata:
+      labels: { app: redis }
+    spec:
+      containers:
+        - name: redis
+          image: redis:7-alpine
+          ports:
+            - containerPort: 6379
+          readinessProbe:
+            exec: { command: ["redis-cli", "ping"] }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  namespace: prerrequisitos
+spec:
+  selector: { app: redis }
+  ports:
+    - port: 6379
+```
+
+Sin persistencia a propósito: Redis guarda aquí estado compartido entre réplicas, no datos que haya
+que conservar.
+
+### Almacén de objetos compatible con S3
+
+```yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: minio
+  namespace: prerrequisitos
+spec:
+  serviceName: minio
+  replicas: 1
+  selector:
+    matchLabels: { app: minio }
+  template:
+    metadata:
+      labels: { app: minio }
+    spec:
+      containers:
+        - name: minio
+          image: minio/minio:latest
+          args: ["server", "/datos", "--console-address", ":9001"]
+          env:
+            - name: MINIO_ROOT_USER
+              value: administrador
+            - name: MINIO_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef: { name: credenciales, key: minio-password }
+          ports:
+            - containerPort: 9000
+            - containerPort: 9001
+          volumeMounts:
+            - name: datos
+              mountPath: /datos
+  volumeClaimTemplates:
+    - metadata: { name: datos }
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources: { requests: { storage: 50Gi } }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: minio
+  namespace: prerrequisitos
+spec:
+  selector: { app: minio }
+  ports:
+    - { name: api, port: 9000 }
+    - { name: consola, port: 9001 }
+```
+
+Cree los dos contenedores que pide la sección 4.2:
+
+```bash
+kubectl exec -n prerrequisitos statefulset/minio -- \
+  mc alias set local http://localhost:9000 administrador "<la contraseña>"
+kubectl exec -n prerrequisitos statefulset/minio -- mc mb local/recortes-biometricos
+kubectl exec -n prerrequisitos statefulset/minio -- mc mb local/respaldos-galeria
+```
+
+### Valores que resultan para la configuración
+
+Con las tres desplegadas en este namespace, los valores de la sección 6.3 quedan así:
+
+| Variable | Valor |
+|---|---|
+| `postgres.host` | `postgres.prerrequisitos.svc.cluster.local` |
+| `postgres.dbname` | `biometria` |
+| `postgres.user` | `app_runtime` (la de servicio) |
+| `redis_addr` | `redis.prerrequisitos.svc.cluster.local:6379` |
+| `cropstore.endpoint` | `minio.prerrequisitos.svc.cluster.local:9000` |
+| `cropstore.use_ssl` | `false` (sin TLS dentro del clúster) |
+| `cropstore.bucket` | `recortes-biometricos` |
+
+En el fichero de Ansible, `postgres_admin` toma el usuario `administrador` y su contraseña, que es la
+credencial con la que se aplican las migraciones.
