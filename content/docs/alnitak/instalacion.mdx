@@ -37,10 +37,23 @@ instalación no se hace dentro del clúster: se lanza desde una máquina que ten
 través del proveedor de Helm de Terraform, que incorpora su propia implementación y no invoca ningún
 ejecutable externo.
 
-Instalación de la colección de Ansible, que no viene incluida:
+Instalación de la colección de Ansible y de la librería de Python que necesita. **Hacen falta las
+dos**: la colección no arrastra la librería, y sin ella el playbook se detiene en su primera tarea
+con `Failed to import the required Python library (kubernetes)` — después de que las etapas
+anteriores hayan desplegado ya medio sistema.
 
 ```bash
 ansible-galaxy collection install kubernetes.core
+
+# Y la librería de Python. Según el sistema:
+sudo apt install python3-kubernetes     # Debian y Ubuntu
+pip install kubernetes                  # en un entorno virtual, u otros sistemas
+```
+
+Compruebe que está disponible para el intérprete que usará Ansible:
+
+```bash
+python3 -c 'import kubernetes; print(kubernetes.__version__)'
 ```
 
 ### 0.2 Comprobar el acceso al clúster
@@ -704,13 +717,30 @@ que las migraciones que aplica corresponden siempre al esquema que esa versión 
 <Callout type="warning" title="Use únicamente etiquetas de versión">
   En los repositorios conviven etiquetas de desarrollo y de validaciones
   anteriores —`latest`, `dev-models`, `*-dev.N` y similares— que **no son
-  entregas**. Dos motivos para no usarlas: son mutables, de modo que dejan de
-  identificar qué está en ejecución, y algunas contienen artefactos
-  incompletos que **arrancan igual** y fallan más tarde de forma difícil de
-  atribuir.
+  entregas**. Son mutables: su contenido puede cambiar, así que dejan de
+  identificar qué está realmente en ejecución y hacen imposible una vuelta atrás
+  determinista.
 
   Si una versión nueva no aparece en esta tabla, solicítela antes de instalar en
   lugar de deducirla del listado de etiquetas.
+</Callout>
+
+<Callout type="warning" title="No todas las imágenes del vectorizador llevan los modelos">
+  El vectorizador tiene etiquetas de desarrollo que **no incluyen los modelos**,
+  y son las más tentadoras porque parecen versionadas. Si se usa una de ellas, el
+  contenedor termina con código 1 nada más arrancar y el pod entra en
+  `CrashLoopBackOff`:
+
+  ```
+  INFO ort: Loaded ONNX Runtime dylib with version '1.19.2'
+  Error: leyendo YuNet models/face_detection_yunet_2023mar.onnx
+  Caused by:
+      No such file or directory (os error 2)
+  ```
+
+  El fallo es inmediato y dice exactamente qué falta, así que es fácil de
+  reconocer: si ve ese error, la imagen es la equivocada. La referencia correcta
+  es la de la tabla de arriba.
 </Callout>
 
 <Callout type="warning" title="kube_context no es el contexto activo de kubectl">
@@ -839,17 +869,25 @@ Tres cosas que conviene entender antes de ejecutar, porque las tres provocan dud
 el momento de planificar, y el CRD de Elasticsearch lo instala el operador que se despliega en esa
 misma etapa. Sobre un clúster limpio, una sola invocación falla.
 
-**Por qué la etapa 2 termina en error.** El Deployment de la API monta el certificado de
-Elasticsearch, que todavía no existe: lo publica Ansible en la etapa 3. Terraform espera a que el
-despliegue complete, agota su plazo y devuelve error. **No hay nada roto.** El mensaje esperado
-contiene una espera agotada:
+**Por qué la etapa 2 termina en error.** Terraform espera a que los despliegues completen y ninguno
+lo consigue todavía: la API monta el certificado de Elasticsearch, que aún no existe —lo publica
+Ansible en la etapa 3—, y el vectorizador tarda más de lo que dura la espera en su primer arranque.
+Agota el plazo y devuelve error. **No hay nada roto.**
+
+Salen **dos** errores, uno por cada despliegue, con esta forma:
 
 ```
-Error: Waiting for rollout to finish: 0 of 2 updated replicas are available...
+Error: Waiting for rollout to finish: 1 replicas wanted; 0 replicas Ready
+Error: Waiting for rollout to finish: 2 replicas wanted; 0 replicas Ready
 ```
 
-Si el error de esta etapa es cualquier otro, deténgase y resuélvalo: `install.sh` lo distingue y
-aborta, mostrando las líneas de error de Terraform.
+El de una réplica es el vectorizador y el de dos es la API, si se han dejado los valores por
+omisión. Lo que identifica al error esperado es la **espera agotada de un despliegue**, no el número
+de réplicas ni el componente concreto.
+
+Si el error de esta etapa es de otra naturaleza —una variable inválida, un recurso que ya existe, un
+fallo de autenticación—, deténgase y resuélvalo antes de seguir. `install.sh` lo distingue y aborta
+mostrando las líneas de error de Terraform.
 
 **Por qué hace falta la cuarta.** Al fallar la etapa 2, Terraform marca el Deployment de la API como
 dañado, y a partir de ahí cualquier `plan` propone reemplazarlo. La cuarta invocación lo recrea con
