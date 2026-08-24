@@ -56,6 +56,10 @@ Debe verse el contexto del clúster de destino y la lista de nodos en estado `Re
 no es el correcto, cámbielo con `kubectl config use-context <nombre>`: **la instalación se aplica
 sobre el contexto activo**, y ese es el error más costoso de deshacer.
 
+Y una advertencia que importa más de lo que parece: **Terraform no usa el contexto activo**, sino el
+que se indique en la variable `kube_context` de la sección 6.3. Comprobar el contexto activo aquí es
+necesario para los comandos de `kubectl` de este manual, pero no determina dónde se instala.
+
 Las dos órdenes son necesarias, y no es redundancia: un contexto puede estar configurado y no
 funcionar. `kubectl config current-context` lee el fichero de configuración local y devuelve un
 nombre aunque las credenciales hayan caducado o el clúster ya no exista. Solo `kubectl get nodes`
@@ -510,10 +514,34 @@ ser accesibles desde fuera del clúster**: no tienen autenticación propia.
 | **Pimienta de contraseñas** | igual formato, valor **distinto** | Deriva y verifica las contraseñas de consola. Vacía: no hay acceso con contraseña |
 | Contraseña del primer administrador | la que elija el cliente, 12 caracteres o más | Solo durante la instalación; no se persiste en claro |
 
-Dos advertencias sobre la llave de firma de sesiones: **debe ser la misma en todas las réplicas de
-la API** —si cada una generara la suya, un inicio de sesión empezado en un pod y terminado en otro
-fallaría de forma intermitente— y hay que generarla e instalarla como parte de la instalación, no
-hay generación automática.
+Dos advertencias sobre la llave de firma de sesiones. La primera es que **debe ser la misma en todas
+las réplicas de la API**: si cada una generara la suya, un inicio de sesión empezado en un pod y
+terminado en otro fallaría de forma intermitente.
+
+La segunda importa para producción. Si el campo se deja vacío, **la instalación no se detiene**:
+genera una llave automáticamente y la deja escrita en el fichero de estado de Terraform. Lo mismo
+ocurre con la pimienta de las API keys y, si se activa su generación, con la de contraseñas. Es
+cómodo para una prueba y **no es aceptable en producción**, porque convierte el estado de Terraform
+en un fichero con secretos en claro que hay que custodiar como tal.
+
+Para producción, genere estos tres valores fuera de la herramienta y páselos ya generados:
+
+```bash
+# Llave de firma de sesiones
+openssl genrsa -out sesiones.pem 2048
+
+# Pimientas: 32 bytes en base64url sin relleno, valores distintos entre sí
+openssl rand -base64 32 | tr '+/' '-_' | tr -d '='
+openssl rand -base64 32 | tr '+/' '-_' | tr -d '='
+```
+
+<Callout type="warning" title="Si el estado de Terraform contiene secretos, protéjalo como un secreto">
+  No lo guarde en un repositorio de código. Si usa almacenamiento remoto,
+  actívele cifrado y restrinja el acceso. Y tenga en cuenta que un valor
+  generado por la herramienta se mantiene estable mientras el estado exista: si
+  el estado se pierde, la llave cambia y **todas las sesiones activas dejan de
+  ser válidas**.
+</Callout>
 
 **Hay DOS pimientas y son distintas a propósito.** `api_key_pepper` para las API keys y
 `password_pepper` para las contraseñas de consola. Podrían tener el mismo valor, pero entonces
@@ -647,6 +675,7 @@ Son dos ficheros y se copian de sus plantillas, como indica la sección 0.
 
 | Variable | Contenido |
 |---|---|
+| `kube_context` | **Nombre del contexto de kubectl contra el que se aplica todo.** Ver el aviso de abajo |
 | `imagen_api` | Referencia de la imagen de la API |
 | `imagen_vectorizador` | Referencia de la imagen del vectorizador |
 | `imagen_consola` | Referencia de la imagen de la consola |
@@ -657,6 +686,19 @@ Son dos ficheros y se copian de sus plantillas, como indica la sección 0.
 | `cropstore` | Objeto con `endpoint`, `region`, `bucket`, `access_key`, `secret_key`, `crop_key`; opcionalmente `use_ssl` (`true`) |
 | `host_publico` | Host único donde se publican consola y API |
 | `sso` | Objeto con `client_id`, `client_secret`, `dominios`, `operadores` |
+
+<Callout type="warning" title="kube_context no es el contexto activo de kubectl">
+  Terraform **no** usa el contexto activo: usa el nombre que se indique en esta
+  variable. Los dos pueden apuntar a clústeres distintos sin que nada lo avise,
+  de modo que comprobar el contexto activo como indica la sección 0.2 no basta.
+  Verifique que el valor de `kube_context` es el del clúster de destino:
+
+  ```bash
+  kubectl config get-contexts
+  ```
+
+  El nombre que aparece en la columna `NAME` es el que va en esta variable.
+</Callout>
 
 **`ansible/group_vars/all.yml`** — las de relleno obligatorio:
 
@@ -681,12 +723,33 @@ Opcionales de uso frecuente:
 
 | Variable | Por omisión | Para qué |
 |---|---|---|
-| `postgres_runtime_user` | vacío | Usuario de servicio al que conceder permisos sobre las tablas que crean las migraciones. Ver el paso 3 |
+| `postgres_runtime_user` | vacío | Usuario de servicio al que conceder permisos sobre las tablas que crean las migraciones. Dejarlo vacío solo es válido si la API usa la credencial administrativa; ver el paso 3 |
 | `primer_admin_password` | vacío | Activa el acceso con contraseña del primer administrador. Requiere `password_pepper` |
 | `password_pepper` | vacío | Debe coincidir con la variable homónima de Terraform |
 | `imagen_prueba` | vacío | Ruta a una imagen facial con la que ejecutar las pruebas funcionales del paso 8 |
 | `vectorizador_provider` | `cuda` | `cpu` para desplegar sin GPU |
-| `tenant` | `default` | Identificador con el que se da de alta al primer administrador |
+| `tenant` | `default` | **Déjelo en `default`.** Ver el aviso de abajo |
+| `es_service` | `elasticsearch-es-http` | Nombre del servicio de Elasticsearch |
+| `campos` | los siete del índice | Solo si se cambian los nombres de campo respecto a la sección 6.2 |
+| `indice_plano` | vacío | Solo para migrar una galería anterior sin alias |
+
+Y en `terraform/terraform.tfvars`, las que gobiernan la GPU y la generación de secretos:
+
+| Variable | Por omisión | Para qué |
+|---|---|---|
+| `instalar_gpu_operator` | `false` | Instala el operador de NVIDIA. Con `false`, debe existir ya |
+| `gpu_node_selector` | `{"nvidia.com/gpu.present": "true"}` | Cómo se seleccionan los nodos con GPU. Ajústelo a cómo etiquete sus nodos, o vacíelo con `{}` |
+| `gpu_tolerations` | `[]` | Los *taints* que hay que tolerar para programar en esos nodos |
+| `gpu_runtime_class` | vacío | Clase de tiempo de ejecución de la GPU. En k3s suele ser `nvidia`. Ver 3.3 |
+| `sso.private_key_pem` | vacío | Llave de firma de sesiones. Vacío la genera la herramienta y **queda en el estado** |
+| `generar_password_pepper` | `false` | Con `true`, genera la pimienta de contraseñas y **queda en el estado** |
+
+<Callout type="warning" title="El identificador de tenant no es configurable hoy">
+  Aunque la variable existe, el valor efectivo con el que la API sella las
+  sesiones queda fijado en `default`. Cambiarlo aquí hace que el primer
+  administrador se dé de alta con un identificador que la API no reconocerá:
+  la cuenta existe y no puede administrar nada. Déjelo en `default`.
+</Callout>
 
 ---
 
@@ -805,12 +868,21 @@ migraciones futuras.
 kubectl get job permisos-runtime -n biometria-1n
 ```
 
-<Callout type="warning" title="Este paso no se puede omitir">
-  Si se omite, la sonda de disponibilidad de la API queda en verde —no comprueba
-  PostgreSQL— y todas las operaciones que tocan la base de datos fallan con
-  `permission denied for table users`. El síntoma no apunta a la causa. Rellene
-  `postgres_runtime_user` en la configuración de Ansible para que el paso se
-  ejecute.
+<Callout type="warning" title="Cuándo hace falta este paso, y qué ocurre si falta">
+  Depende de qué credencial se haya puesto en `postgres.user` de la
+  configuración de Terraform, que es la que usa la API.
+
+  Si es una credencial **de servicio** —lo recomendable—, este paso es
+  obligatorio: sin él, la sonda de disponibilidad queda en verde porque no
+  comprueba PostgreSQL, y todas las operaciones que tocan la base de datos
+  fallan con `permission denied for table users`. El síntoma no apunta a la
+  causa. Rellene `postgres_runtime_user` en la configuración de Ansible para que
+  el paso se ejecute.
+
+  Si es la credencial **administrativa**, el paso no hace falta porque ya es
+  propietaria de las tablas, y puede dejar `postgres_runtime_user` vacío. Es
+  aceptable en un entorno de prueba, pero deja el servicio ejecutándose con
+  permisos para modificar el esquema, que no necesita.
 </Callout>
 
 **Primer administrador.** Un Job inserta la primera cuenta con rol de administrador. Sin él, la
@@ -1495,6 +1567,33 @@ kubectl exec -n prerrequisitos statefulset/minio -- mc mb local/recortes-biometr
 kubectl exec -n prerrequisitos statefulset/minio -- mc mb local/respaldos-galeria
 ```
 
+### Elasticsearch en una sola máquina
+
+Las dependencias anteriores no son lo único que impide validar en un equipo: la plantilla de
+configuración trae el **dimensionado de producción** de Elasticsearch, que solicita tres nodos de
+datos con 100 GiB de memoria y 400 GiB de disco cada uno. Son 300 GiB de memoria y 1,2 TiB de disco,
+que ninguna máquina de trabajo va a conceder. El síntoma es que los pods de Elasticsearch se quedan
+en `Pending` indefinidamente, sin nada que indique qué ajustar.
+
+Estos son los valores con los que la instalación se ha validado completa en un solo nodo. Van en
+`terraform/terraform.tfvars`:
+
+```hcl
+es_data_nodes    = 1
+es_data_memoria  = "4Gi"
+es_data_heap     = "2g"
+es_data_disco    = "20Gi"
+```
+
+Dos consecuencias de reducirlo, ninguna impide validar:
+
+Con un solo nodo de datos, el clúster **no alcanzará `green`** mientras la configuración pida
+réplicas: se queda en `yellow` de forma permanente. Es correcto y esperado, y la verificación de la
+sección 8 lo admite.
+
+Y el rendimiento deja de ser representativo. Con esta memoria el índice no cabe en caché, así que los
+tiempos de respuesta no dicen nada sobre el comportamiento con una galería real.
+
 ### Valores que resultan para la configuración
 
 Con las tres desplegadas en este namespace, los campos de la sección 6.3 **que dependen de estas
@@ -1519,7 +1618,24 @@ las dos pimientas— no los cubre este apéndice y se rellenan según la secció
 | `cropstore.secret_key` | la clave secreta del almacén que anotó |
 | `cropstore.use_ssl` | `false` — sin TLS dentro del clúster |
 | `cropstore.crop_key` | la clave de cifrado de recortes que generó |
-| `es_storage_class` | la clase de disco del clúster, la misma que usan los volúmenes de este apéndice |
+| `es_storage_class` | la clase de disco del clúster. Lea el aviso de abajo antes de decidirla |
+
+<Callout type="warning" title="La clase de disco por omisión de k3s no cumple los requisitos de 3.1">
+  En un k3s recién instalado la única clase disponible suele ser `local-path`,
+  que trae `reclaimPolicy: Delete` y no admite ampliación de volumen. La
+  sección 3.1 pide lo contrario para Elasticsearch —`Retain` y expansión
+  habilitada— y por un motivo concreto: con `Delete`, **eliminar el
+  PersistentVolumeClaim borra la galería sin confirmación ni aviso**.
+
+  Para validar sirve, siempre que se sepa. Si va a conservar datos entre
+  pruebas, cree una clase con `reclaimPolicy: Retain` en lugar de reutilizar la
+  de por omisión. Compruebe qué tiene la suya con:
+
+  ```bash
+  kubectl get storageclass -o custom-columns=\
+  'NOMBRE:.metadata.name,RECLAMO:.reclaimPolicy,AMPLIABLE:.allowVolumeExpansion'
+  ```
+</Callout>
 
 **En `ansible/group_vars/all.yml`:**
 
