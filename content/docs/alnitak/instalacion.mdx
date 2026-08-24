@@ -687,15 +687,30 @@ Son dos ficheros y se copian de sus plantillas, como indica la sección 0.
 | `host_publico` | Host único donde se publican consola y API |
 | `sso` | Objeto con `client_id`, `client_secret`, `dominios`, `operadores` |
 
-<Callout type="warning" title="Las referencias de las imágenes se entregan, no se deducen">
-  Las cuatro referencias, **con su etiqueta exacta**, forman parte de la entrega
-  y llegan junto con las credenciales del registro. No las deduzca del listado
-  de etiquetas del repositorio: conviven etiquetas de desarrollo, de validación
-  y de entrega, y la combinación correcta no es necesariamente la versión más
-  alta de cada repositorio ni una etiqueta común a todos.
+#### Versiones de la entrega
 
-  Si no dispone de ellas, solicítelas antes de empezar: una referencia
-  equivocada puede desplegar un componente incompleto que arranca igual.
+Estas son las cuatro referencias de la entrega vigente. Cópielas tal cual:
+
+| Componente | Referencia |
+|---|---|
+| API | `docker.io/jaakai/jaak-alnilam-api:0.16.0` |
+| Consola | `docker.io/jaakai/jaak-alnilam-web:0.14.0` |
+| Vectorizador | `docker.io/jaakai/jaak-alnitak-serve-gpu:0.1.0` |
+| Herramientas | `docker.io/jaakai/jaak-alnilam-tools:0.16.0` |
+
+La imagen de herramientas comparte número con la API a propósito: ambas salen del mismo código, así
+que las migraciones que aplica corresponden siempre al esquema que esa versión de la API espera.
+
+<Callout type="warning" title="Use únicamente etiquetas de versión">
+  En los repositorios conviven etiquetas de desarrollo y de validaciones
+  anteriores —`latest`, `dev-models`, `*-dev.N` y similares— que **no son
+  entregas**. Dos motivos para no usarlas: son mutables, de modo que dejan de
+  identificar qué está en ejecución, y algunas contienen artefactos
+  incompletos que **arrancan igual** y fallan más tarde de forma difícil de
+  atribuir.
+
+  Si una versión nueva no aparece en esta tabla, solicítela antes de instalar en
+  lugar de deducirla del listado de etiquetas.
 </Callout>
 
 <Callout type="warning" title="kube_context no es el contexto activo de kubectl">
