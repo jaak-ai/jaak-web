@@ -76,7 +76,31 @@ Python del sistema. Depende de cómo esté instalado Ansible:
   instálela con el comando de la fila que corresponda a su instalación.
 </Callout>
 
-### 0.2 Comprobar el acceso al clúster
+### 0.2 Sobre el equipo desde el que se instala
+
+No hay requisito de sistema operativo. La instalación se ha ejecutado desde Linux y desde macOS, y
+funciona desde cualquiera que disponga de las herramientas anteriores, incluido un subsistema Linux
+sobre Windows.
+
+Los comandos de este manual y el guion `install.sh` están escritos para el intérprete de órdenes
+estándar (`/bin/sh`), sin construcciones específicas de `bash`, de modo que funcionan igual en las
+distintas distribuciones y en macOS. Donde una herramienta difiere entre sistemas —como la ruta del
+intérprete de Python que usa Ansible— el manual lo indica en su sitio.
+
+Lo que sí conviene tener presente: **el equipo desde el que se instala no queda ligado a la
+instalación**. Solo necesita alcanzar el clúster mientras se ejecuta. Puede instalarse desde un
+portátil y operar después desde otro equipo distinto, con la única condición de que ese otro tenga
+acceso al clúster y, si va a reaplicar la configuración, el fichero de estado de Terraform.
+
+<Callout type="warning" title="El estado de Terraform sí viaja con la instalación">
+  El directorio `terraform/` guarda el estado del despliegue. Si va a operar
+  desde otro equipo o si más de una persona va a aplicar cambios, use
+  almacenamiento remoto de estado con bloqueo, en lugar de copiar el fichero.
+  Dos personas aplicando desde estados distintos dejan el despliegue en un
+  estado incoherente que no avisa.
+</Callout>
+
+### 0.3 Comprobar el acceso al clúster
 
 Antes de descargar nada, confirme que el equipo llega al clúster correcto:
 
@@ -100,7 +124,7 @@ demuestra que el clúster responde y que el acceso es válido. Si devuelve un er
 de conexión, resuélvalo antes de continuar: los pasos siguientes fallarían más adelante y con
 mensajes que no señalan esta causa.
 
-### 0.3 Obtener el paquete de instalación
+### 0.4 Obtener el paquete de instalación
 
 El paquete contiene los scripts que ejecutan este manual. Descárguelo y descomprímalo:
 
@@ -122,7 +146,7 @@ ansible/                                pasos que dependen del paso anterior
   tasks/                                los ocho procedimientos
 ```
 
-### 0.4 Credenciales del registro de imágenes
+### 0.5 Credenciales del registro de imágenes
 
 Tres de las imágenes son privadas (sección 2.1). Solicite a JAAK las credenciales de descarga antes
 de empezar: sin ellas los pods quedarán en `ImagePullBackOff`. Se configuran en la sección 6.
@@ -777,7 +801,7 @@ que las migraciones que aplica corresponden siempre al esquema que esa versión 
 <Callout type="warning" title="kube_context no es el contexto activo de kubectl">
   Terraform **no** usa el contexto activo: usa el nombre que se indique en esta
   variable. Los dos pueden apuntar a clústeres distintos sin que nada lo avise,
-  de modo que comprobar el contexto activo como indica la sección 0.2 no basta.
+  de modo que comprobar el contexto activo como indica la sección 0.3 no basta.
   Verifique que el valor de `kube_context` es el del clúster de destino:
 
   ```bash
@@ -1472,10 +1496,12 @@ RUNTIME_PASS=$(leer runtime-password)
   Compruebe que las tres variables tienen valor antes de seguir:
 
   ```bash
-  for v in PG_PASS MINIO_PASS RUNTIME_PASS; do
-    [ -n "${!v}" ] && echo "$v: definida" || echo "$v: VACIA — revise el paso anterior"
-  done
+  [ -n "$PG_PASS" ]      || echo "PG_PASS vacía — revise el paso anterior"
+  [ -n "$MINIO_PASS" ]   || echo "MINIO_PASS vacía — revise el paso anterior"
+  [ -n "$RUNTIME_PASS" ] || echo "RUNTIME_PASS vacía — revise el paso anterior"
   ```
+
+  Si no imprime nada, las tres tienen valor y puede continuar.
 </Callout>
 
 La clave de cifrado de los recortes **no se guarda en el secreto** a propósito, porque no la consume
