@@ -44,17 +44,37 @@ anteriores hayan desplegado ya medio sistema.
 
 ```bash
 ansible-galaxy collection install kubernetes.core
-
-# Y la librería de Python. Según el sistema:
-sudo apt install python3-kubernetes     # Debian y Ubuntu
-pip install kubernetes                  # en un entorno virtual, u otros sistemas
 ```
 
-Compruebe que está disponible para el intérprete que usará Ansible:
+La librería de Python hay que instalarla **donde Ansible la vaya a buscar**, que no siempre es el
+Python del sistema. Depende de cómo esté instalado Ansible:
 
-```bash
-python3 -c 'import kubernetes; print(kubernetes.__version__)'
-```
+| Ansible instalado con | Comando |
+|---|---|
+| Paquetes del sistema (Debian, Ubuntu) | `sudo apt install python3-kubernetes` |
+| `pipx` | `pipx inject ansible kubernetes` |
+| Homebrew | `/opt/homebrew/Cellar/ansible/*/libexec/bin/pip install kubernetes` |
+| Un entorno virtual | Actívelo y ejecute `pip install kubernetes` |
+
+<Callout type="warning" title="Compruébelo con el intérprete de Ansible, no con el del PATH">
+  Un `python3 -c 'import kubernetes'` a secas comprueba el Python del `PATH`,
+  que en varias instalaciones **no es** el que usa Ansible. Eso da los dos
+  errores posibles: decir que falta cuando está bien instalada, y —peor— decir
+  que está cuando Ansible no la encontrará, con lo que el playbook se detiene
+  igualmente veinte minutos después.
+
+  Ansible imprime la ruta de su intérprete al final de la línea `python version`.
+  Esta comprobación funciona con cualquier forma de instalación:
+
+  ```bash
+  PY=$(ansible --version | sed -n 's/.*python version = .*(\(.*\))/\1/p')
+  echo "Ansible usa: $PY"
+  "$PY" -c 'import kubernetes; print(kubernetes.__version__)'
+  ```
+
+  Debe imprimir un número de versión. Si responde `ModuleNotFoundError`,
+  instálela con el comando de la fila que corresponda a su instalación.
+</Callout>
 
 ### 0.2 Comprobar el acceso al clúster
 
