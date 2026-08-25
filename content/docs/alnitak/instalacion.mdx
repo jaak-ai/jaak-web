@@ -1055,7 +1055,7 @@ Y las cinco que ya traen valor, por si hay que cambiarlas:
 | `kube_context` | vacío (usa el actual) | Para fijar el contexto contra el que se aplica todo. Ver el aviso de abajo |
 | `redis_password` | vacío | Si su Redis exige credencial. Tiene que coincidir con la que pida el servidor |
 | `redis_username` | vacío | Solo con las ACL de Redis 6+; con `requirepass` se deja vacío |
-| `respaldos` | `{ bucket = "" }` | Para activar las copias de la galería. **Con `bucket` vacío no hay copias automáticas** |
+| `respaldos` | `{ bucket = "" }` | Para activar las copias de la galería. Objeto con `bucket` y, según el caso, `region`, `endpoint` (host:puerto **sin esquema**, igual que `cropstore`), `use_ssl`, `access_key` y `secret_key`. **Con `bucket` vacío no hay copias automáticas** |
 
 #### Versiones de la entrega
 
@@ -2520,6 +2520,21 @@ kubectl exec -n prerrequisitos statefulset/minio -- \
 kubectl exec -n prerrequisitos statefulset/minio -- mc mb local/recortes-biometricos
 kubectl exec -n prerrequisitos statefulset/minio -- mc mb local/respaldos-galeria
 ```
+
+<Callout type="warning" title="Este MinIO no sirve como destino de instantáneas">
+  Vale para los recortes, que es su cometido aquí, pero **no como destino de los
+  respaldos de Elasticsearch** (sección 10). El cliente de S3 de Elasticsearch 9
+  manda un borrado que las versiones de MinIO anteriores a 2025 —incluida la que
+  fija este manifiesto— rechazan por falta de la cabecera `Content-Md5`. La
+  verificación de escritura falla y **detiene la instalación**.
+
+  Para validar con respaldos activados, use S3 nativo del proveedor o un MinIO
+  reciente. Si solo quiere completar la instalación, deje `respaldos.bucket`
+  vacío: las copias quedan desactivadas y el playbook lo avisa.
+
+  Y si su almacén sirve HTTP plano, como este, ponga `respaldos.use_ssl` a
+  `false`: el endpoint va sin esquema, igual que el de `cropstore`.
+</Callout>
 
 ### Elasticsearch en una sola máquina
 
