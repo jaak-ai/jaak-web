@@ -292,7 +292,7 @@ sin volver a codificar el conjunto en base64: la codificación afecta únicament
 Compruebe que funciona antes de instalar:
 
 ```bash
-docker manifest inspect docker.io/jaakai/jaak-alnilam-api:0.17.0 > /dev/null \
+docker manifest inspect docker.io/jaakai/jaak-alnilam-api:0.17.1 > /dev/null \
   && echo "La credencial abre el registro"
 ```
 
@@ -1065,7 +1065,7 @@ Estas son las cuatro referencias de la entrega vigente. Cópielas tal cual:
 
 | Componente | Referencia |
 |---|---|
-| API | `docker.io/jaakai/jaak-alnilam-api:0.17.0` |
+| API | `docker.io/jaakai/jaak-alnilam-api:0.17.1` |
 | Consola | `docker.io/jaakai/jaak-alnilam-web:0.14.0` |
 | Vectorizador | `docker.io/jaakai/jaak-alnitak-serve-gpu:0.1.0` |
 | Herramientas | `docker.io/jaakai/jaak-alnilam-tools:0.16.0` |
@@ -1102,31 +1102,28 @@ que las migraciones que aplica corresponden siempre al esquema que esa versión 
   es la de la tabla de arriba.
 </Callout>
 
-<Callout type="warning" title="Aunque entre con contraseña, `dominios` NO puede ir vacío">
-  El bloque `sso` hay que rellenarlo siempre, y **con al menos un dominio**, aun
-  cuando no vaya a usar Google.
+<Callout type="warning" title="El bloque `sso` hay que rellenarlo aunque entre con contraseña">
+  La estructura de la configuración exige `client_id`, `client_secret` y
+  `redirect_url`: **dejar cualquiera de los tres vacío apaga también el acceso
+  con contraseña**, porque es el mismo servicio de identidad quien lo resuelve.
+  Escriba un valor de relleno si no va a usar Google.
 
-  El motivo es una limitación de la versión actual: con `dominios = []` y sin
-  correos permitidos, el servicio de identidad no se construye, y **con él se
-  apaga también el acceso con usuario y contraseña**, que no tiene nada que ver
-  con Google. El proceso arranca y `/readyz` responde, pero `/auth/login`
-  devuelve `503 SSO no configurado` con la contraseña correcta: la consola queda
-  **sin ninguna forma de entrar**.
-
-  Ponga el dominio de su organización. El acceso con Google no se activa por eso
-  —hace falta un `client_id` real— y el acceso con contraseña funciona:
+  La **lista de dominios sí puede ir vacía**: eso desactiva el acceso con Google
+  a propósito y deja vivo el de usuario y contraseña.
 
   ```hcl
   sso = {
     client_id     = "no-se-usa"
     client_secret = "no-se-usa"
-    dominios      = ["suempresa.com"]   # al menos uno, aunque no use Google
+    dominios      = []            # vacío desactiva el acceso con Google
     operadores    = []
   }
   ```
 
-  Está corregido para la próxima entrega, de modo que apagar Google deje vivo el
-  acceso con contraseña. Mientras tanto, el dominio es obligatorio.
+  Requiere la versión **0.17.1 o superior** de la API. En versiones anteriores,
+  dominios vacíos apagaba también el acceso con contraseña y la consola quedaba
+  sin ninguna forma de entrar; si usa una imagen más antigua, ponga al menos un
+  dominio.
 
   Si más adelante quiere habilitar Google, basta con rellenar los cuatro campos
   y reaplicar.
