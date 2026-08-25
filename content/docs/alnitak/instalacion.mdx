@@ -1102,25 +1102,31 @@ que las migraciones que aplica corresponden siempre al esquema que esa versión 
   es la de la tabla de arriba.
 </Callout>
 
-<Callout type="warning" title="El bloque sso hay que rellenarlo aunque el acceso sea con contraseña">
-  La estructura de la configuración lo exige, pero **sus valores no intervienen
-  en el acceso con usuario y contraseña**: esa vía autentica contra la base de
-  datos y toma los permisos del rol del usuario, sin consultar ninguno de estos
-  campos.
+<Callout type="warning" title="Aunque entre con contraseña, `dominios` NO puede ir vacío">
+  El bloque `sso` hay que rellenarlo siempre, y **con al menos un dominio**, aun
+  cuando no vaya a usar Google.
 
-  Si no va a usar Google, **deje la lista de dominios vacía**. Con
-  `dominios = []` y sin correos permitidos, el inicio de sesión con Google queda
-  desactivado a propósito y el proceso arranca con normalidad. Los otros dos
-  campos hay que escribirlos porque la estructura los pide, pero no se usan:
+  El motivo es una limitación de la versión actual: con `dominios = []` y sin
+  correos permitidos, el servicio de identidad no se construye, y **con él se
+  apaga también el acceso con usuario y contraseña**, que no tiene nada que ver
+  con Google. El proceso arranca y `/readyz` responde, pero `/auth/login`
+  devuelve `503 SSO no configurado` con la contraseña correcta: la consola queda
+  **sin ninguna forma de entrar**.
+
+  Ponga el dominio de su organización. El acceso con Google no se activa por eso
+  —hace falta un `client_id` real— y el acceso con contraseña funciona:
 
   ```hcl
   sso = {
     client_id     = "no-se-usa"
     client_secret = "no-se-usa"
-    dominios      = []            # vacío desactiva el acceso con Google
+    dominios      = ["suempresa.com"]   # al menos uno, aunque no use Google
     operadores    = []
   }
   ```
+
+  Está corregido para la próxima entrega, de modo que apagar Google deje vivo el
+  acceso con contraseña. Mientras tanto, el dominio es obligatorio.
 
   Si más adelante quiere habilitar Google, basta con rellenar los cuatro campos
   y reaplicar.
