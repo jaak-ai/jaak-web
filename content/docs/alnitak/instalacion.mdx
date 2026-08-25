@@ -2861,14 +2861,23 @@ eksctl create addon \
   --name aws-ebs-csi-driver \
   --cluster alnitak-validacion \
   --region us-east-1 \
-  --service-account-role-arn arn:aws:iam::$CUENTA:role/AmazonEKS_EBS_CSI_DriverRole \
+  --service-account-role-arn "arn:aws:iam::${CUENTA}:role/AmazonEKS_EBS_CSI_DriverRole" \
   --force
 ```
 
-Compruebe que quedó en marcha antes de seguir:
+Las llaves de `${CUENTA}` no son estilo: **en zsh, que es la shell por omisión de macOS,
+`$CUENTA:role` se interpreta como la variable seguida del modificador `:r`** y el ARN sale
+corrupto —`...767398084827ole/...`—. AWS responde entonces con un error de permisos que manda a
+revisar la cuenta, no el comando.
+
+Compruebe que quedó en marcha antes de seguir, y que el rol llegó de verdad:
 
 ```sh
 kubectl -n kube-system rollout status deployment/ebs-csi-controller --timeout=300s
+
+# Debe imprimir el ARN completo, terminado en el nombre del rol
+kubectl get sa ebs-csi-controller-sa -n kube-system \
+  -o jsonpath='{.metadata.annotations.eks\.amazonaws\.com/role-arn}'; echo
 ```
 
 ### Y después
