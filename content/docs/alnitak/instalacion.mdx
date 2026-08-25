@@ -6,16 +6,40 @@ order: 8
 unlisted: true
 ---
 
-<Callout type="info" title="Paquete de instalación descargable">
-  Los scripts que ejecutan este manual —Terraform, Ansible e `install.sh`— se
-  descargan en un solo archivo: [jaak-alnitak-installer.tar.gz](/downloads/alnitak/jaak-alnitak-installer.tar.gz).
-  Este documento explica qué hace cada paso; el paquete lo ejecuta.
+<Callout type="info" title="Dónde están los scripts de instalación">
+  Los scripts que ejecutan este manual —Terraform, Ansible e `install.sh`— viven
+  en un repositorio de acceso restringido y **solo lectura**:
+
+  `github.com/jaak-ai/jaak-alnitak-installer`
+
+  Solicite acceso junto con las credenciales del registro de imágenes
+  (sección 0.5): se concede sobre la cuenta de GitHub que nos indique. Una vez
+  concedido:
+
+```bash
+git clone https://github.com/jaak-ai/jaak-alnitak-installer.git
+cd jaak-alnitak-installer
+```
+
+  Este documento explica qué hace cada paso; el repositorio lo ejecuta. Trabaje
+  siempre sobre un clon actualizado: las correcciones se publican ahí.
 </Callout>
 
 ## 0. Antes de empezar
 
 Esta sección deja el equipo desde el que se instala en condiciones de ejecutar el resto. La
 instalación no se hace dentro del clúster: se lanza desde una máquina que tenga acceso a él.
+
+<Callout type="warning" title="Este manual empieza con un clúster ya operativo">
+  La instalación **no crea el clúster de Kubernetes**: lo da por existente, con
+  permisos para instalar operadores en él. Es el supuesto de la sección 1, y es
+  lo normal cuando la solución se despliega en la infraestructura del cliente.
+
+  Si va a validar el producto y no tiene un clúster donde hacerlo, el
+  [apéndice B](#apéndice-b-clúster-de-validación-en-aws) da el procedimiento
+  completo del clúster mínimo sobre el que se ha verificado esta instalación.
+  Léalo antes de la sección 3, no después.
+</Callout>
 
 ### 0.1 Herramientas necesarias
 
@@ -186,15 +210,23 @@ demuestra que el clúster responde y que el acceso es válido. Si devuelve un er
 de conexión, resuélvalo antes de continuar: los pasos siguientes fallarían más adelante y con
 mensajes que no señalan esta causa.
 
-### 0.4 Obtener el paquete de instalación
+### 0.4 Obtener los scripts de instalación
 
-El paquete contiene los scripts que ejecutan este manual. Descárguelo y descomprímalo:
+Los scripts que ejecutan este manual están en un repositorio de acceso restringido y **solo
+lectura**. Solicite acceso antes de empezar, junto con las credenciales del registro de imágenes
+(sección 0.5): se concede sobre la cuenta de GitHub que nos indique.
 
 ```bash
-curl -LO https://www.jaak.ai/downloads/alnitak/jaak-alnitak-installer.tar.gz
-tar -xzf jaak-alnitak-installer.tar.gz
+git clone https://github.com/jaak-ai/jaak-alnitak-installer.git
 cd jaak-alnitak-installer
 ```
+
+Si el clonado responde `Repository not found`, es que el acceso todavía no está concedido: GitHub
+devuelve ese mensaje —y no uno de permisos— para los repositorios privados que la cuenta no puede
+ver.
+
+Trabaje siempre sobre un clon actualizado. Las correcciones se publican ahí, así que antes de una
+instalación conviene un `git pull`.
 
 Contenido, que es el que se referencia en el resto del documento:
 
@@ -220,25 +252,36 @@ Sin ella, los pods se quedan en `ImagePullBackOff` y la instalación no avanza.
 #### Cómo se convierte en lo que pide la configuración
 
 La variable `registro_credenciales` de `terraform.tfvars` espera el **contenido de un fichero de
-configuración de Docker**, no un usuario y una contraseña sueltos. La forma más segura de generarlo
-es dejar que Docker lo escriba:
-
-```bash
-docker login docker.io -u <usuario>
-# pide la credencial por entrada estándar y no la deja en el historial
-
-cat ~/.docker/config.json
-```
-
-Ese contenido, en una sola línea, es el valor de la variable. Si prefiere no iniciar sesión en el
-equipo, se genera a mano:
+configuración de Docker**, no un usuario y una contraseña sueltos. Genérelo así:
 
 ```bash
 USUARIO="<usuario>"
 CREDENCIAL="<credencial>"
 printf '{"auths":{"https://index.docker.io/v1/":{"auth":"%s"}}}' \
-  "$(printf '%s:%s' "$USUARIO" "$CREDENCIAL" | base64)"
+  "$(printf '%s:%s' "$USUARIO" "$CREDENCIAL" | base64 | tr -d '\n')"
 ```
+
+El `tr -d '\n'` no sobra: el `base64` de GNU parte la salida en líneas de 76 caracteres, así que
+un usuario y una credencial que juntos pasen de 57 caracteres producirían un `auth` cortado por un
+salto de línea, y por tanto inválido.
+
+<Callout type="warning" title="Si su Docker guarda las credenciales en el llavero, no use `config.json`">
+  Existe la tentación de hacer `docker login` y copiar `~/.docker/config.json`,
+  pero **en la mayoría de equipos ese fichero no contiene la credencial**. Si hay
+  un gestor de credenciales configurado —Docker Desktop en macOS y en Windows,
+  y lo habitual también en Linux de escritorio—, `docker login` la guarda en el
+  llavero del sistema y deja el bloque `auths` **vacío**.
+
+  El resultado es un JSON válido, con la forma correcta y sin credencial dentro.
+  Nada lo detecta hasta que los pods fallan con `ImagePullBackOff`. Compruébelo
+  antes de usarlo:
+
+```bash
+grep -q '"auth"' ~/.docker/config.json \
+  && echo "El fichero sirve" \
+  || echo "Su Docker guarda la credencial fuera del fichero: genérela a mano"
+```
+</Callout>
 
 Tres precisiones, porque el formato no perdona:
 
@@ -249,8 +292,15 @@ sin volver a codificar el conjunto en base64: la codificación afecta únicament
 Compruebe que funciona antes de instalar:
 
 ```bash
-docker pull docker.io/jaakai/jaak-alnilam-api:0.17.0
+docker manifest inspect docker.io/jaakai/jaak-alnilam-api:0.17.0 > /dev/null \
+  && echo "La credencial abre el registro"
 ```
+
+Se usa `manifest inspect` y no `docker pull` a propósito: comprueba exactamente lo que interesa
+—que la credencial abre un repositorio privado— sin descargar cientos de megabytes y **sin depender
+de la arquitectura de su equipo**. Un `docker pull` desde un Mac con Apple Silicon fallaría aunque
+la credencial fuese correcta, porque las imágenes son solo `linux/amd64` (sección 2.1), y el error
+habla de manifiestos, no de credenciales.
 
 ---
 
@@ -385,6 +435,21 @@ hacen falta:
 Solo **las tres primeras se entregan**: son las que hay que descargar de un registro privado, y por
 eso el clúster necesita el `imagePullSecret` de la sección 6.1. Las otras cuatro son prerrequisitos
 del cliente (sección 3) y sus imágenes son públicas, así que no requieren credencial.
+
+<Callout type="warning" title="Las imágenes de la entrega son solo `linux/amd64`">
+  Las tres imágenes de JAAK, y la de herramientas que usan las migraciones, se
+  publican **únicamente para `linux/amd64`**. No hay variante para ARM.
+
+  Esto no es un detalle del equipo desde el que se instala: **condiciona los nodos
+  del clúster**. Si dimensiona con instancias ARM —en AWS, las familias Graviton
+  como `m7g`, `c7g` o `t4g`, que suelen elegirse por coste— los pods se quedarán en
+  `ImagePullBackOff` con un mensaje que habla de manifiestos y que es fácil
+  confundir con un problema de credenciales. Reserve nodos x86-64 para esta carga.
+
+  En un equipo de instalación con Apple Silicon no hay problema: la instalación no
+  ejecuta esas imágenes en local. Solo tenga en cuenta que un `docker pull` de
+  prueba fallará ahí por este motivo, y no porque la credencial esté mal.
+</Callout>
 
 En una instalación en la nube lo habitual es que esas cuatro **no sean contenedores en absoluto**:
 PostgreSQL, Redis y el almacén se contratan como servicios gestionados. Elasticsearch sí sigue
@@ -2549,3 +2614,105 @@ las dos pimientas— no los cubre este apéndice y se rellenan según la secció
   pone la administrativa en `postgres.user` la instalación funciona, pero el
   servicio queda ejecutándose con permisos que no necesita.
 </Callout>
+
+---
+
+## Apéndice B. Clúster de validación en AWS
+
+Solo para **validar el producto** cuando no se dispone de un clúster. En una instalación real el
+clúster es del cliente y este apéndice sobra, igual que el apéndice A.
+
+Es el clúster mínimo sobre el que se ha verificado esta instalación. Requiere `eksctl` además de
+las herramientas de la sección 0.1.
+
+### Por qué este dimensionado
+
+Un solo nodo `m5.2xlarge` (8 vCPU, 32 GiB). El número sale de tres restricciones que conviene
+entender antes de cambiarlo:
+
+- La instalación solicita unas **3,5 vCPU** entre todos sus componentes, con el nodo de datos de
+  Elasticsearch pidiendo **4 vCPU en un solo pod**.
+- Por eso una máquina de exactamente 4 vCPU **no vale nunca**: el sistema del clúster ya consume
+  parte, y ese pod no entra. Es el caso que la sección 3.0 describe.
+- La cuota por omisión de una cuenta nueva de AWS son **8 vCPU** en instancias bajo demanda, así
+  que no caben dos máquinas de este tamaño sin pedir ampliación.
+
+El vectorizador se despliega **sin GPU**: la validación funcional no la necesita y evita tanto el
+coste como la cuota aparte que llevan las instancias con GPU.
+
+### Crear el clúster
+
+```sh
+eksctl create cluster \
+  --name alnitak-validacion \
+  --region us-east-1 \
+  --version 1.33 \
+  --nodegroup-name nodos \
+  --node-type m5.2xlarge \
+  --nodes 1 \
+  --managed \
+  --with-oidc
+```
+
+Tarda entre quince y veinte minutos. `--with-oidc` no es opcional: sin él no se puede dar identidad
+propia al driver de discos del paso siguiente.
+
+Al terminar, `eksctl` deja el contexto de `kubectl` apuntando al clúster nuevo. Para reconstruirlo
+en otro equipo:
+
+```sh
+aws eks update-kubeconfig --region us-east-1 --name alnitak-validacion
+```
+
+### Instalar el driver de discos
+
+Un EKS recién creado **no trae el driver de EBS**, y sin él los volúmenes de Elasticsearch se quedan
+en `Pending` para siempre (sección 3.0). Necesita un rol propio: EKS limita el acceso de los pods a
+los metadatos del nodo, así que el driver no puede heredar los permisos de la máquina.
+
+```sh
+CUENTA=$(aws sts get-caller-identity --query Account --output text)
+
+eksctl create iamserviceaccount \
+  --name ebs-csi-controller-sa \
+  --namespace kube-system \
+  --cluster alnitak-validacion \
+  --region us-east-1 \
+  --role-name AmazonEKS_EBS_CSI_DriverRole \
+  --attach-policy-arn arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy \
+  --role-only --approve
+
+eksctl create addon \
+  --name aws-ebs-csi-driver \
+  --cluster alnitak-validacion \
+  --region us-east-1 \
+  --service-account-role-arn arn:aws:iam::$CUENTA:role/AmazonEKS_EBS_CSI_DriverRole \
+  --force
+```
+
+Compruebe que quedó en marcha antes de seguir:
+
+```sh
+kubectl -n kube-system rollout status deployment/ebs-csi-controller --timeout=300s
+```
+
+### Y después
+
+Cree la clase de disco de la **sección 3.1** —con su marca de clase predeterminada— y siga desde la
+sección 3. Las dependencias que falten (PostgreSQL, Redis, almacén de objetos) se resuelven con el
+apéndice A o con servicios gestionados.
+
+### Retirarlo
+
+<Callout type="warning" title="Esto factura mientras exista">
+  Un clúster de este tamaño cuesta del orden de **1 USD por hora**, y sigue
+  facturando aunque no se use. Retírelo en cuanto termine la validación.
+</Callout>
+
+```sh
+eksctl delete cluster --name alnitak-validacion --region us-east-1
+```
+
+Borrar el clúster **no borra los volúmenes de Elasticsearch**: la clase de disco lleva
+`reclaimPolicy: Retain` y sobreviven. Complete la [sección 12](#12-desinstalación) o quedarán
+facturando, con la galería dentro.
