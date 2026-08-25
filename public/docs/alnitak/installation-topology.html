@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Topología de instalación de Alnitak</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #fafaf7; color: #101828; font-family: Montserrat, sans-serif; }
+    svg { display: block; width: 100%; min-width: 840px; }
+    .node { fill: #fff; stroke: #101828; stroke-width: 1; }
+    .store { fill: rgba(16, 24, 40, .05); stroke: #4a5565; stroke-width: 1; }
+    .input { fill: rgba(74, 85, 101, .10); stroke: #6a7282; stroke-width: 1; }
+    .focal { fill: rgba(0, 102, 255, .08); stroke: #0066ff; stroke-width: 1.2; }
+    .zone { fill: rgba(16, 24, 40, .02); stroke: rgba(16, 24, 40, .18); stroke-width: .8; stroke-dasharray: 4 4; }
+    .tag { font: 500 8px ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .12em; fill: #4a5565; }
+    .name { font: 600 14px Montserrat, sans-serif; fill: #101828; }
+    .detail { font: 400 10px ui-monospace, SFMono-Regular, Menlo, monospace; fill: #4a5565; }
+    .edge { fill: none; stroke: #4a5565; stroke-width: 1.2; marker-end: url(#arrow); }
+    .link { fill: none; stroke: #0066ff; stroke-width: 1.2; marker-end: url(#arrow-link); }
+    .label { font: 500 8px ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .06em; fill: #4a5565; }
+  </style>
+</head>
+<body>
+  <svg viewBox="0 0 960 560" role="img" aria-labelledby="alnitak-installation-title alnitak-installation-desc" xmlns="http://www.w3.org/2000/svg">
+    <title id="alnitak-installation-title">Topología de instalación de Alnitak</title>
+    <desc id="alnitak-installation-desc">La API privada coordina consola, vectorización y dependencias de datos, mientras los canales del cliente acceden por el punto de entrada configurado.</desc>
+    <defs>
+      <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#4a5565"/></marker>
+      <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#0066ff"/></marker>
+    </defs>
+    <rect width="960" height="560" fill="#fafaf7"/>
+    <rect class="zone" x="240" y="128" width="680" height="312" rx="8"/>
+    <rect x="256" y="132" width="176" height="20" rx="4" fill="#fafaf7"/>
+    <text class="tag" x="268" y="146">ENTORNO DEL CLIENTE</text>
+
+    <path class="link" d="M200 240 H440"/>
+    <path class="edge" d="M400 240 H440"/>
+    <path class="edge" d="M600 240 H680"/>
+    <path class="edge" d="M488 280 V312 Q488 320 480 320 H360 Q352 320 352 328 V360"/>
+    <path class="edge" d="M520 280 V360"/>
+    <path class="edge" d="M552 280 V312 Q552 320 560 320 H728 Q736 320 736 328 V360"/>
+
+    <rect x="248" y="212" width="48" height="16" rx="4" fill="#fafaf7"/>
+    <text class="label" x="272" y="224" text-anchor="middle">HTTPS</text>
+    <rect x="616" y="212" width="48" height="16" rx="4" fill="#fafaf7"/>
+    <text class="label" x="640" y="224" text-anchor="middle">IMAGEN</text>
+    <rect x="572" y="336" width="40" height="16" rx="4" fill="#fafaf7"/>
+    <text class="label" x="592" y="348" text-anchor="middle">ESTADO</text>
+
+    <rect class="input" x="40" y="200" width="160" height="80" rx="6"/>
+    <text class="tag" x="56" y="220">EXTERNO</text>
+    <text class="name" x="120" y="246" text-anchor="middle">Canales cliente</text>
+    <text class="detail" x="120" y="264" text-anchor="middle">API key · sesión</text>
+
+    <rect class="node" x="240" y="200" width="160" height="80" rx="6"/>
+    <text class="tag" x="256" y="220">OPERACIÓN</text>
+    <text class="name" x="320" y="246" text-anchor="middle">Consola</text>
+    <text class="detail" x="320" y="264" text-anchor="middle">gestión · trazabilidad</text>
+
+    <rect class="focal" x="440" y="200" width="160" height="80" rx="6"/>
+    <text class="tag" x="456" y="220">PUNTO DE ENTRADA</text>
+    <text class="name" x="520" y="246" text-anchor="middle">API orquestadora</text>
+    <text class="detail" x="520" y="264" text-anchor="middle">autorización · flujo</text>
+
+    <rect class="node" x="680" y="200" width="160" height="80" rx="6"/>
+    <text class="tag" x="696" y="220">CÓMPUTO</text>
+    <text class="name" x="760" y="246" text-anchor="middle">Vectorización</text>
+    <text class="detail" x="760" y="264" text-anchor="middle">GPU disponible</text>
+
+    <rect class="store" x="280" y="360" width="144" height="64" rx="6"/>
+    <text class="tag" x="296" y="380">OPERACIÓN</text>
+    <text class="name" x="352" y="404" text-anchor="middle">PostgreSQL</text>
+
+    <rect class="store" x="448" y="360" width="144" height="64" rx="6"/>
+    <text class="tag" x="464" y="380">EVENTOS</text>
+    <text class="name" x="520" y="404" text-anchor="middle">Redis</text>
+
+    <rect class="store" x="664" y="360" width="144" height="64" rx="6"/>
+    <text class="tag" x="680" y="380">BÚSQUEDA</text>
+    <text class="name" x="736" y="404" text-anchor="middle">Galería vectorial</text>
+
+    <line x1="40" y1="480" x2="920" y2="480" stroke="rgba(16,24,40,.12)" stroke-width="1"/>
+    <text class="tag" x="40" y="512">LECTURA</text>
+    <text class="detail" x="112" y="510">La API centraliza acceso y conecta cómputo con dependencias de datos.</text>
+  </svg>
+</body>
+</html>

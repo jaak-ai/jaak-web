@@ -1,5 +1,5 @@
 ---
-title: Seguridad y cumplimiento
+title: Seguridad y tratamiento de datos
 description: Credenciales, scopes, custodia cifrada de la biometría, auditoría encadenada, retención y requisitos de infraestructura de JAAK Alnitak.
 category: concepto
 order: 12
@@ -78,7 +78,7 @@ cruzar entre organizaciones enviando otro valor.
 
 | Dato | Tratamiento |
 |---|---|
-| **Imagen de consulta** | Se procesa **en memoria y no se persiste** en ninguna etapa. |
+| **Imagen de consulta** | En la configuración de referencia, se procesa en memoria y no se guarda como parte de la consulta. |
 | **Vector de consulta** | Transitorio: vive solo durante la atención de la solicitud. |
 | **Recortes faciales alineados** | Cifrados en reposo con **AES-256-GCM** en almacenamiento de objetos, **fuera del índice de búsqueda**. |
 | **Galería vectorial** | En el almacén vectorial, no expuesto públicamente, con credencial de mínimo privilegio y TLS. |
@@ -110,17 +110,16 @@ Registro **append-only** de cada consulta y cada alta:
 | Sello de tiempo UTC | |
 
 - **Encadenamiento por hash:** cada evento incorpora el hash del anterior
-  (`prev_hash`). Cualquier alteración o borrado **rompe la cadena**, y un
-  verificador permite comprobar la integridad completa del registro en
-  cualquier momento.
-- **Minimización:** la auditoría **nunca** persiste imágenes, vectores ni datos
-  personales. Solo huellas y metadatos de la operación.
+  (`prev_hash`). El verificador detecta alteraciones o discontinuidades de la
+  cadena presentes en el registro que revisa.
+- **Minimización:** en la configuración de referencia, la auditoría guarda
+  huellas y metadatos de operación; no almacena imágenes ni vectores.
 - **Operaciones privilegiadas:** el re-embedding y el swap de alias también se
   auditan, con actor e índices de origen y destino.
 - Las consultas lanzadas desde la consola tienen exactamente la misma
   trazabilidad que las de los canales automatizados.
 
-## Amenazas cubiertas
+## Controles previstos
 
 | Amenaza | Controles |
 |---|---|
@@ -143,33 +142,14 @@ Registro **append-only** de cada consulta y cada alta:
 - Los respaldos respetan el mismo plazo que el dato en línea: un dato eliminado
   no sobrevive en los backups más allá del plazo.
 
-## Cumplimiento normativo
+## Tratamiento de datos y registros
 
-<Callout type="info" title="Qué aporta la solución y qué no">
-En un despliegue on-premise, la solución **aporta los controles técnicos que
-facilitan el cumplimiento** de los marcos aplicables. **No constituye por sí
-misma una certificación**: el cumplimiento formal depende también de los
-procesos y políticas del cliente.
-</Callout>
-
-**LFPDPPP** (datos personales sensibles / biométricos):
-
-- **Finalidad y minimización:** la imagen de consulta no se persiste; la
-  auditoría no guarda datos personales.
-- **Medidas de seguridad:** AES-256-GCM en reposo, TLS en tránsito, claves en
-  gestor de secretos, autenticación y autorización por scopes.
-- **Derechos ARCO:** el identificador biométrico opaco y el borrado por
-  segmentos con acta facilitan atender solicitudes de acceso, rectificación,
-  cancelación y oposición.
-- **Consentimiento y aviso de privacidad:** proceso del cliente, habilitado por
-  la trazabilidad que el sistema provee.
-
-**NOM-151** (conservación e integridad de datos):
-
-- Cadena de hash de la auditoría como mecanismo de detección de alteraciones.
-- Sellos de tiempo UTC en cada evento.
-- Custodia documentada y verificador de cadena para exhibir la integridad del
-  registro ante terceros.
+- La imagen de consulta se procesa según la configuración descrita en esta
+  guía; los recortes de enrolamiento usan el almacenamiento y cifrado indicados
+  en la sección de custodia.
+- La auditoría registra huellas, metadatos de operación y sellos de tiempo UTC.
+- La retención, el borrado y el acceso a los datos se definen para cada
+  despliegue con el cliente.
 
 ## Requisitos del lado del cliente
 
