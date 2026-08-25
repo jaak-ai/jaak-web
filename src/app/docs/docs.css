@@ -20,7 +20,7 @@
 
 .docs-header__brand { display: flex; align-items: center; gap: 20px; padding: 0 clamp(24px, 5vw, 104px); border-right: 1px solid var(--docs-rule); background: var(--docs-panel); }
 .docs-header__main { display: flex; min-width: 0; align-items: center; justify-content: space-between; gap: 32px; padding: 0 40px; }
-.docs-header__search { width: 170px; }
+.docs-header__search { width: 184px; }
 .docs-header__section, .docs-header__login { color: var(--docs-ink); }
 .docs-header__section:hover, .docs-header__login:hover { color: var(--docs-link); }
 .docs-header__cta { border-radius: 6px; background: var(--docs-link); color: #fff; }

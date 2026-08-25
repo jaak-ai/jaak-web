@@ -16,7 +16,8 @@ export function SearchButton() {
   return (
     <button
       onClick={handleClick}
-      className="flex w-full items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-4 py-2 text-sm text-gray-500 transition-colors hover:border-gray-300 hover:bg-gray-100"
+      className="flex min-h-11 w-full items-center gap-2 whitespace-nowrap rounded-lg border border-gray-200 bg-gray-50 px-4 py-2 text-sm text-gray-500 transition-colors hover:border-gray-300 hover:bg-gray-100"
+      aria-label="Buscar en la documentación"
       type="button"
     >
       <svg
@@ -32,7 +33,7 @@ export function SearchButton() {
           d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
         />
       </svg>
-      <span>Buscar en la documentacion...</span>
+      <span>Buscar</span>
       <kbd className="ml-auto hidden rounded bg-gray-200 px-2 py-0.5 text-xs font-medium text-gray-500 sm:block">
         {isMac ? '⌘' : 'Ctrl'} K
       </kbd>

@@ -138,7 +138,7 @@ export function SearchModal() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDownInModal}
-            placeholder="Buscar en la documentacion..."
+            placeholder="Buscar en la documentación..."
             className="flex-1 bg-transparent text-gray-900 placeholder-gray-400 outline-none"
           />
           <kbd className="hidden rounded bg-gray-100 px-2 py-1 text-xs font-medium text-gray-500 sm:block">
