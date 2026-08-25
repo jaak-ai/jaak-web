@@ -82,19 +82,18 @@ Una credencial de solo consulta **no puede dar altas ni tocar la galería**. El
 re-embedding y el swap de alias reescriben o sustituyen la galería completa: se
 separan en su propio scope y exigen separación de funciones.
 
-<Callout type="danger" title="Estado actual del aislamiento multiinquilino">
-El mecanismo descrito en esta sección —tenant derivado de la credencial, filtro
-obligatorio en toda búsqueda, campo de tenant en cada documento— está
-implementado y es el que gobierna cada consulta.
+<Callout type="info" title="Cómo se resuelve el tenant de cada sesión">
+Para una **integración de servicio**, el tenant sale de la API key.
 
-Pero **en la versión actual el único valor de tenant que opera es `default`**: la
-API lo fija ahí al sellar las sesiones, y el preflight de la instalación se
-detiene si se configura otro. En la práctica, hoy **un despliegue es de un solo
-inquilino**, y el aislamiento entre organizaciones distintas se consigue con
-despliegues separados, no con tenants dentro del mismo.
+Para una **persona** que entra por SSO, se resuelve en el login: el dominio de
+su correo se busca en la tabla de empresas del despliegue y de ahí sale su
+tenant. Un usuario que ya existe conserva el que se le fijó al crearlo. Si el
+dominio no corresponde a ninguna empresa registrada, se usa el tenant por
+omisión de la configuración.
 
-Si tu caso exige varias organizaciones aisladas en una sola instalación,
-confírmalo con el equipo de JAAK antes de diseñar sobre ello.
+Consecuencia práctica: **las organizaciones y sus dominios se administran desde
+la consola**, no en la configuración del servicio. El único tenant que se fija
+al instalar es el del primer administrador.
 </Callout>
 
 <Callout type="warning" title="Tenant y canal vienen de la credencial, nunca de la petición">

@@ -331,7 +331,7 @@ desaparece la evidencia de por qué falló el anterior.
 | Nodo con `nvidia.com/gpu` | Falta el GPU Operator o el device plugin, o el nodo no está listo. En modo CPU no se exige |
 | StorageClass | La clase declarada no existe en el clúster |
 | PostgreSQL alcanzable | Se comprueba con un Job **desde dentro del clúster**, que es desde donde tiene que llegar la API |
-| Tenant distinto de `default` | Hoy es el único valor que funciona: la API lo fija ahí al sellar las sesiones |
+| Tenant vacío | Es el identificador de organización del primer administrador. Sin él, su sesión no puede filtrar la galería, que exige tenant en toda búsqueda y alta |
 
 ### Los pods de Elasticsearch se quedan en `Pending`
 
