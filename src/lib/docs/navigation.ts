@@ -197,7 +197,7 @@ export const alnitakNavigation: NavItem[] = [
   { title: 'Consola de operación', href: '/docs/alnitak/consola' },
   { title: 'Instalación', href: '/docs/alnitak/instalacion' },
   { title: 'Rendimiento y SLA', href: '/docs/alnitak/rendimiento' },
-  { title: 'Seguridad y cumplimiento', href: '/docs/alnitak/seguridad' },
+  { title: 'Seguridad y tratamiento de datos', href: '/docs/alnitak/seguridad' },
 ]
 
 export function flattenNavigation(items: NavItem[]): NavItem[] {

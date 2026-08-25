@@ -58,8 +58,8 @@ solución completa.
 | [Arquitectura](/docs/alnitak/arquitectura) | Arquitectura, seguridad | Pipeline, score y veredicto, resiliencia |
 | [API](/docs/alnitak/api) | Integradores | Auth, endpoints, esquemas, errores |
 | [Consola de operación](/docs/alnitak/consola) | Operación, analistas | Interfaz pantalla a pantalla |
-| [Rendimiento y capacidad](/docs/alnitak/rendimiento) | Arquitectura, operaciones | Bondades, mediciones, gráficas, dimensionado |
-| [Seguridad](/docs/alnitak/seguridad) | Seguridad, cumplimiento | Credenciales, scopes, auditoría, biometría |
+| [Rendimiento y capacidad](/docs/alnitak/rendimiento) | Arquitectura, operaciones | Mediciones, gráficas y dimensionado |
+| [Seguridad](/docs/alnitak/seguridad) | Seguridad, privacidad | Credenciales, scopes, auditoría y tratamiento de datos |
 
 ### Manual de despliegue y operación
 
@@ -69,7 +69,7 @@ descargables; el resto se entrega por canal privado a los equipos del proyecto:
 | Documento | Contenido |
 |---|---|
 | Galería, vectores e índice | Esquema del dato, parámetros del almacén, ciclo de vida |
-| [Instalación](/docs/alnitak/instalacion) | Requisitos, secretos, Terraform + Ansible, verificación, pruebas de humo — con [paquete descargable](/downloads/alnitak/jaak-alnitak-installer.tar.gz) |
+| [Instalación](/docs/alnitak/instalacion) | Requisitos, secretos, Terraform + Ansible, verificación y pruebas de humo — con [repositorio de instalación](https://github.com/jaak-ai/jaak-alnitak-installer) |
 | Configuración | Parámetros y variables de entorno |
 | Operación | Observabilidad, alertas, escalado |
 | Mantenimiento | Migración, re-vectorización, respaldos |
@@ -89,7 +89,7 @@ Galería de **50 M**, caras reales, cadena completa (API + GPU + almacén).
 
 | | Medido |
 |---|---|
-| Identify a 60 rps | 3.600/3.600 correctas, 0 % error |
+| Identify a 60 rps | 3.600 respuestas HTTP satisfactorias en la corrida |
 | Mixto identify + enroll a 60 rps | p95 ~200 ms en ambas operaciones |
 | Escalera de caudal | Estable al menos hasta 120 rps (p95 ~215 ms) |
 

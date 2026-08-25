@@ -6,10 +6,10 @@ order: 8
 unlisted: true
 ---
 
-<Callout type="info" title="Paquete de instalación descargable">
+<Callout type="info" title="Repositorio de instalación">
   Los scripts que ejecutan este manual —Terraform, Ansible e `install.sh`— se
-  descargan en un solo archivo: [jaak-alnitak-installer.tar.gz](/downloads/alnitak/jaak-alnitak-installer.tar.gz).
-  Este documento explica qué hace cada paso; el paquete lo ejecuta.
+  mantienen en [jaak-ai/jaak-alnitak-installer](https://github.com/jaak-ai/jaak-alnitak-installer).
+  Este documento explica qué hace cada paso; el repositorio contiene su ejecución.
 </Callout>
 
 ## 0. Antes de empezar
@@ -186,13 +186,12 @@ demuestra que el clúster responde y que el acceso es válido. Si devuelve un er
 de conexión, resuélvalo antes de continuar: los pasos siguientes fallarían más adelante y con
 mensajes que no señalan esta causa.
 
-### 0.4 Obtener el paquete de instalación
+### 0.4 Obtener el repositorio de instalación
 
-El paquete contiene los scripts que ejecutan este manual. Descárguelo y descomprímalo:
+El repositorio contiene los scripts que ejecutan este manual. Clónelo:
 
 ```bash
-curl -LO https://www.jaak.ai/downloads/alnitak/jaak-alnitak-installer.tar.gz
-tar -xzf jaak-alnitak-installer.tar.gz
+git clone https://github.com/jaak-ai/jaak-alnitak-installer.git
 cd jaak-alnitak-installer
 ```
 
@@ -330,7 +329,7 @@ los sistemas del cliente más allá de la API, y la instalación sin Kubernetes.
       ▼                       ▼
  ┌──────────┐          ┌──────────────┐          ┌───────────────┐
  │ CONSOLA  │─────────▶│     API      │─────────▶│ alnitak-serve │
- │ Angular  │  mismo   │      Go      │   HTTP   │  Rust + GPU   │
+ │ consola  │  mismo   │ orquestación│   HTTP   │ vectorización │
  │  nginx   │  origen  │   :8080      │  :8000   │   vectoriza   │
  └──────────┘          └──────┬───────┘          └───────────────┘
                               │ vector 512-D

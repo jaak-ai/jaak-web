@@ -74,14 +74,14 @@ El score de cada candidato es la **similitud coseno normalizada al intervalo
 
 | Condición | Veredicto | Significado |
 |---|---|---|
-| `score ≥ t + 0.06` | `match` | Coincidencia. Decisión automática. |
-| `t ≤ score < t + 0.06` | `review` | Revisión manual. Zona de mayor incertidumbre. |
-| `score < t` | `no_match` | Sin coincidencia. |
+| `score ≥ t + 0.06` | `match` | Candidato por encima de la banda de revisión. |
+| `t ≤ score < t + 0.06` | `review` | Candidato dentro de la banda de revisión. |
+| `score < t` | `no_match` | No hay candidato por encima del umbral. |
 
-La banda intermedia de **0.06** existe para evitar decisiones automáticas en la
-franja donde el error es más probable, y dirigir esos casos a un operador. El
-umbral por defecto es `0.82`, ajustable en la configuración del despliegue o
-por petición.
+La banda intermedia de **0.06** separa los candidatos cercanos al umbral para
+su tratamiento por el flujo del cliente. El umbral por defecto es `0.82`,
+ajustable en la configuración del despliegue o por petición. Cada despliegue
+debe validar sus umbrales antes de usarlos para automatizar decisiones.
 
 <Callout type="tip" title="El score que recibes ya está normalizado">
 Los motores de búsqueda vectorial no siempre devuelven el coseno tal cual:
@@ -98,23 +98,22 @@ con el vector del enrolamiento**. Si esa búsqueda produce una coincidencia, el
 alta se rechaza con `409 duplicate_or_fraud` y la respuesta incluye los
 candidatos que la provocaron.
 
-Es un control doble:
+Es una comprobación previa orientada a:
 
-- **Antiduplicado** — higiene de la galería: un rostro, una identidad.
-- **Antifraude** — un mismo rostro no puede obtener dos expedientes distintos.
+- **Antiduplicado** — detectar candidatos que requieran revisar un alta.
+- **Antifraude** — señalar altas que podrían corresponder a un expediente ya
+  existente.
 
 ## Criterios del almacén vectorial
 
-La galería vive en un almacén vectorial que cumple cuatro condiciones, y esas
-condiciones —no el producto concreto— son las que sostienen la latencia y el
-caudal en régimen:
+La galería usa un almacén vectorial con estas cuatro características. Son las
+que sostienen la latencia y el caudal en régimen:
 
 - **Búsqueda kNN aproximada sobre grafo HNSW**, madura y en versión estable, no
   experimental.
-- **Cuantificación a 8 bits** del vector indexado, que reduce drásticamente la
-  memoria de trabajo frente a los vectores en coma flotante sin cuantificar, con
-  rescoring sobre los originales para no perder precisión en la ordenación
-  final.
+- **Cuantificación a 8 bits** del vector indexado, que reduce la memoria de
+  trabajo frente a los vectores en coma flotante sin cuantificar, con rescoring
+  sobre los originales para mejorar la ordenación final.
 - **Filtrado por metadatos dentro de la misma consulta kNN** —canal, expediente,
   versión de modelo— y no como post-filtrado.
 - **Replicación y redistribución de datos** nativas, que dan redundancia y
@@ -132,16 +131,15 @@ segmentos, memoria residente, número de candidatos explorados).
 | Rechazo explícito por calidad | Una imagen sin rostro no genera una identificación dudosa: se rechaza y queda en auditoría |
 | Marcado de consultas multirrostro | La consulta se resuelve con el rostro mayor y queda señalada para revisión |
 | API sin estado tras balanceador | Cualquier réplica atiende cualquier consulta |
-| Galería replicada en el almacén vectorial | La pérdida de un nodo no interrumpe las consultas ni compromete la galería |
-| Vectorizador replicado | La pérdida de una réplica reduce capacidad, no disponibilidad |
+| Galería replicada en el almacén vectorial | Aporta redundancia; el comportamiento ante fallo depende del quórum y de la configuración del despliegue |
+| Vectorizador replicado | Aporta capacidad de recuperación; validar el comportamiento ante fallo en cada despliegue |
 
 ## Esquema de alias de la galería
 
 El servicio consulta **siempre por un alias**, no por el índice físico. Esa
-indirección es la que permite reconstruir la galería con un modelo nuevo en un
-índice paralelo y conmutar en caliente (blue/green), sin ventana de
-indisponibilidad y de forma atómica: nunca hay un instante en que el alias
-apunte a dos índices ni a ninguno.
+indirección permite reconstruir la galería con un modelo nuevo en un índice
+paralelo y preparar una conmutación blue/green. La conmutación y su impacto se
+validan con el procedimiento de cada despliegue.
 
 El procedimiento de conmutación y los casos de migración están en el manual de
 mantenimiento de la entrega.
