@@ -747,8 +747,9 @@ Antes de instalar hay que tener:
    administrativa para aplicar migraciones y otra de runtime sin DDL. **No hace falta conceder
    permisos a la de runtime**: lo hace la instalación (ver paso 3 de la sección 7), porque las
    tablas no existen hasta que corren las migraciones.
-2. **Redis** accesible. Sin autenticación en la configuración actual — **⚠ si el cliente exige
-   autenticación en Redis, hoy no hay dónde configurarla.**
+2. **Redis** accesible, preferiblemente **con credencial**: se configura en `redis_password`
+   (sección 6.3) y debe coincidir con la que exija el servidor. Dejarla vacía conecta sin
+   autenticar, que es lo único que admite un Redis sin `requirepass`.
 3. **Dos buckets** compatibles con S3: uno para los recortes faciales, otro para los respaldos de
    Elasticsearch. Con sus credenciales de acceso.
 
@@ -850,7 +851,8 @@ ser accesibles desde fuera del clúster**: no tienen autenticación propia.
 | SSO | client secret de Google, y una **llave privada RSA en PEM** | El client secret es de Google; la llave privada firma las sesiones |
 | Cropstore | access key, secret key, y una **clave de cifrado de 32 bytes** | Acceso al bucket y cifrado AES-256-GCM de cada recorte |
 | PostgreSQL | usuario y contraseña de runtime | Conexión de la API |
-| Respaldos de Elasticsearch | access key y secret key | ⚠ **Hoy nada lo usa**: los snapshots automáticos no están configurados (ver sección 10). El bucket conviene tenerlo desde el principio; el secreto se creará cuando se configuren |
+| Redis | contraseña y, solo con ACL, usuario | Estado de sesión compartido entre réplicas. Vacías conectan sin autenticar: ver sección 11 |
+| Respaldos de Elasticsearch | access key y secret key | Instantáneas automáticas de la galería (sección 10). Pueden ir vacías en AWS si el rol de los nodos ya permite escribir en el contenedor |
 | Registro de imágenes | credenciales de pull | Descargar las imágenes privadas |
 | **Pimienta de API keys** | 32 bytes o más, en **base64url sin relleno** | Deriva y verifica los hashes de las API keys |
 | **Pimienta de contraseñas** | igual formato, valor **distinto** | Deriva y verifica las contraseñas de consola. Vacía: no hay acceso con contraseña |
@@ -1027,11 +1029,13 @@ log:
 
 Son dos ficheros y se copian de sus plantillas, como indica la sección 0.
 
-**`terraform/terraform.tfvars`** — diez variables sin valor por omisión:
+**`terraform/terraform.tfvars`** — **diez** variables sin valor por omisión, que hay que rellenar
+sí o sí, y cuatro más que sí lo tienen y solo se tocan si hacen falta:
+
+Las diez obligatorias:
 
 | Variable | Contenido |
 |---|---|
-| `kube_context` | **Nombre del contexto de kubectl contra el que se aplica todo.** Ver el aviso de abajo |
 | `imagen_api` | Referencia completa de la imagen de la API, con su etiqueta |
 | `imagen_vectorizador` | Referencia completa de la imagen del vectorizador, con su etiqueta |
 | `imagen_consola` | Referencia completa de la imagen de la consola, con su etiqueta |
@@ -1039,12 +1043,19 @@ Son dos ficheros y se copian de sus plantillas, como indica la sección 0.
 | `es_storage_class` | Nombre de la StorageClass de la sección 3.1 |
 | `postgres` | Objeto con `host`, `dbname`, `user`, `password`; opcionalmente `port` (5432) y `sslmode` (`require`) |
 | `redis_addr` | `host:puerto` de Redis |
-| `redis_password` | Credencial de Redis. Vacía se conecta sin autenticar; tiene que coincidir con lo que exija el servidor |
-| `redis_username` | Usuario de Redis. Solo con las ACL de Redis 6+; con `requirepass` se deja vacío |
 | `cropstore` | Objeto con `endpoint`, `region`, `bucket`, `access_key`, `secret_key`, `crop_key`; opcionalmente `use_ssl` (`true`) |
-| `respaldos` | Objeto con `bucket` y, según el caso, `region`, `endpoint`, `access_key`, `secret_key`. Con `bucket` vacío **no hay copias automáticas de la galería** |
 | `host_publico` | Host único donde se publican consola y API |
 | `sso` | Objeto con `client_id`, `client_secret`, `dominios`, `operadores`. **Obligatorio aunque no use Google**: ver el aviso de abajo |
+
+Y las cinco que ya traen valor, por si hay que cambiarlas:
+
+| Variable | Por omisión | Cuándo tocarla |
+|---|---|---|
+| `kubeconfig_path` | `~/.kube/config` | Si su kubeconfig está en otra ruta. **Terraform lee este fichero, no la variable `KUBECONFIG` del entorno** |
+| `kube_context` | vacío (usa el actual) | Para fijar el contexto contra el que se aplica todo. Ver el aviso de abajo |
+| `redis_password` | vacío | Si su Redis exige credencial. Tiene que coincidir con la que pida el servidor |
+| `redis_username` | vacío | Solo con las ACL de Redis 6+; con `requirepass` se deja vacío |
+| `respaldos` | `{ bucket = "" }` | Para activar las copias de la galería. **Con `bucket` vacío no hay copias automáticas** |
 
 #### Versiones de la entrega
 
@@ -1124,6 +1135,13 @@ que las migraciones que aplica corresponden siempre al esquema que esa versión 
   ```
 
   El nombre que aparece en la columna `NAME` es el que va en esta variable.
+
+  **Y lo mismo con el fichero.** Terraform lee la ruta de `kubeconfig_path`
+  —`~/.kube/config` por omisión— y **no la variable de entorno `KUBECONFIG`**. Si
+  trabaja con un kubeconfig en otra ruta, `kubectl` usará el del entorno y
+  Terraform el de la variable: el contexto puede llamarse igual en los dos
+  ficheros y apuntar a clústeres distintos. Son la misma decisión partida en dos,
+  así que fíjelas juntas.
 </Callout>
 
 **`ansible/group_vars/all.yml`** — las de relleno obligatorio:
@@ -1152,7 +1170,7 @@ Opcionales de uso frecuente:
 | `postgres_runtime_user` | vacío | Usuario de servicio al que conceder permisos sobre las tablas que crean las migraciones. Dejarlo vacío solo es válido si la API usa la credencial administrativa; ver el paso 3 |
 | `primer_admin_password` | vacío | Activa el acceso con contraseña del primer administrador. Requiere `password_pepper` |
 | `password_pepper` | vacío | Debe coincidir con la variable homónima de Terraform |
-| `imagen_prueba` | vacío | Ruta a una imagen facial con la que ejecutar las pruebas funcionales del paso 8 |
+| `imagen_prueba` | vacío | Ruta a una imagen facial para las pruebas funcionales del paso 8. **Requiere `primer_admin_password`**: la prueba entra con contraseña. Requisitos y consideraciones en 8.5 |
 | `vectorizador_provider` | `cuda` | `cpu` para desplegar sin GPU |
 | `tenant` | `default` | **Déjelo en `default`.** Ver el aviso de abajo |
 | `es_service` | `elasticsearch-es-http` | Nombre del servicio de Elasticsearch |
@@ -1192,8 +1210,7 @@ aplican si no se tocan:
 | `es_data_disco` | `400Gi` | Disco por nodo de datos |
 | `api_replicas` | `2` | Réplicas de la API |
 | `api_memoria_limite` | `1Gi` | Límite de memoria por réplica de la API |
-| `rate_limit_max` | `120` | Peticiones **por IP de origen y por ventana**. `0` desactiva el límite |
-| `rate_limit_window` | `1s` | Duración de la ventana del limitador |
+| `rate_limit_max` | `120` | Peticiones **por IP de origen y por segundo**. `0` desactiva el límite. La ventana es de un segundo y está fijada en la imagen: no se puede cambiar desde la configuración |
 | `vectorizador_workers` | `4` | Réplicas del motor dentro del proceso. **Cada una carga su propia copia del modelo**, así que este número decide la memoria que pide el vectorizador |
 | `vectorizador_max_inflight` | `128` | Peticiones simultáneas admitidas por el vectorizador |
 
@@ -1337,8 +1354,12 @@ kubectl get configmap api-config -n biometria-1n
 kubectl get secret api-secretos -n biometria-1n -o jsonpath='{.data}' | tr ',' '\n' | cut -d'"' -f2
 ```
 
-Deben aparecer las nueve claves de la sección 6.1. La décima,
-`ALNILAM_ELASTICSEARCH_API_KEY`, la añade el paso 6.
+Deben aparecer **once** claves. La duodécima, `ALNILAM_ELASTICSEARCH_API_KEY`, la añade el paso 6.
+
+Son las de Elasticsearch, SSO, cropstore, PostgreSQL, Redis y las dos pimientas. Las credenciales
+de respaldos y las del registro de imágenes **no están aquí**: viven en secretos propios
+(`es-respaldos-s3` y `registro-imagenes`), porque los consumen Elasticsearch y el kubelet, no la
+API.
 
 <Callout type="warning" title="Los secretos tienen que existir antes que los componentes">
   El pod de la API monta la configuración y el certificado de Elasticsearch como
@@ -1732,6 +1753,32 @@ Es la comprobación que de verdad cierra la instalación, y está automatizada. 
 configurada, el playbook entra como administrador, emite una credencial de servicio por el mismo
 endpoint que usa la consola, da de alta un rostro, lo busca, comprueba que el duplicado se rechaza,
 revoca la credencial y deja la galería como estaba.
+
+#### La imagen de prueba
+
+**No se entrega con el producto: la aporta quien instala.** Requisitos:
+
+| Requisito | Motivo |
+|---|---|
+| JPG o PNG | Formatos que acepta el vectorizador |
+| **Menos de 1 MB** | La imagen viaja en un ConfigMap, que tiene ese límite |
+| **Un solo rostro** | Con varias caras el alta no es determinista |
+| Que **no esté ya en la galería** | Si está, el alta se rechaza como duplicado y la prueba no puede distinguirlo de un fallo |
+
+Requiere además `primer_admin_password`: la prueba se autentica con contraseña, así que sin ella el
+playbook se detiene antes de empezar.
+
+<Callout type="warning" title="Esa cara se da de alta en la galería">
+  Durante la prueba, el rostro que indique queda **registrado en la galería
+  biométrica** como un alta real: es lo que permite comprobar que la búsqueda y
+  la detección de duplicados funcionan.
+
+  El propio playbook **lo borra al terminar**, junto con la credencial de servicio
+  que emitió. Aun así, use preferentemente **un rostro sintético** —generado, no
+  de una persona real— y no la fotografía de alguien del equipo. Evita tener que
+  justificar por qué un dato biométrico personal pasó por un entorno de
+  validación.
+</Callout>
 
 ```bash
 cd ansible && ansible-playbook site.yml --tags humo
