@@ -317,6 +317,8 @@ dos contenedores, y decidido el método de acceso a la consola.
 
 ```bash
 cp terraform/terraform.tfvars.example terraform/terraform.tfvars
+
+mkdir -p ansible/group_vars
 cp ansible/group_vars_all.example.yml ansible/group_vars/all.yml
 ```
 
@@ -999,7 +1001,7 @@ log:
 |---|---|
 | `postgres.host`, `postgres.dbname` | El proceso no arranca |
 | `elasticsearch.fields.tenant` | El proceso no arranca |
-| `sso.allowed_domains` vacío | El proceso rechaza el arranque |
+| `sso.client_id`, `sso.client_secret` o `sso.redirect_url` vacíos | El acceso con Google queda desactivado. El proceso **sí arranca** |
 | `elasticsearch.ca_cert_path` ilegible | El proceso no arranca |
 
 **Campos que degradan el servicio sin error visible:**
@@ -1575,8 +1577,83 @@ configuración no resuelve en DNS: revise que coincida con el servicio real.
 
 ### Paso 10 — Publicación
 
-Publique consola y API **bajo el mismo host**, con TLS, según la sección 3.2. No es una preferencia:
-si viven en hosts distintos, las peticiones de la consola fallan en el navegador.
+**La publicación la aporta el cliente**, y es el único paso de esta secuencia que la instalación no
+ejecuta: los dos servicios que crea son de tipo `ClusterIP`, alcanzables solo dentro del clúster. Es
+deliberado — el balanceador, el certificado y el DNS son de la organización, con sus propias
+políticas — pero significa que aquí hay trabajo que hacer y no un comando que copiar.
+
+**Lo que tiene que cumplir**, sea con el mecanismo que sea:
+
+| Requisito | Por qué |
+|---|---|
+| **Un solo host** para consola y API | Si viven en hosts distintos, las peticiones de la consola fallan en el navegador. No es una preferencia: es una restricción dura (sección 3.2) |
+| `/` a la consola; `/api/` y `/auth/` a la API | Es el reparto de rutas que espera la consola |
+| **TLS** en ese host | La cookie de sesión va marcada como segura: sin HTTPS el navegador no la guarda y no se puede iniciar sesión |
+| El host coincide con `host_publico` | Ese valor se hornea en la configuración de la API y en la URL de retorno del acceso con Google |
+
+**Un `Ingress` de partida.** Si su clúster ya tiene un controlador de ingress, esto cubre el
+reparto de rutas. Ajuste el nombre de la clase, el emisor del certificado y las anotaciones a lo que
+use su organización:
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: alnitak
+  namespace: biometria-1n
+spec:
+  ingressClassName: nginx          # el de su clúster
+  tls:
+    - hosts: [biometria.ejemplo.com]
+      secretName: alnitak-tls      # el secreto con su certificado
+  rules:
+    - host: biometria.ejemplo.com
+      http:
+        paths:
+          - path: /api/
+            pathType: Prefix
+            backend: { service: { name: api-1n, port: { number: 8080 } } }
+          - path: /auth/
+            pathType: Prefix
+            backend: { service: { name: api-1n, port: { number: 8080 } } }
+          - path: /
+            pathType: Prefix
+            backend: { service: { name: consola-1n, port: { number: 80 } } }
+```
+
+El orden importa: las rutas más específicas van antes que `/`.
+
+**Cómo saber que quedó bien.** Desde fuera del clúster, contra su host:
+
+```sh
+HOST=biometria.ejemplo.com
+
+# La consola responde en la raíz
+curl -sI "https://$HOST/" | head -1
+
+# La API responde bajo el mismo host
+curl -s "https://$HOST/readyz"
+
+# Y el certificado es válido: sin -k y sin errores
+curl -sS -o /dev/null "https://$HOST/readyz" && echo "TLS correcto"
+```
+
+`/readyz` debe devolver `"status":"ready"`. Si responde la consola en lugar de la API, el reparto de
+rutas está mal: `/api/` y `/auth/` no están llegando al servicio de la API.
+
+<Callout type="info" title="Se puede verificar la instalación sin publicar">
+  Las comprobaciones de la sección 8 se hacen desde dentro del clúster o con
+  `kubectl port-forward`, así que **no hace falta completar este paso para
+  validar** que la instalación funciona:
+
+```sh
+kubectl port-forward -n biometria-1n svc/consola-1n 8080:80
+```
+
+  Es lo razonable en un entorno de validación, donde montar DNS y certificados
+  para tirarlo todo después no aporta. En un despliegue real este paso sí es
+  obligatorio: sin él nadie puede usar la consola.
+</Callout>
 
 ### Paso 11 — Credenciales de operación
 
