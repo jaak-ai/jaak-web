@@ -1894,11 +1894,22 @@ playbook se detiene antes de empezar.
   biométrica** como un alta real: es lo que permite comprobar que la búsqueda y
   la detección de duplicados funcionan.
 
-  El propio playbook **lo borra al terminar**, junto con la credencial de servicio
-  que emitió. Aun así, use preferentemente **un rostro sintético** —generado, no
-  de una persona real— y no la fotografía de alguien del equipo. Evita tener que
-  justificar por qué un dato biométrico personal pasó por un entorno de
-  validación.
+  El playbook borra al terminar **el vector de la galería y la credencial de
+  servicio** que emitió, pero **no el recorte**: la imagen facial cifrada se queda
+  en el contenedor de recortes, con el identificador biométrico como nombre.
+
+  Por eso, use **un rostro sintético** —generado, no de una persona real— y no la
+  fotografía de alguien del equipo. Evita tener que justificar por qué un dato
+  biométrico personal quedó almacenado en un entorno de validación.
+
+  Para retirarlo a mano, el identificador aparece en la salida de la prueba:
+
+```bash
+kubectl -n biometria-1n logs job/pruebas-de-humo | grep -i "id"
+```
+
+  Y con ese identificador, bórrelo del contenedor de recortes con el cliente de su
+  almacén. Está previsto que el playbook lo haga solo en una versión próxima.
 </Callout>
 
 ```bash
