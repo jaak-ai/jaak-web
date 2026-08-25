@@ -278,9 +278,11 @@ Ambos deben completarse antes de continuar. Las variables obligatorias están en
 ./install.sh
 ```
 
-El guion ejecuta las cuatro invocaciones de la sección 7 en orden, tolera únicamente el error
-esperado de la segunda, ejecuta las verificaciones y comprueba al terminar que el estado quedó
-íntegro. Termina con `INSTALACION COMPLETA` y código de salida 0; cualquier otro final detiene la
+Antes de empezar comprueba la versión de Terraform, que el contexto de destino sea el indicado, que
+la configuración sea coherente entre los dos ficheros y que las credenciales del registro estén
+puestas. Después ejecuta las cuatro invocaciones de la sección 7 en orden, tolera únicamente el
+error esperado de la segunda —y solo si **todos** los errores de esa etapa son del tipo esperado—,
+ejecuta las verificaciones y comprueba al terminar que el estado quedó íntegro. Termina con `INSTALACION COMPLETA` y código de salida 0; cualquier otro final detiene la
 instalación e indica la causa.
 
 Si se ha configurado una imagen de prueba, ejecuta además las pruebas funcionales: inicio de sesión,
@@ -1219,8 +1221,12 @@ omisión. Lo que identifica al error esperado es la **espera agotada de un despl
 de réplicas ni el componente concreto.
 
 Si el error de esta etapa es de otra naturaleza —una variable inválida, un recurso que ya existe, un
-fallo de autenticación—, deténgase y resuélvalo antes de seguir. `install.sh` lo distingue y aborta
-mostrando las líneas de error de Terraform.
+fallo de autenticación—, deténgase y resuélvalo antes de seguir.
+
+`install.sh` lo distingue contando los errores y las esperas agotadas, y solo continúa si coinciden.
+Un error de otro tipo que llegue **acompañando** a las esperas esperadas detiene igualmente la
+instalación: el despliegue habría quedado incompleto de una forma que los pasos siguientes no
+comprueban.
 
 **Por qué hace falta la cuarta.** Al fallar la etapa 2, Terraform marca el Deployment de la API como
 dañado, y a partir de ahí cualquier `plan` propone reemplazarlo. La cuarta invocación lo recrea con
