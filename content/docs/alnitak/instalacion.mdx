@@ -454,6 +454,13 @@ Cree su clase `gp3` con la marca puesta y verifique que es la única que la tien
 `kubernetes.io/aws-ebs`, no el driver `ebs.csi.aws.com` que se acaba de instalar, así que no cumpliría
 los requisitos de la sección 3.1.
 
+**Los volúmenes de EBS siguen facturando después de desinstalar.** La clase que exige la sección 3.1
+lleva `reclaimPolicy: Retain`, y eso significa que los discos de Elasticsearch sobreviven a
+`terraform destroy` y a la eliminación del clúster. Quedan en estado `available` —existen, no están
+conectados a nada y se cobran igual— y nada los retira solo. Es del mismo tipo que el aviso del
+driver de EBS: no falla, no avisa y se descubre tarde, en este caso en la factura. El procedimiento
+para retirarlos está en la [sección 12](#12-desinstalación).
+
 **Las imágenes tienen que estar en un registro que el clúster alcance.** Es obvio dicho así, y
 aun así es el fallo que más cuesta ver al pasar de una máquina a un clúster de verdad: en un k3s de
 un nodo, una imagen construida en esa máquina ya está en su almacén local y una referencia como
@@ -550,6 +557,16 @@ dividido entre sus nodos de datos.
   pod que lo va a usar.
 - **`reclaimPolicy: Retain`** — es la galería biométrica: eliminar un `PersistentVolumeClaim` no debe
   borrar los datos.
+
+<Callout type="warning" title="Lo que `Retain` implica al desinstalar">
+  `Retain` protege los datos mientras el sistema vive, y por eso se pide. Su
+  contrapartida es que **los volúmenes sobreviven a todo**: a borrar el
+  `PersistentVolumeClaim`, a borrar el namespace y a eliminar el clúster entero.
+  Nada los retira automáticamente, y en una nube un volumen que existe se factura
+  aunque no esté conectado a nada. Después de desinstalar quedan además copias
+  completas de la galería en esos volúmenes. Retirarlos es un paso manual y
+  deliberado: está en la [sección 12](#12-desinstalación).
+</Callout>
 
 #### Manifiesto de ejemplo
 
@@ -977,7 +994,10 @@ Son dos ficheros y se copian de sus plantillas, como indica la sección 0.
 | `es_storage_class` | Nombre de la StorageClass de la sección 3.1 |
 | `postgres` | Objeto con `host`, `dbname`, `user`, `password`; opcionalmente `port` (5432) y `sslmode` (`require`) |
 | `redis_addr` | `host:puerto` de Redis |
+| `redis_password` | Credencial de Redis. Vacía se conecta sin autenticar; tiene que coincidir con lo que exija el servidor |
+| `redis_username` | Usuario de Redis. Solo con las ACL de Redis 6+; con `requirepass` se deja vacío |
 | `cropstore` | Objeto con `endpoint`, `region`, `bucket`, `access_key`, `secret_key`, `crop_key`; opcionalmente `use_ssl` (`true`) |
+| `respaldos` | Objeto con `bucket` y, según el caso, `region`, `endpoint`, `access_key`, `secret_key`. Con `bucket` vacío **no hay copias automáticas de la galería** |
 | `host_publico` | Host único donde se publican consola y API |
 | `sso` | Objeto con `client_id`, `client_secret`, `dominios`, `operadores`. **Obligatorio aunque no use Google**: ver el aviso de abajo |
 
@@ -1767,13 +1787,69 @@ funcionando y solo se pausan las altas.
 
 ## 10. Actualizaciones y respaldo
 
-**Actualizar** es cambiar la etiqueta de la imagen y reiniciar el despliegue. **⚠ Advertencia: el
-vectorizador corre hoy con una etiqueta mutable, no versionada.** Eso impide saber qué versión
-está en ejecución y hacer una vuelta atrás determinista. Antes de entregar hay que resolverlo.
+**Actualizar** es cambiar la etiqueta de la imagen en la configuración y volver a aplicar. Fije
+siempre una etiqueta de versión concreta y no una etiqueta móvil: solo así se sabe qué versión está
+en ejecución y se puede volver atrás a una anterior de forma determinista.
 
-**Respaldar** son tres cosas distintas: los snapshots de Elasticsearch al bucket, el respaldo de
-PostgreSQL por los medios del cliente, y el bucket de recortes, que es el único origen para
-re-vectorizar. Redis no necesita respaldo. **⚠ No hay snapshots automáticos configurados hoy.**
+**Respaldar** son tres cosas distintas, con orígenes y responsables diferentes:
+
+- **La galería en Elasticsearch**, mediante instantáneas al contenedor de respaldos. La instalación
+  las deja configuradas y programadas; el detalle está más abajo.
+- **PostgreSQL**, por los medios del cliente. Si es un servicio administrado, sus propias copias
+  automáticas sirven.
+- **El contenedor de recortes**, que es el único origen para volver a vectorizar la galería si
+  hiciera falta reconstruirla.
+
+Redis no necesita respaldo: solo guarda estado de sesión, que se regenera.
+
+#### Instantáneas de la galería
+
+Se configuran con la variable `respaldos` (sección 6.3). La instalación registra el repositorio,
+comprueba que Elasticsearch puede **escribir** en él —no solo alcanzarlo—, programa la política y
+toma una primera copia de comprobación, de modo que la instalación no termina sin haber demostrado
+que el respaldo funciona.
+
+Por omisión toma una copia diaria a la 01:30 y conserva 30 días, con un mínimo de 5 copias y un
+máximo de 50 aunque caduquen. La programación y la retención se ajustan en el fichero de
+configuración del playbook.
+
+<Callout type="warning" title="Con `bucket` vacío no hay copias">
+  Si no configura contenedor de respaldos, la instalación funciona igual pero la
+  galería queda **sin copia de seguridad**. La única forma de recuperarla sería
+  volver a vectorizar desde el contenedor de recortes, lo que exige que ese
+  contenedor siga existiendo y lleva tanto tiempo como la carga original. El
+  playbook lo avisa al terminar.
+</Callout>
+
+Las credenciales del contenedor no viajan en la petición: Elasticsearch solo las lee de su almacén
+seguro interno, y la instalación las deposita ahí. En AWS pueden dejarse vacías si el rol de los
+nodos ya permite escribir en el contenedor.
+
+**Comprobar que las copias se están tomando.** Desde un pod de Elasticsearch:
+
+```bash
+kubectl exec -n datos elasticsearch-es-data-0 -- \
+  curl -sk -u elastic:$CLAVE https://localhost:9200/_slm/policy/galeria
+```
+
+Interesa `last_success`, con la fecha de la última copia correcta, y que `last_failure` no sea más
+reciente. Para ver las copias existentes:
+
+```bash
+kubectl exec -n datos elasticsearch-es-data-0 -- \
+  curl -sk -u elastic:$CLAVE 'https://localhost:9200/_snapshot/respaldos/_all?verbose=false'
+```
+
+**Forzar una copia** fuera de programación, por ejemplo antes de una actualización:
+
+```bash
+kubectl exec -n datos elasticsearch-es-data-0 -- \
+  curl -sk -u elastic:$CLAVE -X POST https://localhost:9200/_slm/policy/galeria/_execute
+```
+
+**Restaurar** exige cerrar antes el índice o restaurar con otro nombre, porque Elasticsearch no
+sobrescribe un índice abierto. Es una operación que conviene ensayar una vez en un entorno de prueba
+antes de necesitarla de verdad.
 
 ---
 
@@ -1789,13 +1865,16 @@ preferencia: si viven en hosts distintos, las peticiones de la consola fallan en
 disponibles son Google Workspace y usuario con contraseña. No hay integración con directorios
 corporativos, así que las cuentas de operación se administran desde la propia consola.
 
-**Redis debe quedar aislado por política de red, no solo por no publicarlo.** Guarda estado de
-sesión compartido entre réplicas de la API y **no exige credencial**, de modo que cualquier carga que
-se ejecute en el clúster puede alcanzarlo si nada lo impide. No basta con no exponerlo al exterior:
-en un clúster compartido con otros equipos o aplicaciones, eso deja el estado de sesión al alcance de
-cualquiera de ellos.
+**Redis debe pedir credencial y quedar además aislado por política de red.** Guarda el estado de
+sesión compartido entre réplicas de la API, así que cualquier carga que se ejecute en el clúster
+puede alcanzarlo si nada lo impide. En un clúster compartido con otros equipos o aplicaciones, no
+exponerlo al exterior no basta.
 
-Restrinja quién puede hablar con él. Esta política solo admite tráfico desde los pods de la API:
+Las dos medidas son independientes y conviene aplicar ambas. **La credencial** se configura en
+`redis_password` (sección 6.3) y tiene que coincidir con la que exija el propio Redis: si el servidor
+la pide y la configuración no la lleva, la API no puede conectarse y el estado cae a memoria de
+proceso, lo que con más de una réplica produce datos parciales en la consola. **La política de red**
+restringe quién puede siquiera abrir el puerto; esta solo admite tráfico desde los pods de la API:
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -1820,10 +1899,72 @@ spec:
 
 <Callout type="warning" title="Compruebe que su clúster aplica políticas de red">
   Una `NetworkPolicy` en un clúster sin complemento que la implemente **se acepta
-  y no hace nada**: el objeto existe, no da error, y el tráfico sigue pasando.
-  En EKS con el complemento de red de AWS hay que habilitarlas explícitamente.
-  Verifíquelo antes de darlo por resuelto.
+  y no hace nada**: el objeto existe, `kubectl` responde `created`, y el tráfico
+  sigue pasando. El síntoma de que no se aplica es que no hay síntoma, así que
+  compruébelo antes de darlo por resuelto.
 </Callout>
+
+**Comprobación que sirve en cualquier clúster.** No depende del proveedor: se crea un destino, se
+comprueba que responde, se le aplica una política que no admite a nadie y se comprueba que deja de
+responder. Si sigue respondiendo, el clúster no está aplicando las políticas.
+
+```sh
+kubectl create namespace prueba-politicas
+kubectl -n prueba-politicas run destino --image=nginx:alpine --labels=app=destino --port=80
+kubectl -n prueba-politicas expose pod destino --port=80
+kubectl -n prueba-politicas wait --for=condition=Ready pod/destino --timeout=120s
+
+# Sin política todavía: debe imprimir 200.
+kubectl -n prueba-politicas run sonda --rm -i --restart=Never --image=curlimages/curl:8.10.1 -- \
+  curl -s -o /dev/null -w '%{http_code}\n' --max-time 5 http://destino
+
+# Una política que no admite tráfico de nadie.
+kubectl -n prueba-politicas apply -f - <<'EOF'
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: denegar-todo
+  namespace: prueba-politicas
+spec:
+  podSelector:
+    matchLabels: { app: destino }
+  policyTypes: [Ingress]
+EOF
+
+# Ahora debe agotar el tiempo de espera y no imprimir 200.
+kubectl -n prueba-politicas run sonda --rm -i --restart=Never --image=curlimages/curl:8.10.1 -- \
+  curl -s -o /dev/null -w '%{http_code}\n' --max-time 5 http://destino
+
+kubectl delete namespace prueba-politicas
+```
+
+Si la segunda comprobación vuelve a imprimir `200`, las políticas no se están aplicando y la del
+apartado anterior tampoco estará protegiendo nada.
+
+**En EKS con el complemento de red de AWS.** El dato no está donde se esperaría. `aws eks
+describe-addon` devuelve `configurationValues: None` en un clúster recién creado, y la variable
+`NETWORK_POLICY_ENFORCING_MODE=standard` que sí aparece en el `DaemonSet` despista porque, leída
+sola, sugiere lo contrario. El valor que manda está en los argumentos del contenedor
+`aws-eks-nodeagent`:
+
+```sh
+kubectl get ds aws-node -n kube-system \
+  -o jsonpath='{.spec.template.spec.containers[?(@.name=="aws-eks-nodeagent")].args}' \
+  | tr ',' '\n' | grep enable-network-policy
+```
+
+En un clúster EKS recién creado con el complemento por omisión esto devuelve
+`--enable-network-policy=false`, es decir: **desactivadas**. Se habilitan actualizando el
+complemento y esperando a que el `DaemonSet` se reinicie:
+
+```sh
+aws eks update-addon --cluster-name <clúster> --addon-name vpc-cni --region <región> \
+  --configuration-values '{"enableNetworkPolicy":"true"}' --resolve-conflicts PRESERVE
+
+kubectl -n kube-system rollout status ds/aws-node --timeout=300s
+```
+
+Repita después la comprobación anterior: debe devolver `--enable-network-policy=true`.
 
 El mismo criterio aplica al vectorizador y a Elasticsearch: se publican únicamente consola y API,
 según la sección 3.2, y conviene acotar además quién puede hablar con ellos dentro del clúster.
@@ -1860,6 +2001,81 @@ datos, como indica la sección 8.
 **Estado del clúster de Elasticsearch.** El estado `green` requiere al menos tantos nodos de datos
 como réplicas configuradas. Un clúster con menos nodos permanecerá en `yellow` de forma
 permanente, lo que es funcionalmente correcto pero conviene tenerlo en cuenta al dimensionar.
+
+---
+
+## 12. Desinstalación
+
+Desinstalar no es solo deshacer lo que creó Terraform. Los volúmenes de la galería tienen
+`reclaimPolicy: Retain` por decisión de diseño (sección 3.1), así que **sobreviven al desmontaje** y
+hay que retirarlos a propósito. Si se salta este apartado, la cuenta sigue facturando volúmenes
+sueltos y las copias de la galería siguen existiendo después de creer haberlo borrado todo.
+
+**Paso 1. Retirar los componentes.**
+
+```sh
+cd terraform
+terraform destroy
+```
+
+Terraform termina con `Destroy complete!` y **no menciona los volúmenes**: no son suyos, los creó
+Kubernetes bajo demanda. Que este paso acabe sin advertencias no significa que no quede nada.
+
+**Paso 2. Localizar y borrar los `PersistentVolume` que quedaron.**
+
+Con la clase eliminada, los volúmenes pasan a estado `Released`, que quiere decir «ya no lo usa
+nadie y sigo aquí»:
+
+```sh
+kubectl get pv -o custom-columns=\
+'NOMBRE:.metadata.name,ESTADO:.status.phase,RECLAMO:.spec.persistentVolumeReclaimPolicy,PVC:.spec.claimRef.name'
+```
+
+Los que aparezcan en `Released` con `Retain` y un `PVC` que empiece por `elasticsearch-data-` son de
+esta instalación. Compruebe la lista antes de borrar —el clúster puede alojar otras cosas— y
+elimínelos:
+
+```sh
+kubectl delete pv <nombre>
+```
+
+**Paso 3. Borrar los volúmenes del proveedor.**
+
+Borrar el `PersistentVolume` **no borra el disco subyacente**: con `Retain`, Kubernetes se
+desentiende y el volumen queda en la cuenta. En AWS aparecen en estado `available`, que significa
+«existe, no está conectado a nada y se cobra igual»:
+
+```sh
+aws ec2 describe-volumes --region <región> \
+  --filters "Name=status,Values=available" \
+  --query 'Volumes[].{id:VolumeId,tam:Size,pvc:Tags[?Key==`kubernetes.io/created-for/pvc/name`]|[0].Value}' \
+  --output table
+
+aws ec2 delete-volume --region <región> --volume-id <id>
+```
+
+La columna `pvc` identifica cuál corresponde a esta instalación. En otros proveedores el equivalente
+es la lista de discos no conectados de la cuenta.
+
+<Callout type="warning" title="Esos volúmenes contienen la galería">
+  No son datos derivados: son los vectores biométricos. Mientras existan, existe
+  una copia utilizable de la galería fuera de todo control de acceso del sistema,
+  porque el sistema ya no está. Si el desmontaje es definitivo, bórrelos; si es
+  temporal y quiere conservarlos, déjelos anotados en algún sitio, porque nada
+  más los va a recordar.
+</Callout>
+
+**Paso 4. Lo que no gestiona este procedimiento.** Si usó servicios administrados en lugar de las
+dependencias del apéndice A, la base de datos, el caché y el contenedor de objetos son recursos
+propios de su cuenta y se retiran por separado. Lo mismo aplica al contenedor de recortes y al de
+respaldos: no los crea la instalación y no los borra.
+
+**Comprobación final.** Ninguno de estos comandos debe devolver nada de la instalación:
+
+```sh
+kubectl get pv | grep Released
+aws ec2 describe-volumes --region <región> --filters "Name=status,Values=available" --output table
+```
 
 ---
 
@@ -2067,6 +2283,14 @@ sobre las tablas que crearán las migraciones futuras.
 
 ### Redis
 
+Elija una credencial y créela como secreto. Redis guarda el estado de sesión compartido entre
+réplicas de la API, así que conviene que pida autenticación incluso en un entorno de prueba:
+
+```bash
+kubectl create secret generic redis-credencial -n prerrequisitos \
+  --from-literal=password="$(openssl rand -base64 24)"
+```
+
 Guarde este manifiesto como `redis.yaml`:
 
 ```yaml
@@ -2086,10 +2310,20 @@ spec:
       containers:
         - name: redis
           image: redis:7.4.11-alpine
+          env:
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef: { name: redis-credencial, key: password }
+          # --requirepass se pasa por argumento leyendo la variable, para que la
+          # credencial no quede escrita en el manifiesto.
+          command: ["sh", "-c"]
+          args: ['exec redis-server --requirepass "$REDIS_PASSWORD"']
           ports:
             - containerPort: 6379
           readinessProbe:
-            exec: { command: ["redis-cli", "ping"] }
+            # Sin -a la sonda recibe NOAUTH y el pod nunca llega a Ready.
+            exec:
+              command: ["sh", "-c", 'redis-cli -a "$REDIS_PASSWORD" ping']
 ---
 apiVersion: v1
 kind: Service
@@ -2104,8 +2338,19 @@ spec:
 
 ```bash
 kubectl apply -f redis.yaml
-kubectl wait --for=condition=available deployment/redis -n prerrequisitos --timeout=180s
+kubectl rollout status deployment/redis -n prerrequisitos --timeout=180s
 ```
+
+Recupere la credencial para ponerla en la configuración:
+
+```bash
+kubectl get secret redis-credencial -n prerrequisitos \
+  -o jsonpath='{.data.password}' | base64 -d; echo
+```
+
+Ese valor es el que va en `redis_password` (sección 6.3). Si prefiere un Redis sin autenticación,
+deje `redis_password` vacío y retire `--requirepass` del manifiesto: las dos cosas tienen que
+coincidir o la API no podrá conectarse.
 
 Sin persistencia a propósito: Redis guarda aquí estado compartido entre réplicas, no datos que haya
 que conservar.
@@ -2256,6 +2501,8 @@ las dos pimientas— no los cubre este apéndice y se rellenan según la secció
 | `postgres.password` | la contraseña de servicio que anotó |
 | `postgres.sslmode` | `disable` — este despliegue no expone TLS |
 | `redis_addr` | `redis.prerrequisitos.svc.cluster.local:6379` |
+| `redis_password` | la credencial de Redis que recuperó del secreto `redis-credencial` |
+| `redis_username` | vacío — el manifiesto usa `requirepass`, no ACL |
 | `cropstore.endpoint` | `minio.prerrequisitos.svc.cluster.local:9000` — sin esquema |
 | `cropstore.region` | `us-east-1` — el almacén no la usa, pero el cliente de S3 exige un valor |
 | `cropstore.bucket` | `recortes-biometricos` |
