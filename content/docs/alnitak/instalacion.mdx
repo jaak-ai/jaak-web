@@ -476,7 +476,7 @@ los dan servicios gestionados en vez de pods.
 | Almacén S3 | **S3 nativo** | Sin cambio de código: la API habla el protocolo de S3 |
 | GPU | grupo de nodos con instancias `g6` | Para producción. La validación se hizo sin GPU |
 
-**El aviso que ahorra media hora de desconcierto:** un EKS recién creado **no trae el driver de EBS**.
+**Requisito de almacenamiento en EKS:** un clúster recién creado **no incluye el driver de EBS**.
 Sin él, cualquier `PersistentVolumeClaim` se queda en `Pending` para siempre, y lo que se ve es que
 Elasticsearch no arranca —el pod nunca se programa— sin ningún error que apunte al disco. Hay que
 instalar el complemento `aws-ebs-csi-driver` **antes** de la sección 7.
@@ -506,8 +506,8 @@ conectados a nada y se cobran igual— y nada los retira solo. Es del mismo tipo
 driver de EBS: no falla, no avisa y se descubre tarde, en este caso en la factura. El procedimiento
 para retirarlos está en la [sección 12](#12-desinstalación).
 
-**Las imágenes tienen que estar en un registro que el clúster alcance.** Es obvio dicho así, y
-aun así es el fallo que más cuesta ver al pasar de una máquina a un clúster de verdad: en un k3s de
+**El clúster debe poder acceder al registro de imágenes.** Este requisito cambia al pasar de una
+máquina a un clúster: en un k3s de
 un nodo, una imagen construida en esa máquina ya está en su almacén local y una referencia como
 `docker.io/library/jaak-alnilam-api:main-check` funciona sin registro ninguno. En un Kubernetes
 gestionado los nodos son otras máquinas y esa misma referencia no resuelve en ningún sitio: el pod
@@ -685,7 +685,7 @@ explícitamente: el módulo de Terraform lo hace por la variable `gpu_runtime_cl
 
 Sin ella el pod arranca con `runc`, sin las librerías de CUDA montadas, y **muere con un segfault
 dentro de `libonnxruntime_providers_cuda.so`**. El log se corta tras dos líneas y no menciona nada
-del runtime. Es el error más caro de diagnosticar de toda la instalación.
+del runtime. Revise esta configuración antes de investigar otros componentes.
 
 **Las etiquetas del nodo.** El selector por omisión busca `nvidia.com/gpu.present=true`, que la
 pone el detector de características que acompaña al GPU Operator. Con un device plugin instalado a
@@ -784,7 +784,7 @@ El administrador invita por correo desde la consola y el sistema devuelve **dos 
 entrar con Google y otro para fijar una contraseña. Se manda el que corresponda a esa persona; el
 sistema no puede saber cuál.
 
-El invitado abre su enlace, elige su contraseña y **queda dentro**. La contraseña no pasa nunca por
+La persona invitada abre su enlace, define su contraseña e inicia sesión. La contraseña no pasa por
 manos del administrador.
 
 **Relevante en una red cerrada:** si no hay servicio de correo configurado, los enlaces de
@@ -894,7 +894,7 @@ Las dos tienen el mismo formato: al menos 32 bytes en **base64url sin relleno**.
 un valor con significado: deshabilitan su vía. `password_pepper` vacía significa «este
 despliegue no usa acceso con contraseña», y el endpoint responde 501.
 
-**La pimienta de las API keys es obligatoria y es fácil de olvidar.** Sin ella la autenticación por
+**La pimienta de las API keys es obligatoria y debe registrarse durante la configuración.** Sin ella la autenticación por
 API key no existe: no se pueden emitir credenciales ni validar las que haya, y la consola con SSO de
 Google queda como única forma de entrar. Como este manual promete integraciones máquina a máquina
 por API key, no es opcional. Dos detalles de formato que cuestan un rato: tiene que ser **base64url
@@ -1272,7 +1272,7 @@ misma etapa. Sobre un clúster limpio, una sola invocación falla.
 **Por qué la etapa 2 termina en error.** Terraform espera a que los despliegues completen y ninguno
 lo consigue todavía: la API monta el certificado de Elasticsearch, que aún no existe —lo publica
 Ansible en la etapa 3—, y el vectorizador tarda más de lo que dura la espera en su primer arranque.
-Agota el plazo y devuelve error. **No hay nada roto.**
+Agota el plazo y devuelve error. **Este resultado es esperado si los únicos errores son los tiempos de espera descritos a continuación.**
 
 Salen **dos** errores, uno por cada despliegue, con esta forma:
 
@@ -1657,7 +1657,7 @@ anterior lo usa. Si ejecuta `curl` aquí, el error dice que el ejecutable no exi
 servicio falle.
 
 Use **`127.0.0.1`, no `localhost`**. `localhost` resuelve primero a `::1` y el proceso escucha solo
-en IPv4, de modo que con el servicio en perfecto estado responde:
+en IPv4, de modo que puede responder así aunque el servicio esté disponible:
 
 ```
 wget: can't connect to remote host: Connection refused
@@ -2200,7 +2200,7 @@ MINIO_PASS=$(leer minio-password)
 RUNTIME_PASS=$(leer runtime-password)
 ```
 
-<Callout type="warning" title="Una variable vacía aquí no da error, y deja el sistema roto">
+<Callout type="warning" title="Una variable vacía se acepta y deja una configuración inválida">
   Si `RUNTIME_PASS` está vacía, el comando que crea el rol de servicio se
   convierte en `CREATE ROLE app_runtime LOGIN PASSWORD ''` y **PostgreSQL lo
   acepta**: el rol queda con contraseña vacía y la instalación no reporta nada.
@@ -2612,8 +2612,8 @@ entender antes de cambiarlo:
 
 - La instalación solicita unas **3,5 vCPU** entre todos sus componentes, con el nodo de datos de
   Elasticsearch pidiendo **4 vCPU en un solo pod**.
-- Por eso una máquina de exactamente 4 vCPU **no vale nunca**: el sistema del clúster ya consume
-  parte, y ese pod no entra. Es el caso que la sección 3.0 describe.
+- Por eso una máquina de exactamente 4 vCPU no admite ese pod: el sistema del clúster ya consume
+  parte de la capacidad. Es el caso que describe la sección 3.0.
 - La cuota por omisión de una cuenta nueva de AWS son **8 vCPU** en instancias bajo demanda, así
   que no caben dos máquinas de este tamaño sin pedir ampliación.
 

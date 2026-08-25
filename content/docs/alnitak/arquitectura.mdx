@@ -79,12 +79,12 @@ su tratamiento por el flujo del cliente. El umbral por defecto es `0.82`,
 ajustable en la configuración del despliegue o por petición. Cada despliegue
 debe validar sus umbrales antes de usarlos para automatizar decisiones.
 
-<Callout type="tip" title="El score que recibes ya está normalizado">
+<Callout type="tip" title="El score de respuesta está normalizado">
 Los motores de búsqueda vectorial no siempre devuelven el coseno tal cual:
 según la métrica configurada pueden entregarlo reescalado. **La API se encarga
 de la normalización**, de modo que el campo `score` de la respuesta y el
-`threshold` que envías están siempre en la misma escala [0, 1]. No tienes que
-convertir nada.
+`threshold` de la petición usan la misma escala [0, 1]. No requiere una
+conversión adicional.
 </Callout>
 
 ## Alta con control antiduplicado

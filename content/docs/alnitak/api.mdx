@@ -289,8 +289,8 @@ Todos los errores comparten el mismo sobre:
 | `internal` | `500` | Error no clasificado | Revisar logs con el `query_id` |
 
 <Callout type="warning" title="429 antes de tiempo">
-Un `429` con el servicio lejos de su capacidad casi siempre significa que todo
-el tráfico entra por un gateway y comparte la cuota de una sola IP: es
-configuración del limitador, no saturación. Lo cubre el manual de configuración
-de la entrega.
+Un `429` con el servicio lejos de su capacidad puede indicar que el tráfico
+entra por un gateway y comparte la cuota de una sola IP. Revise primero la
+configuración del limitador antes de atribuirlo a saturación. El manual de
+configuración de la entrega describe ese ajuste.
 </Callout>

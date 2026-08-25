@@ -65,10 +65,10 @@ export function TableOfContents() {
   }
 
   return (
-    <nav className="w-56 flex-shrink-0 hidden xl:block">
-      <div className="sticky top-32 h-[calc(100vh-8rem)] overflow-y-auto">
-        <p className="mb-4 text-sm font-semibold text-gray-900">
-          En esta pagina
+    <nav className="docs-toc w-56 flex-shrink-0 hidden xl:block">
+      <div className="docs-toc__inner sticky overflow-y-auto">
+        <p className="docs-toc__title mb-4 text-sm font-semibold">
+          En esta página
         </p>
         <ul className="space-y-2 text-sm">
           {headings.map((heading) => (
@@ -81,8 +81,8 @@ export function TableOfContents() {
                 className={`
                   block py-1 transition-colors
                   ${activeId === heading.id
-                    ? 'font-medium text-[#0066ff]'
-                    : 'text-gray-600 hover:text-[#0066ff]'
+                    ? 'docs-toc__link--active'
+                    : 'docs-toc__link'
                   }
                 `}
                 onClick={(e) => {

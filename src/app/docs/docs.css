@@ -1,0 +1,79 @@
+.docs-shell {
+  --docs-ink: #17213b;
+  --docs-muted: #66738a;
+  --docs-rule: #e4eaf3;
+  --docs-paper: #ffffff;
+  --docs-panel: #f7f9fc;
+  --docs-link: #0066ff;
+  --docs-link-tint: #edf4ff;
+  background: var(--docs-paper);
+  color: var(--docs-ink);
+}
+
+.docs-header {
+  height: 72px;
+  border-bottom: 1px solid var(--docs-rule);
+  background: color-mix(in srgb, var(--docs-paper) 94%, transparent);
+  backdrop-filter: blur(14px);
+}
+
+.docs-header__inner { max-width: 1680px; margin: 0 auto; }
+.docs-header__rule { background: var(--docs-rule); }
+.docs-header__section, .docs-header__login { color: var(--docs-ink); }
+.docs-header__section:hover, .docs-header__login:hover { color: var(--docs-link); }
+.docs-header__cta { border-radius: 6px; background: var(--docs-link); color: #fff; }
+.docs-header__cta:hover { background: #0052cc; }
+
+.docs-frame { padding-top: 72px; min-height: 100vh; }
+.docs-sidebar { border-right: 1px solid var(--docs-rule); background: var(--docs-panel); }
+.docs-sidebar__inner, .docs-toc__inner { top: 104px; height: calc(100vh - 104px); }
+.docs-sidebar__back { color: var(--docs-muted); }
+.docs-sidebar__back:hover { color: var(--docs-link); }
+.docs-sidebar__title { color: var(--docs-ink); letter-spacing: .12em; }
+
+.docs-nav-group, .docs-nav-item { color: var(--docs-muted); border-radius: 4px; }
+.docs-nav-group:hover, .docs-nav-item:hover { color: var(--docs-link); background: rgba(0, 102, 255, .045); }
+.docs-nav-group--active { color: var(--docs-link); }
+.docs-nav-item--active { position: relative; color: var(--docs-link); font-weight: 700; background: var(--docs-link-tint); }
+.docs-nav-item--active::before { content: ''; position: absolute; left: -12px; top: 4px; bottom: 4px; width: 2px; background: var(--docs-link); }
+
+.docs-page { max-width: 1600px; margin: 0 auto; }
+.docs-article { padding: 8px 0 64px; }
+.docs-breadcrumb { color: var(--docs-muted); }
+.docs-breadcrumb a:hover { color: var(--docs-link); }
+.docs-breadcrumb__current { color: var(--docs-ink); }
+.docs-eyebrow { border: 1px solid #cfe0ff; border-radius: 4px; background: var(--docs-link-tint); color: #0052cc; letter-spacing: .12em; }
+
+.docs-prose { color: #43506a; font-size: 1rem; line-height: 1.8; }
+.docs-prose :where(h1, h2, h3, h4) { color: var(--docs-ink); letter-spacing: -.025em; scroll-margin-top: 104px; }
+.docs-prose h1 { margin-bottom: 1.25rem; font-size: clamp(2.25rem, 4vw, 3.25rem); font-weight: 800; line-height: 1.08; }
+.docs-prose h2 { margin-top: 3.75rem; padding-top: .5rem; border-top: 1px solid var(--docs-rule); font-size: 1.7rem; }
+.docs-prose h3 { margin-top: 2rem; font-size: 1.2rem; }
+.docs-prose :where(a) { color: var(--docs-link); font-weight: 600; text-underline-offset: 3px; }
+.docs-prose :where(code):not(pre code) { border: 1px solid var(--docs-rule); border-radius: 4px; background: #f4f7fb; color: #293a58; font-weight: 600; }
+.docs-prose :where(pre) { border: 1px solid #dce5f0; border-radius: 8px; background: #111b31; }
+.docs-prose :where(table) { border-color: var(--docs-rule); font-size: .9rem; }
+.docs-prose :where(th) { color: var(--docs-ink); background: #f7f9fc; }
+.docs-prose :where(td, th) { border-color: var(--docs-rule); }
+.docs-prose iframe { margin: 2rem 0; border: 1px solid var(--docs-rule) !important; border-radius: 8px; background: var(--docs-panel); }
+
+.docs-toc { border-left: 1px solid var(--docs-rule); padding-left: 24px; }
+.docs-toc__title { color: var(--docs-ink); }
+.docs-toc__link, .docs-toc__link--active { border-left: 1px solid transparent; color: var(--docs-muted); }
+.docs-toc__link:hover { color: var(--docs-link); }
+.docs-toc__link--active { border-left-color: var(--docs-link); color: var(--docs-link); font-weight: 600; }
+
+.docs-pagination { border-top: 1px solid var(--docs-rule); }
+.docs-pagination__label { color: var(--docs-muted); }
+.docs-pagination__title { color: var(--docs-ink); }
+.docs-pagination__link:hover :is(.docs-pagination__label, .docs-pagination__title) { color: var(--docs-link); }
+
+@media (max-width: 1279px) { .docs-page { max-width: 1100px; } }
+@media (max-width: 1023px) { .docs-page { padding: 32px 24px; } }
+@media (max-width: 640px) {
+  .docs-header__inner { padding: 0 16px; }
+  .docs-header__logo img { height: 26px; width: auto; }
+  .docs-page { padding: 24px 20px; }
+  .docs-article { padding-top: 0; }
+  .docs-prose h1 { font-size: 2rem; }
+}
