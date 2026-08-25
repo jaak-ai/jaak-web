@@ -17,6 +17,9 @@ unlisted: true
   ]}
 />
 
+
+Términos que no reconozcas: [Glosario](/docs/alnitak/glosario).
+
 Controles de seguridad de **JAAK Alnitak** y qué debe aportar la
 infraestructura del cliente para que operen de extremo a extremo.
 
@@ -218,7 +221,7 @@ cliente debe proveer:
 | Credencial de Elasticsearch de mínimo privilegio | Acotada al índice de la galería, con caducidad |
 | Rate limit ajustado al dimensionado | Con `trusted_proxies` si hay gateway delante |
 | Auditoría replicándose a WORM/SIEM | Verificar que llegan eventos |
-| Cadena de auditoría íntegra | Ejecutar el verificador |
+| Cadena de auditoría íntegra | Ejecutar la verificación de la cadena — pide el procedimiento vigente al equipo de JAAK: hoy no hay comando documentado, ver [Operación → Auditoría](/docs/alnitak/operacion#auditoría) |
 
 Cada comprobación de esta tabla se corresponde con un parámetro concreto: los
 nombres, sus valores y sus variables `ALNILAM_*` están en

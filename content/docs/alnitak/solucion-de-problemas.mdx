@@ -50,13 +50,25 @@ de una petición.
 
 | `/readyz` dice | Ve a |
 |---|---|
-| Vectorizador en falso | [El vectorizador no responde](#503-vectorizer_unavailable) |
-| Galería en falso | [La galería no responde](#503-gallery_unavailable) |
+| `checks.vectorizer: false` | [El vectorizador no responde](#503-vectorizer_unavailable) |
+| `checks.elasticsearch: false` | [La galería no responde](#503-gallery_unavailable) |
+| `gallery_blocked: true` | [La API no arranca](#la-api-no-arranca) — colisión de alias, y no se sale reiniciando |
 | Todo afirmativo pero hay errores | [Errores de la API](#errores-de-la-api) |
 | No responde nada | [La API no arranca](#la-api-no-arranca) |
 
 Y si el problema es una consulta concreta, no el servicio: guarda su `query_id`
-y busca el detalle completo en `GET /api/v1/events/{id}`.
+y busca su detalle en `GET /api/v1/events/{id}`.
+
+<Callout type="warning" title="El desglose por etapa hay que capturarlo en el momento">
+`stages[]` viene **solo en la respuesta del `identify`**. El detalle de evento da
+calidad, parámetros, shards, veredicto y candidatos, pero **no** los
+milisegundos por etapa.
+
+Si tu integración no guarda el `stages[]` de las respuestas, una consulta lenta
+ya pasada no se puede desglosar *a posteriori*. Regístralo en tu lado —al menos
+para las que superen tu umbral de latencia— y usa `/metrics/stages` para el
+reparto agregado.
+</Callout>
 
 ---
 
@@ -180,7 +192,7 @@ El síntoma habitual es `/readyz` que nunca pasa y pods reiniciándose.
 
 | Causa | Señal en el log de arranque |
 |---|---|
-| **Colisión de alias**: existe un índice con el nombre del alias | La API lo dice explícitamente. Es un bloqueo del que no se sale reiniciando: hay que [migrar el índice plano](/docs/alnitak/mantenimiento#migrar-un-índice-plano-preexistente) |
+| **Colisión de alias**: existe un índice con el nombre del alias | `/readyz` devuelve `gallery_blocked: true` con Elasticsearch en verde, y la API lo dice en el log. Bloqueo del que no se sale reiniciando: hay que [migrar el índice plano](/docs/alnitak/mantenimiento#migrar-un-índice-plano-preexistente) |
 | La credencial de Elasticsearch no tiene `create_index` y `manage` | `403` al arrancar. La API **monta la galería ella misma** y sin esos privilegios no puede |
 | La CA de Elasticsearch no existe o no parsea | El arranque falla explícitamente. Durante la instalación esto es normal en la etapa 2 |
 | La pimienta no llega a 32 bytes | El arranque falla diciéndolo |
@@ -358,8 +370,9 @@ recoge estas comprobaciones con su forma de ejecutarlas.
 
 Lleva esto y el diagnóstico empieza donde lo dejaste:
 
-1. El **`query_id`** de una consulta afectada, y su detalle de
-   `GET /api/v1/events/{id}`.
+1. El **`query_id`** de una consulta afectada, su detalle de
+   `GET /api/v1/events/{id}` y, si lo registraste, el `stages[]` de su respuesta
+   original.
 2. La salida de **`/readyz`**.
 3. Las **versiones** de las cuatro imágenes desplegadas.
 4. La salida de **`GET /api/v1/gallery/stats`**.

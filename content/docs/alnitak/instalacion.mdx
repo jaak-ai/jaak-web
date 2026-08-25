@@ -53,6 +53,17 @@ suele traer ya alguno. Todos son variables del `tfvars`:
 
 La versión de ECK se fija en `eck_version`.
 
+<Callout type="warning" title="Licencia de Elasticsearch: confírmala con tus términos">
+El instalador **no configura ninguna licencia**: despliega Elasticsearch con el
+nivel por omisión de ECK. Las funciones que Alnitak usa de forma esencial son la
+búsqueda **kNN sobre `dense_vector` con `int8_hnsw`** y las **instantáneas
+programadas** de la galería.
+
+Si tu organización tiene un acuerdo con Elastic, o si tu área legal necesita
+saber qué nivel de licencia cubre este uso, confírmalo antes de instalar: no es
+una decisión que el instalador tome por ti, y este manual no la sustituye.
+</Callout>
+
 <Callout type="info" title="Por qué el preflight exige el CRD de Elasticsearch">
 El preflight comprueba que exista el CRD `elasticsearches.elasticsearch.k8s.elastic.co`,
 y **eso no contradice** que el instalador instale ECK: el preflight corre en la
@@ -280,6 +291,36 @@ reducidos comentado. Con ellos el clúster se queda en estado `yellow`, y **es
 correcto**: no hay nodos para colocar las réplicas. Hay que bajar también las
 peticiones de CPU: reducir solo memoria y disco deja el total en 8,5 vCPU, que
 no cabe en una máquina de 8.
+
+### 4.2 Dimensionado del resto de componentes
+
+Los valores por omisión del instalador, para que sepas qué va a pedirle al
+planificador antes de aplicar:
+
+| Componente | CPU solicitada | CPU límite | Memoria solicitada | Memoria límite | GPU | Réplicas |
+|---|---|---|---|---|---|---|
+| **Vectorizador** | `2` (`vectorizador_cpu`) | `8` | `4Gi` | `12Gi` | **`1`** en modo `cuda` | 1 |
+| **API** | `100m` | `1` | `512Mi` | `1Gi` (`api_memoria_limite`) | — | `2` (`api_replicas`) |
+| **Consola** | `100m` | `500m` | `128Mi` | `512Mi` | — | 1 |
+| **Nodo de datos** | `4` (`es_data_cpu`) | `16` | `100Gi` (`es_data_memoria`) | igual | — | `3` (`es_data_nodes`) |
+| **Nodo maestro** | `500m` (`es_master_cpu`) | `1` | `2Gi` | `2Gi` | — | `3` (`es_master_nodes`) |
+
+Suma de solicitudes con los valores de producción: **~15,8 vCPU y ~305 GiB de
+memoria**, más 1 GPU. Es lo que el clúster tiene que tener asignable antes de
+empezar; si no lo tiene, los pods se quedan en `Pending` y el síntoma no dice
+por qué.
+
+<Callout type="danger" title="No bajes el límite de memoria de la API de 1Gi">
+`512Mi` provocó un `OOMKilled` en el entorno de origen. El pod muere y reaparece
+sin que nada señale la causa como falta de memoria. No lo bajes sin medirlo en
+tu carga.
+</Callout>
+
+<Callout type="info" title="Una GPU por réplica de vectorizador">
+El vectorizador solicita y limita **`nvidia.com/gpu = 1`**: una tarjeta entera
+por réplica, sin compartir. Para alta disponibilidad hacen falta dos nodos con
+GPU, no un nodo con dos procesos.
+</Callout>
 
 <Callout type="warning" title="El modo CPU no sirve para medir">
 `vectorizador_provider = "cpu"` existe para entornos sin tarjeta: no pide

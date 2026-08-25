@@ -287,6 +287,49 @@ al crear el índice. Ver
 Los tres requieren `admin:gallery`. El procedimiento completo, con sus tiempos y
 su rollback, está en [Mantenimiento](/docs/alnitak/mantenimiento).
 
+**Arrancar una re-vectorización** — cuerpo de `POST /gallery/reembed`:
+
+```json
+{
+  "target_index": "galeria_biometrica_v2",
+  "source_index": "galeria_biometrica_v1",
+  "model_version": "<modelo-nuevo>"
+}
+```
+
+Solo `target_index` es obligatorio. La respuesta, y la de
+`GET /gallery/reembed/{id}`, es el estado del trabajo:
+
+```json
+{
+  "id": "job_01J8XM...",
+  "status": "running",
+  "target_index": "galeria_biometrica_v2",
+  "source_index": "galeria_biometrica_v1",
+  "model_version": "<modelo-nuevo>",
+  "processed": 12400000,
+  "failed": 3,
+  "total": 50000000,
+  "vectors_per_sec": 1840.5,
+  "started_at": "2026-08-24T02:00:00Z",
+  "updated_at": "2026-08-24T04:12:31Z"
+}
+```
+
+`vectors_per_sec` con `total` es lo que permite estimar cuánto queda: es la
+única fuente de tiempo real de la operación. Un trabajo fallido trae `error` y
+`completed_at`. **`failed` distinto de cero merece revisión antes de conmutar**:
+son rostros que no están en el índice nuevo.
+
+**Conmutar el alias** — cuerpo de `POST /gallery/alias`:
+
+```json
+{ "new_index": "galeria_biometrica_v2" }
+```
+
+`alias` es opcional; vacío usa el alias de producción. La respuesta confirma
+`alias`, `new_index` y `status`.
+
 ---
 
 ## Métricas y eventos
@@ -297,17 +340,133 @@ su rollback, está en [Mantenimiento](/docs/alnitak/mantenimiento).
 | `GET` | `/api/v1/metrics/history` | `read:metrics` | Serie temporal de rps y p95 por bucket |
 | `GET` | `/api/v1/metrics/stages` | `read:metrics` | Presupuesto por etapa, total y holgura |
 | `GET` | `/api/v1/events/recent` | `read:events` | Últimas consultas atendidas |
-| `GET` | `/api/v1/events/{id}` | `read:events` | Detalle completo de una consulta |
+| `GET` | `/api/v1/events/{id}` | `read:events` | Detalle de una consulta |
 | `GET` | `/api/v1/stream/events` | `read:events` | Flujo en vivo de consultas (SSE) |
 | `GET` | `/api/v1/infra/nodes` | `read:metrics` | Carga y estado por nodo del clúster |
 | `GET` | `/api/v1/alerts/summary` | `read:metrics` | Alertas del turno |
 
-<Callout type="info" title="Campos nulos cuando aún no hay observación">
-En `/metrics/summary`, `gpu_use`, `availability_30d` y `downtime_minutes_30d`
-son **nulos** mientras no haya ventana suficiente de observación;
-`observed_since` marca el inicio de la ventana. El servicio no inventa una
-disponibilidad que todavía no ha medido.
+### `GET /api/v1/metrics/summary`
+
+```json
+{
+  "p50": 121.0,
+  "p95": 204.0,
+  "p99": 370.0,
+  "rps": 58.4,
+  "rps_read": 41.2,
+  "rps_write": 17.2,
+  "gpu_use": 0.62,
+  "availability_30d": 0.9993,
+  "downtime_minutes_30d": 30.2,
+  "observed_since": "2026-07-01T00:00:00Z",
+  "queries_today": 184320,
+  "sla": { "latency_ms": 400, "rps": 60 }
+}
+```
+
+`gpu_use`, `availability_30d` y `downtime_minutes_30d` son **`null`** mientras no
+haya ventana suficiente de observación; `observed_since` marca el inicio de la
+ventana. El bloque `sla` devuelve el techo declarado del despliegue, no una
+garantía del servicio: ver
+[Configuración → Techo de latencia](/docs/alnitak/configuracion#techo-de-latencia-declarado).
+
+### `GET /api/v1/metrics/history`
+
+Array de buckets:
+
+```json
+[
+  { "ts": "2026-08-24T10:00:00Z", "rps": 58.4, "rps_read": 41.2, "rps_write": 17.2, "p95": 204.0 }
+]
+```
+
+### `GET /api/v1/metrics/stages`
+
+```json
+{
+  "stages": [
+    { "name": "Recepción y decodificación", "ms": 0 },
+    { "name": "Detección y alineación",     "ms": 13 },
+    { "name": "Vectorización",              "ms": 5 },
+    { "name": "Búsqueda kNN",               "ms": 10 },
+    { "name": "Orquestación",               "ms": 3 }
+  ],
+  "total_ms": 31,
+  "slack_ms": 369,
+  "budget_ms": 400
+}
+```
+
+Es el reparto **agregado** de la ventana reciente. `budget_ms` es
+`sla.latency_ms`, y `slack_ms` la holgura contra él.
+
+### `GET /api/v1/events/recent` y `GET /api/v1/stream/events`
+
+Filas resumidas, en el mismo formato en los dos casos. `stream/events` las
+entrega como **Server-Sent Events** (`text/event-stream`), una por mensaje:
+
+```json
+{
+  "id": "q_01J8XK2M4T9F",
+  "ts": "2026-08-24T10:14:22Z",
+  "channel": "web",
+  "top1_score": 0.913,
+  "ms": 41,
+  "verdict": "match"
+}
+```
+
+El `id` es el `query_id` de la consulta.
+
+### `GET /api/v1/events/{id}`
+
+```json
+{
+  "id": "q_01J8XK2M4T9F",
+  "ts": "2026-08-24T10:14:22Z",
+  "channel": "web",
+  "quality": { "icao": 0.91, "liveness": 0.97 },
+  "num_candidates": 800,
+  "top_n": 5,
+  "shards": { "queried": 5, "total": 5 },
+  "verdict": "match",
+  "candidates": [
+    { "rank": 1, "biometric_id": "bio_8f21c0", "score": 0.913 }
+  ]
+}
+```
+
+<Callout type="warning" title="El detalle de evento NO trae el desglose por etapa">
+`stages[]` **solo viene en la respuesta del `identify` original**. Este endpoint
+devuelve calidad, parámetros de búsqueda, shards consultados, veredicto y
+candidatos, pero no los milisegundos por etapa.
+
+Consecuencia práctica: si quieres diagnosticar *a posteriori* dónde se fue el
+tiempo de una consulta concreta, **hay que haber guardado el `stages[]` de la
+respuesta en el momento**. Para el reparto agregado, usa `/metrics/stages`.
 </Callout>
+
+### `GET /api/v1/infra/nodes`
+
+```json
+[
+  { "name": "es-data-0", "role": "data", "cpu_load": 0.41, "state": "green" }
+]
+```
+
+### `GET /api/v1/alerts/summary`
+
+```json
+{
+  "identity_theft": 0,
+  "duplicate_enrollment": 3,
+  "low_quality": 17,
+  "shift_start": "2026-08-24T06:00:00Z"
+}
+```
+
+Son contadores **del turno**, desde `shift_start`. Qué significa cada uno y qué
+hacer con él, en [Operación → Alertas del turno](/docs/alnitak/operacion#alertas-del-turno).
 
 ---
 
@@ -320,6 +479,48 @@ disponibilidad que todavía no ha medido.
 | `GET` | `/metrics` | No | Métricas en formato Prometheus |
 
 Ninguna expone configuración, credenciales ni detalles internos.
+
+### `GET /healthz`
+
+```json
+{ "status": "ok" }
+```
+
+Solo dice que el proceso responde. **No comprueba ninguna dependencia**, así que
+un `healthz` en verde con el servicio inservible es un estado posible y esperado.
+
+### `GET /readyz`
+
+Listo — `200`:
+
+```json
+{
+  "status": "ready",
+  "checks": { "elasticsearch": true, "vectorizer": true }
+}
+```
+
+No listo — `503`:
+
+```json
+{
+  "status": "not_ready",
+  "message": "vectorizador: context deadline exceeded",
+  "checks": { "elasticsearch": true, "vectorizer": false }
+}
+```
+
+El bloque `checks` es lo que hace útil esta sonda: **divide el problema en dos
+antes de que empieces a buscar**. El `message` trae la causa concreta.
+
+<Callout type="warning" title="`gallery_blocked`: Elasticsearch responde y la galería no está montada">
+La respuesta puede incluir además `"gallery_blocked": true`. Significa que
+Elasticsearch contesta con normalidad **pero un índice plano ocupa el nombre del
+alias de producción**, así que el esquema versionado no se puede montar.
+
+No se sale de ese estado reiniciando: hay que
+[migrar el índice](/docs/alnitak/mantenimiento#migrar-un-índice-plano-preexistente).
+</Callout>
 
 ---
 

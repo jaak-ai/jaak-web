@@ -253,7 +253,7 @@ identify:
 | `default_top_n` | `10` | Tamaño de la lista de candidatos. El cliente puede pedir otro por petición. |
 | `default_num_candidates` | `800` | Candidatos explorados por shard. **La palanca entre recall y latencia.** |
 | `default_threshold` | `0.82` | Umbral `t` del veredicto de tres estados. |
-| `max_image_bytes` | `4194304` (4 MiB) | Tamaño máximo de la imagen de entrada. |
+| `max_image_bytes` | `4194304` (4 MiB) | Tamaño máximo de la imagen de entrada, **en bytes**. |
 
 <Callout type="danger" title="El umbral por omisión no es una calibración">
 `0.82` es **una cifra de verificación 1:1 sin calibrar**, y en 1:N la
@@ -264,6 +264,14 @@ de automatizar decisiones.
 El método, las métricas (FPIR, FNIR, rank-1), el arnés de medición y el límite
 de tamaño muestral están en
 [Precisión y calibración del umbral](/docs/alnitak/precision).
+</Callout>
+
+<Callout type="info" title="No hay límite de resolución, solo de tamaño en bytes">
+El servicio valida **bytes**, no píxeles: no hay resolución mínima ni máxima
+configurable. Aun así, las imágenes grandes cuestan tiempo en las etapas de
+decodificación y detección, así que conviene que el canal de captura recorte y
+comprima antes de enviar. Si el desglose por etapa señala detección como
+dominante, ese es el primer sitio donde mirar.
 </Callout>
 
 <Callout type="info" title="Los umbrales de calidad y vivacidad no se configuran aquí">

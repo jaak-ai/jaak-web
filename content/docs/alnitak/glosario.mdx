@@ -1,0 +1,302 @@
+---
+title: Glosario
+description: Términos de identificación biométrica 1:N, búsqueda vectorial y operación que usa el manual de JAAK Alnitak, explicados sin dar nada por sabido.
+category: recurso
+order: 16
+unlisted: true
+---
+
+<Orientation
+  audience="Cualquiera que lea este manual y se tropiece con un término"
+  goal="Poder seguir cualquier página del manual sin buscar nada fuera."
+  outOfScope={[
+    { title: "Cómo se mide la precisión con estas métricas", href: "/docs/alnitak/precision" },
+    { title: "Los parámetros configurables del servicio", href: "/docs/alnitak/configuracion" },
+  ]}
+/>
+
+Términos que el resto del manual usa. Ordenados por bloque, no alfabéticamente:
+leídos en orden, cada uno se apoya en el anterior.
+
+## Identificación biométrica
+
+**1:1 (verificación)** — Comparar dos imágenes y responder si son la misma
+persona. Es la pregunta del desbloqueo de un móvil.
+
+**1:N (identificación)** — Comparar una imagen contra una galería de N registros
+y responder quién es, o que no está. Cada consulta dispara N comparaciones
+implícitas, y por eso **sus errores no se miden con las métricas de 1:1**. Es lo
+que hace Alnitak.
+
+**Embedding / vector facial** — La representación numérica de un rostro que
+produce el modelo: en Alnitak, 512 números en coma flotante. Dos fotos de la
+misma persona dan vectores cercanos; de personas distintas, lejanos. **El
+embedding no es reversible a la cara original**, pero sí es un dato biométrico.
+
+**512-D** — Que el vector tiene 512 dimensiones, es decir, 512 números. Lo fija
+el modelo: cambiarlo obliga a reconstruir la galería entera.
+
+**L2-normalizado** — El vector se escala para que su longitud sea exactamente 1.
+Con vectores normalizados, el producto escalar equivale al coseno del ángulo
+entre ellos, que es más barato de calcular. De ahí que la galería use
+`dot_product`.
+
+**Similitud coseno** — Mide el ángulo entre dos vectores, no su distancia. En el
+manual siempre aparece ya **normalizada al intervalo [0, 1]**: 1 es idéntico, 0
+es sin relación. Es el `score` de la respuesta.
+
+**Score** — La similitud del candidato con la consulta, en [0, 1]. Está en la
+misma escala que el `threshold` que envías: la API se encarga de la conversión.
+
+**Umbral (`t`)** — El corte a partir del cual un candidato se considera
+coincidencia. **No es una constante del producto**: se calibra por despliegue.
+
+**Banda de revisión** — La franja `[t, t+0.06)` donde el candidato no es lo
+bastante bueno para decidir ni lo bastante malo para descartar. Su ancho, 0.06,
+es constante y no se configura.
+
+**Veredicto** — Los tres estados que devuelve el servicio: `match` (por encima
+de la banda), `review` (dentro de la banda) y `no_match` (por debajo del
+umbral).
+
+**Alineación** — Rotar, escalar y recortar el rostro detectado a una posición
+canónica antes de vectorizarlo. Sin alineación, el mismo rostro en dos poses da
+vectores distintos.
+
+**Recorte facial (crop)** — La imagen del rostro ya alineado. Alnitak la custodia
+cifrada, fuera del índice de búsqueda, y es lo que permite **cambiar de modelo
+sin recapturar a nadie**.
+
+**ICAO** — Familia de requisitos de calidad para fotografías de identidad de la
+Organización de Aviación Civil Internacional: encuadre, iluminación, fondo,
+expresión, oclusión. El servicio devuelve una puntuación ICAO en [0, 1] por
+consulta.
+
+**Vivacidad (liveness)** — Comprobación de que delante de la cámara hay una
+persona y no una foto, una pantalla o una máscara. El servicio devuelve una
+puntuación en [0, 1]. **El detalle de qué ataques cubre y contra qué norma no
+está en este manual**: consúltalo con el equipo de JAAK antes de apoyar en ella
+una decisión de riesgo.
+
+**Multirrostro** — Una imagen con más de una cara. Alnitak resuelve con el rostro
+de mayor área y marca la consulta con `multi_face: true`.
+
+## Métricas de precisión 1:N
+
+Las cuatro que importan, y por qué no valen las de 1:1, están desarrolladas en
+[Precisión y calibración del umbral](/docs/alnitak/precision).
+
+**FMR / FNMR** — Métricas de **1:1**: tasa de falsas coincidencias y de falsos
+rechazos, sobre pares de imágenes. Aparecen en el manual solo para explicar por
+qué **no** se usan en 1:N.
+
+**rank-1 / rank-5** — Fracción de consultas genuinas cuya identidad correcta sale
+en primera posición, o entre las cinco primeras, **sin aplicar umbral**. Mide si
+el motor ordena bien.
+
+**FPIR** — *False Positive Identification Rate*. De las consultas de personas que
+**no están** en la galería, qué fracción produce una falsa alarma por encima del
+umbral.
+
+**FNIR** — *False Negative Identification Rate*. De las consultas de personas que
+**sí están**, qué fracción no se identifica correctamente.
+
+**FNIR@FPIR** — El par que hay que reportar: cuántos genuinos se pierden cuando
+el umbral se fija para tolerar una FPIR concreta. Es la métrica que conecta el
+tamaño de tu galería con el umbral que configuras.
+
+**Consulta genuina / impostora** — Genuina: la persona está en la galería.
+Impostora: no está. Sin consultas impostoras **no hay FPIR que medir**.
+
+**Regla del tres** — Para sostener una FPIR de `p` con cero falsos positivos
+observados hacen falta del orden de `3/p` consultas impostoras. Es la razón por
+la que afirmar una FPIR de 10⁻⁶ exige un conjunto impostor millonario.
+
+## Búsqueda vectorial
+
+**kNN** — *k-nearest neighbours*: encontrar los `k` vectores más parecidos al de
+la consulta. Es la búsqueda que resuelve el 1:N.
+
+**ANN (búsqueda aproximada)** — Encontrar *casi* siempre los vecinos correctos, a
+cambio de ser órdenes de magnitud más rápido que comparar contra los 50 millones.
+Todo el rendimiento del sistema depende de esta concesión.
+
+**HNSW** — *Hierarchical Navigable Small World*: la estructura de grafo que hace
+posible el ANN. Cada vector es un nodo conectado a sus vecinos, y la búsqueda
+"camina" el grafo en vez de recorrer la galería.
+
+**`m`** — Conexiones por nodo del grafo HNSW. Más conexiones, mejor recall y más
+memoria. Se fija al crear el índice.
+
+**`ef_construction`** — Cuánto esfuerzo se invierte en construir bien el grafo.
+Se paga al indexar, no al consultar. Se fija al crear el índice.
+
+**`num_candidates`** — Cuántos candidatos explora la búsqueda **por shard** antes
+de fusionar y quedarse con los mejores. Es **la palanca entre recall y
+latencia**, y se envía en cada petición: se puede mover sin reindexar.
+
+**Recall** — Qué fracción de los vecinos verdaderamente más cercanos encuentra la
+búsqueda aproximada. Recall bajo significa que la persona correcta estaba en la
+galería y la búsqueda no la trajo.
+
+**Cuantificación `int8`** — Guardar cada número del vector en 8 bits en vez de
+32. Reduce la memoria del índice a menos de un tercio; a 50 M, ~30 GB en vez de
+~102 GB. La búsqueda recorre el grafo sobre los cuantificados.
+
+**Rescoring** — Reordenar los pocos candidatos finales usando los vectores
+originales sin cuantificar, para que la pérdida de precisión de la cuantificación
+no afecte al orden que se devuelve.
+
+**Arranque en frío** — El estado en que el índice acaba de cargarse y sus
+estructuras no están en memoria. La primera consulta puede tardar **segundos**.
+No es representativa de nada.
+
+**Compactación de segmentos (forcemerge)** — Consolidar los ficheros internos del
+índice para que el grafo quede en su estado óptimo. Tras cualquier reconstrucción
+masiva, es lo que devuelve la latencia a su régimen.
+
+## Galería e índice
+
+**Galería** — El conjunto de rostros enrolados, guardados como vectores en un
+índice de Elasticsearch. Un documento por rostro.
+
+**Enrolamiento (enroll)** — Dar de alta un rostro en la galería. En Alnitak
+incluye una búsqueda 1:N previa como control antiduplicado.
+
+**Expediente (`record`)** — Tu identificador de negocio, el que asocias al
+rostro. El servicio no lo interpreta: solo lo guarda y lo devuelve.
+
+**Identificador biométrico (`biometric_id`)** — La identidad del rostro dentro de
+la galería, generada por el servicio.
+
+**Tenant** — La organización propietaria de un documento. Se deriva **siempre**
+de la credencial, nunca de la petición. Un documento sin él es invisible a toda
+búsqueda.
+
+**Alias** — Un nombre que apunta a un índice físico. El servicio consulta siempre
+el alias, nunca el índice: esa indirección es lo que permite reconstruir la
+galería en paralelo y conmutar.
+
+**`is_write_index`** — La marca que indica a qué índice físico van las escrituras
+cuando se escribe a través de un alias.
+
+**Blue/green** — Cambiar de versión teniendo las dos preparadas y conmutando el
+apuntador. Aquí: índice nuevo construido en paralelo, alias conmutado al final,
+índice viejo intacto por si hay que volver.
+
+**Shard** — Una partición del índice. La búsqueda va a todos los shards y fusiona
+sus resultados. **El número de shards no se cambia en caliente.**
+
+**Réplica** — Una copia de un shard, para redundancia y capacidad de lectura.
+
+**`refresh_interval`** — Cada cuánto lo recién escrito pasa a ser buscable. En la
+galería, 1 segundo.
+
+**Índice externo / solo lectura** — Modos en que el servicio consulta una galería
+que **no administra**: no crea el índice ni el alias, no migra, y en solo lectura
+rechaza toda escritura.
+
+**Re-vectorización (re-embedding)** — Reconstruir todos los vectores de la
+galería con un modelo nuevo, a partir de los recortes custodiados.
+
+**Versión de modelo (`model_version`)** — Con qué modelo se produjo cada vector.
+Es el filtro que impide comparar vectores de modelos distintos, cuyos scores no
+son comparables.
+
+## Plataforma y operación
+
+**Elasticsearch** — El motor de búsqueda donde vive la galería. Aporta el kNN
+sobre HNSW, la cuantificación, el filtrado en la misma consulta y la
+replicación.
+
+**ECK** — *Elastic Cloud on Kubernetes*: el operador que despliega y gestiona
+Elasticsearch dentro del clúster.
+
+**Operador (Kubernetes)** — Un componente que se instala en el clúster y sabe
+gestionar el ciclo de vida de otra cosa (aquí, un clúster de Elasticsearch)
+mediante recursos propios.
+
+**CRD** — *Custom Resource Definition*: el tipo de recurso nuevo que un operador
+añade a Kubernetes. La comprobación previa de la instalación busca el CRD de
+Elasticsearch.
+
+**StorageClass** — La clase de disco que el clúster usará. En la galería tiene
+que sostener picos de ~7.200 IOPS.
+
+**IOPS** — Operaciones de entrada/salida por segundo que aguanta un disco. Es el
+límite que convierte la indexación en cuello de botella si se queda corto.
+
+**RuntimeClass** — Qué runtime de contenedores usa un pod. Es **obligatoria**
+para el vectorizador cuando el runtime de NVIDIA no es el de omisión: sin ella,
+segfault sin mensaje útil.
+
+**Caché de páginas** — La memoria que el sistema operativo usa para tener los
+ficheros del disco en RAM. **Aquí es donde vive el rendimiento de la búsqueda**,
+y por eso el heap de la JVM se deja pequeño a propósito.
+
+**Heap (JVM)** — La memoria que gestiona la máquina virtual de Java. Cubre la
+indexación y las estructuras de consulta, no el grafo. Darle más memoria se la
+quita a la caché de páginas.
+
+**Liveness / readiness** — Las dos sondas: la primera dice si el proceso vive, la
+segunda si además puede atender tráfico porque sus dependencias responden.
+
+**SSE** — *Server-Sent Events*: un flujo HTTP que el servidor mantiene abierto y
+por el que va enviando mensajes. Es cómo se entrega el flujo de consultas en
+vivo.
+
+**Open-loop (generador de carga)** — Un generador que mantiene el ritmo de envío
+pactado **sin esperar** a que respondan las peticiones anteriores. Es lo que
+permite medir el sistema y no la latencia del propio generador.
+
+**p50 / p95 / p99** — Percentiles de latencia. p95 = 204 ms significa que el 95 %
+de las consultas terminó en 204 ms o menos. **La media no se usa**: esconde
+exactamente la cola que el usuario nota.
+
+## Seguridad
+
+**Pimienta (pepper)** — Un secreto del servidor que entra en el cálculo del hash
+de una credencial. A diferencia de la sal, **no se guarda junto al dato**: vive
+en el gestor de secretos. Rotarla invalida todas las credenciales.
+
+**HMAC-SHA256** — Función de hash con clave. Aquí se usa con la pimienta para
+guardar la huella de los secretos de las API keys, en vez de los secretos.
+
+**Comparación en tiempo constante** — Comparar dos secretos tardando siempre lo
+mismo, para que el atacante no pueda deducir cuánto acertó midiendo el tiempo de
+respuesta.
+
+**AES-256-GCM** — Cifrado que además **autentica**: si el dato cifrado se
+manipula, el descifrado falla en vez de devolver basura.
+
+**Nonce** — Un valor único por objeto cifrado. Reutilizarlo con la misma clave
+rompe la seguridad del cifrado.
+
+**AAD** — *Additional Authenticated Data*: dato que no se cifra pero queda
+autenticado junto al contenido. Aquí es el identificador biométrico, y es lo que
+impide sustituir el recorte de una persona por el de otra.
+
+**RS256** — Firma de JWT con clave asimétrica: se firma con la privada y se
+verifica con la pública.
+
+**`kid`** — *Key ID*: identifica con qué clave se firmó un token, para poder
+rotar claves sin invalidar lo ya emitido.
+
+**Confusión de algoritmo (JWT)** — Ataque en que el atacante cambia el algoritmo
+declarado del token para que el verificador use material público como secreto. Se
+previene **fijando** el algoritmo aceptado, como hace el servicio con RS256.
+
+**Scope** — El permiso concreto que lleva una credencial. Una credencial de
+consulta no puede dar altas.
+
+**WORM** — *Write Once Read Many*: almacenamiento que no permite modificar ni
+borrar lo escrito. Es donde debe replicarse la auditoría.
+
+**SIEM** — El sistema corporativo que centraliza y correlaciona registros de
+seguridad.
+
+**Encadenamiento por hash** — Cada evento de auditoría incluye el hash del
+anterior, así que alterar uno intermedio rompe la cadena de forma detectable.
+
+**NTP** — Sincronización de reloj entre máquinas. La validez de los sellos de
+tiempo de la auditoría depende de ella.

@@ -226,6 +226,12 @@ export const alnitakNavigation: NavItem[] = [
       { title: 'Solución de problemas', href: '/docs/alnitak/solucion-de-problemas' },
     ],
   },
+  {
+    title: 'Referencia',
+    items: [
+      { title: 'Glosario', href: '/docs/alnitak/glosario' },
+    ],
+  },
 ]
 
 export function flattenNavigation(items: NavItem[]): NavItem[] {

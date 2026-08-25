@@ -59,8 +59,9 @@ Cualquiera de las cuatro en rojo tiene su camino en
 
 ### El desglose por etapa es el diagnóstico
 
-Cada respuesta lleva `stages[]` con los milisegundos reales de esta consulta. La
-consola agrega ese reparto en el panel de presupuesto de latencia, y dice
+Cada respuesta lleva `stages[]` con los milisegundos reales de esta consulta, y
+`GET /api/v1/metrics/stages` da el reparto agregado de la ventana reciente. La
+consola pinta ese agregado en el panel de presupuesto de latencia, y dice
 **dónde** se va el tiempo:
 
 | Etapa dominante | Dónde mirar |
@@ -88,7 +89,7 @@ Los que usas en operación. Los esquemas completos de respuesta están en
 | `GET /api/v1/infra/nodes` | `read:metrics` | Carga y estado por nodo del clúster |
 | `GET /api/v1/alerts/summary` | `read:metrics` | Alertas del turno |
 | `GET /api/v1/events/recent` | `read:events` | Últimas consultas atendidas |
-| `GET /api/v1/events/{id}` | `read:events` | Detalle completo de una consulta, por `query_id` |
+| `GET /api/v1/events/{id}` | `read:events` | Detalle de una consulta por `query_id`: calidad, parámetros, shards, veredicto y candidatos. **No incluye `stages[]`** |
 | `GET /api/v1/stream/events` | `read:events` | Flujo en vivo (SSE) |
 | `GET /metrics` | — | Métricas en formato Prometheus |
 
@@ -233,8 +234,16 @@ primer usuario— reciba una latencia que no es la del sistema.
 
 Cada consulta y cada alta dejan un evento encadenado por hash. En operación:
 
-- **Verifica la cadena periódicamente** con el verificador. Detecta alteraciones
-  y discontinuidades del registro que revisa.
+- **Verifica la cadena periódicamente.** La comprobación recorre el registro y
+  detecta alteraciones y discontinuidades.
+
+  <Callout type="warning" title="La verificación no se ejecuta hoy con un comando propio">
+  La lógica de verificación se distribuye como parte del servicio, **no como un
+  binario suelto ni como endpoint**. Para incorporarla a tu rutina de operación,
+  pide al equipo de JAAK asignado al proyecto la herramienta o el procedimiento
+  vigente para tu versión: no hay un comando documentado que puedas ejecutar por
+  tu cuenta.
+  </Callout>
 - **Confirma que los eventos llegan al SIEM o al almacenamiento WORM.** Una
   auditoría que no sale de la máquina no protege de gran cosa.
 - **Vigila la sincronización NTP** de todos los nodos: la validez de los sellos
