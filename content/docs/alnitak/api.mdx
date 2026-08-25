@@ -2,14 +2,42 @@
 title: Referencia de API
 description: Endpoints, autenticación, esquemas de petición y respuesta y códigos de error de la API v1 de JAAK Alnitak.
 category: api
-order: 6
+order: 4
 unlisted: true
 ---
+
+<Orientation
+  audience="Integradores del cliente que consumen la API desde sus canales"
+  goal="Conocer todos los endpoints, sus esquemas exactos y qué hacer ante cada error."
+  before={{ title: "Inicio rápido", href: "/docs/alnitak/inicio-rapido" }}
+  outOfScope={[
+    { title: "Qué hace cada etapa del pipeline", href: "/docs/alnitak/arquitectura" },
+    { title: "Parámetros del servidor y variables ALNILAM_*", href: "/docs/alnitak/configuracion" },
+    { title: "Diagnóstico de un fallo en producción", href: "/docs/alnitak/solucion-de-problemas" },
+  ]}
+/>
 
 Referencia de la **API v1** de JAAK Alnitak. Todos los endpoints de negocio
 cuelgan de `/api/v1` y exigen credencial; las sondas y las métricas no.
 
 La URL base es la de tu despliegue: no hay endpoint compartido.
+
+## Todos los endpoints de un vistazo
+
+| Método | Ruta | Scope | Para qué |
+|---|---|---|---|
+| `POST` | [`/api/v1/identify`](#identificación-1n) | `identify` | Búsqueda 1:N contra la galería |
+| `POST` | [`/api/v1/enroll`](#alta-en-galería) | `enroll` | Alta con control antiduplicado |
+| `GET` | [`/api/v1/gallery/stats`](#galería) | `read:metrics` | Estado del índice |
+| `POST` | [`/api/v1/gallery/reembed`](#galería) | `admin:gallery` | Re-vectorizar con modelo nuevo |
+| `GET` | [`/api/v1/gallery/reembed/{id}`](#galería) | `admin:gallery` | Progreso de la re-vectorización |
+| `POST` | [`/api/v1/gallery/alias`](#galería) | `admin:gallery` | Conmutar el alias |
+| `GET` | [`/api/v1/metrics/*`](#métricas-y-eventos) | `read:metrics` | Resumen, historia y etapas |
+| `GET` | [`/api/v1/events/*`](#métricas-y-eventos) | `read:events` | Eventos recientes y detalle |
+| `GET` | [`/api/v1/stream/events`](#métricas-y-eventos) | `read:events` | Flujo en vivo (SSE) |
+| `GET` | [`/api/v1/infra/nodes`](#métricas-y-eventos) | `read:metrics` | Estado por nodo |
+| `GET` | [`/api/v1/alerts/summary`](#métricas-y-eventos) | `read:metrics` | Alertas del turno |
+| `GET` | [`/healthz`, `/readyz`, `/metrics`](#sondas-y-métricas-de-plataforma) | — | Sondas y Prometheus |
 
 ## Autenticación
 
@@ -54,15 +82,21 @@ mismo mensaje para clave desconocida, mal formada o inválida.
   auth="api-key"
 />
 
-Acepta `multipart/form-data` (campo de fichero) o `application/json` con la
-imagen en base64.
+Acepta dos formatos de entrada, con los mismos parámetros en ambos:
+
+| Formato | Cómo va la imagen |
+|---|---|
+| `multipart/form-data` | En el campo **`image`**, como fichero. Los demás parámetros, como campos del formulario |
+| `application/json` | En `image_base64` |
+
+Formatos de imagen aceptados: **JPG y PNG**.
 
 <ParamsTable
   title="Cuerpo (application/json)"
   params={[
     { name: "image_base64", type: "string", required: true, description: "Imagen facial codificada en base64. Tamaño máximo configurable, 4 MiB por defecto." },
-    { name: "top_n", type: "integer", required: false, default: "10", description: "Tamaño de la lista de candidatos devuelta." },
-    { name: "num_candidates", type: "integer", required: false, default: "800", description: "Candidatos explorados por shard antes de fusionar. Palanca entre recall y latencia." },
+    { name: "top_n", type: "integer", required: false, default: "10", description: "Tamaño de la lista de candidatos devuelta. Rango admitido: 1 a 20; fuera de él la petición se rechaza con 400." },
+    { name: "num_candidates", type: "integer", required: false, default: "800", description: "Candidatos explorados por shard antes de fusionar. Palanca entre recall y latencia. Máximo 2000." },
     { name: "threshold", type: "number", required: false, default: "0.82", description: "Umbral t del veredicto de tres estados, en escala de coseno normalizado [0,1]." },
     { name: "channel", type: "string", required: false, description: "Canal de origen, para trazabilidad." }
   ]}
@@ -87,7 +121,7 @@ curl -X POST https://alnitak.interno/api/v1/identify \
 {
   "query_id": "q_01J8XK2M4T9F",
   "took_ms": 41,
-  "vectorization_ms": 28,
+  "vectorization_ms": 16,
   "threshold": 0.82,
   "top_n": 5,
   "num_candidates": 800,
@@ -122,8 +156,9 @@ curl -X POST https://alnitak.interno/api/v1/identify \
 |---|---|
 | `query_id` | Identificador de la consulta. Es la clave para buscarla en la auditoría y en `/events/{id}`. |
 | `took_ms` | Tiempo total extremo a extremo, medido con un solo reloj. |
+| `vectorization_ms` | Milisegundos de la etapa de vectorización. Es el mismo valor que la etapa `Vectorización` de `stages[]`, expuesto aparte por comodidad. |
 | `stages[]` | Milisegundos reales de cada etapa del pipeline en **esta** consulta. Los `name` son los literales en español del servicio (`Recepción y decodificación`, `Detección y alineación`, `Vectorización`, `Búsqueda kNN`, `Orquestación`). |
-| `slack_ms` | Diferencia entre un techo configurable del despliegue (`config.sla.latency_ms`) y el `took_ms` de esta consulta. Útil en operación y métricas; el valor del techo lo define el despliegue. |
+| `slack_ms` | Diferencia entre un techo configurable del despliegue (`sla.latency_ms`) y el `took_ms` de esta consulta. Útil en operación y métricas; el valor del techo lo define el despliegue. |
 | `scanned` | Candidatos efectivamente explorados. |
 | `quality` | Puntuaciones ICAO y de vivacidad, en [0, 1]. |
 | `candidates[].score` | Similitud coseno **normalizada a [0, 1]**, en la misma escala que `threshold`. |
@@ -133,8 +168,11 @@ curl -X POST https://alnitak.interno/api/v1/identify \
 
 La respuesta incluye además un bloque de diagnóstico de la búsqueda —índice
 consultado, candidatos totales, score máximo, estado de los shards y la consulta
-literal que se envió al almacén vectorial— que la consola usa para trazabilidad.
-Su esquema se documenta en el manual de integración de la entrega.
+kNN literal que se envió a Elasticsearch— que la consola usa para trazabilidad.
+Se ve renderizado en
+[Consola de operación → Consulta kNN](/docs/alnitak/consola#consulta-knn), y
+sirve para reproducir una búsqueda fuera del servicio: ver
+[Solución de problemas](/docs/alnitak/solucion-de-problemas).
 
 ---
 
@@ -163,10 +201,12 @@ Mismos formatos de entrada que `/identify`, más el campo `record`.
 
 ```json
 {
+  "query_id": "q_01J8XK2M4T9F",
   "biometric_id": "bio_8f21c0",
   "record": "EXP-2026-00412",
   "channel": "web",
   "took_ms": 44,
+  "vectorization_ms": 18,
   "quality": { "icao": 0.93, "liveness": 0.98 },
   "verdict": "no_match",
   "candidates": [],
@@ -175,7 +215,26 @@ Mismos formatos de entrada que `/identify`, más el campo `record`.
 ```
 
 El `verdict` de un alta correcta es `no_match`: es el resultado de la búsqueda
-1:N previa, y confirma que el rostro no estaba ya en la galería.
+1:N previa, y confirma que el rostro no estaba ya en la galería. El `query_id`
+es la clave de su evento de auditoría, igual que en `identify`.
+
+<Callout type="danger" title="Un alta con veredicto `review` se GUARDA, no se rechaza">
+El rechazo por duplicado se dispara **solo con `match`**. Si la búsqueda 1:N
+previa deja el mejor candidato en la banda de revisión —`t ≤ score < t+0.06`—
+el alta **se completa con `201`** y el `verdict` de la respuesta es `review`.
+
+No es un error: es el contrato. Pero significa que **tu integración tiene que
+mirar el `verdict` de un `201`**, no solo el código de estado. Si tu proceso de
+negocio exige revisión humana en esa banda, la decisión de encolar el caso es
+tuya: el servicio ya dio de alta el rostro.
+</Callout>
+
+<Callout type="info" title="El alta se rechaza también si el modelo no coincide">
+El alta se escribe con la versión de modelo que reporta el vectorizador. Si
+difiere de la versión activa de la galería, se rechaza: mezclar modelos en el
+índice que sirve producción invalida la comparabilidad de los scores. Ver
+[Precisión y calibración](/docs/alnitak/precision#cada-cambio-de-modelo-obliga-a-recalibrar).
+</Callout>
 
 ### Alta rechazada por duplicado (409)
 
@@ -205,25 +264,28 @@ el rechazo, para que un operador pueda resolverlo.
 {
   "vectors": 50000000,
   "dims": 512,
-  "similarity": "cosine",
+  "similarity": "dot_product",
   "quantization": "int8",
   "index_ram_bytes": 32212254720,
   "unquantized_ram_bytes": 109951162778,
   "shards": 5,
   "replicas": 2,
-  "hnsw": { "m": 16, "ef_construction": 100 },
+  "hnsw": { "m": 16, "ef_construction": 200 },
   "model_version": "<modelo-activo>"
 }
 ```
 
-Requiere `read:metrics`.
+Requiere `read:metrics`. **Los valores son los del despliegue consultado**, no
+constantes del producto: shards, réplicas, similitud y parámetros HNSW se fijan
+al crear el índice. Ver
+[Galería, vectores e índice](/docs/alnitak/galeria#parámetros-del-índice).
 
 <Endpoint method="POST" path="/api/v1/gallery/reembed" description="Arranca la re-vectorización de la galería con un modelo nuevo" auth="api-key" />
 <Endpoint method="GET" path="/api/v1/gallery/reembed/{id}" description="Progreso del trabajo de re-vectorización" auth="api-key" />
 <Endpoint method="POST" path="/api/v1/gallery/alias" description="Conmuta el alias de la galería al índice nuevo" auth="api-key" />
 
-Los tres requieren `admin:gallery`. El procedimiento completo está en el manual
-de mantenimiento de la entrega.
+Los tres requieren `admin:gallery`. El procedimiento completo, con sus tiempos y
+su rollback, está en [Mantenimiento](/docs/alnitak/mantenimiento).
 
 ---
 
@@ -277,7 +339,7 @@ Todos los errores comparten el mismo sobre:
 
 | Código | HTTP | Causa | Qué hacer |
 |---|---|---|---|
-| `invalid_image` | `400` | Formato no soportado, imagen corrupta o por encima del tamaño máximo | Revisar formato y tamaño antes de enviar |
+| `invalid_image` | `400` | Formato no soportado (solo **JPG y PNG**), imagen corrupta, por encima del tamaño máximo, o `top_n`/`num_candidates` fuera de rango | Revisar formato, tamaño y parámetros antes de enviar |
 | `low_quality` | `422` | Sin rostro detectable, o calidad/vivacidad por debajo del umbral | Recapturar con mejor iluminación y encuadre |
 | `unauthorized` | `401` | Credencial ausente, desconocida, mal formada o inválida | Revisar la credencial |
 | `forbidden` | `403` | Credencial válida sin el scope requerido | Solicitar el scope |
@@ -285,12 +347,13 @@ Todos los errores comparten el mismo sobre:
 | `duplicate_or_fraud` | `409` | El rostro ya está en la galería (solo en alta) | Resolver el expediente duplicado |
 | `rate_limited` | `429` | Superado el límite por IP y ventana | Reducir la tasa, o revisar `trusted_proxies` |
 | `vectorizer_unavailable` | `503` | El motor de tokenización no responde | Revisar el vectorizador y las GPU |
-| `gallery_unavailable` | `503` | El almacén vectorial no responde | Revisar el clúster de búsqueda |
+| `gallery_unavailable` | `503` | Elasticsearch no responde | Revisar el clúster de la galería |
 | `internal` | `500` | Error no clasificado | Revisar logs con el `query_id` |
 
 <Callout type="warning" title="429 antes de tiempo">
 Un `429` con el servicio lejos de su capacidad casi siempre significa que todo
 el tráfico entra por un gateway y comparte la cuota de una sola IP: es
-configuración del limitador, no saturación. Lo cubre el manual de configuración
-de la entrega.
+configuración del limitador, no saturación. Se corrige declarando el gateway en
+`server.trusted_proxies`; ver
+[Configuración → Limitador de peticiones](/docs/alnitak/configuracion#limitador-de-peticiones).
 </Callout>

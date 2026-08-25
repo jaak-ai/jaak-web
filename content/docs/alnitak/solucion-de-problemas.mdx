@@ -1,0 +1,370 @@
+---
+title: Solución de problemas
+description: Catálogo de síntomas, causas y remedios de JAAK Alnitak — errores de la API, fallos de instalación, latencia degradada y problemas de la galería.
+category: guia
+order: 15
+unlisted: true
+---
+
+<Orientation
+  audience="Quien está diagnosticando ahora mismo: integrador, SRE o guardia"
+  goal="Ir del síntoma que tienes delante a la causa y al remedio, sin pasar por todo el manual."
+  outOfScope={[
+    { title: "Qué significa cada parámetro", href: "/docs/alnitak/configuracion" },
+    { title: "Respaldar, restaurar o migrar", href: "/docs/alnitak/mantenimiento" },
+    { title: "Qué vigilar en el día a día", href: "/docs/alnitak/operacion" },
+  ]}
+/>
+
+Organizado por **lo que estás viendo**, no por componente.
+
+## Antes de nada: de dónde salen los nombres
+
+Los comandos de esta página usan marcadores —`<ns_api>`, `<ns_gpu>`,
+`<ns_datos>`, `<api>`—. Sus valores están en los dos ficheros de configuración
+de tu instalación (`ns_api`, `ns_gpu`, `ns_datos` del fichero del playbook), y
+si no los tienes a mano, el clúster los dice:
+
+```bash
+# Namespaces de la instalación
+kubectl get ns
+
+# Deployments de un namespace, con sus nombres reales
+kubectl get deploy -n <ns_api>
+
+# Todo lo de la instalación, si no sabes por dónde empezar
+kubectl get pods -A | grep -iE "alnilam|alnitak|elasticsearch"
+```
+
+Anótalos una vez: en guardia no es el momento de buscarlos.
+
+## Lo primero, siempre
+
+```bash
+curl -s "$ALNITAK_URL/readyz"
+```
+
+`/readyz` comprueba las dos dependencias que importan: la galería y el
+vectorizador. Sabe distinguirlas, y eso divide el problema en dos por el precio
+de una petición.
+
+| `/readyz` dice | Ve a |
+|---|---|
+| Vectorizador en falso | [El vectorizador no responde](#503-vectorizer_unavailable) |
+| Galería en falso | [La galería no responde](#503-gallery_unavailable) |
+| Todo afirmativo pero hay errores | [Errores de la API](#errores-de-la-api) |
+| No responde nada | [La API no arranca](#la-api-no-arranca) |
+
+Y si el problema es una consulta concreta, no el servicio: guarda su `query_id`
+y busca el detalle completo en `GET /api/v1/events/{id}`.
+
+---
+
+## Errores de la API
+
+### `401 unauthorized`
+
+Mismo mensaje para clave ausente, desconocida, mal formada e inválida: **es
+deliberado**, no distinguirlos evita convertir el endpoint en un oráculo de
+credenciales válidas.
+
+| Comprobar | |
+|---|---|
+| La cabecera es `X-API-Key` | No `Authorization`, salvo que uses el JWT de la consola |
+| El secreto está completo | Formato `alnilam_<keyID>_<secreto>`, sin recortes ni espacios |
+| La credencial no está revocada | Compruébalo en la consola |
+| La pimienta del servidor no ha cambiado | Rotarla invalida **todas** las credenciales: hay que reemitirlas |
+
+### `403 forbidden`
+
+La credencial es válida y **le falta el scope**. `identify` y `enroll` son
+scopes distintos; las métricas y los eventos también. Ver
+[Operación → Credenciales](/docs/alnitak/operacion#credenciales).
+
+### `422 low_quality`
+
+No se detectó rostro, o la calidad/vivacidad no llega al umbral. **No consume
+consulta.**
+
+Si sube de forma sostenida **en un solo canal**, el problema casi nunca es el
+servicio: es un cambio en ese canal —app actualizada, cámara nueva, recorte
+distinto, compresión más agresiva—. Compara el volumen por canal antes de mirar
+el servicio.
+
+### `429 rate_limited`
+
+<Callout type="danger" title="Con el servicio lejos de su capacidad, es configuración">
+Si todo el tráfico entra por un gateway y ese gateway **no está declarado** en
+`server.trusted_proxies`, todas las peticiones comparten la cuota de una sola IP
+y el servicio devuelve `429` mucho antes de su capacidad real.
+
+```yaml
+server:
+  trusted_proxies: ["10.0.0.0/8", "172.16.5.10"]
+```
+
+Es, con diferencia, la causa más frecuente de un `429` inexplicable. Detalle en
+[Configuración → Limitador de peticiones](/docs/alnitak/configuracion#limitador-de-peticiones).
+</Callout>
+
+Si el `429` aparece **con el servicio en su techo**, entonces sí es capacidad:
+mira el desglose por etapa para saber qué capa ampliar. En la medición de
+referencia los `429` aparecieron a partir de ~150 rps, y eran de la capa
+frontal, no del motor.
+
+### `503 vectorizer_unavailable`
+
+El motor de tokenización no responde dentro de su plazo de 250 ms, ni en el
+reintento.
+
+| Causa | Cómo se reconoce |
+|---|---|
+| **Falta la RuntimeClass de GPU** | El pod muere con **segfault**, y el mensaje no menciona el runtime por ningún sitio. Es el fallo más costoso de diagnosticar: si el runtime de NVIDIA no es el de omisión de containerd —k3s, por ejemplo— hay que declararla. Ver [Instalación → 3.3](/docs/alnitak/instalacion#33-runtimeclass-de-gpu) |
+| Ningún nodo expone `nvidia.com/gpu` | Falta el GPU Operator o el device plugin, o el nodo no está listo |
+| Réplica única reiniciándose | Con una sola réplica, actualizarla **es** una interrupción |
+| GPU saturada | El desglose por etapa muestra vectorización dominante |
+
+```bash
+kubectl get pods -n <ns_gpu>
+kubectl logs <pod-vectorizador> -n <ns_gpu>
+kubectl describe pod <pod-vectorizador> -n <ns_gpu>
+```
+
+### `503 gallery_unavailable`
+
+Elasticsearch no responde.
+
+| Causa | Comprobación |
+|---|---|
+| El clúster está en rojo o sin quórum | Estado del clúster y de los shards en Grafana |
+| **NetworkPolicy bloqueando el 9200** | Si el CNI aplica NetworkPolicies, hay que permitir explícitamente el tráfico del namespace de la API al 9200 del de datos |
+| La credencial de la API caducó o fue invalidada | Rótala: `ansible-playbook site.yml -e forzar_credencial_es=true` |
+| El certificado del clúster cambió | La CA montada ya no lo valida: republica el certificado con `--tags elasticsearch` |
+| Pods en `Pending` por disco o memoria | `kubectl describe` sobre los pods de datos |
+
+### Un alta se guardó cuando esperaba un rechazo
+
+**No es un fallo: es el contrato.** El rechazo por duplicado salta **solo con
+veredicto `match`**. Si el mejor candidato quedó en la banda de revisión
+—`t ≤ score < t+0.06`— el alta se completa con `201` y el `verdict` de la
+respuesta es `review`.
+
+| Si tu flujo... | Entonces |
+|---|---|
+| Solo mira el código de estado | Verás altas aceptadas que tu negocio considera dudosas. Hay que leer el `verdict` del `201` |
+| Exige revisión humana en la banda | Encolar el caso es responsabilidad de tu integración |
+| Ve demasiados `review` en las altas | El umbral no está calibrado para tu población: ver [Precisión y calibración](/docs/alnitak/precision) |
+
+### `409 duplicate_or_fraud`
+
+**No es un error de capacidad ni de configuración.** Es el control antiduplicado
+funcionando: el rostro ya está en la galería. La respuesta incluye los
+candidatos que provocaron el rechazo, y lo resuelve una persona sobre el
+expediente. En una corrida de carga con tráfico mixto, un porcentaje de `409` es
+lo esperado.
+
+### `500 internal`
+
+Busca por el `query_id` de la respuesta en los logs de la API. Es la vía directa
+al evento concreto:
+
+```bash
+kubectl logs deploy/<api> -n <ns_api> | grep <query_id>
+```
+
+---
+
+## La API no arranca
+
+El síntoma habitual es `/readyz` que nunca pasa y pods reiniciándose.
+
+| Causa | Señal en el log de arranque |
+|---|---|
+| **Colisión de alias**: existe un índice con el nombre del alias | La API lo dice explícitamente. Es un bloqueo del que no se sale reiniciando: hay que [migrar el índice plano](/docs/alnitak/mantenimiento#migrar-un-índice-plano-preexistente) |
+| La credencial de Elasticsearch no tiene `create_index` y `manage` | `403` al arrancar. La API **monta la galería ella misma** y sin esos privilegios no puede |
+| La CA de Elasticsearch no existe o no parsea | El arranque falla explícitamente. Durante la instalación esto es normal en la etapa 2 |
+| La pimienta no llega a 32 bytes | El arranque falla diciéndolo |
+| Los dominios de correo del SSO están vacíos | Impide el arranque |
+| Los pods no pueden descargar las imágenes | Mensaje del kubelet que **no** señala la causa: suele ser `registro_credenciales` vacío. Ver [Instalación → 0.5](/docs/alnitak/instalacion#05-credenciales-del-registro-de-imágenes) |
+
+```bash
+kubectl logs deploy/<api> -n <ns_api> --previous
+kubectl describe pod -l app=<api> -n <ns_api>
+```
+
+---
+
+## Latencia degradada
+
+El desglose por etapa dice **dónde** se va el tiempo. Es el primer sitio donde
+mirar, no el último.
+
+| Etapa dominante | Causa probable | Remedio |
+|---|---|---|
+| **Vectorización** | GPU saturada, o imágenes de entrada demasiado grandes | Añadir réplicas de GPU; limitar el tamaño en el canal |
+| **Búsqueda kNN** | Índice frío, segmentos sin compactar, índice que no cabe en memoria, o `num_candidates` alto | Calentar, compactar, revisar memoria, bajar `num_candidates` |
+| **Detección y alineación** | Imágenes grandes o de baja calidad | Recorte y compresión en el canal |
+| **Orquestación** | Réplicas de API insuficientes | Escalar la API |
+
+Referencia de reparto en régimen, medida sobre 50 M: suma en servidor ~31 ms,
+con la búsqueda kNN en ~10 ms. La diferencia entre esos ~31 ms y los ~120 ms que
+ve el cliente **es red y TLS**, no el servicio.
+
+### Casos concretos
+
+<Callout type="warning" title="Todas las consultas lentas justo después de un despliegue">
+Índice frío. La primera consulta con el índice recién cargado puede ir a
+**segundos**. Es esperado: calienta con unas cuantas consultas antes de medir o
+de dar el despliegue por bueno.
+</Callout>
+
+<Callout type="danger" title="Latencia alta y estable, con la galería creciendo">
+El índice ha dejado de caber en memoria. Cada consulta paga IO de disco. No se
+arregla con `num_candidates`: hay que añadir memoria a los nodos de datos.
+Referencia: ~30 GB calientes por copia a 50 M con `int8`. Ver
+[Instalación → 4.1](/docs/alnitak/instalacion#41-dimensionado-el-índice-debe-caber-en-ram).
+</Callout>
+
+<Callout type="warning" title="Vectorización 12 veces más lenta de lo esperado">
+El vectorizador está en modo CPU. `vectorizador_provider = "cpu"` no pide
+recursos de GPU y rinde ~12 veces menos: existe para validar el flujo en
+entornos sin tarjeta, nunca para producción ni para medir.
+</Callout>
+
+<Callout type="tip" title="Si mides con un generador de carga y las cifras no cuadran">
+Comprueba primero el generador. Si se satura, la corrida describe al cliente y
+no al servicio. Y con el limitador activo se mide el limitador: para medir
+capacidad hay que desactivarlo (`rate_limit_max: 0`) y volver a fijarlo después.
+</Callout>
+
+---
+
+## Resultados biométricos que no cuadran
+
+| Síntoma | Causa probable |
+|---|---|
+| **Un rostro que está en galería no se encuentra nunca** | El documento no tiene campo de tenant. Es invisible a toda búsqueda, y no produce ningún error. Ver [Galería](/docs/alnitak/galeria#un-rostro-un-documento) |
+| Los scores salen en otra escala | La similitud configurada no coincide con la del índice |
+| Los scores dejaron de ser comparables | Vectores de modelos distintos en la misma galería: falta el filtro por versión de modelo, o se conmutó sin re-vectorizar |
+| Demasiados `review` | El umbral no está calibrado para esta población. **No se arregla moviendo el umbral a ojo**: se calibra con datos etiquetados y su propio arnés, ver [Precisión y calibración](/docs/alnitak/precision) |
+| El recuento de `review` se desvía de lo previsto | Deriva de población, canal o calidad de captura. La curva de umbral predice esa tasa: compárala y recalibra, ver [Precisión](/docs/alnitak/precision#del-umbral-medido-al-umbral-operativo) |
+| Recall bajo con latencia holgada | `num_candidates` demasiado bajo. Es la palanca, y se mueve por petición sin reindexar |
+| La consulta trae un candidato inesperado y quieres reproducirla | La consola muestra la **consulta kNN literal** que se envió al índice: se puede repetir fuera de la consola. Ver [Consola → Consulta kNN](/docs/alnitak/consola#consulta-knn) |
+
+<Callout type="info" title="Estas mediciones no describen exactitud">
+Las cifras de rendimiento del manual describen latencia, caudal y respuestas.
+**No describen exactitud biométrica.** La exactitud se mide aparte, con FPIR,
+FNIR y rank-1 sobre un conjunto etiquetado propio:
+[Precisión y calibración del umbral](/docs/alnitak/precision).
+</Callout>
+
+---
+
+## Fallos durante la instalación
+
+### La etapa 2 falla
+
+**Es el orden esperado**, si —y solo si— todos los errores son esperas agotadas:
+el Deployment de la API monta un certificado que todavía no existe. `install.sh`
+lo tolera ahí y solo ahí, y **cuenta** los errores: si aparece alguno que no sea
+una espera agotada, se detiene y lo enseña, porque tolerarlo rompería la
+instalación tres pasos más adelante con un mensaje que no tiene nada que ver.
+
+Esa etapa tarda **diez a quince minutos**. Que parezca colgada es normal.
+
+### `install.sh` se detiene antes de empezar
+
+Todas estas comprobaciones son deliberadamente tempranas: fallan en segundos en
+vez de a los veinte minutos.
+
+| Mensaje | Causa |
+|---|---|
+| Terraform de otra rama | Hace falta **1.11.x exactamente**. Ver [0.1](/docs/alnitak/instalacion#01-terraform-debe-ser-de-la-rama-111x) |
+| Falta `ansible-playbook` en el `PATH`, pero Ansible está instalado | Instalado con pipx sin dependencias: `pipx install --include-deps --force ansible` |
+| `registro_credenciales` vacío | Sin él los secretos del registro no se crean y los pods no pueden descargar imágenes |
+| Configuración inconsistente entre los dos ficheros | Los valores compartidos difieren. Ver [6.2](/docs/alnitak/instalacion#62-los-siete-valores-que-viven-en-los-dos-ficheros) |
+| Contextos distintos | `kube_context` y el contexto activo de `kubectl` apuntan a clústeres distintos |
+| Aviso de secretos generados | Quedarían **en claro en el fichero de estado**. Ver [6.1](/docs/alnitak/instalacion#61-secretos-genéralos-fuera-para-producción) |
+
+### El playbook se detiene
+
+La causa está en el Job, no en el estado del Job:
+
+```bash
+kubectl logs job/<nombre> -n <namespace>
+```
+
+Y si el registro está vacío porque el contenedor no llegó a arrancar:
+
+```bash
+kubectl describe pod -l job-name=<nombre> -n <namespace>
+```
+
+| Estado del pod | Qué significa |
+|---|---|
+| **No existe** | El Job no llegó a programarse. Suele ser falta de recursos asignables en el nodo, no red |
+| **`Pending`** | No se pudo programar en ningún nodo. Habitualmente falta de CPU o memoria |
+| **Se ejecutó y falló** | El log dice exactamente qué respondió la dependencia |
+
+<Callout type="warning" title="Mira los Jobs antes de relanzar">
+Se conservan **una hora**. El siguiente intento los sustituye, y con ellos
+desaparece la evidencia de por qué falló el anterior.
+</Callout>
+
+### El preflight falla
+
+| Comprobación | Qué falta |
+|---|---|
+| CRD de Elasticsearch | El operador ECK no está instalado |
+| Nodo con `nvidia.com/gpu` | Falta el GPU Operator o el device plugin, o el nodo no está listo. En modo CPU no se exige |
+| StorageClass | La clase declarada no existe en el clúster |
+| PostgreSQL alcanzable | Se comprueba con un Job **desde dentro del clúster**, que es desde donde tiene que llegar la API |
+| Tenant distinto de `default` | Hoy es el único valor que funciona: la API lo fija ahí al sellar las sesiones |
+
+### Los pods de Elasticsearch se quedan en `Pending`
+
+Los valores de producción piden **300 GiB de memoria y 1,2 TiB de disco** entre
+los tres nodos de datos. En una máquina de trabajo no caben.
+
+Para validar en un solo equipo, usa los valores reducidos del `tfvars` —y **baja
+también las peticiones de CPU**: reducir solo memoria y disco deja el total en
+8,5 vCPU, que no cabe en una máquina de 8. El clúster se queda en `yellow`, y es
+correcto: no hay nodos donde colocar las réplicas.
+
+---
+
+## Cosas que fallan en silencio
+
+Los peores fallos son los que no producen ningún error. Compruébalos a
+propósito:
+
+| Fallo silencioso | Cómo detectarlo |
+|---|---|
+| **No hay respaldos** | El contenedor de respaldos declarado en solo uno de los dos ficheros de configuración no da error: simplemente no hay copias. Comprueba que **la última instantánea existe y terminó bien** |
+| **Un rostro invisible** | Documento sin campo de tenant: no aparece en ninguna búsqueda y no genera error |
+| **Sin filtro por versión de modelo** | El servicio lo avisa en el log de arranque, y nada más. Los scores dejan de ser comparables |
+| **La verificación TLS desactivada** | Avisa en el log de arranque. Debe estar en `false` en producción |
+| **Credenciales de Elasticsearch acumuladas** | Cada emisión invalida las anteriores del mismo nombre, pero conviene revisar que no quedan claves antiguas con acceso de escritura |
+| **La auditoría no sale de la máquina** | Verifica que llegan eventos al SIEM o al almacenamiento WORM, no solo que se escriben |
+| **Relojes desincronizados** | La validez de los sellos de tiempo de la auditoría depende del NTP de todos los nodos |
+
+La [lista de verificación antes de
+producción](/docs/alnitak/seguridad#lista-de-verificación-antes-de-producción)
+recoge estas comprobaciones con su forma de ejecutarlas.
+
+---
+
+## Cuando hay que escalar a JAAK
+
+Lleva esto y el diagnóstico empieza donde lo dejaste:
+
+1. El **`query_id`** de una consulta afectada, y su detalle de
+   `GET /api/v1/events/{id}`.
+2. La salida de **`/readyz`**.
+3. Las **versiones** de las cuatro imágenes desplegadas.
+4. La salida de **`GET /api/v1/gallery/stats`**.
+5. El **desglose por etapa** del periodo afectado.
+6. El **log de arranque** de la API, con sus avisos.
+7. Qué cambió, y cuándo.
+
+Contacta por los canales acordados en el contrato de servicio.

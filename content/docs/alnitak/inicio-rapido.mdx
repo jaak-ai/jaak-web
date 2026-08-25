@@ -1,0 +1,185 @@
+---
+title: Inicio rápido
+description: Tu primera identificación 1:N contra JAAK Alnitak — comprobar el servicio, enviar una imagen, leer la respuesta y dar de alta un rostro.
+category: guia
+order: 3
+unlisted: true
+---
+
+<Orientation
+  audience="Integradores del cliente que ya tienen la URL y una credencial"
+  goal="Haber lanzado tu primera identificación, entendido la respuesta y dado de alta un rostro."
+  before={{ title: "Arquitectura", href: "/docs/alnitak/arquitectura" }}
+  outOfScope={[
+    { title: "Todos los endpoints, campos y errores", href: "/docs/alnitak/api" },
+    { title: "Instalar el servicio en un clúster", href: "/docs/alnitak/instalacion" },
+    { title: "Emitir credenciales para tu equipo", href: "/docs/alnitak/operacion" },
+  ]}
+/>
+
+De cero a una identificación resuelta. Diez minutos, cuatro peticiones.
+
+## Lo que necesitas antes de empezar
+
+| Requisito | Cómo se consigue |
+|---|---|
+| **URL base del despliegue** | La fija tu instalación. No hay endpoint compartido: pregunta a quien instaló, o mírala en `host_publico`. |
+| **API key de servicio** | Formato `alnilam_<keyID>_<secreto>`. La emite un administrador desde la consola. El secreto **se muestra una sola vez**. |
+| **Los scopes `identify` y `enroll`** | Se piden al emitir la credencial. Sin `identify` la primera llamada devuelve `403`. |
+| **Una foto con un rostro** | **JPG o PNG**, hasta **4 MiB**, un solo rostro de frente. |
+
+<Callout type="tip" title="Guarda la credencial en el entorno, no en el código">
+Los ejemplos de esta página asumen dos variables. Defínelas una vez y el resto
+se copia y pega tal cual.
+
+```bash
+export ALNITAK_URL="https://biometria.cliente.com"
+export ALNITAK_API_KEY="alnilam_a1b2c3_..."
+```
+</Callout>
+
+---
+
+## Paso 1 — Comprobar que el servicio está listo
+
+Antes de mandar una imagen, confirma que la cadena completa responde. `/readyz`
+no pide credencial y comprueba **las dos dependencias que importan**: la galería
+y el vectorizador.
+
+```bash
+curl -s "$ALNITAK_URL/readyz"
+```
+
+Un servicio listo responde `200` y declara ambas dependencias en verde. Si
+alguna sale en falso, la identificación va a fallar con `503`: no sigas, ve a
+[Solución de problemas](/docs/alnitak/solucion-de-problemas).
+
+<Callout type="warning" title="La primera consulta tras un despliegue puede tardar segundos">
+Con el índice recién cargado, la primera búsqueda paga el calentamiento del
+grafo HNSW. No es representativa de nada: lanza unas cuantas antes de medir. Ver
+[Rendimiento y capacidad → Arranque en frío](/docs/alnitak/rendimiento#arranque-en-frío).
+</Callout>
+
+## Paso 2 — Tu primera identificación
+
+La forma más corta es `multipart/form-data` con el fichero en el campo `image`:
+no hay que codificar nada.
+
+```bash
+curl -X POST "$ALNITAK_URL/api/v1/identify" \
+  -H "X-API-Key: $ALNITAK_API_KEY" \
+  -F "image=@rostro.jpg" \
+  -F "top_n=5"
+```
+
+La misma consulta en JSON, si tu cliente ya trabaja con base64:
+
+```bash
+# base64 sin saltos de línea: -w0 en GNU (Linux), sin flag en BSD (macOS).
+B64=$(base64 -w0 rostro.jpg 2>/dev/null || base64 rostro.jpg | tr -d '\n')
+
+curl -X POST "$ALNITAK_URL/api/v1/identify" \
+  -H "X-API-Key: $ALNITAK_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d "{\"image_base64\": \"$B64\", \"top_n\": 5}"
+```
+
+Los saltos de línea importan: un base64 multilínea rompe el JSON y devuelve
+`400`.
+
+## Paso 3 — Leer la respuesta
+
+```json
+{
+  "query_id": "q_01J8XK2M4T9F",
+  "took_ms": 41,
+  "threshold": 0.82,
+  "candidates": [
+    {
+      "rank": 1,
+      "biometric_id": "bio_8f21c0",
+      "record": "EXP-2026-00412",
+      "score": 0.913,
+      "verdict": "match"
+    }
+  ],
+  "stages": [
+    { "name": "Recepción y decodificación", "ms": 0 },
+    { "name": "Detección y alineación",     "ms": 12 },
+    { "name": "Vectorización",              "ms": 16 },
+    { "name": "Búsqueda kNN",               "ms": 9 },
+    { "name": "Orquestación",               "ms": 4 }
+  ],
+  "multi_face": false
+}
+```
+
+Tres campos deciden qué hace tu integración:
+
+| Campo | Cómo usarlo |
+|---|---|
+| `candidates[0].verdict` | `match` → hay coincidencia. `review` → zona de umbral, la resuelve una persona. `no_match` → no hay candidato por encima del umbral. |
+| `candidates[0].score` | Similitud coseno **ya normalizada a [0, 1]**, en la misma escala que el `threshold` que enviaste. No hay que convertir nada. |
+| `query_id` | Guárdalo. Es la clave para buscar esta consulta en la auditoría y en `GET /api/v1/events/{id}`. |
+
+<Callout type="danger" title="No automatices decisiones con el umbral por defecto">
+`0.82` es **una cifra de verificación 1:1 sin calibrar**. En identificación 1:N
+la probabilidad de falso positivo se multiplica por el tamaño de la galería, así
+que ese valor no es defendible tal cual contra decenas de millones de registros.
+
+Antes de que un `match` dispare una acción irreversible, calibra el umbral con
+datos etiquetados de tu población: el procedimiento, las métricas y el arnés de
+medición están en
+[Precisión y calibración del umbral](/docs/alnitak/precision).
+</Callout>
+
+El array `stages` es tu herramienta de diagnóstico desde el primer día: dice en
+qué etapa se fue el tiempo **en esta consulta concreta**, no en un promedio.
+
+## Paso 4 — Dar de alta un rostro
+
+`enroll` añade el mismo campo `record`, tu identificador de negocio:
+
+```bash
+curl -X POST "$ALNITAK_URL/api/v1/enroll" \
+  -H "X-API-Key: $ALNITAK_API_KEY" \
+  -F "image=@rostro.jpg" \
+  -F "record=EXP-2026-00412"
+```
+
+Un alta correcta devuelve `201` con `"verdict": "no_match"`. **Eso es lo
+esperado**: antes de guardar, el servicio hace una búsqueda 1:N con el vector
+nuevo, y `no_match` confirma que ese rostro no estaba ya en la galería.
+
+Si el rostro ya existe, la respuesta es `409 duplicate_or_fraud` y trae los
+candidatos que provocaron el rechazo, para que un operador resuelva el
+expediente. Es el único error que incluye `candidates`.
+
+<Callout type="danger" title="Mira el `verdict` del 201, no solo el código">
+El rechazo salta **solo con `match`**. Si el mejor candidato cae en la banda de
+revisión, el alta **se completa** con `201` y `verdict: "review"`. Si tu proceso
+exige revisión humana en esa banda, encolarlo es responsabilidad de tu
+integración: el rostro ya está en la galería.
+</Callout>
+
+---
+
+## Los cuatro errores del primer día
+
+| Respuesta | Qué pasó de verdad |
+|---|---|
+| `401 unauthorized` | La cabecera es `X-API-Key`, no `Authorization`. El mensaje es genérico a propósito: no distingue clave ausente de clave inválida. |
+| `403 forbidden` | La credencial es válida pero le falta el scope. `identify` y `enroll` son scopes distintos. |
+| `422 low_quality` | No se detectó rostro, o la calidad/vivacidad no llega al umbral. Recaptura con mejor luz y encuadre. |
+| `429 rate_limited` | Casi nunca es saturación real: si tu tráfico entra por un gateway sin declarar, todas las peticiones comparten la cuota de una IP. Ver [Configuración → Limitador de peticiones](/docs/alnitak/configuracion#limitador-de-peticiones). |
+
+La tabla completa de códigos está en
+[Referencia de API → Formato de error](/docs/alnitak/api#formato-de-error).
+
+## Siguiente paso
+
+- Integración en serio, con todos los parámetros y esquemas →
+  [Referencia de API](/docs/alnitak/api)
+- Resolver a mano un caso marcado como revisión →
+  [Consola de operación](/docs/alnitak/consola)
+- Dimensionar tu despliegue → [Rendimiento y capacidad](/docs/alnitak/rendimiento)

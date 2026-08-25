@@ -2,14 +2,25 @@
 title: Rendimiento y capacidad
 description: Latencia, caudal y dimensionado de JAAK Alnitak — lo que hace el servicio bajo carga y lo que se ha medido.
 category: concepto
-order: 11
+order: 6
 unlisted: true
 ---
 
+<Orientation
+  audience="Arquitectura del cliente que evalúa capacidad · Operaciones que dimensiona el despliegue"
+  goal="Saber qué se midió, en qué condiciones, y con qué cifras dimensionar tu despliegue."
+  before={{ title: "Arquitectura", href: "/docs/alnitak/arquitectura" }}
+  outOfScope={[
+    { title: "Exactitud biométrica: FPIR, FNIR y calibración", href: "/docs/alnitak/precision" },
+    { title: "Nodos, memoria y disco a pedir al clúster", href: "/docs/alnitak/instalacion" },
+    { title: "Qué vigilar en producción", href: "/docs/alnitak/operacion" },
+  ]}
+/>
+
 **JAAK Alnitak** identifica rostros contra galerías de decenas de millones de
 vectores, con vectorización en GPU y búsqueda kNN en el mismo ciclo. Aquí
-van las **bondades del sistema** y **lo que se ha medido** (siempre con
-corpus, camino y tamaño de galería).
+se describen las mediciones disponibles, con su corpus, camino y tamaño de
+galería.
 
 <Highlight title="En una frase">
 Con caras reales y galería de 50 M, a 60 rps el identify responde en torno a
@@ -17,14 +28,14 @@ Con caras reales y galería de 50 M, a 60 rps el identify responde en torno a
 El servicio se mantiene estable al menos hasta **120 rps**.
 </Highlight>
 
-## Bondades
+## Mediciones de capacidad
 
 | Capacidad | En la práctica |
 |---|---|
-| **Galería grande** | Validado con **50 millones** de vectores 512-D (int8 + HNSW). |
+| **Galería medida** | Corrida con **50 millones** de vectores 512-D (int8 + HNSW). |
 | **Rápido de punta a punta** | ~**120 ms p50** / ~**200 ms p95** a 60 rps con caras reales (incluye red). |
 | **Búsqueda ligera a escala** | Etapa kNN ~**10 ms** sobre 50 M; no es el cuello principal. |
-| **Caudal útil** | Identify estable al menos hasta **120 rps**; a 60 rps, 3.600/3.600 correctas. |
+| **Caudal observado** | Identify sin respuestas de error en la corrida hasta **120 rps**; a 60 rps, 3.600 respuestas HTTP satisfactorias. |
 | **Lectura y escritura** | Mixto identify + enroll a 60 rps con latencias del mismo orden. |
 | **Transparencia** | Cada respuesta lleva `took_ms` y `stages[]` por etapa. |
 | **Memoria contenida** | ~**30 GB** calientes por copia a 50 M (int8), no cientos de GB en float32. |
@@ -43,13 +54,25 @@ El servicio se mantiene estable al menos hasta **120 rps**.
 Despliegue con API, vectorizador y galería de **50 M**. Corpus: caras reales
 (webface/LFW, 112×112). Generador open-loop.
 
+<Callout type="warning" title="Condiciones de la corrida, para que las cifras se puedan leer bien">
+- **El limitador de peticiones estaba desactivado** (`rate_limit_max: 0`). Es
+  obligatorio para medir capacidad: con el limitador activo se mide el
+  limitador, no el sistema. Por eso los 120 rps de estas tablas **no** son el
+  valor por omisión del limitador, que casualmente también es 120.
+- Las **consultas** corrieron contra un índice de 50 M administrado por otro
+  equipo, en modo solo lectura. Las corridas que incluyen altas usaron una
+  galería con escritura habilitada.
+- Las cifras de latencia son **del reloj del cliente**, así que incluyen red y
+  TLS hasta la API.
+</Callout>
+
 ### Identify a 60 rps
 
 <MetricGrid>
-  <Metric value="121 ms" label="p50" hint="mediana de las respuestas correctas" />
+  <Metric value="121 ms" label="p50" hint="mediana de respuestas HTTP satisfactorias" />
   <Metric value="204 ms" label="p95" hint="cola alta del régimen" />
   <Metric value="370 ms" label="p99" />
-  <Metric value="60 rps" label="caudal de éxitos" hint="3.600 / 3.600 · 0 % error" />
+  <Metric value="60 rps" label="caudal observado" hint="3.600 / 3.600 respuestas HTTP satisfactorias" />
 </MetricGrid>
 
 | Percentil | ms |
@@ -133,7 +156,10 @@ vectorizar el rostro que en recorrer la galería.
 | **120** | **120** | **215** | **0 %** | Estable |
 | 150 | 137 | 213 | 8,6 % (429) | Techo de capa frontal |
 
-\*Corrida dedicada de 60 s a 60 rps: **p95 = 204 ms**.
+\*El rango `~200–340` recoge las distintas pasadas a 60 rps de la escalera, que
+se ejecutan seguidas y arrastran el estado de la anterior. La cifra de referencia
+a 60 rps es la de la **corrida dedicada** de 60 s: **p95 = 204 ms**. Para
+dimensionar, usa 204.
 
 <Figure
   src="/docs/alnitak/bench-punto-de-quiebre.png"
@@ -167,7 +193,7 @@ Predomina la GPU. Sin orquestación ni red de servicio.
 ### Solo kNN
 
 Vectores ya listos: del orden de **120 rps** y **~10 ms** p99 de búsqueda
-sobre 50 M.
+sobre 50 M, contra el índice `int8_hnsw` de Elasticsearch.
 
 ### Etapas en lab (5 M, GPU A10)
 
@@ -178,6 +204,17 @@ sobre 50 M.
 | Búsqueda kNN | 12 |
 | Orquestación | 4 |
 | **Total** | **~31** |
+
+<Callout type="info" title="Por qué el kNN de 5 M sale más lento que el de 50 M">
+No es un error de la tabla, y **no significa que la búsqueda mejore al crecer la
+galería**. Son corridas distintas: clústeres, número de shards, estado de
+compactación y temperatura de caché distintos. La latencia de un kNN sobre HNSW
+la domina el estado del índice —segmentos, residencia en memoria,
+`num_candidates`— mucho más que el número de vectores, dentro de este rango.
+
+Con el índice frío o sin compactar, 5 M pueden ir más lentos que 50 M calientes.
+Las dos cifras describen su corrida, y **no se deben interpolar entre ellas**.
+</Callout>
 
 ---
 
@@ -203,15 +240,24 @@ La entrega incluye generadores de carga (identify a ritmo fijo; mixto
 identify/enroll con imágenes reales). Si el generador se satura, la corrida
 describe al cliente, no al servicio.
 
-## Precisión biométrica
+El dimensionado que sostiene estas cifras —nodos de datos, heap, clase de disco
+y GPU— está en [Instalación](/docs/alnitak/instalacion).
 
-Las corridas de capacidad no se usan para citar FAR/FRR. El umbral y la
-precisión se calibran con el conjunto etiquetado del cliente.
+## Alcance de estas mediciones
+
+Las cifras de esta página describen latencia, caudal y respuestas del servicio
+en los escenarios indicados. **No describen exactitud biométrica**: aquí no hay
+ni una cifra de FPIR, FNIR ni rank-1, y no se pueden deducir de las que sí hay.
+
+La exactitud es propia de cada despliegue —población, canal de captura y tamaño
+de galería—, y su medición tiene su propio método, sus propias métricas y su
+propio arnés:
+[Precisión y calibración del umbral](/docs/alnitak/precision).
 
 ## Hardware de las mediciones
 
 | Componente | Referencia |
 |---|---|
 | Vectorización | GPU tipo NVIDIA A10 (E2E de caras reales con una GPU; HA con 2+) |
-| Almacén vectorial | 3 nodos de datos + coordinación en quórum |
+| Galería vectorial | Elasticsearch 8.15.x: 3 nodos de datos + coordinación en quórum |
 | API | 2+ réplicas sin estado tras balanceador |

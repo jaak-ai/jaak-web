@@ -1,6 +1,6 @@
 ---
 title: JAAK Alnitak — Identificación facial 1:N
-description: Manual de cliente del microservicio de identificación biométrica 1:N de JAAK — arquitectura, API, operación y lo que se ha medido bajo carga.
+description: Manual de cliente del microservicio de identificación biométrica 1:N de JAAK — arquitectura, API, instalación on-premise, operación y lo que se ha medido bajo carga.
 category: guia
 order: 1
 unlisted: true
@@ -17,8 +17,9 @@ Con caras reales y galería de **50 M**, a **60 rps** el identify va a
 caudal se mantiene estable al menos hasta **120 rps**.
 </Highlight>
 
-Esta documentación está dirigida al equipo técnico y de operación del cliente:
-cómo se instala, se configura, se consume y se opera el servicio.
+Este es el **manual de entrega** de Alnitak: la documentación completa del
+producto, desde la evaluación técnica hasta la instalación on-premise y la
+operación del día a día. No hay un segundo manual en otro canal.
 
 <Callout type="info" title="Documentación de despliegue dedicado">
 Alnitak se entrega **on-premise en la infraestructura del cliente** (o sobre
@@ -36,49 +37,65 @@ documentación se comparte por enlace directo con los equipos del proyecto.
 | **Vigilar** latencia y caudal en tiempo real | Consola + métricas Prometheus + desglose por etapa en cada respuesta |
 | **Auditar** quién consultó qué y cuándo | Auditoría encadenada por hash, con actor, veredicto y huella de imagen |
 
-## Los dos motores
+## Las tres piezas
 
 | Componente | Rol |
 |---|---|
 | **Motor de tokenización facial** (`alnitak`) | Detecta el rostro, lo alinea y produce el vector de **512 dimensiones** L2-normalizado. Acelerado por GPU. |
 | **API de orquestación y galería** (`alnilam`) | Autentica, valida la imagen, orquesta el pipeline, aplica el veredicto, audita y expone métricas. Sin estado, escalable. |
+| **Galería vectorial** (Elasticsearch) | Guarda los vectores como `dense_vector` cuantificado a `int8` sobre grafo HNSW y resuelve la búsqueda kNN. Se despliega con el operador **ECK** dentro del clúster del cliente. |
 
 Se suma la **consola de operación**, con acceso por SSO corporativo.
 
 <Callout type="warning" title="Sobre los nombres internos">
-`alnitak` y `alnilam` son los nombres de los dos componentes. Aparecen en
-imágenes, variables `ALNILAM_*` y configuración. **JAAK Alnitak** nombra la
+`alnitak` y `alnilam` son los nombres de los dos componentes propios. Aparecen
+en imágenes, variables `ALNILAM_*` y configuración. **JAAK Alnitak** nombra la
 solución completa.
 </Callout>
 
-## Mapa de esta documentación
+## Cómo leer este manual
+
+Cuatro bloques. Léelos en orden si vienes de cero; salta al que te toca si ya
+sabes qué buscas.
+
+### Empezar
+
+| Documento | Qué contiene |
+|---|---|
+| Esta página | Qué es, qué resuelve y cómo está organizado el manual |
+| [Arquitectura](/docs/alnitak/arquitectura) | Componentes, pipeline de una consulta, score y veredicto, resiliencia |
+| [Inicio rápido](/docs/alnitak/inicio-rapido) | Tu primera identificación, de la credencial a la respuesta |
+
+### Integrar
 
 | Documento | Para quién | Qué contiene |
 |---|---|---|
-| [Arquitectura](/docs/alnitak/arquitectura) | Arquitectura, seguridad | Pipeline, score y veredicto, resiliencia |
-| [API](/docs/alnitak/api) | Integradores | Auth, endpoints, esquemas, errores |
-| [Consola de operación](/docs/alnitak/consola) | Operación, analistas | Interfaz pantalla a pantalla |
-| [Rendimiento y capacidad](/docs/alnitak/rendimiento) | Arquitectura, operaciones | Bondades, mediciones, gráficas, dimensionado |
-| [Seguridad](/docs/alnitak/seguridad) | Seguridad, cumplimiento | Credenciales, scopes, auditoría, biometría |
+| [Referencia de API](/docs/alnitak/api) | Integradores | Auth, endpoints, esquemas, errores |
+| [Consola de operación](/docs/alnitak/consola) | Operación, analistas | La interfaz web, pantalla a pantalla |
 
-### Manual de despliegue y operación
+### Evaluar
 
-Instalación, configuración, operación, mantenimiento, actualizaciones e
-incidencias se entregan por canal privado a los equipos del proyecto:
+| Documento | Para quién | Qué contiene |
+|---|---|---|
+| [Rendimiento y capacidad](/docs/alnitak/rendimiento) | Arquitectura, operaciones | Mediciones, gráficas, dimensionado |
+| [Seguridad y tratamiento de datos](/docs/alnitak/seguridad) | Seguridad, privacidad | Credenciales, scopes, auditoría, custodia de biometría |
+| [Precisión y calibración del umbral](/docs/alnitak/precision) | Arquitectura, ciencia de datos | FPIR, FNIR, rank-1 y cómo fijar el umbral de tu despliegue |
 
-| Documento | Contenido |
+### Instalar y operar
+
+| Documento | Qué contiene |
 |---|---|
-| Galería, vectores e índice | Esquema del dato, parámetros del almacén, ciclo de vida |
-| Instalación | Requisitos, despliegue on-premise, creación de galería |
-| Configuración | Parámetros y variables de entorno |
-| Operación | Observabilidad, alertas, escalado |
-| Mantenimiento | Migración, re-vectorización, respaldos |
-| Actualizaciones | Versionado, promoción, rollback |
-| Solución de problemas | Síntomas y causas |
+| [Galería, vectores e índice](/docs/alnitak/galeria) | Esquema del dato, parámetros del índice, ciclo de vida |
+| [Instalación](/docs/alnitak/instalacion) | Requisitos, prerrequisitos del cliente, secuencia de instalación |
+| [Configuración](/docs/alnitak/configuracion) | Parámetros del servicio y variables `ALNILAM_*` |
+| [Operación](/docs/alnitak/operacion) | Observabilidad, métricas, alertas, escalado |
+| [Mantenimiento](/docs/alnitak/mantenimiento) | Respaldos, re-vectorización, migración de índice |
+| [Actualizaciones](/docs/alnitak/actualizaciones) | Versionado, promoción entre ambientes, rollback |
+| [Solución de problemas](/docs/alnitak/solucion-de-problemas) | Síntomas, causa y remedio |
 
 ## Lo que hemos medido
 
-Galería de **50 M**, caras reales, cadena completa (API + GPU + almacén).
+Galería de **50 M**, caras reales, cadena completa (API + GPU + Elasticsearch).
 
 <MetricGrid>
   <Metric value="~120 ms" label="p50 identify" hint="a 60 rps, cliente" />
@@ -87,15 +104,6 @@ Galería de **50 M**, caras reales, cadena completa (API + GPU + almacén).
   <Metric value="120 rps" label="caudal estable" hint="identify open-loop" />
 </MetricGrid>
 
-| | Medido |
-|---|---|
-| Identify a 60 rps | 3.600/3.600 correctas, 0 % error |
-| Mixto identify + enroll a 60 rps | p95 ~200 ms en ambas operaciones |
-| Escalera de caudal | Estable al menos hasta 120 rps (p95 ~215 ms) |
-
-Detalle, tablas y más gráficas en
-[Rendimiento y capacidad](/docs/alnitak/rendimiento).
-
 <Figure
   src="/docs/alnitak/bench-resumen.png"
   alt="Resumen de escenarios de carga con caras reales"
@@ -103,18 +111,16 @@ Detalle, tablas y más gráficas en
   priority
 />
 
-<FigureGrid>
-  <Figure
-    src="/docs/alnitak/bench-latencia-percentiles.png"
-    alt="Percentiles de latencia del identify a 60 rps"
-    caption="p50, p95, p99 y máximo en el cliente."
-  />
-  <Figure
-    src="/docs/alnitak/bench-punto-de-quiebre.png"
-    alt="Escalera de carga de identify"
-    caption="Latencia y caudal al subir el ritmo de llegada."
-  />
-</FigureGrid>
+Los escenarios uno a uno, la escalera de caudal completa, el desglose por etapa
+y el dimensionado de memoria y disco están en
+[Rendimiento y capacidad](/docs/alnitak/rendimiento).
+
+<Callout type="warning" title="Estas cifras no son de exactitud">
+Describen latencia y caudal. **La exactitud biométrica se mide aparte**, con
+FPIR, FNIR y rank-1 sobre un conjunto etiquetado propio, y el umbral por defecto
+del servicio no está calibrado para 1:N. Antes de automatizar decisiones, pasa
+por [Precisión y calibración del umbral](/docs/alnitak/precision).
+</Callout>
 
 ## Soporte
 

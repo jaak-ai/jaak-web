@@ -9,6 +9,7 @@ import { Endpoint, ParamsTable, ResponseSchema, HttpMethod } from './api'
 import { Metric, MetricGrid } from './Metric'
 import { Figure, FigureGrid } from './Figure'
 import { Highlight } from './Highlight'
+import { Orientation } from './Orientation'
 
 function extractCodeText(node: unknown): string {
   if (typeof node === 'string') return node
@@ -35,6 +36,7 @@ export const mdxComponents: MDXComponents = {
   Figure,
   FigureGrid,
   Highlight,
+  Orientation,
   h1: ({ children }) => (
     <h1 className="mb-4 text-4xl font-black text-gray-900">{children}</h1>
   ),

@@ -1,0 +1,245 @@
+---
+title: Operación
+description: Operación diaria de JAAK Alnitak — qué vigilar, métricas y alertas, gestión de credenciales, escalado y rutina de turno.
+category: guia
+order: 12
+unlisted: true
+---
+
+<Orientation
+  audience="Operación y SRE del cliente · Quien está de guardia"
+  goal="Saber qué vigilar, qué significa cada señal y qué palanca mover cuando algo se degrada."
+  before={{ title: "Instalación", href: "/docs/alnitak/instalacion" }}
+  outOfScope={[
+    { title: "Resolver un caso biométrico concreto", href: "/docs/alnitak/consola" },
+    { title: "Respaldos y re-vectorización", href: "/docs/alnitak/mantenimiento" },
+    { title: "Diagnóstico paso a paso de un fallo", href: "/docs/alnitak/solucion-de-problemas" },
+  ]}
+/>
+
+Qué mirar cada día, qué señales importan y qué hacer con ellas.
+
+## Las dos herramientas, y qué responde cada una
+
+| Herramienta | Responde |
+|---|---|
+| **Consola de operación** | "¿Vamos bien de latencia y caudal, y qué pasó con esta consulta?" |
+| **Dashboard de Grafana** | "¿Cómo está el clúster de la galería?" |
+
+No se solapan y ninguna sustituye a la otra. La consola mira el servicio; Grafana
+mira la infraestructura que lo sostiene. La entrega incluye el dashboard de
+Grafana como definición JSON versionada, para desplegar en el Grafana del
+cliente: estado del clúster y shards, tasa y latencia de búsqueda, saturación de
+los pools (colas y rechazos), indexación, JVM/GC, y CPU y disco por nodo.
+
+## Rutina de turno
+
+Cuatro comprobaciones, dos minutos:
+
+1. **`/readyz` responde afirmativamente** con las dos dependencias en verde.
+2. **Los cuatro KPIs de la consola** están en su régimen habitual.
+3. **Las alertas del turno** están a cero, o las que hay están asignadas.
+4. **La última instantánea de la galería** terminó bien.
+
+Cualquiera de las cuatro en rojo tiene su camino en
+[Solución de problemas](/docs/alnitak/solucion-de-problemas).
+
+---
+
+## Señales del servicio
+
+### Los cuatro KPIs
+
+| KPI | Cuándo preocuparse |
+|---|---|
+| **Latencia p95 extremo a extremo** | Cuando sube de forma sostenida o se aleja del régimen habitual. Un pico aislado no es una señal. |
+| **Throughput sostenido** | Caída brusca con tráfico real esperado. Con poco tráfico, un valor bajo es normal y no significa nada. |
+| **Galería indexada** | Un salto o una caída brusca **sin operación planificada**. Es la señal de que algo escribió o borró lo que no debía. |
+| **Disponibilidad 30 días** | Aparece con guion mientras no haya ventana de observación suficiente: el servicio no inventa una cifra que no ha medido. |
+
+### El desglose por etapa es el diagnóstico
+
+Cada respuesta lleva `stages[]` con los milisegundos reales de esta consulta. La
+consola agrega ese reparto en el panel de presupuesto de latencia, y dice
+**dónde** se va el tiempo:
+
+| Etapa dominante | Dónde mirar |
+|---|---|
+| **Vectorización** | GPU: saturación, réplicas disponibles, y el tamaño de las imágenes de entrada |
+| **Búsqueda kNN** | Segmentos del índice, memoria residente, y `num_candidates` |
+| **Detección y alineación** | Tamaño y calidad de las imágenes que manda el canal |
+| **Orquestación** | Réplicas de la API y presión de red |
+
+Referencia de reparto en régimen, medida sobre 50 M: la suma en servidor es de
+~31 ms, con la búsqueda kNN en ~10 ms. Si la búsqueda se aleja mucho de ese
+orden, el índice ha dejado de estar caliente o ha perdido la compactación. Ver
+[Rendimiento y capacidad](/docs/alnitak/rendimiento#dónde-se-va-el-tiempo-p50-de-stages).
+
+### Endpoints de observabilidad
+
+Los que usas en operación. Los esquemas completos de respuesta están en
+[Referencia de API](/docs/alnitak/api#métricas-y-eventos).
+
+| Ruta | Scope | Para qué |
+|---|---|---|
+| `GET /api/v1/metrics/summary` | `read:metrics` | p50, p95, p99, rps, uso de GPU, disponibilidad 30 d, consultas del día y umbrales configurados |
+| `GET /api/v1/metrics/history` | `read:metrics` | Serie temporal de rps y p95 por bucket |
+| `GET /api/v1/metrics/stages` | `read:metrics` | Presupuesto por etapa, total y holgura |
+| `GET /api/v1/infra/nodes` | `read:metrics` | Carga y estado por nodo del clúster |
+| `GET /api/v1/alerts/summary` | `read:metrics` | Alertas del turno |
+| `GET /api/v1/events/recent` | `read:events` | Últimas consultas atendidas |
+| `GET /api/v1/events/{id}` | `read:events` | Detalle completo de una consulta, por `query_id` |
+| `GET /api/v1/stream/events` | `read:events` | Flujo en vivo (SSE) |
+| `GET /metrics` | — | Métricas en formato Prometheus |
+
+<Callout type="info" title="Campos nulos no son campos roto">
+En `/metrics/summary`, el uso de GPU, la disponibilidad de 30 días y los minutos
+de indisponibilidad son **nulos** mientras no haya ventana suficiente de
+observación; `observed_since` marca el inicio de la ventana. Es deliberado: el
+servicio no publica una disponibilidad que todavía no ha medido.
+</Callout>
+
+### Sondas
+
+| Ruta | Qué significa |
+|---|---|
+| `GET /healthz` | El proceso está vivo. No dice nada de sus dependencias. |
+| `GET /readyz` | Listo para atender tráfico: comprueba **Elasticsearch y el vectorizador**. |
+
+Ninguna pide credencial, y ninguna expone configuración, credenciales ni
+detalles internos.
+
+---
+
+## Alertas del turno
+
+Tres contadores accionables, no un log:
+
+| Alerta | Qué significa | Qué hacer |
+|---|---|---|
+| **Usurpación de identidad** | Un rostro coincide con expedientes distintos | El enrolamiento queda **detenido** para revisión manual. Lo resuelve un analista en la consola |
+| **Duplicado en enrolamiento** | La persona ya existe en galería con otro folio | Se sugiere fusión de expediente. Decisión de negocio, no técnica |
+| **Calidad insuficiente** | Imagen rechazada antes de vectorizar (ICAO / oclusión) | **No consume consulta.** Si sube de forma sostenida, el problema está en el canal de captura, no en el servicio |
+
+Un pico de calidad insuficiente en un solo canal casi siempre es un cambio en
+ese canal —una actualización de app, una cámara nueva, un recorte distinto— y no
+una degradación del servicio.
+
+### Alertas que conviene definir en tu Prometheus
+
+El servicio expone las métricas; los umbrales son tuyos, porque dependen de tu
+dimensionado contratado:
+
+| Señal | Motivo |
+|---|---|
+| p95 por encima del techo declarado, sostenido | Es la señal que el cliente nota |
+| Tasa de `503` distinta de cero | `vectorizer_unavailable` o `gallery_unavailable`: una dependencia está caída |
+| Tasa de `429` distinta de cero | Casi siempre es el limitador mal configurado, no capacidad |
+| `/readyz` fallando en cualquier réplica | Dependencia perdida |
+| Recuento de vectores cayendo sin operación planificada | Pérdida de datos |
+| Instantánea programada que no termina | El respaldo lleva días sin existir y nadie lo sabe |
+
+---
+
+## Credenciales
+
+### Emitir una credencial de servicio
+
+Las emite un administrador desde la consola, con los scopes mínimos:
+
+| Scope | Permite |
+|---|---|
+| `identify` | Consulta 1:N |
+| `enroll` | Alta en galería |
+| `read:metrics` | Métricas, estadísticas de galería, nodos, alertas |
+| `read:events` | Eventos y flujo en vivo |
+| `admin:gallery` | Re-vectorización y conmutación de alias |
+
+<Callout type="warning" title="El secreto se muestra una sola vez">
+Al generar una credencial, el secreto en claro se entrega **una única vez** y no
+puede recuperarse. Si se pierde, se revoca y se emite otra. No hay recuperación
+porque el servicio no guarda el secreto: solo su HMAC con la pimienta.
+</Callout>
+
+Una credencial por canal, con el scope mínimo. Un canal que solo consulta **no
+debe poder dar altas**, y `admin:gallery` merece separación de funciones: reescribe
+o sustituye la galería completa.
+
+### Rotar la credencial de Elasticsearch
+
+La API se autentica contra la galería con una API key acotada al índice. Para
+rotarla:
+
+```bash
+ansible-playbook site.yml -e forzar_credencial_es=true
+```
+
+Invalida las anteriores con el mismo nombre, emite una nueva y reinicia la API.
+Sin ese indicador el playbook **no la toca**, para que las pasadas repetidas no
+acumulen claves con acceso de escritura que nadie revoca.
+
+---
+
+## Escalado
+
+El sistema escala por capas independientes, y confundirlas cuesta dinero sin
+arreglar nada:
+
+| Si sube | Escala |
+|---|---|
+| **El tráfico** (más consultas por segundo) | Réplicas de GPU y de API |
+| **La galería** (más rostros) | Nodos de datos del clúster: memoria y disco |
+
+<Callout type="tip" title="El cuello de botella no está donde se supone">
+La búsqueda kNN sobre 50 M aporta ~10 ms. El coste de trabajo lo dominan
+**detección y vectorización en GPU**. Añadir nodos de datos para arreglar un
+problema de latencia con la galería estable no mejora nada: mira la GPU primero,
+con el desglose por etapa.
+</Callout>
+
+### Añadir capacidad de vectorización
+
+Es la palanca de caudal. La API es sin estado tras balanceador, así que añadir
+réplicas de API acompaña bien al aumento de GPU. La medición de referencia
+sostuvo 120 rps con una GPU tipo A10; a partir de ~150 rps aparecieron `429` de
+la capa frontal, que es limitador, no capacidad. Ver
+[Rendimiento y capacidad](/docs/alnitak/rendimiento#escalera-de-caudal-identify).
+
+### Añadir capacidad de galería
+
+El índice **debe caber en memoria**. Al crecer la galería, la memoria caliente
+crece con ella: ~30 GB por copia a 50 M con `int8`. El número de shards no se
+cambia en caliente. Ver
+[Galería → Shards y réplicas](/docs/alnitak/galeria#shards-y-réplicas).
+
+---
+
+## Después de cada despliegue
+
+<Callout type="warning" title="Calienta el índice antes de mirar la latencia">
+La primera consulta con el índice recién cargado puede ir a **segundos**. Un
+calentamiento breve tras cada despliegue evita que la primera medición —o el
+primer usuario— reciba una latencia que no es la del sistema.
+</Callout>
+
+1. `/readyz` afirmativo en todas las réplicas.
+2. Unas cuantas consultas de calentamiento.
+3. p95 de vuelta al régimen habitual.
+4. Log de arranque sin avisos nuevos: el servicio avisa explícitamente cuando
+   la verificación de TLS está desactivada, cuando falta el campo de versión de
+   modelo y cuando la pimienta no llega al mínimo.
+
+## Auditoría
+
+Cada consulta y cada alta dejan un evento encadenado por hash. En operación:
+
+- **Verifica la cadena periódicamente** con el verificador. Detecta alteraciones
+  y discontinuidades del registro que revisa.
+- **Confirma que los eventos llegan al SIEM o al almacenamiento WORM.** Una
+  auditoría que no sale de la máquina no protege de gran cosa.
+- **Vigila la sincronización NTP** de todos los nodos: la validez de los sellos
+  de tiempo depende de ella.
+
+Las consultas lanzadas desde la consola tienen exactamente la misma
+trazabilidad que las de los canales automatizados: la consola no es una vía
+lateral. Detalle en [Seguridad → Auditoría](/docs/alnitak/seguridad#auditoría).
