@@ -1511,10 +1511,29 @@ despliegue nunca queda disponible.
 ES_PASS=$(kubectl get secret elasticsearch-es-elastic-user -n biometria-1n-datos \
   -o go-template='{{index .data "elastic"}}' | base64 -d)
 
+# Se verifica el certificado con la autoridad del propio clúster, que el
+# operador deja montada dentro del pod.
 kubectl exec -n biometria-1n-datos statefulset/elasticsearch-es-master -- \
-  curl -sk -u "elastic:$ES_PASS" \
+  curl -s --cacert /usr/share/elasticsearch/config/http-certs/ca.crt \
+  -u "elastic:$ES_PASS" \
   "https://localhost:9200/_alias/galeria-biometrica-v1"
 ```
+
+<Callout type="warning" title="No desactive la verificación del certificado">
+  Es tentador añadir `-k` para que el comando funcione sin más, y en una
+  comprobación puntual dentro del pod parece inocuo. Pero un comando copiado de
+  un manual acaba en los guiones de operación de alguien, y ahí sí importa:
+  saltarse la verificación deja la conexión expuesta a suplantación.
+
+  Si el comando falla por el certificado, la causa es que la ruta de la autoridad
+  no es esa en su versión del operador. Búsquela en lugar de desactivar la
+  comprobación:
+
+  ```bash
+  kubectl exec -n biometria-1n-datos statefulset/elasticsearch-es-master -- \
+    find /usr/share/elasticsearch/config -name 'ca.crt'
+  ```
+</Callout>
 
 Debe devolver el índice físico `galeria-biometrica-v1_v1` con el alias apuntando a él y marcado como
 índice de escritura. Si devuelve 404, la API todavía no ha arrancado o no pudo crear el índice:
@@ -1679,7 +1698,16 @@ Debe empezar así:
 alnilam_gallery_vectors 0
 ```
 
-Este endpoint debe quedar protegido en la publicación: no requiere autenticación propia.
+Este endpoint **no requiere autenticación propia**, así que quien pueda alcanzarlo ve el estado
+interno del sistema: número de vectores en la galería, latencias y volumen de operaciones.
+
+No lo publique. Si necesita que un sistema de monitorización externo lo consulte, tiene dos caminos:
+dejarlo accesible solo dentro del clúster y que el recolector viva ahí —lo habitual con Prometheus—,
+o publicarlo detrás de una capa que autentique, con la autenticación básica del ingress o con un
+intermediario que valide credenciales del clúster.
+
+Lo que no debe hacerse es incluir `/metrics` en la misma publicación que la consola y la API sin
+ninguna restricción: quedaría abierto a cualquiera que conozca la dirección.
 
 ---
 
@@ -1729,9 +1757,44 @@ preferencia: si viven en hosts distintos, las peticiones de la consola fallan en
 disponibles son Google Workspace y usuario con contraseña. No hay integración con directorios
 corporativos, así que las cuentas de operación se administran desde la propia consola.
 
-**Redis debe permanecer en la red interna del clúster.** Guarda estado de sesión compartido entre
-réplicas de la API y no debe ser alcanzable desde fuera. Lo mismo aplica al vectorizador y a
-Elasticsearch: se publican únicamente consola y API, según la sección 3.2.
+**Redis debe quedar aislado por política de red, no solo por no publicarlo.** Guarda estado de
+sesión compartido entre réplicas de la API y **no exige credencial**, de modo que cualquier carga que
+se ejecute en el clúster puede alcanzarlo si nada lo impide. No basta con no exponerlo al exterior:
+en un clúster compartido con otros equipos o aplicaciones, eso deja el estado de sesión al alcance de
+cualquiera de ellos.
+
+Restrinja quién puede hablar con él. Esta política solo admite tráfico desde los pods de la API:
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: redis-solo-desde-la-api
+  namespace: prerrequisitos
+spec:
+  podSelector:
+    matchLabels: { app: redis }
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels: { kubernetes.io/metadata.name: biometria-1n }
+          podSelector:
+            matchLabels: { app: api-1n }
+      ports:
+        - protocol: TCP
+          port: 6379
+```
+
+<Callout type="warning" title="Compruebe que su clúster aplica políticas de red">
+  Una `NetworkPolicy` en un clúster sin complemento que la implemente **se acepta
+  y no hace nada**: el objeto existe, no da error, y el tráfico sigue pasando.
+  En EKS con el complemento de red de AWS hay que habilitarlas explícitamente.
+  Verifíquelo antes de darlo por resuelto.
+</Callout>
+
+El mismo criterio aplica al vectorizador y a Elasticsearch: se publican únicamente consola y API,
+según la sección 3.2, y conviene acotar además quién puede hablar con ellos dentro del clúster.
 
 **Las credenciales de identidad son obligatorias.** Un despliegue sin ellas queda sin control de
 acceso efectivo, por lo que la instalación debe completar la sección 6.1 antes de exponer el
