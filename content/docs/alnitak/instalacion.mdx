@@ -2058,8 +2058,15 @@ En un clúster EKS recién creado con el complemento por omisión esto devuelve
 complemento y esperando a que el `DaemonSet` se reinicie:
 
 ```sh
+# Se recupera el rol del complemento y se le vuelve a pasar: sin esto el
+# comando lo pierde y el CNI se queda sin permisos. Ver el aviso de abajo.
+ROL=$(aws eks describe-addon --cluster-name <clúster> --addon-name vpc-cni --region <región> \
+        --query 'addon.serviceAccountRoleArn' --output text)
+
 aws eks update-addon --cluster-name <clúster> --addon-name vpc-cni --region <región> \
-  --configuration-values '{"enableNetworkPolicy":"true"}' --resolve-conflicts PRESERVE
+  --configuration-values '{"enableNetworkPolicy":"true"}' \
+  ${ROL:+--service-account-role-arn "$ROL"} \
+  --resolve-conflicts PRESERVE
 
 kubectl -n kube-system rollout status ds/aws-node --timeout=300s
 ```
@@ -2077,6 +2084,32 @@ until kubectl get ds aws-node -n kube-system \
 done
 echo "políticas de red habilitadas"
 ```
+
+<Callout type="warning" title="Sin `--service-account-role-arn` el comando deja el CNI sin permisos">
+  Si su clúster da al complemento `vpc-cni` **su propio rol de IAM** —lo hace
+  `eksctl` con `--with-oidc`, y es como queda el clúster del apéndice B—, la
+  identidad vive en una anotación de la ServiceAccount `aws-node`. Un
+  `update-addon` sin `--service-account-role-arn` **borra esa anotación**, y
+  `--resolve-conflicts PRESERVE` no la salva: conserva la configuración del
+  complemento, no la identidad.
+
+  Como en ese montaje la política del CNI **no está en el rol de los nodos**,
+  `aws-node` se queda sin permisos de EC2 y entra en `CrashLoopBackOff`. Los pods
+  que ya corren siguen, pero el clúster no puede dar dirección a ninguno nuevo.
+
+  Lo que despista es que `describe-addon` sigue devolviendo el ARN correcto
+  mientras la ServiceAccount está sin anotar: mirando solo el lado de AWS parece
+  que todo está bien. Compruebe el lado del clúster:
+
+```bash
+kubectl get sa aws-node -n kube-system -o jsonpath='{.metadata.annotations}'
+kubectl get pod -n kube-system -l k8s-app=aws-node   # debe quedar 2/2 Running
+```
+
+  Es el mismo mecanismo que el apéndice B explica para el driver de discos: EKS
+  limita el acceso de los pods a los metadatos del nodo, así que estos
+  complementos no heredan los permisos de la máquina.
+</Callout>
 
 Y compruébelo después con la prueba empírica de más arriba, que es la única que demuestra que se
 aplican de verdad.
