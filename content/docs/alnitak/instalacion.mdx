@@ -48,7 +48,7 @@ instalación no se hace dentro del clúster: se lanza desde una máquina que ten
 | `kubectl` | compatible con el clúster | Comunicarse con Kubernetes |
 | `terraform` | 1.11.x | Declarar el estado del despliegue |
 | `ansible` | 2.16 o superior, con la colección `kubernetes.core` | Ejecutar los pasos que dependen del resultado del anterior |
-| `psql` | 16 o superior | Preparar la base de datos y su credencial de servicio |
+| `psql` | 16 o superior | **Opcional.** La instalación no lo usa: prepara la base con Jobs dentro del clúster. Hace falta solo para operaciones a mano, como desbloquear una cuenta (sección 8) |
 | `openssl` | cualquiera reciente | Generar los secretos de la sección 6 |
 
 <Callout type="warning" title="Si instala Ansible con pipx, use --include-deps">
@@ -237,7 +237,7 @@ terraform/                              estado deseado del despliegue
 ansible/                                pasos que dependen del paso anterior
   group_vars_all.example.yml            plantilla de configuración
   site.yml                              punto de entrada
-  tasks/                                los ocho procedimientos
+  tasks/                                los nueve pasos, más un auxiliar de espera
 ```
 
 ### 0.5 Credenciales del registro de imágenes
@@ -1974,8 +1974,28 @@ Debe empezar así:
 alnilam_gallery_vectors 0
 ```
 
+<Callout type="warning" title="`alnilam_gallery_vectors` no es el tamaño de la galería">
+  Con **más de una réplica de la API** esta métrica no dice cuántos vectores hay.
+  Cada réplica lleva su propia cuenta: la ajusta al valor real solo cuando ella
+  misma atiende una petición de estadísticas de la consola, y entre medias suma
+  únicamente las altas que ha atendido ella.
+
+  El resultado es que cada réplica reporta un número distinto y ninguno coincide
+  con la galería. Sirve para ver actividad, no para contar.
+
+  **Para saber cuántos vectores hay**, pregúnteselo a Elasticsearch, que es la
+  única fuente fiable:
+
+```bash
+kubectl exec -n biometria-1n-datos statefulset/elasticsearch-es-master -c elasticsearch -- \
+  curl -s --cacert /usr/share/elasticsearch/config/http-certs/ca.crt \
+  -u "elastic:$ES_PASS" \
+  "https://elasticsearch-es-http.biometria-1n-datos.svc:9200/galeria-biometrica-v1/_count"
+```
+</Callout>
+
 Este endpoint **no requiere autenticación propia**, así que quien pueda alcanzarlo ve el estado
-interno del sistema: número de vectores en la galería, latencias y volumen de operaciones.
+interno del sistema: latencias, volumen de operaciones y actividad de la galería.
 
 No lo publique. Si necesita que un sistema de monitorización externo lo consulte, tiene dos caminos:
 dejarlo accesible solo dentro del clúster y que el recolector viva ahí —lo habitual con Prometheus—,
@@ -2920,6 +2940,13 @@ revisar la cuenta, no el comando.
 Compruebe que quedó en marcha antes de seguir, y que el rol llegó de verdad:
 
 ```sh
+# El addon tarda unos segundos en crear el Deployment, y `rollout status` falla si
+# todavía no existe en vez de esperarlo. Se espera primero a que aparezca.
+until kubectl -n kube-system get deployment/ebs-csi-controller >/dev/null 2>&1; do
+  echo "esperando a que el complemento cree su despliegue..."
+  sleep 5
+done
+
 kubectl -n kube-system rollout status deployment/ebs-csi-controller --timeout=300s
 
 # Debe imprimir el ARN completo, terminado en el nombre del rol
