@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { headingId } from './headingId'
 
 interface Heading {
   id: string
@@ -17,11 +18,21 @@ export function TableOfContents() {
     if (!article) return
 
     const elements = article.querySelectorAll('h2, h3')
-    const extractedHeadings: Heading[] = Array.from(elements).map((element) => ({
-      id: element.id,
-      text: element.textContent || '',
-      level: element.tagName === 'H2' ? 2 : 3,
-    }))
+    const ids = new Map<string, number>()
+    const extractedHeadings: Heading[] = Array.from(elements).map((element) => {
+      const text = element.textContent || ''
+      const baseId = element.id || headingId(text)
+      const occurrence = ids.get(baseId) || 0
+      ids.set(baseId, occurrence + 1)
+      const id = occurrence === 0 ? baseId : `${baseId}-${occurrence + 1}`
+      element.id = id
+
+      return {
+        id,
+        text,
+        level: element.tagName === 'H2' ? 2 : 3,
+      }
+    })
 
     setHeadings(extractedHeadings)
   }, [])
@@ -85,6 +96,11 @@ export function TableOfContents() {
                     : 'docs-toc__link'
                   }
                 `}
+                style={{
+                  color: activeId === heading.id
+                    ? 'var(--docs-link)'
+                    : 'var(--docs-muted)',
+                }}
                 onClick={(e) => {
                   e.preventDefault()
                   const element = document.getElementById(heading.id)

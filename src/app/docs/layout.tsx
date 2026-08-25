@@ -23,32 +23,28 @@ export default function DocsLayout({
   return (
     <div className="docs-shell min-h-screen">
       <header className="docs-header fixed top-0 left-0 right-0 z-50">
-        <div className="docs-header__inner flex h-full items-center justify-between px-6">
-          <div className="flex items-center gap-5">
-            <Link href="/" className="docs-header__logo flex items-center">
+        <div className="docs-header__brand">
+          <Link href="/" className="docs-header__logo flex items-center">
               <Image
                 src="/images/logos/jaak-logo-azul.png"
                 alt="JAAK"
                 width={100}
                 height={40}
-                className="h-8 w-auto"
+                className="h-7 w-auto"
                 priority
               />
-            </Link>
-            <div className="docs-header__rule h-6 w-px" />
-            <Link
-              href="/docs"
-              className="docs-header__section text-sm font-semibold transition-colors"
-            >
-              Documentación
-            </Link>
-          </div>
+          </Link>
+          <Link href="/docs" className="docs-header__section text-sm font-semibold transition-colors">
+            Documentación
+          </Link>
+        </div>
 
-          <div className="docs-header__search hidden md:flex flex-1 max-w-md mx-8">
+        <div className="docs-header__main">
+          <div className="docs-header__search hidden md:flex">
             <SearchButton />
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="docs-header__actions flex items-center gap-4">
             <Link
               href="https://platform.jaak.ai"
               className="docs-header__login hidden sm:block text-sm font-medium transition-colors"

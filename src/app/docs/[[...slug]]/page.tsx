@@ -51,58 +51,16 @@ export default async function DocPage({ params }: PageProps) {
   const slugPath = resolvedParams.slug?.join('/') || ''
   const { prev, next } = findPrevNext(slugPath)
 
-  // Build breadcrumb from slug
-  const breadcrumbs = [{ title: 'Docs', href: '/docs' }]
-  if (resolvedParams.slug && resolvedParams.slug.length > 0) {
-    let currentPath = '/docs'
-    for (const segment of resolvedParams.slug) {
-      currentPath += `/${segment}`
-      const segmentDoc = allDocs.find((d) => d.url === currentPath)
-      breadcrumbs.push({
-        title: segmentDoc?.title || segment.replace(/-/g, ' '),
-        href: currentPath,
-      })
-    }
-  }
+  const isAlnitakDoc = slugPath === 'alnitak' || slugPath.startsWith('alnitak/')
 
   return (
     <div className="docs-page docs-page--centered docs-page--reading-grid px-8 py-10">
       <article className="docs-article min-w-0">
-        {breadcrumbs.length > 1 && (
-          <nav className="docs-breadcrumb mb-6 flex items-center gap-2 text-sm">
-            {breadcrumbs.map((crumb, index) => (
-              <span key={crumb.href} className="flex items-center gap-2">
-                {index > 0 && (
-                  <svg
-                    className="h-4 w-4 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                )}
-                {index === breadcrumbs.length - 1 ? (
-                  <span className="docs-breadcrumb__current font-medium">{crumb.title}</span>
-                ) : (
-                  <Link href={crumb.href} className="transition-colors">
-                    {crumb.title}
-                  </Link>
-                )}
-              </span>
-            ))}
-          </nav>
-        )}
-
-        {doc.category && (
-          <span className="docs-eyebrow mb-4 inline-block px-3 py-1 text-xs font-semibold uppercase tracking-wide">
-            {doc.category}
-          </span>
+        {isAlnitakDoc && (
+          <header className="docs-document-header">
+            <h1>{doc.title}</h1>
+            <p>{doc.description}</p>
+          </header>
         )}
 
         <div className="docs-prose prose prose-gray max-w-4xl">
