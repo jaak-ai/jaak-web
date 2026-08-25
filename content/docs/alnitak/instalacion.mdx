@@ -851,7 +851,8 @@ ser accesibles desde fuera del clúster**: no tienen autenticación propia.
 | SSO | client secret de Google, y una **llave privada RSA en PEM** | El client secret es de Google; la llave privada firma las sesiones |
 | Cropstore | access key, secret key, y una **clave de cifrado de 32 bytes** | Acceso al bucket y cifrado AES-256-GCM de cada recorte |
 | PostgreSQL | usuario y contraseña de runtime | Conexión de la API |
-| Respaldos de Elasticsearch | access key y secret key | ⚠ **Hoy nada lo usa**: los snapshots automáticos no están configurados (ver sección 10). El bucket conviene tenerlo desde el principio; el secreto se creará cuando se configuren |
+| Redis | contraseña y, solo con ACL, usuario | Estado de sesión compartido entre réplicas. Vacías conectan sin autenticar: ver sección 11 |
+| Respaldos de Elasticsearch | access key y secret key | Instantáneas automáticas de la galería (sección 10). Pueden ir vacías en AWS si el rol de los nodos ya permite escribir en el contenedor |
 | Registro de imágenes | credenciales de pull | Descargar las imágenes privadas |
 | **Pimienta de API keys** | 32 bytes o más, en **base64url sin relleno** | Deriva y verifica los hashes de las API keys |
 | **Pimienta de contraseñas** | igual formato, valor **distinto** | Deriva y verifica las contraseñas de consola. Vacía: no hay acceso con contraseña |
@@ -1353,8 +1354,12 @@ kubectl get configmap api-config -n biometria-1n
 kubectl get secret api-secretos -n biometria-1n -o jsonpath='{.data}' | tr ',' '\n' | cut -d'"' -f2
 ```
 
-Deben aparecer las nueve claves de la sección 6.1. La décima,
-`ALNILAM_ELASTICSEARCH_API_KEY`, la añade el paso 6.
+Deben aparecer **once** claves. La duodécima, `ALNILAM_ELASTICSEARCH_API_KEY`, la añade el paso 6.
+
+Son las de Elasticsearch, SSO, cropstore, PostgreSQL, Redis y las dos pimientas. Las credenciales
+de respaldos y las del registro de imágenes **no están aquí**: viven en secretos propios
+(`es-respaldos-s3` y `registro-imagenes`), porque los consumen Elasticsearch y el kubelet, no la
+API.
 
 <Callout type="warning" title="Los secretos tienen que existir antes que los componentes">
   El pod de la API monta la configuración y el certificado de Elasticsearch como
