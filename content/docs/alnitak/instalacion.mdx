@@ -1030,7 +1030,7 @@ log:
 Son dos ficheros y se copian de sus plantillas, como indica la sección 0.
 
 **`terraform/terraform.tfvars`** — **diez** variables sin valor por omisión, que hay que rellenar
-sí o sí, y cuatro más que sí lo tienen y solo se tocan si hacen falta:
+sí o sí, y cinco más que sí lo tienen y solo se tocan si hacen falta:
 
 Las diez obligatorias:
 
@@ -1186,6 +1186,7 @@ Y en `terraform/terraform.tfvars`, las que gobiernan la GPU y la generación de 
 | `gpu_tolerations` | una tolerancia para `nvidia.com/gpu` con operador `Exists` y efecto `NoSchedule` | Los *taints* que hay que tolerar. El valor por omisión cubre el caso habitual: no hace falta añadirlo |
 | `gpu_runtime_class` | vacío | Clase de tiempo de ejecución de la GPU. En k3s suele ser `nvidia`. Ver 3.3 |
 | `sso.private_key_pem` | vacío | Llave de firma de sesiones. Vacío la genera la herramienta y **queda en el estado** |
+| `api_key_pepper` | vacío | Pimienta de las API keys de servicio (sección 6.1). Vacía **la genera la herramienta y queda en el estado**: la instalación termina en verde con un secreto que nadie pidió. Póngala usted en producción |
 | `generar_password_pepper` | `false` | Con `true`, genera la pimienta de contraseñas y **queda en el estado** |
 
 Y las que gobiernan qué se instala y con qué tamaño. Los valores de esta tabla son los que se
