@@ -1630,11 +1630,12 @@ ES_PASS=$(kubectl get secret elasticsearch-es-elastic-user -n biometria-1n-datos
   -o go-template='{{index .data "elastic"}}' | base64 -d)
 
 # Se verifica el certificado con la autoridad del propio clúster, que el
-# operador deja montada dentro del pod.
-kubectl exec -n biometria-1n-datos statefulset/elasticsearch-es-master -- \
+# operador deja montada dentro del pod. Se llama al servicio por su nombre y no
+# a localhost: es el nombre para el que está emitido el certificado.
+kubectl exec -n biometria-1n-datos statefulset/elasticsearch-es-master -c elasticsearch -- \
   curl -s --cacert /usr/share/elasticsearch/config/http-certs/ca.crt \
   -u "elastic:$ES_PASS" \
-  "https://localhost:9200/_alias/galeria-biometrica-v1"
+  "https://elasticsearch-es-http.biometria-1n-datos.svc:9200/_alias/galeria-biometrica-v1"
 ```
 
 <Callout type="warning" title="No desactive la verificación del certificado">
@@ -1643,12 +1644,18 @@ kubectl exec -n biometria-1n-datos statefulset/elasticsearch-es-master -- \
   un manual acaba en los guiones de operación de alguien, y ahí sí importa:
   saltarse la verificación deja la conexión expuesta a suplantación.
 
-  Si el comando falla por el certificado, la causa es que la ruta de la autoridad
-  no es esa en su versión del operador. Búsquela en lugar de desactivar la
-  comprobación:
+  Si el comando falla por el certificado, mire **qué** dice el error antes de
+  tocar nada:
+
+  - `no alternative certificate subject name matches target host name` — el
+    problema es el **host**, no la autoridad. El certificado que emite ECK vale
+    para el nombre del servicio, no para `localhost`. Llame al servicio por su
+    nombre, como hace el comando de arriba, y ajústelo si cambió el namespace.
+  - `unable to get local issuer certificate` o similar — ahí sí es la ruta de la
+    autoridad, que puede variar con la versión del operador. Búsquela:
 
   ```bash
-  kubectl exec -n biometria-1n-datos statefulset/elasticsearch-es-master -- \
+  kubectl exec -n biometria-1n-datos statefulset/elasticsearch-es-master -c elasticsearch -- \
     find /usr/share/elasticsearch/config -name 'ca.crt'
   ```
 </Callout>
@@ -2056,7 +2063,22 @@ aws eks update-addon --cluster-name <clúster> --addon-name vpc-cni --region <re
 kubectl -n kube-system rollout status ds/aws-node --timeout=300s
 ```
 
-Repita después la comprobación anterior: debe devolver `--enable-network-policy=true`.
+**El `rollout status` no basta**, y conviene saberlo antes de dar el paso por hecho: devuelve el
+visto bueno mientras el complemento sigue en `UPDATING`, así que la comprobación de arriba puede
+seguir diciendo `false` unos segundos más. Espere al argumento, que es lo que de verdad decide:
+
+```sh
+until kubectl get ds aws-node -n kube-system \
+  -o jsonpath='{.spec.template.spec.containers[?(@.name=="aws-eks-nodeagent")].args}' \
+  | tr ',' '\n' | grep -q -- '--enable-network-policy=true'; do
+  echo "esperando a que el complemento aplique el cambio..."
+  sleep 10
+done
+echo "políticas de red habilitadas"
+```
+
+Y compruébelo después con la prueba empírica de más arriba, que es la única que demuestra que se
+aplican de verdad.
 
 El mismo criterio aplica al vectorizador y a Elasticsearch: se publican únicamente consola y API,
 según la sección 3.2, y conviene acotar además quién puede hablar con ellos dentro del clúster.
