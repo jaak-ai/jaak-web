@@ -45,10 +45,40 @@ instalación no se hace dentro del clúster: se lanza desde una máquina que ten
   volver a inyectar la librería de Python.
 </Callout>
 
-<Callout type="warning" title="La versión de Terraform importa">
-  Use la rama **1.11**. Las versiones 1.12 y posteriores cambian el tratamiento
-  de la identidad de recursos del proveedor de Kubernetes y la secuencia de la
-  sección 7 falla al reaplicar.
+<Callout type="warning" title="Terraform debe ser de la rama 1.11, y no se instala con el gestor de paquetes">
+  Las versiones 1.12 y posteriores cambian el tratamiento de la identidad de
+  recursos del proveedor de Kubernetes, y la secuencia de la sección 7 falla al
+  reaplicar. El fallo no es inmediato: la instalación arranca y se rompe en la
+  cuarta pasada, que es el peor momento para descubrir que la herramienta era la
+  equivocada.
+
+  **Ninguna vía habitual instala esa rama.** Los gestores de paquetes, el
+  repositorio de HashiCorp y los gestores de versiones entregan la última
+  publicada. Hay que descargar el binario directamente:
+
+  ```bash
+  VERSION=1.11.4
+
+  # Elija la línea de su sistema
+  PLATAFORMA=darwin_arm64    # macOS con Apple Silicon
+  # PLATAFORMA=darwin_amd64  # macOS con Intel
+  # PLATAFORMA=linux_amd64   # Linux
+  # PLATAFORMA=linux_arm64   # Linux en ARM
+
+  curl -LO "https://releases.hashicorp.com/terraform/${VERSION}/terraform_${VERSION}_${PLATAFORMA}.zip"
+  unzip "terraform_${VERSION}_${PLATAFORMA}.zip"
+  sudo mv terraform /usr/local/bin/
+  ```
+
+  Compruebe la versión antes de seguir:
+
+  ```bash
+  terraform version
+  ```
+
+  Debe decir `Terraform v1.11.4`. Si ya tenía otra instalada y prefiere no
+  sustituirla, deje el binario donde quiera e indique su ruta al ejecutar:
+  `TERRAFORM=/ruta/a/terraform ./install.sh`.
 </Callout>
 
 **No hace falta el binario `helm`.** La etapa 1 de la sección 7 instala un chart, pero lo hace a
@@ -180,8 +210,47 @@ ansible/                                pasos que dependen del paso anterior
 
 ### 0.5 Credenciales del registro de imágenes
 
-Tres de las imágenes son privadas (sección 2.1). Solicite a JAAK las credenciales de descarga antes
-de empezar: sin ellas los pods quedarán en `ImagePullBackOff`. Se configuran en la sección 6.
+Las imágenes de la solución están en un registro privado (sección 2.1), así que hace falta una
+credencial de descarga. **Solicítela antes que ninguna otra cosa**, y en particular antes de crear
+infraestructura de pago: en una nube el clúster empieza a facturar en cuanto existe, y si la
+credencial tarda en llegar se paga la espera.
+
+Sin ella, los pods se quedan en `ImagePullBackOff` y la instalación no avanza.
+
+#### Cómo se convierte en lo que pide la configuración
+
+La variable `registro_credenciales` de `terraform.tfvars` espera el **contenido de un fichero de
+configuración de Docker**, no un usuario y una contraseña sueltos. La forma más segura de generarlo
+es dejar que Docker lo escriba:
+
+```bash
+docker login docker.io -u <usuario>
+# pide la credencial por entrada estándar y no la deja en el historial
+
+cat ~/.docker/config.json
+```
+
+Ese contenido, en una sola línea, es el valor de la variable. Si prefiere no iniciar sesión en el
+equipo, se genera a mano:
+
+```bash
+USUARIO="<usuario>"
+CREDENCIAL="<credencial>"
+printf '{"auths":{"https://index.docker.io/v1/":{"auth":"%s"}}}' \
+  "$(printf '%s:%s' "$USUARIO" "$CREDENCIAL" | base64)"
+```
+
+Tres precisiones, porque el formato no perdona:
+
+El valor de `auth` es `usuario:credencial` **codificado en base64**, no la credencial sola. El
+fichero va **completo**, con su bloque `auths`, no solo la parte interior. Y se pasa **tal cual**,
+sin volver a codificar el conjunto en base64: la codificación afecta únicamente al campo `auth`.
+
+Compruebe que funciona antes de instalar:
+
+```bash
+docker pull docker.io/jaakai/jaak-alnilam-api:0.16.0
+```
 
 ---
 
@@ -436,21 +505,95 @@ que baja el total a 3,5 vCPU.
 
 ### 3.1 La StorageClass de Elasticsearch
 
-Es el requisito de infraestructura más fácil de subdimensionar. La búsqueda vectorial hace
-lecturas aleatorias intensas: el cálculo de referencia es de **~120 lecturas aleatorias por
-consulta**, que a 60 consultas por segundo son **~7 200 IOPS de pico sostenido**.
+Es el requisito de infraestructura más fácil de subdimensionar, y **la única pieza que hay que crear
+a mano**: el resto de prerrequisitos se contratan o se despliegan con sus propios manifiestos.
 
-Requisitos de la clase:
+#### De dónde sale la cifra
 
-- IOPS sostenidos suficientes para ese pico, con margen. En la práctica, ~30 000 IOPS.
-- `ReadWriteOnce`.
-- `allowVolumeExpansion: true` — la galería crece.
-- `volumeBindingMode: WaitForFirstConsumer`.
-- `reclaimPolicy: Retain` — es la galería biométrica, no debe borrarse al eliminar el PVC.
+La búsqueda vectorial hace lecturas aleatorias intensas. El cálculo de referencia es de **~120
+lecturas aleatorias por consulta**, que a 60 consultas por segundo dan **~7 200 IOPS de pico
+sostenido**. Esa cifra es del **conjunto del clúster**, no de un volumen.
 
-Equivalencias orientativas: en AWS, `gp3` con IOPS provisionadas o `io2`; en Azure, Premium SSD
-v2; en Google Cloud, `pd-ssd` o Hyperdisk; en bare metal, NVMe local.
+A ese pico hay que sumarle margen para lo que ocurre además de consultar: la indexación de altas
+nuevas y, sobre todo, las fusiones de segmentos, que son intensivas y no se pueden programar a
+voluntad. Con ese margen, la referencia queda en **~30 000 IOPS para el conjunto**.
 
+**Lo que hay que aprovisionar por volumen es esa cifra dividida entre el número de nodos de datos**,
+porque cada uno tiene el suyo y el tráfico se reparte:
+
+| Nodos de datos | IOPS por volumen |
+|---|---|
+| 3 (dimensionado por omisión) | ~10 000 |
+| 2 | ~15 000 |
+| 1 | ~30 000 |
+
+Si cambia `es_data_nodes`, recalcule. Y si su carga real no son 60 consultas por segundo, rehaga el
+cálculo desde el principio: 120 lecturas por consulta, por su tasa objetivo, por cuatro de margen,
+dividido entre sus nodos de datos.
+
+<Callout type="info" title="En un entorno de validación esto sobra">
+  La cifra corresponde a la galería de producción con volumen real. Para validar
+  la instalación con una galería vacía o de pocos registros, las IOPS de base de
+  cualquier disco SSD son suficientes y aprovisionar por encima solo encarece la
+  prueba. Reduzca sin problema; el resto de propiedades de la clase sí conviene
+  mantenerlas.
+</Callout>
+
+#### Propiedades que debe cumplir
+
+- **IOPS** según la tabla anterior.
+- **`ReadWriteOnce`** como modo de acceso.
+- **`allowVolumeExpansion: true`**, porque la galería crece.
+- **`volumeBindingMode: WaitForFirstConsumer`**, para que el volumen se cree en la misma zona que el
+  pod que lo va a usar.
+- **`reclaimPolicy: Retain`** — es la galería biométrica: eliminar un `PersistentVolumeClaim` no debe
+  borrar los datos.
+
+#### Manifiesto de ejemplo
+
+Para AWS, con el driver de EBS. Ajuste el nombre, las IOPS y el rendimiento a su caso:
+
+```yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: galeria-alto-iops
+  annotations:
+    # Solo si quiere que sea la clase predeterminada del clúster. Asegúrese de
+    # que no haya otra marcada: ver la sección 3.0.
+    storageclass.kubernetes.io/is-default-class: "true"
+provisioner: ebs.csi.aws.com
+parameters:
+  type: gp3
+  iops: "10000"        # por volumen, según la tabla de arriba
+  throughput: "500"    # MB/s
+  encrypted: "true"
+allowVolumeExpansion: true
+volumeBindingMode: WaitForFirstConsumer
+reclaimPolicy: Retain
+```
+
+Aplíquelo y compruebe que quedó como espera:
+
+```bash
+kubectl apply -f storageclass.yaml
+kubectl get storageclass -o custom-columns=\
+'NOMBRE:.metadata.name,RECLAMO:.reclaimPolicy,AMPLIABLE:.allowVolumeExpansion'
+```
+
+El nombre que le dé es el que va en `es_storage_class`, en los dos ficheros de configuración.
+
+#### Equivalencias en otros proveedores
+
+El manifiesto anterior es específico de AWS. En otros proveedores cambian el `provisioner` y los
+nombres de los parámetros, pero no las cinco propiedades:
+
+| Proveedor | Tipo de volumen |
+|---|---|
+| AWS | `gp3` con IOPS provisionadas, o `io2` |
+| Azure | Premium SSD v2 |
+| Google Cloud | `pd-ssd` o Hyperdisk |
+| Infraestructura propia | NVMe local |
 
 ### 3.2 Exposición y TLS
 
@@ -800,7 +943,21 @@ log:
 | `redis.addr` vacío | El estado compartido pasa a memoria del proceso. Con más de una réplica, el tablero muestra datos parciales y el detalle de eventos falla de forma intermitente |
 | `cropstore.endpoint` vacío | Las altas no conservan el recorte, por lo que no podrán re-vectorizarse si se actualiza el modelo |
 | `server.rate_limit_max: 0` | Desaparece el límite de peticiones en el borde y una avalancha llega hasta la GPU |
+| `server.rate_limit_max` demasiado bajo | Se rechazan peticiones legítimas con `429`. Ver el aviso de abajo |
 | `sso` sin completar | El despliegue queda sin control de acceso efectivo. Complete la sección 6.1 antes de exponer el servicio |
+
+<Callout type="warning" title="El límite de peticiones cuenta por IP, no por credencial">
+  El valor por omisión son **120 peticiones por segundo y por dirección IP de
+  origen**, no por minuto ni por cliente. Importa porque **detrás de un
+  balanceador o una pasarela todo el tráfico llega con la misma IP**: en ese
+  caso el límite se agota con el conjunto de las peticiones y se empiezan a
+  rechazar llamadas legítimas con `429` mucho antes de alcanzar la capacidad
+  real del sistema.
+
+  Si publica el servicio detrás de una capa que ya controla la admisión, ajuste
+  el valor al dimensionado contratado o desactívelo con `0` y deje ese control
+  donde corresponda.
+</Callout>
 
 ### 6.3 Variables que hay que rellenar
 
@@ -820,7 +977,7 @@ Son dos ficheros y se copian de sus plantillas, como indica la sección 0.
 | `redis_addr` | `host:puerto` de Redis |
 | `cropstore` | Objeto con `endpoint`, `region`, `bucket`, `access_key`, `secret_key`, `crop_key`; opcionalmente `use_ssl` (`true`) |
 | `host_publico` | Host único donde se publican consola y API |
-| `sso` | Objeto con `client_id`, `client_secret`, `dominios`, `operadores` |
+| `sso` | Objeto con `client_id`, `client_secret`, `dominios`, `operadores`. **Obligatorio aunque no use Google**: ver el aviso de abajo |
 
 #### Versiones de la entrega
 
@@ -863,6 +1020,30 @@ que las migraciones que aplica corresponden siempre al esquema que esa versión 
   El fallo es inmediato y dice exactamente qué falta, así que es fácil de
   reconocer: si ve ese error, la imagen es la equivocada. La referencia correcta
   es la de la tabla de arriba.
+</Callout>
+
+<Callout type="warning" title="El bloque sso hay que rellenarlo aunque el acceso sea con contraseña">
+  La estructura de la configuración lo exige, pero **sus valores no intervienen
+  en el acceso con usuario y contraseña**: esa vía autentica contra la base de
+  datos y toma los permisos del rol del usuario, sin consultar ninguno de estos
+  campos.
+
+  Si no va a usar Google, **deje la lista de dominios vacía**. Con
+  `dominios = []` y sin correos permitidos, el inicio de sesión con Google queda
+  desactivado a propósito y el proceso arranca con normalidad. Los otros dos
+  campos hay que escribirlos porque la estructura los pide, pero no se usan:
+
+  ```hcl
+  sso = {
+    client_id     = "no-se-usa"
+    client_secret = "no-se-usa"
+    dominios      = []            # vacío desactiva el acceso con Google
+    operadores    = []
+  }
+  ```
+
+  Si más adelante quiere habilitar Google, basta con rellenar los cuatro campos
+  y reaplicar.
 </Callout>
 
 <Callout type="warning" title="kube_context no es el contexto activo de kubectl">
@@ -942,8 +1123,9 @@ aplican si no se tocan:
 | `es_data_disco` | `400Gi` | Disco por nodo de datos |
 | `api_replicas` | `2` | Réplicas de la API |
 | `api_memoria_limite` | `1Gi` | Límite de memoria por réplica de la API |
-| `rate_limit_max` | `120` | Peticiones por minuto y credencial. `0` desactiva el límite |
-| `vectorizador_workers` | `2` | Réplicas de sesión de inferencia dentro del vectorizador |
+| `rate_limit_max` | `120` | Peticiones **por IP de origen y por ventana**. `0` desactiva el límite |
+| `rate_limit_window` | `1s` | Duración de la ventana del limitador |
+| `vectorizador_workers` | `4` | Réplicas del motor dentro del proceso. **Cada una carga su propia copia del modelo**, así que este número decide la memoria que pide el vectorizador |
 | `vectorizador_max_inflight` | `128` | Peticiones simultáneas admitidas por el vectorizador |
 
 <Callout type="warning" title="El dimensionado por omisión es de producción">
