@@ -2328,9 +2328,18 @@ kubectl get pv -o custom-columns=\
 'NOMBRE:.metadata.name,ESTADO:.status.phase,RECLAMO:.spec.persistentVolumeReclaimPolicy,PVC:.spec.claimRef.name'
 ```
 
-Los que aparezcan en `Released` con `Retain` y un `PVC` que empiece por `elasticsearch-data-` son de
-esta instalación. Compruebe la lista antes de borrar —el clúster puede alojar otras cosas— y
-elimínelos:
+Los que aparezcan en `Released` con `Retain` son de esta instalación. **No mire solo los de
+Elasticsearch:** si desplegó las dependencias con el apéndice A, también hay volúmenes de PostgreSQL
+y del almacén de objetos, y esos suelen ser los más grandes. Con el nombrado del apéndice A, los
+`PVC` a buscar son:
+
+| Prefijo del `PVC` | Qué contiene |
+|---|---|
+| `elasticsearch-data-` | La galería biométrica |
+| `datos-postgres-` | Usuarios, sesiones y credenciales de servicio |
+| `datos-minio-` | Los recortes faciales cifrados |
+
+Compruebe la lista antes de borrar —el clúster puede alojar otras cosas— y elimínelos:
 
 ```sh
 kubectl delete pv <nombre>
@@ -2367,10 +2376,24 @@ dependencias del apéndice A, la base de datos, el caché y el contenedor de obj
 propios de su cuenta y se retiran por separado. Lo mismo aplica al contenedor de recortes y al de
 respaldos: no los crea la instalación y no los borra.
 
+**Paso 5. Los CRD de Elasticsearch, si el clúster sigue en pie.**
+
+`terraform destroy` **no borra las definiciones de recurso de ECK**: Helm las conserva por política y
+lo dice en un aviso al terminar, entre el ruido de la salida. Son doce, no ocupan nada y no cuestan
+dinero, pero quedan en el clúster del cliente después de haberlo desinstalado todo.
+
+```sh
+kubectl get crd -o name | grep k8s.elastic.co
+kubectl get crd -o name | grep k8s.elastic.co | xargs -r kubectl delete
+```
+
+Si va a borrar el clúster entero, este paso sobra: se van con él.
+
 **Comprobación final.** Ninguno de estos comandos debe devolver nada de la instalación:
 
 ```sh
 kubectl get pv | grep Released
+kubectl get crd -o name | grep k8s.elastic.co
 aws ec2 describe-volumes --region <región> --filters "Name=status,Values=available" --output table
 ```
 
