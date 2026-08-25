@@ -6,10 +6,23 @@ order: 8
 unlisted: true
 ---
 
-<Callout type="info" title="Paquete de instalación descargable">
-  Los scripts que ejecutan este manual —Terraform, Ansible e `install.sh`— se
-  descargan en un solo archivo: [jaak-alnitak-installer.tar.gz](/downloads/alnitak/jaak-alnitak-installer.tar.gz).
-  Este documento explica qué hace cada paso; el paquete lo ejecuta.
+<Callout type="info" title="Dónde están los scripts de instalación">
+  Los scripts que ejecutan este manual —Terraform, Ansible e `install.sh`— viven
+  en un repositorio de acceso restringido y **solo lectura**:
+
+  `github.com/jaak-ai/jaak-alnitak-installer`
+
+  Solicite acceso junto con las credenciales del registro de imágenes
+  (sección 0.5): se concede sobre la cuenta de GitHub que nos indique. Una vez
+  concedido:
+
+```bash
+git clone https://github.com/jaak-ai/jaak-alnitak-installer.git
+cd jaak-alnitak-installer
+```
+
+  Este documento explica qué hace cada paso; el repositorio lo ejecuta. Trabaje
+  siempre sobre un clon actualizado: las correcciones se publican ahí.
 </Callout>
 
 ## 0. Antes de empezar
@@ -197,15 +210,23 @@ demuestra que el clúster responde y que el acceso es válido. Si devuelve un er
 de conexión, resuélvalo antes de continuar: los pasos siguientes fallarían más adelante y con
 mensajes que no señalan esta causa.
 
-### 0.4 Obtener el paquete de instalación
+### 0.4 Obtener los scripts de instalación
 
-El paquete contiene los scripts que ejecutan este manual. Descárguelo y descomprímalo:
+Los scripts que ejecutan este manual están en un repositorio de acceso restringido y **solo
+lectura**. Solicite acceso antes de empezar, junto con las credenciales del registro de imágenes
+(sección 0.5): se concede sobre la cuenta de GitHub que nos indique.
 
 ```bash
-curl -LO https://www.jaak.ai/downloads/alnitak/jaak-alnitak-installer.tar.gz
-tar -xzf jaak-alnitak-installer.tar.gz
+git clone https://github.com/jaak-ai/jaak-alnitak-installer.git
 cd jaak-alnitak-installer
 ```
+
+Si el clonado responde `Repository not found`, es que el acceso todavía no está concedido: GitHub
+devuelve ese mensaje —y no uno de permisos— para los repositorios privados que la cuenta no puede
+ver.
+
+Trabaje siempre sobre un clon actualizado. Las correcciones se publican ahí, así que antes de una
+instalación conviene un `git pull`.
 
 Contenido, que es el que se referencia en el resto del documento:
 
