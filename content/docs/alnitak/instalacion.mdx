@@ -1798,8 +1798,8 @@ En el primer arranque con GPU puede tardar más de un minuto, según la sección
 
 ### 8.4 El acceso a la consola funciona
 
-Estas pruebas atraviesan la consola con su servidor web, que es el camino que seguirá un navegador.
-Para lanzarlas desde su equipo, abra un túnel al servicio de la API:
+Estas pruebas se lanzan **contra la API**, que es quien resuelve el acceso; la consola solo la
+consume desde el navegador. Para lanzarlas desde su equipo, abra un túnel al servicio de la API:
 
 ```bash
 kubectl port-forward -n biometria-1n svc/api-1n 8080:8080
@@ -1808,22 +1808,52 @@ kubectl port-forward -n biometria-1n svc/api-1n 8080:8080
 Y en otra terminal:
 
 ```bash
-# Inicio de sesión del administrador
-curl -si -X POST http://127.0.0.1:8080/auth/login \
+# Inicio de sesión del administrador. -c guarda la cookie para los pasos siguientes.
+curl -si -c cookies.txt -X POST http://127.0.0.1:8080/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"admin@ejemplo.com","password":"<la configurada>"}'
 ```
 
-| Prueba | Resultado esperado |
-|---|---|
-| El administrador entra con su contraseña | `200` con cookie de sesión |
-| Contraseña incorrecta | `401` |
-| Correo que no existe | `401`, con **cuerpo idéntico al anterior** |
-| Varios fallos seguidos y luego la contraseña correcta | `401`: el bloqueo actúa y no se anuncia |
-| El administrador invita a otra persona | `201` con los enlaces de invitación |
-| La persona invitada establece su contraseña | `200` y queda con sesión activa |
-| Reutilizar el mismo enlace de invitación | `403` |
-| Contraseña por debajo del mínimo | `400` indicando el mínimo, **sin consumir el enlace** |
+| Prueba | Cómo se pide | Resultado esperado |
+|---|---|---|
+| El administrador entra con su contraseña | `POST /auth/login` | `200` con cookie de sesión |
+| Contraseña incorrecta | el mismo, cambiando la contraseña | `401` |
+| Correo que no existe | el mismo, cambiando el correo | `401`, con **cuerpo idéntico al anterior** |
+| Varios fallos seguidos y luego la correcta | el mismo, repetido | `401`: el bloqueo actúa y no se anuncia |
+| El administrador invita a otra persona | `POST /api/v1/admin/users/invite` | `201` con los enlaces de invitación |
+| La persona invitada establece su contraseña | `POST /auth/invitation/password` | `200` y queda con sesión activa |
+| Reutilizar el mismo enlace de invitación | el mismo, con el token ya usado | `403` |
+| Contraseña por debajo del mínimo | el mismo, con una contraseña corta | `400` indicando el mínimo, **sin consumir el enlace** |
+
+#### Las cuatro de la invitación
+
+Necesitan la cookie del primer inicio de sesión, porque invitar exige un permiso que solo tienen
+las sesiones de rol administrador:
+
+```bash
+# Invitar. El rol puede ser "admin", "operator" o "viewer".
+curl -si -b cookies.txt -X POST http://127.0.0.1:8080/api/v1/admin/users/invite \
+  -H "Content-Type: application/json" \
+  -d '{"email":"invitado@ejemplo.com","role":"viewer"}'
+```
+
+La respuesta trae `invite_url` —la vía de Google— e `invite_password_url`, que es la que interesa
+aquí. **El token va en esa segunda URL**, y es lo que se envía al establecer la contraseña:
+
+```bash
+TOKEN="<el que aparece en invite_password_url>"
+
+# La persona invitada fija su contraseña
+curl -si -X POST http://127.0.0.1:8080/auth/invitation/password \
+  -H "Content-Type: application/json" \
+  -d "{\"token\":\"$TOKEN\",\"password\":\"unaContraseñaLargaYNueva\"}"
+
+# Repetir la misma orden con el token ya usado: debe dar 403
+# Y con una contraseña corta, antes de usarlo: 400 y el enlace sigue sirviendo
+```
+
+Si `invite_password_url` no aparece en la respuesta, es que la consola no tiene URL base
+configurada: revise `host_publico`.
 
 Que el correo inexistente y la contraseña incorrecta devuelvan exactamente lo mismo es deliberado:
 evita que se pueda averiguar qué cuentas existen probando direcciones.
