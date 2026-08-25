@@ -51,6 +51,15 @@ const UNIDAD_BY_GROUP: Record<string, string> = {
   ocr: "tokens",
 };
 
+// Segmento comercial del SKU (AUTO-7): mismo catálogo de productos, distinto
+// empaque. `autoservicio` (paquetes estándar → /autoservicio) vs `enterprise`
+// (alto volumen, pago anual → /autoservicio-enterprise). La fuente de verdad es
+// el backend (`/public/v1/catalog` expone `segment` por tier), NO una lista en
+// el front. Un tier sin `segment` es autoservicio (default del backfill AUTO-7).
+export type Segment = "autoservicio" | "enterprise";
+const tierSegment = (t: CatalogTier): Segment =>
+  (t.segment as Segment) === "enterprise" ? "enterprise" : "autoservicio";
+
 // ── Forma (parcial) de la respuesta del endpoint ──────────────────────────────
 export interface CatalogTier {
   id: string;
@@ -58,6 +67,7 @@ export interface CatalogTier {
   tierName: string;
   tierOrder: number;
   price: number; // CON IVA
+  segment?: string; // autoservicio | enterprise (AUTO-7)
   quota: { value: number; prefix?: string; postfix?: string };
 }
 export interface CatalogProduct {
@@ -96,11 +106,14 @@ function mapPaquete(t: CatalogTier): Paquete | null {
   };
 }
 
-// Mapea un producto del endpoint al modelo `Producto` de la UI. Devuelve null si
-// no tiene paquetes válidos (no se puede comprar).
-export function mapProducto(p: CatalogProduct): Producto | null {
+// Mapea un producto del endpoint al modelo `Producto` de la UI, quedándose solo
+// con los tiers del `segment` pedido (AUTO-7/AUTO-8). Un mismo producto puede
+// tener SKUs en ambos segmentos; por eso el filtro es a nivel tier. Devuelve null
+// si no le queda ningún paquete vendible en ese segmento (no se muestra).
+export function mapProducto(p: CatalogProduct, segment: Segment = "autoservicio"): Producto | null {
   // Orden desde el backend (tierOrder), no una lista fija en el front.
   const paquetes = [...(p.tiers || [])]
+    .filter((t) => tierSegment(t) === segment)
     .sort((a, b) => a.tierOrder - b.tierOrder)
     .map(mapPaquete)
     .filter((q): q is Paquete => q !== null);
@@ -119,35 +132,39 @@ export function mapProducto(p: CatalogProduct): Producto | null {
   };
 }
 
-export function mapCatalog(data: CatalogResponse): Producto[] {
+export function mapCatalog(data: CatalogResponse, segment: Segment = "autoservicio"): Producto[] {
   // KYC y demás recurrentes SÍ se muestran (SD-283); entran al carrito como todo,
   // marcados `plan: true` para rutearlos al slot de plan del checkout unificado.
   return (data.products || [])
-    .map(mapProducto)
+    .map((p) => mapProducto(p, segment))
     .filter((p): p is Producto => p !== null);
 }
 
-// pricingIndex (slug → tier → _id) desde la respuesta del endpoint.
-export function buildPricingIndex(data: CatalogResponse): PricingIndex {
+// pricingIndex (slug → tier → _id) desde la respuesta del endpoint, solo para los
+// tiers del segmento pedido (el checkout hidrata con el _id del SKU correcto).
+export function buildPricingIndex(data: CatalogResponse, segment: Segment = "autoservicio"): PricingIndex {
   const index: PricingIndex = {};
   for (const p of data.products || []) {
     for (const t of p.tiers || []) {
-      if (t.tier && t.id) (index[p.slug] ??= {})[t.tier] = t.id;
+      if (t.tier && t.id && tierSegment(t) === segment) (index[p.slug] ??= {})[t.tier] = t.id;
     }
   }
   return index;
 }
 
-// productKeys (slug → productKey del backend) para el `k` del deep-link.
-export function buildProductKeys(data: CatalogResponse): Record<string, string> {
+// productKeys (slug → productKey del backend) para el `k` del deep-link. Solo los
+// productos con al menos un tier del segmento pedido.
+export function buildProductKeys(data: CatalogResponse, segment: Segment = "autoservicio"): Record<string, string> {
   const keys: Record<string, string> = {};
   for (const p of data.products || []) {
-    if (p.fulfillment?.productKey) keys[p.slug] = p.fulfillment.productKey;
+    if (p.fulfillment?.productKey && (p.tiers || []).some((t) => tierSegment(t) === segment)) {
+      keys[p.slug] = p.fulfillment.productKey;
+    }
   }
   return keys;
 }
 
-export async function getAutoservicioCatalog(): Promise<{
+export async function getAutoservicioCatalog(segment: Segment = "autoservicio"): Promise<{
   categorias: Categoria[];
   productos: Producto[];
   pricingIndex: PricingIndex;
@@ -159,20 +176,25 @@ export async function getAutoservicioCatalog(): Promise<{
     });
     if (!res.ok) throw new Error(`catalog ${res.status}`);
     const data: CatalogResponse = await res.json();
-    const productos = mapCatalog(data);
-    if (productos.length === 0) throw new Error("catalog empty");
+    const productos = mapCatalog(data, segment);
+    // Autoservicio: si el endpoint no trae productos, es una falla (siempre hay
+    // catálogo estándar) → caemos al hardcodeado. Enterprise: vacío es un estado
+    // VÁLIDO (aún no se cargan los 44 SKUs, AUTO-6), así que NO forzamos error ni
+    // caemos a un fallback autoservicio que contaminaría la página enterprise.
+    if (productos.length === 0 && segment === "autoservicio") throw new Error("catalog empty");
     return {
       categorias: fallbackCategorias,
       productos,
-      pricingIndex: buildPricingIndex(data),
-      productKeys: buildProductKeys(data),
+      pricingIndex: buildPricingIndex(data, segment),
+      productKeys: buildProductKeys(data, segment),
     };
   } catch {
-    // Fallback seguro: la página no se rompe si el endpoint no responde. Sin
-    // índice, `comprable` no oculta nada y el checkout usa el productKeys local.
+    // Fallback seguro SOLO para autoservicio: la página estándar no se rompe si el
+    // endpoint no responde. Para enterprise no hay catálogo hardcodeado —
+    // devolvemos vacío y la página muestra su estado "próximamente".
     return {
       categorias: fallbackCategorias,
-      productos: fallbackProductos,
+      productos: segment === "enterprise" ? [] : fallbackProductos,
       pricingIndex: {},
       productKeys: {},
     };

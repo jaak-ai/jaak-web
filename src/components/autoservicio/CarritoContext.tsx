@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 import { type Categoria, type Paquete, type Producto } from "@/data/autoservicio-catalogo";
 import { escribirParamsUrl, leerParamUrl } from "./urlEstado";
 
@@ -35,6 +35,15 @@ interface CarritoStore {
 
 const Ctx = createContext<CarritoStore | null>(null);
 
+// Tier por defecto de un producto, data-driven: el recomendado si de verdad es
+// uno de sus paquetes, si no el primer paquete. NUNCA un tier hardcodeado —
+// enterprise usa Titanio/Iridio/… y no tiene "plata" (rompía con `.precio` de
+// undefined al asumir un default fijo).
+const defaultTier = (p: Producto): Tier =>
+  (p.recomendado && p.paquetes.some((q) => q.id === p.recomendado)
+    ? p.recomendado
+    : p.paquetes[0]?.id) as Tier;
+
 export function CarritoProvider({
   children,
   productos,
@@ -49,7 +58,15 @@ export function CarritoProvider({
   productKeys?: Record<string, string>;
 }) {
   const [tierByProduct, setTierByProduct] = useState<Record<string, Tier>>(() =>
-    Object.fromEntries(productos.map((p) => [p.id, p.recomendado ?? "plata"]))
+    Object.fromEntries(productos.map((p) => [p.id, defaultTier(p)]))
+  );
+  // Default por id para los fallbacks (tierDe / URL): evita asumir un tier fijo.
+  const defaultTierDe = useCallback(
+    (id: string): Tier => {
+      const p = productos.find((q) => q.id === id);
+      return p ? defaultTier(p) : ("" as Tier);
+    },
+    [productos]
   );
   const [cart, setCart] = useState<string[]>([]);
   // Productos cuyo tier eligió el usuario explícitamente (chip). El volumen de la
@@ -88,12 +105,12 @@ export function CarritoProvider({
   // tier ajustado), para que un refresh conserve la selección.
   useEffect(() => {
     if (!hidratado) return;
-    const sel = cart.map((id) => `${id}.${tierByProduct[id] ?? "plata"}`).join(",");
+    const sel = cart.map((id) => `${id}.${tierByProduct[id] ?? defaultTierDe(id)}`).join(",");
     escribirParamsUrl({ sel: sel || null });
-  }, [hidratado, cart, tierByProduct]);
+  }, [hidratado, cart, tierByProduct, defaultTierDe]);
 
   const enCarrito = (id: string) => cart.includes(id);
-  const tierDe = (id: string): Tier => tierByProduct[id] ?? "plata";
+  const tierDe = (id: string): Tier => tierByProduct[id] ?? defaultTierDe(id);
   const setTier = (id: string, tier: Tier) => {
     setTierByProduct((prev) => ({ ...prev, [id]: tier }));
     setTouched((prev) => {
