@@ -1634,18 +1634,26 @@ El orden importa: las rutas más específicas van antes que `/`.
 ```sh
 HOST=biometria.ejemplo.com
 
-# La consola responde en la raíz
+# 1) La consola responde en la raíz
 curl -sI "https://$HOST/" | head -1
 
-# La API responde bajo el mismo host
-curl -s "https://$HOST/readyz"
+# 2) La API recibe lo que va bajo /auth/. Sin sesión debe responder 401,
+#    que es la API contestando: si devuelve HTML, está contestando la consola.
+curl -s -o /dev/null -w '%{http_code}\n' "https://$HOST/auth/me"
 
-# Y el certificado es válido: sin -k y sin errores
-curl -sS -o /dev/null "https://$HOST/readyz" && echo "TLS correcto"
+# 3) El certificado es válido: sin -k y sin errores
+curl -sS -o /dev/null "https://$HOST/" && echo "TLS correcto"
 ```
 
-`/readyz` debe devolver `"status":"ready"`. Si responde la consola en lugar de la API, el reparto de
-rutas está mal: `/api/` y `/auth/` no están llegando al servicio de la API.
+El segundo es el que comprueba el reparto de rutas. Un `401` significa que `/auth/` llega a la API;
+cualquier respuesta HTML significa que está cayendo en la consola y el reparto está mal.
+
+<Callout type="info" title="`/readyz` y `/metrics` no se publican, y es lo correcto">
+  Están en la raíz del servicio de la API, no bajo `/api/` ni `/auth/`, así que
+  con este reparto de rutas **no son alcanzables desde fuera**. No lo arregle: la
+  sonda y las métricas no deben quedar expuestas —lo dice la sección 8.6— y se
+  consultan desde dentro del clúster o con `kubectl port-forward`.
+</Callout>
 
 <Callout type="info" title="Se puede verificar la instalación sin publicar">
   Las comprobaciones de la sección 8 se hacen desde dentro del clúster o con
