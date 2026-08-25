@@ -38,7 +38,9 @@
 .docs-nav-item--active::before { content: ''; position: absolute; left: -12px; top: 4px; bottom: 4px; width: 2px; background: var(--docs-link); }
 
 .docs-page { max-width: 1600px; margin: 0 auto; }
-.docs-article { padding: 8px 0 64px; }
+.docs-page--centered { position: relative; padding-inline: clamp(32px, 6vw, 112px); }
+.docs-page--centered .docs-article { width: min(100%, 52rem); margin-inline: auto; padding: 8px 0 64px; }
+.docs-page--centered .docs-toc { display: none; }
 .docs-breadcrumb { color: var(--docs-muted); }
 .docs-breadcrumb a:hover { color: var(--docs-link); }
 .docs-breadcrumb__current { color: var(--docs-ink); }
@@ -68,6 +70,14 @@
 .docs-pagination__title { color: var(--docs-ink); }
 .docs-pagination__link:hover :is(.docs-pagination__label, .docs-pagination__title) { color: var(--docs-link); }
 
+@media (min-width: 1800px) {
+  .docs-page--centered .docs-toc {
+    display: block;
+    position: absolute;
+    top: 40px;
+    left: calc(50% + 30rem);
+  }
+}
 @media (max-width: 1279px) { .docs-page { max-width: 1100px; } }
 @media (max-width: 1023px) { .docs-page { padding: 32px 24px; } }
 @media (max-width: 640px) {

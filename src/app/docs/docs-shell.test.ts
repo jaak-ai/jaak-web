@@ -13,6 +13,7 @@ describe('docs shell', () => {
     const toc = readSource('src/components/docs/TableOfContents.tsx')
 
     expect(layout).toContain('docs-shell')
+    expect(page).toContain('docs-page--centered')
     expect(page).toContain('docs-article')
     expect(sidebar).toContain('docs-sidebar')
     expect(toc).toContain('docs-toc')

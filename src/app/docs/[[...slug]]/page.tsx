@@ -66,8 +66,8 @@ export default async function DocPage({ params }: PageProps) {
   }
 
   return (
-    <div className="docs-page flex gap-12 px-8 py-10">
-      <article className="docs-article flex-1 min-w-0">
+    <div className="docs-page docs-page--centered px-8 py-10">
+      <article className="docs-article min-w-0">
         {breadcrumbs.length > 1 && (
           <nav className="docs-breadcrumb mb-6 flex items-center gap-2 text-sm">
             {breadcrumbs.map((crumb, index) => (
