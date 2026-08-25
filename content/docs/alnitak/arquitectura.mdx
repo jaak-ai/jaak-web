@@ -20,16 +20,12 @@ tecnológicas principales.
 | **Almacén vectorial** | Guarda la galería como vectores de 512 dimensiones con cuantificación a 8 bits sobre grafo HNSW. Resuelve la búsqueda kNN y aplica los filtros de metadatos dentro de la misma consulta. |
 | **Almacenamiento de objetos** | Custodia los recortes faciales alineados del enrolamiento, **cifrados y fuera del índice de búsqueda**. |
 
-```mermaid
-flowchart LR
-  C[Canales del cliente] -->|X-API-Key| A[API orquestadora]
-  O[Consola de operación] -->|Cookie de sesión SSO| A
-  A -->|imagen alineada| V[Vectorizador GPU]
-  V -->|vector 512-D| A
-  A -->|kNN| E[(Almacén vectorial<br/>galería biométrica)]
-  A -->|crop cifrado| S[(Object storage)]
-  A --> AU[(Auditoría encadenada)]
-```
+<iframe
+  title="Arquitectura de Alnitak"
+  src="/docs/alnitak/architecture-overview.html"
+  loading="lazy"
+  style={{ width: '100%', height: '560px', border: 0 }}
+/>
 
 La custodia de los recortes cifrados es lo que permite **re-vectorizar la
 galería completa ante un cambio de modelo** sin volver a pedir las imágenes

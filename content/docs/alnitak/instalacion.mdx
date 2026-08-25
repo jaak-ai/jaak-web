@@ -320,32 +320,12 @@ los sistemas del cliente más allá de la API, y la instalación sin Kubernetes.
 
 ## 2. Arquitectura
 
-```
-                        clientes del cliente
-                     (canales, integraciones)
-                              │  API key
-   navegador                  │
-      │  sesión               │
-      ▼                       ▼
- ┌──────────┐          ┌──────────────┐          ┌───────────────┐
- │ CONSOLA  │─────────▶│     API      │─────────▶│ alnitak-serve │
- │ consola  │  mismo   │ orquestación│   HTTP   │ vectorización │
- │  nginx   │  origen  │   :8080      │  :8000   │   vectoriza   │
- └──────────┘          └──────┬───────┘          └───────────────┘
-                              │ vector 512-D
-                              ▼
-                      ┌──────────────┐
-                      │ELASTICSEARCH │  galería + búsqueda kNN
-                      │    :9200     │
-                      └──────────────┘
-                              │
-        ┌─────────────────────┼─────────────────────┐
-        ▼                     ▼                     ▼
-   PostgreSQL              Redis            Almacén S3
-   :5432                   :6379            recortes cifrados
-   usuarios, sesiones,     métricas y       (re-vectorización)
-   API keys, auditoría     eventos vivos
-```
+<iframe
+  title="Topología de instalación de Alnitak"
+  src="/docs/alnitak/installation-topology.html"
+  loading="lazy"
+  style={{ width: '100%', height: '560px', border: 0 }}
+/>
 
 Los tres de abajo son dependencias **de la API**, no de Elasticsearch. Elasticsearch solo necesita
 su propio disco.
