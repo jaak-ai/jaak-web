@@ -400,7 +400,7 @@ instalar.
 | Prerrequisito | Para qué | Nota |
 |---|---|---|
 | Kubernetes | todo | Verificado en 1.33 y 1.36. Sobre un Kubernetes gestionado, ver 3.0 |
-| **ECK** (Elastic Cloud on Kubernetes) | despliega y opera el clúster de Elasticsearch | Aporta el CRD `elasticsearch.k8s.elastic.co/v1` |
+| **ECK** (Elastic Cloud on Kubernetes) | despliega y opera el clúster de Elasticsearch | Verificado con la **3.5.0**. Aporta el CRD `elasticsearch.k8s.elastic.co/v1` |
 | **NVIDIA GPU Operator** o device plugin | expone `nvidia.com/gpu` a los pods | Sin él el pod de vectorización nunca se programa. Con device plugin a secas hay que leer 3.3: falta la RuntimeClass y faltan las etiquetas del nodo |
 | **Prometheus Operator** | recoge las métricas | Opcional si el cliente no quiere observabilidad |
 | Gestor de secretos | inyecta los secretos de la sección 6 | External Secrets Operator es la vía recomendada; ver alternativa mínima |
@@ -1109,6 +1109,8 @@ aplican si no se tocan:
 | Variable | Por omisión | Para qué |
 |---|---|---|
 | `instalar_eck` | `true` | Instala el operador de Elasticsearch. Con `false` debe existir ya |
+| `eck_version` | `3.5.0` | Versión del operador de Elasticsearch. **Fijada a propósito**: ver el aviso de abajo |
+| `prometheus_version`, `external_secrets_version`, `gpu_operator_version` | vacío | Versión de los otros operadores. Vacío instala la última publicada |
 | `instalar_prometheus` | `false` | Instala el operador de Prometheus, solo si se quiere observabilidad |
 | `instalar_external_secrets` | `false` | Instala el gestor de secretos externo |
 | `es_version` | `9.5.2` | Versión de Elasticsearch que despliega el operador |
@@ -1127,6 +1129,30 @@ aplican si no se tocan:
 | `rate_limit_window` | `1s` | Duración de la ventana del limitador |
 | `vectorizador_workers` | `4` | Réplicas del motor dentro del proceso. **Cada una carga su propia copia del modelo**, así que este número decide la memoria que pide el vectorizador |
 | `vectorizador_max_inflight` | `128` | Peticiones simultáneas admitidas por el vectorizador |
+
+<Callout type="warning" title="Fije la versión de los operadores que instale">
+  El operador de Elasticsearch viene con versión fijada, y no es un detalle: sin
+  fijarla, Helm instala la última publicada **el día de la instalación**. Dos
+  despliegues de la misma entrega separados por unas semanas acabarían con
+  operadores distintos gobernando la galería, sin que nada en la configuración lo
+  refleje y sin posibilidad de volver atrás de forma determinista.
+
+  Importa además por una razón menos evidente: **es el operador quien decide qué
+  versiones de Elasticsearch admite**. Uno más nuevo puede retirar el soporte de
+  la versión indicada en `es_version`, y el fallo aparecería durante el
+  despliegue sin relación aparente con la causa.
+
+  Los otros tres operadores son opcionales y vienen sin fijar. Si los instala,
+  fije también su versión.
+
+  Y si ya tiene el operador de Elasticsearch instalado —el caso de
+  `instalar_eck = false`—, compruebe cuál es:
+
+  ```bash
+  kubectl get statefulset elastic-operator -n elastic-system \
+    -o jsonpath='{.spec.template.spec.containers[0].image}'
+  ```
+</Callout>
 
 <Callout type="warning" title="El dimensionado por omisión es de producción">
   Los valores de Elasticsearch de esta tabla solicitan, entre los tres nodos de
