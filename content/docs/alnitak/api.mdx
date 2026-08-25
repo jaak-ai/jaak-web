@@ -32,6 +32,7 @@ La URL base es la de tu despliegue: no hay endpoint compartido.
 | `POST` | [`/api/v1/gallery/reembed`](#galería) | `admin:gallery` | Re-vectorizar con modelo nuevo |
 | `GET` | [`/api/v1/gallery/reembed/{id}`](#galería) | `admin:gallery` | Progreso de la re-vectorización |
 | `POST` | [`/api/v1/gallery/alias`](#galería) | `admin:gallery` | Conmutar el alias |
+| `DELETE` | [`/api/v1/biometrics/{id}`](#supresión-de-un-sujeto) | `admin:erasure` | Borrar a una persona de la galería |
 | `GET` | [`/api/v1/metrics/*`](#métricas-y-eventos) | `read:metrics` | Resumen, historia y etapas |
 | `GET` | [`/api/v1/events/*`](#métricas-y-eventos) | `read:events` | Eventos recientes y detalle |
 | `GET` | [`/api/v1/stream/events`](#métricas-y-eventos) | `read:events` | Flujo en vivo (SSE) |
@@ -70,6 +71,7 @@ mismo mensaje para clave desconocida, mal formada o inválida.
 | `read:metrics` | Métricas, estadísticas de galería, nodos, alertas |
 | `read:events` | Eventos recientes, detalle de evento, flujo en vivo |
 | `admin:gallery` | Re-embedding y conmutación de alias |
+| `admin:erasure` | Supresión de un sujeto de la galería |
 
 ---
 
@@ -329,6 +331,78 @@ son rostros que no están en el índice nuevo.
 
 `alias` es opcional; vacío usa el alias de producción. La respuesta confirma
 `alias`, `new_index` y `status`.
+
+---
+
+## Supresión de un sujeto
+
+<Endpoint
+  method="DELETE"
+  path="/api/v1/biometrics/{id}"
+  description="Borra a una persona de la galería: su vector y su recorte cifrado"
+  auth="api-key"
+/>
+
+Requiere el scope **`admin:erasure`**. Es la operación que atiende un derecho de
+supresión: borra **las dos copias** del dato biométrico, el vector del índice y
+el recorte cifrado del almacén de objetos.
+
+```bash
+curl -X DELETE "$ALNITAK_URL/api/v1/biometrics/bio_8f21c0" \
+  -H "X-API-Key: $ALNITAK_ERASURE_KEY"
+```
+
+### Respuesta (200 OK)
+
+```json
+{
+  "biometric_id": "bio_8f21c0",
+  "record": "EXP-2026-00412",
+  "channel": "web",
+  "crop_deleted": true,
+  "erased_at": "2026-08-25T09:14:22Z"
+}
+```
+
+No lleva biometría: cuando esto se serializa, el vector y el recorte ya no
+existen. Es lo que el operador necesita para archivar la solicitud que atendió.
+
+| Campo | Qué es |
+|---|---|
+| `crop_deleted` | Distingue "no había recorte que borrar" de "se borró". Un alta anterior a la custodia de recortes no tiene objeto asociado, y eso **no** es un borrado incompleto |
+| `erased_at` | Sello de tiempo UTC del borrado |
+
+<Callout type="danger" title="Es irreversible, y también borra la capacidad de re-vectorizar a esa persona">
+No hay deshacer. Y como el recorte cifrado desaparece, **esa persona ya no entra
+en una re-vectorización por cambio de modelo**: no queda de dónde reconstruir su
+vector. Es el precio de que la supresión sea real — dejar el recorte mantendría
+su biometría existiendo.
+</Callout>
+
+<Callout type="warning" title="El scope va aparte de `admin:gallery` a propósito">
+Reconstruir la galería es reversible: el índice anterior sigue ahí hasta que
+alguien lo borra. Suprimir a una persona no lo es. Por eso las dos capacidades
+no viajan en la misma credencial, y **ninguna credencial existente hereda
+`admin:erasure`**: hay que emitirla explícitamente.
+</Callout>
+
+### Errores
+
+| Respuesta | Cuándo |
+|---|---|
+| `404 not_found` | El `biometric_id` no existe en **tu** galería. **También es la respuesta cuando el documento pertenece a otra organización**: distinguir los dos casos permitiría averiguar si un rostro está enrolado en otra empresa |
+| `403 forbidden` | La credencial no tiene `admin:erasure` |
+| `500 internal` | El vector se borró y su recorte **no**. La supresión quedó a medias: reintenta la misma llamada, que es idempotente, hasta que devuelva `200` |
+
+<Callout type="danger" title="Un 500 aquí no significa que no pasó nada">
+Significa que pasó la mitad. El vector ya no está —la persona no es
+identificable— pero el recorte cifrado sigue en el almacén. El mensaje lo dice, y
+el reintento lo completa. No lo trates como un fallo sin efecto.
+</Callout>
+
+Cada supresión queda en la cadena de auditoría de administración, con el actor,
+la organización y el identificador. Cuando el vector y el recorte ya no existen,
+**esa fila es la única prueba de que el borrado ocurrió**.
 
 ---
 

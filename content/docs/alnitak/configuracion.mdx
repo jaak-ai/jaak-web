@@ -283,6 +283,36 @@ al proyecto.
 
 ---
 
+## Alta en galería
+
+```yaml
+enroll:
+  block_on_review: false
+```
+
+| Parámetro | Por omisión | Qué hace |
+|---|---|---|
+| `block_on_review` | `false` | Extiende el rechazo por duplicado a la banda de revisión manual |
+
+Con `false` —el comportamiento histórico— el alta se rechaza **solo** con
+veredicto `match`. Un candidato dentro de la banda `[t, t+0.06)` no impide el
+alta: el rostro se guarda, la respuesta es `201` y su `verdict` dice `review`.
+
+Con `true`, la banda también devuelve `409 duplicate_or_fraud`, con los
+candidatos que lo provocaron.
+
+<Callout type="warning" title="Activarlo cambia la conducta de integraciones ya desplegadas">
+Un cliente que hoy recibe `201` en la banda empezaría a recibir `409` en cuanto
+se active. Por eso el defecto es `false`: actualizar de versión no debe cambiar
+el comportamiento de nadie sin avisar.
+
+Actívalo si tu flujo exige intervención humana en esa banda y no quieres
+depender de que cada integración lea el `verdict` de un `201`. Ver
+[Referencia de API → Alta en galería](/docs/alnitak/api#alta-en-galería).
+</Callout>
+
+---
+
 ## Techo de latencia declarado
 
 ```yaml

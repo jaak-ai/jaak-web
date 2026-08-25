@@ -164,7 +164,7 @@ respuesta es `review`.
 | Si tu flujo... | Entonces |
 |---|---|
 | Solo mira el código de estado | Verás altas aceptadas que tu negocio considera dudosas. Hay que leer el `verdict` del `201` |
-| Exige revisión humana en la banda | Encolar el caso es responsabilidad de tu integración |
+| Exige revisión humana en la banda | Encolar el caso es responsabilidad de tu integración — o activa `enroll.block_on_review` y recibirás `409` también en la banda, ver [Configuración → Alta en galería](/docs/alnitak/configuracion#alta-en-galería) |
 | Ve demasiados `review` en las altas | El umbral no está calibrado para tu población: ver [Precisión y calibración](/docs/alnitak/precision) |
 
 ### `409 duplicate_or_fraud`
@@ -358,6 +358,9 @@ propósito:
 | **La verificación TLS desactivada** | Avisa en el log de arranque. Debe estar en `false` en producción |
 | **Credenciales de Elasticsearch acumuladas** | Cada emisión invalida las anteriores del mismo nombre, pero conviene revisar que no quedan claves antiguas con acceso de escritura |
 | **La auditoría no sale de la máquina** | Verifica que llegan eventos al SIEM o al almacenamiento WORM, no solo que se escriben |
+| **La cadena de auditoría rota, o ausente** | `audit-verify <ruta>`: salida `0` íntegra, `1` rota, `2` no se pudo comprobar. **Un `2` no es un `0`**: ver [Operación → Auditoría](/docs/alnitak/operacion#auditoría) |
+| **Una supresión que quedó a medias** | Un `500` en `DELETE /biometrics/{id}` significa que el vector se borró y el recorte no. Reintenta la llamada hasta que dé `200`: es idempotente |
+| **Un bucket de recortes versionado** | El borrado deja la versión anterior recuperable y la supresión no se cumple. Comprueba el versionado y su ciclo de vida |
 | **Relojes desincronizados** | La validez de los sellos de tiempo de la auditoría depende del NTP de todos los nodos |
 
 La [lista de verificación antes de

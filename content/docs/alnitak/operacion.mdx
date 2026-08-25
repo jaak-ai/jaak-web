@@ -237,12 +237,28 @@ Cada consulta y cada alta dejan un evento encadenado por hash. En operación:
 - **Verifica la cadena periódicamente.** La comprobación recorre el registro y
   detecta alteraciones y discontinuidades.
 
-  <Callout type="warning" title="La verificación no se ejecuta hoy con un comando propio">
-  La lógica de verificación se distribuye como parte del servicio, **no como un
-  binario suelto ni como endpoint**. Para incorporarla a tu rutina de operación,
-  pide al equipo de JAAK asignado al proyecto la herramienta o el procedimiento
-  vigente para tu versión: no hay un comando documentado que puedas ejecutar por
-  tu cuenta.
+  La entrega incluye el comando `audit-verify`, que acepta un fichero o el
+  directorio completo:
+
+  ```bash
+  audit-verify /var/log/alnilam/audit.jsonl     # un fichero
+  audit-verify /var/log/alnilam/                # todos los del directorio
+  audit-verify -json /var/log/alnilam/          # para un cron o un SIEM
+  ```
+
+  Distingue **tres** códigos de salida, y la diferencia importa en un cron:
+
+  | Salida | Significa |
+  |---|---:|
+  | `0` | Cadena íntegra |
+  | `1` | **Cadena rota**, con el evento exacto donde no cuadra |
+  | `2` | No se pudo comprobar: ruta ilegible, o ningún fichero de auditoría |
+
+  <Callout type="danger" title="No trates el 2 como un 0">
+  «No pude mirar» no es «está bien». Un cron que solo compruebe `!= 1` dará por
+  buena una auditoría que no existe, que es peor que tenerla rota: el fallo más
+  probable no es que alguien altere el registro, es que el registro deje de
+  escribirse y nadie se entere.
   </Callout>
 - **Confirma que los eventos llegan al SIEM o al almacenamiento WORM.** Una
   auditoría que no sale de la máquina no protege de gran cosa.
