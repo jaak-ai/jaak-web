@@ -1907,14 +1907,24 @@ playbook se detiene antes de empezar.
   fotografía de alguien del equipo. Evita tener que justificar por qué un dato
   biométrico personal quedó almacenado en un entorno de validación.
 
-  Para retirarlo a mano, el identificador aparece en la salida de la prueba:
+  Para retirarlo a mano hace falta el identificador biométrico, que es el nombre
+  con el que se guarda el objeto. La prueba lo imprime al terminar:
 
 ```bash
-kubectl -n biometria-1n logs job/pruebas-de-humo | grep -i "id"
+kubectl -n biometria-1n logs job/pruebas-de-humo | grep "identificador biometrico"
 ```
 
-  Y con ese identificador, bórrelo del contenedor de recortes con el cliente de su
-  almacén. Está previsto que el playbook lo haga solo en una versión próxima.
+  Si instaló con una versión anterior del paquete, que no lo imprimía,
+  pregúnteselo a la galería antes de borrar el alta —o al propio almacén, donde
+  el objeto sigue estando aunque el documento ya no exista:
+
+```bash
+# Los objetos del contenedor de recortes, por fecha
+mc ls --recursive local/recortes-biometricos
+```
+
+  Con el identificador, bórrelo del contenedor con el cliente de su almacén. Está
+  previsto que el playbook lo haga solo en una versión próxima.
 </Callout>
 
 ```bash
