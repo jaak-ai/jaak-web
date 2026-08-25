@@ -14,6 +14,7 @@ describe('docs shell', () => {
 
     expect(layout).toContain('docs-shell')
     expect(page).toContain('docs-page--centered')
+    expect(page).toContain('docs-page--reading-grid')
     expect(page).toContain('docs-article')
     expect(sidebar).toContain('docs-sidebar')
     expect(toc).toContain('docs-toc')

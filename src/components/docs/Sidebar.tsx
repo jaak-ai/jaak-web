@@ -109,7 +109,7 @@ export function Sidebar() {
   const isAlnitak = pathname === '/docs/alnitak' || pathname.startsWith('/docs/alnitak/')
 
   return (
-    <nav className="docs-sidebar w-64 flex-shrink-0 hidden lg:block">
+    <nav className="docs-sidebar flex-shrink-0 hidden lg:block">
       <div className="docs-sidebar__inner sticky overflow-y-auto p-6">
         {isAlnitak ? (
           <>
