@@ -86,6 +86,10 @@ export interface CatalogProduct {
 export interface CatalogResponse {
   products: CatalogProduct[];
   total: number;
+  // Descuento global por pago anual (fracción, p.ej. 0.05), fuente única del
+  // backend (AUTO-10). Se aplica a los tiers enterprise (pago anual). NO se
+  // hardcodea en el front: si viene, se usa; si no, no hay descuento.
+  annualDiscountRate?: number;
 }
 
 // pricingIndex: slug → tier → pricing _id (para hidratar el checkout).
@@ -164,11 +168,26 @@ export function buildProductKeys(data: CatalogResponse, segment: Segment = "auto
   return keys;
 }
 
+// Aplica el descuento por pago anual (fracción) al precio de cada paquete. Solo se
+// usa para el segmento enterprise (pago anual). Como es porcentaje, descontar sobre
+// el precio SIN IVA equivale a hacerlo sobre el total (IVA proporcional), así que
+// el precio mostrado = el cobrado por el backend (AUTO-10). Devuelve los productos
+// intactos si el rate no es positivo.
+export function applyAnnualDiscount(productos: Producto[], rate: number): Producto[] {
+  if (!rate || rate <= 0) return productos;
+  const factor = 1 - rate;
+  return productos.map((p) => ({
+    ...p,
+    paquetes: p.paquetes.map((q) => ({ ...q, precio: Math.round(q.precio * factor * 100) / 100 })),
+  }));
+}
+
 export async function getAutoservicioCatalog(segment: Segment = "autoservicio"): Promise<{
   categorias: Categoria[];
   productos: Producto[];
   pricingIndex: PricingIndex;
   productKeys: Record<string, string>;
+  annualDiscountRate: number;
 }> {
   try {
     const res = await fetch(`${API_BASE}/public/v1/catalog`, {
@@ -176,17 +195,21 @@ export async function getAutoservicioCatalog(segment: Segment = "autoservicio"):
     });
     if (!res.ok) throw new Error(`catalog ${res.status}`);
     const data: CatalogResponse = await res.json();
-    const productos = mapCatalog(data, segment);
+    const mapped = mapCatalog(data, segment);
     // Autoservicio: si el endpoint no trae productos, es una falla (siempre hay
     // catálogo estándar) → caemos al hardcodeado. Enterprise: vacío es un estado
     // VÁLIDO (aún no se cargan los 44 SKUs, AUTO-6), así que NO forzamos error ni
     // caemos a un fallback autoservicio que contaminaría la página enterprise.
-    if (productos.length === 0 && segment === "autoservicio") throw new Error("catalog empty");
+    if (mapped.length === 0 && segment === "autoservicio") throw new Error("catalog empty");
+    // AUTO-10: el descuento anual solo aplica al segmento enterprise (pago anual).
+    const rate = typeof data.annualDiscountRate === "number" ? data.annualDiscountRate : 0;
+    const productos = segment === "enterprise" ? applyAnnualDiscount(mapped, rate) : mapped;
     return {
       categorias: fallbackCategorias,
       productos,
       pricingIndex: buildPricingIndex(data, segment),
       productKeys: buildProductKeys(data, segment),
+      annualDiscountRate: segment === "enterprise" ? rate : 0,
     };
   } catch {
     // Fallback seguro SOLO para autoservicio: la página estándar no se rompe si el
@@ -197,6 +220,7 @@ export async function getAutoservicioCatalog(segment: Segment = "autoservicio"):
       productos: segment === "enterprise" ? [] : fallbackProductos,
       pricingIndex: {},
       productKeys: {},
+      annualDiscountRate: 0,
     };
   }
 }

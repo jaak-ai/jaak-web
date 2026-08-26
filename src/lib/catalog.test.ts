@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { mapProducto, mapCatalog, type CatalogProduct, type CatalogResponse } from "./catalog";
+import { mapProducto, mapCatalog, applyAnnualDiscount, type CatalogProduct, type CatalogResponse } from "./catalog";
 
 // Endpoint devuelve precios CON IVA; verificamos el mapeo al modelo `Producto`.
 const consultaIne: CatalogProduct = {
@@ -112,5 +112,27 @@ describe("mapCatalog", () => {
     const out = mapCatalog(data);
     expect(out).toHaveLength(1);
     expect(out[0].id).toBe("consulta-ine");
+  });
+});
+
+describe("applyAnnualDiscount (AUTO-10)", () => {
+  // consultaIne (sin IVA): plata 200, cobre 14.
+  it("aplica el descuento al precio de cada paquete", () => {
+    const productos = [mapProducto(consultaIne)!];
+    const out = applyAnnualDiscount(productos, 0.05);
+    expect(out[0].paquetes.find((q) => q.id === "plata")!.precio).toBe(190); // 200 × 0.95
+    expect(out[0].paquetes.find((q) => q.id === "cobre")!.precio).toBe(13.3); // 14 × 0.95
+  });
+
+  it("un rate distinto (10%) escala el descuento", () => {
+    const productos = [mapProducto(consultaIne)!];
+    const out = applyAnnualDiscount(productos, 0.1);
+    expect(out[0].paquetes.find((q) => q.id === "plata")!.precio).toBe(180); // 200 × 0.90
+  });
+
+  it("rate 0 o negativo no cambia nada (misma referencia)", () => {
+    const productos = [mapProducto(consultaIne)!];
+    expect(applyAnnualDiscount(productos, 0)).toBe(productos);
+    expect(applyAnnualDiscount(productos, -0.1)).toBe(productos);
   });
 });

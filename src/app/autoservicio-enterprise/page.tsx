@@ -45,8 +45,11 @@ export default async function AutoservicioEnterprisePage() {
   // Catálogo data-driven filtrado al segmento enterprise (AUTO-7/AUTO-8). Sin
   // SKUs enterprise cargados (AUTO-6 pendiente), `productos` viene vacío y la
   // página muestra su estado "próximamente" — nunca el catálogo autoservicio.
-  const { productos, categorias, pricingIndex, productKeys } = await getAutoservicioCatalog("enterprise");
+  const { productos, categorias, pricingIndex, productKeys, annualDiscountRate } = await getAutoservicioCatalog("enterprise");
   const hayProductos = productos.length > 0;
+  // AUTO-10: el descuento anual viene del catálogo (fuente única), NO hardcodeado.
+  // Los precios de las tarjetas ya lo tienen aplicado; aquí solo lo comunicamos.
+  const annualDiscountPct = annualDiscountRate > 0 ? Math.round(annualDiscountRate * 1000) / 10 : 0;
 
   return (
     <>
@@ -125,6 +128,15 @@ export default async function AutoservicioEnterprisePage() {
                   <span className="rounded-full px-1.5 py-0.5 text-[10px] font-bold" style={{ background: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.6)" }}>Próximamente</span>
                 </span>
               </div>
+
+              {/* AUTO-10: descuento anual (del catálogo, no hardcodeado). Los precios
+                  mostrados ya lo incluyen. */}
+              {annualDiscountPct > 0 && (
+                <p className="mt-3 flex items-center gap-2 text-[13px] font-semibold" style={{ color: "#E7C65A" }}>
+                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  Precios con {annualDiscountPct}% de descuento por pago anual ya incluido
+                </p>
+              )}
             </div>
           </div>
         </section>
