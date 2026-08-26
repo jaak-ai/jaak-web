@@ -36,12 +36,12 @@ El servicio se mantiene estable al menos hasta **120 rps**.
 | Capacidad | En la práctica |
 |---|---|
 | **Galería medida** | Corrida con **50 millones** de vectores 512-D (int8 + HNSW). |
-| **Rápido de punta a punta** | ~**120 ms p50** / ~**200 ms p95** a 60 rps con caras reales (incluye red). |
-| **Búsqueda ligera a escala** | Etapa kNN ~**10 ms** sobre 50 M; no es el cuello principal. |
-| **Caudal observado** | Identify sin respuestas de error en la corrida hasta **120 rps**; a 60 rps, 3.600 respuestas HTTP satisfactorias. |
+| **Latencia extremo a extremo** | ~**120 ms p50** / ~**200 ms p95** a 60 rps con caras reales (incluye red). |
+| **Coste de búsqueda a escala** | Etapa kNN ~**10 ms** sobre 50 M; no es el cuello principal. |
+| **Caudal observado** | No se registraron respuestas de error en la corrida hasta **120 rps**; a 60 rps se obtuvieron 3.600 respuestas HTTP satisfactorias. |
 | **Lectura y escritura** | Mixto identify + enroll a 60 rps con latencias del mismo orden. |
 | **Transparencia** | Cada respuesta lleva `took_ms` y `stages[]` por etapa. |
-| **Memoria contenida** | ~**30 GB** calientes por copia a 50 M (int8), no cientos de GB en float32. |
+| **Memoria por copia** | ~**30 GB** calientes por copia a 50 M (int8), frente a cientos de GB en float32. |
 | **Escala por capas** | Más tráfico → GPU/API; más galería → nodos de datos. |
 
 <Callout type="info" title="Tres caminos de medición (no se mezclan)">
@@ -245,6 +245,8 @@ describe al cliente, no al servicio.
 
 El dimensionado que sostiene estas cifras —nodos de datos, heap, clase de disco
 y GPU— está en [Instalación](/docs/alnitak/instalacion).
+
+## Alcance de estas mediciones
 
 ## Alcance de estas mediciones
 

@@ -131,7 +131,7 @@ reintento.
 
 | Causa | Cómo se reconoce |
 |---|---|
-| **Falta la RuntimeClass de GPU** | El pod muere con **segfault**, y el mensaje no menciona el runtime por ningún sitio. Es el fallo más costoso de diagnosticar: si el runtime de NVIDIA no es el de omisión de containerd —k3s, por ejemplo— hay que declararla. Ver [Instalación → 3.3](/docs/alnitak/instalacion#33-runtimeclass-de-gpu) |
+| **Falta la RuntimeClass de GPU** | El pod muere con **segfault**, y el mensaje no menciona el runtime por ningún sitio. Es el fallo más costoso de diagnosticar: si el runtime de NVIDIA no es el de omisión de containerd —k3s, por ejemplo— hay que declararla. Ver [Instalación → 3.3](/docs/alnitak/instalacion#33-la-gpu-dos-cosas-que-no-se-ven-hasta-que-fallan) |
 | Ningún nodo expone `nvidia.com/gpu` | Falta el GPU Operator o el device plugin, o el nodo no está listo |
 | Réplica única reiniciándose | Con una sola réplica, actualizarla **es** una interrupción |
 | GPU saturada | El desglose por etapa muestra vectorización dominante |
@@ -234,7 +234,7 @@ de dar el despliegue por bueno.
 El índice ha dejado de caber en memoria. Cada consulta paga IO de disco. No se
 arregla con `num_candidates`: hay que añadir memoria a los nodos de datos.
 Referencia: ~30 GB calientes por copia a 50 M con `int8`. Ver
-[Instalación → 4.1](/docs/alnitak/instalacion#41-dimensionado-el-índice-debe-caber-en-ram).
+[Instalación → 4.1](/docs/alnitak/instalacion#41-hardware).
 </Callout>
 
 <Callout type="warning" title="Vectorización 12 veces más lenta de lo esperado">
@@ -291,12 +291,12 @@ vez de a los veinte minutos.
 
 | Mensaje | Causa |
 |---|---|
-| Terraform de otra rama | Hace falta **1.11.x exactamente**. Ver [0.1](/docs/alnitak/instalacion#01-terraform-debe-ser-de-la-rama-111x) |
+| Terraform de otra rama | Hace falta la versión que fije la entrega. Ver [Instalación → 0.1](/docs/alnitak/instalacion#01-herramientas-necesarias) |
 | Falta `ansible-playbook` en el `PATH`, pero Ansible está instalado | Instalado con pipx sin dependencias: `pipx install --include-deps --force ansible` |
 | `registro_credenciales` vacío | Sin él los secretos del registro no se crean y los pods no pueden descargar imágenes |
-| Configuración inconsistente entre los dos ficheros | Los valores compartidos difieren. Ver [6.2](/docs/alnitak/instalacion#62-los-siete-valores-que-viven-en-los-dos-ficheros) |
+| Configuración inconsistente entre los dos ficheros | Los valores compartidos difieren. Ver [Instalación → 6.3](/docs/alnitak/instalacion#63-variables-que-hay-que-rellenar) |
 | Contextos distintos | `kube_context` y el contexto activo de `kubectl` apuntan a clústeres distintos |
-| Aviso de secretos generados | Quedarían **en claro en el fichero de estado**. Ver [6.1](/docs/alnitak/instalacion#61-secretos-genéralos-fuera-para-producción) |
+| Aviso de secretos generados | Quedarían **en claro en el fichero de estado**. Ver [Instalación → 6.1](/docs/alnitak/instalacion#61-secretos) |
 
 ### El playbook se detiene
 

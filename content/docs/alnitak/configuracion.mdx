@@ -11,7 +11,7 @@ unlisted: true
   goal="Saber qué parámetro toca cambiar, cómo se llama su variable de entorno y qué rompe si te equivocas."
   before={{ title: "Instalación", href: "/docs/alnitak/instalacion" }}
   outOfScope={[
-    { title: "Dimensionado de nodos, memoria y disco", href: "/docs/alnitak/instalacion#41-dimensionado-el-índice-debe-caber-en-ram" },
+    { title: "Dimensionado de nodos, memoria y disco", href: "/docs/alnitak/instalacion#41-hardware" },
     { title: "Qué significan los scopes y credenciales", href: "/docs/alnitak/seguridad" },
     { title: "Diagnosticar un fallo concreto", href: "/docs/alnitak/solucion-de-problemas" },
   ]}
@@ -176,7 +176,7 @@ vectores L2-normalizados el producto escalar equivale al coseno y es más barato
 Si la configuración de la API y el índice declaran similitudes distintas, los
 scores salen en otra escala y **el umbral deja de significar lo que crees** —sin
 que nada falle ni avise—. Al cambiar una, cambia la otra. Es un caso más de
-[valores duplicados en dos sitios](/docs/alnitak/instalacion#62-los-siete-valores-que-viven-en-los-dos-ficheros).
+[valores duplicados en dos sitios](/docs/alnitak/instalacion#63-variables-que-hay-que-rellenar).
 </Callout>
 
 ### Campos del índice
@@ -202,7 +202,7 @@ aquí, en la configuración que lee la API. Si divergen, esta configuración
 describe un índice que nadie consulta — y la deriva no es teórica: los nombres
 por omisión del instalador y los del despliegue de producción no son los mismos.
 Al cambiarlos, cámbialos en los dos sitios. Ver
-[Instalación → 6.2](/docs/alnitak/instalacion#62-los-siete-valores-que-viven-en-los-dos-ficheros).
+[Instalación → 6.3](/docs/alnitak/instalacion#63-variables-que-hay-que-rellenar).
 </Callout>
 
 <Callout type="danger" title="Sin campo de versión de modelo se pierde la homogeneidad">
@@ -352,7 +352,7 @@ instalador, que las deposita como secretos y las inyecta en el pod.
 | PostgreSQL administrativo (migraciones, primer administrador) | `postgres_admin` del fichero del playbook |
 | Redis | `redis_addr`, `redis_username`, `redis_password` del `tfvars` |
 
-Ver [Instalación → 4. Dependencias que aporta el cliente](/docs/alnitak/instalacion#4-dependencias-que-aporta-el-cliente).
+Ver [Instalación → 4. Dependencias que aporta el cliente](/docs/alnitak/instalacion#4-preparación-previa).
 
 <Callout type="warning" title="Redis sin credencial es legible por cualquiera que alcance el puerto">
 Redis guarda el **estado de sesión compartido** entre réplicas de la API. Dejar

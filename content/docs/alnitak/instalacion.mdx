@@ -1,576 +1,3014 @@
 ---
 title: Instalación
-description: Instalación on-premise de JAAK Alnitak sobre Kubernetes — requisitos del equipo, prerrequisitos del clúster, dependencias del cliente, configuración y secuencia de instalación.
+description: Manual de instalación de la solución de identificación biométrica facial 1:N — prerrequisitos, configuración, secuencia de despliegue y verificación.
 category: guia
-order: 10
+order: 8
 unlisted: true
 ---
 
-<Orientation
-  audience="Quien instala: SRE o administrador de plataforma del cliente"
-  goal="Tener el servicio instalado, verificado y respondiendo en tu clúster."
-  before={{ title: "Arquitectura", href: "/docs/alnitak/arquitectura" }}
-  outOfScope={[
-    { title: "Qué significa cada parámetro del servicio", href: "/docs/alnitak/configuracion" },
-    { title: "Qué vigilar una vez instalado", href: "/docs/alnitak/operacion" },
-    { title: "Qué hacer si un paso falla", href: "/docs/alnitak/solucion-de-problemas" },
-  ]}
-/>
+<Callout type="info" title="Dónde están los scripts de instalación">
+  Los scripts que ejecutan este manual —Terraform, Ansible e `install.sh`— viven
+  en un repositorio de acceso restringido y **solo lectura**:
 
-Este documento acompaña al paquete `jaak-alnitak-installer`. Los guiones
-ejecutan lo que aquí se describe; **no son autoexplicativos por sí solos**, y
-sus mensajes de error remiten a las secciones numeradas de esta página.
+  `github.com/jaak-ai/jaak-alnitak-installer`
 
-<Callout type="info" title="Cómo leer las referencias del instalador">
-Cuando `install.sh` o una plantilla de configuración dicen "ver la sección 0.1
-del manual", se refieren a la sección **0.1 de esta página**. La numeración de
-este documento es la que citan los guiones: no cambia entre versiones sin
-motivo.
+  Solicite acceso junto con las credenciales del registro de imágenes
+  (sección 0.5): se concede sobre la cuenta de GitHub que nos indique. Una vez
+  concedido:
+
+```bash
+git clone https://github.com/jaak-ai/jaak-alnitak-installer.git
+cd jaak-alnitak-installer
+```
+
+  Este documento explica qué hace cada paso; el repositorio lo ejecuta. Trabaje
+  siempre sobre un clon actualizado: las correcciones se publican ahí.
 </Callout>
 
-## 1. Qué instalan estos guiones, y qué no
+## 0. Antes de empezar
 
-**Sí instalan**: los tres componentes de Alnitak (API, vectorizador GPU,
-consola), el **operador ECK y el clúster de Elasticsearch** de la galería, la
-plantilla y el índice, las credenciales, las migraciones de base de datos, el
-primer administrador y las instantáneas programadas de la galería.
+Esta sección deja el equipo desde el que se instala en condiciones de ejecutar el resto. La
+instalación no se hace dentro del clúster: se lanza desde una máquina que tenga acceso a él.
 
-**No instalan**: el clúster de Kubernetes, PostgreSQL, Redis ni el almacén
-compatible con S3. Son responsabilidad de quien instala y se describen en la
-sección 4.
+<Callout type="warning" title="Este manual empieza con un clúster ya operativo">
+  La instalación **no crea el clúster de Kubernetes**: lo da por existente, con
+  permisos para instalar operadores en él. Es el supuesto de la sección 1, y es
+  lo normal cuando la solución se despliega en la infraestructura del cliente.
 
-### 1.1 Operadores: cuatro interruptores
+  Si va a validar el producto y no tiene un clúster donde hacerlo, el
+  [apéndice B](#apéndice-b-clúster-de-validación-en-aws) da el procedimiento
+  completo del clúster mínimo sobre el que se ha verificado esta instalación.
+  Léalo antes de la sección 3, no después.
+</Callout>
 
-Cuatro operadores se instalan o no según convenga, porque un clúster corporativo
-suele traer ya alguno. Todos son variables del `tfvars`:
+### 0.1 Herramientas necesarias
 
-| Variable | Por omisión | Qué instala |
+| Herramienta | Versión | Para qué |
 |---|---|---|
-| `instalar_eck` | **`true`** | Operador ECK. Apágalo **solo** si tu clúster ya lo tiene: es el que hace posible la galería |
-| `instalar_gpu_operator` | `false` | GPU Operator de NVIDIA. Déjalo apagado si el clúster ya expone `nvidia.com/gpu` por otra vía |
-| `instalar_prometheus` | `false` | `kube-prometheus-stack`. **La solución funciona sin él**, pero sin Prometheus no tienes alertas propias |
-| `instalar_external_secrets` | `false` | External Secrets Operator. Apágalo si los secretos se crean por otra vía |
+| `kubectl` | compatible con el clúster | Comunicarse con Kubernetes |
+| `terraform` | 1.11.x | Declarar el estado del despliegue |
+| `ansible` | 2.16 o superior, con la colección `kubernetes.core` | Ejecutar los pasos que dependen del resultado del anterior |
+| `psql` | 16 o superior | **Opcional.** La instalación no lo usa: prepara la base con Jobs dentro del clúster. Hace falta solo para operaciones a mano, como desbloquear una cuenta (sección 8) |
+| `openssl` | cualquiera reciente | Generar los secretos de la sección 6 |
 
-La versión de ECK se fija en `eck_version`.
+<Callout type="warning" title="Si instala Ansible con pipx, use --include-deps">
+  `pipx install ansible` **no deja disponible `ansible-playbook`**. El paquete
+  `ansible` es un metapaquete cuyo único punto de entrada es
+  `ansible-community`, así que `pipx` expone solo ese y ninguno de los demás
+  ejecutables queda en el `PATH`. La instalación se detiene entonces en sus
+  comprobaciones previas, diciendo que falta un binario, aunque Ansible esté
+  perfectamente instalado.
 
-<Callout type="warning" title="Licencia de Elasticsearch: confírmala con tus términos">
-El instalador **no configura ninguna licencia**: despliega Elasticsearch con el
-nivel por omisión de ECK. Las funciones que Alnitak usa de forma esencial son la
-búsqueda **kNN sobre `dense_vector` con `int8_hnsw`** y las **instantáneas
-programadas** de la galería.
+  ```bash
+  pipx install --include-deps ansible
+  ```
 
-Si tu organización tiene un acuerdo con Elastic, o si tu área legal necesita
-saber qué nivel de licencia cubre este uso, confírmalo antes de instalar: no es
-una decisión que el instalador tome por ti, y este manual no la sustituye.
+  Si ya lo había instalado sin esa opción, reinstale con
+  `pipx install --include-deps --force ansible`. Las dependencias inyectadas con
+  `pipx inject` **se conservan** al forzar la reinstalación, así que no hay que
+  volver a inyectar la librería de Python.
 </Callout>
 
-<Callout type="info" title="Por qué el preflight exige el CRD de Elasticsearch">
-El preflight comprueba que exista el CRD `elasticsearches.elasticsearch.k8s.elastic.co`,
-y **eso no contradice** que el instalador instale ECK: el preflight corre en la
-etapa 3, después de que la etapa 1 haya instalado el operador. Si desactivas
-`instalar_eck` sin tener ECK en el clúster, el preflight falla ahí — y ese es
-exactamente su trabajo.
+<Callout type="warning" title="Terraform debe ser de la rama 1.11, y no se instala con el gestor de paquetes">
+  Las versiones 1.12 y posteriores cambian el tratamiento de la identidad de
+  recursos del proveedor de Kubernetes, y la secuencia de la sección 7 falla al
+  reaplicar. El fallo no es inmediato: la instalación arranca y se rompe en la
+  cuarta pasada, que es el peor momento para descubrir que la herramienta era la
+  equivocada.
+
+  **Ninguna vía habitual instala esa rama.** Los gestores de paquetes, el
+  repositorio de HashiCorp y los gestores de versiones entregan la última
+  publicada. Hay que descargar el binario directamente:
+
+  ```bash
+  VERSION=1.11.4
+
+  # Elija la línea de su sistema
+  PLATAFORMA=darwin_arm64    # macOS con Apple Silicon
+  # PLATAFORMA=darwin_amd64  # macOS con Intel
+  # PLATAFORMA=linux_amd64   # Linux
+  # PLATAFORMA=linux_arm64   # Linux en ARM
+
+  curl -LO "https://releases.hashicorp.com/terraform/${VERSION}/terraform_${VERSION}_${PLATAFORMA}.zip"
+  unzip "terraform_${VERSION}_${PLATAFORMA}.zip"
+  sudo mv terraform /usr/local/bin/
+  ```
+
+  Compruebe la versión antes de seguir:
+
+  ```bash
+  terraform version
+  ```
+
+  Debe decir `Terraform v1.11.4`. Si ya tenía otra instalada y prefiere no
+  sustituirla, deje el binario donde quiera e indique su ruta al ejecutar:
+  `TERRAFORM=/ruta/a/terraform ./install.sh`.
 </Callout>
 
-## 2. Obtener el paquete
+**No hace falta el binario `helm`.** La etapa 1 de la sección 7 instala un chart, pero lo hace a
+través del proveedor de Helm de Terraform, que incorpora su propia implementación y no invoca ningún
+ejecutable externo.
 
-El paquete de instalación se entrega por el canal acordado con el equipo de JAAK
-asignado al proyecto. Contiene tres cosas:
+Instalación de la colección de Ansible y de la librería de Python que necesita. **Hacen falta las
+dos**: la colección no arrastra la librería, y sin ella el playbook se detiene en su primera tarea
+con `Failed to import the required Python library (kubernetes)` — después de que las etapas
+anteriores hayan desplegado ya medio sistema.
 
+```bash
+ansible-galaxy collection install kubernetes.core
 ```
-install.sh      Orquesta la secuencia completa. Es el punto de entrada.
-terraform/      Estado deseado del despliegue sobre un clúster ya existente.
-ansible/        Los pasos que dependen del resultado del paso anterior.
+
+La librería de Python hay que instalarla **donde Ansible la vaya a buscar**, que no siempre es el
+Python del sistema. Lo primero es averiguar qué intérprete usa: Ansible imprime su ruta al final de
+la línea `python version`.
+
+```bash
+PY=$(ansible --version | sed -n 's/.*python version = .*(\(.*\))/\1/p')
+echo "Ansible usa: $PY"
 ```
 
----
+Con esa ruta, la instalación y la comprobación funcionan igual en cualquier sistema y con cualquier
+forma de haber instalado Ansible:
 
-## 0. El equipo desde el que se instala
+```bash
+"$PY" -m pip install kubernetes
+"$PY" -c 'import kubernetes; print(kubernetes.__version__)'
+```
 
-Nada se ejecuta por SSH: todo va por la API de Kubernetes desde tu máquina. Es
-la máquina la que necesita herramientas, no los nodos.
+Debe imprimir un número de versión.
 
-| Herramienta | Versión |
+Las comillas de `"$PY"` no son decorativas: en algunas instalaciones la ruta del intérprete
+**contiene espacios** —con `pipx` en macOS vive bajo `Library/Application Support`—, y sin comillas
+el comando se parte y falla con un `No such file or directory` que señala media ruta.
+
+Se usa `-m pip` en lugar de invocar `pip` directamente porque **no siempre existe el ejecutable**:
+en algunas instalaciones el directorio del intérprete solo contiene enlaces a Python, y un `pip` a
+secas falla diciendo que no encuentra el fichero. Como módulo está disponible igualmente.
+
+Dos casos en los que este método no aplica:
+
+| Situación | Qué usar |
 |---|---|
-| `kubectl` | Compatible con el clúster |
-| `terraform` | **1.11.x exactamente** — ver 0.1 |
-| `ansible` | 2.16 o superior, con la colección `kubernetes.core` y la librería Python `kubernetes` |
-| `psql` | 16 o superior |
-| `openssl` | Cualquiera reciente |
+| Ansible instalado con paquetes del sistema (Debian, Ubuntu) | `sudo apt install python3-kubernetes`. El Python del sistema suele impedir instalar con `pip`, y ahí el paquete es la vía correcta |
+| Ansible instalado con `pipx` | `pipx inject ansible kubernetes`, que es la forma que `pipx` documenta para añadir una dependencia al entorno de una aplicación. Lea antes el aviso sobre `--include-deps` |
 
-No hay requisito de sistema operativo: los guiones están escritos para
-`/bin/sh` y se han ejecutado desde Linux y desde macOS.
+<Callout type="warning" title="Compruébelo con el intérprete de Ansible, no con el del PATH">
+  Un `python3 -c 'import kubernetes'` a secas comprueba el Python del `PATH`,
+  que en varias instalaciones **no es** el que usa Ansible. Eso da los dos
+  errores posibles: decir que falta cuando está bien instalada, y —peor— decir
+  que está cuando Ansible no la encontrará, con lo que el playbook se detiene
+  igualmente veinte minutos después.
 
-### 0.1 Terraform debe ser de la rama 1.11.x
-
-**No vale una versión posterior.** Las 1.12 y siguientes cambian el tratamiento
-de la identidad de recursos y la instalación falla al reaplicar — es decir, en
-la cuarta pasada, el peor momento para descubrirlo. `install.sh` lo comprueba
-antes de empezar y se detiene si la versión no encaja.
-
-Si tu máquina tiene otra rama instalada, apunta el instalador a la correcta sin
-tocar tu `PATH`:
-
-```bash
-TERRAFORM=/ruta/a/terraform-1.11 ./install.sh
-```
-
-### 0.2 kubectl y el contexto correcto
-
-Terraform se aplica sobre el contexto declarado en `kube_context`, **no sobre el
-contexto activo de `kubectl`**. Los dos pueden apuntar a clústeres distintos sin
-que nada avise, y entonces la instalación va a parar a un sitio que nadie ha
-mirado.
-
-`install.sh` compara ambos y se detiene si difieren. Los comandos de
-verificación de este manual usan el activo, así que lo más simple es que
-coincidan.
-
-### 0.3 Ansible y sus colecciones
-
-```bash
-ansible-galaxy collection install kubernetes.core community.postgresql
-pip install kubernetes
-```
-
-<Callout type="warning" title="Si instalaste Ansible con pipx">
-`pipx install ansible` instala el metapaquete, cuyo único punto de entrada es
-`ansible-community`: ni `ansible` ni `ansible-playbook` quedan en el `PATH`
-aunque Ansible esté instalado. Se resuelve reinstalando con las dependencias:
-
-```bash
-pipx install --include-deps --force ansible
-```
+  Por eso la comprobación de arriba usa `"$PY"` y no `python3`.
 </Callout>
 
-### 0.4 psql y openssl
+### 0.2 Sobre el equipo desde el que se instala
 
-`openssl` genera las pimientas y la clave RS256 si decides producirlas fuera
-(recomendado; ver 6.1).
+No hay requisito de sistema operativo. La instalación se ha ejecutado desde Linux y desde macOS, y
+funciona desde cualquiera que disponga de las herramientas anteriores, incluido un subsistema Linux
+sobre Windows.
 
-`psql` 16+ se lista como herramienta local para inspeccionar la base a mano.
-**Las migraciones no se ejecutan desde tu máquina**: corren como Jobs dentro del
-clúster, con una imagen de `postgres` y la imagen de herramientas de la entrega
-— que es desde donde tienen ruta de red a la base.
+Los comandos de este manual y el guion `install.sh` están escritos para el intérprete de órdenes
+estándar (`/bin/sh`), sin construcciones específicas de `bash`, de modo que funcionan igual en las
+distintas distribuciones y en macOS. Donde una herramienta difiere entre sistemas —como la ruta del
+intérprete de Python que usa Ansible— el manual lo indica en su sitio.
+
+Lo que sí conviene tener presente: **el equipo desde el que se instala no queda ligado a la
+instalación**. Solo necesita alcanzar el clúster mientras se ejecuta. Puede instalarse desde un
+portátil y operar después desde otro equipo distinto, con la única condición de que ese otro tenga
+acceso al clúster y, si va a reaplicar la configuración, el fichero de estado de Terraform.
+
+<Callout type="warning" title="El estado de Terraform sí viaja con la instalación">
+  El directorio `terraform/` guarda el estado del despliegue. Si va a operar
+  desde otro equipo o si más de una persona va a aplicar cambios, use
+  almacenamiento remoto de estado con bloqueo, en lugar de copiar el fichero.
+  Dos personas aplicando desde estados distintos dejan el despliegue en un
+  estado incoherente que no avisa.
+</Callout>
+
+### 0.3 Comprobar el acceso al clúster
+
+Antes de descargar nada, confirme que el equipo llega al clúster correcto:
+
+```bash
+kubectl config current-context
+kubectl get nodes
+```
+
+Debe verse el contexto del clúster de destino y la lista de nodos en estado `Ready`. Si el contexto
+no es el correcto, cámbielo con `kubectl config use-context <nombre>`: **la instalación se aplica
+sobre el contexto activo**, y ese es el error más costoso de deshacer.
+
+Y una advertencia que importa más de lo que parece: **Terraform no usa el contexto activo**, sino el
+que se indique en la variable `kube_context` de la sección 6.3. Comprobar el contexto activo aquí es
+necesario para los comandos de `kubectl` de este manual, pero no determina dónde se instala.
+
+Las dos órdenes son necesarias, y no es redundancia: un contexto puede estar configurado y no
+funcionar. `kubectl config current-context` lee el fichero de configuración local y devuelve un
+nombre aunque las credenciales hayan caducado o el clúster ya no exista. Solo `kubectl get nodes`
+demuestra que el clúster responde y que el acceso es válido. Si devuelve un error de autenticación o
+de conexión, resuélvalo antes de continuar: los pasos siguientes fallarían más adelante y con
+mensajes que no señalan esta causa.
+
+### 0.4 Obtener los scripts de instalación
+
+Los scripts que ejecutan este manual están en un repositorio de acceso restringido y **solo
+lectura**. Solicite acceso antes de empezar, junto con las credenciales del registro de imágenes
+(sección 0.5): se concede sobre la cuenta de GitHub que nos indique.
+
+```bash
+git clone https://github.com/jaak-ai/jaak-alnitak-installer.git
+cd jaak-alnitak-installer
+```
+
+Si el clonado responde `Repository not found`, es que el acceso todavía no está concedido: GitHub
+devuelve ese mensaje —y no uno de permisos— para los repositorios privados que la cuenta no puede
+ver.
+
+Trabaje siempre sobre un clon actualizado. Las correcciones se publican ahí, así que antes de una
+instalación conviene un `git pull`.
+
+Contenido, que es el que se referencia en el resto del documento:
+
+```
+install.sh                              orquesta la secuencia de la sección 7
+terraform/                              estado deseado del despliegue
+  terraform.tfvars.example              plantilla de configuración
+ansible/                                pasos que dependen del paso anterior
+  group_vars_all.example.yml            plantilla de configuración
+  site.yml                              punto de entrada
+  tasks/                                los nueve pasos, más un auxiliar de espera
+```
 
 ### 0.5 Credenciales del registro de imágenes
 
-`registro_credenciales` espera el **contenido completo de un fichero de
-configuración de Docker, en una línea**:
+Las imágenes de la solución están en un registro privado (sección 2.1), así que hace falta una
+credencial de descarga. **Solicítela antes que ninguna otra cosa**, y en particular antes de crear
+infraestructura de pago: en una nube el clúster empieza a facturar en cuanto existe, y si la
+credencial tarda en llegar se paga la espera.
+
+Sin ella, los pods se quedan en `ImagePullBackOff` y la instalación no avanza.
+
+#### Cómo se convierte en lo que pide la configuración
+
+La variable `registro_credenciales` de `terraform.tfvars` espera el **contenido de un fichero de
+configuración de Docker**, no un usuario y una contraseña sueltos. Genérelo así:
 
 ```bash
-docker login
-cat ~/.docker/config.json    # copiar el contenido íntegro
+USUARIO="<usuario>"
+CREDENCIAL="<credencial>"
+printf '{"auths":{"https://index.docker.io/v1/":{"auth":"%s"}}}' \
+  "$(printf '%s:%s' "$USUARIO" "$CREDENCIAL" | base64 | tr -d '\n')"
 ```
 
-Queda así:
+El `tr -d '\n'` no sobra: el `base64` de GNU parte la salida en líneas de 76 caracteres, así que
+un usuario y una credencial que juntos pasen de 57 caracteres producirían un `auth` cortado por un
+salto de línea, y por tanto inválido.
 
-```json
-{"auths":{"https://index.docker.io/v1/":{"auth":"dXN1YXJpbzpjcmVkZW5jaWFs"}}}
+<Callout type="warning" title="Si su Docker guarda las credenciales en el llavero, no use `config.json`">
+  Existe la tentación de hacer `docker login` y copiar `~/.docker/config.json`,
+  pero **en la mayoría de equipos ese fichero no contiene la credencial**. Si hay
+  un gestor de credenciales configurado —Docker Desktop en macOS y en Windows,
+  y lo habitual también en Linux de escritorio—, `docker login` la guarda en el
+  llavero del sistema y deja el bloque `auths` **vacío**.
+
+  El resultado es un JSON válido, con la forma correcta y sin credencial dentro.
+  Nada lo detecta hasta que los pods fallan con `ImagePullBackOff`. Compruébelo
+  antes de usarlo:
+
+```bash
+grep -q '"auth"' ~/.docker/config.json \
+  && echo "El fichero sirve" \
+  || echo "Su Docker guarda la credencial fuera del fichero: genérela a mano"
 ```
-
-El campo `auth` de dentro es `usuario:credencial` en base64; **el conjunto no se
-codifica otra vez**.
-
-<Callout type="danger" title="Dejarlo vacío no da error, y rompe la instalación después">
-Kubernetes rechaza un secreto de tipo `dockerconfigjson` con contenido vacío, así
-que los tres secretos del registro no se crean. La instalación sigue adelante y
-los pods no pueden descargar las imágenes, con un mensaje del kubelet que no
-señala la causa. `install.sh` comprueba que el valor no esté vacío antes de
-empezar.
 </Callout>
+
+Tres precisiones, porque el formato no perdona:
+
+El valor de `auth` es `usuario:credencial` **codificado en base64**, no la credencial sola. El
+fichero va **completo**, con su bloque `auths`, no solo la parte interior. Y se pasa **tal cual**,
+sin volver a codificar el conjunto en base64: la codificación afecta únicamente al campo `auth`.
+
+Compruebe que funciona antes de instalar:
+
+```bash
+docker manifest inspect docker.io/jaakai/jaak-alnilam-api:0.17.1 > /dev/null \
+  && echo "La credencial abre el registro"
+```
+
+Se usa `manifest inspect` y no `docker pull` a propósito: comprueba exactamente lo que interesa
+—que la credencial abre un repositorio privado— sin descargar cientos de megabytes y **sin depender
+de la arquitectura de su equipo**. Un `docker pull` desde un Mac con Apple Silicon fallaría aunque
+la credencial fuese correcta, porque las imágenes son solo `linux/amd64` (sección 2.1), y el error
+habla de manifiestos, no de credenciales.
 
 ---
 
-## 3. Prerrequisitos del clúster
+## Instalación rápida
 
-Antes de lanzar nada, el clúster debe tener:
+Resumen de la secuencia para quien ya haya instalado antes. La primera vez conviene seguir las
+secciones completas, que explican qué hace cada paso y cómo verificarlo.
 
-| Prerrequisito | Comprobación |
-|---|---|
-| El CRD de Elasticsearch presente — lo pone la etapa 1, o tu ECK previo | Lo verifica el preflight |
-| Al menos un **nodo que exponga `nvidia.com/gpu`** asignable | Lo verifica el preflight, salvo en modo CPU |
-| La **StorageClass** declarada, existente | Lo verifica el preflight |
-| **PostgreSQL alcanzable desde dentro del clúster** | Lo verifica el preflight con un Job real |
+**Requisitos previos cubiertos** (secciones 3 y 4): clúster de Kubernetes con sus operadores,
+PostgreSQL con la base creada y sus dos credenciales, Redis, un almacén compatible con S3 con sus
+dos contenedores, y decidido el método de acceso a la consola.
 
-<Callout type="warning" title="NetworkPolicies">
-Si tu CNI aplica NetworkPolicies, hay que **permitir explícitamente** el tráfico
-del namespace de la API al puerto 9200 del namespace de datos. Es un fallo que
-no aparece en clústeres donde el CNI no las aplica, así que conviene revisarlo
-antes de instalar y no cuando `/readyz` no pase.
-</Callout>
-
-### 3.1 Almacenamiento de la galería
-
-La clase de almacenamiento debe sostener **picos de ~7.200 IOPS**. En AWS, `gp3`
-con IOPS aprovisionadas; en OCI, volúmenes de bloque de rendimiento alto. Una
-clase de propósito general sin IOPS garantizadas convierte la indexación y la
-compactación de segmentos en el cuello de botella del sistema.
-
-### 3.2 Exposición: un solo host
-
-Consola y API se sirven bajo **un único host público**. Es obligatorio: la
-sesión de la consola viaja en cookie `httpOnly` con `SameSite=Lax`, y separar
-los dos en hosts distintos impide que la cookie llegue a la API.
-
-```
-host_publico = "biometria.cliente.com"
-```
-
-### 3.3 RuntimeClass de GPU
-
-**Obligatoria cuando el runtime de NVIDIA no es el de omisión de containerd.**
-En k3s, por ejemplo, hay que poner `"nvidia"`. Con el GPU Operator suele poder
-quedar vacía.
-
-Si falta cuando hace falta, el vectorizador arranca sin las librerías de CUDA y
-**muere con un segfault que no menciona el runtime por ningún sitio**. Es uno de
-los fallos más costosos de diagnosticar de toda la instalación.
-
----
-
-## 4. Dependencias que aporta el cliente
-
-| Dependencia | Para qué | Notas |
-|---|---|---|
-| **PostgreSQL 16+** | Usuarios, sesiones, credenciales, auditoría | Se necesitan **dos** credenciales: una administrativa para las migraciones y el primer administrador, y una de runtime con menos permisos para la API |
-| **Redis** | Estado de sesión compartido entre réplicas de la API | En un clúster compartido con otras aplicaciones, protégelo con credencial: cualquier carga capaz de abrir el puerto podría leer el estado de sesión |
-| **Almacén compatible con S3** | Recortes faciales cifrados, e instantáneas de la galería | Dos contenedores distintos |
-
-<Callout type="info" title="TLS contra PostgreSQL">
-La instalación usa `sslmode=require` por omisión. Si tu PostgreSQL no habla TLS,
-hay que ponerlo en `disable` explícitamente en la configuración del playbook: sin
-ese valor la migración falla y no hay otro sitio donde cambiarlo.
-</Callout>
-
-### 4.1 Dimensionado: el índice debe caber en RAM
-
-Es el requisito que más despliegues subestiman. **La búsqueda kNN solo cumple su
-latencia si el grafo y los vectores cuantificados residen en memoria.** Si el
-índice no cabe, cada consulta paga IO de disco y la latencia se va a cientos de
-milisegundos.
-
-Referencia medida sobre **50 M de vectores 512-D con `int8`**:
-
-| | Valor |
-|---|---|
-| Memoria caliente por copia | ~**30 GB** (vectores `int8` + grafo) |
-| Disco, shards primarios | ~**126 GB** |
-
-Los valores de producción por omisión del instalador piden, entre los tres nodos
-de datos, **300 GiB de memoria y 1,2 TiB de disco**:
-
-```
-es_data_nodes    = 3
-es_data_memoria  = "100Gi"
-es_data_heap     = "16g"
-es_data_disco    = "400Gi"
-```
-
-<Callout type="warning" title="El heap va pequeño a propósito: no apliques la regla del 50 %">
-La recomendación general de Elasticsearch —heap a la mitad de la memoria del
-nodo— **no aplica a búsqueda vectorial**. Aquí el grafo HNSW y los vectores
-cuantificados se sirven desde la **caché de páginas del sistema operativo**, no
-desde el heap de la JVM. Con nodos de 100Gi, un heap de 16g deja ~84Gi para esa
-caché, que es donde está el rendimiento.
-
-Subir el heap a 50g siguiendo la regla general **quita 34Gi a la caché** y
-empeora la latencia de búsqueda. El heap solo necesita cubrir la indexación y
-las estructuras de consulta.
-</Callout>
-
-<Callout type="danger" title="No precargar los vectores sin cuantificar">
-Forzar la residencia de los vectores en coma flotante arrastra ~102 GB extra a
-la caché de páginas **sin ningún beneficio** en la búsqueda caliente, porque el
-grafo se recorre sobre los cuantificados. Ver
-[Rendimiento y capacidad](/docs/alnitak/rendimiento#memoria-y-disco-a-50-m).
-</Callout>
-
-Para validar el flujo en un solo equipo, el `tfvars` incluye un juego de valores
-reducidos comentado. Con ellos el clúster se queda en estado `yellow`, y **es
-correcto**: no hay nodos para colocar las réplicas. Hay que bajar también las
-peticiones de CPU: reducir solo memoria y disco deja el total en 8,5 vCPU, que
-no cabe en una máquina de 8.
-
-### 4.2 Dimensionado del resto de componentes
-
-Los valores por omisión del instalador, para que sepas qué va a pedirle al
-planificador antes de aplicar:
-
-| Componente | CPU solicitada | CPU límite | Memoria solicitada | Memoria límite | GPU | Réplicas |
-|---|---|---|---|---|---|---|
-| **Vectorizador** | `2` (`vectorizador_cpu`) | `8` | `4Gi` | `12Gi` | **`1`** en modo `cuda` | 1 |
-| **API** | `100m` | `1` | `512Mi` | `1Gi` (`api_memoria_limite`) | — | `2` (`api_replicas`) |
-| **Consola** | `100m` | `500m` | `128Mi` | `512Mi` | — | 1 |
-| **Nodo de datos** | `4` (`es_data_cpu`) | `16` | `100Gi` (`es_data_memoria`) | igual | — | `3` (`es_data_nodes`) |
-| **Nodo maestro** | `500m` (`es_master_cpu`) | `1` | `2Gi` | `2Gi` | — | `3` (`es_master_nodes`) |
-
-Suma de solicitudes con los valores de producción: **~15,8 vCPU y ~305 GiB de
-memoria**, más 1 GPU. Es lo que el clúster tiene que tener asignable antes de
-empezar; si no lo tiene, los pods se quedan en `Pending` y el síntoma no dice
-por qué.
-
-<Callout type="danger" title="No bajes el límite de memoria de la API de 1Gi">
-`512Mi` provocó un `OOMKilled` en el entorno de origen. El pod muere y reaparece
-sin que nada señale la causa como falta de memoria. No lo bajes sin medirlo en
-tu carga.
-</Callout>
-
-<Callout type="info" title="Una GPU por réplica de vectorizador">
-El vectorizador solicita y limita **`nvidia.com/gpu = 1`**: una tarjeta entera
-por réplica, sin compartir. Para alta disponibilidad hacen falta dos nodos con
-GPU, no un nodo con dos procesos.
-</Callout>
-
-<Callout type="warning" title="El modo CPU no sirve para medir">
-`vectorizador_provider = "cpu"` existe para entornos sin tarjeta: no pide
-recursos de GPU y **rinde unas 12 veces menos** en vectorización. Sirve para
-validar que el flujo funciona, nunca para medir capacidad ni para producción.
-</Callout>
-
----
-
-## 5. Identidad y acceso de operadores
-
-La consola entra **solo por SSO corporativo**, con el dominio de correo
-restringido. Hay que preparar:
-
-| Valor | Notas |
-|---|---|
-| `client_id` y `client_secret` del proveedor | Del registro de la aplicación OAuth |
-| `dominios` | Dominios de correo autorizados. **Vacío impide el arranque** |
-| `operadores` | Correos que reciben permisos de operación |
-| `primer_admin` | Correo del primer administrador. **Sin este alta nadie puede administrar**, ni con el SSO bien configurado: quien entre primero lo hará con permisos de consulta |
-
-<Callout type="info" title="Despliegues sin salida a internet">
-Si la red del clúster no deja salir al proveedor de identidad, **nadie puede
-entrar la primera vez**, y sin ese primer administrador no se puede dar de alta
-a nadie más. Para ese caso se habilita el acceso con contraseña: hay que fijar
-la contraseña del primer administrador **y** la pimienta de contraseñas. Poner
-una sin la otra detiene el playbook con el motivo, en vez de dejar un usuario
-cuya contraseña la API no puede verificar.
-</Callout>
-
----
-
-## 6. Los dos ficheros de configuración
+**Los dos ficheros de configuración**, a partir de sus plantillas:
 
 ```bash
 cp terraform/terraform.tfvars.example terraform/terraform.tfvars
+
+mkdir -p ansible/group_vars
 cp ansible/group_vars_all.example.yml ansible/group_vars/all.yml
 ```
 
-Ninguno tiene valores por omisión útiles: son los datos de tu entorno. Ambos
-contienen credenciales y **nunca deben subirse a un repositorio**. El fichero de
-estado de Terraform, tampoco: puede contener secretos generados durante la
-instalación.
+Ambos deben completarse antes de continuar. Las variables obligatorias están en la sección 6.2.
 
-### 6.1 Secretos: genéralos fuera para producción
-
-Cuatro campos, si se dejan vacíos, **los genera Terraform y quedan escritos en
-claro en su fichero de estado**: la pimienta de API keys, la de contraseñas, la
-clave privada RS256 y la clave de cifrado de recortes.
-
-Es aceptable para una validación. Para producción, genéralos fuera y pásalos ya
-generados:
-
-```bash
-# Pimientas: >= 32 bytes en base64url sin relleno.
-# Las DOS deben ser DISTINTAS entre sí: rotar las API keys no debe
-# expulsar a las personas de la consola.
-openssl rand -base64 32 | tr '+/' '-_' | tr -d '='
-
-# Clave de cifrado de los recortes: 32 bytes en hex
-openssl rand -hex 32
-
-# Clave privada RS256 de las sesiones de la consola
-openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -out sesiones.pem
-```
-
-`install.sh` avisa antes de empezar si detecta que alguno se va a generar
-automáticamente, y pide confirmación. Si continúas, **trata el fichero de estado
-de Terraform como un fichero con secretos**.
-
-<Callout type="danger" title="La clave de recortes no es opcional en producción">
-Sin ella no hay custodia de los recortes faciales, y **un cambio de modelo
-obligaría a recapturar a toda la población**: no habría de dónde re-vectorizar.
-Ver [Galería → Ciclo de vida del dato](/docs/alnitak/galeria#ciclo-de-vida-del-dato).
-</Callout>
-
-### 6.2 Los siete valores que viven en los dos ficheros
-
-Estos valores están declarados en **ambos** ficheros y no se propagan de uno a
-otro. Si difieren, la instalación avanza y falla más adelante en un punto que no
-señala la causa — Ansible busca recursos en un namespace donde Terraform no los
-creó, o describe un índice que nadie consulta.
-
-| En `terraform.tfvars` | En `group_vars/all.yml` |
-|---|---|
-| `namespace_api` | `ns_api` |
-| `namespace_vectorizador` | `ns_gpu` |
-| `namespace_elasticsearch` | `ns_datos` |
-| `es_storage_class` | `es_storage_class` |
-| `indice` | `indice` |
-| `respaldos.bucket` | `respaldos_bucket` |
-| `elasticsearch.fields` | `campos` |
-
-`install.sh` los compara antes de empezar y se detiene enseñando las
-discrepancias. Es una comprobación barata que evita descubrirlo a los veinte
-minutos.
-
-<Callout type="warning" title="El contenedor de respaldos, declarado a medias">
-`respaldos` aparece en los dos ficheros y para cosas distintas: Terraform
-deposita las credenciales en el almacén seguro de Elasticsearch, y el playbook
-registra el repositorio y programa la copia. Configurar solo uno **no da
-error**: simplemente no habría respaldos, y nadie se enteraría hasta necesitar
-restaurar.
-</Callout>
-
-### 6.3 Versiones de las imágenes
-
-Usa **solo etiquetas de versión**. En los repositorios conviven etiquetas
-mutables y de desarrollo —`latest`, `dev-models`, `*-dev.N`— que no son entregas
-y que pueden contener artefactos incompletos que **arrancan igual**.
-
-| Componente | Variable |
-|---|---|
-| API de orquestación | `imagen_api` |
-| Vectorizador GPU | `imagen_vectorizador` |
-| Consola de operación | `imagen_consola` |
-| Herramientas de línea de comandos | `imagen_herramientas` |
-
-Las versiones exactas de tu entrega las da el equipo de JAAK asignado al
-proyecto. La política de versionado y promoción está en
-[Actualizaciones](/docs/alnitak/actualizaciones).
-
-<Callout type="info" title="La imagen de herramientas es una imagen aparte">
-Las migraciones y la generación de credenciales **no están en la imagen de la
-API**. Van en `imagen_herramientas`, y sin ella el playbook no puede aplicar las
-migraciones ni dar de alta al primer administrador.
-</Callout>
-
----
-
-## 7. Ejecutar la instalación
+**Ejecución:**
 
 ```bash
 ./install.sh
 ```
 
-Envuelve cuatro invocaciones en este orden:
+Antes de empezar comprueba la versión de Terraform, que el contexto de destino sea el indicado, que
+la configuración sea coherente entre los dos ficheros y que las credenciales del registro estén
+puestas. Después ejecuta las cuatro invocaciones de la sección 7 en orden, tolera únicamente el
+error esperado de la segunda —y solo si **todos** los errores de esa etapa son del tipo esperado—,
+ejecuta las verificaciones y comprueba al terminar que el estado quedó íntegro. Termina con `INSTALACION COMPLETA` y código de salida 0; cualquier otro final detiene la
+instalación e indica la causa.
 
-```
-terraform apply -target=helm_release.eck   # 1) el operador
-terraform apply                            # 2) todo lo demás — falla, y es normal
-ansible-playbook site.yml                  # 3) migraciones, CA, credenciales, humo
-terraform apply                            # 4) dejar el estado limpio
-```
+Si se ha configurado una imagen de prueba, ejecuta además las pruebas funcionales: inicio de sesión,
+emisión de credencial de servicio, alta de un rostro, búsqueda, rechazo del duplicado y revocación.
 
-<Callout type="warning" title="La etapa 2 termina en error, y es el orden esperado">
-El Deployment de la API monta el certificado de Elasticsearch, que **todavía no
-existe**: espera y agota su plazo. `install.sh` tolera ese fallo ahí y **solo
-ahí**, y además comprueba que *todos* los errores de la etapa sean esperas
-agotadas. Si aparece cualquier otro —una variable mal puesta, por ejemplo— se
-detiene, porque si se tolerase, la instalación se rompería tres pasos más
-adelante con un mensaje que no tiene nada que ver.
+Duración orientativa en un clúster pequeño: entre 15 y 25 minutos, en su mayor parte esperando el
+arranque de los componentes.
 
-La etapa 2 tarda **de diez a quince minutos**. Sin salida parecería colgada, así
-que el guion muestra el avance en vivo.
+---
+
+## 1. Alcance
+
+Este manual describe cómo instalar la solución de identificación facial 1:N en un clúster de
+Kubernetes propiedad del cliente, en cualquier proveedor de nube o en infraestructura propia.
+
+**Lo que sí cubre:** los siete componentes de la solución, sus prerrequisitos, la configuración
+completa, los secretos que hay que proveer, la secuencia de instalación, cómo verificar que quedó
+bien, y la operación básica de la galería.
+
+**Lo que no cubre:** el entrenamiento o la sustitución del modelo biométrico, la integración con
+los sistemas del cliente más allá de la API, y la instalación sin Kubernetes.
+
+### Supuestos
+
+1. El cliente opera un clúster de Kubernetes y puede instalar operadores en él.
+2. Hay al menos un nodo con GPU NVIDIA.
+3. Hay salida a internet hacia los dominios de la sección 4.4, **o** el cliente usa el acceso con
+   usuario y contraseña de la sección 4.3. Sin internet y sin contraseña configurada no hay forma de
+   entrar a la consola.
+4. El cliente provee PostgreSQL, Redis y un almacén de objetos compatible con S3, gestionados o
+   autoalojados.
+5. La solución se entrega como **imágenes de contenedor prehorneadas**. No se entrega código
+   fuente ni es posible compilar sin acceso a repositorios privados de JAAK.
+
+---
+
+## 2. Arquitectura
+
+<iframe
+  title="Topología de instalación de Alnitak"
+  src="/docs/alnitak/installation-topology.html"
+  loading="lazy"
+  style={{ width: '100%', height: '560px', border: 0 }}
+/>
+
+Los tres de abajo son dependencias **de la API**, no de Elasticsearch. Elasticsearch solo necesita
+su propio disco.
+
+### El flujo de una consulta
+
+1. Llega una imagen a la API, por consola o por integración.
+2. La API autentica, valida formato, tamaño y calidad, y **no persiste la imagen**.
+3. Llama a `alnitak-serve`, que detecta el rostro, lo alinea y devuelve un vector de 512
+   dimensiones más el recorte alineado.
+4. La API busca ese vector en Elasticsearch por similitud, con un pre-filtro por tenant y por
+   versión de modelo.
+5. Normaliza los scores, aplica el umbral y devuelve la lista ordenada con un veredicto de tres
+   estados: coincidencia, revisión manual o sin coincidencia.
+
+**El alta usa la misma cadena.** Antes de escribir, hace una búsqueda 1:N con el vector nuevo: si
+encuentra coincidencia, rechaza el alta. Un mismo rostro no puede tener dos expedientes.
+
+---
+
+### 2.1 Las siete piezas y de dónde sale cada imagen
+
+Conviene tenerlo claro antes de empezar, porque determina qué hay que preparar y qué credenciales
+hacen falta:
+
+| Componente | Imagen |
+|---|---|
+| Consola web | `docker.io/jaakai/jaak-alnilam-web` — **privada, de JAAK** |
+| API | `docker.io/jaakai/jaak-alnilam-api` — **privada, de JAAK** |
+| Vectorizador | `docker.io/jaakai/jaak-alnitak-serve-gpu` — **privada, de JAAK** |
+| Elasticsearch | `docker.elastic.co/elasticsearch/elasticsearch` — pública; la referencia el operador ECK, no se pone a mano |
+| PostgreSQL | `docker.io/library/postgres` — pública, o un servicio gestionado sin imagen (RDS) |
+| Redis | `docker.io/library/redis` — pública, o un servicio gestionado sin imagen (ElastiCache) |
+| Almacén S3 | `docker.io/minio/minio` — pública si es autoalojado; con S3 nativo no hay imagen |
+
+Solo **las tres primeras se entregan**: son las que hay que descargar de un registro privado, y por
+eso el clúster necesita el `imagePullSecret` de la sección 6.1. Las otras cuatro son prerrequisitos
+del cliente (sección 3) y sus imágenes son públicas, así que no requieren credencial.
+
+<Callout type="warning" title="Las imágenes de la entrega son solo `linux/amd64`">
+  Las tres imágenes de JAAK, y la de herramientas que usan las migraciones, se
+  publican **únicamente para `linux/amd64`**. No hay variante para ARM.
+
+  Esto no es un detalle del equipo desde el que se instala: **condiciona los nodos
+  del clúster**. Si dimensiona con instancias ARM —en AWS, las familias Graviton
+  como `m7g`, `c7g` o `t4g`, que suelen elegirse por coste— los pods se quedarán en
+  `ImagePullBackOff` con un mensaje que habla de manifiestos y que es fácil
+  confundir con un problema de credenciales. Reserve nodos x86-64 para esta carga.
+
+  En un equipo de instalación con Apple Silicon no hay problema: la instalación no
+  ejecuta esas imágenes en local. Solo tenga en cuenta que un `docker pull` de
+  prueba fallará ahí por este motivo, y no porque la credencial esté mal.
 </Callout>
 
-Termina con `INSTALACION COMPLETA` y código de salida 0. Cualquier otro final
-detiene la instalación indicando la causa.
+En una instalación en la nube lo habitual es que esas cuatro **no sean contenedores en absoluto**:
+PostgreSQL, Redis y el almacén se contratan como servicios gestionados. Elasticsearch sí sigue
+dentro del clúster, operado por ECK: el instalador no soporta hoy un servicio de búsqueda gestionado.
 
-Al final se ejecuta `terraform plan`: si aún propone cambios, algo quedó a
-medias y el guion falla en vez de declarar éxito.
+Hay una cuarta imagen privada, la de herramientas (`jaak-alnilam-tools`), que **no es un componente**:
+corre una vez para aplicar las migraciones y crear el primer administrador, y no deja nada
+desplegado.
 
-### Qué hace el playbook, paso a paso
+## 3. Prerrequisitos de plataforma
 
-El orden de ejecución **no es el numérico**: los respaldos (09) corren antes de
-la verificación (06) porque la verificación es el último control de calidad, y
-la migración (07) va al final porque solo se ejecuta bajo demanda. La columna
-"Paso" es el número de fichero, no el orden.
+Ninguno forma parte de la entrega. Son responsabilidad del cliente y **deben estar antes** de
+instalar.
 
-| Paso | Etiqueta | Qué hace |
+| Prerrequisito | Para qué | Nota |
 |---|---|---|
-| 01 | `preflight` | Comprueba CRDs, nodo con GPU, StorageClass y PostgreSQL alcanzable desde dentro del clúster |
-| 02 | `postgres` | Migraciones, permisos de la credencial de runtime, alta del primer administrador |
-| 03 | `elasticsearch` | Publica el certificado CA del clúster para que la API confíe en él |
-| 04 | `indice` | Crea la plantilla de índice de la galería |
-| 05 | `credenciales` | Emite la API key de la API contra Elasticsearch, acotada al índice |
-| 09 | `respaldos` | Registra el repositorio de instantáneas, lo prueba y programa la copia periódica |
-| 06 | `verificacion` | Comprueba galería montada, API lista, vectorizador, `/readyz` y consola |
-| 08 | `humo` | Pruebas funcionales de extremo a extremo |
-| 07 | `migracion` | Solo bajo demanda: migrar un índice plano preexistente |
+| Kubernetes | todo | Verificado en 1.33 y 1.36. Sobre un Kubernetes gestionado, ver 3.0 |
+| **ECK** (Elastic Cloud on Kubernetes) | despliega y opera el clúster de Elasticsearch | Verificado con la **3.5.0**. Aporta el CRD `elasticsearch.k8s.elastic.co/v1` |
+| **NVIDIA GPU Operator** o device plugin | expone `nvidia.com/gpu` a los pods | Sin él el pod de vectorización nunca se programa. Con device plugin a secas hay que leer 3.3: falta la RuntimeClass y faltan las etiquetas del nodo |
+| **Prometheus Operator** | recoge las métricas | Opcional si el cliente no quiere observabilidad |
+| Gestor de secretos | inyecta los secretos de la sección 6 | External Secrets Operator es la vía recomendada; ver alternativa mínima |
+| **PostgreSQL ≥ 13** | usuarios, sesiones, auditoría | La versión mínima viene de `gen_random_uuid()` |
+| **Redis** | estado compartido entre réplicas de la API | Obligatorio de facto con más de una réplica |
+| Almacén compatible con **S3** | recortes faciales cifrados | Dos buckets: recortes y respaldos de Elasticsearch |
+| **StorageClass de alto rendimiento** | datos de Elasticsearch | Ver 3.1 |
+| Ingress o balanceador con **TLS** | exponer consola y API | Ver 3.2, es una restricción dura |
 
-Se puede ejecutar por partes:
+### 3.0 Instalación sobre un Kubernetes gestionado (AWS)
+
+El manual no presupone ningún proveedor: pide un clúster de Kubernetes, y de dónde sale es
+indiferente. Esta sección recoge lo que cambia cuando el clúster es **EKS de AWS**, que es el caso
+que se ha ejecutado además del k3s de la validación original.
+
+Lo importante primero: **el instalador no cambia**. Los mismos `terraform` y `ansible` de la entrega
+funcionan tal cual; lo único distinto son los valores de configuración, porque los prerrequisitos
+los dan servicios gestionados en vez de pods.
+
+| Prerrequisito | En AWS | Nota |
+|---|---|---|
+| Kubernetes | **EKS** | El plano de control se paga por hora, esté o no en uso |
+| StorageClass | **EBS `gp3`** vía el complemento del driver CSI | Ver el aviso de esta sección |
+| PostgreSQL | **RDS** | `db.t4g.micro` basta para la validación |
+| Redis | un Deployment en el clúster, o **ElastiCache** | ElastiCache obliga a subredes privadas con NAT |
+| Almacén S3 | **S3 nativo** | Sin cambio de código: la API habla el protocolo de S3 |
+| GPU | grupo de nodos con instancias `g6` | Para producción. La validación se hizo sin GPU |
+
+**Requisito de almacenamiento en EKS:** un clúster recién creado **no incluye el driver de EBS**.
+Sin él, cualquier `PersistentVolumeClaim` se queda en `Pending` para siempre, y lo que se ve es que
+Elasticsearch no arranca —el pod nunca se programa— sin ningún error que apunte al disco. Hay que
+instalar el complemento `aws-ebs-csi-driver` **antes** de la sección 7.
+
+**Y hay que dejar exactamente una clase de disco marcada como predeterminada, que debe ser la suya.**
+Compruébelo antes de instalar, porque el estado de partida varía según la versión de EKS:
 
 ```bash
-ansible-playbook site.yml --tags preflight     # solo comprobar
-ansible-playbook site.yml --tags migracion     # índice plano preexistente
+kubectl get storageclass -o custom-columns=\
+'NOMBRE:.metadata.name,PREDETERMINADA:.metadata.annotations.storageclass\.kubernetes\.io/is-default-class'
 ```
 
-<Callout type="tip" title="El playbook es idempotente en lo que importa">
-La segunda pasada no reemite la credencial de Elasticsearch ni reinicia la API.
-Para rotarla a propósito:
+En las versiones recientes el clúster viene con una clase `gp2` **sin marcar**, de modo que no hay
+ninguna predeterminada; en versiones anteriores venía marcada. Los dos extremos dan problemas: con
+ninguna, cualquier volumen que no declare su clase se queda en `Pending` sin decir por qué; con dos,
+Kubernetes elige una arbitrariamente.
+
+Cree su clase `gp3` con la marca puesta y verifique que es la única que la tiene. Y no se apoye en la
+`gp2` de fábrica aunque parezca cómodo: usa el antiguo provisionador integrado
+`kubernetes.io/aws-ebs`, no el driver `ebs.csi.aws.com` que se acaba de instalar, así que no cumpliría
+los requisitos de la sección 3.1.
+
+**Los volúmenes de EBS siguen facturando después de desinstalar.** La clase que exige la sección 3.1
+lleva `reclaimPolicy: Retain`, y eso significa que los discos de Elasticsearch sobreviven a
+`terraform destroy` y a la eliminación del clúster. Quedan en estado `available` —existen, no están
+conectados a nada y se cobran igual— y nada los retira solo. Es del mismo tipo que el aviso del
+driver de EBS: no falla, no avisa y se descubre tarde, en este caso en la factura. El procedimiento
+para retirarlos está en la [sección 12](#12-desinstalación).
+
+**El clúster debe poder acceder al registro de imágenes.** Este requisito cambia al pasar de una
+máquina a un clúster: en un k3s de
+un nodo, una imagen construida en esa máquina ya está en su almacén local y una referencia como
+`docker.io/library/jaak-alnilam-api:main-check` funciona sin registro ninguno. En un Kubernetes
+gestionado los nodos son otras máquinas y esa misma referencia no resuelve en ningún sitio: el pod
+se queda en `ImagePullBackOff` y el mensaje habla de credenciales, no de que la imagen no exista.
+
+Dos formas de resolverlo, y conviene elegir antes de instalar:
+
+- **Registro privado del proveedor de la solución** (Docker Hub de JAAK, que es de donde salen las
+  imágenes publicadas). El clúster necesita el `imagePullSecret` de la sección 6.1, que es lo que
+  configura `registro_credenciales`. Es el camino de entrega normal.
+- **Registro del propio cliente** (ECR en AWS, Artifact Registry en Google, ACR en Azure): se copian
+  las imágenes una vez al registro del cliente. Tiene la ventaja de que en AWS el rol de los nodos
+  puede leer de ECR sin credencial alguna, y la de no depender de un registro externo en cada
+  arranque de pod.
+
+**El usuario de PostgreSQL en RDS.** RDS no da superusuario de la instancia, sino el administrador
+del motor. Eso no impide nada, pero sí obliga a lo de la sección 6.2: el usuario de runtime necesita
+`ALTER DEFAULT PRIVILEGES` para poder leer las tablas que las migraciones crearán después. Con RDS
+es más visible porque no hay forma de saltárselo dando superusuario.
+
+**El dimensionado no cabe en máquinas de 4 vCPU, y el motivo es el reparto, no la suma.** El nodo
+de datos de Elasticsearch pide **4 vCPU en un solo pod**, así que necesita una máquina de más de 4:
+en una de exactamente 4 no entra nunca, porque el sistema del clúster ya consume parte. Lo que se ve
+es el pod en `Pending` con `Insufficient cpu`, y añadir más máquinas del mismo tamaño no lo arregla.
+
+Medido sobre lo que el instalador pide de verdad: nodo de datos 4 vCPU, cada maestro 500m, el
+vectorizador 2, cada réplica de API y de consola 100m, el operador de ECK 100m, y el sistema de EKS
+—red, DNS, driver de EBS— unos 500m. Alrededor de **8,5 vCPU solicitadas** con un solo nodo de
+datos, y 16,5 con los tres del dimensionado de producción.
+
+Todas esas peticiones son configurables, así que para validar se pueden reducir: ver el apéndice A,
+que baja el total a 3,5 vCPU.
+
+<Callout type="warning" title="Compruebe la cuota de vCPU de su cuenta antes de empezar">
+  Una cuenta de AWS nueva trae por omisión una cuota de **8 vCPU bajo demanda**
+  para instancias estándar. Con el dimensionado de producción no alcanza, y no
+  se resuelve pagando: hasta que el aumento no se aprueba, no se pueden lanzar
+  más instancias.
+
+  ```bash
+  aws service-quotas get-service-quota --region <región> \
+    --service-code ec2 --quota-code L-1216C47A
+  ```
+
+  Si el valor es insuficiente, **solicite el aumento antes de empezar**: la
+  aprobación no es inmediata y no depende de quien instala. Es el tipo de
+  trámite que solo se descubre cuando ya se está dentro.
+</Callout>
+
+### 3.1 La StorageClass de Elasticsearch
+
+Es el requisito de infraestructura más fácil de subdimensionar, y **la única pieza que hay que crear
+a mano**: el resto de prerrequisitos se contratan o se despliegan con sus propios manifiestos.
+
+#### De dónde sale la cifra
+
+La búsqueda vectorial hace lecturas aleatorias intensas. El cálculo de referencia es de **~120
+lecturas aleatorias por consulta**, que a 60 consultas por segundo dan **~7 200 IOPS de pico
+sostenido**. Esa cifra es del **conjunto del clúster**, no de un volumen.
+
+A ese pico hay que sumarle margen para lo que ocurre además de consultar: la indexación de altas
+nuevas y, sobre todo, las fusiones de segmentos, que son intensivas y no se pueden programar a
+voluntad. Con ese margen, la referencia queda en **~30 000 IOPS para el conjunto**.
+
+**Lo que hay que aprovisionar por volumen es esa cifra dividida entre el número de nodos de datos**,
+porque cada uno tiene el suyo y el tráfico se reparte:
+
+| Nodos de datos | IOPS por volumen |
+|---|---|
+| 3 (dimensionado por omisión) | ~10 000 |
+| 2 | ~15 000 |
+| 1 | ~30 000 |
+
+Si cambia `es_data_nodes`, recalcule. Y si su carga real no son 60 consultas por segundo, rehaga el
+cálculo desde el principio: 120 lecturas por consulta, por su tasa objetivo, por cuatro de margen,
+dividido entre sus nodos de datos.
+
+<Callout type="info" title="En un entorno de validación esto sobra">
+  La cifra corresponde a la galería de producción con volumen real. Para validar
+  la instalación con una galería vacía o de pocos registros, las IOPS de base de
+  cualquier disco SSD son suficientes y aprovisionar por encima solo encarece la
+  prueba. Reduzca sin problema; el resto de propiedades de la clase sí conviene
+  mantenerlas.
+</Callout>
+
+#### Propiedades que debe cumplir
+
+- **IOPS** según la tabla anterior.
+- **`ReadWriteOnce`** como modo de acceso.
+- **`allowVolumeExpansion: true`**, porque la galería crece.
+- **`volumeBindingMode: WaitForFirstConsumer`**, para que el volumen se cree en la misma zona que el
+  pod que lo va a usar.
+- **`reclaimPolicy: Retain`** — es la galería biométrica: eliminar un `PersistentVolumeClaim` no debe
+  borrar los datos.
+
+<Callout type="warning" title="Lo que `Retain` implica al desinstalar">
+  `Retain` protege los datos mientras el sistema vive, y por eso se pide. Su
+  contrapartida es que **los volúmenes sobreviven a todo**: a borrar el
+  `PersistentVolumeClaim`, a borrar el namespace y a eliminar el clúster entero.
+  Nada los retira automáticamente, y en una nube un volumen que existe se factura
+  aunque no esté conectado a nada. Después de desinstalar quedan además copias
+  completas de la galería en esos volúmenes. Retirarlos es un paso manual y
+  deliberado: está en la [sección 12](#12-desinstalación).
+</Callout>
+
+#### Manifiesto de ejemplo
+
+Para AWS, con el driver de EBS. Ajuste el nombre, las IOPS y el rendimiento a su caso:
+
+```yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: galeria-alto-iops
+  annotations:
+    # Solo si quiere que sea la clase predeterminada del clúster. Asegúrese de
+    # que no haya otra marcada: ver la sección 3.0.
+    storageclass.kubernetes.io/is-default-class: "true"
+provisioner: ebs.csi.aws.com
+parameters:
+  type: gp3
+  iops: "10000"        # por volumen, según la tabla de arriba
+  throughput: "500"    # MB/s
+  encrypted: "true"
+allowVolumeExpansion: true
+volumeBindingMode: WaitForFirstConsumer
+reclaimPolicy: Retain
+```
+
+Aplíquelo y compruebe que quedó como espera:
 
 ```bash
-ansible-playbook site.yml -e forzar_credencial_es=true
+kubectl apply -f storageclass.yaml
+kubectl get storageclass -o custom-columns=\
+'NOMBRE:.metadata.name,RECLAMO:.reclaimPolicy,AMPLIABLE:.allowVolumeExpansion'
 ```
+
+El nombre que le dé es el que va en `es_storage_class`, en los dos ficheros de configuración.
+
+#### Equivalencias en otros proveedores
+
+El manifiesto anterior es específico de AWS. En otros proveedores cambian el `provisioner` y los
+nombres de los parámetros, pero no las cinco propiedades:
+
+| Proveedor | Tipo de volumen |
+|---|---|
+| AWS | `gp3` con IOPS provisionadas, o `io2` |
+| Azure | Premium SSD v2 |
+| Google Cloud | `pd-ssd` o Hyperdisk |
+| Infraestructura propia | NVMe local |
+
+### 3.2 Exposición y TLS
+
+Dos restricciones que no son negociables y hay que diseñar desde el principio:
+
+**La consola y la API tienen que servirse desde el mismo origen.** No es una preferencia: hay un
+defecto en la API por el que la configuración de CORS se ignora y queda un valor por defecto de
+desarrollo. Si la consola vive en un host distinto al de la API, todas sus peticiones fallan en el
+navegador. La forma soportada es un solo host, con la consola sirviendo `/` y reenviando `/api/` y
+`/auth/` a la API.
+
+**HTTPS es obligatorio en la práctica.** La captura desde cámara y el portapapeles de la consola
+son APIs de contexto seguro: sobre HTTP fallan, y lo hacen de forma parcial y confusa porque la
+sesión sí funciona.
+
+### 3.3 La GPU: dos cosas que no se ven hasta que fallan
+
+Exponer `nvidia.com/gpu` no basta. Hay dos piezas más, y las dos dan síntomas que apuntan al sitio
+equivocado.
+
+**La RuntimeClass.** El contenedor del vectorizador tiene que arrancar con el runtime de NVIDIA. Si
+en el clúster ese runtime es el que containerd usa por omisión —lo habitual con el GPU Operator—
+funciona sin declarar nada. Si es una RuntimeClass más, como en k3s, hay que pedirla
+explícitamente: el módulo de Terraform lo hace por la variable `gpu_runtime_class`.
+
+Sin ella el pod arranca con `runc`, sin las librerías de CUDA montadas, y **muere con un segfault
+dentro de `libonnxruntime_providers_cuda.so`**. El log se corta tras dos líneas y no menciona nada
+del runtime. Revise esta configuración antes de investigar otros componentes.
+
+**Las etiquetas del nodo.** El selector por omisión busca `nvidia.com/gpu.present=true`, que la
+pone el detector de características que acompaña al GPU Operator. Con un device plugin instalado a
+mano el nodo no tiene ninguna etiqueta de GPU y el pod se queda **`Pending` para siempre** con
+`Insufficient nvidia.com/gpu`. Hay que ajustar el selector a cómo etiquete el cliente sus nodos, o
+vaciarlo.
+
+**Y un aviso sobre tarjetas recientes.** Si la GPU es de una arquitectura posterior a la compilación
+de ONNX Runtime de la imagen, CUDA compila los kernels durante el arranque. Funciona, pero el primer
+arranque tarda: medido en una tarjeta de generación reciente, unos 100 segundos hasta que el
+servicio escucha y algo menos de dos minutos hasta que el pod queda listo. Durante ese tiempo el
+registro no emite nada entre la carga de los proveedores de ejecución y el final de la compilación.
+
+**La sonda de disponibilidad fallará varias veces, y es lo esperado.** En los eventos del pod
+aparecerá:
+
+```
+Readiness probe failed: Get "http://<ip>:8000/readyz": connect: connection refused
+```
+
+No hay que ajustar nada. La sonda espera 60 segundos antes de la primera comprobación y admite 30
+fallos consecutivos cada 10 segundos, de modo que tolera **seis minutos** de arranque: sobra margen.
+El pod **no se reinicia** por esos fallos, porque solo afectan a la sonda de disponibilidad, no a la
+de vitalidad. Que el contador de reinicios siga en cero confirma que el arranque va bien.
+
+**Sin GPU.** Hay un modo `cpu` (`vectorizador_provider = "cpu"`) que no pide recursos de GPU ni
+RuntimeClass. Sirve para validar el flujo en un entorno donde no hay tarjeta, y **no para medir**:
+la vectorización pasa de 4 ms a 50 ms, doce veces más lenta.
+
+---
+
+## 4. Preparación previa
+
+### 4.1 Hardware
+
+Requisitos de hardware, en resumen: una GPU NVIDIA
+para vectorización, tres nodos de datos de Elasticsearch generosos en RAM, y capacidad de CPU
+modesta para la API y la consola.
+
+**El dimensionamiento de Elasticsearch es el que decide si se cumple el tiempo de respuesta.** La
+premisa es que el índice se sirva desde memoria: para una galería de 50 millones de vectores
+cuantizados, la huella calculada es de ~126 GB de datos primarios, con un pico de ~250 GB durante
+una migración de modelo. Un clúster que no pueda mantener eso caliente hará lecturas a disco en la
+ruta de la consulta y no sostendrá el objetivo.
+
+### 4.2 Bases de datos y almacenamiento
+
+<Callout type="info" title="Si no dispone de estas dependencias">
+  Las tres son responsabilidad del cliente y en producción lo normal es que ya
+  existan o se contraten como servicios gestionados. Para validar la instalación
+  en una sola máquina, el **apéndice A** incluye una configuración mínima que las
+  levanta dentro del propio clúster.
+</Callout>
+
+
+Antes de instalar hay que tener:
+
+1. **PostgreSQL** accesible desde el clúster, con una base creada y dos credenciales: una
+   administrativa para aplicar migraciones y otra de runtime sin DDL. **No hace falta conceder
+   permisos a la de runtime**: lo hace la instalación (ver paso 3 de la sección 7), porque las
+   tablas no existen hasta que corren las migraciones.
+2. **Redis** accesible, preferiblemente **con credencial**: se configura en `redis_password`
+   (sección 6.3) y debe coincidir con la que exija el servidor. Dejarla vacía conecta sin
+   autenticar, que es lo único que admite un Redis sin `requirepass`.
+3. **Dos buckets** compatibles con S3: uno para los recortes faciales, otro para los respaldos de
+   Elasticsearch. Con sus credenciales de acceso.
+
+### 4.3 Identidad
+
+Hay **dos formas de entrar a la consola**, y conviene decidir cuál usa el cliente antes de instalar,
+porque cambian los prerrequisitos.
+
+**Con Google.** Hay que crear un cliente OAuth 2.0 y registrar el URI de redirección **exactamente**
+como quedará en producción: `https://<host-consola>/auth/google/callback`. Un carácter de diferencia
+produce un error de redirección. Exige salida a internet: el login valida contra Google en cada
+intento, sin caché.
+
+**Con usuario y contraseña.** No exige salida a internet ni cuenta de Google. Es la vía para un
+despliegue cuya red no deja salir a `accounts.google.com`, donde la primera opción deja la consola
+inservible aunque todo lo demás funcione.
+
+Las dos conviven: instalar una no quita la otra, y en la pantalla de acceso aparecen ambas.
+
+#### Qué hace falta para el acceso con contraseña
+
+1. **La pimienta de contraseñas** (`password_pepper`), en la sección 6.1. Vacía **deshabilita**
+   esta vía: el endpoint responde 501 y en la consola no se muestra el formulario. Es deliberado —
+   un despliegue que no la configura no estrena sin saberlo un endpoint de contraseñas.
+2. **Una contraseña para el primer administrador**, que se fija durante la instalación (paso 3 de la
+   secuencia). Sin ella no hay nadie que pueda entrar sin Google, y sin ese primer administrador no
+   se puede dar de alta a nadie más: es el arranque en frío de la consola.
+3. Nada más. Los demás usuarios los crea ese administrador desde la consola.
+
+#### Cómo se da de alta al resto del equipo
+
+El administrador invita por correo desde la consola y el sistema devuelve **dos enlaces**: uno para
+entrar con Google y otro para fijar una contraseña. Se manda el que corresponda a esa persona; el
+sistema no puede saber cuál.
+
+La persona invitada abre su enlace, define su contraseña e inicia sesión. La contraseña no pasa por
+manos del administrador.
+
+**Relevante en una red cerrada:** si no hay servicio de correo configurado, los enlaces de
+invitación se devuelven en la respuesta de la propia petición y el administrador los distribuye por
+el canal que corresponda. Sin este comportamiento, un despliegue sin correo saliente no podría dar
+de alta a nadie, lo que reintroduciría la dependencia de conectividad externa.
+
+
+#### Política y bloqueo
+
+La contraseña exige **al menos 12 caracteres**, contados en caracteres reales, y nada más: ni
+mayúsculas ni símbolos obligatorios. Las reglas de composición empujan hacia `Password1!`, que es
+corta y predecible; la longitud protege más.
+
+Tras **5 intentos fallidos consecutivos** la cuenta queda bloqueada **15 minutos**. Los dos valores
+son configurables.
+
+**⚠ El bloqueo no se anuncia, y es a propósito.** Durante el bloqueo la respuesta es la misma que
+para una contraseña incorrecta, sin decir que la cuenta está bloqueada ni cuánto falta. El motivo:
+una cuenta que no existe nunca se bloquea, así que una respuesta distinta revelaría qué correos
+están dados de alta y bastarían unos pocos intentos para enumerar usuarios. La consecuencia para el
+usuario legítimo es que verá «correo o contraseña incorrectos» aunque los escriba bien, y tendrá que
+esperar. Conviene que el soporte del cliente lo sepa.
+
+**⚠ Limitación que sigue en pie:** no hay integración con Entra ID, Okta ni LDAP. El acceso con
+contraseña quita la dependencia de internet, pero no es federación: los usuarios viven en la base de
+datos de la solución. Las integraciones máquina a máquina no se ven afectadas, porque usan API key.
+
+### 4.4 Salida a internet
+
+| Destino | Para qué | ¿Opcional? |
+|---|---|---|
+| `accounts.google.com`, `oauth2.googleapis.com`, `www.googleapis.com` | inicio de sesión con Google | **Sí**, si se usa el acceso con usuario y contraseña (4.3). Obligatorio si Google es la única vía |
+| registro de imágenes de contenedor | descargar la solución | No, salvo mirror interno |
+| `api.resend.com` | invitaciones por correo | Sí. Sin él, el enlace de invitación se devuelve en la respuesta |
+
+---
+
+## 5. Puertos
+
+| Componente | Puerto | Quién lo llama |
+|---|---|---|
+| Consola (nginx) | 80 | el ingress |
+| API | 8080 | la consola y las integraciones |
+| `alnitak-serve` | 8000 | solo la API |
+| Elasticsearch | 9200 (HTTP), 9300 (entre nodos) | solo la API |
+| PostgreSQL | 5432 | solo la API |
+| Redis | 6379 | solo la API |
+| Almacén de objetos | según el proveedor | la API y Elasticsearch |
+
+Solo la consola y la API necesitan exposición externa. El vectorizador y Elasticsearch **no deben
+ser accesibles desde fuera del clúster**: no tienen autenticación propia.
+
+---
+
+## 6. Secretos y configuración
+
+### 6.1 Secretos
+
+| Secreto | Claves | Para qué |
+|---|---|---|
+| Credenciales de Elasticsearch | API key | La API contra el índice |
+| SSO | client secret de Google, y una **llave privada RSA en PEM** | El client secret es de Google; la llave privada firma las sesiones |
+| Cropstore | access key, secret key, y una **clave de cifrado de 32 bytes** | Acceso al bucket y cifrado AES-256-GCM de cada recorte |
+| PostgreSQL | usuario y contraseña de runtime | Conexión de la API |
+| Redis | contraseña y, solo con ACL, usuario | Estado de sesión compartido entre réplicas. Vacías conectan sin autenticar: ver sección 11 |
+| Respaldos de Elasticsearch | access key y secret key | Instantáneas automáticas de la galería (sección 10). Pueden ir vacías en AWS si el rol de los nodos ya permite escribir en el contenedor |
+| Registro de imágenes | credenciales de pull | Descargar las imágenes privadas |
+| **Pimienta de API keys** | 32 bytes o más, en **base64url sin relleno** | Deriva y verifica los hashes de las API keys |
+| **Pimienta de contraseñas** | igual formato, valor **distinto** | Deriva y verifica las contraseñas de consola. Vacía: no hay acceso con contraseña |
+| Contraseña del primer administrador | la que elija el cliente, 12 caracteres o más | Solo durante la instalación; no se persiste en claro |
+
+Dos advertencias sobre la llave de firma de sesiones. La primera es que **debe ser la misma en todas
+las réplicas de la API**: si cada una generara la suya, un inicio de sesión empezado en un pod y
+terminado en otro fallaría de forma intermitente.
+
+La segunda importa para producción. Si el campo se deja vacío, **la instalación no se detiene**:
+genera una llave automáticamente y la deja escrita en el fichero de estado de Terraform. Lo mismo
+ocurre con la pimienta de las API keys y, si se activa su generación, con la de contraseñas. Es
+cómodo para una prueba y **no es aceptable en producción**, porque convierte el estado de Terraform
+en un fichero con secretos en claro que hay que custodiar como tal.
+
+Para producción, genere estos tres valores fuera de la herramienta y páselos ya generados:
+
+```bash
+# Llave de firma de sesiones
+openssl genrsa -out sesiones.pem 2048
+
+# Pimientas: 32 bytes en base64url sin relleno, valores distintos entre sí
+openssl rand -base64 32 | tr '+/' '-_' | tr -d '='
+openssl rand -base64 32 | tr '+/' '-_' | tr -d '='
+```
+
+<Callout type="warning" title="Si el estado de Terraform contiene secretos, protéjalo como un secreto">
+  No lo guarde en un repositorio de código. Si usa almacenamiento remoto,
+  actívele cifrado y restrinja el acceso. Y tenga en cuenta que un valor
+  generado por la herramienta se mantiene estable mientras el estado exista: si
+  el estado se pierde, la llave cambia y **todas las sesiones activas dejan de
+  ser válidas**.
+</Callout>
+
+**Hay DOS pimientas y son distintas a propósito.** `api_key_pepper` para las API keys y
+`password_pepper` para las contraseñas de consola. Podrían tener el mismo valor, pero entonces
+rotar las credenciales de servicio —que es una operación normal— dejaría además a **todas las
+personas fuera de la consola**. Separarlas cuesta una línea de configuración.
+
+Las dos tienen el mismo formato: al menos 32 bytes en **base64url sin relleno**. Y las dos vacías son
+un valor con significado: deshabilitan su vía. `password_pepper` vacía significa «este
+despliegue no usa acceso con contraseña», y el endpoint responde 501.
+
+**La pimienta de las API keys es obligatoria y debe registrarse durante la configuración.** Sin ella la autenticación por
+API key no existe: no se pueden emitir credenciales ni validar las que haya, y la consola con SSO de
+Google queda como única forma de entrar. Como este manual promete integraciones máquina a máquina
+por API key, no es opcional. Dos detalles de formato que cuestan un rato: tiene que ser **base64url
+sin relleno** y de al menos 32 bytes; un valor alfanumérico de 64 caracteres cumple. Y **cambiarla
+invalida todas las API keys ya emitidas**, porque sus hashes dejan de coincidir.
+
+**Los secretos tienen que existir antes que los workloads, y con la API es literal.** Su pod monta
+la configuración y el certificado CA de Elasticsearch como volúmenes **no opcionales**: si el
+ConfigMap del CA no existe todavía, el pod no se queda «arrancado pero no listo» — se queda en
+`ContainerCreating` con `configmap "es-ca" not found` y **no llega a arrancar**. Es lo esperado
+mientras no se haya completado el paso 4, y no indica un problema con la imagen.
+
+El paquete de instalación crea este conjunto de secretos de forma reproducible, que
+es lo que faltaba: antes se creaba a mano y era el punto del despliegue con menos reproducibilidad.
+
+### 6.2 Configuración
+
+La API se configura mediante **un fichero montado**, no por variables de entorno. El motivo es que
+Kubernetes descarta las variables declaradas con valor vacío, y varios campos necesitan poder quedar
+explícitamente vacíos para desactivar la función que gobiernan; con variables de entorno se volvería
+a aplicar el valor por omisión sin avisar.
+
+El fichero es un ConfigMap llamado `api-config`, con una única clave `config.yaml`, montado en
+`/etc/alnilam/config.yaml`. La ruta se indica al proceso mediante la variable de entorno
+`ALNILAM_CONFIG`; sin ella, el binario usaría la configuración incluida en la imagen.
+
+**Las credenciales no van en este fichero.** Viajan en el secreto `api-secretos` de la sección 6.1,
+que se inyecta como variables de entorno. El fichero de configuración no contiene ninguna
+contraseña ni clave.
+
+Los scripts del paquete generan este fichero a partir de las variables de la sección 6.3, de modo
+que normalmente no hay que escribirlo a mano. Esta es su estructura completa, útil para revisar un
+despliegue o diagnosticar:
+
+```yaml
+server:
+  port: 8080
+  rate_limit_max: 120                 # 0 desactiva el límite: no recomendable
+  cors_origins: "https://consola.ejemplo.com"
+elasticsearch:
+  addresses: ["https://elasticsearch-es-http.biometria-1n-datos.svc:9200"]
+  index: galeria-biometrica-v1        # el alias, no el índice físico
+  ca_cert_path: /etc/es-ca/ca.crt
+  similarity: dot_product
+  external_index: false
+  read_only: false
+  active_model: w600k_r50
+  fields:                             # los siete, explícitos
+    vector: vector
+    id: id
+    tenant: tenant_id
+    record: record
+    channel: channel
+    created_at: created_at
+    model_version: model_version
+vectorizer:
+  url: "http://vectorizador.biometria-1n-gpu.svc.cluster.local:8000"
+  timeout_ms: 5000
+identify:
+  default_top_n: 10                   # resultados devueltos
+  default_num_candidates: 800         # candidatos explorados por shard
+  default_threshold: 0.82
+postgres:
+  host: postgres.ejemplo.interno
+  port: 5432
+  dbname: biometria
+  sslmode: require
+redis:
+  addr: "redis.ejemplo.interno:6379"
+cropstore:
+  endpoint: s3.us-east-1.amazonaws.com
+  region: us-east-1
+  bucket: recortes-biometricos
+  use_ssl: true
+sso:
+  client_id: "<identificador del cliente OAuth>"
+  redirect_url: "https://consola.ejemplo.com/auth/google/callback"
+  console_url: "https://consola.ejemplo.com"
+  allowed_domains: ["ejemplo.com"]
+  operator_emails: ["admin@ejemplo.com"]
+  session_ttl: 8h
+sla:
+  latency_ms: 400
+  rps: 60
+log:
+  level: info
+```
+
+<Callout type="warning" title="Los siete campos del índice deben declararse los siete">
+  Los valores por omisión que el proceso aplica a `elasticsearch.fields` no
+  coinciden con los nombres que crea la plantilla del índice de la sección 7. Si
+  se omite uno, la API escribirá en un campo que el índice no tiene definido:
+  Elasticsearch lo creará automáticamente sin el tipo adecuado y el filtrado por
+  ese campo dejará de aprovechar el índice. Declárelos los siete.
+</Callout>
+
+**Campos que impiden el arranque si faltan o son incorrectos:**
+
+| Campo | Efecto |
+|---|---|
+| `postgres.host`, `postgres.dbname` | El proceso no arranca |
+| `elasticsearch.fields.tenant` | El proceso no arranca |
+| `sso.client_id`, `sso.client_secret` o `sso.redirect_url` vacíos | El acceso con Google queda desactivado. El proceso **sí arranca** |
+| `elasticsearch.ca_cert_path` ilegible | El proceso no arranca |
+
+**Campos que degradan el servicio sin error visible:**
+
+| Campo | Consecuencia |
+|---|---|
+| `redis.addr` vacío | El estado compartido pasa a memoria del proceso. Con más de una réplica, el tablero muestra datos parciales y el detalle de eventos falla de forma intermitente |
+| `cropstore.endpoint` vacío | Las altas no conservan el recorte, por lo que no podrán re-vectorizarse si se actualiza el modelo |
+| `server.rate_limit_max: 0` | Desaparece el límite de peticiones en el borde y una avalancha llega hasta la GPU |
+| `server.rate_limit_max` demasiado bajo | Se rechazan peticiones legítimas con `429`. Ver el aviso de abajo |
+| `sso` sin completar | El despliegue queda sin control de acceso efectivo. Complete la sección 6.1 antes de exponer el servicio |
+
+<Callout type="warning" title="El límite de peticiones cuenta por IP, no por credencial">
+  El valor por omisión son **120 peticiones por segundo y por dirección IP de
+  origen**, no por minuto ni por cliente. Importa porque **detrás de un
+  balanceador o una pasarela todo el tráfico llega con la misma IP**: en ese
+  caso el límite se agota con el conjunto de las peticiones y se empiezan a
+  rechazar llamadas legítimas con `429` mucho antes de alcanzar la capacidad
+  real del sistema.
+
+  Si publica el servicio detrás de una capa que ya controla la admisión, ajuste
+  el valor al dimensionado contratado o desactívelo con `0` y deje ese control
+  donde corresponda.
+</Callout>
+
+### 6.3 Variables que hay que rellenar
+
+Son dos ficheros y se copian de sus plantillas, como indica la sección 0.
+
+**`terraform/terraform.tfvars`** — **diez** variables sin valor por omisión, que hay que rellenar
+sí o sí, y cinco más que sí lo tienen y solo se tocan si hacen falta:
+
+Las diez obligatorias:
+
+| Variable | Contenido |
+|---|---|
+| `imagen_api` | Referencia completa de la imagen de la API, con su etiqueta |
+| `imagen_vectorizador` | Referencia completa de la imagen del vectorizador, con su etiqueta |
+| `imagen_consola` | Referencia completa de la imagen de la consola, con su etiqueta |
+| `registro_credenciales` | Credenciales de descarga del registro privado, en formato de configuración de Docker |
+| `es_storage_class` | Nombre de la StorageClass de la sección 3.1 |
+| `postgres` | Objeto con `host`, `dbname`, `user`, `password`; opcionalmente `port` (5432) y `sslmode` (`require`) |
+| `redis_addr` | `host:puerto` de Redis |
+| `cropstore` | Objeto con `endpoint`, `region`, `bucket`, `access_key`, `secret_key`, `crop_key`; opcionalmente `use_ssl` (`true`) |
+| `host_publico` | Host único donde se publican consola y API |
+| `sso` | Objeto con `client_id`, `client_secret`, `dominios`, `operadores`. **Obligatorio aunque no use Google**: ver el aviso de abajo |
+
+Y las cinco que ya traen valor, por si hay que cambiarlas:
+
+| Variable | Por omisión | Cuándo tocarla |
+|---|---|---|
+| `kubeconfig_path` | `~/.kube/config` | Si su kubeconfig está en otra ruta. **Terraform lee este fichero, no la variable `KUBECONFIG` del entorno** |
+| `kube_context` | vacío (usa el actual) | Para fijar el contexto contra el que se aplica todo. Ver el aviso de abajo |
+| `redis_password` | vacío | Si su Redis exige credencial. Tiene que coincidir con la que pida el servidor |
+| `redis_username` | vacío | Solo con las ACL de Redis 6+; con `requirepass` se deja vacío |
+| `respaldos` | `{ bucket = "" }` | Para activar las copias de la galería. Objeto con `bucket` y, según el caso, `region`, `endpoint` (host:puerto **sin esquema**, igual que `cropstore`), `use_ssl`, `access_key` y `secret_key`. **Con `bucket` vacío no hay copias automáticas** |
+
+#### Versiones de la entrega
+
+Estas son las cuatro referencias de la entrega vigente. Cópielas tal cual:
+
+| Componente | Referencia |
+|---|---|
+| API | `docker.io/jaakai/jaak-alnilam-api:0.17.1` |
+| Consola | `docker.io/jaakai/jaak-alnilam-web:0.14.0` |
+| Vectorizador | `docker.io/jaakai/jaak-alnitak-serve-gpu:0.1.0` |
+| Herramientas | `docker.io/jaakai/jaak-alnilam-tools:0.16.0` |
+
+La imagen de herramientas comparte número con la API a propósito: ambas salen del mismo código, así
+que las migraciones que aplica corresponden siempre al esquema que esa versión de la API espera.
+
+<Callout type="warning" title="Use únicamente etiquetas de versión">
+  En los repositorios conviven etiquetas de desarrollo y de validaciones
+  anteriores —`latest`, `dev-models`, `*-dev.N` y similares— que **no son
+  entregas**. Son mutables: su contenido puede cambiar, así que dejan de
+  identificar qué está realmente en ejecución y hacen imposible una vuelta atrás
+  determinista.
+
+  Si una versión nueva no aparece en esta tabla, solicítela antes de instalar en
+  lugar de deducirla del listado de etiquetas.
+</Callout>
+
+<Callout type="warning" title="No todas las imágenes del vectorizador llevan los modelos">
+  El vectorizador tiene etiquetas de desarrollo que **no incluyen los modelos**,
+  y son las más tentadoras porque parecen versionadas. Si se usa una de ellas, el
+  contenedor termina con código 1 nada más arrancar y el pod entra en
+  `CrashLoopBackOff`:
+
+  ```
+  INFO ort: Loaded ONNX Runtime dylib with version '1.19.2'
+  Error: leyendo YuNet models/face_detection_yunet_2023mar.onnx
+  Caused by:
+      No such file or directory (os error 2)
+  ```
+
+  El fallo es inmediato y dice exactamente qué falta, así que es fácil de
+  reconocer: si ve ese error, la imagen es la equivocada. La referencia correcta
+  es la de la tabla de arriba.
+</Callout>
+
+<Callout type="warning" title="El bloque `sso` hay que rellenarlo aunque entre con contraseña">
+  La estructura de la configuración exige `client_id`, `client_secret` y
+  `redirect_url`: **dejar cualquiera de los tres vacío apaga también el acceso
+  con contraseña**, porque es el mismo servicio de identidad quien lo resuelve.
+  Escriba un valor de relleno si no va a usar Google.
+
+  La **lista de dominios sí puede ir vacía**: eso desactiva el acceso con Google
+  a propósito y deja vivo el de usuario y contraseña.
+
+  ```hcl
+  sso = {
+    client_id     = "no-se-usa"
+    client_secret = "no-se-usa"
+    dominios      = []            # vacío desactiva el acceso con Google
+    operadores    = []
+  }
+  ```
+
+  Requiere la versión **0.17.1 o superior** de la API. En versiones anteriores,
+  dominios vacíos apagaba también el acceso con contraseña y la consola quedaba
+  sin ninguna forma de entrar; si usa una imagen más antigua, ponga al menos un
+  dominio.
+
+  Si más adelante quiere habilitar Google, basta con rellenar los cuatro campos
+  y reaplicar.
+</Callout>
+
+<Callout type="warning" title="kube_context no es el contexto activo de kubectl">
+  Terraform **no** usa el contexto activo: usa el nombre que se indique en esta
+  variable. Los dos pueden apuntar a clústeres distintos sin que nada lo avise,
+  de modo que comprobar el contexto activo como indica la sección 0.3 no basta.
+  Verifique que el valor de `kube_context` es el del clúster de destino:
+
+  ```bash
+  kubectl config get-contexts
+  ```
+
+  El nombre que aparece en la columna `NAME` es el que va en esta variable.
+
+  **Y lo mismo con el fichero.** Terraform lee la ruta de `kubeconfig_path`
+  —`~/.kube/config` por omisión— y **no la variable de entorno `KUBECONFIG`**. Si
+  trabaja con un kubeconfig en otra ruta, `kubectl` usará el del entorno y
+  Terraform el de la variable: el contexto puede llamarse igual en los dos
+  ficheros y apuntar a clústeres distintos. Son la misma decisión partida en dos,
+  así que fíjelas juntas.
+</Callout>
+
+**`ansible/group_vars/all.yml`** — las de relleno obligatorio:
+
+| Variable | Contenido |
+|---|---|
+| `ns_api`, `ns_gpu`, `ns_datos` | Los tres namespaces. Deben coincidir con los declarados en Terraform |
+| `es_storage_class` | El mismo valor que en Terraform |
+| `indice` | El mismo valor que `indice` en Terraform |
+| `es_release` | Nombre del recurso de Elasticsearch |
+| `postgres_admin` | Objeto con `host`, `dbname`, `user`, `password`: la credencial **administrativa**, distinta de la de servicio |
+| `primer_admin` | Correo del primer administrador de la consola |
+| `imagen_herramientas` | Referencia de la imagen de herramientas |
+
+<Callout type="warning" title="Los valores compartidos no se derivan solos">
+  Los namespaces, el nombre del índice y la StorageClass aparecen en los dos
+  ficheros y **no se propagan de uno a otro**. Si difieren, la instalación
+  avanza y falla más adelante en un punto que no señala la causa. Complete
+  primero el de Terraform y copie esos valores al de Ansible.
+</Callout>
+
+Opcionales de uso frecuente:
+
+| Variable | Por omisión | Para qué |
+|---|---|---|
+| `postgres_runtime_user` | vacío | Usuario de servicio al que conceder permisos sobre las tablas que crean las migraciones. Dejarlo vacío solo es válido si la API usa la credencial administrativa; ver el paso 3 |
+| `primer_admin_password` | vacío | Activa el acceso con contraseña del primer administrador. Requiere `password_pepper` |
+| `password_pepper` | vacío | Debe coincidir con la variable homónima de Terraform |
+| `imagen_prueba` | vacío | Ruta a una imagen facial para las pruebas funcionales del paso 8. **Requiere `primer_admin_password`**: la prueba entra con contraseña. Requisitos y consideraciones en 8.5 |
+| `vectorizador_provider` | `cuda` | `cpu` para desplegar sin GPU |
+| `tenant` | `default` | **Déjelo en `default`.** Ver el aviso de abajo |
+| `es_service` | `elasticsearch-es-http` | Nombre del servicio de Elasticsearch |
+| `campos` | los siete del índice | Solo si se cambian los nombres de campo respecto a la sección 6.2 |
+| `indice_plano` | vacío | Solo para migrar una galería anterior sin alias |
+
+Y en `terraform/terraform.tfvars`, las que gobiernan la GPU y la generación de secretos:
+
+| Variable | Por omisión | Para qué |
+|---|---|---|
+| `instalar_gpu_operator` | `false` | Con `false` el operador debe existir ya en el clúster, como indica la sección 3. Actívelo solo si quiere que la instalación lo aporte |
+| `gpu_node_selector` | `{"nvidia.com/gpu.present": "true"}` | Cómo se seleccionan los nodos con GPU. Ajústelo a cómo etiquete sus nodos, o vacíelo con `{}` |
+| `gpu_tolerations` | una tolerancia para `nvidia.com/gpu` con operador `Exists` y efecto `NoSchedule` | Los *taints* que hay que tolerar. El valor por omisión cubre el caso habitual: no hace falta añadirlo |
+| `gpu_runtime_class` | vacío | Clase de tiempo de ejecución de la GPU. En k3s suele ser `nvidia`. Ver 3.3 |
+| `sso.private_key_pem` | vacío | Llave de firma de sesiones. Vacío la genera la herramienta y **queda en el estado** |
+| `api_key_pepper` | vacío | Pimienta de las API keys de servicio (sección 6.1). Vacía **la genera la herramienta y queda en el estado**: la instalación termina en verde con un secreto que nadie pidió. Póngala usted en producción |
+| `generar_password_pepper` | `false` | Con `true`, genera la pimienta de contraseñas y **queda en el estado** |
+
+Y las que gobiernan qué se instala y con qué tamaño. Los valores de esta tabla son los que se
+aplican si no se tocan:
+
+| Variable | Por omisión | Para qué |
+|---|---|---|
+| `instalar_eck` | `true` | Instala el operador de Elasticsearch. Con `false` debe existir ya |
+| `eck_version` | `3.5.0` | Versión del operador de Elasticsearch. **Fijada a propósito**: ver el aviso de abajo |
+| `prometheus_version`, `external_secrets_version`, `gpu_operator_version` | vacío | Versión de los otros operadores. Vacío instala la última publicada |
+| `instalar_prometheus` | `false` | Instala el operador de Prometheus, solo si se quiere observabilidad |
+| `instalar_external_secrets` | `false` | Instala el gestor de secretos externo |
+| `es_version` | `9.5.2` | Versión de Elasticsearch que despliega el operador |
+| `indice` | `galeria-biometrica-v1` | Nombre del alias de la galería. Debe coincidir con el de Ansible |
+| `es_data_nodes` | `3` | Nodos de datos. Ver el apéndice A para validar en una máquina |
+| `es_master_nodes` | `3` | Nodos maestros |
+| `es_data_cpu` | `4` | **CPU por nodo de datos.** La petición que más pesa de la instalación |
+| `es_master_cpu` | `500m` | CPU por nodo maestro |
+| `vectorizador_cpu` | `2` | CPU del vectorizador. No cambia con `vectorizador_provider` |
+| `es_data_memoria` | `100Gi` | Memoria por nodo de datos |
+| `es_data_heap` | `16g` | Memoria de la máquina virtual de Java por nodo. Regla habitual: la mitad de la anterior |
+| `es_data_disco` | `400Gi` | Disco por nodo de datos |
+| `api_replicas` | `2` | Réplicas de la API |
+| `api_memoria_limite` | `1Gi` | Límite de memoria por réplica de la API |
+| `rate_limit_max` | `120` | Peticiones **por IP de origen y por segundo**. `0` desactiva el límite. La ventana es de un segundo y está fijada en la imagen: no se puede cambiar desde la configuración |
+| `vectorizador_workers` | `4` | Réplicas del motor dentro del proceso. **Cada una carga su propia copia del modelo**, así que este número decide la memoria que pide el vectorizador |
+| `vectorizador_max_inflight` | `128` | Peticiones simultáneas admitidas por el vectorizador |
+
+<Callout type="warning" title="Fije la versión de los operadores que instale">
+  El operador de Elasticsearch viene con versión fijada, y no es un detalle: sin
+  fijarla, Helm instala la última publicada **el día de la instalación**. Dos
+  despliegues de la misma entrega separados por unas semanas acabarían con
+  operadores distintos gobernando la galería, sin que nada en la configuración lo
+  refleje y sin posibilidad de volver atrás de forma determinista.
+
+  Importa además por una razón menos evidente: **es el operador quien decide qué
+  versiones de Elasticsearch admite**. Uno más nuevo puede retirar el soporte de
+  la versión indicada en `es_version`, y el fallo aparecería durante el
+  despliegue sin relación aparente con la causa.
+
+  Los otros tres operadores son opcionales y vienen sin fijar. Si los instala,
+  fije también su versión.
+
+  Y si ya tiene el operador de Elasticsearch instalado —el caso de
+  `instalar_eck = false`—, compruebe cuál es:
+
+  ```bash
+  kubectl get statefulset elastic-operator -n elastic-system \
+    -o jsonpath='{.spec.template.spec.containers[0].image}'
+  ```
+</Callout>
+
+<Callout type="warning" title="El dimensionado por omisión es de producción">
+  Los valores de Elasticsearch de esta tabla solicitan, entre los tres nodos de
+  datos, 300 GiB de memoria y 1,2 TiB de disco. En un equipo de trabajo los pods
+  quedarán en `Pending` sin explicación. Para validar en una sola máquina, use
+  los valores del apéndice A.
+</Callout>
+
+<Callout type="warning" title="El identificador de tenant no es configurable hoy">
+  Aunque la variable existe, el valor efectivo con el que la API sella las
+  sesiones queda fijado en `default`. Cambiarlo aquí hace que el primer
+  administrador se dé de alta con un identificador que la API no reconocerá:
+  la cuenta existe y no puede administrar nada. Déjelo en `default`.
 </Callout>
 
 ---
 
-## 8. Verificación
+## 7. Secuencia de instalación
 
-La verificación corre **dentro** del playbook. Comprueba, en este orden:
+Toda la secuencia la ejecuta `./install.sh` en el orden correcto. Esta sección explica qué hace cada
+paso, cómo comprobar que salió bien y qué hacer si no. Los comandos aparecen para poder verificar y
+diagnosticar, no porque haya que teclearlos uno a uno.
 
-1. La galería está montada: existen el índice físico y el alias.
-2. El Deployment de la API terminó de rodar y hay al menos un pod listo.
-3. El vectorizador está disponible.
-4. `/readyz` responde afirmativamente.
-5. La consola responde.
+### 7.0 La secuencia y por qué son cuatro invocaciones
 
-Si configuraste una imagen de prueba, las **pruebas de humo** entran además como
-un usuario real: inicio de sesión, emisión de API key, alta de un rostro,
-búsqueda, comprobación del rechazo por duplicado, revocación de la credencial y
-limpieza de la galería. Requieren la contraseña del primer administrador.
+```bash
+cd terraform
+terraform init                             # 0) descarga los proveedores. Solo la primera vez
+terraform apply -target=helm_release.eck   # 1) solo el operador de Elasticsearch
+terraform apply                            # 2) el resto — TERMINA EN ERROR, es lo esperado
+
+cd ../ansible
+ansible-playbook site.yml                  # 3) lo que depende de que (2) esté desplegado
+
+cd ../terraform
+terraform apply                            # 4) deja el estado consistente
+```
+
+Estos comandos son la forma desplegada de lo que hace `./install.sh`, que además comprueba entre
+etapas que el error de la segunda sea el esperado y no otro. Si los ejecuta a mano, tenga presentes
+los cambios de directorio y el `init`: sin él, la primera invocación falla porque los proveedores no
+están descargados.
+
+Tres cosas que conviene entender antes de ejecutar, porque las tres provocan dudas la primera vez:
+
+**Por qué la etapa 1 va sola.** El proveedor de Kubernetes de Terraform exige que un CRD exista en
+el momento de planificar, y el CRD de Elasticsearch lo instala el operador que se despliega en esa
+misma etapa. Sobre un clúster limpio, una sola invocación falla.
+
+**Por qué la etapa 2 termina en error.** Terraform espera a que los despliegues completen y ninguno
+lo consigue todavía: la API monta el certificado de Elasticsearch, que aún no existe —lo publica
+Ansible en la etapa 3—, y el vectorizador tarda más de lo que dura la espera en su primer arranque.
+Agota el plazo y devuelve error. **Este resultado es esperado si los únicos errores son los tiempos de espera descritos a continuación.**
+
+Salen **dos** errores, uno por cada despliegue, con esta forma:
+
+```
+Error: Waiting for rollout to finish: 1 replicas wanted; 0 replicas Ready
+Error: Waiting for rollout to finish: 2 replicas wanted; 0 replicas Ready
+```
+
+El de una réplica es el vectorizador y el de dos es la API, si se han dejado los valores por
+omisión. Lo que identifica al error esperado es la **espera agotada de un despliegue**, no el número
+de réplicas ni el componente concreto.
+
+Si el error de esta etapa es de otra naturaleza —una variable inválida, un recurso que ya existe, un
+fallo de autenticación—, deténgase y resuélvalo antes de seguir.
+
+`install.sh` lo distingue contando los errores y las esperas agotadas, y solo continúa si coinciden.
+Un error de otro tipo que llegue **acompañando** a las esperas esperadas detiene igualmente la
+instalación: el despliegue habría quedado incompleto de una forma que los pasos siguientes no
+comprueban.
+
+**Por qué hace falta la cuarta.** Al fallar la etapa 2, Terraform marca el Deployment de la API como
+dañado, y a partir de ahí cualquier `plan` propone reemplazarlo. La cuarta invocación lo recrea con
+todo en su sitio y deja el plan sin cambios pendientes.
+
+### Paso 1 — Prerrequisitos de plataforma
+
+Los operadores de la sección 3 y la StorageClass deben existir antes de empezar. Compruébelo:
+
+```bash
+# El CRD de Elasticsearch (lo aporta ECK)
+kubectl get crd elasticsearches.elasticsearch.k8s.elastic.co
+
+# La StorageClass declarada en la configuración
+kubectl get storageclass
+
+# Si el vectorizador va con GPU: algún nodo debe exponerla
+kubectl get nodes -o json | grep -c 'nvidia.com/gpu'
+```
+
+Si la StorageClass no aparece, créela según los requisitos de la sección 3.1. Si ningún nodo expone
+`nvidia.com/gpu`, falta el operador de NVIDIA o el nodo no está listo; con `vectorizador_provider:
+cpu` esta comprobación no aplica.
+
+El instalador repite estas verificaciones y se detiene con un mensaje explícito si alguna falla, de
+modo que no es posible avanzar sin los prerrequisitos.
+
+### Paso 2 — Namespaces, secretos y configuración
+
+Lo ejecuta Terraform. Crea los tres namespaces —`biometria-1n`, `biometria-1n-gpu` y
+`biometria-1n-datos`, configurables—, el secreto de acceso al registro en cada uno de ellos, el
+secreto `api-secretos` con las nueve credenciales de la sección 6.1, y el ConfigMap `api-config` con
+la configuración de la sección 6.2.
+
+Comprobación:
+
+```bash
+kubectl get ns biometria-1n biometria-1n-gpu biometria-1n-datos
+kubectl get secret api-secretos registro-imagenes -n biometria-1n
+kubectl get configmap api-config -n biometria-1n
+
+# Ver qué claves contiene el secreto, sin revelar sus valores
+kubectl get secret api-secretos -n biometria-1n -o jsonpath='{.data}' | tr ',' '\n' | cut -d'"' -f2
+```
+
+Deben aparecer **once** claves. La duodécima, `ALNILAM_ELASTICSEARCH_API_KEY`, la añade el paso 6.
+
+Son las de Elasticsearch, SSO, cropstore, PostgreSQL, Redis y las dos pimientas. Las credenciales
+de respaldos y las del registro de imágenes **no están aquí**: viven en secretos propios
+(`es-respaldos-s3` y `registro-imagenes`), porque los consumen Elasticsearch y el kubelet, no la
+API.
+
+<Callout type="warning" title="Los secretos tienen que existir antes que los componentes">
+  El pod de la API monta la configuración y el certificado de Elasticsearch como
+  volúmenes obligatorios. Si el ConfigMap del certificado no existe todavía, el
+  pod no queda «arrancado pero no listo»: se queda en `ContainerCreating` con
+  `configmap "es-ca" not found` y no llega a ejecutarse. Es lo esperado mientras
+  no se haya completado el paso 4.
+</Callout>
+
+### Paso 3 — Base de datos, permisos y primer administrador
+
+Lo ejecuta Ansible, en tres partes, y todas dentro del clúster: la máquina desde la que se instala
+normalmente no alcanza la base de datos del cliente.
+
+**Migraciones.** Un Job llamado `db-migrate` ejecuta `/app/db-migrate` desde la imagen de
+herramientas, con la credencial **administrativa**. La API no aplica migraciones al arrancar, de
+forma deliberada.
+
+```bash
+kubectl get job db-migrate -n biometria-1n
+kubectl logs job/db-migrate -n biometria-1n
+```
+
+Debe aparecer `Completions 1/1`. Si el Job falla, el motivo más frecuente es el modo de TLS: el
+binario usa `require` por omisión y termina con `server refused TLS connection` contra un PostgreSQL
+sin TLS. Ajuste `postgres_admin.sslmode` en la configuración de Ansible.
+
+**Permisos de la credencial de servicio.** Las migraciones crean las tablas como propiedad de la
+credencial administrativa, de modo que la credencial de servicio —la que usa la API— nace sin
+permisos sobre ellas. Un segundo Job los concede, incluidos los de las tablas que crearán las
+migraciones futuras.
+
+```bash
+kubectl get job permisos-runtime -n biometria-1n
+```
+
+<Callout type="warning" title="Cuándo hace falta este paso, y qué ocurre si falta">
+  Depende de qué credencial se haya puesto en `postgres.user` de la
+  configuración de Terraform, que es la que usa la API.
+
+  Si es una credencial **de servicio** —lo recomendable—, este paso es
+  obligatorio: sin él, la sonda de disponibilidad queda en verde porque no
+  comprueba PostgreSQL, y todas las operaciones que tocan la base de datos
+  fallan con `permission denied for table users`. El síntoma no apunta a la
+  causa. Rellene `postgres_runtime_user` en la configuración de Ansible para que
+  el paso se ejecute.
+
+  Si es la credencial **administrativa**, el paso no hace falta porque ya es
+  propietaria de las tablas, y puede dejar `postgres_runtime_user` vacío. Es
+  aceptable en un entorno de prueba, pero deja el servicio ejecutándose con
+  permisos para modificar el esquema, que no necesita.
+</Callout>
+
+**Primer administrador.** Un Job inserta la primera cuenta con rol de administrador. Sin él, la
+primera persona que entre lo hará como consultor y nadie podrá administrar la consola.
+
+```bash
+kubectl get job primer-admin -n biometria-1n
+```
+
+El alta usa el identificador de tenant configurado, `default` por omisión. Debe ser el mismo con el
+que la API sella las sesiones; si no coinciden, el administrador existe pero no se le reconoce.
+
+Si además se configuró contraseña para esa cuenta, un tercer Job la establece derivando el hash
+dentro del clúster. Requiere que `password_pepper` esté configurada en los dos ficheros; si falta, la
+instalación se detiene antes de crear nada, para no dejar una cuenta con una contraseña que no
+serviría para entrar.
+
+### Si un paso de la instalación falla
+
+Varios pasos de la instalación no los ejecuta Ansible directamente: lanza un **Job** dentro del
+clúster y espera su resultado. Cuando uno falla, el mensaje de Ansible dice qué se esperaba, pero la
+causa concreta está en el registro de ese Job.
+
+| Paso | Job | Ver el registro |
+|---|---|---|
+| Comprobación de PostgreSQL (preflight) | `preflight-postgres` | `kubectl logs job/preflight-postgres -n biometria-1n` |
+| Migraciones | `db-migrate` | `kubectl logs job/db-migrate -n biometria-1n` |
+| Permisos de la credencial de servicio | `permisos-runtime` | `kubectl logs job/permisos-runtime -n biometria-1n` |
+| Alta del primer administrador | `primer-admin` | `kubectl logs job/primer-admin -n biometria-1n` |
+| Contraseña del primer administrador | `primer-admin-password` | `kubectl logs job/primer-admin-password -n biometria-1n` |
+| Pruebas funcionales | `pruebas-de-humo` | `kubectl logs job/pruebas-de-humo -n biometria-1n` |
+
+<Callout type="warning" title="Mire el registro antes de relanzar la instalación">
+  Los Jobs se conservan una hora, pero **cada nuevo intento sustituye al
+  anterior**. Si relanza `install.sh` antes de consultar el registro, pierde la
+  evidencia de lo que falló, que es justo lo que suele hacerse cuando el fallo
+  parece transitorio.
+</Callout>
+
+Si el registro está vacío o el Job no aparece, es que no llegó a ejecutarse. Eso apunta al clúster y
+no a la configuración —lo más habitual es que no haya recursos asignables para programar el pod— y
+lo dicen los eventos:
+
+```bash
+kubectl describe job/<nombre> -n biometria-1n
+kubectl describe pod -l job-name=<nombre> -n biometria-1n
+```
+
+### Paso 4 — Elasticsearch y su certificado
+
+Terraform despliega el clúster de Elasticsearch mediante el operador, y Ansible copia su certificado
+al ConfigMap `es-ca` del namespace de la API.
+
+```bash
+# Estado del clúster (puede tardar varios minutos en el primer arranque)
+kubectl get elasticsearch -n biometria-1n-datos
+
+# El certificado ya publicado donde la API lo espera
+kubectl get configmap es-ca -n biometria-1n
+```
+
+El clúster debe alcanzar estado `green`, o `yellow` si hay menos nodos de datos que réplicas
+configuradas, lo que es correcto en una instalación reducida.
+
+<Callout type="warning" title="Al renovar el certificado hay que repetir este paso">
+  El certificado se copia, no se referencia. Cuando el operador lo renueve, la
+  copia queda obsoleta y la API dejará de pasar su sonda con `certificate signed
+  by unknown authority`. Vuelva a ejecutar este paso del playbook.
+</Callout>
+
+### Paso 5 — Plantilla del índice
+
+Ansible crea una **plantilla**, no el índice. El índice físico y su alias los crea la propia API al
+arrancar, a partir de esta plantilla:
+
+```json
+{"index_patterns":["galeria-biometrica-v1*"],
+ "template":{
+   "settings":{"number_of_shards":2,"number_of_replicas":1,
+               "refresh_interval":"1s",
+               "index.store.preload":["vec","veq","vex"]},
+   "mappings":{"_source":{"excludes":["vector"]},
+     "properties":{
+       "vector":{"type":"dense_vector","dims":512,"index":true,
+                 "similarity":"dot_product",
+                 "index_options":{"type":"int8_hnsw","m":16,"ef_construction":200}},
+       "id":{"type":"keyword"},
+       "tenant_id":{"type":"keyword"},
+       "record":{"type":"keyword"},
+       "channel":{"type":"keyword"},
+       "created_at":{"type":"date"},
+       "model_version":{"type":"keyword"}}}}}
+```
+
+Los campos de filtro son `keyword` para que el pre-filtro por tenant y por versión de modelo se
+resuelva sobre el índice. El vector se excluye de `_source` porque no hace falta devolverlo y ocupa.
+
+<Callout type="warning" title="No cree un índice con el nombre del alias">
+  El nombre configurado —`galeria-biometrica-v1` por omisión— es el **alias**. El
+  índice físico se llamará `galeria-biometrica-v1_v1`. Si existe un índice plano
+  ocupando el nombre del alias, la API se niega a continuar, su sonda no pasa
+  nunca y la instalación queda bloqueada hasta eliminar ese índice a mano.
+</Callout>
+
+### Paso 6 — Credencial de la API contra Elasticsearch
+
+Ansible emite una credencial acotada al patrón del índice y la añade al secreto de la API. No se usa
+el superusuario.
+
+```json
+{"name":"api-1n",
+ "role_descriptors":{"galeria":{
+   "cluster":["monitor"],
+   "indices":[{"names":["galeria-biometrica-v1*"],
+               "privileges":["read","write","view_index_metadata",
+                             "create_index","manage"]}]}}}
+```
+
+Los privilegios `create_index` y `manage` son necesarios aunque el servicio parezca de solo consulta:
+la API crea el índice y su alias durante el arranque, y sin ellos recibe un error de autorización.
+
+Antes de emitir la nueva, el paso invalida las anteriores con el mismo nombre, para no acumular
+credenciales con permiso de escritura sobre la galería.
+
+### Paso 7 — Vectorizador
+
+Terraform lo despliega. Si va con GPU, revise la sección 3.3 antes: hay dos ajustes —la clase de
+tiempo de ejecución y las etiquetas del nodo— que si faltan producen síntomas que apuntan a otro
+sitio.
+
+```bash
+kubectl get pods -n biometria-1n-gpu
+kubectl logs -n biometria-1n-gpu -l app=vectorizador --tail=20
+```
+
+El registro debe mostrar el proveedor de ejecución activo y el modelo cargado. En tarjetas más
+recientes que los kernels precompilados de la imagen, el primer arranque puede tardar más de un
+minuto compilándolos; es normal y solo ocurre la primera vez.
+
+### Paso 8 — API
+
+Terraform la despliega y espera a que el despliegue complete. Es la etapa que falla en la segunda
+invocación y se resuelve en la cuarta.
+
+```bash
+kubectl get pods -n biometria-1n -l app=api-1n
+kubectl rollout status deployment/api-1n -n biometria-1n
+```
+
+### Paso 9 — Consola
+
+Terraform despliega el contenedor de la consola, que sirve la interfaz y redirige las llamadas a la
+API.
+
+```bash
+kubectl get pods -n biometria-1n -l app=consola-1n
+```
+
+Si el pod no arranca con un error de host no encontrado, el nombre del servicio de la API en su
+configuración no resuelve en DNS: revise que coincida con el servicio real.
+
+### Paso 10 — Publicación
+
+**La publicación la aporta el cliente**, y es el único paso de esta secuencia que la instalación no
+ejecuta: los dos servicios que crea son de tipo `ClusterIP`, alcanzables solo dentro del clúster. Es
+deliberado — el balanceador, el certificado y el DNS son de la organización, con sus propias
+políticas — pero significa que aquí hay trabajo que hacer y no un comando que copiar.
+
+**Lo que tiene que cumplir**, sea con el mecanismo que sea:
+
+| Requisito | Por qué |
+|---|---|
+| **Un solo host** para consola y API | Si viven en hosts distintos, las peticiones de la consola fallan en el navegador. No es una preferencia: es una restricción dura (sección 3.2) |
+| `/` a la consola; `/api/` y `/auth/` a la API | Es el reparto de rutas que espera la consola |
+| **TLS** en ese host | La cookie de sesión va marcada como segura: sin HTTPS el navegador no la guarda y no se puede iniciar sesión |
+| El host coincide con `host_publico` | Ese valor se hornea en la configuración de la API y en la URL de retorno del acceso con Google |
+
+**Un `Ingress` de partida.** Si su clúster ya tiene un controlador de ingress, esto cubre el
+reparto de rutas. Ajuste el nombre de la clase, el emisor del certificado y las anotaciones a lo que
+use su organización:
 
 ```yaml
-imagen_prueba: "/ruta/local/a/rostro.jpg"   # JPG o PNG, < 1 MB
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: alnitak
+  namespace: biometria-1n
+spec:
+  ingressClassName: nginx          # el de su clúster
+  tls:
+    - hosts: [biometria.ejemplo.com]
+      secretName: alnitak-tls      # el secreto con su certificado
+  rules:
+    - host: biometria.ejemplo.com
+      http:
+        paths:
+          - path: /api/
+            pathType: Prefix
+            backend: { service: { name: api-1n, port: { number: 8080 } } }
+          - path: /auth/
+            pathType: Prefix
+            backend: { service: { name: api-1n, port: { number: 8080 } } }
+          - path: /
+            pathType: Prefix
+            backend: { service: { name: consola-1n, port: { number: 80 } } }
 ```
 
-### 8.1 Lo que la verificación NO cubre
+El orden importa: las rutas más específicas van antes que `/`.
 
-`/readyz` comprueba que Elasticsearch y el vectorizador responden. **No
-comprueba** que el modelo cargado sea el correcto, que los umbrales estén
-calibrados para tu población, ni que el rendimiento cumpla tu dimensionado.
+**Cómo saber que quedó bien.** Desde fuera del clúster, contra su host:
 
-Antes de dar por buena la instalación:
+```sh
+HOST=biometria.ejemplo.com
 
-- Recorre la [lista de verificación de seguridad](/docs/alnitak/seguridad#lista-de-verificación-antes-de-producción).
-- Lanza tu propia carga y compárala con
-  [Rendimiento y capacidad](/docs/alnitak/rendimiento).
-- Calienta el índice: la primera consulta tras el arranque puede ir a segundos.
+# 1) La consola responde en la raíz
+curl -sI "https://$HOST/" | head -1
 
-## Si algo falla
+# 2) La API recibe lo que va bajo /auth/. Sin sesión debe responder 401,
+#    que es la API contestando: si devuelve HTML, está contestando la consola.
+curl -s -o /dev/null -w '%{http_code}\n' "https://$HOST/auth/me"
 
-Cada mensaje de `install.sh` dice qué comprobar. Si el playbook se detuvo
-esperando un Job, la causa está en su registro:
+# 3) El certificado es válido: sin -k y sin errores
+curl -sS -o /dev/null "https://$HOST/" && echo "TLS correcto"
+```
+
+El segundo es el que comprueba el reparto de rutas. Un `401` significa que `/auth/` llega a la API;
+cualquier respuesta HTML significa que está cayendo en la consola y el reparto está mal.
+
+<Callout type="info" title="`/readyz` y `/metrics` no se publican, y es lo correcto">
+  Están en la raíz del servicio de la API, no bajo `/api/` ni `/auth/`, así que
+  con este reparto de rutas **no son alcanzables desde fuera**. No lo arregle: la
+  sonda y las métricas no deben quedar expuestas —lo dice la sección 8.6— y se
+  consultan desde dentro del clúster o con `kubectl port-forward`.
+</Callout>
+
+<Callout type="info" title="Se puede verificar la instalación sin publicar">
+  Las comprobaciones de la sección 8 se hacen desde dentro del clúster o con
+  `kubectl port-forward`, así que **no hace falta completar este paso para
+  validar** que la instalación funciona:
+
+```sh
+kubectl port-forward -n biometria-1n svc/consola-1n 8080:80
+```
+
+  Es lo razonable en un entorno de validación, donde montar DNS y certificados
+  para tirarlo todo después no aporta. En un despliegue real este paso sí es
+  obligatorio: sin él nadie puede usar la consola.
+</Callout>
+
+### Paso 11 — Credenciales de operación
+
+Emita las credenciales de servicio de cada integración con los permisos mínimos e invite desde la
+consola a las personas que vayan a operar el sistema.
+
+---
+
+### 7.1 Si una pasada de Terraform se interrumpe
+
+Vale la pena saberlo antes de que pase, porque la etapa 2 tarda y es tentador cortarla. Si un
+`terraform apply` se interrumpe a mitad —con Ctrl-C, por una caída de red o porque alguien pierde la
+paciencia— los recursos que ya se crearon **quedan en el clúster pero no en el estado de Terraform**.
+La siguiente pasada intenta crearlos otra vez y falla así:
+
+```
+Error: Failed to create deployment: deployments.apps "api-1n" already exists
+Error: Failed to create deployment: deployments.apps "vectorizador" already exists
+```
+
+Reintentar no lo arregla: seguirá existiendo. Hay dos salidas y la primera es la buena:
 
 ```bash
-kubectl logs job/<nombre> -n <namespace>
+# 1) Adoptar lo que ya existe (no toca nada que esté corriendo)
+terraform import kubernetes_deployment.api biometria-1n/api-1n
+terraform import kubernetes_deployment.vectorizador biometria-1n-gpu/vectorizador
+
+# 2) O borrar el recurso huérfano y dejar que Terraform lo cree
+kubectl delete deployment api-1n -n biometria-1n
 ```
 
-Y si el registro está vacío porque el contenedor no llegó a arrancar, en los
-eventos del pod:
+El nombre del recurso de Terraform sale del propio mensaje de error, y el identificador que pide
+`import` es `namespace/nombre`. La opción 1 es preferible: la 2 corta el servicio durante el
+rearranque.
+
+## 8. Verificación
+
+`install.sh` ejecuta estas comprobaciones automáticamente y se detiene si alguna falla. Esta sección
+da los comandos para repetirlas a mano, que es lo que hará falta si algo va mal después.
+
+Las comprobaciones se hacen **desde dentro del clúster**, porque es desde ahí desde donde los
+componentes se hablan entre sí. Todos los comandos siguientes usan un pod temporal o `kubectl exec`.
+
+### 8.1 El índice y su alias existen
+
+Es la condición de la que dependen las demás: sin galería montada, la API no pasa su sonda y su
+despliegue nunca queda disponible.
 
 ```bash
-kubectl describe pod -l job-name=<nombre> -n <namespace>
+# Contraseña del usuario elastic, que genera el operador
+ES_PASS=$(kubectl get secret elasticsearch-es-elastic-user -n biometria-1n-datos \
+  -o go-template='{{index .data "elastic"}}' | base64 -d)
+
+# Se verifica el certificado con la autoridad del propio clúster, que el
+# operador deja montada dentro del pod. Se llama al servicio por su nombre y no
+# a localhost: es el nombre para el que está emitido el certificado.
+kubectl exec -n biometria-1n-datos statefulset/elasticsearch-es-master -c elasticsearch -- \
+  curl -s --cacert /usr/share/elasticsearch/config/http-certs/ca.crt \
+  -u "elastic:$ES_PASS" \
+  "https://elasticsearch-es-http.biometria-1n-datos.svc:9200/_alias/galeria-biometrica-v1"
 ```
 
-Los Jobs de la instalación **se conservan una hora** para que puedas
-consultarlos. Míralos *antes* de relanzar: el siguiente intento los sustituye.
+<Callout type="warning" title="No desactive la verificación del certificado">
+  Es tentador añadir `-k` para que el comando funcione sin más, y en una
+  comprobación puntual dentro del pod parece inocuo. Pero un comando copiado de
+  un manual acaba en los guiones de operación de alguien, y ahí sí importa:
+  saltarse la verificación deja la conexión expuesta a suplantación.
 
-El catálogo de síntomas, con causa y remedio, está en
-[Solución de problemas](/docs/alnitak/solucion-de-problemas).
+  Si el comando falla por el certificado, mire **qué** dice el error antes de
+  tocar nada:
+
+  - `no alternative certificate subject name matches target host name` — el
+    problema es el **host**, no la autoridad. El certificado que emite ECK vale
+    para el nombre del servicio, no para `localhost`. Llame al servicio por su
+    nombre, como hace el comando de arriba, y ajústelo si cambió el namespace.
+  - `unable to get local issuer certificate` o similar — ahí sí es la ruta de la
+    autoridad, que puede variar con la versión del operador. Búsquela:
+
+  ```bash
+  kubectl exec -n biometria-1n-datos statefulset/elasticsearch-es-master -c elasticsearch -- \
+    find /usr/share/elasticsearch/config -name 'ca.crt'
+  ```
+</Callout>
+
+Debe devolver el índice físico `galeria-biometrica-v1_v1` con el alias apuntando a él y marcado como
+índice de escritura. Si devuelve 404, la API todavía no ha arrancado o no pudo crear el índice:
+revise sus registros.
+
+### 8.2 La sonda de disponibilidad de la API responde
+
+```bash
+POD=$(kubectl get pod -n biometria-1n -l app=api-1n -o jsonpath='{.items[0].metadata.name}')
+kubectl exec -n biometria-1n "$POD" -- wget -qO- http://127.0.0.1:8080/readyz
+```
+
+Debe devolver algo así:
+
+```json
+{"checks":{"elasticsearch":true,"vectorizer":true},"status":"ready"}
+```
+
+Informa de Elasticsearch y del vectorizador por separado. Tres precauciones al ejecutarlo:
+
+Use **`wget`, no `curl`**. La imagen de la API no incluye `curl`; trae `wget`, `nc` y un intérprete
+de órdenes. La de Elasticsearch, en cambio, sí trae `curl` y no `wget`, por eso la comprobación
+anterior lo usa. Si ejecuta `curl` aquí, el error dice que el ejecutable no existe, no que el
+servicio falle.
+
+Use **`127.0.0.1`, no `localhost`**. `localhost` resuelve primero a `::1` y el proceso escucha solo
+en IPv4, de modo que puede responder así aunque el servicio esté disponible:
+
+```
+wget: can't connect to remote host: Connection refused
+```
+
+La sonda del kubelet no se ve afectada porque usa la dirección del pod, así que el sistema está sano
+y solo falla la comprobación manual.
+
+Y tenga presente su alcance: la sonda cubre Elasticsearch y el vectorizador, **no** PostgreSQL, Redis
+ni el almacén de recortes. Puede responder afirmativamente con la base de datos inaccesible.
+
+### 8.3 El vectorizador responde
+
+```bash
+kubectl exec -n biometria-1n "$POD" -- \
+  wget -qO- http://vectorizador.biometria-1n-gpu.svc.cluster.local:8000/readyz
+```
+
+Debe devolver algo así:
+
+```json
+{"inflight":0,"max_inflight":128,"status":"ready","workers":4}
+```
+
+En el primer arranque con GPU puede tardar más de un minuto, según la sección 3.3.
+
+### 8.4 El acceso a la consola funciona
+
+Estas pruebas se lanzan **contra la API**, que es quien resuelve el acceso; la consola solo la
+consume desde el navegador. Para lanzarlas desde su equipo, abra un túnel al servicio de la API:
+
+```bash
+kubectl port-forward -n biometria-1n svc/api-1n 8080:8080
+```
+
+Y en otra terminal:
+
+```bash
+# Inicio de sesión del administrador. -c guarda la cookie para los pasos siguientes.
+curl -si -c cookies.txt -X POST http://127.0.0.1:8080/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"admin@ejemplo.com","password":"<la configurada>"}'
+```
+
+| Prueba | Cómo se pide | Resultado esperado |
+|---|---|---|
+| El administrador entra con su contraseña | `POST /auth/login` | `200` con cookie de sesión |
+| Contraseña incorrecta | el mismo, cambiando la contraseña | `401` |
+| Correo que no existe | el mismo, cambiando el correo | `401`, con **cuerpo idéntico al anterior** |
+| Varios fallos seguidos y luego la correcta | el mismo, repetido | `401`: el bloqueo actúa y no se anuncia |
+| El administrador invita a otra persona | `POST /api/v1/admin/users/invite` | `201` con los enlaces de invitación |
+| La persona invitada establece su contraseña | `POST /auth/invitation/password` | `200` y queda con sesión activa |
+| Reutilizar el mismo enlace de invitación | el mismo, con el token ya usado | `403` |
+| Contraseña por debajo del mínimo | el mismo, con una contraseña corta | `400` indicando el mínimo, **sin consumir el enlace** |
+
+#### Las cuatro de la invitación
+
+Necesitan la cookie del primer inicio de sesión, porque invitar exige un permiso que solo tienen
+las sesiones de rol administrador:
+
+```bash
+# Invitar. El rol puede ser "admin", "operator" o "viewer".
+curl -si -b cookies.txt -X POST http://127.0.0.1:8080/api/v1/admin/users/invite \
+  -H "Content-Type: application/json" \
+  -d '{"email":"invitado@ejemplo.com","role":"viewer"}'
+```
+
+La respuesta trae `invite_url` —la vía de Google— e `invite_password_url`, que es la que interesa
+aquí. **El token va en esa segunda URL**, y es lo que se envía al establecer la contraseña:
+
+```bash
+TOKEN="<el que aparece en invite_password_url>"
+
+# La persona invitada fija su contraseña
+curl -si -X POST http://127.0.0.1:8080/auth/invitation/password \
+  -H "Content-Type: application/json" \
+  -d "{\"token\":\"$TOKEN\",\"password\":\"unaContraseñaLargaYNueva\"}"
+
+# Repetir la misma orden con el token ya usado: debe dar 403
+# Y con una contraseña corta, antes de usarlo: 400 y el enlace sigue sirviendo
+```
+
+Si `invite_password_url` no aparece en la respuesta, es que la consola no tiene URL base
+configurada: revise `host_publico`.
+
+Que el correo inexistente y la contraseña incorrecta devuelvan exactamente lo mismo es deliberado:
+evita que se pueda averiguar qué cuentas existen probando direcciones.
+
+<Callout type="warning" title="Deje la prueba del bloqueo para el final">
+  La fila de los fallos seguidos **inutiliza durante quince minutos la cuenta con
+  la que se prueba**, y la verificación siguiente necesita entrar con la del
+  primer administrador. Si sigue esta sección en orden con esa cuenta, la
+  comprobación 8.5 fallará por culpa de esta.
+
+  Hágala **después de 8.5**, o con una cuenta invitada en lugar de la del
+  administrador. Si ya la ha ejecutado, más abajo está cómo desbloquear.
+</Callout>
+
+### 8.5 El flujo funcional completo
+
+Es la comprobación que de verdad cierra la instalación, y está automatizada. Con `imagen_prueba`
+configurada, el playbook entra como administrador, emite una credencial de servicio por el mismo
+endpoint que usa la consola, da de alta un rostro, lo busca, comprueba que el duplicado se rechaza,
+revoca la credencial y deja la galería como estaba.
+
+#### La imagen de prueba
+
+**No se entrega con el producto: la aporta quien instala.** Requisitos:
+
+| Requisito | Motivo |
+|---|---|
+| JPG o PNG | Formatos que acepta el vectorizador |
+| **Menos de 1 MB** | La imagen viaja en un ConfigMap, que tiene ese límite |
+| **Un solo rostro** | Con varias caras el alta no es determinista |
+| Que **no esté ya en la galería** | Si está, el alta se rechaza como duplicado y la prueba no puede distinguirlo de un fallo |
+
+Requiere además `primer_admin_password`: la prueba se autentica con contraseña, así que sin ella el
+playbook se detiene antes de empezar.
+
+<Callout type="warning" title="Esa cara se da de alta en la galería">
+  Durante la prueba, el rostro que indique queda **registrado en la galería
+  biométrica** como un alta real: es lo que permite comprobar que la búsqueda y
+  la detección de duplicados funcionan.
+
+  El playbook borra al terminar **el vector de la galería y la credencial de
+  servicio** que emitió, pero **no el recorte**: la imagen facial cifrada se queda
+  en el contenedor de recortes, con el identificador biométrico como nombre.
+
+  Por eso, use **un rostro sintético** —generado, no de una persona real— y no la
+  fotografía de alguien del equipo. Evita tener que justificar por qué un dato
+  biométrico personal quedó almacenado en un entorno de validación.
+
+  Para retirarlo a mano hace falta el identificador biométrico, que es el nombre
+  con el que se guarda el objeto. La prueba lo imprime al terminar:
+
+```bash
+kubectl -n biometria-1n logs job/pruebas-de-humo | grep "identificador biometrico"
+```
+
+  Si instaló con una versión anterior del paquete, que no lo imprimía,
+  pregúnteselo a la galería antes de borrar el alta —o al propio almacén, donde
+  el objeto sigue estando aunque el documento ya no exista:
+
+```bash
+# Los objetos del contenedor de recortes, por fecha
+mc ls --recursive local/recortes-biometricos
+```
+
+  Con el identificador, bórrelo del contenedor con el cliente de su almacén. Está
+  previsto que el playbook lo haga solo en una versión próxima.
+</Callout>
+
+```bash
+cd ansible && ansible-playbook site.yml --tags humo
+```
+
+Termina con `HUMO OK: las siete comprobaciones pasaron`. Si alguna falla, el mensaje indica cuál y
+qué esperaba.
+
+| Prueba | Qué tiene que pasar |
+|---|---|
+| Credencial incorrecta | `401` |
+| Inicio de sesión del administrador | `200` con cookie |
+| Emisión de credencial de servicio | `201` |
+| Alta de un rostro | Devuelve identificador biométrico y veredicto `sin_coincidencia` con la galería vacía |
+| Búsqueda de la misma imagen | Aparece en primera posición, veredicto `coincidencia` |
+| Alta repetida de la misma cara | Se rechaza con `duplicate_or_fraud` |
+| Revocación de la credencial | Las peticiones posteriores con esa credencial devuelven `401` |
+
+La respuesta de la búsqueda incluye el desglose por etapas y la consulta que se envió a
+Elasticsearch, lo que la convierte en el mejor punto de partida para diagnosticar un resultado
+inesperado.
+
+### Desbloquear una cuenta
+
+El bloqueo por intentos fallidos se libera solo a los quince minutos, y para una persona basta con
+esperar. Pero **si algo automático reintenta contra esa cuenta, cada intento renueva el plazo** y la
+cuenta no se libera nunca. Es lo que ocurre si se lanza repetidamente una comprobación que incluya
+un login fallido con ese mismo correo.
+
+Hoy no se puede desbloquear desde la consola: hay que hacerlo en la base de datos, con la credencial
+administrativa.
+
+```bash
+kubectl exec -n prerrequisitos statefulset/postgres -- \
+  psql -U administrador -d biometria -c \
+  "UPDATE users SET failed_login_attempts = 0, locked_until = NULL
+     WHERE email = 'admin@ejemplo.com';"
+```
+
+Si PostgreSQL es un servicio gestionado y no un pod, ejecute el mismo `UPDATE` con `psql` desde un
+equipo que alcance la base.
+
+Para comprobar el estado de una cuenta antes o después:
+
+```sql
+SELECT email, failed_login_attempts, locked_until, locked_until > now() AS bloqueada
+  FROM users WHERE email = 'admin@ejemplo.com';
+```
+
+### 8.6 Las métricas responden
+
+```bash
+kubectl exec -n biometria-1n "$POD" -- wget -qO- http://127.0.0.1:8080/metrics | head -5
+```
+
+Debe empezar así:
+
+```
+# HELP alnilam_gallery_vectors Vectores indexados en la galería biométrica.
+# TYPE alnilam_gallery_vectors gauge
+alnilam_gallery_vectors 0
+```
+
+<Callout type="warning" title="`alnilam_gallery_vectors` no es el tamaño de la galería">
+  Con **más de una réplica de la API** esta métrica no dice cuántos vectores hay.
+  Cada réplica lleva su propia cuenta: la ajusta al valor real solo cuando ella
+  misma atiende una petición de estadísticas de la consola, y entre medias suma
+  únicamente las altas que ha atendido ella.
+
+  El resultado es que cada réplica reporta un número distinto y ninguno coincide
+  con la galería. Sirve para ver actividad, no para contar.
+
+  **Para saber cuántos vectores hay**, pregúnteselo a Elasticsearch, que es la
+  única fuente fiable:
+
+```bash
+kubectl exec -n biometria-1n-datos statefulset/elasticsearch-es-master -c elasticsearch -- \
+  curl -s --cacert /usr/share/elasticsearch/config/http-certs/ca.crt \
+  -u "elastic:$ES_PASS" \
+  "https://elasticsearch-es-http.biometria-1n-datos.svc:9200/galeria-biometrica-v1/_count"
+```
+</Callout>
+
+Este endpoint **no requiere autenticación propia**, así que quien pueda alcanzarlo ve el estado
+interno del sistema: latencias, volumen de operaciones y actividad de la galería.
+
+No lo publique. Si necesita que un sistema de monitorización externo lo consulte, tiene dos caminos:
+dejarlo accesible solo dentro del clúster y que el recolector viva ahí —lo habitual con Prometheus—,
+o publicarlo detrás de una capa que autentique, con la autenticación básica del ingress o con un
+intermediario que valide credenciales del clúster.
+
+Lo que no debe hacerse es incluir `/metrics` en la misma publicación que la consola y la API sin
+ninguna restricción: quedaría abierto a cualquiera que conozca la dirección.
+
+---
+
+## 9. Operación de la galería
+
+**Carga masiva.** Al sembrar o recargar la galería conviene desactivar réplicas y refresco, y al
+terminar **fusionar el índice a un solo segmento**. La razón es medida: cada búsqueda recorre el
+grafo de cada segmento, así que un índice recién cargado con decenas de segmentos multiplica la
+latencia. El número de segmentos se puede consultar y hay que vigilarlo.
+
+**Cambio de modelo.** Los vectores de dos versiones del modelo **no son comparables**, así que
+cambiar de modelo obliga a re-vectorizar la galería completa. El procedimiento construye un índice
+nuevo desde los recortes cifrados, sin volver a pedir las imágenes originales, y al terminar
+conmuta el alias en una sola operación. Requiere capacidad para dos índices a la vez, y
+**recalibrar el umbral** antes de conmutar.
+
+**Galería preexistente.** Si el cliente ya tiene un índice plano con el nombre que la solución usa
+como alias, **el servicio no arranca**: Elasticsearch no admite un alias con el nombre de un
+índice existente. Hay un procedimiento de migración —bloquear escrituras, reindexar al índice
+versionado, verificar recuentos, fusionar, borrar el plano y crear el alias— que tarda de minutos a
+varias horas y necesita ventana de mantenimiento. Durante el reindexado las consultas siguen
+funcionando y solo se pausan las altas.
+
+---
+
+## 10. Actualizaciones y respaldo
+
+**Actualizar** es cambiar la etiqueta de la imagen en la configuración y volver a aplicar. Fije
+siempre una etiqueta de versión concreta y no una etiqueta móvil: solo así se sabe qué versión está
+en ejecución y se puede volver atrás a una anterior de forma determinista.
+
+**Respaldar** son tres cosas distintas, con orígenes y responsables diferentes:
+
+- **La galería en Elasticsearch**, mediante instantáneas al contenedor de respaldos. La instalación
+  las deja configuradas y programadas; el detalle está más abajo.
+- **PostgreSQL**, por los medios del cliente. Si es un servicio administrado, sus propias copias
+  automáticas sirven.
+- **El contenedor de recortes**, que es el único origen para volver a vectorizar la galería si
+  hiciera falta reconstruirla.
+
+Redis no necesita respaldo: solo guarda estado de sesión, que se regenera.
+
+#### Instantáneas de la galería
+
+Se configuran con la variable `respaldos` (sección 6.3). La instalación registra el repositorio,
+comprueba que Elasticsearch puede **escribir** en él —no solo alcanzarlo—, programa la política y
+toma una primera copia de comprobación, de modo que la instalación no termina sin haber demostrado
+que el respaldo funciona.
+
+Por omisión toma una copia diaria a la 01:30 y conserva 30 días, con un mínimo de 5 copias y un
+máximo de 50 aunque caduquen. La programación y la retención se ajustan en el fichero de
+configuración del playbook.
+
+<Callout type="warning" title="Con `bucket` vacío no hay copias">
+  Si no configura contenedor de respaldos, la instalación funciona igual pero la
+  galería queda **sin copia de seguridad**. La única forma de recuperarla sería
+  volver a vectorizar desde el contenedor de recortes, lo que exige que ese
+  contenedor siga existiendo y lleva tanto tiempo como la carga original. El
+  playbook lo avisa al terminar.
+</Callout>
+
+Las credenciales del contenedor no viajan en la petición: Elasticsearch solo las lee de su almacén
+seguro interno, y la instalación las deposita ahí. En AWS pueden dejarse vacías si el rol de los
+nodos ya permite escribir en el contenedor.
+
+**Comprobar que las copias se están tomando.** Desde un pod de Elasticsearch:
+
+```bash
+kubectl exec -n datos elasticsearch-es-data-0 -- \
+  curl -sk -u elastic:$CLAVE https://localhost:9200/_slm/policy/galeria
+```
+
+Interesa `last_success`, con la fecha de la última copia correcta, y que `last_failure` no sea más
+reciente. Para ver las copias existentes:
+
+```bash
+kubectl exec -n datos elasticsearch-es-data-0 -- \
+  curl -sk -u elastic:$CLAVE 'https://localhost:9200/_snapshot/respaldos/_all?verbose=false'
+```
+
+**Forzar una copia** fuera de programación, por ejemplo antes de una actualización:
+
+```bash
+kubectl exec -n datos elasticsearch-es-data-0 -- \
+  curl -sk -u elastic:$CLAVE -X POST https://localhost:9200/_slm/policy/galeria/_execute
+```
+
+**Restaurar** exige cerrar antes el índice o restaurar con otro nombre, porque Elasticsearch no
+sobrescribe un índice abierto. Es una operación que conviene ensayar una vez en un entorno de prueba
+antes de necesitarla de verdad.
+
+---
+
+## 11. Consideraciones de operación
+
+Puntos que conviene conocer antes de instalar, porque condicionan el diseño del despliegue o la
+operación posterior.
+
+**La consola y la API se publican bajo el mismo host.** Es un requisito de la sección 3.2, no una
+preferencia: si viven en hosts distintos, las peticiones de la consola fallan en el navegador.
+
+**Los usuarios de la consola residen en la base de datos de la solución.** Los métodos de acceso
+disponibles son Google Workspace y usuario con contraseña. No hay integración con directorios
+corporativos, así que las cuentas de operación se administran desde la propia consola.
+
+**Redis debe pedir credencial y quedar además aislado por política de red.** Guarda el estado de
+sesión compartido entre réplicas de la API, así que cualquier carga que se ejecute en el clúster
+puede alcanzarlo si nada lo impide. En un clúster compartido con otros equipos o aplicaciones, no
+exponerlo al exterior no basta.
+
+Las dos medidas son independientes y conviene aplicar ambas. **La credencial** se configura en
+`redis_password` (sección 6.3) y tiene que coincidir con la que exija el propio Redis: si el servidor
+la pide y la configuración no la lleva, la API no puede conectarse y el estado cae a memoria de
+proceso, lo que con más de una réplica produce datos parciales en la consola. **La política de red**
+restringe quién puede siquiera abrir el puerto; esta solo admite tráfico desde los pods de la API:
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: redis-solo-desde-la-api
+  namespace: prerrequisitos
+spec:
+  podSelector:
+    matchLabels: { app: redis }
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels: { kubernetes.io/metadata.name: biometria-1n }
+          podSelector:
+            matchLabels: { app: api-1n }
+      ports:
+        - protocol: TCP
+          port: 6379
+```
+
+<Callout type="warning" title="Compruebe que su clúster aplica políticas de red">
+  Una `NetworkPolicy` en un clúster sin complemento que la implemente **se acepta
+  y no hace nada**: el objeto existe, `kubectl` responde `created`, y el tráfico
+  sigue pasando. El síntoma de que no se aplica es que no hay síntoma, así que
+  compruébelo antes de darlo por resuelto.
+</Callout>
+
+**Comprobación que sirve en cualquier clúster.** No depende del proveedor: se crea un destino, se
+comprueba que responde, se le aplica una política que no admite a nadie y se comprueba que deja de
+responder. Si sigue respondiendo, el clúster no está aplicando las políticas.
+
+```sh
+kubectl create namespace prueba-politicas
+kubectl -n prueba-politicas run destino --image=nginx:alpine --labels=app=destino --port=80
+kubectl -n prueba-politicas expose pod destino --port=80
+kubectl -n prueba-politicas wait --for=condition=Ready pod/destino --timeout=120s
+
+# Sin política todavía: debe imprimir 200.
+kubectl -n prueba-politicas run sonda --rm -i --restart=Never --image=curlimages/curl:8.10.1 -- \
+  curl -s -o /dev/null -w '%{http_code}\n' --max-time 5 http://destino
+
+# Una política que no admite tráfico de nadie.
+kubectl -n prueba-politicas apply -f - <<'EOF'
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: denegar-todo
+  namespace: prueba-politicas
+spec:
+  podSelector:
+    matchLabels: { app: destino }
+  policyTypes: [Ingress]
+EOF
+
+# Ahora debe agotar el tiempo de espera y no imprimir 200.
+kubectl -n prueba-politicas run sonda --rm -i --restart=Never --image=curlimages/curl:8.10.1 -- \
+  curl -s -o /dev/null -w '%{http_code}\n' --max-time 5 http://destino
+
+kubectl delete namespace prueba-politicas
+```
+
+Si la segunda comprobación vuelve a imprimir `200`, las políticas no se están aplicando y la del
+apartado anterior tampoco estará protegiendo nada.
+
+**En EKS con el complemento de red de AWS.** El dato no está donde se esperaría. `aws eks
+describe-addon` devuelve `configurationValues: None` en un clúster recién creado, y la variable
+`NETWORK_POLICY_ENFORCING_MODE=standard` que sí aparece en el `DaemonSet` despista porque, leída
+sola, sugiere lo contrario. El valor que manda está en los argumentos del contenedor
+`aws-eks-nodeagent`:
+
+```sh
+kubectl get ds aws-node -n kube-system \
+  -o jsonpath='{.spec.template.spec.containers[?(@.name=="aws-eks-nodeagent")].args}' \
+  | tr ',' '\n' | grep enable-network-policy
+```
+
+En un clúster EKS recién creado con el complemento por omisión esto devuelve
+`--enable-network-policy=false`, es decir: **desactivadas**. Se habilitan actualizando el
+complemento y esperando a que el `DaemonSet` se reinicie:
+
+```sh
+# Se recupera el rol del complemento y se le vuelve a pasar: sin esto el
+# comando lo pierde y el CNI se queda sin permisos. Ver el aviso de abajo.
+ROL=$(aws eks describe-addon --cluster-name <clúster> --addon-name vpc-cni --region <región> \
+        --query 'addon.serviceAccountRoleArn' --output text)
+
+aws eks update-addon --cluster-name <clúster> --addon-name vpc-cni --region <región> \
+  --configuration-values '{"enableNetworkPolicy":"true"}' \
+  ${ROL:+--service-account-role-arn "$ROL"} \
+  --resolve-conflicts PRESERVE
+
+kubectl -n kube-system rollout status ds/aws-node --timeout=300s
+```
+
+**El `rollout status` no basta**, y conviene saberlo antes de dar el paso por hecho: devuelve el
+visto bueno mientras el complemento sigue en `UPDATING`, así que la comprobación de arriba puede
+seguir diciendo `false` unos segundos más. Espere al argumento, que es lo que de verdad decide:
+
+```sh
+until kubectl get ds aws-node -n kube-system \
+  -o jsonpath='{.spec.template.spec.containers[?(@.name=="aws-eks-nodeagent")].args}' \
+  | tr ',' '\n' | grep -q -- '--enable-network-policy=true'; do
+  echo "esperando a que el complemento aplique el cambio..."
+  sleep 10
+done
+echo "políticas de red habilitadas"
+```
+
+<Callout type="warning" title="Sin `--service-account-role-arn` el comando deja el CNI sin permisos">
+  Si su clúster da al complemento `vpc-cni` **su propio rol de IAM** —lo hace
+  `eksctl` con `--with-oidc`, y es como queda el clúster del apéndice B—, la
+  identidad vive en una anotación de la ServiceAccount `aws-node`. Un
+  `update-addon` sin `--service-account-role-arn` **borra esa anotación**, y
+  `--resolve-conflicts PRESERVE` no la salva: conserva la configuración del
+  complemento, no la identidad.
+
+  Como en ese montaje la política del CNI **no está en el rol de los nodos**,
+  `aws-node` se queda sin permisos de EC2 y entra en `CrashLoopBackOff`. Los pods
+  que ya corren siguen, pero el clúster no puede dar dirección a ninguno nuevo.
+
+  Lo que despista es que `describe-addon` sigue devolviendo el ARN correcto
+  mientras la ServiceAccount está sin anotar: mirando solo el lado de AWS parece
+  que todo está bien. Compruebe el lado del clúster:
+
+```bash
+kubectl get sa aws-node -n kube-system -o jsonpath='{.metadata.annotations}'
+kubectl get pod -n kube-system -l k8s-app=aws-node   # debe quedar 2/2 Running
+```
+
+  Es el mismo mecanismo que el apéndice B explica para el driver de discos: EKS
+  limita el acceso de los pods a los metadatos del nodo, así que estos
+  complementos no heredan los permisos de la máquina.
+</Callout>
+
+Y compruébelo después con la prueba empírica de más arriba, que es la única que demuestra que se
+aplican de verdad.
+
+El mismo criterio aplica al vectorizador y a Elasticsearch: se publican únicamente consola y API,
+según la sección 3.2, y conviene acotar además quién puede hablar con ellos dentro del clúster.
+
+**Las credenciales de identidad son obligatorias.** Un despliegue sin ellas queda sin control de
+acceso efectivo, por lo que la instalación debe completar la sección 6.1 antes de exponer el
+servicio.
+
+**Redundancia.** La configuración de partida despliega una réplica de vectorizador. La API escala
+horizontalmente sin más que aumentar réplicas; el vectorizador requiere una GPU por réplica, por lo
+que la alta disponibilidad de ese componente es una decisión de dimensionado con coste asociado.
+
+**La sonda de disponibilidad cubre Elasticsearch y el vectorizador**, no PostgreSQL, Redis ni el
+almacén de recortes. La supervisión de esas tres dependencias debe cubrirse con el sistema de
+monitorización del cliente.
+
+**Primer arranque del vectorizador en GPUs recientes.** Si la arquitectura de la tarjeta es más
+nueva que los kernels precompilados de la imagen, CUDA los compila durante el primer arranque, que
+pasa a durar en torno a dos minutos. La sonda de disponibilidad fallará varias veces mientras tanto
+y el pod no se reinicia: el margen configurado lo contempla y no hay que ajustar nada. Ver la
+sección 3.3.
+
+**Gestión de contraseñas de consola.** El cambio de contraseña y la recuperación de una olvidada se
+resuelven con una invitación nueva emitida por un administrador. El bloqueo por intentos fallidos no
+se comunica al usuario de forma explícita —es una medida deliberada para no revelar qué cuentas
+existen—, por lo que el soporte debe saber que un usuario bloqueado ve el mismo mensaje que un
+usuario con credenciales incorrectas.
+
+Para una persona basta con esperar quince minutos sin reintentar. **Pero cada intento fallido renueva
+el plazo**, así que si algo automático reintenta contra esa cuenta —una comprobación programada, un
+script de vigilancia— el bloqueo no expira nunca. En ese caso hay que desbloquearla en la base de
+datos, como indica la sección 8.
+
+**Estado del clúster de Elasticsearch.** El estado `green` requiere al menos tantos nodos de datos
+como réplicas configuradas. Un clúster con menos nodos permanecerá en `yellow` de forma
+permanente, lo que es funcionalmente correcto pero conviene tenerlo en cuenta al dimensionar.
+
+---
+
+## 12. Desinstalación
+
+Desinstalar no es solo deshacer lo que creó Terraform. Los volúmenes de la galería tienen
+`reclaimPolicy: Retain` por decisión de diseño (sección 3.1), así que **sobreviven al desmontaje** y
+hay que retirarlos a propósito. Si se salta este apartado, la cuenta sigue facturando volúmenes
+sueltos y las copias de la galería siguen existiendo después de creer haberlo borrado todo.
+
+**Paso 1. Retirar los componentes.**
+
+```sh
+cd terraform
+terraform destroy
+```
+
+Terraform termina con `Destroy complete!` y **no menciona los volúmenes**: no son suyos, los creó
+Kubernetes bajo demanda. Que este paso acabe sin advertencias no significa que no quede nada.
+
+**Paso 2. Localizar y borrar los `PersistentVolume` que quedaron.**
+
+Con la clase eliminada, los volúmenes pasan a estado `Released`, que quiere decir «ya no lo usa
+nadie y sigo aquí»:
+
+```sh
+kubectl get pv -o custom-columns=\
+'NOMBRE:.metadata.name,ESTADO:.status.phase,RECLAMO:.spec.persistentVolumeReclaimPolicy,PVC:.spec.claimRef.name'
+```
+
+Los que aparezcan en `Released` con `Retain` son de esta instalación. **No mire solo los de
+Elasticsearch:** si desplegó las dependencias con el apéndice A, también hay volúmenes de PostgreSQL
+y del almacén de objetos, y esos suelen ser los más grandes. Con el nombrado del apéndice A, los
+`PVC` a buscar son:
+
+| Prefijo del `PVC` | Qué contiene |
+|---|---|
+| `elasticsearch-data-` | La galería biométrica |
+| `datos-postgres-` | Usuarios, sesiones y credenciales de servicio |
+| `datos-minio-` | Los recortes faciales cifrados |
+
+Compruebe la lista antes de borrar —el clúster puede alojar otras cosas— y elimínelos:
+
+```sh
+kubectl delete pv <nombre>
+```
+
+**Paso 3. Borrar los volúmenes del proveedor.**
+
+Borrar el `PersistentVolume` **no borra el disco subyacente**: con `Retain`, Kubernetes se
+desentiende y el volumen queda en la cuenta. En AWS aparecen en estado `available`, que significa
+«existe, no está conectado a nada y se cobra igual»:
+
+```sh
+aws ec2 describe-volumes --region <región> \
+  --filters "Name=status,Values=available" \
+  --query 'Volumes[].{id:VolumeId,tam:Size,pvc:Tags[?Key==`kubernetes.io/created-for/pvc/name`]|[0].Value}' \
+  --output table
+
+aws ec2 delete-volume --region <región> --volume-id <id>
+```
+
+La columna `pvc` identifica cuál corresponde a esta instalación. En otros proveedores el equivalente
+es la lista de discos no conectados de la cuenta.
+
+<Callout type="warning" title="Esos volúmenes contienen la galería">
+  No son datos derivados: son los vectores biométricos. Mientras existan, existe
+  una copia utilizable de la galería fuera de todo control de acceso del sistema,
+  porque el sistema ya no está. Si el desmontaje es definitivo, bórrelos; si es
+  temporal y quiere conservarlos, déjelos anotados en algún sitio, porque nada
+  más los va a recordar.
+</Callout>
+
+**Paso 4. Lo que no gestiona este procedimiento.** Si usó servicios administrados en lugar de las
+dependencias del apéndice A, la base de datos, el caché y el contenedor de objetos son recursos
+propios de su cuenta y se retiran por separado. Lo mismo aplica al contenedor de recortes y al de
+respaldos: no los crea la instalación y no los borra.
+
+**Paso 5. Los CRD de Elasticsearch, si el clúster sigue en pie.**
+
+`terraform destroy` **no borra las definiciones de recurso de ECK**: Helm las conserva por política y
+lo dice en un aviso al terminar, entre el ruido de la salida. Son doce, no ocupan nada y no cuestan
+dinero, pero quedan en el clúster del cliente después de haberlo desinstalado todo.
+
+```sh
+kubectl get crd -o name | grep k8s.elastic.co
+kubectl get crd -o name | grep k8s.elastic.co | xargs -r kubectl delete
+```
+
+Si va a borrar el clúster entero, este paso sobra: se van con él.
+
+**Comprobación final.** Ninguno de estos comandos debe devolver nada de la instalación:
+
+```sh
+kubectl get pv | grep Released
+kubectl get crd -o name | grep k8s.elastic.co
+aws ec2 describe-volumes --region <región> --filters "Name=status,Values=available" --output table
+```
+
+---
+
+## Apéndice A. Dependencias en el clúster, para entornos de prueba
+
+Las tres dependencias de la sección 4.2 —PostgreSQL, Redis y el almacén de objetos— son
+responsabilidad del cliente, y en producción lo habitual es que sean servicios gestionados o
+instancias ya existentes. Pero para **validar la instalación en una sola máquina** puede no haber
+ninguna disponible, así que este apéndice da una configuración mínima que las levanta dentro del
+propio clúster.
+
+<Callout type="warning" title="Solo para entornos de prueba">
+  Esta configuración no tiene respaldos, ni replicación, ni cifrado en tránsito,
+  y usa credenciales en un único secreto. Sirve para comprobar que la
+  instalación funciona de extremo a extremo. **No debe usarse en producción**:
+  ahí las tres dependencias se contratan como servicios gestionados o se
+  despliegan con los criterios de operación del cliente.
+</Callout>
+
+Aun siendo un entorno de prueba, los manifiestos fijan la versión exacta de las tres imágenes y
+declaran la clase de disco de forma explícita. Ambas cosas por el mismo motivo que el resto del documento
+recomienda: una etiqueta móvil impide saber qué versión está en ejecución, y un volumen sin clase
+declarada toma la que esté marcada por omisión, que en algunos clústeres gestionados no es única
+(sección 3.0). Sustituya `CAMBIAR` por la clase de su clúster antes de aplicar; para verla:
+
+```bash
+kubectl get storageclass
+```
+
+La marcada `(default)` es la que se usaría si se omite el campo. Si hay más de una marcada, la
+elección deja de ser predecible: por eso conviene declararla.
+
+Fijar la versión de PostgreSQL tiene además un motivo inmediato: si el volumen sobrevive entre dos
+pruebas y la imagen ha saltado de versión mayor, el contenedor se niega a arrancar sobre un
+directorio de datos escrito por otra versión.
+
+Cree primero el namespace y genere las credenciales **en variables de shell**, para poder leerlas
+antes de usarlas:
+
+```bash
+kubectl create namespace prerrequisitos
+
+# En variables, para poder verlas y anotarlas. Se eliminan los caracteres
+# / @ " ' porque complican las cadenas de conexión.
+PG_PASS=$(openssl rand -base64 24 | tr -d '/@"'"'"' ')
+MINIO_PASS=$(openssl rand -base64 24 | tr -d '/@"'"'"' ')
+RUNTIME_PASS=$(openssl rand -base64 24 | tr -d '/@"'"'"' ')
+
+# Clave de cifrado de los recortes: 32 bytes. Se acepta en hexadecimal
+# (64 caracteres) o en base64 estándar; aquí se genera en hexadecimal.
+CROP_KEY=$(openssl rand -hex 32)
+
+# Anótelas antes de continuar: son valores de la sección 6.3.
+cat <<FIN
+contraseña administrativa de PostgreSQL : $PG_PASS
+contraseña de servicio de PostgreSQL    : $RUNTIME_PASS
+clave secreta del almacén               : $MINIO_PASS
+clave de cifrado de recortes            : $CROP_KEY
+FIN
+
+kubectl create secret generic credenciales -n prerrequisitos \
+  --from-literal=postgres-password="$PG_PASS" \
+  --from-literal=minio-password="$MINIO_PASS" \
+  --from-literal=runtime-password="$RUNTIME_PASS"
+```
+
+**Si continúa en una terminal nueva**, vuelva a cargar las variables antes de ejecutar cualquier
+comando posterior. Estas órdenes las **reasignan**, no solo las muestran:
+
+```bash
+leer() {
+  kubectl get secret credenciales -n prerrequisitos \
+    -o go-template="{{index .data \"$1\" | base64decode}}"
+}
+PG_PASS=$(leer postgres-password)
+MINIO_PASS=$(leer minio-password)
+RUNTIME_PASS=$(leer runtime-password)
+```
+
+<Callout type="warning" title="Una variable vacía se acepta y deja una configuración inválida">
+  Si `RUNTIME_PASS` está vacía, el comando que crea el rol de servicio se
+  convierte en `CREATE ROLE app_runtime LOGIN PASSWORD ''` y **PostgreSQL lo
+  acepta**: el rol queda con contraseña vacía y la instalación no reporta nada.
+  El fallo aparece más tarde, en la primera operación contra la base de datos.
+  Compruebe que las tres variables tienen valor antes de seguir:
+
+  ```bash
+  [ -n "$PG_PASS" ]      || echo "PG_PASS vacía — revise el paso anterior"
+  [ -n "$MINIO_PASS" ]   || echo "MINIO_PASS vacía — revise el paso anterior"
+  [ -n "$RUNTIME_PASS" ] || echo "RUNTIME_PASS vacía — revise el paso anterior"
+  ```
+
+  Si no imprime nada, las tres tienen valor y puede continuar.
+</Callout>
+
+La clave de cifrado de los recortes **no se guarda en el secreto** a propósito, porque no la consume
+ningún componente de este apéndice: se transcribe a mano a la configuración. Si la pierde antes de
+instalar, genere otra; una vez instalado **no puede cambiarse** sin perder el acceso a los recortes
+ya almacenados.
+
+### PostgreSQL
+
+Guarde este manifiesto como `postgres.yaml`:
+
+```yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+  namespace: prerrequisitos
+spec:
+  serviceName: postgres
+  replicas: 1
+  selector:
+    matchLabels: { app: postgres }
+  template:
+    metadata:
+      labels: { app: postgres }
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16.15
+          env:
+            - name: POSTGRES_DB
+              value: biometria
+            - name: POSTGRES_USER
+              value: administrador
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef: { name: credenciales, key: postgres-password }
+            # Sin este subdirectorio, el contenedor falla al inicializar sobre
+            # un volumen que no está vacío.
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: datos
+              mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+    - metadata: { name: datos }
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        # Declare la clase explícitamente. Si se omite, Kubernetes usa la que
+        # esté marcada por omisión, y en algunos clústeres gestionados hay más
+        # de una marcada: la elección deja de ser predecible. Ver 3.0.
+        storageClassName: CAMBIAR
+        resources: { requests: { storage: 20Gi } }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  namespace: prerrequisitos
+spec:
+  # Sin dirección propia: es el servicio gobernante de un StatefulSet, y así
+  # cada pod obtiene su nombre DNS estable.
+  clusterIP: None
+  selector: { app: postgres }
+  ports:
+    - port: 5432
+```
+
+Aplíquelo y espere a que la base de datos acepte conexiones:
+
+```bash
+kubectl apply -f postgres.yaml
+
+# Esperar sobre el StatefulSet, no sobre el pod: `kubectl wait` no aguarda a que
+# el recurso exista, así que si se lanza en el segundo que el controlador tarda
+# en crear el pod, devuelve «pods "postgres-0" not found» y corta. Es
+# intermitente y desconcierta. `rollout status` sí espera a que aparezca.
+kubectl rollout status statefulset/postgres -n prerrequisitos --timeout=300s
+
+# Comprobar que acepta conexiones antes de continuar
+kubectl exec -n prerrequisitos postgres-0 -- pg_isready -U administrador -d biometria
+```
+
+Debe responder `accepting connections`. Lo habitual es que responda a la primera, unos diez segundos
+después del `apply`; si devuelve otra cosa, espere unos segundos y repita, porque estar el pod listo
+no garantiza que la inicialización de la base haya terminado.
+
+La instalación necesita **dos** credenciales de PostgreSQL: la administrativa, que es la que crea el
+manifiesto, y una de servicio con menos permisos. Cree la segunda ahora:
+
+```bash
+# Usa la variable generada más arriba, para que la contraseña del rol y la que
+# se pone en la configuración no puedan divergir. Si abrió una terminal nueva,
+# recupere el valor antes de ejecutarlo.
+kubectl exec -n prerrequisitos statefulset/postgres -- \
+  psql -U administrador -d biometria -c \
+  "CREATE ROLE app_runtime LOGIN PASSWORD '$RUNTIME_PASS';"
+```
+
+<Callout type="warning" title="Si el rol y la configuración llevan contraseñas distintas, el error tarda en aparecer">
+  Este desajuste no impide el arranque. La API levanta, su sonda de
+  disponibilidad se pone en verde —no comprueba PostgreSQL, como indica la
+  sección 8.2— y el fallo solo se manifiesta en la primera operación que toca la
+  base de datos. Es el mismo patrón que el de los permisos descrito en el paso 3
+  de la sección 7.
+</Callout>
+
+No hace falta concederle permisos: eso lo hace el paso 3 de la sección 7, que además se los concede
+sobre las tablas que crearán las migraciones futuras.
+
+### Redis
+
+Elija una credencial y créela como secreto. Redis guarda el estado de sesión compartido entre
+réplicas de la API, así que conviene que pida autenticación incluso en un entorno de prueba:
+
+```bash
+kubectl create secret generic redis-credencial -n prerrequisitos \
+  --from-literal=password="$(openssl rand -base64 24)"
+```
+
+Guarde este manifiesto como `redis.yaml`:
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: prerrequisitos
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: redis }
+  template:
+    metadata:
+      labels: { app: redis }
+    spec:
+      containers:
+        - name: redis
+          image: redis:7.4.11-alpine
+          env:
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef: { name: redis-credencial, key: password }
+          # --requirepass se pasa por argumento leyendo la variable, para que la
+          # credencial no quede escrita en el manifiesto.
+          command: ["sh", "-c"]
+          args: ['exec redis-server --requirepass "$REDIS_PASSWORD"']
+          ports:
+            - containerPort: 6379
+          readinessProbe:
+            # Sin -a la sonda recibe NOAUTH y el pod nunca llega a Ready.
+            exec:
+              command: ["sh", "-c", 'redis-cli -a "$REDIS_PASSWORD" ping']
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  namespace: prerrequisitos
+spec:
+  selector: { app: redis }
+  ports:
+    - port: 6379
+```
+
+```bash
+kubectl apply -f redis.yaml
+kubectl rollout status deployment/redis -n prerrequisitos --timeout=180s
+```
+
+Recupere la credencial para ponerla en la configuración:
+
+```bash
+kubectl get secret redis-credencial -n prerrequisitos \
+  -o jsonpath='{.data.password}' | base64 -d; echo
+```
+
+Ese valor es el que va en `redis_password` (sección 6.3). Si prefiere un Redis sin autenticación,
+deje `redis_password` vacío y retire `--requirepass` del manifiesto: las dos cosas tienen que
+coincidir o la API no podrá conectarse.
+
+Sin persistencia a propósito: Redis guarda aquí estado compartido entre réplicas, no datos que haya
+que conservar.
+
+### Almacén de objetos compatible con S3
+
+Guarde este manifiesto como `minio.yaml`:
+
+```yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: minio
+  namespace: prerrequisitos
+spec:
+  serviceName: minio
+  replicas: 1
+  selector:
+    matchLabels: { app: minio }
+  template:
+    metadata:
+      labels: { app: minio }
+    spec:
+      containers:
+        - name: minio
+          image: minio/minio:RELEASE.2024-10-13T13-34-11Z
+          args: ["server", "/datos", "--console-address", ":9001"]
+          env:
+            - name: MINIO_ROOT_USER
+              value: administrador
+            - name: MINIO_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef: { name: credenciales, key: minio-password }
+          ports:
+            - containerPort: 9000
+            - containerPort: 9001
+          volumeMounts:
+            - name: datos
+              mountPath: /datos
+  volumeClaimTemplates:
+    - metadata: { name: datos }
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: CAMBIAR
+        resources: { requests: { storage: 50Gi } }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: minio
+  namespace: prerrequisitos
+spec:
+  clusterIP: None
+  selector: { app: minio }
+  ports:
+    - { name: api, port: 9000 }
+    - { name: consola, port: 9001 }
+```
+
+Aplíquelo y espere:
+
+```bash
+kubectl apply -f minio.yaml
+
+# Igual que con PostgreSQL: se espera sobre el StatefulSet, no sobre el pod.
+kubectl rollout status statefulset/minio -n prerrequisitos --timeout=300s
+```
+
+Cree los dos **buckets** que pide la sección 4.2. Si abrió una terminal nueva, recargue antes las
+variables como se indica más arriba:
+
+```bash
+kubectl exec -n prerrequisitos statefulset/minio -- \
+  mc alias set local http://localhost:9000 administrador "$MINIO_PASS"
+kubectl exec -n prerrequisitos statefulset/minio -- mc mb local/recortes-biometricos
+kubectl exec -n prerrequisitos statefulset/minio -- mc mb local/respaldos-galeria
+```
+
+<Callout type="warning" title="Este MinIO no sirve como destino de instantáneas">
+  Vale para los recortes, que es su cometido aquí, pero **no como destino de los
+  respaldos de Elasticsearch** (sección 10). El cliente de S3 de Elasticsearch 9
+  manda un borrado que las versiones de MinIO anteriores a 2025 —incluida la que
+  fija este manifiesto— rechazan por falta de la cabecera `Content-Md5`. La
+  verificación de escritura falla y **detiene la instalación**.
+
+  Para validar con respaldos activados, use S3 nativo del proveedor o un MinIO
+  reciente. Si solo quiere completar la instalación, deje `respaldos.bucket`
+  vacío: las copias quedan desactivadas y el playbook lo avisa.
+
+  Y si su almacén sirve HTTP plano, como este, ponga `respaldos.use_ssl` a
+  `false`: el endpoint va sin esquema, igual que el de `cropstore`.
+</Callout>
+
+### Elasticsearch en una sola máquina
+
+Las dependencias anteriores no son lo único que impide validar en un equipo: la plantilla de
+configuración trae el **dimensionado de producción** de Elasticsearch, que solicita tres nodos de
+datos con 100 GiB de memoria y 400 GiB de disco cada uno. Son 300 GiB de memoria y 1,2 TiB de disco,
+que ninguna máquina de trabajo va a conceder. El síntoma es que los pods de Elasticsearch se quedan
+en `Pending` indefinidamente, sin nada que indique qué ajustar.
+
+Estos son los valores con los que la instalación se ha validado completa en un solo nodo. Van en
+`terraform/terraform.tfvars`:
+
+```hcl
+# Número y tamaño de los nodos
+es_data_nodes    = 1
+es_master_nodes  = 1
+es_data_memoria  = "4Gi"
+es_data_heap     = "2g"
+es_data_disco    = "20Gi"
+
+# CPU solicitada. Reducir memoria y disco no basta: estas peticiones son las
+# que deciden si el despliegue cabe, y con los valores de producción suman
+# más de lo que ofrece una máquina de 8 vCPU.
+es_data_cpu      = "1"
+es_master_cpu    = "500m"
+vectorizador_cpu = "1"
+```
+
+Con esos valores la instalación solicita **3,5 vCPU** en total, frente a las 16,5 del dimensionado
+de producción y las 8,5 que resultaban de reducir solo memoria y disco:
+
+| Componente | Producción | Validación |
+|---|---|---|
+| Elasticsearch, maestros | 1,50 | 0,50 |
+| Elasticsearch, datos | 12,00 | 1,00 |
+| Vectorizador | 2,00 | 1,00 |
+| API y consola | 0,40 | 0,40 |
+| Operador de ECK | 0,10 | 0,10 |
+| Sistema del clúster | ~0,50 | ~0,50 |
+| **Total solicitado** | **16,50** | **3,50** |
+
+<Callout type="warning" title="El modo sin GPU no reduce la CPU solicitada">
+  `vectorizador_provider = "cpu"` evita reclamar `nvidia.com/gpu`, pero **pide
+  exactamente la misma CPU** que el modo con GPU. Para validar con recursos
+  escasos hay que bajar además `vectorizador_cpu`.
+</Callout>
+
+Dos consecuencias de reducirlo, ninguna impide validar:
+
+Con un solo nodo de datos, el clúster **no alcanzará `green`** mientras la configuración pida
+réplicas: se queda en `yellow` de forma permanente. Es correcto y esperado, y la verificación de la
+sección 8 lo admite.
+
+Y el rendimiento deja de ser representativo. Con esta memoria el índice no cabe en caché, así que los
+tiempos de respuesta no dicen nada sobre el comportamiento con una galería real.
+
+### Valores que resultan para la configuración
+
+Con las tres desplegadas en este namespace, los campos de la sección 6.3 **que dependen de estas
+dependencias** quedan así. Los demás —imágenes, credenciales del registro, host público, identidad y
+las dos pimientas— no los cubre este apéndice y se rellenan según la sección 6.
+
+**En `terraform/terraform.tfvars`:**
+
+| Campo | Valor |
+|---|---|
+| `postgres.host` | `postgres.prerrequisitos.svc.cluster.local` |
+| `postgres.port` | `5432` |
+| `postgres.dbname` | `biometria` |
+| `postgres.user` | `app_runtime` — la credencial **de servicio**, no la administrativa |
+| `postgres.password` | la contraseña de servicio que anotó |
+| `postgres.sslmode` | `disable` — este despliegue no expone TLS |
+| `redis_addr` | `redis.prerrequisitos.svc.cluster.local:6379` |
+| `redis_password` | la credencial de Redis que recuperó del secreto `redis-credencial` |
+| `redis_username` | vacío — el manifiesto usa `requirepass`, no ACL |
+| `cropstore.endpoint` | `minio.prerrequisitos.svc.cluster.local:9000` — sin esquema |
+| `cropstore.region` | `us-east-1` — el almacén no la usa, pero el cliente de S3 exige un valor |
+| `cropstore.bucket` | `recortes-biometricos` |
+| `cropstore.access_key` | `administrador` — el usuario que fija el manifiesto en `MINIO_ROOT_USER` |
+| `cropstore.secret_key` | la clave secreta del almacén que anotó |
+| `cropstore.use_ssl` | `false` — sin TLS dentro del clúster |
+| `cropstore.crop_key` | la clave de cifrado de recortes que generó |
+| `es_storage_class` | la clase de disco del clúster. Lea el aviso de abajo antes de decidirla |
+
+<Callout type="warning" title="La clase de disco por omisión de k3s no cumple los requisitos de 3.1">
+  En un k3s recién instalado la única clase disponible suele ser `local-path`,
+  que trae `reclaimPolicy: Delete` y no admite ampliación de volumen. La
+  sección 3.1 pide lo contrario para Elasticsearch —`Retain` y expansión
+  habilitada— y por un motivo concreto: con `Delete`, **eliminar el
+  PersistentVolumeClaim borra la galería sin confirmación ni aviso**.
+
+  Para validar sirve, siempre que se sepa. Si va a conservar datos entre
+  pruebas, cree una clase con `reclaimPolicy: Retain` en lugar de reutilizar la
+  de por omisión. Compruebe qué tiene la suya con:
+
+  ```bash
+  kubectl get storageclass -o custom-columns=\
+  'NOMBRE:.metadata.name,RECLAMO:.reclaimPolicy,AMPLIABLE:.allowVolumeExpansion'
+  ```
+</Callout>
+
+**En `ansible/group_vars/all.yml`:**
+
+| Campo | Valor |
+|---|---|
+| `postgres_admin.host` | `postgres.prerrequisitos.svc.cluster.local` |
+| `postgres_admin.dbname` | `biometria` |
+| `postgres_admin.user` | `administrador` — la credencial **administrativa**, con la que se aplican las migraciones |
+| `postgres_admin.password` | la contraseña administrativa que anotó |
+| `postgres_admin.sslmode` | `disable` |
+| `postgres_runtime_user` | `app_runtime` |
+| `es_storage_class` | **el mismo valor que en Terraform** — este campo no se propaga entre los dos ficheros |
+| `indice` | el mismo valor que `indice` en Terraform |
+| `ns_api`, `ns_gpu`, `ns_datos` | los mismos que en Terraform |
+
+<Callout type="warning" title="Las dos credenciales de PostgreSQL no son intercambiables">
+  La administrativa aplica las migraciones y crea las tablas; la de servicio es
+  la que usa la API en su día a día y no debe poder modificar el esquema. Si se
+  pone la administrativa en `postgres.user` la instalación funciona, pero el
+  servicio queda ejecutándose con permisos que no necesita.
+</Callout>
+
+---
+
+## Apéndice B. Clúster de validación en AWS
+
+Solo para **validar el producto** cuando no se dispone de un clúster. En una instalación real el
+clúster es del cliente y este apéndice sobra, igual que el apéndice A.
+
+Es el clúster mínimo sobre el que se ha verificado esta instalación. Requiere `eksctl` además de
+las herramientas de la sección 0.1.
+
+### Por qué este dimensionado
+
+Un solo nodo `m5.2xlarge` (8 vCPU, 32 GiB). El número sale de tres restricciones que conviene
+entender antes de cambiarlo:
+
+- La instalación solicita unas **3,5 vCPU** entre todos sus componentes, con el nodo de datos de
+  Elasticsearch pidiendo **4 vCPU en un solo pod**.
+- Por eso una máquina de exactamente 4 vCPU no admite ese pod: el sistema del clúster ya consume
+  parte de la capacidad. Es el caso que describe la sección 3.0.
+- La cuota por omisión de una cuenta nueva de AWS son **8 vCPU** en instancias bajo demanda, así
+  que no caben dos máquinas de este tamaño sin pedir ampliación.
+
+El vectorizador se despliega **sin GPU**: la validación funcional no la necesita y evita tanto el
+coste como la cuota aparte que llevan las instancias con GPU.
+
+### Crear el clúster
+
+```sh
+eksctl create cluster \
+  --name alnitak-validacion \
+  --region us-east-1 \
+  --version 1.33 \
+  --nodegroup-name nodos \
+  --node-type m5.2xlarge \
+  --nodes 1 \
+  --managed \
+  --with-oidc
+```
+
+Tarda entre quince y veinte minutos. `--with-oidc` no es opcional: sin él no se puede dar identidad
+propia al driver de discos del paso siguiente.
+
+Al terminar, `eksctl` deja el contexto de `kubectl` apuntando al clúster nuevo. Para reconstruirlo
+en otro equipo:
+
+```sh
+aws eks update-kubeconfig --region us-east-1 --name alnitak-validacion
+```
+
+### Instalar el driver de discos
+
+Un EKS recién creado **no trae el driver de EBS**, y sin él los volúmenes de Elasticsearch se quedan
+en `Pending` para siempre (sección 3.0). Necesita un rol propio: EKS limita el acceso de los pods a
+los metadatos del nodo, así que el driver no puede heredar los permisos de la máquina.
+
+```sh
+CUENTA=$(aws sts get-caller-identity --query Account --output text)
+
+eksctl create iamserviceaccount \
+  --name ebs-csi-controller-sa \
+  --namespace kube-system \
+  --cluster alnitak-validacion \
+  --region us-east-1 \
+  --role-name AmazonEKS_EBS_CSI_DriverRole \
+  --attach-policy-arn arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy \
+  --role-only --approve
+
+eksctl create addon \
+  --name aws-ebs-csi-driver \
+  --cluster alnitak-validacion \
+  --region us-east-1 \
+  --service-account-role-arn "arn:aws:iam::${CUENTA}:role/AmazonEKS_EBS_CSI_DriverRole" \
+  --force
+```
+
+Las llaves de `${CUENTA}` no son estilo: **en zsh, que es la shell por omisión de macOS,
+`$CUENTA:role` se interpreta como la variable seguida del modificador `:r`** y el ARN sale
+corrupto —`...767398084827ole/...`—. AWS responde entonces con un error de permisos que manda a
+revisar la cuenta, no el comando.
+
+Compruebe que quedó en marcha antes de seguir, y que el rol llegó de verdad:
+
+```sh
+# El addon tarda unos segundos en crear el Deployment, y `rollout status` falla si
+# todavía no existe en vez de esperarlo. Se espera primero a que aparezca.
+until kubectl -n kube-system get deployment/ebs-csi-controller >/dev/null 2>&1; do
+  echo "esperando a que el complemento cree su despliegue..."
+  sleep 5
+done
+
+kubectl -n kube-system rollout status deployment/ebs-csi-controller --timeout=300s
+
+# Debe imprimir el ARN completo, terminado en el nombre del rol
+kubectl get sa ebs-csi-controller-sa -n kube-system \
+  -o jsonpath='{.metadata.annotations.eks\.amazonaws\.com/role-arn}'; echo
+```
+
+### Y después
+
+Cree la clase de disco de la **sección 3.1** —con su marca de clase predeterminada— y siga desde la
+sección 3. Las dependencias que falten (PostgreSQL, Redis, almacén de objetos) se resuelven con el
+apéndice A o con servicios gestionados.
+
+### Retirarlo
+
+<Callout type="warning" title="Esto factura mientras exista">
+  Un clúster de este tamaño cuesta del orden de **1 USD por hora**, y sigue
+  facturando aunque no se use. Retírelo en cuanto termine la validación.
+</Callout>
+
+```sh
+eksctl delete cluster --name alnitak-validacion --region us-east-1
+```
+
+Borrar el clúster **no borra los volúmenes de Elasticsearch**: la clase de disco lleva
+`reclaimPolicy: Retain` y sobreviven. Complete la [sección 12](#12-desinstalación) o quedarán
+facturando, con la galería dentro.

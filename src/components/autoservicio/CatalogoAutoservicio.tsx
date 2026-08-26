@@ -2,10 +2,8 @@
 
 import { useEffect, useState } from "react";
 import {
-  productos,
-  categorias,
   formatMXN,
-  tierEstilos,
+  tierEstilo,
   type CategoriaId,
   type Producto,
   type Paquete,
@@ -34,7 +32,7 @@ function CategoryIcon({ categoria, className }: { categoria: CategoriaId; classN
 }
 
 export default function CatalogoAutoservicio() {
-  const { enCarrito, tierDe, setTier, toggle, comprable } = useCarrito();
+  const { productos, categorias, enCarrito, tierDe, setTier, toggle, comprable } = useCarrito();
   // Solo categorías con al menos un producto comprable (con renglón de pricing).
   const categoriasVisibles = categorias.filter((c) =>
     productos.some((p) => p.categoria === c.id && comprable(p.id))
@@ -61,7 +59,7 @@ export default function CatalogoAutoservicio() {
       if (el) obs.observe(el);
     });
     return () => obs.disconnect();
-  }, []);
+  }, [categorias]);
 
   const irA = (id: CategoriaId) => {
     setActiveCat(id);
@@ -123,7 +121,7 @@ export default function CatalogoAutoservicio() {
           <div className="mt-2 flex flex-wrap gap-1.5 pb-1">
             {producto.paquetes.map((q) => {
               const sel = q.id === tierDe(producto.id);
-              const est = tierEstilos[q.id];
+              const est = tierEstilo(q.id);
               return (
                 <button type="button"
                   key={q.id}
@@ -160,7 +158,7 @@ export default function CatalogoAutoservicio() {
                 {producto.paquetes.map((q) => (
                   <tr key={q.id} style={{ background: q.id === tierDe(producto.id) ? "#F1FAFB" : "#fff" }}>
                     <td className="px-2.5 py-1.5 font-medium" style={{ color: NAVY }}>
-                      <span className="mr-1.5 inline-block h-2 w-2 flex-shrink-0 rounded-full align-middle ring-1 ring-black/10" style={{ background: tierEstilos[q.id].base }} />
+                      <span className="mr-1.5 inline-block h-2 w-2 flex-shrink-0 rounded-full align-middle ring-1 ring-black/10" style={{ background: tierEstilo(q.id).base }} />
                       {q.nombre}{producto.recomendado === q.id && <span className="ml-1 text-[10px] font-bold" style={{ color: TEAL_DARK }}>· Recomendado</span>}
                     </td>
                     <td className="px-2.5 py-1.5 text-right whitespace-nowrap" style={{ color: "#4A5568" }}>{q.cantidad.toLocaleString("es-MX")}</td>

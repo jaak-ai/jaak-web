@@ -80,7 +80,7 @@ export function Callout({ type = 'info', title, children }: CalloutProps) {
   const displayTitle = title || style.title
 
   return (
-    <div className={`my-4 rounded-lg border ${style.bg} ${style.border} p-4`}>
+    <div className={`my-4 overflow-hidden rounded-lg border ${style.bg} ${style.border} p-4`}>
       <div className="flex items-start gap-3">
         <Icon className={`mt-0.5 flex-shrink-0 ${style.icon}`} />
         <div className="flex-1 min-w-0">

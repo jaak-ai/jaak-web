@@ -35,16 +35,12 @@ tecnológicas principales.
 | **Galería vectorial** (Elasticsearch) | Guarda la galería como `dense_vector` de 512 dimensiones con cuantificación `int8` sobre grafo HNSW. Resuelve la búsqueda kNN y aplica los filtros de metadatos dentro de la misma consulta. Se despliega con el operador **ECK** en el clúster del cliente. |
 | **Almacenamiento de objetos** | Custodia los recortes faciales alineados del enrolamiento, **cifrados y fuera del índice de búsqueda**. |
 
-```mermaid
-flowchart LR
-  C[Canales del cliente] -->|X-API-Key| A[API orquestadora]
-  O[Consola de operación] -->|Cookie de sesión SSO| A
-  A -->|imagen alineada| V[Vectorizador GPU]
-  V -->|vector 512-D| A
-  A -->|kNN| E[(Elasticsearch<br/>galería biométrica)]
-  A -->|crop cifrado| S[(Object storage)]
-  A --> AU[(Auditoría encadenada)]
-```
+<iframe
+  title="Arquitectura de Alnitak"
+  src="/docs/alnitak/architecture-overview.html"
+  loading="lazy"
+  style={{ width: '100%', height: '560px', border: 0 }}
+/>
 
 La custodia de los recortes cifrados es lo que permite **re-vectorizar la
 galería completa ante un cambio de modelo** sin volver a pedir las imágenes
@@ -100,12 +96,12 @@ su tratamiento por el flujo del cliente. El umbral por defecto es `0.82`,
 ajustable en la configuración del despliegue o por petición. Cada despliegue
 debe validar sus umbrales antes de usarlos para automatizar decisiones.
 
-<Callout type="tip" title="El score que recibes ya está normalizado">
+<Callout type="tip" title="El score de respuesta está normalizado">
 Los motores de búsqueda vectorial no siempre devuelven el coseno tal cual:
 según la métrica configurada pueden entregarlo reescalado. **La API se encarga
-de convertirlo**, de modo que el campo `score` de la respuesta y el
-`threshold` que envías están siempre en la misma escala [0, 1]. No tienes que
-convertir nada.
+de la normalización**, de modo que el campo `score` de la respuesta y el
+`threshold` de la petición usan la misma escala [0, 1]. No requiere una
+conversión adicional.
 </Callout>
 
 ## Alta con control antiduplicado
@@ -131,9 +127,8 @@ Es una comprobación previa orientada a:
 
 ## Criterios de la galería vectorial
 
-La galería vive en un almacén vectorial que cumple cuatro condiciones, y esas
-condiciones —no el producto concreto— son las que sostienen la latencia y el
-caudal en régimen:
+La galería usa un almacén vectorial con estas cuatro características. Son las
+que sostienen la latencia y el caudal en régimen:
 
 - **Búsqueda kNN aproximada sobre grafo HNSW**, madura y en versión estable, no
   experimental.

@@ -143,22 +143,36 @@ export const megaMenus: MegaMenuConfig[] = [
         ],
       },
       {
-        // Fase 1B: preparada pero no publicada. `status:"pending"` a nivel
-        // de columna hace que MegaMenu / MobileNavigation la omitan por
-        // completo sin necesitar cambios de código cuando se active — solo
-        // cambiar este `status` a "active" y completar `href`.
         type: "links",
         id: "products-consultas-oficiales",
         heading: "Consultas oficiales",
-        status: "pending",
         items: [
           {
-            id: "pending:consultas-oficiales",
+            id: "products-consultas-oficiales",
             label: "Consultas oficiales",
-            href: null,
-            description: "INE, RENAPO/CURP — landing en preparación",
-            status: "pending",
-            visibility: { desktop: false, mobile: false },
+            href: "/consultas-oficiales",
+            description: "INE, RENAPO/CURP y listas oficiales",
+            icon: "M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
+            status: "active",
+            visibility: { desktop: true, mobile: true },
+          },
+          {
+            id: "products-validar-curp",
+            label: "Validar CURP / RENAPO",
+            href: "/validar-curp-renapo",
+            description: "Valida una CURP contra RENAPO vía API",
+            icon: "M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25",
+            status: "active",
+            visibility: { desktop: true, mobile: true },
+          },
+          {
+            id: "products-validar-ine",
+            label: "Validar INE",
+            href: "/validar-ine",
+            description: "Valida una credencial INE dentro de tu proceso",
+            icon: "M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-9-13.5h18a1.5 1.5 0 011.5 1.5v13.5a1.5 1.5 0 01-1.5 1.5h-18a1.5 1.5 0 01-1.5-1.5V4.5a1.5 1.5 0 011.5-1.5z",
+            status: "active",
+            visibility: { desktop: true, mobile: true },
           },
         ],
       },
@@ -294,6 +308,15 @@ export const megaMenus: MegaMenuConfig[] = [
             visibility: { desktop: true, mobile: true },
           },
           {
+            id: "sol-automotriz",
+            label: "Automotriz",
+            href: "/kyc-automotriz-lfpiorpi",
+            description: "Identificación de clientes LFPIORPI",
+            icon: "M5 17h14M5 17a2 2 0 104 0m-4 0a2 2 0 11-4 0m14 0a2 2 0 104 0m-4 0a2 2 0 11-4 0M4 17V10a1 1 0 01.4-.8l2.1-1.575A2 2 0 018 7h8a2 2 0 011.5.675L19.6 9.2a1 1 0 01.4.8v7",
+            status: "active",
+            visibility: { desktop: true, mobile: true },
+          },
+          {
             id: "sol-kyc-igaming",
             label: "Gaming e iGaming",
             href: "/soluciones/kyc-igaming-mexico",
@@ -333,6 +356,15 @@ export const megaMenus: MegaMenuConfig[] = [
             href: "/soluciones/prevencion-fraude",
             description: "Detección en tiempo real",
             icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
+            status: "active",
+            visibility: { desktop: true, mobile: true },
+          },
+          {
+            id: "sol-recursos-humanos",
+            label: "Firma digital para RH",
+            href: "/soluciones/recursos-humanos",
+            description: "Contratos, anexos y evidencia laboral",
+            icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4",
             status: "active",
             visibility: { desktop: true, mobile: true },
           },

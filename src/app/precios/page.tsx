@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PreciosClient from "./PreciosClient";
+import { buildKycRegisterUrl, KYC_PLAN_CODE_BY_TIER } from "@/data/autoservicio-catalogo";
 
 export const metadata: Metadata = {
   title: "Precios – KYC Biométrico y Firma Digital NOM-151 | JAAK",
@@ -151,11 +152,11 @@ const PRODUCTS: ProductDefinition[] = [
     applicationCategory: "SecurityApplication",
     image: IMG_IDENTIDAD,
     packages: [
-      { tier: "Cobre",   sku: "JAAK-KYC-COBRE",   qty: 5,   unit: "verificación", unitPlural: "verificaciones", price: 99,    url: "https://platform.jaak.ai/#/onboarding/user-info?plan=cobre" },
-      { tier: "Bronce",  sku: "JAAK-KYC-BRONCE",  qty: 50,  unit: "verificación", unitPlural: "verificaciones", price: 1500,  url: "https://platform.jaak.ai/#/onboarding/plans/bronce" },
-      { tier: "Plata",   sku: "JAAK-KYC-PLATA",   qty: 100, unit: "verificación", unitPlural: "verificaciones", price: 2800,  url: "https://platform.jaak.ai/#/onboarding/plans/plata" },
-      { tier: "Oro",     sku: "JAAK-KYC-ORO",     qty: 250, unit: "verificación", unitPlural: "verificaciones", price: 6625,  url: "https://platform.jaak.ai/#/onboarding/plans/oro" },
-      { tier: "Platino", sku: "JAAK-KYC-PLATINO", qty: 500, unit: "verificación", unitPlural: "verificaciones", price: 12500, url: "https://platform.jaak.ai/#/onboarding/plans/platino1" },
+      { tier: "Cobre",   sku: "JAAK-KYC-COBRE",   qty: 5,   unit: "verificación", unitPlural: "verificaciones", price: 99,    url: buildKycRegisterUrl(KYC_PLAN_CODE_BY_TIER["cobre"]) },
+      { tier: "Bronce",  sku: "JAAK-KYC-BRONCE",  qty: 50,  unit: "verificación", unitPlural: "verificaciones", price: 1500,  url: buildKycRegisterUrl(KYC_PLAN_CODE_BY_TIER["bronce"]) },
+      { tier: "Plata",   sku: "JAAK-KYC-PLATA",   qty: 100, unit: "verificación", unitPlural: "verificaciones", price: 2800,  url: buildKycRegisterUrl(KYC_PLAN_CODE_BY_TIER["plata"]) },
+      { tier: "Oro",     sku: "JAAK-KYC-ORO",     qty: 250, unit: "verificación", unitPlural: "verificaciones", price: 6625,  url: buildKycRegisterUrl(KYC_PLAN_CODE_BY_TIER["oro"]) },
+      { tier: "Platino", sku: "JAAK-KYC-PLATINO", qty: 500, unit: "verificación", unitPlural: "verificaciones", price: 12500, url: buildKycRegisterUrl(KYC_PLAN_CODE_BY_TIER["platino1"]) },
     ],
   },
   {

@@ -15,7 +15,17 @@ const NAVY_DARK = "#071426";
 // MobileStickyCTA (Agendar demo + Descargar guía) — evita duplicar barras.
 // La landing de KYC gaming tiene su propio botón flotante de WhatsApp con
 // número y mensaje precargado específicos de esa campaña.
-const HIDDEN_PREFIXES = ["/autoservicio", "/contacto", "/listas-de-riesgo-pld-aml", "/gracias", "/soluciones/kyc-igaming-mexico"];
+// La landing de LFPIORPI 2026-2027 es de outbound frío: un único CTA de
+// conversión ("Revisar mi operación") en header propio + sticky mobile,
+// sin competir con el widget genérico de demo.
+const HIDDEN_PREFIXES = [
+  "/autoservicio",
+  "/contacto",
+  "/listas-de-riesgo-pld-aml",
+  "/gracias",
+  "/soluciones/kyc-igaming-mexico",
+  "/lfpiorpi-2027",
+];
 const DISMISS_STORAGE_KEY = "jaak_floating_demo_dismissed_until";
 const DISMISS_DAYS = 7;
 const SCROLL_RATIO_TRIGGER = 0.27;

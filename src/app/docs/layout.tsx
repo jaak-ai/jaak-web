@@ -5,6 +5,7 @@ import { docsConfig } from '@/lib/docs/config'
 import Link from 'next/link'
 import Image from 'next/image'
 import type { Metadata } from 'next'
+import './docs.css'
 
 export const metadata: Metadata = {
   title: {
@@ -20,47 +21,39 @@ export default function DocsLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="min-h-screen bg-white">
-      {/* Fixed Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 h-16 border-b border-gray-200 bg-white">
-        <div className="flex h-full items-center justify-between px-6">
-          {/* Left side: Logo and Docs link */}
-          <div className="flex items-center gap-6">
-            <Link href="/" className="flex items-center">
+    <div className="docs-shell min-h-screen">
+      <header className="docs-header fixed top-0 left-0 right-0 z-50">
+        <div className="docs-header__brand">
+          <Link href="/" className="docs-header__logo flex items-center">
               <Image
                 src="/images/logos/jaak-logo-azul.png"
                 alt="JAAK"
                 width={100}
                 height={40}
-                className="h-8 w-auto"
+                className="h-7 w-auto"
                 priority
               />
-            </Link>
-            <div className="h-6 w-px bg-gray-200" />
-            <Link
-              href="/docs"
-              className="text-sm font-semibold text-gray-900 hover:text-[#0066ff] transition-colors"
-            >
-              Documentacion
-            </Link>
-          </div>
+          </Link>
+          <Link href="/docs" className="docs-header__section text-sm font-semibold transition-colors">
+            Documentación
+          </Link>
+        </div>
 
-          {/* Center: Search button */}
-          <div className="hidden md:flex flex-1 max-w-md mx-8">
+        <div className="docs-header__main">
+          <div className="docs-header__search hidden md:flex">
             <SearchButton />
           </div>
 
-          {/* Right side: CTAs */}
-          <div className="flex items-center gap-4">
+          <div className="docs-header__actions flex items-center gap-4">
             <Link
               href="https://platform.jaak.ai"
-              className="hidden sm:block text-sm font-medium text-gray-700 hover:text-[#0066ff] transition-colors"
+              className="docs-header__login hidden sm:block text-sm font-medium transition-colors"
             >
-              Iniciar sesion
+              Iniciar sesión
             </Link>
             <Link
               href="/contacto"
-              className="rounded-lg bg-[#0066ff] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#0052cc]"
+              className="docs-header__cta px-4 py-2 text-sm font-semibold transition-colors"
             >
               Contactar
             </Link>
@@ -68,15 +61,13 @@ export default function DocsLayout({
         </div>
       </header>
 
-      {/* Main layout with sidebar */}
-      <div className="flex pt-16">
+      <div className="docs-frame flex">
         <Sidebar />
         <main className="flex-1 min-w-0">
           {children}
         </main>
       </div>
 
-      {/* Search modal */}
       <SearchModal />
     </div>
   )

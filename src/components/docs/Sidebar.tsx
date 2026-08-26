@@ -51,11 +51,11 @@ function NavItemComponent({ item, level, pathname }: NavItemComponentProps) {
         <button
           onClick={() => setIsOpen(!isOpen)}
           className={`
-            flex w-full items-center justify-between py-1.5 text-sm font-medium transition-colors
+            docs-nav-group flex w-full items-center justify-between py-1.5 text-sm font-medium transition-colors
             ${paddingLeft}
             ${isChildActive
-              ? 'text-[#0066ff]'
-              : 'text-gray-700 hover:text-[#0066ff]'
+              ? 'docs-nav-group--active'
+              : ''
             }
           `}
         >
@@ -88,11 +88,11 @@ function NavItemComponent({ item, level, pathname }: NavItemComponentProps) {
       <Link
         href={item.href!}
         className={`
-          block py-1.5 text-sm transition-colors
+          docs-nav-item block py-1.5 text-sm transition-colors
           ${paddingLeft}
           ${isActive
-            ? 'font-semibold text-[#0066ff]'
-            : 'text-gray-600 hover:text-[#0066ff]'
+            ? 'docs-nav-item--active'
+            : ''
           }
         `}
       >
@@ -109,17 +109,17 @@ export function Sidebar() {
   const isAlnitak = pathname === '/docs/alnitak' || pathname.startsWith('/docs/alnitak/')
 
   return (
-    <nav className="w-64 flex-shrink-0 border-r border-gray-200 bg-white hidden lg:block">
-      <div className="sticky top-32 h-[calc(100vh-8rem)] overflow-y-auto p-6">
+    <nav className="docs-sidebar flex-shrink-0 hidden lg:block">
+      <div className="docs-sidebar__inner sticky overflow-y-auto p-6">
         {isAlnitak ? (
           <>
             <Link
               href="/docs"
-              className="mb-4 flex items-center gap-1.5 text-xs font-medium text-gray-500 transition-colors hover:text-[#0066ff]"
+              className="docs-sidebar__back mb-4 flex items-center gap-1.5 text-xs font-medium transition-colors"
             >
               <span aria-hidden="true">←</span> Documentación
             </Link>
-            <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-gray-900">
+            <p className="docs-sidebar__title mb-3 text-xs font-semibold uppercase tracking-wide">
               JAAK Alnitak
             </p>
             <NavItems items={alnitakNavigation} />

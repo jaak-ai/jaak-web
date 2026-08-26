@@ -51,84 +51,32 @@ export default async function DocPage({ params }: PageProps) {
   const slugPath = resolvedParams.slug?.join('/') || ''
   const { prev, next } = findPrevNext(slugPath)
 
-  // Build breadcrumb from slug
-  const breadcrumbs = [{ title: 'Docs', href: '/docs' }]
-  if (resolvedParams.slug && resolvedParams.slug.length > 0) {
-    let currentPath = '/docs'
-    for (const segment of resolvedParams.slug) {
-      currentPath += `/${segment}`
-      const segmentDoc = allDocs.find((d) => d.url === currentPath)
-      breadcrumbs.push({
-        title: segmentDoc?.title || segment.replace(/-/g, ' '),
-        href: currentPath,
-      })
-    }
-  }
+  const isAlnitakDoc = slugPath === 'alnitak' || slugPath.startsWith('alnitak/')
 
   return (
-    <div className="flex gap-12 px-8 py-10">
-      {/* Main content — takes all available width between Sidebar and TOC.
-         Removed max-w-3xl from the article wrapper so the right-side TOC
-         sits flush against the viewport edge instead of leaving a blank
-         band of whitespace on wide screens. The prose inside still
-         constrains line length for readability via max-w-4xl. */}
-      <article className="flex-1 min-w-0">
-        {/* Breadcrumb */}
-        {breadcrumbs.length > 1 && (
-          <nav className="mb-6 flex items-center gap-2 text-sm text-gray-500">
-            {breadcrumbs.map((crumb, index) => (
-              <span key={crumb.href} className="flex items-center gap-2">
-                {index > 0 && (
-                  <svg
-                    className="h-4 w-4 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                )}
-                {index === breadcrumbs.length - 1 ? (
-                  <span className="text-gray-900 font-medium">{crumb.title}</span>
-                ) : (
-                  <Link href={crumb.href} className="hover:text-[#0066ff] transition-colors">
-                    {crumb.title}
-                  </Link>
-                )}
-              </span>
-            ))}
-          </nav>
+    <div className="docs-page docs-page--centered docs-page--reading-grid px-8 py-10">
+      <article className="docs-article min-w-0">
+        {isAlnitakDoc && (
+          <header className="docs-document-header">
+            <h1>{doc.title}</h1>
+            <p>{doc.description}</p>
+          </header>
         )}
 
-        {/* Category badge */}
-        {doc.category && (
-          <span className="mb-4 inline-block rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-blue-800">
-            {doc.category}
-          </span>
-        )}
-
-        {/* Content — max-w-4xl keeps line length readable while letting the
-           article container span the full width between Sidebar and TOC. */}
-        <div className="prose prose-gray max-w-4xl">
+        <div className="docs-prose prose prose-gray max-w-4xl">
           <MDXContent code={doc.body.code} />
         </div>
 
-        {/* Prev/Next navigation */}
-        <nav className="mt-16 flex items-center justify-between border-t border-gray-200 pt-8">
+        <nav className="docs-pagination mt-16 flex items-center justify-between pt-8">
           {prev ? (
             <Link
               href={prev.href || '#'}
-              className="group flex flex-col items-start"
+              className="docs-pagination__link group flex flex-col items-start"
             >
-              <span className="mb-1 text-sm text-gray-500 group-hover:text-[#0066ff] transition-colors">
+              <span className="docs-pagination__label mb-1 text-sm transition-colors">
                 Anterior
               </span>
-              <span className="flex items-center gap-2 font-semibold text-gray-900 group-hover:text-[#0066ff] transition-colors">
+              <span className="docs-pagination__title flex items-center gap-2 font-semibold transition-colors">
                 <svg
                   className="h-4 w-4"
                   fill="none"
@@ -151,12 +99,12 @@ export default async function DocPage({ params }: PageProps) {
           {next ? (
             <Link
               href={next.href || '#'}
-              className="group flex flex-col items-end"
+              className="docs-pagination__link group flex flex-col items-end"
             >
-              <span className="mb-1 text-sm text-gray-500 group-hover:text-[#0066ff] transition-colors">
+              <span className="docs-pagination__label mb-1 text-sm transition-colors">
                 Siguiente
               </span>
-              <span className="flex items-center gap-2 font-semibold text-gray-900 group-hover:text-[#0066ff] transition-colors">
+              <span className="docs-pagination__title flex items-center gap-2 font-semibold transition-colors">
                 {next.title}
                 <svg
                   className="h-4 w-4"
@@ -179,7 +127,6 @@ export default async function DocPage({ params }: PageProps) {
         </nav>
       </article>
 
-      {/* Table of Contents */}
       <TableOfContents />
     </div>
   )

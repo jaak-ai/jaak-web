@@ -145,6 +145,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    {
+      url: `${baseUrl}/soluciones/recursos-humanos`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
     // Compliance
     {
       url: `${baseUrl}/cumplimiento`,
@@ -257,6 +263,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/kyc-inmobiliario-lfpiorpi`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/lfpiorpi-2027`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/kyc-automotriz-lfpiorpi`,
       lastModified: now,
       changeFrequency: "monthly",
       priority: 0.85,

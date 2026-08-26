@@ -1,16 +1,19 @@
 import Link from "next/link";
-import { productos, formatMXN } from "@/data/autoservicio-catalogo";
+import { formatMXN } from "@/data/autoservicio-catalogo";
+import { getAutoservicioCatalog } from "@/lib/catalog";
 
-// "Desde" = precio mínimo del producto, desde la fuente única de catálogo.
-const destacados = ["kyc", "firma-nom151", "ine", "ocr-id"]
-  .map((id) => productos.find((p) => p.id === id))
-  .filter((p): p is NonNullable<typeof p> => Boolean(p))
-  .map((p) => ({
-    nombre: p.nombre.split(" — ")[0],
-    desde: Math.min(...p.paquetes.map((q) => q.precio)),
-  }));
+const TEAL = "#2DB6C1";
 
-export default function HomepageAutoservicioCTA() {
+export default async function HomepageAutoservicioCTA() {
+  // "Desde" = precio mínimo del producto, desde el catálogo unificado.
+  const { productos } = await getAutoservicioCatalog();
+  const destacados = ["kyc", "firma-nom151", "consulta-ine", "ocr-id"]
+    .map((id) => productos.find((p) => p.id === id))
+    .filter((p): p is NonNullable<typeof p> => Boolean(p))
+    .map((p) => ({
+      nombre: p.nombre.split(" — ")[0],
+      desde: Math.min(...p.paquetes.map((q) => q.precio)),
+    }));
   return (
     <section className="hp-section hp-bg-2 py-16 lg:py-20 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
