@@ -788,7 +788,10 @@ ese rato. Separadas, el arranque conserva su margen y la disponibilidad reaccion
 
 **Sin GPU.** Hay un modo `cpu` (`vectorizador_provider = "cpu"`) que no pide recursos de GPU ni
 RuntimeClass. Sirve para validar el flujo en un entorno donde no hay tarjeta, y **no para medir**:
-la vectorización pasa de 4 ms a 50 ms, doce veces más lenta.
+la vectorización pasa de 4 ms a 50 ms, doce veces más lenta. En ese modo el módulo **ignora
+`gpu_node_selector` y `gpu_tolerations`** —no los copia al pod—, así que puede dejarlos con el valor
+por omisión de la plantilla, el que exige la etiqueta `nvidia.com/gpu.present`, sin que el
+vectorizador se quede `Pending` por ello. Solo se aplican con `vectorizador_provider = "cuda"`.
 
 ### 3.4 El anfitrión del vectorizador: intercambio y memoria bloqueable
 
@@ -1687,8 +1690,9 @@ del cupo contratado.
 
   La salida es **revocar esa instalación** en el panel de licencias, lo que
   libera su hueco de cupo y su identificador, y volver a lanzar la instalación.
-  El identificador que hay que buscar en el panel lo imprime el propio mensaje de
-  error.
+  El identificador que hay que buscar en el panel es el que anotó
+  al instalar —más abajo se explica de dónde sacarlo— y lo imprime también el
+  propio mensaje de error.
 
   Si respalda secretos del clúster, incluya este: se ahorra el trámite.
 </Callout>
@@ -1697,6 +1701,19 @@ La instalación se identifica ante la plataforma con una huella que se deriva de
 modo que es la misma en cada pasada y distinta para dos instalaciones que compartan clúster. No hay
 que configurarla; `huella_instalacion` existe para el caso en que el cliente prefiera usar su propio
 identificador.
+
+**Anote el identificador de la instalación.** La activación la registra del lado de JAAK con un
+identificador propio, distinto de la huella, y es el que hace falta para revocarla: al desmontar
+—sección 12, paso 4— o si pierde el secreto. Está en ese mismo secreto, junto a la clave del motor:
+
+```bash
+kubectl get secret alnitak-license -n biometria-1n-gpu \
+  -o jsonpath='{.data.engine-id}' | base64 -d; echo
+# eng-0a1b2c3d4e5f60718293a4b5c6d7e8f9
+```
+
+Anótelo al terminar de instalar. `terraform destroy` se lleva el secreto, y con él el único sitio
+donde el dato está a mano; a partir de ahí hay que pedirlo a JAAK.
 
 **Comprobación.** Si va con GPU, revise la sección 3.3 antes: hay dos ajustes —la clase de tiempo de
 ejecución y las etiquetas del nodo— que si faltan producen síntomas que apuntan a otro sitio.
@@ -1826,6 +1843,12 @@ kubectl port-forward -n biometria-1n svc/consola-1n 8080:80
   Es lo razonable en un entorno de validación, donde montar DNS y certificados
   para tirarlo todo después no aporta. En un despliegue real este paso sí es
   obligatorio: sin él nadie puede usar la consola.
+
+  `host_publico` **sigue siendo obligatorio** aunque no publique: ponga el nombre
+  que vaya a usar después, o cualquiera que no resuelva. Lo único que cambia es
+  que los enlaces de invitación de la sección 8.4 saldrán con ese host y **no
+  serán navegables** —sirven para extraer el token, no para abrirlos—, y que la
+  consola se abre por `port-forward`.
 </Callout>
 
 ### Paso 11 — Credenciales de operación
@@ -2596,8 +2619,16 @@ secreto con la clave del motor y **la plataforma no se entera**. La instalación
 cupo de la licencia, ocupando un hueco que ya no usa nadie, y su identificador sigue tomado — de
 modo que volver a instalar sobre ese mismo clúster fallaría diciendo que ya estaba activada.
 
-Revóquela en el panel de licencias. Es una operación deliberada y de un solo paso, y hasta hacerla
-el desmontaje no está completo aunque el clúster esté vacío.
+Revóquela en el panel de licencias, buscándola por el identificador que anotó en el paso 7 de la
+sección 7. Si no lo anotó, léalo **antes** de destruir nada:
+
+```bash
+kubectl get secret alnitak-license -n biometria-1n-gpu \
+  -o jsonpath='{.data.engine-id}' | base64 -d; echo
+```
+
+Es una operación deliberada y de un solo paso, y hasta hacerla el desmontaje no está completo aunque
+el clúster esté vacío.
 
 **Paso 5. Lo que no gestiona este procedimiento.** Si usó servicios administrados en lugar de las
 dependencias del apéndice A, la base de datos, el caché y el contenedor de objetos son recursos
@@ -3136,7 +3167,13 @@ entender antes de cambiarlo:
   que no caben dos máquinas de este tamaño sin pedir ampliación.
 
 El vectorizador se despliega **sin GPU**: la validación funcional no la necesita y evita tanto el
-coste como la cuota aparte que llevan las instancias con GPU.
+coste como la cuota aparte que llevan las instancias con GPU. Basta con
+`vectorizador_provider = "cpu"`: `gpu_node_selector` y `gpu_tolerations` se quedan como vengan en la
+plantilla, porque en modo `cpu` el módulo no los usa (sección 3.3).
+
+`host_publico` es obligatorio y aquí no hay nada publicado: ponga cualquier nombre —en la corrida de
+validación se usó `biometria.validacion.local`— y entre a la consola por `port-forward`. La
+consecuencia está en el paso 10 de la sección 7.
 
 ### Crear el clúster
 
