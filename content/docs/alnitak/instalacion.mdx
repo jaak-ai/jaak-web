@@ -12,9 +12,8 @@ unlisted: true
 
   `github.com/jaak-ai/jaak-alnitak-installer`
 
-  Solicite acceso junto con las credenciales del registro de imágenes
-  (sección 0.5): se concede sobre la cuenta de GitHub que nos indique. Una vez
-  concedido:
+  Solicite acceso junto con su clave de licencia (sección 0.5): se concede
+  sobre la cuenta de GitHub que nos indique. Una vez concedido:
 
 ```bash
 git clone https://github.com/jaak-ai/jaak-alnitak-installer.git
@@ -213,8 +212,8 @@ mensajes que no señalan esta causa.
 ### 0.4 Obtener los scripts de instalación
 
 Los scripts que ejecutan este manual están en un repositorio de acceso restringido y **solo
-lectura**. Solicite acceso antes de empezar, junto con las credenciales del registro de imágenes
-(sección 0.5): se concede sobre la cuenta de GitHub que nos indique.
+lectura**. Solicite acceso antes de empezar, junto con su clave de licencia (sección 0.5): se
+concede sobre la cuenta de GitHub que nos indique.
 
 ```bash
 git clone https://github.com/jaak-ai/jaak-alnitak-installer.git
@@ -240,14 +239,32 @@ ansible/                                pasos que dependen del paso anterior
   tasks/                                los nueve pasos, más un auxiliar de espera
 ```
 
-### 0.5 Credenciales del registro de imágenes
+### 0.5 La clave de licencia
 
-Las imágenes de la solución están en un registro privado (sección 2.1), así que hace falta una
-credencial de descarga. **Solicítela antes que ninguna otra cosa**, y en particular antes de crear
-infraestructura de pago: en una nube el clúster empieza a facturar en cuanto existe, y si la
-credencial tarda en llegar se paga la espera.
+JAAK entrega **una clave de licencia** con la instalación, y esa clave sola resuelve las dos cosas
+que el despliegue necesita del exterior:
 
-Sin ella, los pods se quedan en `ImagePullBackOff` y la instalación no avanza.
+1. **Descargar las imágenes.** Se usa como contraseña contra el proxy de imágenes, que las sirve
+   solo a quien tiene licencia (sección 2.1).
+2. **Activar la instalación.** La plataforma de licencias la canjea, una vez, por la clave con la
+   que el vectorizador arranca y descifra sus modelos (paso 7 de la sección 7).
+
+**Solicítela antes que ninguna otra cosa**, y en particular antes de crear infraestructura de pago:
+en una nube el clúster empieza a facturar en cuanto existe, y si la clave tarda en llegar se paga la
+espera.
+
+Sin ella no hay instalación posible: los pods se quedan en `ImagePullBackOff` porque no pueden
+descargar las imágenes, y el vectorizador no arrancaría aunque las tuviera.
+
+<Callout type="info" title="La clave va en los dos ficheros de configuración, con dos formas distintas">
+  El mismo valor aparece dos veces, y no es redundancia: cada uno lo consume de
+  una forma. En `ansible/group_vars/all.yml` va tal cual, en
+  `clave_activacion`, que es lo que se manda a la plataforma de licencias. En
+  `terraform/terraform.tfvars` va dentro de `registro_credenciales`, envuelto en
+  el formato que Kubernetes exige para hablar con un registro.
+
+  Si cambia la clave, cámbiela en los dos.
+</Callout>
 
 #### Cómo se convierte en lo que pide la configuración
 
@@ -255,15 +272,29 @@ La variable `registro_credenciales` de `terraform.tfvars` espera el **contenido 
 configuración de Docker**, no un usuario y una contraseña sueltos. Genérelo así:
 
 ```bash
-USUARIO="<usuario>"
-CREDENCIAL="<credencial>"
-printf '{"auths":{"https://index.docker.io/v1/":{"auth":"%s"}}}' \
-  "$(printf '%s:%s' "$USUARIO" "$CREDENCIAL" | base64 | tr -d '\n')"
+LICENCIA="<su clave de licencia>"
+printf '{"auths":{"alnitak-proxy.jaak.ai":{"auth":"%s"}}}' \
+  "$(printf 'license:%s' "$LICENCIA" | base64 | tr -d '\n')"
 ```
 
-El `tr -d '\n'` no sobra: el `base64` de GNU parte la salida en líneas de 76 caracteres, así que
-un usuario y una credencial que juntos pasen de 57 caracteres producirían un `auth` cortado por un
-salto de línea, y por tanto inválido.
+**El usuario da igual y la contraseña es la clave de licencia.** El proxy no mira el usuario: aquí
+se escribe `license` por convención, y cualquier otro valor funcionaría igual. Lo que decide es la
+contraseña.
+
+El `tr -d '\n'` no sobra: el `base64` de GNU parte la salida en líneas de 76 caracteres, así que un
+usuario y una credencial que juntos pasen de 57 caracteres producirían un `auth` cortado por un
+salto de línea, y por tanto inválido. Con la clave de licencia es fácil rebasar esa longitud.
+
+<Callout type="warning" title="El host del bloque `auths` tiene que ser el mismo que el de las imágenes">
+  El kubelet busca la credencial **por host**. Si el bloque `auths` lleva un host
+  y las referencias de imagen de la sección 6.3 llevan otro, el secreto se crea,
+  Terraform no protesta y los pods se quedan en `ImagePullBackOff` diciendo que
+  no hay autorización — el mismo síntoma exacto que una credencial incorrecta.
+
+  Es lo que ocurre al reaprovechar una configuración anterior, cuando las
+  imágenes ya apuntan al proxy y el bloque `auths` sigue con el registro de
+  antes. `install.sh` lo comprueba antes de empezar.
+</Callout>
 
 <Callout type="warning" title="Si su Docker guarda las credenciales en el llavero, no use `config.json`">
   Existe la tentación de hacer `docker login` y copiar `~/.docker/config.json`,
@@ -285,22 +316,30 @@ grep -q '"auth"' ~/.docker/config.json \
 
 Tres precisiones, porque el formato no perdona:
 
-El valor de `auth` es `usuario:credencial` **codificado en base64**, no la credencial sola. El
-fichero va **completo**, con su bloque `auths`, no solo la parte interior. Y se pasa **tal cual**,
-sin volver a codificar el conjunto en base64: la codificación afecta únicamente al campo `auth`.
+El valor de `auth` es `usuario:credencial` **codificado en base64**, no la credencial sola —y la
+«credencial» aquí es la clave de licencia. El fichero va **completo**, con su bloque `auths`, no
+solo la parte interior. Y se pasa **tal cual**, sin volver a codificar el conjunto en base64: la
+codificación afecta únicamente al campo `auth`.
 
 Compruebe que funciona antes de instalar:
 
 ```bash
-docker manifest inspect docker.io/jaakai/jaak-alnilam-api:0.17.1 > /dev/null \
-  && echo "La credencial abre el registro"
+docker login alnitak-proxy.jaak.ai -u license -p "<su clave de licencia>"
+
+docker manifest inspect alnitak-proxy.jaak.ai/jaakai/jaak-alnilam-api:0.17.1 > /dev/null \
+  && echo "La licencia abre el registro"
 ```
 
 Se usa `manifest inspect` y no `docker pull` a propósito: comprueba exactamente lo que interesa
-—que la credencial abre un repositorio privado— sin descargar cientos de megabytes y **sin depender
+—que la licencia abre un repositorio privado— sin descargar cientos de megabytes y **sin depender
 de la arquitectura de su equipo**. Un `docker pull` desde un Mac con Apple Silicon fallaría aunque
-la credencial fuese correcta, porque las imágenes son solo `linux/amd64` (sección 2.1), y el error
+la licencia fuese correcta, porque las imágenes son solo `linux/amd64` (sección 2.1), y el error
 habla de manifiestos, no de credenciales.
+
+Si el `docker login` no pasa, el mensaje dice cuál de las dos cosas falla y no hay que buscar más
+lejos: un **401** es que la clave no se reconoce, y un **403** es que la clave existe pero su
+licencia no sirve —caducada, suspendida o sin el producto contratado—. Los dos se resuelven con
+JAAK, no en el clúster.
 
 ---
 
@@ -311,7 +350,8 @@ secciones completas, que explican qué hace cada paso y cómo verificarlo.
 
 **Requisitos previos cubiertos** (secciones 3 y 4): clúster de Kubernetes con sus operadores,
 PostgreSQL con la base creada y sus dos credenciales, Redis, un almacén compatible con S3 con sus
-dos contenedores, y decidido el método de acceso a la consola.
+dos contenedores, la clave de licencia en la mano (sección 0.5), y decidido el método de acceso a la
+consola.
 
 **Los dos ficheros de configuración**, a partir de sus plantillas:
 
@@ -331,8 +371,9 @@ Ambos deben completarse antes de continuar. Las variables obligatorias están en
 ```
 
 Antes de empezar comprueba la versión de Terraform, que el contexto de destino sea el indicado, que
-la configuración sea coherente entre los dos ficheros y que las credenciales del registro estén
-puestas. Después ejecuta las cuatro invocaciones de la sección 7 en orden, tolera únicamente el
+la configuración sea coherente entre los dos ficheros, y que la clave de licencia esté puesta en los
+dos sitios donde hace falta: como credencial del registro y como clave de activación. Después
+ejecuta las cuatro invocaciones de la sección 7 en orden, tolera únicamente el
 error esperado de la segunda —y solo si **todos** los errores de esa etapa son del tipo esperado—,
 ejecuta las verificaciones y comprueba al terminar que el estado quedó íntegro. Termina con `INSTALACION COMPLETA` y código de salida 0; cualquier otro final detiene la
 instalación e indica la causa.
@@ -361,9 +402,10 @@ los sistemas del cliente más allá de la API, y la instalación sin Kubernetes.
 
 1. El cliente opera un clúster de Kubernetes y puede instalar operadores en él.
 2. Hay al menos un nodo con GPU NVIDIA.
-3. Hay salida a internet hacia los dominios de la sección 4.4, **o** el cliente usa el acceso con
-   usuario y contraseña de la sección 4.3. Sin internet y sin contraseña configurada no hay forma de
-   entrar a la consola.
+3. Hay salida a internet hacia los dominios **obligatorios** de la sección 4.4: la plataforma de
+   licencias y el proxy de imágenes. Los de Google son opcionales si el cliente usa el acceso con
+   usuario y contraseña de la sección 4.3; sin internet y sin contraseña configurada no hay forma
+   de entrar a la consola.
 4. El cliente provee PostgreSQL, Redis y un almacén de objetos compatible con S3, gestionados o
    autoalojados.
 5. La solución se entrega como **imágenes de contenedor prehorneadas**. No se entrega código
@@ -406,9 +448,9 @@ hacen falta:
 
 | Componente | Imagen |
 |---|---|
-| Consola web | `docker.io/jaakai/jaak-alnilam-web` — **privada, de JAAK** |
-| API | `docker.io/jaakai/jaak-alnilam-api` — **privada, de JAAK** |
-| Vectorizador | `docker.io/jaakai/jaak-alnitak-serve-gpu` — **privada, de JAAK** |
+| Consola web | `alnitak-proxy.jaak.ai/jaakai/jaak-alnilam-web` — **privada, de JAAK** |
+| API | `alnitak-proxy.jaak.ai/jaakai/jaak-alnilam-api` — **privada, de JAAK** |
+| Vectorizador | `alnitak-proxy.jaak.ai/jaakai/jaak-alnitak-serve` — **privada, de JAAK** |
 | Elasticsearch | `docker.elastic.co/elasticsearch/elasticsearch` — pública; la referencia el operador ECK, no se pone a mano |
 | PostgreSQL | `docker.io/library/postgres` — pública, o un servicio gestionado sin imagen (RDS) |
 | Redis | `docker.io/library/redis` — pública, o un servicio gestionado sin imagen (ElastiCache) |
@@ -417,6 +459,12 @@ hacen falta:
 Solo **las tres primeras se entregan**: son las que hay que descargar de un registro privado, y por
 eso el clúster necesita el `imagePullSecret` de la sección 6.1. Las otras cuatro son prerrequisitos
 del cliente (sección 3) y sus imágenes son públicas, así que no requieren credencial.
+
+**Las privadas no se descargan del registro directamente, sino de `alnitak-proxy.jaak.ai`.** Es un
+intermediario de JAAK que reenvía las imágenes y decide quién puede descargarlas mirando la licencia
+del cliente: la contraseña de acceso es la clave de licencia de la sección 0.5, no una credencial de
+registro. Sirve **solo** las cuatro imágenes de esta entrega; cualquier otra la rechaza. No es un
+espejo ni una caché, así que no hay nada que sincronizar y las imágenes son las mismas de siempre.
 
 <Callout type="warning" title="Las imágenes de la entrega son solo `linux/amd64`">
   Las tres imágenes de JAAK, y la de herramientas que usan las migraciones, se
@@ -451,6 +499,7 @@ instalar.
 | Kubernetes | todo | Verificado en 1.33 y 1.36. Sobre un Kubernetes gestionado, ver 3.0 |
 | **ECK** (Elastic Cloud on Kubernetes) | despliega y opera el clúster de Elasticsearch | Verificado con la **3.5.0**. Aporta el CRD `elasticsearch.k8s.elastic.co/v1` |
 | **NVIDIA GPU Operator** o device plugin | expone `nvidia.com/gpu` a los pods | Sin él el pod de vectorización nunca se programa. Con device plugin a secas hay que leer 3.3: falta la RuntimeClass y faltan las etiquetas del nodo |
+| **Anfitrión sin intercambio**, o con memoria bloqueable suficiente | evita que el modelo descifrado acabe escrito en disco | Solo afecta al nodo que ejecuta el vectorizador. Ver 3.4 |
 | **Prometheus Operator** | recoge las métricas | Opcional si el cliente no quiere observabilidad |
 | Gestor de secretos | inyecta los secretos de la sección 6 | External Secrets Operator es la vía recomendada; ver alternativa mínima |
 | **PostgreSQL ≥ 13** | usuarios, sesiones, auditoría | La versión mínima viene de `gen_random_uuid()` |
@@ -517,9 +566,10 @@ se queda en `ImagePullBackOff` y el mensaje habla de credenciales, no de que la 
 
 Dos formas de resolverlo, y conviene elegir antes de instalar:
 
-- **Registro privado del proveedor de la solución** (Docker Hub de JAAK, que es de donde salen las
-  imágenes publicadas). El clúster necesita el `imagePullSecret` de la sección 6.1, que es lo que
-  configura `registro_credenciales`. Es el camino de entrega normal.
+- **Proxy de imágenes de JAAK** (`alnitak-proxy.jaak.ai`), que es de donde se descargan las
+  imágenes publicadas. El clúster necesita el `imagePullSecret` de la sección 6.1, que es lo que
+  configura `registro_credenciales`, con la clave de licencia como credencial. Es el camino de
+  entrega normal.
 - **Registro del propio cliente** (ECR en AWS, Artifact Registry en Google, ACR en Azure): se copian
   las imágenes una vez al registro del cliente. Tiene la ventaja de que en AWS el rol de los nodos
   puede leer de ECR sin credencial alguna, y la de no depender de un registro externo en cada
@@ -701,21 +751,60 @@ arranque tarda: medido en una tarjeta de generación reciente, unos 100 segundos
 servicio escucha y algo menos de dos minutos hasta que el pod queda listo. Durante ese tiempo el
 registro no emite nada entre la carga de los proveedores de ejecución y el final de la compilación.
 
-**La sonda de disponibilidad fallará varias veces, y es lo esperado.** En los eventos del pod
-aparecerá:
+**La sonda de arranque fallará varias veces, y es lo esperado.** En los eventos del pod aparecerá:
 
 ```
-Readiness probe failed: Get "http://<ip>:8000/readyz": connect: connection refused
+Startup probe failed: Get "http://<ip>:8000/readyz": connect: connection refused
 ```
 
 No hay que ajustar nada. La sonda espera 60 segundos antes de la primera comprobación y admite 30
 fallos consecutivos cada 10 segundos, de modo que tolera **seis minutos** de arranque: sobra margen.
-El pod **no se reinicia** por esos fallos, porque solo afectan a la sonda de disponibilidad, no a la
-de vitalidad. Que el contador de reinicios siga en cero confirma que el arranque va bien.
+El pod **no se reinicia** por esos fallos, porque la sonda de vitalidad no empieza a contar hasta
+que la de arranque da el visto bueno. Que el contador de reinicios siga en cero confirma que el
+arranque va bien.
+
+Ese margen vive en una sonda **aparte** de la de disponibilidad a propósito. Desde que `/readyz`
+informa también del estado de la licencia, dejar seis minutos de tolerancia en la sonda de
+disponibilidad significaría que un motor que ha dejado de servir seguiría recibiendo tráfico todo
+ese rato. Separadas, el arranque conserva su margen y la disponibilidad reacciona en segundos.
 
 **Sin GPU.** Hay un modo `cpu` (`vectorizador_provider = "cpu"`) que no pide recursos de GPU ni
 RuntimeClass. Sirve para validar el flujo en un entorno donde no hay tarjeta, y **no para medir**:
 la vectorización pasa de 4 ms a 50 ms, doce veces más lenta.
+
+### 3.4 El anfitrión del vectorizador: intercambio y memoria bloqueable
+
+Los modelos se entregan cifrados dentro de la imagen y **se descifran en memoria**: el texto claro
+no toca el disco en ningún momento. El vectorizador intenta además anclar en RAM el buffer
+descifrado, para que el sistema no pueda llevárselo al intercambio mientras vive.
+
+Ese anclaje es **oportunista**: si el anfitrión no lo permite, el proceso continúa igual y solo deja
+un aviso en su registro. No es un fallo, es la política deliberada — pero significa que la garantía
+no la da el servicio, sino la máquina. Y sin ella queda un hueco real: un modelo de **174 MB**
+descifrado, en un anfitrión con intercambio activo, puede acabar escrito en el disco de intercambio
+en claro y sobrevivir ahí al proceso que lo tenía.
+
+En el clúster donde se validó esta instalación el asunto no se nota, porque Kubernetes exige
+normalmente el intercambio desactivado. En la máquina de un cliente sí importa, así que es un
+requisito del **nodo que ejecuta el vectorizador**, no del clúster entero:
+
+- **Intercambio desactivado** en ese nodo. Es lo habitual y lo más simple.
+- **O** un límite de memoria bloqueable holgado para el contenedor: al menos los 174 MB del modelo,
+  con margen. Requiere subir `RLIMIT_MEMLOCK` en el anfitrión y conceder la capacidad
+  correspondiente al contenedor.
+
+Compruebe lo primero en el nodo con GPU:
+
+```bash
+# Debe imprimir solo la cabecera: ninguna línea significa que no hay intercambio.
+swapon --show
+
+# Y el límite de memoria bloqueable, por si opta por la segunda vía.
+ulimit -l
+```
+
+Cumplir cualquiera de las dos cierra el hueco. No cumplir ninguna **no impide instalar** y no da
+ningún error: el sistema funciona igual, y esa es justamente la razón para comprobarlo aquí.
 
 ---
 
@@ -820,9 +909,16 @@ datos de la solución. Las integraciones máquina a máquina no se ven afectadas
 
 | Destino | Para qué | ¿Opcional? |
 |---|---|---|
+| `alnitak-proxy.jaak.ai` | descargar las imágenes de la solución | No, salvo mirror interno |
+| `licensing.jaak.ai` | activar la instalación y revalidar la licencia | **No.** Sin él el vectorizador no arranca, y si se corta después deja de servir a las 12 horas (sección 11) |
 | `accounts.google.com`, `oauth2.googleapis.com`, `www.googleapis.com` | inicio de sesión con Google | **Sí**, si se usa el acceso con usuario y contraseña (4.3). Obligatorio si Google es la única vía |
-| registro de imágenes de contenedor | descargar la solución | No, salvo mirror interno |
 | `api.resend.com` | invitaciones por correo | Sí. Sin él, el enlace de invitación se devuelve en la respuesta |
+
+Los dos primeros no los alcanza el mismo sitio, y conviene tenerlo presente al abrir la red:
+`alnitak-proxy.jaak.ai` lo llaman **los nodos del clúster**, que son quienes descargan las imágenes,
+mientras que `licensing.jaak.ai` lo llaman **los dos**: el equipo desde el que se instala, para
+activar, y después el vectorizador desde dentro del clúster, para revalidar. Abrir solo uno de los
+dos caminos deja una instalación que falla a mitad.
 
 ---
 
@@ -855,7 +951,8 @@ ser accesibles desde fuera del clúster**: no tienen autenticación propia.
 | PostgreSQL | usuario y contraseña de runtime | Conexión de la API |
 | Redis | contraseña y, solo con ACL, usuario | Estado de sesión compartido entre réplicas. Vacías conectan sin autenticar: ver sección 11 |
 | Respaldos de Elasticsearch | access key y secret key | Instantáneas automáticas de la galería (sección 10). Pueden ir vacías en AWS si el rol de los nodos ya permite escribir en el contenedor |
-| Registro de imágenes | credenciales de pull | Descargar las imágenes privadas |
+| Registro de imágenes | la clave de licencia, en formato de configuración de Docker | Descargar las imágenes privadas del proxy (sección 0.5) |
+| **Licencia del motor** | la clave que devuelve la activación | La emite la plataforma durante la instalación; no la escribe nadie a mano. Vive en el secreto `alnitak-license` y la leen todas las réplicas del vectorizador |
 | **Pimienta de API keys** | 32 bytes o más, en **base64url sin relleno** | Deriva y verifica los hashes de las API keys |
 | **Pimienta de contraseñas** | igual formato, valor **distinto** | Deriva y verifica las contraseñas de consola. Vacía: no hay acceso con contraseña |
 | Contraseña del primer administrador | la que elija el cliente, 12 caracteres o más | Solo durante la instalación; no se persiste en claro |
@@ -1041,7 +1138,7 @@ Las diez obligatorias:
 | `imagen_api` | Referencia completa de la imagen de la API, con su etiqueta |
 | `imagen_vectorizador` | Referencia completa de la imagen del vectorizador, con su etiqueta |
 | `imagen_consola` | Referencia completa de la imagen de la consola, con su etiqueta |
-| `registro_credenciales` | Credenciales de descarga del registro privado, en formato de configuración de Docker |
+| `registro_credenciales` | La clave de licencia, en formato de configuración de Docker. Ver la sección 0.5 |
 | `es_storage_class` | Nombre de la StorageClass de la sección 3.1 |
 | `postgres` | Objeto con `host`, `dbname`, `user`, `password`; opcionalmente `port` (5432) y `sslmode` (`require`) |
 | `redis_addr` | `host:puerto` de Redis |
@@ -1065,10 +1162,14 @@ Estas son las cuatro referencias de la entrega vigente. Cópielas tal cual:
 
 | Componente | Referencia |
 |---|---|
-| API | `docker.io/jaakai/jaak-alnilam-api:0.17.1` |
-| Consola | `docker.io/jaakai/jaak-alnilam-web:0.14.0` |
-| Vectorizador | `docker.io/jaakai/jaak-alnitak-serve-gpu:0.1.0` |
-| Herramientas | `docker.io/jaakai/jaak-alnilam-tools:0.16.0` |
+| API | `alnitak-proxy.jaak.ai/jaakai/jaak-alnilam-api:0.17.1` |
+| Consola | `alnitak-proxy.jaak.ai/jaakai/jaak-alnilam-web:0.14.0` |
+| Vectorizador | `alnitak-proxy.jaak.ai/jaakai/jaak-alnitak-serve:0.1.0` |
+| Herramientas | `alnitak-proxy.jaak.ai/jaakai/jaak-alnilam-tools:0.16.0` |
+
+El host es el del proxy de la sección 2.1, y tiene que ser **el mismo** que el del bloque `auths` de
+`registro_credenciales`: el kubelet busca la credencial por host. El nombre del vectorizador es
+`jaak-alnitak-serve`, sin el sufijo `-gpu` que llevaba antes; el proxy no sirve el nombre viejo.
 
 La imagen de herramientas comparte número con la API a propósito: ambas salen del mismo código, así
 que las migraciones que aplica corresponden siempre al esquema que esa versión de la API espera.
@@ -1082,24 +1183,6 @@ que las migraciones que aplica corresponden siempre al esquema que esa versión 
 
   Si una versión nueva no aparece en esta tabla, solicítela antes de instalar en
   lugar de deducirla del listado de etiquetas.
-</Callout>
-
-<Callout type="warning" title="No todas las imágenes del vectorizador llevan los modelos">
-  El vectorizador tiene etiquetas de desarrollo que **no incluyen los modelos**,
-  y son las más tentadoras porque parecen versionadas. Si se usa una de ellas, el
-  contenedor termina con código 1 nada más arrancar y el pod entra en
-  `CrashLoopBackOff`:
-
-  ```
-  INFO ort: Loaded ONNX Runtime dylib with version '1.19.2'
-  Error: leyendo YuNet models/face_detection_yunet_2023mar.onnx
-  Caused by:
-      No such file or directory (os error 2)
-  ```
-
-  El fallo es inmediato y dice exactamente qué falta, así que es fácil de
-  reconocer: si ve ese error, la imagen es la equivocada. La referencia correcta
-  es la de la tabla de arriba.
 </Callout>
 
 <Callout type="warning" title="El bloque `sso` hay que rellenarlo aunque entre con contraseña">
@@ -1160,6 +1243,7 @@ que las migraciones que aplica corresponden siempre al esquema que esa versión 
 | `postgres_admin` | Objeto con `host`, `dbname`, `user`, `password`: la credencial **administrativa**, distinta de la de servicio |
 | `primer_admin` | Correo del primer administrador de la consola |
 | `imagen_herramientas` | Referencia de la imagen de herramientas |
+| `clave_activacion` | La clave de licencia de la sección 0.5, tal cual. Con ella se activa la instalación |
 
 <Callout type="warning" title="Los valores compartidos no se derivan solos">
   Los namespaces, el nombre del índice y la StorageClass aparecen en los dos
@@ -1181,6 +1265,8 @@ Opcionales de uso frecuente:
 | `es_service` | `elasticsearch-es-http` | Nombre del servicio de Elasticsearch |
 | `campos` | los siete del índice | Solo si se cambian los nombres de campo respecto a la sección 6.2 |
 | `indice_plano` | vacío | Solo para migrar una galería anterior sin alias |
+| `licencia_api_url` | `https://licensing.jaak.ai` | Plataforma de licencias. **El mismo valor que en Terraform**, o la activación y la revalidación irían a sitios distintos |
+| `huella_instalacion` | vacío | Identificador de esta instalación ante la plataforma. Vacío lo deriva del propio clúster, que es lo que se quiere. Ver el paso 7 |
 
 Y en `terraform/terraform.tfvars`, las que gobiernan la GPU y la generación de secretos:
 
@@ -1190,6 +1276,7 @@ Y en `terraform/terraform.tfvars`, las que gobiernan la GPU y la generación de 
 | `gpu_node_selector` | `{"nvidia.com/gpu.present": "true"}` | Cómo se seleccionan los nodos con GPU. Ajústelo a cómo etiquete sus nodos, o vacíelo con `{}` |
 | `gpu_tolerations` | una tolerancia para `nvidia.com/gpu` con operador `Exists` y efecto `NoSchedule` | Los *taints* que hay que tolerar. El valor por omisión cubre el caso habitual: no hace falta añadirlo |
 | `gpu_runtime_class` | vacío | Clase de tiempo de ejecución de la GPU. En k3s suele ser `nvidia`. Ver 3.3 |
+| `licencia_api_url` | `https://licensing.jaak.ai` | Plataforma contra la que el vectorizador revalida su licencia. **El mismo valor que en Ansible** |
 | `sso.private_key_pem` | vacío | Llave de firma de sesiones. Vacío la genera la herramienta y **queda en el estado** |
 | `api_key_pepper` | vacío | Pimienta de las API keys de servicio (sección 6.1). Vacía **la genera la herramienta y queda en el estado**: la instalación termina en verde con un secreto que nadie pidió. Póngala usted en producción |
 | `generar_password_pepper` | `false` | Con `true`, genera la pimienta de contraseñas y **queda en el estado** |
@@ -1293,9 +1380,9 @@ el momento de planificar, y el CRD de Elasticsearch lo instala el operador que s
 misma etapa. Sobre un clúster limpio, una sola invocación falla.
 
 **Por qué la etapa 2 termina en error.** Terraform espera a que los despliegues completen y ninguno
-lo consigue todavía: la API monta el certificado de Elasticsearch, que aún no existe —lo publica
-Ansible en la etapa 3—, y el vectorizador tarda más de lo que dura la espera en su primer arranque.
-Agota el plazo y devuelve error. **Este resultado es esperado si los únicos errores son los tiempos de espera descritos a continuación.**
+lo consigue todavía, cada uno por su motivo: la API monta el certificado de Elasticsearch, que aún
+no existe, y el vectorizador monta la clave de licencia, que tampoco. Las dos cosas las publica
+Ansible en la etapa 3. Agota el plazo y devuelve error. **Este resultado es esperado si los únicos errores son los tiempos de espera descritos a continuación.**
 
 Salen **dos** errores, uno por cada despliegue, con esta forma:
 
@@ -1366,6 +1453,11 @@ Son las de Elasticsearch, SSO, cropstore, PostgreSQL, Redis y las dos pimientas.
 de respaldos y las del registro de imágenes **no están aquí**: viven en secretos propios
 (`es-respaldos-s3` y `registro-imagenes`), porque los consumen Elasticsearch y el kubelet, no la
 API.
+
+**El secreto de licencia tampoco lo crea este paso.** Su contenido no existe todavía: lo emite la
+plataforma de licencias cuando el paso 3 activa la instalación. Que falte aquí es lo esperado, y es
+el motivo de que el vectorizador quede en `ContainerCreating` con `secret "alnitak-license" not
+found` hasta entonces.
 
 <Callout type="warning" title="Los secretos tienen que existir antes que los componentes">
   El pod de la API monta la configuración y el certificado de Elasticsearch como
@@ -1541,20 +1633,63 @@ la API crea el índice y su alias durante el arranque, y sin ellos recibe un err
 Antes de emitir la nueva, el paso invalida las anteriores con el mismo nombre, para no acumular
 credenciales con permiso de escritura sobre la galería.
 
-### Paso 7 — Vectorizador
+### Paso 7 — Vectorizador y activación de la licencia
 
-Terraform lo despliega. Si va con GPU, revise la sección 3.3 antes: hay dos ajustes —la clase de
-tiempo de ejecución y las etiquetas del nodo— que si faltan producen síntomas que apuntan a otro
-sitio.
+Terraform despliega el vectorizador, pero **no arranca hasta tener licencia**, y la licencia la
+consigue el playbook. Son dos mitades del mismo paso, en dos herramientas distintas.
+
+**Qué hace la activación.** El playbook manda la clave de licencia de la sección 0.5 a la plataforma
+y recibe a cambio una **clave de motor**, que deja en el secreto `alnitak-license`. Esa es la que el
+vectorizador lee —de un fichero montado, nunca de un argumento de línea de comandos, que la tabla de
+procesos del nodo deja a la vista de cualquiera— para validar al arrancar y para revalidar después.
+Solo con una respuesta buena descifra sus modelos, y lo hace **en memoria**: el texto claro no llega
+al disco.
+
+**Se activa una sola vez, y eso condiciona la operación.** La plataforma entrega esa clave una única
+vez, guarda solo su huella y **responde con un error a una segunda activación de la misma
+instalación**. Es deliberado: todas las réplicas comparten la misma clave, así que reactivar dejaría
+sin credencial a las que ya la están usando. Por eso el paso mira primero si el secreto ya tiene
+clave y, si la tiene, no vuelve a activar — relanzar `install.sh` es seguro y no consume otro hueco
+del cupo contratado.
+
+<Callout type="warning" title="Si pierde el secreto `alnitak-license`, hay que revocar la instalación">
+  La clave del motor **no se puede volver a consultar**: la plataforma guarda
+  solo su hash. Si ese secreto se borra —al recrear el namespace, por ejemplo—,
+  la instalación no puede volver a activarse por sí sola y el intento falla
+  diciendo que ya estaba activada.
+
+  La salida es **revocar esa instalación** en el panel de licencias, lo que
+  libera su hueco de cupo y su identificador, y volver a lanzar la instalación.
+  El identificador que hay que buscar en el panel lo imprime el propio mensaje de
+  error.
+
+  Si respalda secretos del clúster, incluya este: se ahorra el trámite.
+</Callout>
+
+La instalación se identifica ante la plataforma con una huella que se deriva del propio clúster, de
+modo que es la misma en cada pasada y distinta para dos instalaciones que compartan clúster. No hay
+que configurarla; `huella_instalacion` existe para el caso en que el cliente prefiera usar su propio
+identificador.
+
+**Comprobación.** Si va con GPU, revise la sección 3.3 antes: hay dos ajustes —la clase de tiempo de
+ejecución y las etiquetas del nodo— que si faltan producen síntomas que apuntan a otro sitio.
 
 ```bash
 kubectl get pods -n biometria-1n-gpu
 kubectl logs -n biometria-1n-gpu -l app=vectorizador --tail=20
+
+# La clave del motor está donde el pod la espera
+kubectl get secret alnitak-license -n biometria-1n-gpu
 ```
 
 El registro debe mostrar el proveedor de ejecución activo y el modelo cargado. En tarjetas más
 recientes que los kernels precompilados de la imagen, el primer arranque puede tardar más de un
 minuto compilándolos; es normal y solo ocurre la primera vez.
+
+Si el pod se queda en `ContainerCreating` con `secret "alnitak-license" not found`, es que la
+activación no llegó a completarse: el mensaje del playbook dice por qué. Y si arranca y muere
+enseguida quejándose de la licencia, revise que el clúster alcanza `licensing.jaak.ai` (sección
+4.4): sin conexión en el arranque, el vectorizador no arranca a propósito.
 
 ### Paso 8 — API
 
@@ -1796,8 +1931,23 @@ kubectl exec -n biometria-1n "$POD" -- \
 Debe devolver algo así:
 
 ```json
-{"inflight":0,"max_inflight":128,"status":"ready","workers":4}
+{"status":"ready","license":"valid","license_detail":"licencia validada",
+ "models_loaded":4,"inflight":0,"max_inflight":128,"workers":4}
 ```
+
+Los dos campos que hay que mirar son `status` y `license`. Con todo en orden valen `ready` y
+`valid`; cualquier otra cosa responde `503` y `status` dice qué pasa:
+
+| `status` | Qué significa |
+|---|---|
+| `ready` | Sirviendo |
+| `license_revoked` | La plataforma dijo que esta instalación ya no vale. Los modelos están descargados |
+| `license_unverified` | Doce horas sin poder revalidar. Los modelos están descargados |
+| `models_unloaded` | Sin modelos en memoria, sin que la licencia sea la causa |
+| `saturated` | Sano, pero con todas las peticiones simultáneas ocupadas |
+
+`license_detail` lleva el texto de lo que respondió la plataforma, y es por donde empezar cuando
+`license` no es `valid`.
 
 En el primer arranque con GPU puede tardar más de un minuto, según la sección 3.3.
 
@@ -2280,6 +2430,37 @@ según la sección 3.2, y conviene acotar además quién puede hablar con ellos 
 acceso efectivo, por lo que la instalación debe completar la sección 6.1 antes de exponer el
 servicio.
 
+**El vectorizador depende de la licencia mientras vive, no solo al instalar.** Revalida cada **24
+horas** contra `licensing.jaak.ai`, y de ahí salen tres comportamientos que conviene conocer antes
+de que ocurran:
+
+| Situación | Qué hace el vectorizador |
+|---|---|
+| La plataforma responde que la instalación ya no vale | Deja de atender **en ese momento**, sin margen, y **descarga los modelos de memoria** |
+| La plataforma no responde | Sigue sirviendo y reintenta cada hora. A las **12 horas** sin respuesta se detiene |
+| No hay conexión al arrancar | **No arranca.** Sin margen, y es deliberado |
+
+Cuando se detiene no muere en silencio: responde diciendo que el problema es de licencia y sale de
+rotación en segundos. El pod sigue en pie para poder preguntarle la causa, así que **un vectorizador
+detenido por licencia no se distingue por reinicios**: se ve porque su sonda de disponibilidad no
+pasa y porque lo dice su registro.
+
+Las 12 horas de margen son para una caída de red, no para operar sin conexión: un corte de salida a
+internet que dure una jornada detiene el servicio. Si su red tiene ventanas de mantenimiento largas,
+téngalo en cuenta.
+
+<Callout type="info" title="Suspender y caducar es de la licencia; revocar es de la instalación">
+  Son cosas distintas y el vocabulario importa cuando hay que pedir algo a JAAK.
+  Una **licencia** se suspende o caduca, y eso afecta a todo lo que dependa de
+  ella: deja de abrir el proxy de imágenes y detiene los vectorizadores de todas
+  las instalaciones que ampara. Una **instalación** se revoca, una a una, y eso
+  solo detiene esa: libera además su hueco de cupo, que es lo que permite volver
+  a activarla.
+
+  Pedir «que nos revoquen la licencia» y «que nos suspendan la instalación» son
+  las dos frases que llevan a la operación equivocada.
+</Callout>
+
 **Redundancia.** La configuración de partida despliega una réplica de vectorizador. La API escala
 horizontalmente sin más que aumentar réplicas; el vectorizador requiere una GPU por réplica, por lo
 que la alta disponibilidad de ese componente es una decisión de dimensionado con coste asociado.
@@ -2381,12 +2562,22 @@ es la lista de discos no conectados de la cuenta.
   más los va a recordar.
 </Callout>
 
-**Paso 4. Lo que no gestiona este procedimiento.** Si usó servicios administrados en lugar de las
+**Paso 4. Revocar la instalación en el panel de licencias.**
+
+Es el equivalente de los volúmenes, pero del lado de la licencia: `terraform destroy` borra el
+secreto con la clave del motor y **la plataforma no se entera**. La instalación sigue contando en el
+cupo de la licencia, ocupando un hueco que ya no usa nadie, y su identificador sigue tomado — de
+modo que volver a instalar sobre ese mismo clúster fallaría diciendo que ya estaba activada.
+
+Revóquela en el panel de licencias. Es una operación deliberada y de un solo paso, y hasta hacerla
+el desmontaje no está completo aunque el clúster esté vacío.
+
+**Paso 5. Lo que no gestiona este procedimiento.** Si usó servicios administrados en lugar de las
 dependencias del apéndice A, la base de datos, el caché y el contenedor de objetos son recursos
 propios de su cuenta y se retiran por separado. Lo mismo aplica al contenedor de recortes y al de
 respaldos: no los crea la instalación y no los borra.
 
-**Paso 5. Los CRD de Elasticsearch, si el clúster sigue en pie.**
+**Paso 6. Los CRD de Elasticsearch, si el clúster sigue en pie.**
 
 `terraform destroy` **no borra las definiciones de recurso de ECK**: Helm las conserva por política y
 lo dice en un aviso al terminar, entre el ruido de la salida. Son doce, no ocupan nada y no cuestan
