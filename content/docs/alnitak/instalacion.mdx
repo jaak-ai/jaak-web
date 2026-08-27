@@ -378,6 +378,24 @@ error esperado de la segunda —y solo si **todos** los errores de esa etapa son
 ejecuta las verificaciones y comprueba al terminar que el estado quedó íntegro. Termina con `INSTALACION COMPLETA` y código de salida 0; cualquier otro final detiene la
 instalación e indica la causa.
 
+**Puede detenerse a pedir confirmación.** Si alguno de los secretos que la herramienta es capaz de
+generar sola se ha dejado así —`api_key_pepper` vacía, `sso.private_key_pem` vacía, o
+`generar_password_pepper = true`—, las comprobaciones previas avisan de que quedarán escritos en
+claro en el estado de Terraform y **esperan una respuesta por consola** antes de tocar el clúster.
+Para una ejecución desatendida, la variable de entorno `ASUMIR_SI=1` suprime esa pausa y da por
+aceptados todos los avisos del guion, ese incluido:
+
+```bash
+ASUMIR_SI=1 ./install.sh
+```
+
+Sin terminal interactiva —una tubería, un `cron`, un `ssh` sin `-t`— no pregunta: deja el aviso en la
+salida y continúa. Lo que sí parece un cuelgue es lanzarlo con la terminal delante y nadie mirando:
+en segundo plano (`./install.sh &`) el intérprete lo suspende al ir a leer la respuesta —`suspended
+(tty input)` en zsh, `Stopped (tty input)` en bash, y sin más explicación—, y con la salida
+redirigida a un fichero la pregunta se va con ella y la pantalla queda en blanco. Para los dos
+casos, `ASUMIR_SI=1` o redirigir la entrada con `< /dev/null`.
+
 Si se ha configurado una imagen de prueba, ejecuta además las pruebas funcionales: inicio de sesión,
 emisión de credencial de servicio, alta de un rostro, búsqueda, rechazo del duplicado y revocación.
 
@@ -1376,7 +1394,9 @@ terraform apply                            # 4) deja el estado consistente
 ```
 
 Estos comandos son la forma desplegada de lo que hace `./install.sh`, que además comprueba entre
-etapas que el error de la segunda sea el esperado y no otro. Si los ejecuta a mano, tenga presentes
+etapas que el error de la segunda sea el esperado y no otro, y que antes de la primera puede
+detenerse a pedir confirmación si algún secreto de la sección 6.1 se va a generar solo —`ASUMIR_SI=1`
+suprime esa pausa: ver «Instalación rápida»—. Si los ejecuta a mano, tenga presentes
 los cambios de directorio y el `init`: sin él, la primera invocación falla porque los proveedores no
 están descargados.
 
