@@ -1688,11 +1688,11 @@ del cupo contratado.
   la instalación no puede volver a activarse por sí sola y el intento falla
   diciendo que ya estaba activada.
 
-  La salida es **revocar esa instalación** en el panel de licencias, lo que
-  libera su hueco de cupo y su identificador, y volver a lanzar la instalación.
-  El identificador que hay que buscar en el panel es el que anotó
-  al instalar —más abajo se explica de dónde sacarlo— y lo imprime también el
-  propio mensaje de error.
+  La salida es **pedir a JAAK que revoque esa instalación** —el panel de
+  licencias es una herramienta interna, no algo a lo que usted tenga acceso—, lo
+  que libera su hueco de cupo y su identificador, y volver a lanzar la
+  instalación. Pase el identificador: es el que anotó al instalar —más abajo se
+  explica de dónde sacarlo— y lo imprime también el propio mensaje de error.
 
   Si respalda secretos del clúster, incluya este: se ahorra el trámite.
 </Callout>
@@ -2612,23 +2612,29 @@ es la lista de discos no conectados de la cuenta.
   más los va a recordar.
 </Callout>
 
-**Paso 4. Revocar la instalación en el panel de licencias.**
+**Paso 4. Pedir a JAAK que revoque la instalación.**
 
 Es el equivalente de los volúmenes, pero del lado de la licencia: `terraform destroy` borra el
 secreto con la clave del motor y **la plataforma no se entera**. La instalación sigue contando en el
 cupo de la licencia, ocupando un hueco que ya no usa nadie, y su identificador sigue tomado — de
 modo que volver a instalar sobre ese mismo clúster fallaría diciendo que ya estaba activada.
 
-Revóquela en el panel de licencias, buscándola por el identificador que anotó en el paso 7 de la
-sección 7. Si no lo anotó, léalo **antes** de destruir nada:
+**La revocación se hace del lado de JAAK**, en el panel de licencias, que es una herramienta interna
+y no algo a lo que usted tenga acceso. Solicítela por el canal de soporte del contrato indicando el
+identificador de la instalación, el nombre del clúster y la licencia con la que se activó. Es una
+operación deliberada y de un solo paso, y hasta hacerla el desmontaje no está completo aunque el
+clúster esté vacío.
+
+El identificador es el que anotó en el paso 7 de la sección 7. Si no lo anotó, léalo **antes** de
+destruir nada — el secreto se va con `terraform destroy` y con él el dato:
 
 ```bash
 kubectl get secret alnitak-license -n biometria-1n-gpu \
   -o jsonpath='{.data.engine-id}' | base64 -d; echo
 ```
 
-Es una operación deliberada y de un solo paso, y hasta hacerla el desmontaje no está completo aunque
-el clúster esté vacío.
+Si ya destruyó el clúster sin anotarlo, dígalo igual: JAAK puede localizar la instalación por la
+licencia y la fecha, pero es un trámite más largo.
 
 **Paso 5. Lo que no gestiona este procedimiento.** Si usó servicios administrados en lugar de las
 dependencias del apéndice A, la base de datos, el caché y el contenedor de objetos son recursos
