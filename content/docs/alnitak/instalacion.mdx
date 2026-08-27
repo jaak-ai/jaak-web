@@ -1084,12 +1084,19 @@ log:
   level: info
 ```
 
-<Callout type="warning" title="Los siete campos del índice deben declararse los siete">
+<Callout type="warning" title="Los siete campos del índice van los siete, y no son una variable del tfvars">
   Los valores por omisión que el proceso aplica a `elasticsearch.fields` no
-  coinciden con los nombres que crea la plantilla del índice de la sección 7. Si
-  se omite uno, la API escribirá en un campo que el índice no tiene definido:
-  Elasticsearch lo creará automáticamente sin el tipo adecuado y el filtrado por
-  ese campo dejará de aprovechar el índice. Declárelos los siete.
+  coinciden con los nombres que crea la plantilla del índice de la sección 7:
+  cinco de los siete están en español (`vector_rostro`, `id_biometrico`,
+  `expediente`, `canal`, `alta`). Si se omite uno, la API escribirá en un campo
+  que el índice no tiene definido: Elasticsearch lo creará automáticamente sin el
+  tipo adecuado y el filtrado por ese campo dejará de aprovechar el índice.
+
+  Por eso los siete van explícitos, y por eso **no hay variable que rellenar en
+  la sección 6.3**: están fijados con los valores de arriba en
+  `terraform/namespaces-secretos.tf`. Si necesita cambiar alguno, edítelo ahí y
+  también en `campos` de `ansible/group_vars/all.yml`, que es de donde sale la
+  plantilla del índice: están en dos ficheros y nada comprueba que coincidan.
 </Callout>
 
 **Campos que impiden el arranque si faltan o son incorrectos:**
@@ -1263,7 +1270,7 @@ Opcionales de uso frecuente:
 | `vectorizador_provider` | `cuda` | `cpu` para desplegar sin GPU |
 | `tenant` | `default` | **Déjelo en `default`.** Ver el aviso de abajo |
 | `es_service` | `elasticsearch-es-http` | Nombre del servicio de Elasticsearch |
-| `campos` | los siete del índice | Solo si se cambian los nombres de campo respecto a la sección 6.2 |
+| `campos` | los siete del índice | Solo si se cambian los nombres de campo respecto a la sección 6.2. **No tienen variable en Terraform**: el otro lado está fijado en `terraform/namespaces-secretos.tf`. Ver el aviso de la sección 6.2 |
 | `indice_plano` | vacío | Solo para migrar una galería anterior sin alias |
 | `licencia_api_url` | `https://licensing.jaak.ai` | Plataforma de licencias. **El mismo valor que en Terraform**, o la activación y la revalidación irían a sitios distintos |
 | `huella_instalacion` | vacío | Identificador de esta instalación ante la plataforma. Vacío lo deriva del propio clúster, que es lo que se quiere. Ver el paso 7 |
