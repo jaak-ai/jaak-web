@@ -35,6 +35,7 @@ export const metadata: Metadata = {
     type: "article",
     publishedTime: "2026-08-28",
     authors: ["JAAK"],
+    images: ["/images/blog/biometria-cnbv-2026-identidad-autenticacion.png"],
   },
 };
 
@@ -44,7 +45,7 @@ const articleSchema = {
   headline: "Biometría y CNBV en 2026: el reto ya no es reconocer un rostro",
   description:
     "Análisis técnico y regulatorio de la resolución que modifica las Disposiciones de carácter general aplicables a las instituciones de crédito en materia de biométricos, publicada en el DOF el 1 de julio de 2026.",
-  image: "https://jaak.ai/images/logos/jaak-logo-azul.png",
+  image: "https://jaak.ai/images/blog/biometria-cnbv-2026-identidad-autenticacion.png",
   datePublished: "2026-08-28",
   dateModified: "2026-08-28",
   author: {
@@ -520,6 +521,8 @@ export default function BiometriaCnbv2026() {
         date="28 de agosto, 2026"
         readTime="27 min"
         slug="biometria-cnbv-2026-identidad-autenticacion"
+        image="/images/blog/biometria-cnbv-2026-identidad-autenticacion.png"
+        imageAlt="Biometría y CNBV en 2026 — documento, verificación facial, validación de fuente, seguridad, evidencia y confianza"
         relatedPosts={[
           {
             title: "Guía completa de las disposiciones CNBV para verificación de identidad",

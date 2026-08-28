@@ -19,6 +19,7 @@ export const blogPosts: BlogPost[] = [
     category: "Seguridad",
     slug: "biometria-cnbv-2026-identidad-autenticacion",
     readTime: "27 min",
+    image: "/images/blog/biometria-cnbv-2026-identidad-autenticacion.png",
   },
   {
     title: "Ley Antilavado en México: por qué el sector inmobiliario no puede seguir operando como hace diez años",
