@@ -1063,7 +1063,7 @@ elasticsearch:
   similarity: dot_product
   external_index: false
   read_only: false
-  active_model: w600k_r50
+  active_model: jaak-aura-20260828
   fields:                             # los siete, explícitos
     vector: vector
     id: id
@@ -1192,11 +1192,18 @@ Estas son las cuatro referencias de la entrega vigente. Cópielas tal cual:
 |---|---|
 | API | `alnitak-proxy.jaak.ai/jaakai/jaak-alnilam-api:0.17.1` |
 | Consola | `alnitak-proxy.jaak.ai/jaakai/jaak-alnilam-web:0.14.0` |
-| Vectorizador | `alnitak-proxy.jaak.ai/jaakai/jaak-alnitak-serve:0.1.0` |
+| Vectorizador | `alnitak-proxy.jaak.ai/jaakai/jaak-alnitak-serve:0.2.0` |
 | Herramientas | `alnitak-proxy.jaak.ai/jaakai/jaak-alnilam-tools:0.16.0` |
 
 El host es el del proxy de la sección 2.1, y tiene que ser **el mismo** que el del bloque `auths` de
-`registro_credenciales`: el kubelet busca la credencial por host. El nombre del vectorizador es
+`registro_credenciales`: el kubelet busca la credencial por host.
+
+`active_model` tiene que coincidir **exactamente** con el modelo que sirve la versión del
+vectorizador de esta tabla; con la 0.2.0 es `jaak-aura-20260828`. No es cosmético: cada alta se
+etiqueta con ese valor y toda búsqueda filtra por él, así que si los dos no coinciden el alta se
+rechaza con un error que nombra los dos modelos. Los vectores de dos modelos distintos **no son
+comparables**: cambiar de versión de vectorizador en una instalación que ya tenga altas obliga a
+re-vectorizar la galería contra un índice nuevo y mover el alias, no basta con cambiar este valor. El nombre del vectorizador es
 `jaak-alnitak-serve`, sin el sufijo `-gpu` que llevaba antes; el proxy no sirve el nombre viejo.
 
 La imagen de herramientas comparte número con la API a propósito: ambas salen del mismo código, así
