@@ -11,6 +11,16 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    title: "Biometría y CNBV en 2026: el reto ya no es reconocer un rostro",
+    excerpt:
+      "La actualización regulatoria obliga a mirar más allá del reconocimiento facial: identidad oficial, liveness, enrolamiento, autenticación, bases biométricas propias, seguridad, evidencia y gobierno del dato forman parte de una misma conversación tecnológica.",
+    date: "28 de agosto, 2026",
+    dateISO: "2026-08-28",
+    category: "Seguridad",
+    slug: "biometria-cnbv-2026-identidad-autenticacion",
+    readTime: "27 min",
+  },
+  {
     title: "Ley Antilavado en México: por qué el sector inmobiliario no puede seguir operando como hace diez años",
     excerpt:
       "La reforma a la LFPIORPI de julio 2025 creó la fracción V Bis, eliminó el umbral de habitualidad y puso al desarrollo inmobiliario en el centro del radar de la UIF. Analizamos qué cambió y cómo convertir el cumplimiento en un expediente digital defendible.",
