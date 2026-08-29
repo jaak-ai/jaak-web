@@ -115,6 +115,35 @@ describe("mapCatalog", () => {
   });
 });
 
+describe("setupFee (AUTO-12)", () => {
+  it("mapea el setup fee sin IVA cuando el tier lo trae (>0)", () => {
+    const conSetup: CatalogProduct = {
+      ...consultaIne,
+      tiers: [{ id: "e1", tier: "titanio", tierName: "Titanio", tierOrder: 1, price: 9280, setupFee: 464, segment: "enterprise", quota: { value: 5000 } }],
+    };
+    const p = mapProducto(conSetup, "enterprise")!;
+    // 464 CON IVA → 400 sin IVA
+    expect(p.paquetes[0].setupFee).toBe(400);
+  });
+
+  it("no setea setupFee cuando el tier no lo trae o es 0", () => {
+    const p = mapProducto(consultaIne)!; // sin setupFee
+    expect(p.paquetes.every((q) => q.setupFee === undefined)).toBe(true);
+  });
+
+  it("el descuento anual NO toca el setup fee", () => {
+    const conSetup: CatalogProduct = {
+      ...consultaIne,
+      tiers: [{ id: "e1", tier: "titanio", tierName: "Titanio", tierOrder: 1, price: 9280, setupFee: 464, segment: "enterprise", quota: { value: 5000 } }],
+    };
+    const p = mapProducto(conSetup, "enterprise")!;
+    const [out] = applyAnnualDiscount([p], 0.05);
+    // precio 8000 → 7600 (−5%); setupFee 400 intacto
+    expect(out.paquetes[0].precio).toBe(7600);
+    expect(out.paquetes[0].setupFee).toBe(400);
+  });
+});
+
 describe("applyAnnualDiscount (AUTO-10)", () => {
   // consultaIne (sin IVA): plata 200, cobre 14.
   it("aplica el descuento al precio de cada paquete", () => {

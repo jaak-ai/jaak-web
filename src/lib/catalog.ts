@@ -67,6 +67,7 @@ export interface CatalogTier {
   tierName: string;
   tierOrder: number;
   price: number; // CON IVA
+  setupFee?: number; // cuota de activación única, CON IVA (AUTO-12; hoy solo enterprise)
   segment?: string; // autoservicio | enterprise (AUTO-7)
   quota: { value: number; prefix?: string; postfix?: string };
 }
@@ -102,11 +103,13 @@ function sinIVA(conIVA: number): number {
 
 function mapPaquete(t: CatalogTier): Paquete | null {
   if (!t.tier) return null;
+  const setup = t.setupFee && t.setupFee > 0 ? sinIVA(t.setupFee) : 0;
   return {
     id: t.tier,
     nombre: t.tierName || t.tier,
     cantidad: t.quota?.value ?? 0,
     precio: sinIVA(t.price),
+    ...(setup > 0 ? { setupFee: setup } : {}),
   };
 }
 
