@@ -24,6 +24,16 @@ export interface Paquete {
   // la traen (>0); autoservicio es 0/ausente. Se muestra como línea aparte para
   // que "lo mostrado = lo cobrado" (AUTO-12). NO recibe el descuento anual.
   setupFee?: number;
+  // Recurrencia mensual (AUTO-14). `mensual` = el SKU se puede pagar mes a mes.
+  // `precioMensual`/`cantidadMensual` son los derivados del backend (P/12, cuota/12),
+  // MXN sin IVA / unidades. NO reciben el descuento anual (ese es solo del pago
+  // anual). El precio anual sigue en `precio`; la vista mensual del carrito los
+  // intercambia (ver CarritoContext). `recurrente` lo marca esa vista para que el
+  // deep-link del checkout mande `m: "recharge"`.
+  mensual?: boolean;
+  precioMensual?: number;
+  cantidadMensual?: number;
+  recurrente?: boolean;
 }
 
 export interface Producto {
@@ -341,6 +351,11 @@ export function buildCheckoutUrl(
         s: paquete.setupFee ? Math.round(paquete.setupFee * (1 + IVA) * 100) / 100 : 0,
         d: `${nombre} ${paquete.nombre} ${paquete.cantidad}`,
         q: paquete.cantidad,
+        // Cadencia de cobro (AUTO-14). Por defecto "once" (pago único, comportamiento
+        // previo). La vista mensual del carrito marca `paquete.recurrente`, y aquí lo
+        // traducimos a "recharge" para que el checkout unificado suscriba el SKU en
+        // lugar de cobrarlo una vez. `precio`/`cantidad` ya vienen en su forma mensual.
+        m: paquete.recurrente ? "recharge" : "once",
       };
     });
   const payload: {

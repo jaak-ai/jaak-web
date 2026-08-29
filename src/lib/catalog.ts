@@ -70,6 +70,12 @@ export interface CatalogTier {
   setupFee?: number; // cuota de activación única, CON IVA (AUTO-12; hoy solo enterprise)
   segment?: string; // autoservicio | enterprise (AUTO-7)
   quota: { value: number; prefix?: string; postfix?: string };
+  // Recurrencia mensual (AUTO-14). Si el tier se puede pagar mes a mes, el backend
+  // trae `allowMonthly` + los derivados `monthlyPrice` (CON IVA) y `monthlyQuota`.
+  // Ausentes/0 cuando el SKU es solo anual/pago único.
+  allowMonthly?: boolean;
+  monthlyPrice?: number; // CON IVA
+  monthlyQuota?: number;
 }
 export interface CatalogProduct {
   slug: string;
@@ -104,12 +110,19 @@ function sinIVA(conIVA: number): number {
 function mapPaquete(t: CatalogTier): Paquete | null {
   if (!t.tier) return null;
   const setup = t.setupFee && t.setupFee > 0 ? sinIVA(t.setupFee) : 0;
+  // Mensual (AUTO-14): solo si el backend lo habilita y trae un precio derivado > 0.
+  // El precio mensual llega CON IVA (como el anual) → a SIN IVA para el modelo de UI.
+  // NO se le aplica el descuento anual (applyAnnualDiscount solo toca `precio`).
+  const mensual = !!t.allowMonthly && !!t.monthlyPrice && t.monthlyPrice > 0;
   return {
     id: t.tier,
     nombre: t.tierName || t.tier,
     cantidad: t.quota?.value ?? 0,
     precio: sinIVA(t.price),
     ...(setup > 0 ? { setupFee: setup } : {}),
+    ...(mensual
+      ? { mensual: true, precioMensual: sinIVA(t.monthlyPrice!), cantidadMensual: t.monthlyQuota ?? 0 }
+      : {}),
   };
 }
 
@@ -185,12 +198,20 @@ export function applyAnnualDiscount(productos: Producto[], rate: number): Produc
   }));
 }
 
+// hayMensual: ¿algún paquete de estos productos permite pago mensual? (AUTO-14)
+// Gobierna si la página enterprise ofrece el toggle Anual/Mensual o lo deja en
+// "Próximamente". Deriva de los datos, nunca se hardcodea.
+function hayMensual(productos: Producto[]): boolean {
+  return productos.some((p) => p.paquetes.some((q) => q.mensual));
+}
+
 export async function getAutoservicioCatalog(segment: Segment = "autoservicio"): Promise<{
   categorias: Categoria[];
   productos: Producto[];
   pricingIndex: PricingIndex;
   productKeys: Record<string, string>;
   annualDiscountRate: number;
+  hasMonthly: boolean;
 }> {
   try {
     const res = await fetch(`${API_BASE}/public/v1/catalog`, {
@@ -213,6 +234,8 @@ export async function getAutoservicioCatalog(segment: Segment = "autoservicio"):
       pricingIndex: buildPricingIndex(data, segment),
       productKeys: buildProductKeys(data, segment),
       annualDiscountRate: segment === "enterprise" ? rate : 0,
+      // El pago mensual es una opción enterprise (mismo producto, cadencia mensual).
+      hasMonthly: segment === "enterprise" && hayMensual(productos),
     };
   } catch {
     // Fallback seguro SOLO para autoservicio: la página estándar no se rompe si el
@@ -224,6 +247,7 @@ export async function getAutoservicioCatalog(segment: Segment = "autoservicio"):
       pricingIndex: {},
       productKeys: {},
       annualDiscountRate: 0,
+      hasMonthly: false,
     };
   }
 }
