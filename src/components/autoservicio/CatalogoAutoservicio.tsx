@@ -182,6 +182,15 @@ export default function CatalogoAutoservicio() {
                 Incluye <span className="text-[14px] font-bold">{paqueteSel.cantidad.toLocaleString("es-MX")}</span> {producto.unidad}
               </span>
             </div>
+            {/* AUTO-12: cuota de activación única (setup fee). Solo aparece cuando el
+                SKU la trae (>0, hoy solo enterprise) → "mostrado = cobrado". Se cobra
+                una sola vez por empresa. */}
+            {!!paqueteSel.setupFee && paqueteSel.setupFee > 0 && (
+              <div className="mt-1.5 text-[12px]" style={{ color: "#64748B" }}>
+                + {formatMXN(paqueteSel.setupFee)} de activación única
+                <span className="text-[11px]" style={{ color: "#94A3B8" }}> (una sola vez)</span>
+              </div>
+            )}
           </div>
           <button type="button"
             onClick={() => toggle(producto.id)}

@@ -20,6 +20,10 @@ export interface Paquete {
   nombre: string;
   cantidad: number; // unidades incluidas
   precio: number; // MXN, sin IVA
+  // Cuota de activación única (setup fee), MXN sin IVA. Hoy solo SKUs enterprise
+  // la traen (>0); autoservicio es 0/ausente. Se muestra como línea aparte para
+  // que "lo mostrado = lo cobrado" (AUTO-12). NO recibe el descuento anual.
+  setupFee?: number;
 }
 
 export interface Producto {
@@ -331,7 +335,10 @@ export function buildCheckoutUrl(
         n: nombre,
         pr: Math.round(paquete.precio * (1 + IVA) * 100) / 100,
         c: "MXN",
-        s: 0,
+        // Setup fee (AUTO-12) CON IVA en el slot `s` para que /register lo muestre.
+        // El cobro real lo re-resuelve el backend desde product_pricing; esto es solo
+        // display, coherente con lo mostrado en el catálogo.
+        s: paquete.setupFee ? Math.round(paquete.setupFee * (1 + IVA) * 100) / 100 : 0,
         d: `${nombre} ${paquete.nombre} ${paquete.cantidad}`,
         q: paquete.cantidad,
       };
