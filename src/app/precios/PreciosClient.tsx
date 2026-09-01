@@ -80,13 +80,14 @@ const PLANS = [
     badge: "Infraestructura crítica",
     badgeColor: "#655dc6",
     price: "Personalizado",
-    priceSub: "contrato anual · volumen desde 5k/mes",
+    priceSub: "contrato anual · volumen desde 5k/mes · cuota de activación única",
     desc: "Diseñado para operaciones reguladas con alto volumen y requerimientos específicos de cumplimiento.",
     features: [
       "Integración API / SDK / Whitelabel",
       "Infraestructura dedicada",
       "Cumplimiento avanzado (CNBV, UIF)",
       "Personalización completa de flujos",
+      "Cuota de activación única por empresa",
     ],
     forWhom: ["Bancos · Fintech reguladas", "Telco · Grandes corporativos", "Volumen ≥ 5,000 verif/mes"],
     support: "Equipo dedicado + SLA garantizado",
@@ -145,7 +146,11 @@ const faqItems = [
   },
   {
     question: "¿Los paquetes caducan o son reembolsables?",
-    answer: "Vencen a 12 meses desde la compra. No son reembolsables. Setup Fees tampoco son reembolsables.",
+    answer: "Vencen a 12 meses desde la compra. No son reembolsables. La cuota de activación única (setup fee) de Enterprise tampoco es reembolsable.",
+  },
+  {
+    question: "¿Hay cuota de activación (setup fee)?",
+    answer: "El Autoservicio no tiene cuota de activación. Los planes Enterprise incluyen una cuota de activación única por empresa, que se cobra solo la primera vez; las compras posteriores no la vuelven a pagar.",
   },
   {
     question: "¿JAAK cumple con LFPIORPI, CNBV y UIF?",
