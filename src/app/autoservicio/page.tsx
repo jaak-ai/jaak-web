@@ -37,7 +37,7 @@ const TEAL = "#2DB6C1";
 export default async function AutoservicioPage() {
   // Catálogo data-driven (endpoint unificado): productos + categorías +
   // pricingIndex (IDs reales para el checkout) + productKeys, todo de una fuente.
-  const { productos, categorias, pricingIndex, productKeys } = await getAutoservicioCatalog();
+  const { productos, categorias, pricingIndex, productKeys } = await getAutoservicioCatalog("autoservicio");
 
   return (
     <>
