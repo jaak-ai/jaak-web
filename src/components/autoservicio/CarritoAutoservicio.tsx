@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from "react";
 import {
-  IVA,
   formatMXN,
   buildCheckoutUrl,
   type Producto,
   type Paquete,
 } from "@/data/autoservicio-catalogo";
+import { computeCartTotals } from "@/lib/autoservicioCoupon";
 import { useCarrito } from "./CarritoContext";
 import { getUtmParams } from "@/components/CloudflareTurnstile";
 
@@ -60,16 +60,11 @@ export default function CarritoAutoservicio() {
   const subtotal = items.reduce((s, i) => s + i.paquete.precio, 0);
 
   // El descuento se previsualiza solo cuando el cupón de la URL coincide con el
-  // destacado vigente. AUTO-30: el descuento se aplica al SUBTOTAL (antes de IVA),
-  // como cobra el backend; el IVA se recalcula sobre la base ya descontada.
+  // destacado vigente. El cálculo (descuento sobre subtotal + IVA sobre la base
+  // descontada, AUTO-30) vive en computeCartTotals para poder testearlo y no
+  // duplicarlo entre el panel desktop y la barra móvil.
   const couponApplies = !!(featured && couponCode && featured.code.toUpperCase() === couponCode.toUpperCase());
-  const descuento = couponApplies
-    ? featured!.type === "percent"
-      ? Math.round((subtotal * featured!.value) / 100)
-      : Math.min(featured!.value, subtotal)
-    : 0;
-  const iva = Math.round((subtotal - descuento) * IVA);
-  const total = subtotal - descuento + iva; // total final (con descuento + IVA sobre la base descontada)
+  const { descuento, iva, total } = computeCartTotals(subtotal, couponApplies ? featured! : null);
 
   const checkoutHref = items.length
     ? buildCheckoutUrl(items, {
