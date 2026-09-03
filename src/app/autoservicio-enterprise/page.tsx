@@ -119,22 +119,17 @@ export default async function AutoservicioEnterprisePage() {
 
               {/* Toggle anual/mensual del hero (presentacional). El toggle FUNCIONAL
                   que recalcula precios vive con el catálogo (AutoservicioVariantes),
-                  que solo se renderiza cuando hay SKUs. Aquí comunicamos el esquema:
-                  si algún SKU permite mensual (AUTO-14) invitamos a elegir abajo; si
-                  no, "Mensual — Próximamente". Sin catálogo cargado, sigue anual. */}
+                  que solo se renderiza cuando hay SKUs. El Mensual SOLO se muestra
+                  cuando hay dato (algún SKU enterprise permite mensual, AUTO-14): no
+                  anunciamos "próximamente". Sin mensual, el hero comunica solo Anual. */}
               <div className="mt-9 inline-flex items-center gap-1 rounded-xl p-1" style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.12)" }}>
                 <span className="rounded-lg px-4 py-2 text-[13px] font-semibold text-white" style={{ background: GOLD, color: "#1A1400" }}>
                   Anual
                 </span>
-                {hasMonthly ? (
+                {hasMonthly && (
                   <span className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[13px] font-semibold" style={{ color: "rgba(255,255,255,0.72)" }}>
                     Mensual
                     <span className="rounded-full px-1.5 py-0.5 text-[10px] font-bold" style={{ background: "rgba(45,182,193,0.22)", color: "#8FE3EA" }}>Disponible</span>
-                  </span>
-                ) : (
-                  <span className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[13px] font-semibold" style={{ color: "rgba(255,255,255,0.45)" }}>
-                    Mensual
-                    <span className="rounded-full px-1.5 py-0.5 text-[10px] font-bold" style={{ background: "rgba(255,255,255,0.1)", color: "rgba(255,255,255,0.6)" }}>Próximamente</span>
                   </span>
                 )}
               </div>
