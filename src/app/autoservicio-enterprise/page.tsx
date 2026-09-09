@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AutoservicioVariantes from "@/components/autoservicio/AutoservicioVariantes";
 import ComoFuncionaBanner from "@/components/autoservicio/ComoFuncionaBanner";
 import { getAutoservicioCatalog } from "@/lib/catalog";
+import { buildAutoservicioMetadata } from "@/lib/autoservicioMetadata";
 import {
   enterpriseBreadcrumbSchema,
   enterpriseFaqSchema,
@@ -12,30 +12,17 @@ import {
   ENTERPRISE_FAQ,
 } from "./schema";
 
-export const metadata: Metadata = {
+export const metadata = buildAutoservicioMetadata({
   title: "Autoservicio Enterprise — Alto volumen con pago anual | JAAK",
   description:
     "Paquetes Enterprise de KYC, firma electrónica NOM-151, validaciones y OCR para operaciones de alto volumen. Pago anual, activación inmediata y compra en línea sin vendedores.",
-  alternates: { canonical: "/autoservicio-enterprise" },
-  openGraph: {
-    type: "website",
-    locale: "es_MX",
-    url: "/autoservicio-enterprise",
-    siteName: "JAAK",
-    title: "Autoservicio Enterprise JAAK — Alto volumen con pago anual",
-    description:
-      "Paquetes Enterprise de KYC, firma electrónica, validaciones y OCR para alto volumen. Pago anual, activación inmediata.",
-    images: [{ url: "/images/logos/jaak-logo-azul.png", width: 800, height: 400, alt: "Autoservicio Enterprise JAAK" }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Autoservicio Enterprise JAAK — Alto volumen con pago anual",
-    description: "Paquetes Enterprise de KYC, firma electrónica, validaciones y OCR para alto volumen. Pago anual.",
-    images: ["/images/logos/jaak-logo-azul.png"],
-    creator: "@jaak_ai",
-    site: "@jaak_ai",
-  },
-};
+  path: "/autoservicio-enterprise",
+  socialTitle: "Autoservicio Enterprise JAAK — Alto volumen con pago anual",
+  ogDescription:
+    "Paquetes Enterprise de KYC, firma electrónica, validaciones y OCR para alto volumen. Pago anual, activación inmediata.",
+  twitterDescription: "Paquetes Enterprise de KYC, firma electrónica, validaciones y OCR para alto volumen. Pago anual.",
+  imageAlt: "Autoservicio Enterprise JAAK",
+});
 
 const NAVY = "#212A45";
 const TEAL = "#2DB6C1";

@@ -1,36 +1,23 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import AutoservicioVariantes from "@/components/autoservicio/AutoservicioVariantes";
 import ComoFuncionaBanner from "@/components/autoservicio/ComoFuncionaBanner";
 import { getAutoservicioCatalog } from "@/lib/catalog";
+import { buildAutoservicioMetadata } from "@/lib/autoservicioMetadata";
 import { autoservicioBreadcrumbSchema, buildAutoservicioProductsSchema } from "./schema";
 
-export const metadata: Metadata = {
+export const metadata = buildAutoservicioMetadata({
   title: "Autoservicio — Compra y activa servicios JAAK en minutos",
   description:
     "Compra KYC, firma electrónica NOM-151, validaciones INE/CURP y OCR en línea. Arma tu paquete, paga seguro y activa al instante. Sin vendedores, sin esperas.",
-  alternates: { canonical: "/autoservicio" },
-  openGraph: {
-    type: "website",
-    locale: "es_MX",
-    url: "/autoservicio",
-    siteName: "JAAK",
-    title: "Autoservicio JAAK — Compra y activa tus servicios en minutos",
-    description:
-      "Arma tu paquete de KYC, firma electrónica, validaciones y OCR. Paga en línea y actívalo al instante, sin vendedores ni esperas.",
-    images: [{ url: "/images/logos/jaak-logo-azul.png", width: 800, height: 400, alt: "Autoservicio JAAK" }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Autoservicio JAAK — Compra y activa tus servicios en minutos",
-    description: "Arma tu paquete de KYC, firma electrónica, validaciones y OCR. Paga en línea y actívalo al instante.",
-    images: ["/images/logos/jaak-logo-azul.png"],
-    creator: "@jaak_ai",
-    site: "@jaak_ai",
-  },
-};
+  path: "/autoservicio",
+  socialTitle: "Autoservicio JAAK — Compra y activa tus servicios en minutos",
+  ogDescription:
+    "Arma tu paquete de KYC, firma electrónica, validaciones y OCR. Paga en línea y actívalo al instante, sin vendedores ni esperas.",
+  twitterDescription: "Arma tu paquete de KYC, firma electrónica, validaciones y OCR. Paga en línea y actívalo al instante.",
+  imageAlt: "Autoservicio JAAK",
+});
 
 const TEAL = "#2DB6C1";
 
