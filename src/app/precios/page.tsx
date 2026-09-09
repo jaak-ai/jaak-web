@@ -65,7 +65,15 @@ const faqSchema = {
       name: "¿Los paquetes caducan o son reembolsables?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Vencen a 12 meses desde la compra. No son reembolsables. Setup Fees tampoco son reembolsables.",
+        text: "Vencen a 12 meses desde la compra. No son reembolsables. La cuota de activación única (setup fee) de Enterprise tampoco es reembolsable.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "¿Hay cuota de activación (setup fee)?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "El Autoservicio no tiene cuota de activación. Los planes Enterprise incluyen una cuota de activación única por empresa, que se cobra solo la primera vez; las compras posteriores no la vuelven a pagar.",
       },
     },
     {

@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from "react";
 import {
-  IVA,
   formatMXN,
   buildCheckoutUrl,
   type Producto,
   type Paquete,
 } from "@/data/autoservicio-catalogo";
+import { computeCartTotals } from "@/lib/autoservicioCoupon";
 import { useCarrito } from "./CarritoContext";
 import { getUtmParams } from "@/components/CloudflareTurnstile";
 
@@ -58,19 +58,13 @@ export default function CarritoAutoservicio() {
     return { producto, paquete: getPaquete(producto, tierDe(id)) };
   });
   const subtotal = items.reduce((s, i) => s + i.paquete.precio, 0);
-  const iva = Math.round(subtotal * IVA);
-  const total = subtotal + iva;
 
   // El descuento se previsualiza solo cuando el cupón de la URL coincide con el
-  // destacado vigente. Percent sobre el total (con IVA, como cobra el backend);
-  // fijo en pesos, acotado al total.
+  // destacado vigente. El cálculo (descuento sobre subtotal + IVA sobre la base
+  // descontada, AUTO-30) vive en computeCartTotals para poder testearlo y no
+  // duplicarlo entre el panel desktop y la barra móvil.
   const couponApplies = !!(featured && couponCode && featured.code.toUpperCase() === couponCode.toUpperCase());
-  const descuento = couponApplies
-    ? featured!.type === "percent"
-      ? Math.round((total * featured!.value) / 100)
-      : Math.min(featured!.value, total)
-    : 0;
-  const totalFinal = total - descuento;
+  const { descuento, iva, total } = computeCartTotals(subtotal, couponApplies ? featured! : null);
 
   const checkoutHref = items.length
     ? buildCheckoutUrl(items, {
@@ -94,7 +88,7 @@ export default function CarritoAutoservicio() {
           <div className="flex items-center justify-between gap-3">
             <div>
               <div className="text-[12px]" style={{ color: "#64748B" }}>{items.length} producto(s)</div>
-              <div className="text-lg font-bold" style={{ color: NAVY }}>{formatMXN(totalFinal)} <span className="text-[12px] font-semibold" style={{ color: "#64748B" }}>MXN</span></div>
+              <div className="text-lg font-bold" style={{ color: NAVY }}>{formatMXN(total)} <span className="text-[12px] font-semibold" style={{ color: "#64748B" }}>MXN</span></div>
             </div>
             <button type="button" onClick={() => setAbiertoMovil(true)} className="inline-flex items-center gap-2 rounded-xl px-5 py-3 text-[14px] font-semibold text-white" style={{ background: TEAL }}>
               <CartIcon className="h-[18px] w-[18px]" />
@@ -126,7 +120,8 @@ function ResumenPanel({
   checkoutHref: string;
   onQuitar: (productoId: string) => void;
 }) {
-  const totalFinal = total - descuento;
+  // `total` ya viene con el descuento aplicado al subtotal y el IVA sobre la base
+  // descontada (AUTO-30), así que no se vuelve a restar aquí.
   return (
     <div className="rounded-2xl border bg-white p-5" style={{ borderColor: "#E6E8EF" }}>
       <div className="flex items-center gap-2" style={{ color: NAVY }}>
@@ -175,16 +170,16 @@ function ResumenPanel({
 
           <div className="mt-3 space-y-1.5 border-t pt-3 text-[13px]" style={{ borderColor: "#EEF0F4" }}>
             <Row label="Subtotal" value={formatMXN(subtotal)} />
-            <Row label="IVA (16%)" value={formatMXN(iva)} muted />
             {descuento > 0 && (
               <div className="flex items-center justify-between">
                 <span style={{ color: "#16a34a" }}>Cupón {couponLabel}</span>
                 <span style={{ color: "#16a34a" }}>− {formatMXN(descuento)}</span>
               </div>
             )}
+            <Row label="IVA (16%)" value={formatMXN(iva)} muted />
             <div className="flex items-center justify-between pt-1">
               <span className="text-[14px] font-bold" style={{ color: NAVY }}>Total</span>
-              <span className="text-[18px] font-bold" style={{ color: NAVY }}>{formatMXN(totalFinal)} <span className="text-[12px] font-semibold" style={{ color: "#64748B" }}>MXN</span></span>
+              <span className="text-[18px] font-bold" style={{ color: NAVY }}>{formatMXN(total)} <span className="text-[12px] font-semibold" style={{ color: "#64748B" }}>MXN</span></span>
             </div>
           </div>
 

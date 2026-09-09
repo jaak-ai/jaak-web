@@ -28,12 +28,16 @@ export const autoservicioBreadcrumbSchema = {
 // Catálogo de productos como ItemList → Product + AggregateOffer.
 // Precio = el que se muestra en la card (sin IVA, "+ IVA" en el sitio) para que
 // el dato estructurado COINCIDA con el precio visible (requisito de Google).
-export function buildAutoservicioProductsSchema(productos: Producto[], categorias: Categoria[]) {
+export function buildAutoservicioProductsSchema(
+  productos: Producto[],
+  categorias: Categoria[],
+  { name = "Catálogo de Autoservicio JAAK", path = "/autoservicio" }: { name?: string; path?: string } = {}
+) {
   const categoriaNombre = (id: string) => categorias.find((c) => c.id === id)?.nombre ?? "";
   return {
   "@context": "https://schema.org",
   "@type": "ItemList",
-  name: "Catálogo de Autoservicio JAAK",
+  name,
   itemListElement: productos.map((p, i) => {
     const precios = p.paquetes.map((q) => q.precio);
     return {
@@ -53,7 +57,7 @@ export function buildAutoservicioProductsSchema(productos: Producto[], categoria
           highPrice: Math.max(...precios).toFixed(2),
           offerCount: p.paquetes.length,
           availability: "https://schema.org/InStock",
-          url: `${BASE}/autoservicio`,
+          url: `${BASE}${path}`,
         },
       },
     };

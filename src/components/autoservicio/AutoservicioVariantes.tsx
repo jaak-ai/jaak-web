@@ -3,10 +3,59 @@
 import { useEffect, useState } from "react";
 import CatalogoAutoservicio from "./CatalogoAutoservicio";
 import ConfiguradorAutoservicio from "./ConfiguradorAutoservicio";
-import { CarritoProvider } from "./CarritoContext";
+import { CarritoProvider, useCarrito } from "./CarritoContext";
 import { type Categoria, type Producto } from "@/data/autoservicio-catalogo";
 
 const NAVY = "#212A45";
+const GOLD = "#C9A227";
+
+// Toggle Anual/Mensual (AUTO-14). Solo se muestra si algún SKU del catálogo permite
+// pago mensual (`puedeMensual`); si no, no aparece y todo queda anual. Al cambiar la
+// cadencia, los precios/cantidades del catálogo y del carrito se recalculan solos
+// (la vista de productos del store ya refleja la cadencia).
+function CadenciaToggle() {
+  const { cadencia, setCadencia, puedeMensual } = useCarrito();
+  if (!puedeMensual) return null;
+  const opciones: { v: "anual" | "mensual"; label: string }[] = [
+    { v: "anual", label: "Anual" },
+    { v: "mensual", label: "Mensual" },
+  ];
+  return (
+    <div className="bg-white">
+      <div className="mx-auto flex max-w-7xl flex-col items-center gap-1.5 px-4 pt-3 sm:px-6 lg:px-8">
+        <span className="text-[10.5px] font-semibold uppercase tracking-[0.16em]" style={{ color: "#64748B" }}>
+          Cómo prefieres pagar
+        </span>
+        <div className="inline-flex items-center gap-1 rounded-xl p-1" style={{ background: "#F3F4F8" }} role="group" aria-label="Cadencia de pago">
+          {opciones.map((o) => {
+            const activo = cadencia === o.v;
+            return (
+              <button
+                key={o.v}
+                type="button"
+                onClick={() => setCadencia(o.v)}
+                aria-pressed={activo}
+                className="rounded-lg px-4 py-2 text-[13px] font-semibold transition-colors"
+                style={activo ? { background: NAVY, color: "#fff" } : { background: "transparent", color: "#475569" }}
+              >
+                {o.label}
+              </button>
+            );
+          })}
+        </div>
+        {cadencia === "anual" ? (
+          <span className="text-[12px] font-semibold" style={{ color: GOLD }}>
+            El pago anual incluye el descuento; el mensual se cobra mes a mes.
+          </span>
+        ) : (
+          <span className="text-[12px]" style={{ color: "#64748B" }}>
+            Pago recurrente mes a mes, sin descuento. Cancelas cuando quieras.
+          </span>
+        )}
+      </div>
+    </div>
+  );
+}
 
 type Variante = "catalogo" | "guia";
 
@@ -86,6 +135,8 @@ export default function AutoservicioVariantes({
   return (
     <CarritoProvider productos={productos} categorias={categorias} pricingIndex={pricingIndex} productKeys={productKeys}>
     <div id="experiencia">
+      {/* Cadencia de pago (AUTO-14): Anual/Mensual. Solo si algún SKU lo permite. */}
+      <CadenciaToggle />
       {/* Selector de modo según el perfil del comprador. No es fijo: vive al
           inicio de la experiencia y se va con el scroll para no estorbar. */}
       <div className="bg-white">

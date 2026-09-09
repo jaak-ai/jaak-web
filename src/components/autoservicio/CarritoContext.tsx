@@ -1,10 +1,29 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { type Categoria, type Paquete, type Producto } from "@/data/autoservicio-catalogo";
 import { escribirParamsUrl, leerParamUrl } from "./urlEstado";
 
 type Tier = Paquete["id"];
+
+// Cadencia de cobro (AUTO-14). "anual" = pago del año por adelantado (con el −5%,
+// comportamiento previo); "mensual" = pago recurrente mes a mes, sin descuento.
+export type Cadencia = "anual" | "mensual";
+
+// vistaMensual proyecta los paquetes a su forma mensual: para los SKUs que la
+// permiten, intercambia precio/cantidad por sus derivados (P/12, cuota/12) y marca
+// `recurrente` para que el deep-link del checkout use "recharge". Los que no la
+// permiten se quedan anuales (pago único). Los ids/tiers no cambian, así que el
+// resto del store (tier elegido, comprable) sigue operando sobre el catálogo base.
+const vistaMensual = (productos: Producto[]): Producto[] =>
+  productos.map((p) => ({
+    ...p,
+    paquetes: p.paquetes.map((q) =>
+      q.mensual && q.precioMensual !== undefined
+        ? { ...q, precio: q.precioMensual, cantidad: q.cantidadMensual ?? q.cantidad, recurrente: true }
+        : q
+    ),
+  }));
 
 // Store único del carrito de autoservicio, compartido entre Catálogo y Guía.
 // - tierByProduct: tier elegido por producto (siempre definido; default = recomendado).
@@ -31,9 +50,24 @@ interface CarritoStore {
   pricingIndex: PricingIndex;
   productKeys: Record<string, string>;
   comprable: (id: string) => boolean;
+  // Cadencia de cobro (AUTO-14). `productos` ya refleja la cadencia activa (los
+  // precios/cantidades mostrados y sumados salen de aquí). `puedeMensual` gobierna
+  // si se ofrece el toggle (algún SKU permite pago mensual).
+  cadencia: Cadencia;
+  setCadencia: (c: Cadencia) => void;
+  puedeMensual: boolean;
 }
 
 const Ctx = createContext<CarritoStore | null>(null);
+
+// Tier por defecto de un producto, data-driven: el recomendado si de verdad es
+// uno de sus paquetes, si no el primer paquete. NUNCA un tier hardcodeado —
+// enterprise usa Titanio/Iridio/… y no tiene "plata" (rompía con `.precio` de
+// undefined al asumir un default fijo).
+const defaultTier = (p: Producto): Tier =>
+  (p.recomendado && p.paquetes.some((q) => q.id === p.recomendado)
+    ? p.recomendado
+    : p.paquetes[0]?.id) as Tier;
 
 export function CarritoProvider({
   children,
@@ -49,9 +83,35 @@ export function CarritoProvider({
   productKeys?: Record<string, string>;
 }) {
   const [tierByProduct, setTierByProduct] = useState<Record<string, Tier>>(() =>
-    Object.fromEntries(productos.map((p) => [p.id, p.recomendado ?? "plata"]))
+    Object.fromEntries(productos.map((p) => [p.id, defaultTier(p)]))
+  );
+  // Default por id para los fallbacks (tierDe / URL): evita asumir un tier fijo.
+  const defaultTierDe = useCallback(
+    (id: string): Tier => {
+      const p = productos.find((q) => q.id === id);
+      return p ? defaultTier(p) : ("" as Tier);
+    },
+    [productos]
   );
   const [cart, setCart] = useState<string[]>([]);
+  // Cadencia activa (AUTO-14). Default anual (comportamiento previo). El toggle de
+  // la página enterprise la cambia; solo tiene efecto si algún SKU permite mensual.
+  const [cadencia, setCadenciaState] = useState<Cadencia>("anual");
+  const puedeMensual = useMemo(
+    () => productos.some((p) => p.paquetes.some((q) => q.mensual)),
+    [productos]
+  );
+  // Nunca dejar la cadencia en "mensual" si el catálogo no lo permite.
+  const setCadencia = useCallback(
+    (c: Cadencia) => setCadenciaState(c === "mensual" && !puedeMensual ? "anual" : c),
+    [puedeMensual]
+  );
+  // Vista de productos según la cadencia: los consumidores leen SIEMPRE `productos`
+  // del store, así que los precios/cantidades cambian solos al alternar el toggle.
+  const productosView = useMemo(
+    () => (cadencia === "mensual" ? vistaMensual(productos) : productos),
+    [cadencia, productos]
+  );
   // Productos cuyo tier eligió el usuario explícitamente (chip). El volumen de la
   // Guía no los reescribe: respeta la elección manual hecha en cualquier modo.
   const [touched, setTouched] = useState<Set<string>>(new Set());
@@ -88,12 +148,12 @@ export function CarritoProvider({
   // tier ajustado), para que un refresh conserve la selección.
   useEffect(() => {
     if (!hidratado) return;
-    const sel = cart.map((id) => `${id}.${tierByProduct[id] ?? "plata"}`).join(",");
+    const sel = cart.map((id) => `${id}.${tierByProduct[id] ?? defaultTierDe(id)}`).join(",");
     escribirParamsUrl({ sel: sel || null });
-  }, [hidratado, cart, tierByProduct]);
+  }, [hidratado, cart, tierByProduct, defaultTierDe]);
 
   const enCarrito = (id: string) => cart.includes(id);
-  const tierDe = (id: string): Tier => tierByProduct[id] ?? "plata";
+  const tierDe = (id: string): Tier => tierByProduct[id] ?? defaultTierDe(id);
   const setTier = (id: string, tier: Tier) => {
     setTierByProduct((prev) => ({ ...prev, [id]: tier }));
     setTouched((prev) => {
@@ -132,7 +192,7 @@ export function CarritoProvider({
 
   return (
     <Ctx.Provider
-      value={{ productos, categorias, cart, enCarrito, tierDe, setTier, toggle, quitar, aplicarVolumen, pricingIndex, productKeys, comprable }}
+      value={{ productos: productosView, categorias, cart, enCarrito, tierDe, setTier, toggle, quitar, aplicarVolumen, pricingIndex, productKeys, comprable, cadencia, setCadencia, puedeMensual }}
     >
       {children}
     </Ctx.Provider>

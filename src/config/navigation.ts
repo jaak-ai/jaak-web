@@ -581,7 +581,7 @@ export const globalCTAs: GlobalCTA[] = [
   {
     id: "comprar",
     label: "Comprar",
-    href: "/autoservicio",
+    href: "/comprar",
     variant: "primary",
     visibility: { desktop: true, mobile: true },
   },

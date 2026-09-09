@@ -97,3 +97,19 @@ describe("buildCheckoutUrl KYC/plan routing", () => {
     expect(p.k.pc).toBe("amatista");
   });
 });
+
+describe("buildCheckoutUrl cadencia mensual (AUTO-14)", () => {
+  it("un producto normal se manda como pago único (m: once)", () => {
+    const p = decodePayload(buildCheckoutUrl([{ producto: firma, paquete: cobre }]));
+    expect(p.products[0].m).toBe("once");
+  });
+
+  it("un paquete marcado recurrente se manda como recharge con su precio/cantidad mensual", () => {
+    const mensual = { ...cobre, precio: 500, cantidad: 100, recurrente: true };
+    const p = decodePayload(buildCheckoutUrl([{ producto: firma, paquete: mensual }]));
+    expect(p.products[0].m).toBe("recharge");
+    // el precio del slot ya es el mensual (con IVA), no el anual
+    expect(p.products[0].pr).toBe(Math.round(500 * 1.16 * 100) / 100);
+    expect(p.products[0].q).toBe(100);
+  });
+});

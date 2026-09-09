@@ -7,7 +7,9 @@ import { globalCTAs } from "@/config/navigation";
 
 // Landings de campaña con su propia jerarquía de CTA (WhatsApp / demo con
 // especialista) donde "Comprar" del header solo compite y distrae.
-const HIDE_COMPRAR_ROUTES = ["/soluciones/kyc-igaming-mexico"];
+// El CTA "Comprar" se oculta en la propia pantalla de segmentación (/comprar),
+// que ya ES el destino de "Comprar" — mostrarlo ahí sería redundante.
+const HIDE_COMPRAR_ROUTES = ["/soluciones/kyc-igaming-mexico", "/comprar"];
 
 /**
  * Cluster de CTA globales del header: "Iniciar sesión" y "Comprar" — las
