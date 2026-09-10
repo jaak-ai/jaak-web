@@ -1,0 +1,225 @@
+---
+title: Actualizaciones
+description: Versionado y actualización de JAAK Alnitak — qué contiene una entrega, orden de actualización, verificación, rollback y qué cambios obligan a re-vectorizar.
+category: guia
+order: 14
+unlisted: true
+---
+
+<Orientation
+  audience="Quien mantiene el despliegue: SRE o administrador de plataforma del cliente"
+  goal="Poder subir de versión con un rollback claro, y saber qué cambios son rutina y cuáles no."
+  before={{ title: "Instalación", href: "/docs/alnitak/instalacion" }}
+  outOfScope={[
+    { title: "Cambiar de modelo de vectorización", href: "/docs/alnitak/mantenimiento#re-vectorización-con-un-modelo-nuevo" },
+    { title: "Instalación desde cero", href: "/docs/alnitak/instalacion" },
+    { title: "Qué mirar tras el despliegue", href: "/docs/alnitak/operacion#después-de-cada-despliegue" },
+  ]}
+/>
+
+Cómo se versiona Alnitak, qué contiene una entrega y cómo subir de versión sin
+sobresaltos.
+
+## Qué es una entrega
+
+Cuatro imágenes con su versión. Una entrega es el conjunto: **no se mezclan
+versiones de distintas entregas** salvo indicación expresa del equipo de JAAK.
+
+| Componente | Variable en el `tfvars` |
+|---|---|
+| API de orquestación | `imagen_api` |
+| Vectorizador GPU | `imagen_vectorizador` |
+| Consola de operación | `imagen_consola` |
+| Herramientas de línea de comandos | `imagen_herramientas` |
+
+<Callout type="danger" title="Solo etiquetas de versión">
+En los repositorios conviven etiquetas mutables y de desarrollo —`latest`,
+`dev-models`, `*-dev.N`— que **no son entregas** y que pueden contener
+artefactos incompletos que arrancan igual. Un despliegue apuntando a una
+etiqueta mutable no es reproducible: el mismo `terraform apply` puede traer
+código distinto mañana.
+</Callout>
+
+## Cómo se numeran las versiones
+
+Versionado semántico, con prefijo `v`. Lo que llega al cliente son las versiones
+**limpias**: `v1.4.2`, sin sufijo.
+
+Los sufijos identifican los ambientes internos por los que pasó antes:
+
+| Sufijo | Ambiente |
+|---|---|
+| `vX.Y.Z-dev.N` | desarrollo |
+| `vX.Y.Z-alpha.N` | qa |
+| `vX.Y.Z-beta.N` | sandbox |
+| `vX.Y.Z` | **producción — es la que se entrega** |
+
+Nada llega a una versión limpia sin haber pasado por sus tres sufijos: la cadena
+de etiquetas es la evidencia de qué se probó y dónde. Si en tu despliegue
+aparece una imagen con sufijo, no es una entrega.
+
+---
+
+## Actualizar el despliegue
+
+### 1. Leer las notas de la versión
+
+Antes de tocar nada, confirma con el equipo de JAAK asignado al proyecto:
+
+- Si la entrega **cambia el modelo de vectorización**. Si lo cambia, no es una
+  actualización de rutina: ver [Cuándo hay que
+  re-vectorizar](#cuándo-hay-que-re-vectorizar).
+- Si hay **migraciones de base de datos**.
+- Si hay **cambios en el esquema del índice**.
+- Si hay parámetros de configuración nuevos u obsoletos.
+
+### 2. Respaldar antes
+
+| Qué | Por qué |
+|---|---|
+| Instantánea de la galería | Punto de retorno si la actualización toca el índice |
+| Respaldo de PostgreSQL | Las migraciones no siempre son reversibles |
+| Copia del `tfvars` actual | Es tu registro de qué versión estaba corriendo |
+
+La última anotada por escrito vale más de lo que parece: el rollback empieza por
+saber a qué versión volver.
+
+### 3. Actualizar las etiquetas y aplicar
+
+```bash
+# Editar terraform/terraform.tfvars con las versiones nuevas
+terraform plan     # revisar QUÉ va a cambiar antes de aplicarlo
+terraform apply
+```
+
+<Callout type="warning" title="Lee el plan">
+`terraform plan` debe proponer únicamente cambios de etiqueta de imagen y los
+recursos que dependan de ellos. Si propone borrar o recrear el clúster de
+Elasticsearch, los volúmenes o el índice, **no lo apliques**: falta contexto y
+hay que resolverlo antes.
+</Callout>
+
+### 4. Aplicar migraciones, si la entrega las trae
+
+```bash
+ansible-playbook site.yml --tags postgres
+```
+
+Las migraciones van en la **imagen de herramientas**, no en la de la API: sin
+actualizar `imagen_herramientas` se aplicarían las migraciones de la versión
+anterior.
+
+### 5. Verificar
+
+```bash
+ansible-playbook site.yml --tags verificacion
+```
+
+Y a mano, lo que la verificación no cubre:
+
+1. `/readyz` afirmativo en **todas** las réplicas.
+2. Calentar el índice con unas cuantas consultas.
+3. p95 de vuelta al régimen habitual.
+4. **Leer el log de arranque**: el servicio avisa explícitamente de la
+   verificación TLS desactivada, del campo de versión de modelo ausente y de la
+   pimienta por debajo del mínimo. Un aviso nuevo tras una actualización es una
+   señal.
+5. Una consulta real de extremo a extremo, y un alta de prueba.
+
+### Orden de actualización
+
+Con el pipeline completo hay que subirlo todo en la misma pasada. Si tu política
+exige hacerlo por partes:
+
+| Orden | Componente | Motivo |
+|---|---|---|
+| 1 | Vectorizador | Es la dependencia; la API tolera su indisponibilidad breve con timeout y reintento |
+| 2 | Herramientas | Necesaria antes de las migraciones |
+| 3 | API | Después de sus dependencias y sus migraciones |
+| 4 | Consola | Es la capa de presentación; puede ir última sin riesgo |
+
+<Callout type="info" title="La API tolera un vectorizador que se reinicia, no uno que desaparece">
+La llamada al vectorizador tiene 250 ms de plazo y un reintento: absorbe un
+reinicio rodante con varias réplicas. Con **una sola réplica** de vectorizador,
+actualizarlo es una interrupción: durante el reinicio las consultas responden
+`503 vectorizer_unavailable`.
+</Callout>
+
+---
+
+## Rollback
+
+Volver atrás es devolver las etiquetas a la versión anterior y reaplicar:
+
+```bash
+# Restaurar las etiquetas previas en terraform/terraform.tfvars
+terraform plan
+terraform apply
+ansible-playbook site.yml --tags verificacion
+```
+
+Funciona limpio mientras la actualización **no haya cambiado datos**. Los tres
+casos en que el rollback de imagen no basta:
+
+| Cambio | Qué más hace falta |
+|---|---|
+| Migraciones de base de datos aplicadas | Restaurar el respaldo de PostgreSQL, o la migración inversa que indique JAAK |
+| Cambio de modelo con alias conmutado | Conmutar el alias de vuelta al índice anterior: ver [Mantenimiento](/docs/alnitak/mantenimiento#re-vectorización-con-un-modelo-nuevo) |
+| Cambio de esquema del índice | Restaurar la instantánea de la galería |
+
+Por eso el paso 2 no es opcional.
+
+---
+
+## Cuándo hay que re-vectorizar
+
+| Cambio de la entrega | ¿Re-vectorizar? |
+|---|---|
+| Versión de la API, la consola o las herramientas | **No** |
+| Versión del vectorizador **con el mismo modelo** | **No** |
+| **Modelo de vectorización distinto** | **Sí**, y recalibrar el umbral |
+| Dimensiones del vector distintas | **Sí**, obligatoriamente |
+| Rotación de la clave de cifrado de recortes | **No**: son planos independientes |
+
+<Callout type="danger" title="Un cambio de modelo no es una actualización de rutina">
+Los scores de dos modelos no son comparables. Subir la versión del vectorizador
+con un modelo nuevo **sin re-vectorizar la galería** deja vectores de dos
+modelos convivientes: los scores dejan de significar lo mismo y el umbral deja de
+tener un significado único. Y aunque se re-vectorice, **hay que recalibrar el
+umbral antes de conmutar**, porque el calibrado del modelo viejo no sirve.
+
+El procedimiento completo, con su rollback, está en
+[Mantenimiento → Re-vectorización](/docs/alnitak/mantenimiento#re-vectorización-con-un-modelo-nuevo).
+</Callout>
+
+---
+
+## Compatibilidad de la API
+
+Los endpoints cuelgan de `/api/v1`. Dentro de la v1:
+
+- **Se pueden añadir campos** a las respuestas. Tu integración debe ignorar los
+  que no conozca, no fallar por ellos.
+- **No se quitan ni se renombran** campos ni endpoints existentes.
+- Un cambio incompatible iría en una versión de ruta nueva, con periodo de
+  convivencia.
+
+<Callout type="tip" title="La prueba de compatibilidad más útil, en un comando">
+Antes de actualizar en producción, lanza tu integración real contra el despliegue
+actualizado en un ambiente de prueba y compara la respuesta de `/identify`
+campo a campo. Es más rápido que leer notas de versión y no depende de que estén
+completas.
+</Callout>
+
+## Si la actualización falla
+
+Los Jobs de la instalación se conservan una hora:
+
+```bash
+kubectl logs job/<nombre> -n <namespace>
+kubectl describe pod -l job-name=<nombre> -n <namespace>
+```
+
+Míralos **antes** de relanzar: el siguiente intento los sustituye. El catálogo de
+síntomas está en
+[Solución de problemas](/docs/alnitak/solucion-de-problemas).
