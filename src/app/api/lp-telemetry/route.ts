@@ -27,7 +27,26 @@ function clampBody(raw: string): TelemetryBody | null {
   }
 }
 
-async function forwardGa4(body: TelemetryBody, clientIp: string | null) {
+/**
+ * GA4 solo asocia un evento a una página si viaja `page_location`. Los payloads
+ * del cliente no siempre lo traen (useLpFunnel envía solo la ruta), así que lo
+ * reconstruimos con el origen de la petición.
+ */
+function resolvePageLocation(body: TelemetryBody, origin: string | null): string | null {
+  if (typeof body.page_url === "string" && body.page_url.startsWith("http")) {
+    return body.page_url;
+  }
+  const path =
+    (typeof body.page === "string" && body.page) ||
+    (typeof body.page_path === "string" && body.page_path) ||
+    (typeof body.page_name === "string" && body.page_name) ||
+    "";
+  if (!path) return null;
+  const base = (origin || process.env.NEXT_PUBLIC_SITE_ORIGIN || "https://jaak.ai").replace(/\/$/, "");
+  return `${base}${path.startsWith("/") ? path : `/${path}`}`;
+}
+
+async function forwardGa4(body: TelemetryBody, clientIp: string | null, origin: string | null) {
   const measurementId = process.env.GA4_MEASUREMENT_ID || process.env.NEXT_PUBLIC_GA4_MEASUREMENT_ID;
   const apiSecret = process.env.GA4_API_SECRET;
   if (!measurementId || !apiSecret) return { forwarded: false as const };
@@ -48,6 +67,14 @@ async function forwardGa4(body: TelemetryBody, clientIp: string | null) {
     else if (typeof v === "boolean") params[k.slice(0, 40)] = v;
   }
   params.engagement_time_msec = typeof body.engagement_ms === "number" ? body.engagement_ms : 1;
+
+  // Se asignan después del bucle porque este recorta a 100 caracteres y GA4
+  // admite hasta 1000 en las URLs; una URL con UTMs se rompería al truncarse.
+  const pageLocation = resolvePageLocation(body, origin);
+  if (pageLocation) params.page_location = pageLocation.slice(0, 1000);
+  if (typeof body.referrer === "string" && body.referrer) {
+    params.page_referrer = body.referrer.slice(0, 1000);
+  }
 
   const url = `https://www.google-analytics.com/mp/collect?measurement_id=${encodeURIComponent(
     measurementId
@@ -134,7 +161,7 @@ export async function POST(req: NextRequest) {
   let ga: { forwarded: boolean; status?: number } = { forwarded: false };
   let kairos: { forwarded: boolean; status?: number } = { forwarded: false };
   try {
-    ga = await forwardGa4(body, ip);
+    ga = await forwardGa4(body, ip, origin);
   } catch (err) {
     console.warn("lp-telemetry ga4 forward failed", err);
   }
