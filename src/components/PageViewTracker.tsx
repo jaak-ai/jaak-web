@@ -12,7 +12,11 @@
 
 import { useEffect, useRef } from "react";
 import { gtmEvent } from "@/components/GoogleTagManager";
-import { buildTrafficIdentity, trafficClassLabel } from "@/lib/trafficIdentity";
+import {
+  buildTrafficIdentity,
+  trafficClassLabel,
+  type TrafficIdentity,
+} from "@/lib/trafficIdentity";
 
 type Props = {
   /** Identificador estable de la página, p. ej. "home" */
@@ -28,38 +32,21 @@ export default function PageViewTracker({ page, beacon = true }: Props) {
     if (fired.current) return;
     fired.current = true;
 
-    let identity;
+    let identity: TrafficIdentity;
     try {
       identity = buildTrafficIdentity(window);
     } catch {
       return;
     }
 
+    // Partimos de la identidad completa para no desincronizarnos cuando
+    // trafficIdentity gane campos nuevos; solo aplanamos lo que el sink
+    // necesita en primitivos (GA4 Measurement Protocol no admite arrays).
     const payload = {
+      ...identity,
       page,
-      page_path: identity.page_path,
-      page_url: identity.page_url,
-      visitor_id: identity.visitor_id,
-      session_id: identity.session_id,
-      session_started_at: identity.session_started_at,
-      referrer: identity.referrer,
-      referrer_host: identity.referrer_host,
-      channel: identity.channel,
-      traffic_class: identity.traffic_class,
-      traffic_label: trafficClassLabel(identity.traffic_class),
-      bot_score: identity.bot_score,
       bot_reasons: identity.bot_reasons.join(","),
-      utm_source: identity.utm_source,
-      utm_medium: identity.utm_medium,
-      utm_campaign: identity.utm_campaign,
-      utm_content: identity.utm_content,
-      utm_term: identity.utm_term,
-      gclid: identity.gclid,
-      fbclid: identity.fbclid,
-      device: identity.device,
-      language: identity.language,
-      tz: identity.tz,
-      screen: identity.screen,
+      traffic_label: trafficClassLabel(identity.traffic_class),
     };
 
     gtmEvent("page_view", payload);
