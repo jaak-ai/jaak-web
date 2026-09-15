@@ -1,9 +1,13 @@
 "use client";
 
 /**
- * Pageview medible por página: empuja `page_view` al dataLayer de GTM y lo
+ * Pageview medible por página: empuja `lp_view` al dataLayer de GTM y lo
  * replica al sink first-party `/api/lp-telemetry` (que a su vez reenvía a GA4
  * vía Measurement Protocol y a Kairos).
+ *
+ * El evento NO se llama `page_view` a propósito: ese nombre está reservado por
+ * GA4 y el Google tag del contenedor ya lo emite solo en cada carga. Reutilizarlo
+ * duplicaría las vistas de página. `lp_view` sigue la convención de useLpFunnel.
  *
  * Incluye `visitor_id` (localStorage, persona recurrente) y `session_id`
  * (sessionStorage, visita) para poder contar visitas y personas únicas, además
@@ -49,11 +53,11 @@ export default function PageViewTracker({ page, beacon = true }: Props) {
       traffic_label: trafficClassLabel(identity.traffic_class),
     };
 
-    gtmEvent("page_view", payload);
+    gtmEvent("lp_view", payload);
 
     if (!beacon) return;
     try {
-      const json = JSON.stringify({ event: "page_view", ...payload });
+      const json = JSON.stringify({ event: "lp_view", ...payload });
       if (navigator.sendBeacon) {
         navigator.sendBeacon(
           "/api/lp-telemetry",
