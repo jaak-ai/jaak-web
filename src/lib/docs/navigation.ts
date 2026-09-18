@@ -191,13 +191,47 @@ export const docsNavigation: NavItem[] = [
 // en el sidebar general ni en la búsqueda, pero sí necesitan navegación entre
 // ellas cuando ya estás dentro del manual.
 export const alnitakNavigation: NavItem[] = [
-  { title: 'Introducción', href: '/docs/alnitak' },
-  { title: 'Arquitectura', href: '/docs/alnitak/arquitectura' },
-  { title: 'Referencia de API', href: '/docs/alnitak/api' },
-  { title: 'Consola de operación', href: '/docs/alnitak/consola' },
-  { title: 'Instalación', href: '/docs/alnitak/instalacion' },
-  { title: 'Rendimiento y SLA', href: '/docs/alnitak/rendimiento' },
-  { title: 'Seguridad y tratamiento de datos', href: '/docs/alnitak/seguridad' },
+  {
+    title: 'Empezar',
+    items: [
+      { title: 'Introducción', href: '/docs/alnitak' },
+      { title: 'Arquitectura', href: '/docs/alnitak/arquitectura' },
+      { title: 'Inicio rápido', href: '/docs/alnitak/inicio-rapido' },
+    ],
+  },
+  {
+    title: 'Integrar',
+    items: [
+      { title: 'Referencia de API', href: '/docs/alnitak/api' },
+      { title: 'Consola de operación', href: '/docs/alnitak/consola' },
+    ],
+  },
+  {
+    title: 'Evaluar',
+    items: [
+      { title: 'Rendimiento y capacidad', href: '/docs/alnitak/rendimiento' },
+      { title: 'Seguridad y tratamiento de datos', href: '/docs/alnitak/seguridad' },
+      { title: 'Precisión y calibración del umbral', href: '/docs/alnitak/precision' },
+    ],
+  },
+  {
+    title: 'Instalar y operar',
+    items: [
+      { title: 'Galería, vectores e índice', href: '/docs/alnitak/galeria' },
+      { title: 'Instalación', href: '/docs/alnitak/instalacion' },
+      { title: 'Configuración', href: '/docs/alnitak/configuracion' },
+      { title: 'Operación', href: '/docs/alnitak/operacion' },
+      { title: 'Mantenimiento', href: '/docs/alnitak/mantenimiento' },
+      { title: 'Actualizaciones', href: '/docs/alnitak/actualizaciones' },
+      { title: 'Solución de problemas', href: '/docs/alnitak/solucion-de-problemas' },
+    ],
+  },
+  {
+    title: 'Referencia',
+    items: [
+      { title: 'Glosario', href: '/docs/alnitak/glosario' },
+    ],
+  },
 ]
 
 export function flattenNavigation(items: NavItem[]): NavItem[] {

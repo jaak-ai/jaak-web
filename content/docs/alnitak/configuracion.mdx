@@ -1,0 +1,401 @@
+---
+title: Configuración
+description: Parámetros del servicio JAAK Alnitak — fichero de configuración, variables de entorno ALNILAM_*, limitador de peticiones, TLS, campos del índice y umbrales.
+category: guia
+order: 11
+unlisted: true
+---
+
+<Orientation
+  audience="Quien opera el servicio: SRE o administrador de plataforma del cliente"
+  goal="Saber qué parámetro toca cambiar, cómo se llama su variable de entorno y qué rompe si te equivocas."
+  before={{ title: "Instalación", href: "/docs/alnitak/instalacion" }}
+  outOfScope={[
+    { title: "Dimensionado de nodos, memoria y disco", href: "/docs/alnitak/instalacion#41-hardware" },
+    { title: "Qué significan los scopes y credenciales", href: "/docs/alnitak/seguridad" },
+    { title: "Diagnosticar un fallo concreto", href: "/docs/alnitak/solucion-de-problemas" },
+  ]}
+/>
+
+Referencia de los parámetros del servicio de orquestación (`alnilam`). Cada
+parámetro tiene un nombre en el fichero de configuración y una variable de
+entorno equivalente.
+
+## Cómo se resuelve la configuración
+
+Dos fuentes, con la variable de entorno ganando siempre:
+
+```
+fichero config.yaml   →   variable de entorno ALNILAM_*   →   valor efectivo
+```
+
+La regla de nombres es mecánica: **`ALNILAM_` + la ruta del parámetro en
+mayúsculas, con los puntos convertidos en guiones bajos**.
+
+| En el fichero | Variable de entorno |
+|---|---|
+| `server.rate_limit_max` | `ALNILAM_SERVER_RATE_LIMIT_MAX` |
+| `auth.server_pepper` | `ALNILAM_AUTH_SERVER_PEPPER` |
+| `elasticsearch.read_only` | `ALNILAM_ELASTICSEARCH_READ_ONLY` |
+| `identify.default_threshold` | `ALNILAM_IDENTIFY_DEFAULT_THRESHOLD` |
+
+<Callout type="warning" title="Los secretos van por variable de entorno, nunca en el fichero">
+La pimienta del servidor, la credencial de Elasticsearch y la clave privada de
+las sesiones se inyectan desde el gestor de secretos como variables de entorno.
+En el fichero de configuración quedarían en claro dentro de una imagen o un
+ConfigMap. La [lista de verificación antes de
+producción](/docs/alnitak/seguridad#lista-de-verificación-antes-de-producción)
+lo comprueba.
+</Callout>
+
+---
+
+## Servidor
+
+```yaml
+server:
+  port: 8080
+  rate_limit_max: 120
+  rate_limit_window: "1s"
+  trusted_proxies: []
+```
+
+### Limitador de peticiones
+
+| Parámetro | Por omisión | Qué hace |
+|---|---|---|
+| `rate_limit_max` | `120` | Máximo de peticiones **por IP de origen y ventana**. `0` desactiva el limitador. |
+| `rate_limit_window` | `"1s"` | Ventana, como duración (`"1s"`, `"500ms"`, `"2s"`). |
+| `trusted_proxies` | `[]` | IPs o rangos CIDR de los proxies y balanceadores de confianza. |
+
+El valor por omisión es **conservador**: ajústalo al dimensionado contratado.
+
+<Callout type="danger" title="La causa número uno de un 429 que no debería existir">
+En on-premise, si todo el tráfico entra por un gateway y ese gateway **no está
+declarado** en `trusted_proxies`, todas las peticiones comparten la cuota de una
+sola IP y el servicio devuelve `429` mucho antes de su capacidad real. No es
+saturación: es configuración.
+
+```yaml
+trusted_proxies: ["10.0.0.0/8", "172.16.5.10"]
+```
+
+Solo cuando la conexión entra desde uno de esos orígenes se toma la IP real del
+cliente de `X-Forwarded-For`, y la cuota pasa a ser por cliente final. **Con la
+lista vacía la cabecera se ignora siempre**, y con razón: confiar a ciegas
+permitiría falsear la IP y saltarse el limitador.
+</Callout>
+
+Si el control de admisión ya lo hace una capa anterior, `rate_limit_max: 0`
+desactiva el limitador y deja el borde sin freno propio — decisión explícita, no
+descuido.
+
+---
+
+## Autenticación
+
+```yaml
+auth:
+  server_pepper: ""          # ALNILAM_AUTH_SERVER_PEPPER
+  jwt:
+    issuer: "https://auth.jaak.ai"
+    audience: "jaak-alnilam-api"
+```
+
+| Parámetro | Notas |
+|---|---|
+| `server_pepper` | Pimienta con la que se calcula el HMAC-SHA256 de los secretos de las API keys. **Mínimo 32 bytes**: el arranque falla si no lo cumple. Se inyecta desde el gestor de secretos. |
+| `jwt.issuer` / `jwt.audience` | Obligatorios. El verificador exige `iss`, `aud`, `exp` y `nbf`, y está **fijado a RS256** con la clave pública seleccionada por `kid`. |
+
+<Callout type="danger" title="Rotar la pimienta invalida todas las API keys">
+Los secretos no se guardan: solo su HMAC con la pimienta. Cambiarla hace que
+ninguna credencial existente verifique, y hay que reemitirlas todas. Por eso la
+pimienta de API keys y la de contraseñas **deben ser distintas**: rotar una no
+debe expulsar a las personas de la consola.
+</Callout>
+
+---
+
+## Galería (Elasticsearch)
+
+```yaml
+elasticsearch:
+  addresses: ["https://elasticsearch-es-http.datos.svc:9200"]
+  index: "galeria_biometrica"
+  ca_cert_path: "/etc/es-ca/ca.crt"
+  similarity: "cosine"
+  external_index: false
+  read_only: false
+  insecure_skip_verify: false
+```
+
+### TLS contra el clúster
+
+| Parámetro | Cuándo usarlo |
+|---|---|
+| `ca_cert_path` | Ruta a un PEM con la CA que firma el certificado del clúster. Es el caso normal con ECK. **Si el fichero no existe o no parsea, el arranque falla.** |
+| `ca_cert` | El PEM completo como valor, para inyectarlo desde un Secret o ConfigMap. Excluyente con `ca_cert_path`. |
+| `insecure_skip_verify` | Desactiva la verificación del certificado. **Solo desarrollo.** |
+
+<Callout type="danger" title="insecure_skip_verify en producción deja la conexión expuesta">
+Con él activo, cualquiera que pueda interponerse entre la API y el clúster puede
+suplantarlo. El servicio lo avisa en el log de arranque, y la lista de
+verificación antes de producción exige que esté en `false`.
+</Callout>
+
+### Credencial
+
+La API se autentica contra Elasticsearch con una **API key acotada al índice de
+la galería**, no con el superusuario. Se inyecta como
+`ALNILAM_ELASTICSEARCH_API_KEY`, tiene precedencia sobre usuario y contraseña, y
+no aparece en el volcado de configuración del arranque.
+
+La clave necesita, sobre el patrón del índice: `read`, `write`,
+`view_index_metadata`, `create_index` y `manage`. Los dos últimos parecen de más
+para un servicio que consulta, pero **la API monta la galería ella misma** —crea
+el índice físico y el alias que apunta a él— y sin ellos recibe un `403` al
+arrancar y `/readyz` no pasa nunca.
+
+### Similitud
+
+Determina la fórmula con la que se desnormaliza el score que devuelve
+Elasticsearch, de modo que el `score` de la respuesta y el `threshold` que envías
+estén siempre en la misma escala [0, 1].
+
+| | Valor |
+|---|---|
+| Valor por omisión **del código** | `cosine` |
+| Valor que escribe **el instalador** | `dot_product` |
+
+En un despliegue instalado con el paquete, el valor efectivo es
+**`dot_product`**: el instalador lo escribe a la vez en la configuración de la
+API y en la plantilla del índice, precisamente para que coincidan. Sobre
+vectores L2-normalizados el producto escalar equivale al coseno y es más barato.
+
+<Callout type="danger" title="Tiene que coincidir con la similitud del índice">
+Si la configuración de la API y el índice declaran similitudes distintas, los
+scores salen en otra escala y **el umbral deja de significar lo que crees** —sin
+que nada falle ni avise—. Al cambiar una, cambia la otra. Es un caso más de
+[valores duplicados en dos sitios](/docs/alnitak/instalacion#63-variables-que-hay-que-rellenar).
+</Callout>
+
+### Campos del índice
+
+```yaml
+  fields:
+    vector: "vector_rostro"
+    id: "id_biometrico"
+    record: "expediente"
+    channel: "canal"
+    created_at: "alta"
+    model_version: "model_version"
+```
+
+Permiten consultar un índice preexistente con otro esquema sin tocar código.
+`vector` e `id` son **obligatorios**; el resto puede dejarse vacío (`""`) si el
+campo no existe: no se pide en `_source`, no se escribe en las altas y no se
+filtra por él.
+
+<Callout type="warning" title="Estos nombres están duplicados y nada obliga a que coincidan">
+Los mismos nombres aparecen en la plantilla del índice que crea el instalador y
+aquí, en la configuración que lee la API. Si divergen, esta configuración
+describe un índice que nadie consulta — y la deriva no es teórica: los nombres
+por omisión del instalador y los del despliegue de producción no son los mismos.
+Al cambiarlos, cámbialos en los dos sitios. Ver
+[Instalación → 6.3](/docs/alnitak/instalacion#63-variables-que-hay-que-rellenar).
+</Callout>
+
+<Callout type="danger" title="Sin campo de versión de modelo se pierde la homogeneidad">
+Si `model_version` queda vacío, la búsqueda **no filtra por modelo**. El
+servicio lo advierte al arrancar. Mezclar vectores de modelos distintos en una
+misma galería produce scores que no son comparables entre sí, y el umbral deja
+de tener un significado único.
+</Callout>
+
+### Galerías ajenas
+
+| Parámetro | Efecto |
+|---|---|
+| `external_index: true` | El índice se consulta tal cual: no se crea alias, no se migra, y ocupar el nombre no se trata como colisión. |
+| `read_only: true` | Solo consulta. Rechaza altas, re-vectorización, conmutación de alias, forcemerge y carga masiva con `gallery_read_only`. |
+
+Detalle en [Galería → Galerías ajenas](/docs/alnitak/galeria#galerías-ajenas-solo-lectura).
+
+---
+
+## Vectorizador
+
+```yaml
+vectorizer:
+  url: "http://vectorizador.gpu.svc:8000"
+  timeout_ms: 250
+```
+
+`timeout_ms` es el plazo de la llamada al motor de tokenización, **con un
+reintento**. Subirlo alarga la cola de latencia de todas las consultas; bajarlo
+convierte una GPU momentáneamente ocupada en errores `vectorizer_unavailable`.
+El valor medido y recomendado es `250`.
+
+---
+
+## Identificación
+
+```yaml
+identify:
+  default_top_n: 10
+  default_num_candidates: 800
+  default_threshold: 0.82
+  max_image_bytes: 4194304
+```
+
+| Parámetro | Por omisión | Notas |
+|---|---|---|
+| `default_top_n` | `10` | Tamaño de la lista de candidatos. El cliente puede pedir otro por petición. |
+| `default_num_candidates` | `800` | Candidatos explorados por shard. **La palanca entre recall y latencia.** |
+| `default_threshold` | `0.82` | Umbral `t` del veredicto de tres estados. |
+| `max_image_bytes` | `4194304` (4 MiB) | Tamaño máximo de la imagen de entrada, **en bytes**. |
+
+<Callout type="danger" title="El umbral por omisión no es una calibración">
+`0.82` es **una cifra de verificación 1:1 sin calibrar**, y en 1:N la
+probabilidad de falso positivo se multiplica por el tamaño de la galería. Cada
+despliegue tiene que fijar el suyo con datos etiquetados de su población antes
+de automatizar decisiones.
+
+El método, las métricas (FPIR, FNIR, rank-1), el arnés de medición y el límite
+de tamaño muestral están en
+[Precisión y calibración del umbral](/docs/alnitak/precision).
+</Callout>
+
+<Callout type="info" title="No hay límite de resolución, solo de tamaño en bytes">
+El servicio valida **bytes**, no píxeles: no hay resolución mínima ni máxima
+configurable. Aun así, las imágenes grandes cuestan tiempo en las etapas de
+decodificación y detección, así que conviene que el canal de captura recorte y
+comprima antes de enviar. Si el desglose por etapa señala detección como
+dominante, ese es el primer sitio donde mirar.
+</Callout>
+
+<Callout type="info" title="Los umbrales de calidad y vivacidad no se configuran aquí">
+`quality.icao` y `quality.liveness` se devuelven en cada respuesta y gobiernan el
+rechazo `422 low_quality`, pero **no son parámetros de este fichero**: viven en
+el motor de tokenización. Para ajustarlos, habla con el equipo de JAAK asignado
+al proyecto.
+</Callout>
+
+---
+
+## Alta en galería
+
+```yaml
+enroll:
+  block_on_review: false
+```
+
+| Parámetro | Por omisión | Qué hace |
+|---|---|---|
+| `block_on_review` | `false` | Extiende el rechazo por duplicado a la banda de revisión manual |
+
+Con `false` —el comportamiento histórico— el alta se rechaza **solo** con
+veredicto `match`. Un candidato dentro de la banda `[t, t+0.06)` no impide el
+alta: el rostro se guarda, la respuesta es `201` y su `verdict` dice `review`.
+
+Con `true`, la banda también devuelve `409 duplicate_or_fraud`, con los
+candidatos que lo provocaron.
+
+<Callout type="warning" title="Activarlo cambia la conducta de integraciones ya desplegadas">
+Un cliente que hoy recibe `201` en la banda empezaría a recibir `409` en cuanto
+se active. Por eso el defecto es `false`: actualizar de versión no debe cambiar
+el comportamiento de nadie sin avisar.
+
+Actívalo si tu flujo exige intervención humana en esa banda y no quieres
+depender de que cada integración lea el `verdict` de un `201`. Ver
+[Referencia de API → Alta en galería](/docs/alnitak/api#alta-en-galería).
+</Callout>
+
+---
+
+## Techo de latencia declarado
+
+```yaml
+sla:
+  latency_ms: 400
+  rps: 60
+```
+
+No es un límite que el servicio imponga: es el **techo declarado del
+despliegue**, y de él sale el campo `slack_ms` de cada respuesta —la diferencia
+entre ese techo y el `took_ms` real de la consulta— además de los umbrales que
+pinta la consola. Ponlo en el valor contratado, no en el medido: sirve para ver
+cuánto margen queda, y con un techo optimista `slack_ms` deja de avisar.
+
+<Callout type="warning" title="Con 400 ms de techo, un reintento del vectorizador se lo come">
+`vectorizer.timeout_ms` es 250 ms **con un reintento**: una consulta que agote el
+primer intento consume ≥ 500 ms solo en esa etapa, por encima del techo de 400.
+`slack_ms` sale negativo, y eso es exactamente lo que tiene que verse: la
+consulta incumplió el techo declarado. No es un fallo del cálculo.
+
+Si tus consultas muestran `slack_ms` negativo de forma recurrente, el problema
+está en el vectorizador, no en el techo. Ver
+[Solución de problemas](/docs/alnitak/solucion-de-problemas#503-vectorizer_unavailable).
+</Callout>
+
+---
+
+## PostgreSQL y Redis
+
+Son dependencias obligatorias del servicio, pero **no se configuran en este
+fichero**: sus credenciales y direcciones se declaran en el `tfvars` del
+instalador, que las deposita como secretos y las inyecta en el pod.
+
+| Dependencia | Dónde se declara |
+|---|---|
+| PostgreSQL de runtime | Bloque `postgres` del `tfvars` |
+| PostgreSQL administrativo (migraciones, primer administrador) | `postgres_admin` del fichero del playbook |
+| Redis | `redis_addr`, `redis_username`, `redis_password` del `tfvars` |
+
+Ver [Instalación → 4. Dependencias que aporta el cliente](/docs/alnitak/instalacion#4-preparación-previa).
+
+<Callout type="warning" title="Redis sin credencial es legible por cualquiera que alcance el puerto">
+Redis guarda el **estado de sesión compartido** entre réplicas de la API. Dejar
+`redis_password` vacío solo es admisible en un Redis dedicado y aislado; en un
+clúster compartido con otras aplicaciones, ponerla.
+</Callout>
+
+---
+
+## Registro
+
+```yaml
+log:
+  level: "info"
+```
+
+Los logs son estructurados, con lista de permitidos y redacción de cabeceras.
+**Está prohibido registrar tokens y API keys**, y los errores hacia el cliente
+son genéricos a propósito. Subir a `debug` en producción es una decisión que hay
+que tomar a sabiendas y revertir después.
+
+---
+
+## Cambiar la configuración en caliente
+
+La configuración se monta como ConfigMap y los secretos como Secret. Un cambio
+requiere reiniciar los pods de la API:
+
+```bash
+kubectl rollout restart deploy/<api> -n <namespace>
+kubectl rollout status  deploy/<api> -n <namespace>
+```
+
+Después, **confirma que las dos dependencias siguen en verde** antes de dar el
+cambio por bueno:
+
+```bash
+curl -s "$ALNITAK_URL/readyz"
+```
+
+<Callout type="tip" title="El arranque avisa de lo que está mal configurado">
+El servicio emite avisos explícitos en el log de arranque cuando
+`insecure_skip_verify` está activo, cuando falta el campo de versión de modelo y
+cuando la pimienta no llega al mínimo. Leer ese log tras cada cambio es la
+comprobación más rentable que existe.
+</Callout>

@@ -1,0 +1,224 @@
+---
+title: Precisión y calibración del umbral
+description: Cómo se mide la precisión de identificación 1:N de JAAK Alnitak — FPIR, FNIR, rank-1, tamaño muestral y cómo se fija el umbral operativo de un despliegue.
+category: concepto
+order: 8
+unlisted: true
+---
+
+<Orientation
+  audience="Arquitectura y ciencia de datos del cliente · Quien tiene que defender el umbral ante negocio o ante el regulador"
+  goal="Saber con qué métricas se mide un sistema 1:N y cómo se fija el umbral de tu despliegue con datos propios."
+  before={{ title: "Arquitectura", href: "/docs/alnitak/arquitectura" }}
+  outOfScope={[
+    { title: "Latencia, caudal y dimensionado", href: "/docs/alnitak/rendimiento" },
+    { title: "Dónde se configura el umbral", href: "/docs/alnitak/configuracion#identificación" },
+    { title: "Recalibrar al cambiar de modelo", href: "/docs/alnitak/mantenimiento#re-vectorización-con-un-modelo-nuevo" },
+  ]}
+/>
+
+
+Términos que no reconozcas: [Glosario](/docs/alnitak/glosario).
+
+<Callout type="danger" title="El umbral por defecto no está calibrado para 1:N">
+`identify.default_threshold = 0.82` es **una cifra de verificación 1:1 sin
+calibrar**. En identificación 1:N no es defendible tal cual: la probabilidad de
+falso positivo **se multiplica por el tamaño de la galería**.
+
+Contra más de 50 M de registros hace falta una tasa de falsa aceptación por
+comparación del orden de **10⁻⁶ o menor**. Un despliegue que automatice
+decisiones con el umbral de fábrica está tomando una decisión que nadie ha
+medido.
+</Callout>
+
+## Por qué 1:N no se mide como 1:1
+
+La métrica clásica de verificación 1:1 —FMR/FNMR sobre pares de imágenes— mide
+**una comparación aislada**: "¿son estas dos imágenes la misma persona?". En
+identificación 1:N la pregunta es otra: "¿está esta persona en la galería de N
+registros?". Cada consulta dispara N comparaciones implícitas.
+
+Las consecuencias son grandes y poco intuitivas:
+
+- Con N = 50 M, un FMR por comparación de **10⁻⁴** —excelente en 1:1— produce
+  del orden de **miles de falsos positivos por consulta**. Solo un FMR de
+  ~10⁻⁶ o menor mantiene los falsos positivos en cifras operables.
+- Hay **dos clases de consulta** con comportamiento distinto: la persona sí
+  está en la galería (*genuina*) y la persona no está (*impostora*). La métrica
+  de pares no distingue el error operativo que importa en cada caso.
+
+Por eso la precisión 1:N se mide con tasas de identificación, no de pares.
+
+## Las métricas que sí aplican
+
+| Métrica | Definición | Qué responde |
+|---|---|---|
+| **rank-1 / rank-5** | Fracción de consultas genuinas cuya identidad correcta aparece en el top-1 / top-5, **sin umbral** | ¿El motor ordena bien? Es la capacidad bruta del modelo |
+| **FPIR(t)** | Fracción de consultas **impostoras** cuyo mejor score supera el umbral `t` | ¿Cuántas falsas alarmas produce alguien que no está registrado? |
+| **FNIR@FPIR** | Fracción de consultas **genuinas** no identificadas correctamente cuando el umbral se fija para una FPIR dada | ¿Qué precio pagamos en genuinos perdidos por exigir pocas falsas alarmas? |
+| **Curva de umbral** | `umbral → FPIR, FNIR, tasa de revisión manual` | ¿Qué umbral equilibra falsas alarmas, genuinos perdidos y carga de revisión? |
+
+**FNIR@FPIR es la métrica que hay que reportar**, para FPIR ∈ `{10⁻³, 10⁻⁴, 10⁻⁵, 10⁻⁶}`: es la que conecta el tamaño real de tu galería con el umbral que
+acabas configurando.
+
+La curva de umbral incluye la **tasa de revisión manual**, es decir, cuántos
+casos caerán en la banda `[t, t+0.06)`. Eso convierte la calibración en una
+decisión que también es operativa: un umbral más exigente reduce falsas alarmas
+y **aumenta la carga de trabajo de tus analistas**.
+
+<Callout type="info" title="La banda de revisión es una constante, no un parámetro">
+El ancho de la banda de revisión manual es **0.06** y no se configura: no hay
+parámetro para ella. Lo que mueves es `t`, y la banda va detrás. Ver
+[Arquitectura → Score y veredicto](/docs/alnitak/arquitectura#score-y-veredicto-de-tres-estados).
+</Callout>
+
+---
+
+## El conjunto etiquetado
+
+La calibración se hace con un arnés de medición que la entrega incluye
+(`bench/cmd/accuracy`). Necesita imágenes con identidad conocida, en una de dos
+formas:
+
+| Forma | Estructura |
+|---|---|
+| Directorio | Una carpeta por identidad, con sus imágenes JPG/PNG dentro |
+| CSV | Líneas `ruta,identidad`, rutas relativas al propio CSV |
+
+El reparto es determinista dado una semilla:
+
+1. Se barajan las identidades y se reservan las últimas como **impostoras**:
+   ninguna imagen suya entra en la galería, y todas sus consultas son intentos
+   de alguien no registrado.
+2. De cada identidad genuina, las primeras imágenes pasan a la **galería** y
+   las siguientes son **consultas genuinas**.
+
+### Reglas de calidad del conjunto
+
+<Callout type="danger" title="Tres errores que invalidan la medición">
+- **La consulta no puede ser el mismo archivo que el alta.** Si lo es, rank-1
+  mide deduplicación, no identificación: el resultado sale magnífico y no
+  significa nada. Usa sesiones, fechas o capturas distintas.
+- **Las identidades impostoras deben ser comparables en dificultad** a las
+  genuinas: mismo canal, misma calidad de captura. Impostores "fáciles" hunden
+  artificialmente la FPIR medida.
+- **El conjunto tiene que parecerse a tu población**, no a un dataset
+  académico. Un umbral calibrado sobre caras de otra demografía, otra cámara u
+  otra iluminación no es tu umbral.
+</Callout>
+
+### Tamaño muestral: la regla del tres
+
+Es el límite que más expectativas rompe, y es aritmética, no opinión.
+
+**Para sostener una FPIR de `p` con cero falsos positivos observados hacen falta
+del orden de `3/p` consultas impostoras.** Con `N` consultas impostoras solo
+puedes sostener FPIR ≥ ~`3/N`:
+
+| FPIR objetivo | Consultas impostoras necesarias |
+|---|---:|
+| 10⁻³ | ~3.000 |
+| 10⁻⁴ | ~30.000 |
+| 10⁻⁵ | ~300.000 |
+| 10⁻⁶ | **~3.000.000** |
+
+El arnés marca cada fila de su tabla con su soporte estadístico. **Mientras no
+exista un conjunto impostor millonario, las filas de 10⁻⁵ y 10⁻⁶ son
+orientativas y deben reportarse como tales**, no como una garantía. Presentarlas
+de otro modo es un problema, no un atajo.
+
+---
+
+## Cómo se ejecuta
+
+```bash
+cd bench && go build ./cmd/accuracy
+
+./accuracy \
+  --dataset ./rostros-etiquetados \
+  --vectorizer http://localhost:9000 \
+  --gallery-per-id 2 \
+  --probes-per-id 3 \
+  --impostor-identities 200 \
+  --seed 42 \
+  --target-fpir 1e-5 \
+  --out precision-2026-07.json
+```
+
+| Parámetro | Para qué |
+|---|---|
+| `--dataset` / `--csv` | El conjunto etiquetado. Una de las dos, obligatoria |
+| `--vectorizer` | URL del motor de tokenización |
+| `--gallery-per-id` | Imágenes por identidad que van a la galería |
+| `--probes-per-id` | Imágenes por identidad que se usan como consulta |
+| `--impostor-identities` | Identidades reservadas como impostoras. **Obligatorio y ≥ 1**: sin impostores no hay FPIR que medir |
+| `--seed` | Semilla del reparto. Dos corridas solo son comparables con el mismo conjunto, semilla y reparto |
+| `--target-fpir` | FPIR objetivo para el umbral recomendado |
+| `--out` | Fichero JSON con el resultado completo |
+
+El arnés vectoriza cada imagen contra el motor de tokenización, toma el rostro
+de mayor área, renormaliza y calcula las similitudes **en memoria**. No toca
+Elasticsearch ni la API: mide el modelo, no el servicio. Las imágenes que no se
+vectorizan se reportan aparte, y las consultas genuinas que pierden toda su
+galería por esos fallos se excluyen del cálculo.
+
+### Qué devuelve
+
+| Salida | Contenido |
+|---|---|
+| `params` | Todos los parámetros de la corrida, para comparabilidad |
+| `rank` | rank-1 y rank-5 |
+| `fnir_at_fpir[]` | Por cada FPIR objetivo: umbral empírico, FPIR medida, FNIR en ese umbral y **si el tamaño muestral lo sostiene** |
+| `threshold_curve[]` | Puntos `(umbral, FPIR, FNIR, tasa de revisión manual)` |
+| `recommended_threshold` | El umbral para tu FPIR objetivo, su FNIR, y un aviso si la muestra no lo sostiene |
+
+---
+
+## Del umbral medido al umbral operativo
+
+1. **Corre el arnés** con el conjunto etiquetado definitivo y el modelo vigente.
+2. **Elige el FPIR objetivo con el cliente.** 10⁻⁵ es un punto de partida
+   razonable; 10⁻⁶ exige conjunto impostor millonario para ser defendible.
+3. **Configura `identify.default_threshold`** con el umbral recomendado, y
+   **archiva el JSON de la corrida en el expediente**: es la evidencia de por
+   qué el umbral es ese.
+4. **Vigila la deriva en producción**: compara la tasa real de casos en
+   revisión manual contra la que predijo la curva. Una desviación sostenida
+   significa que algo cambió —el canal, la población, la calidad de captura— y
+   toca recalibrar.
+
+El paso 4 es el que se olvida. La calibración no es un hito de puesta en
+marcha: es una métrica que se vigila, y su señal está en el panel de alertas de
+la [consola](/docs/alnitak/consola).
+
+## Cada cambio de modelo obliga a recalibrar
+
+Los vectores de dos modelos distintos **no son comparables**: cada
+entrenamiento define su propio espacio de 512 dimensiones y su propia
+distribución de scores. Un cambio de modelo implica siempre las dos cosas:
+
+1. **Re-indexar la galería completa** con el modelo nuevo, a un índice nuevo,
+   y conmutar el alias. Nunca mezclar modelos en el índice que sirve
+   producción: el filtro por versión de modelo es el cinturón de seguridad, no
+   la estrategia.
+2. **Recalibrar el umbral** con este arnés.
+
+<Callout type="danger" title="El umbral viejo no significa nada en el espacio nuevo">
+Y no falla en una dirección predecible: puede quedar **demasiado laxo** (falsos
+positivos en masa) o **demasiado estricto** (genuinos rechazados en masa). No
+se puede estimar a ojo ni ajustar por proporción.
+
+La calibración es **parte del procedimiento de migración de modelo**, no una
+tarea opcional posterior. Ver
+[Mantenimiento → Re-vectorización](/docs/alnitak/mantenimiento#re-vectorización-con-un-modelo-nuevo).
+</Callout>
+
+## Qué no cubre esta página
+
+Las cifras de precisión **son propias de cada despliegue**: dependen de tu
+población, tu canal de captura y tu galería. Este manual documenta **cómo se
+miden**, no publica valores de referencia, porque un rank-1 o una FNIR medidos
+sobre otra población no predicen los tuyos.
+
+Para las mediciones de latencia y caudal —que sí son del servicio y sí están
+publicadas— ver [Rendimiento y capacidad](/docs/alnitak/rendimiento).
