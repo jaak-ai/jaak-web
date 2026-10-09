@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
+import { identityAiArticle, identityAiAuthor } from "@/lib/blog/identityAiArticle";
 import ArticleLayout from "../ArticleLayout";
+import ScrollableArticleTable from "../ScrollableArticleTable";
 
-const title = "Inteligencia artificial en la verificación de identidad: aplicaciones, riesgos y límites";
+const title = identityAiArticle.title;
 const seoTitle = "IA en la verificación de identidad: riesgos y límites | JAAK";
-const description = "Conoce cómo se aplica la IA a la verificación de identidad, sus límites ante la suplantación y qué evaluar al elegir una solución para tu empresa.";
-const slug = "inteligencia-artificial-verificacion-identidad";
+const description = identityAiArticle.excerpt;
+const slug = identityAiArticle.slug;
 const url = `https://jaak.ai/blog/${slug}`;
-const image = `/images/blog/${slug}.png`;
+const image = identityAiArticle.image;
 const imageAlt = "IA en la verificación de identidad: aplicaciones, riesgos y límites — JAAK";
 
 export const metadata: Metadata = {
@@ -15,7 +17,7 @@ export const metadata: Metadata = {
   keywords: ["biometría facial", "prueba de vida", "KYC", "deepfakes", "suplantación de identidad"],
   alternates: { canonical: url },
   robots: { index: true, follow: true },
-  openGraph: { title: seoTitle, description, type: "article", url, locale: "es_MX", siteName: "JAAK", publishedTime: "2025-10-09", authors: ["JAAK"], images: [{ url: image, width: 1024, height: 538, alt: imageAlt }] },
+  openGraph: { title: seoTitle, description, type: "article", url, locale: "es_MX", siteName: "JAAK", publishedTime: identityAiArticle.dateISO, authors: [identityAiAuthor.name], images: [{ url: image, width: 1024, height: 538, alt: imageAlt }] },
   twitter: { card: "summary_large_image", title: seoTitle, description, images: [{ url: image, alt: imageAlt }] },
 };
 
@@ -24,27 +26,27 @@ const jsonLd = {
   "@graph": [
     {
       "@type": "Article", headline: title, description, inLanguage: "es-MX",
-      datePublished: "2025-10-09",
+      datePublished: identityAiArticle.dateISO,
       image: `https://jaak.ai${image}`,
-      author: { "@type": "Organization", "@id": "https://jaak.ai/#organization", name: "JAAK", url: "https://jaak.ai" },
+      author: identityAiAuthor,
       mainEntityOfPage: { "@type": "WebPage", "@id": url },
       publisher: { "@id": "https://jaak.ai/#organization" },
     },
     {
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Inicio", item: "https://jaak.ai" },
-        { "@type": "ListItem", position: 2, name: "Blog", item: "https://jaak.ai/blog" },
-        { "@type": "ListItem", position: 3, name: title, item: url },
-      ],
+        { name: "Inicio", item: "https://jaak.ai" },
+        { name: "Blog", item: "https://jaak.ai/blog" },
+        { name: title, item: url },
+      ].map((item, index) => ({ "@type": "ListItem", position: index + 1, ...item })),
     },
   ],
 };
 
 export default function Page() {
   return (
-    <ArticleLayout title={title} category="IA" readTime="9 min" slug={slug}
-      date="9 de octubre, 2025" organizationAuthor="JAAK"
+    <ArticleLayout title={title} category={identityAiArticle.category} readTime={identityAiArticle.readTime} slug={slug}
+      date={identityAiArticle.date} organizationAuthor={identityAiAuthor.name}
       image={image} imageAlt={imageAlt}
       showBottomCta={false} relatedPosts={[]} jsonLd={jsonLd}>
       <style>{`
@@ -61,10 +63,10 @@ export default function Page() {
         .jaak-article-body .article-band--light { background: #FFFFFF; border-color: #D9E2EC; }
         .jaak-article-body .article-band--light :is(h2, h3, strong, b) { color: #212A45 !important; }
         .jaak-article-body .article-band--light :is(p, li, td, em) { color: #4A5568 !important; }
-        .jaak-article-body .article-band--light a { color: #007880 !important; }
+        .jaak-article-body .article-band--light :is(a, button) { color: #007880 !important; }
         .jaak-article-body .article-band--light a:hover { color: #212A45 !important; }
         .jaak-article-body .article-band--light :focus-visible { outline-color: #007880; }
-        .jaak-article-body .article-band--light [role="region"] { border-color: #D9E2EC !important; }
+        .jaak-article-body .article-band--light [data-table-scroll] { border-color: #D9E2EC !important; }
         .jaak-article-body .article-band--light table th { background: #EDF5F8 !important; color: #212A45 !important; border-color: #D9E2EC !important; }
         .jaak-article-body .article-band--light table td { color: #4A5568 !important; border-color: #D9E2EC !important; }
         .jaak-article-body .article-band--light table tr:nth-child(even) { background: #F7F9FC !important; }
@@ -104,7 +106,7 @@ export default function Page() {
       <section className="article-band article-band--blue" aria-labelledby="la-ia-tambien-puede-facilitar-la-suplantacion">
         <h2 id="la-ia-tambien-puede-facilitar-la-suplantacion" className="text-2xl font-bold mt-12 mb-6 scroll-mt-36">{"La IA también puede facilitar la suplantación"}</h2>
         <p className="text-gray-600 leading-relaxed mb-4">{"Conviene separar tres conceptos:"}</p>
-        <div role="region" aria-label="Tabla: Concepto" tabIndex={0} className="my-8 max-w-full overflow-x-auto rounded-lg border border-white/10 focus-visible:outline-2 focus-visible:outline-[#1ECAD3]"><table className="w-full min-w-[640px] text-sm text-left"><thead><tr><th scope="col" className="p-4 border-b">{"Concepto"}</th><th scope="col" className="p-4 border-b">{"Qué describe"}</th><th scope="col" className="p-4 border-b">{"Ejemplo hipotético"}</th></tr></thead><tbody><tr><td className="p-4 border-b align-top">{"Deepfake"}</td><td className="p-4 border-b align-top">{"Contenido generado o modificado con IA para simular una apariencia o actuación"}</td><td className="p-4 border-b align-top">{"Un video que representa el rostro de otra persona"}</td></tr><tr><td className="p-4 border-b align-top">{"Ataque de presentación"}</td><td className="p-4 border-b align-top">{"Un intento de engaño frente al sensor de captura"}</td><td className="p-4 border-b align-top">{"Una fotografía mostrada ante la cámara"}</td></tr><tr><td className="p-4 border-b align-top">{"Ataque de inyección"}</td><td className="p-4 border-b align-top">{"La introducción de contenido en el flujo digital de captura o procesamiento"}</td><td className="p-4 border-b align-top">{"Imágenes sustituidas antes de llegar al componente que las analiza"}</td></tr></tbody></table></div>
+        <ScrollableArticleTable label="Tabla: Concepto" headers={["Concepto", "Qué describe", "Ejemplo hipotético"]} rows={[["Deepfake", "Contenido generado o modificado con IA para simular una apariencia o actuación", "Un video que representa el rostro de otra persona"], ["Ataque de presentación", "Un intento de engaño frente al sensor de captura", "Una fotografía mostrada ante la cámara"], ["Ataque de inyección", "La introducción de contenido en el flujo digital de captura o procesamiento", "Imágenes sustituidas antes de llegar al componente que las analiza"]]} />
         <p className="text-gray-600 leading-relaxed mb-4"><strong>{"Deepfake describe el contenido; inyección describe un mecanismo."}</strong>{" Pueden combinarse, pero no son equivalentes. Tampoco todo intento de suplantación requiere IA."}</p>
         <p className="text-gray-600 leading-relaxed mb-4">{"La "}<a href="https://pages.nist.gov/800-63-4/sp800-63a.html#digital-injection-prevention-and-forged-media-detection" className="text-[#1ECAD3] underline underline-offset-4 hover:text-white">{"sección 3.14 de NIST SP 800-63A-4"}</a>{" aborda la inyección y el contenido manipulado. Advierte que la comparación biométrica por sí sola no previene esos ataques y que los controles de captura y presentación tampoco cubren todos los casos."}</p>
         <p className="text-gray-600 leading-relaxed mb-4">{"Para una empresa, esto implica preguntar tanto qué analiza la solución como qué confianza ofrece sobre el origen del material recibido."}</p>
@@ -134,7 +136,7 @@ export default function Page() {
       <section className="article-band article-band--light" aria-labelledby="que-revisar-al-elegir-una-solucion-de-verificacion-de-identidad">
         <h2 id="que-revisar-al-elegir-una-solucion-de-verificacion-de-identidad" className="text-2xl font-bold mt-12 mb-6 scroll-mt-36">{"Qué revisar al elegir una solución de verificación de identidad"}</h2>
         <p className="text-gray-600 leading-relaxed mb-4">{"Utiliza estas preguntas para convertir una demostración comercial en una evaluación documentada:"}</p>
-        <div role="region" aria-label="Tabla: Criterio" tabIndex={0} className="my-8 max-w-full overflow-x-auto rounded-lg border border-white/10 focus-visible:outline-2 focus-visible:outline-[#1ECAD3]"><table className="w-full min-w-[640px] text-sm text-left"><thead><tr><th scope="col" className="p-4 border-b">{"Criterio"}</th><th scope="col" className="p-4 border-b">{"Pregunta al proveedor"}</th><th scope="col" className="p-4 border-b">{"Evidencia que conviene solicitar"}</th></tr></thead><tbody><tr><td className="p-4 border-b align-top">{"Alcance"}</td><td className="p-4 border-b align-top">{"¿Qué comprueba cada módulo y qué queda fuera?"}</td><td className="p-4 border-b align-top">{"Descripción funcional y límites documentados"}</td></tr><tr><td className="p-4 border-b align-top">{"Amenazas"}</td><td className="p-4 border-b align-top">{"¿Qué ataques de presentación e inyección se evaluaron?"}</td><td className="p-4 border-b align-top">{"Matriz de amenazas y resultados por escenario"}</td></tr><tr><td className="p-4 border-b align-top">{"Pruebas independientes"}</td><td className="p-4 border-b align-top">{"¿Qué versión y condiciones cubre el informe?"}</td><td className="p-4 border-b align-top">{"Informe con fechas, metodología y alcance"}</td></tr><tr><td className="p-4 border-b align-top">{"Errores"}</td><td className="p-4 border-b align-top">{"¿Cómo se manejan fallos, reintentos y excepciones?"}</td><td className="p-4 border-b align-top">{"Política de decisión y flujo de revisión"}</td></tr><tr><td className="p-4 border-b align-top">{"Privacidad"}</td><td className="p-4 border-b align-top">{"¿Cómo se conservan, utilizan y eliminan los datos?"}</td><td className="p-4 border-b align-top">{"Documentación de tratamiento, accesos y conservación"}</td></tr><tr><td className="p-4 border-b align-top">{"Integración y trazabilidad"}</td><td className="p-4 border-b align-top">{"¿Qué resultados quedan disponibles para investigar un caso?"}</td><td className="p-4 border-b align-top">{"Documentación técnica y ejemplos de registros"}</td></tr><tr><td className="p-4 border-b align-top">{"Experiencia"}</td><td className="p-4 border-b align-top">{"¿Qué ocurre con usuarios que no completan la captura?"}</td><td className="p-4 border-b align-top">{"Resultados de piloto y mecanismos de asistencia"}</td></tr></tbody></table></div>
+        <ScrollableArticleTable label="Tabla: Criterio" headers={["Criterio", "Pregunta al proveedor", "Evidencia que conviene solicitar"]} rows={[["Alcance", "¿Qué comprueba cada módulo y qué queda fuera?", "Descripción funcional y límites documentados"], ["Amenazas", "¿Qué ataques de presentación e inyección se evaluaron?", "Matriz de amenazas y resultados por escenario"], ["Pruebas independientes", "¿Qué versión y condiciones cubre el informe?", "Informe con fechas, metodología y alcance"], ["Errores", "¿Cómo se manejan fallos, reintentos y excepciones?", "Política de decisión y flujo de revisión"], ["Privacidad", "¿Cómo se conservan, utilizan y eliminan los datos?", "Documentación de tratamiento, accesos y conservación"], ["Integración y trazabilidad", "¿Qué resultados quedan disponibles para investigar un caso?", "Documentación técnica y ejemplos de registros"], ["Experiencia", "¿Qué ocurre con usuarios que no completan la captura?", "Resultados de piloto y mecanismos de asistencia"]]} />
         <p className="text-gray-600 leading-relaxed mb-4">{"Antes del piloto, acuerda qué resultados permitirán continuar, cuáles exigirán ajustes y quién resolverá los casos inconclusos. Así, la evaluación responde a necesidades operativas concretas."}</p>
       </section>
       <section className="article-band article-band--blue" aria-labelledby="la-perspectiva-de-jaak">

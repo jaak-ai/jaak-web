@@ -56,3 +56,11 @@ La revisión posterior con portada y fondos alternados pasó compilación (inclu
 - Escritorio 1440 px y móviles 390/320 px: sin desbordamiento de página, tablas con scroll contenido; sin errores JavaScript del código local.
 
 Los resultados corresponden al build local de producción. No se realizó merge ni despliegue a producción y no se afirma indexación efectiva por buscadores.
+
+## Correcciones de calidad para TO-1292
+
+Las seis anotaciones de SonarQube se atendieron: props de ArticleLayout de solo lectura, autor por categoría calculado sin ternario anidado y tablas con secciones nativas etiquetadas. Un componente común renderiza ambas tablas a partir de sus encabezados y filas originales; botones nativos permiten desplazar horizontalmente con teclado sin asignar tabIndex a elementos estáticos.
+
+Los datos editoriales aprobados se centralizan en `src/lib/blog/identityAiArticle.ts` y se reutilizan en la página y en blogPosts. Los breadcrumbs se construyen con una lista de enlaces y sus posiciones, conservando el JSON-LD original. El detector local jscpd no encontró duplicaciones en los archivos nuevos del artículo; el veredicto del gate corresponde a SonarQube y se verifica después del push.
+
+Tras las correcciones: build final correcto (incluidos tipos); 68 pruebas y lint sin errores (dos advertencias previas). Chrome/Playwright valida el texto completo, metadatos, sitemap/RSS, ausencia de regresiones y viewport 1440/390/320. Los botones de la primera tabla se activaron con Enter en móvil: desplazamiento a la derecha mayor que cero y regreso a cero a la izquierda.

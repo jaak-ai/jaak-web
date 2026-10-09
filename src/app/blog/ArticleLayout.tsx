@@ -68,19 +68,18 @@ export default function ArticleLayout({
   showAuthor = true,
   organizationAuthor,
   showBottomCta = true,
-}: ArticleLayoutProps) {
+}: Readonly<ArticleLayoutProps>) {
   const colors = categoryColors[category] || {
     bg: "bg-white/10",
     text: "text-white/60",
   };
 
+  const categoryAuthor = JAVIER_CATEGORIES.includes(category) ? AUTHORS.javier : AUTHORS.arianna;
   const author = organizationAuthor ? {
     name: organizationAuthor,
     initials: organizationAuthor,
     gradient: "linear-gradient(135deg, #0066ff 0%, #1ECAD3 100%)",
-  } : JAVIER_CATEGORIES.includes(category)
-    ? AUTHORS.javier
-    : AUTHORS.arianna;
+  } : categoryAuthor;
 
   const related =
     relatedPosts ??
