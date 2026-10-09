@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   keywords: ["biometría facial", "prueba de vida", "KYC", "deepfakes", "suplantación de identidad"],
   alternates: { canonical: url },
   robots: { index: false, follow: false },
-  openGraph: { title: seoTitle, description, type: "article", url, locale: "es_MX", siteName: "JAAK", images: [] },
+  openGraph: { title: seoTitle, description, type: "article", url, locale: "es_MX", siteName: "JAAK", publishedTime: "2025-10-09", authors: ["JAAK"], images: [] },
   twitter: { card: "summary", title: seoTitle, description, images: [] },
 };
 
@@ -27,6 +27,8 @@ const jsonLd = {
   "@graph": [
     {
       "@type": "Article", headline: title, description, inLanguage: "es-MX",
+      datePublished: "2025-10-09",
+      author: { "@type": "Organization", "@id": "https://jaak.ai/#organization", name: "JAAK", url: "https://jaak.ai" },
       mainEntityOfPage: { "@type": "WebPage", "@id": url },
       publisher: { "@id": "https://jaak.ai/#organization" },
     },
@@ -45,7 +47,8 @@ export default function Page() {
   if (!isDraftPreview(process.env)) notFound();
   return (
     <ArticleLayout title={title} category="IA" readTime="9 min" slug={slug}
-      showAuthor={false} showBottomCta={false} relatedPosts={[]} jsonLd={jsonLd}>
+      date="9 de octubre, 2025" organizationAuthor="JAAK"
+      showBottomCta={false} relatedPosts={[]} jsonLd={jsonLd}>
       <p className="text-gray-600 leading-relaxed mb-4">{"La inteligencia artificial puede apoyar la verificación de identidad mediante la extracción de datos documentales, la comparación facial y el análisis de señales de suplantación. Cada tarea aporta evidencia distinta: leer una identificación, encontrar semejanza entre rostros y evaluar la captura responden preguntas diferentes."}</p>
       <p className="text-gray-600 leading-relaxed mb-4">{"Pensemos en un ejemplo hipotético: una persona solicita un crédito desde su celular. Envía una identificación y captura su rostro. Antes de continuar, la empresa necesita evaluar el documento, relacionarlo con la persona solicitante y determinar si la interacción presenta señales de manipulación."}</p>
       <p className="text-gray-600 leading-relaxed mb-4">{"La pregunta empresarial es qué evidencia permite reunir la tecnología y cómo utilizarla para tomar una decisión proporcional al riesgo."}</p>

@@ -21,6 +21,7 @@ interface ArticleLayoutProps {
   category: string;
   date?: string;
   showAuthor?: boolean;
+  organizationAuthor?: string;
   showBottomCta?: boolean;
   readTime: string;
   slug: string;
@@ -65,6 +66,7 @@ export default function ArticleLayout({
   relatedPosts,
   children,
   showAuthor = true,
+  organizationAuthor,
   showBottomCta = true,
 }: ArticleLayoutProps) {
   const colors = categoryColors[category] || {
@@ -72,7 +74,11 @@ export default function ArticleLayout({
     text: "text-white/60",
   };
 
-  const author = JAVIER_CATEGORIES.includes(category)
+  const author = organizationAuthor ? {
+    name: organizationAuthor,
+    initials: organizationAuthor,
+    gradient: "linear-gradient(135deg, #0066ff 0%, #1ECAD3 100%)",
+  } : JAVIER_CATEGORIES.includes(category)
     ? AUTHORS.javier
     : AUTHORS.arianna;
 
@@ -298,18 +304,22 @@ export default function ArticleLayout({
                   >
                     {author.name}
                   </p>
-                  <p
-                    className="text-xs font-bold mb-3"
-                    style={{ color: "#1ECAD3", fontFamily: FONT }}
-                  >
-                    {author.role}
-                  </p>
-                  <p
-                    className="text-sm leading-relaxed"
-                    style={{ color: "rgba(255,255,255,0.52)", fontFamily: FONT }}
-                  >
-                    {author.bio}
-                  </p>
+                  {"role" in author && author.role && (
+                    <p
+                      className="text-xs font-bold mb-3"
+                      style={{ color: "#1ECAD3", fontFamily: FONT }}
+                    >
+                      {author.role}
+                    </p>
+                  )}
+                  {"bio" in author && author.bio && (
+                    <p
+                      className="text-sm leading-relaxed"
+                      style={{ color: "rgba(255,255,255,0.52)", fontFamily: FONT }}
+                    >
+                      {author.bio}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
