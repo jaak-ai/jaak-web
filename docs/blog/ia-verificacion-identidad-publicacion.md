@@ -1,6 +1,10 @@
 # Revisión editorial: IA en la verificación de identidad
 
-Estado: preparado para publicación en el PR en borrador; todavía sin merge ni despliegue a producción. Ruta: `/blog/inteligencia-artificial-verificacion-identidad`.
+Estado: preparado para publicación; todavía sin merge ni despliegue a producción.
+
+Trazabilidad Volo: **TO-1292**, tarea creada y confirmada por el usuario. PR: https://github.com/jaak-ai/jaak-web/pull/204.
+
+El usuario pidió avanzar con la publicación. La fusión y el despliegue quedan sujetos a los controles y revisiones obligatorios del repositorio. Ruta: `/blog/inteligencia-artificial-verificacion-identidad`.
 
 ## Revisión y vista previa
 
@@ -14,7 +18,7 @@ Listado del blog, relacionados, sitemap y RSS consumen ese registro sin cambios 
 
 Article y Open Graph conservan únicamente los datos confirmados: autor institucional JAAK, fecha 2025-10-09 y portada autorizada. No se inventan revisor, fecha de modificación, cargo ni biografía. El canonical propio y el título SEO absoluto se conservan. robots.txt permite esta ruta.
 
-La preparación se mantiene en el PR en borrador. Publicar en producción requiere una instrucción explícita de merge/despliegue. La indexabilidad se comprueba sobre el build local de producción; no implica que buscadores hayan indexado una página aún no publicada. Las vistas previas de Vercel pueden añadir su propia cabecera `X-Robots-Tag: noindex` para proteger los previews.
+La preparación está en el PR. Se solicitó avanzar con la publicación; antes de fusionar deben pasar los controles y revisiones obligatorios. La indexabilidad se comprueba sobre el build local de producción; no implica que buscadores hayan indexado una página aún no publicada. Las vistas previas de Vercel pueden añadir su propia cabecera `X-Robots-Tag: noindex` para proteger los previews.
 
 ## Ajustes editoriales realizados
 
