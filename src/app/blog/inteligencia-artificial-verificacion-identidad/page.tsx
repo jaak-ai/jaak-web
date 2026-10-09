@@ -1,10 +1,5 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 import ArticleLayout from "../ArticleLayout";
-import { isDraftPreview } from "./preview";
-
-// Evaluate visibility per request: a preview build must not cache a public draft.
-export const dynamic = "force-dynamic";
 
 const title = "Inteligencia artificial en la verificación de identidad: aplicaciones, riesgos y límites";
 const seoTitle = "IA en la verificación de identidad: riesgos y límites | JAAK";
@@ -19,7 +14,7 @@ export const metadata: Metadata = {
   description,
   keywords: ["biometría facial", "prueba de vida", "KYC", "deepfakes", "suplantación de identidad"],
   alternates: { canonical: url },
-  robots: { index: false, follow: false },
+  robots: { index: true, follow: true },
   openGraph: { title: seoTitle, description, type: "article", url, locale: "es_MX", siteName: "JAAK", publishedTime: "2025-10-09", authors: ["JAAK"], images: [{ url: image, width: 1024, height: 538, alt: imageAlt }] },
   twitter: { card: "summary_large_image", title: seoTitle, description, images: [{ url: image, alt: imageAlt }] },
 };
@@ -47,7 +42,6 @@ const jsonLd = {
 };
 
 export default function Page() {
-  if (!isDraftPreview(process.env)) notFound();
   return (
     <ArticleLayout title={title} category="IA" readTime="9 min" slug={slug}
       date="9 de octubre, 2025" organizationAuthor="JAAK"
