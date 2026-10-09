@@ -1,17 +1,16 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import ArticleLayout from "../ArticleLayout";
+import { isDraftPreview } from "./preview";
+
+// Evaluate visibility per request: a preview build must not cache a public draft.
+export const dynamic = "force-dynamic";
 
 const title = "Inteligencia artificial en la verificación de identidad: aplicaciones, riesgos y límites";
 const seoTitle = "IA en la verificación de identidad: riesgos y límites | JAAK";
 const description = "Conoce cómo se aplica la IA a la verificación de identidad, sus límites ante la suplantación y qué evaluar al elegir una solución para tu empresa.";
 const slug = "inteligencia-artificial-verificacion-identidad";
 const url = `https://jaak.ai/blog/${slug}`;
-
-// Editorial draft: no public registry entry. Never enable in Vercel production.
-const previewEnabled = process.env.VERCEL_ENV !== "production" &&
-  (process.env.NODE_ENV === "development" || process.env.VERCEL_ENV === "preview" ||
-    process.env.JAAK_BLOG_DRAFT_PREVIEW === "true");
 
 export const metadata: Metadata = {
   title: { absolute: seoTitle },
@@ -43,7 +42,7 @@ const jsonLd = {
 };
 
 export default function Page() {
-  if (!previewEnabled) notFound();
+  if (!isDraftPreview(process.env)) notFound();
   return (
     <ArticleLayout title={title} category="IA" readTime="9 min" slug={slug}
       showAuthor={false} showBottomCta={false} relatedPosts={[]} jsonLd={jsonLd}>
