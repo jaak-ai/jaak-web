@@ -1,3 +1,5 @@
+import { identityAiArticle } from "./blog/identityAiArticle";
+
 export interface BlogPost {
   title: string;
   excerpt: string;
@@ -220,6 +222,7 @@ export const blogPosts: BlogPost[] = [
     readTime: "12 min",
     image: "/images/blog/mejores-practicas-compliance-mexico.png",
   },
+  identityAiArticle,
 ];
 
 export const categoryColors: Record<string, { bg: string; text: string }> = {

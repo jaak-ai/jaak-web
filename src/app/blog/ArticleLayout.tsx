@@ -19,7 +19,10 @@ interface ArticleLayoutProps {
   title: string;
   subtitle?: string;
   category: string;
-  date: string;
+  date?: string;
+  showAuthor?: boolean;
+  organizationAuthor?: string;
+  showBottomCta?: boolean;
   readTime: string;
   slug: string;
   image?: string;
@@ -50,6 +53,72 @@ const AUTHORS = {
   },
 };
 
+function getArticleAuthor(category: string, organizationAuthor?: string) {
+  const categoryAuthor = JAVIER_CATEGORIES.includes(category) ? AUTHORS.javier : AUTHORS.arianna;
+  const author = organizationAuthor ? {
+    name: organizationAuthor,
+    initials: organizationAuthor,
+    gradient: "linear-gradient(135deg, #0066ff 0%, #1ECAD3 100%)",
+  } : categoryAuthor;
+
+  return author;
+}
+
+function ArticleAuthor({
+  author,
+  showAuthor,
+}: Readonly<{ author: ReturnType<typeof getArticleAuthor>; showAuthor: boolean }>) {
+  if (!showAuthor) return null;
+
+  return (
+    <section
+      className="py-12"
+      style={{ borderTop: "1px solid rgba(255,255,255,0.06)", background: "#202945" }}
+    >
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div
+          className="flex items-start gap-5 p-6 rounded-2xl border"
+          style={{
+            background: "rgba(255,255,255,0.04)",
+            borderColor: "rgba(255,255,255,0.08)",
+          }}
+        >
+          <div
+            className="w-14 h-14 rounded-2xl flex items-center justify-center text-white font-black text-lg shrink-0"
+            style={{ background: author.gradient, fontFamily: FONT }}
+          >
+            {author.initials}
+          </div>
+          <div>
+            <p
+              className="font-black text-white text-base leading-tight mb-0.5"
+              style={{ fontFamily: FONT, letterSpacing: "-0.4px" }}
+            >
+              {author.name}
+            </p>
+            {"role" in author && author.role && (
+              <p
+                className="text-xs font-bold mb-3"
+                style={{ color: "#1ECAD3", fontFamily: FONT }}
+              >
+                {author.role}
+              </p>
+            )}
+            {"bio" in author && author.bio && (
+              <p
+                className="text-sm leading-relaxed"
+                style={{ color: "rgba(255,255,255,0.52)", fontFamily: FONT }}
+              >
+                {author.bio}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function ArticleLayout({
   title,
   subtitle,
@@ -62,15 +131,16 @@ export default function ArticleLayout({
   jsonLd,
   relatedPosts,
   children,
-}: ArticleLayoutProps) {
+  showAuthor = true,
+  organizationAuthor,
+  showBottomCta = true,
+}: Readonly<ArticleLayoutProps>) {
   const colors = categoryColors[category] || {
     bg: "bg-white/10",
     text: "text-white/60",
   };
 
-  const author = JAVIER_CATEGORIES.includes(category)
-    ? AUTHORS.javier
-    : AUTHORS.arianna;
+  const author = getArticleAuthor(category, organizationAuthor);
 
   const related =
     relatedPosts ??
@@ -185,9 +255,11 @@ export default function ArticleLayout({
                 </svg>
                 {readTime}
               </span>
-              <span className="text-xs" style={{ color: "rgba(255,255,255,0.28)", fontFamily: FONT }}>
-                {date}
-              </span>
+              {date && (
+                <span className="text-xs" style={{ color: "rgba(255,255,255,0.28)", fontFamily: FONT }}>
+                  {date}
+                </span>
+              )}
             </div>
 
             {/* Title */}
@@ -266,47 +338,7 @@ export default function ArticleLayout({
         </section>
 
         {/* ── AUTHOR ─────────────────────────────────────── */}
-        <section
-          className="py-12"
-          style={{ borderTop: "1px solid rgba(255,255,255,0.06)", background: "#202945" }}
-        >
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div
-              className="flex items-start gap-5 p-6 rounded-2xl border"
-              style={{
-                background: "rgba(255,255,255,0.04)",
-                borderColor: "rgba(255,255,255,0.08)",
-              }}
-            >
-              <div
-                className="w-14 h-14 rounded-2xl flex items-center justify-center text-white font-black text-lg shrink-0"
-                style={{ background: author.gradient, fontFamily: FONT }}
-              >
-                {author.initials}
-              </div>
-              <div>
-                <p
-                  className="font-black text-white text-base leading-tight mb-0.5"
-                  style={{ fontFamily: FONT, letterSpacing: "-0.4px" }}
-                >
-                  {author.name}
-                </p>
-                <p
-                  className="text-xs font-bold mb-3"
-                  style={{ color: "#1ECAD3", fontFamily: FONT }}
-                >
-                  {author.role}
-                </p>
-                <p
-                  className="text-sm leading-relaxed"
-                  style={{ color: "rgba(255,255,255,0.52)", fontFamily: FONT }}
-                >
-                  {author.bio}
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
+        <ArticleAuthor author={author} showAuthor={showAuthor} />
 
         {/* ── RELATED POSTS ──────────────────────────────── */}
         {related.length > 0 && (
@@ -412,28 +444,30 @@ export default function ArticleLayout({
         </section>
 
         {/* ── BOTTOM CTA ──────────────────────────────────── */}
-        <section
-          className="py-14"
-          style={{
-            borderTop: "1px solid rgba(30,202,211,0.10)",
-            background:
-              "linear-gradient(135deg, rgba(30,202,211,0.06) 0%, rgba(0,102,255,0.05) 100%)",
-          }}
-        >
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2
-              className="font-black text-white mb-6"
-              style={{
-                fontFamily: FONT,
-                fontSize: "clamp(18px,2.5vw,28px)",
-                letterSpacing: "-0.6px",
-              }}
-            >
-              ¿Listo para operar con confianza digital?
-            </h2>
-            <ArticleBottomCta slug={slug} category={category} />
-          </div>
-        </section>
+        {showBottomCta && (
+          <section
+            className="py-14"
+            style={{
+              borderTop: "1px solid rgba(30,202,211,0.10)",
+              background:
+                "linear-gradient(135deg, rgba(30,202,211,0.06) 0%, rgba(0,102,255,0.05) 100%)",
+            }}
+          >
+            <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+              <h2
+                className="font-black text-white mb-6"
+                style={{
+                  fontFamily: FONT,
+                  fontSize: "clamp(18px,2.5vw,28px)",
+                  letterSpacing: "-0.6px",
+                }}
+              >
+                ¿Listo para operar con confianza digital?
+              </h2>
+              <ArticleBottomCta slug={slug} category={category} />
+            </div>
+          </section>
+        )}
       </main>
 
       <Footer />
