@@ -2,9 +2,20 @@
 title: Consola de operación
 description: Guía de la interfaz web de JAAK Alnitak — panel de datos y operación, búsqueda manual 1:N, flujo de consultas en vivo y detalle por consulta.
 category: guia
-order: 7
+order: 5
 unlisted: true
 ---
+
+<Orientation
+  audience="Operación y analistas del cliente · Quien resuelve casos marcados para revisión manual"
+  goal="Saber qué mira cada panel, qué decisión soporta y qué no se hace desde aquí."
+  before={{ title: "Arquitectura", href: "/docs/alnitak/arquitectura" }}
+  outOfScope={[
+    { title: "Consumir el servicio por API", href: "/docs/alnitak/api" },
+    { title: "Qué alertas configurar y cuándo escalar", href: "/docs/alnitak/operacion" },
+    { title: "Dar de alta operadores y su SSO", href: "/docs/alnitak/configuracion" },
+  ]}
+/>
 
 Guía de la **consola de operación**: la aplicación web desde la que un operador
 autorizado vigila el servicio y ejecuta consultas manuales.
@@ -100,7 +111,7 @@ Al pie, el contador de **consultas del día**.
 Panel izquierdo:
 
 1. **Carga la imagen** arrastrándola, con *Cargar archivo* o con *Usar cámara*.
-   Formatos JPG y PNG, hasta 4 MB.
+   Formatos JPG y PNG, hasta 4 MiB.
 2. **Ajusta los parámetros**:
    - **Top-N (k)** — cuántos candidatos devolver.
    - **Candidatos kNN** — `num_candidates`, los candidatos explorados por shard.
@@ -132,7 +143,7 @@ Al pie: cuántos superan el umbral y cuántos se descartaron.
 
 ### Consulta kNN
 
-Panel derecho con la **consulta literal que la API envió al almacén vectorial** —
+Panel derecho con la **consulta literal que la API envió a Elasticsearch** —
 `_source`, filtro por versión de modelo, `k`, `num_candidates` y el vector de
 consulta— junto a los datos de la respuesta: `hits.total.value`, `max_score`,
 shards correctos y fallidos, `timed_out`, documentos en el índice y RAM.
@@ -176,7 +187,8 @@ el Grafana del cliente.
 
 Reparto de responsabilidades: la **consola** responde "¿vamos bien de
 latencia y caudal, y qué pasó con esta consulta?"; **Grafana** responde
-"¿cómo está el clúster?".
+"¿cómo está el clúster?". El detalle de métricas, umbrales y alertas está en
+[Operación](/docs/alnitak/operacion).
 
 ## Qué hacer desde la consola, y qué no
 
@@ -184,5 +196,5 @@ latencia y caudal, y qué pasó con esta consulta?"; **Grafana** responde
 |---|---|
 | Vigilar latencia, caudal y alertas del turno | Dar de alta identidades en masa (eso es la API) |
 | Resolver casos de revisión manual | Cambiar configuración del servicio |
-| Investigar una consulta concreta | Re-vectorizar la galería o conmutar el alias: son operaciones privilegiadas y van por API |
+| Investigar una consulta concreta | [Re-vectorizar la galería o conmutar el alias](/docs/alnitak/mantenimiento): son operaciones privilegiadas y van por API |
 | Comprobar el estado del índice y del vectorizador | Sustituir a la observabilidad del clúster |

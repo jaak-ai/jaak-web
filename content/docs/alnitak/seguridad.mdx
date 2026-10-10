@@ -2,18 +2,33 @@
 title: Seguridad y tratamiento de datos
 description: Credenciales, scopes, custodia cifrada de la biometría, auditoría encadenada, retención y requisitos de infraestructura de JAAK Alnitak.
 category: concepto
-order: 12
+order: 7
 unlisted: true
 ---
+
+<Orientation
+  audience="Seguridad de la información del cliente · Privacidad y protección de datos · Arquitectura"
+  goal="Saber qué controles trae el servicio, qué debe aportar tu infraestructura y qué se guarda de cada rostro."
+  before={{ title: "Arquitectura", href: "/docs/alnitak/arquitectura" }}
+  outOfScope={[
+    { title: "Cómo se configura cada control", href: "/docs/alnitak/configuracion" },
+    { title: "Prerrequisitos de red, secretos y TLS del clúster", href: "/docs/alnitak/instalacion" },
+    { title: "Programación de respaldos y su retención", href: "/docs/alnitak/mantenimiento" },
+  ]}
+/>
+
+
+Términos que no reconozcas: [Glosario](/docs/alnitak/glosario).
 
 Controles de seguridad de **JAAK Alnitak** y qué debe aportar la
 infraestructura del cliente para que operen de extremo a extremo.
 
 ## Límites de confianza
 
-API, vectorizador, almacén vectorial, operadores y clientes son **límites de
+API, vectorizador, Elasticsearch, operadores y clientes son **límites de
 confianza distintos**. La autenticación no sustituye al aislamiento de red, a
-la autorización por tenant ni a los controles del propio almacén vectorial.
+la autorización por tenant ni a los controles del propio clúster de la
+galería.
 
 `/healthz` y `/readyz` quedan sin autenticación, y por eso no exponen
 configuración, credenciales ni detalles internos.
@@ -62,10 +77,25 @@ Cada credencial se limita a las operaciones que necesita:
 | `read:metrics` | Métricas, estadísticas de galería, nodos, alertas |
 | `read:events` | Eventos y flujo en vivo |
 | `admin:gallery` | Re-embedding y conmutación de alias |
+| `admin:erasure` | Supresión de un sujeto: borra su vector y su recorte cifrado |
 
 Una credencial de solo consulta **no puede dar altas ni tocar la galería**. El
 re-embedding y el swap de alias reescriben o sustituyen la galería completa: se
 separan en su propio scope y exigen separación de funciones.
+
+<Callout type="info" title="Cómo se resuelve el tenant de cada sesión">
+Para una **integración de servicio**, el tenant sale de la API key.
+
+Para una **persona** que entra por SSO, se resuelve en el login: el dominio de
+su correo se busca en la tabla de empresas del despliegue y de ahí sale su
+tenant. Un usuario que ya existe conserva el que se le fijó al crearlo. Si el
+dominio no corresponde a ninguna empresa registrada, se usa el tenant por
+omisión de la configuración.
+
+Consecuencia práctica: **las organizaciones y sus dominios se administran desde
+la consola**, no en la configuración del servicio. El único tenant que se fija
+al instalar es el del primer administrador.
+</Callout>
 
 <Callout type="warning" title="Tenant y canal vienen de la credencial, nunca de la petición">
 Se derivan **exclusivamente** de la credencial validada y se propagan al
@@ -81,7 +111,7 @@ cruzar entre organizaciones enviando otro valor.
 | **Imagen de consulta** | En la configuración de referencia, se procesa en memoria y no se guarda como parte de la consulta. |
 | **Vector de consulta** | Transitorio: vive solo durante la atención de la solicitud. |
 | **Recortes faciales alineados** | Cifrados en reposo con **AES-256-GCM** en almacenamiento de objetos, **fuera del índice de búsqueda**. |
-| **Galería vectorial** | En el almacén vectorial, no expuesto públicamente, con credencial de mínimo privilegio y TLS. |
+| **Galería vectorial** | En Elasticsearch, no expuesto públicamente, con credencial de mínimo privilegio y TLS con la CA del clúster. |
 
 Cada recorte se cifra con **nonce aleatorio único** por objeto y versión de
 clave, y el identificador biométrico como **dato asociado autenticado (AAD)**.
@@ -97,7 +127,20 @@ independientes.
 
 ## Auditoría
 
-Registro **append-only** de cada consulta y cada alta:
+Registro **append-only** de cada consulta y cada alta.
+
+<Callout type="info" title="Dos registros, no uno">
+| Registro | Qué guarda | Dónde |
+|---|---|---|
+| Eventos de consulta y alta | `query_id`, tenant, canal, huella de imagen, veredicto, latencia | Fichero **JSONL** append-only |
+| Operaciones de administración | Altas de usuario, credenciales, re-vectorización, conmutación de alias y **supresión de un sujeto** | Tabla en **PostgreSQL** |
+
+**Los dos van encadenados por hash**, con el mismo esquema `prev_hash`. Al
+planificar respaldos, retención y envío al SIEM hay que cubrir los dos: cubrir
+solo uno deja media traza sin proteger.
+</Callout>
+
+Campos del evento de consulta:
 
 | Campo | |
 |---|---|
@@ -116,6 +159,9 @@ Registro **append-only** de cada consulta y cada alta:
   huellas y metadatos de operación; no almacena imágenes ni vectores.
 - **Operaciones privilegiadas:** el re-embedding y el swap de alias también se
   auditan, con actor e índices de origen y destino.
+- **Supresión de un sujeto:** se audita con actor, organización e identificador
+  biométrico. Cuando el vector y el recorte ya no existen, esa fila es **la única
+  prueba** de que el borrado ocurrió y de quién lo pidió.
 - Las consultas lanzadas desde la consola tienen exactamente la misma
   trazabilidad que las de los canales automatizados.
 
@@ -127,10 +173,11 @@ Registro **append-only** de cada consulta y cada alta:
 | Inyección o sustitución de imagen | MIME y tamaño validados, decodificación segura, límites de tiempo, umbrales de calidad y vivacidad, una sola imagen por petición |
 | Abuso de consulta 1:N (enumeración de galería) | Scope `identify`, rate limit por cliente/IP, Top-N acotado, alertas de volumen, auditoría por consulta y respuesta mínima |
 | Alta fraudulenta | Scope `enroll`, comprobación 1:N previa, revisión de coincidencias, separación operativa entre identificar y dar de alta |
-| Exfiltración de galería u objetos | Almacén vectorial y buckets no públicos, cifrado de recortes, TLS/mTLS, RBAC, credenciales de mínimo privilegio, respaldos cifrados y egress restringido |
+| Exfiltración de galería u objetos | Clúster de Elasticsearch y buckets no públicos, cifrado de recortes, TLS/mTLS, RBAC, credenciales de mínimo privilegio, respaldos cifrados y egress restringido |
 | Sustitución de recorte o reutilización de nonce | Nonce único por objeto y versión de clave, identificador biométrico como AAD, etiqueta GCM verificada antes de descifrar |
 | Cruce entre tenants | Filtro obligatorio por tenant desde la credencial, control de acceso por índice/alias, pruebas de aislamiento |
 | Re-embedding o swap no autorizado | Scope `admin:gallery`, separación de funciones, auditoría encadenada |
+| Supresión no autorizada o cruzada entre organizaciones | Scope `admin:erasure` propio, comprobación del tenant del documento antes de borrar, respuesta `404` indistinguible para documentos de otra organización, auditoría encadenada |
 | Manipulación de auditoría | JSONL append-only, permisos restrictivos, `prev_hash`, verificación periódica, copia remota WORM y alertas ante ruptura |
 | Fuga por logs o errores | Errores genéricos, logs estructurados con lista de permitidos, redacción de cabeceras, prohibición de registrar tokens y API keys |
 
@@ -138,9 +185,30 @@ Registro **append-only** de cada consulta y cada alta:
 
 - Política de retención por plazo definido según la finalidad del tratamiento,
   acordada con el cliente.
-- **Borrado por segmentos completos con acta de destrucción.**
+- **Supresión de un sujeto concreto**: `DELETE /api/v1/biometrics/{id}` borra su
+  vector del índice **y** su recorte cifrado del almacén de objetos. Requiere el
+  scope `admin:erasure` y queda en la cadena de auditoría con actor e
+  identificador. Ver
+  [Referencia de API → Supresión de un sujeto](/docs/alnitak/api#supresión-de-un-sujeto).
+- **Borrado por segmentos completos con acta de destrucción**, para retiradas
+  masivas por vencimiento de plazo.
 - Los respaldos respetan el mismo plazo que el dato en línea: un dato eliminado
   no sobrevive en los backups más allá del plazo.
+
+<Callout type="danger" title="Dos condiciones para que una supresión se cumpla de verdad">
+El borrado alcanza las dos copias en línea del dato biométrico, pero hay dos
+sitios donde puede sobrevivir si la infraestructura no está preparada:
+
+1. **Versionado del bucket de recortes.** Con versionado activo, el borrado deja
+   un marcador y **la versión anterior del recorte sigue recuperable**. Ese
+   bucket no debe estar versionado, o su política de ciclo de vida debe purgar
+   las versiones no actuales dentro del plazo acordado.
+2. **Instantáneas de la galería.** Una instantánea tomada antes del borrado
+   contiene el vector. Su retención tiene que estar dentro del plazo, que es la
+   misma regla que ya aplica al resto del dato.
+
+Los dos son responsabilidad de la infraestructura del cliente, no del servicio.
+</Callout>
 
 ## Tratamiento de datos y registros
 
@@ -175,7 +243,13 @@ cliente debe proveer:
 | Secretos fuera del fichero y de la imagen | Todos por variable de entorno desde el gestor de secretos |
 | Pepper de al menos 32 bytes | El arranque falla si no lo cumple |
 | Clave de recortes configurada | Sin ella no hay custodia y un cambio de modelo obligaría a recapturar |
-| Credencial del almacén vectorial de mínimo privilegio | Acotada al índice de la galería, con caducidad |
+| Credencial de Elasticsearch de mínimo privilegio | Acotada al índice de la galería, con caducidad |
 | Rate limit ajustado al dimensionado | Con `trusted_proxies` si hay gateway delante |
 | Auditoría replicándose a WORM/SIEM | Verificar que llegan eventos |
-| Cadena de auditoría íntegra | Ejecutar el verificador |
+| Cadena de auditoría íntegra | `audit-verify <ruta>` — salida 0. Ver [Operación → Auditoría](/docs/alnitak/operacion#auditoría) |
+| Bucket de recortes sin versionado, o con purga de versiones | Si está versionado, un borrado deja la versión anterior recuperable y la supresión no se cumple |
+
+Cada comprobación de esta tabla se corresponde con un parámetro concreto: los
+nombres, sus valores y sus variables `ALNILAM_*` están en
+[Configuración](/docs/alnitak/configuracion). Lo que hay que tener listo antes
+de instalar está en [Instalación](/docs/alnitak/instalacion).
