@@ -53,6 +53,72 @@ const AUTHORS = {
   },
 };
 
+function getArticleAuthor(category: string, organizationAuthor?: string) {
+  const categoryAuthor = JAVIER_CATEGORIES.includes(category) ? AUTHORS.javier : AUTHORS.arianna;
+  const author = organizationAuthor ? {
+    name: organizationAuthor,
+    initials: organizationAuthor,
+    gradient: "linear-gradient(135deg, #0066ff 0%, #1ECAD3 100%)",
+  } : categoryAuthor;
+
+  return author;
+}
+
+function ArticleAuthor({
+  author,
+  showAuthor,
+}: Readonly<{ author: ReturnType<typeof getArticleAuthor>; showAuthor: boolean }>) {
+  if (!showAuthor) return null;
+
+  return (
+    <section
+      className="py-12"
+      style={{ borderTop: "1px solid rgba(255,255,255,0.06)", background: "#202945" }}
+    >
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div
+          className="flex items-start gap-5 p-6 rounded-2xl border"
+          style={{
+            background: "rgba(255,255,255,0.04)",
+            borderColor: "rgba(255,255,255,0.08)",
+          }}
+        >
+          <div
+            className="w-14 h-14 rounded-2xl flex items-center justify-center text-white font-black text-lg shrink-0"
+            style={{ background: author.gradient, fontFamily: FONT }}
+          >
+            {author.initials}
+          </div>
+          <div>
+            <p
+              className="font-black text-white text-base leading-tight mb-0.5"
+              style={{ fontFamily: FONT, letterSpacing: "-0.4px" }}
+            >
+              {author.name}
+            </p>
+            {"role" in author && author.role && (
+              <p
+                className="text-xs font-bold mb-3"
+                style={{ color: "#1ECAD3", fontFamily: FONT }}
+              >
+                {author.role}
+              </p>
+            )}
+            {"bio" in author && author.bio && (
+              <p
+                className="text-sm leading-relaxed"
+                style={{ color: "rgba(255,255,255,0.52)", fontFamily: FONT }}
+              >
+                {author.bio}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function ArticleLayout({
   title,
   subtitle,
@@ -74,12 +140,7 @@ export default function ArticleLayout({
     text: "text-white/60",
   };
 
-  const categoryAuthor = JAVIER_CATEGORIES.includes(category) ? AUTHORS.javier : AUTHORS.arianna;
-  const author = organizationAuthor ? {
-    name: organizationAuthor,
-    initials: organizationAuthor,
-    gradient: "linear-gradient(135deg, #0066ff 0%, #1ECAD3 100%)",
-  } : categoryAuthor;
+  const author = getArticleAuthor(category, organizationAuthor);
 
   const related =
     relatedPosts ??
@@ -277,53 +338,7 @@ export default function ArticleLayout({
         </section>
 
         {/* ── AUTHOR ─────────────────────────────────────── */}
-        {showAuthor && (
-          <section
-            className="py-12"
-            style={{ borderTop: "1px solid rgba(255,255,255,0.06)", background: "#202945" }}
-          >
-            <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div
-                className="flex items-start gap-5 p-6 rounded-2xl border"
-                style={{
-                  background: "rgba(255,255,255,0.04)",
-                  borderColor: "rgba(255,255,255,0.08)",
-                }}
-              >
-                <div
-                  className="w-14 h-14 rounded-2xl flex items-center justify-center text-white font-black text-lg shrink-0"
-                  style={{ background: author.gradient, fontFamily: FONT }}
-                >
-                  {author.initials}
-                </div>
-                <div>
-                  <p
-                    className="font-black text-white text-base leading-tight mb-0.5"
-                    style={{ fontFamily: FONT, letterSpacing: "-0.4px" }}
-                  >
-                    {author.name}
-                  </p>
-                  {"role" in author && author.role && (
-                    <p
-                      className="text-xs font-bold mb-3"
-                      style={{ color: "#1ECAD3", fontFamily: FONT }}
-                    >
-                      {author.role}
-                    </p>
-                  )}
-                  {"bio" in author && author.bio && (
-                    <p
-                      className="text-sm leading-relaxed"
-                      style={{ color: "rgba(255,255,255,0.52)", fontFamily: FONT }}
-                    >
-                      {author.bio}
-                    </p>
-                  )}
-                </div>
-              </div>
-            </div>
-          </section>
-        )}
+        <ArticleAuthor author={author} showAuthor={showAuthor} />
 
         {/* ── RELATED POSTS ──────────────────────────────── */}
         {related.length > 0 && (
