@@ -12,7 +12,7 @@ export const facialRecognitionArticle = {
   reviewerName: "JAAK",
   date: "12 de octubre, 2026",
   dateISO: "2026-10-12",
-  image: "/images/blog/reconocimiento-facial-biometria-prueba-de-vida.png",
-  imageDimensions: { width: 617, height: 324 },
+  image: "/images/blog/reconocimiento-facial-biometria-prueba-de-vida-hd.png",
+  imageDimensions: { width: 1732, height: 908 },
   imageAlt: "Reconocimiento facial, biometría y prueba de vida: diferencias clave — JAAK",
 };
