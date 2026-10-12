@@ -44,3 +44,7 @@ Enlaces JAAK presentes y comprobados en el proyecto/build local: `/plataforma/ve
 - HTTP 200 sin cabecera noindex en producción local y robots.txt sin bloqueo de /blog. Listado incluye slug; sitemap y RSS contienen una sola entrada con canonical, fecha y categoría aprobadas. Homepage mantiene sus destacados previos.
 
 La protección de borrador y sus 404 correspondían a la etapa inicial, anterior a la autorización de publicar. La fusión final queda sujeta a las revisiones y controles obligatorios; no se omiten protecciones. Verificar despliegue y página pública antes de informar publicación completada.
+
+## Vista previa de revisión
+
+Despliegue Preview confirmado por GitHub/Vercel para la preparación de producción: https://jaak-1zza7jc5i-jaak-ai.vercel.app/blog/reconocimiento-facial-biometria-prueba-de-vida. El PR está listo para revisión y la fusión automática se mantiene sujeta a Itera, SonarQube Code Analysis y JAAK Structural Quality. La vista previa no acredita publicación en el dominio de producción.
