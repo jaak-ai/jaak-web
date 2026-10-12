@@ -8,7 +8,7 @@ export default function Page() {
   return (
     <ArticleLayout title={article.title} slug={article.slug} category={article.category} readTime={article.readTime}
       organizationAuthor={article.authorName} date={article.date} showBottomCta={false} jsonLd={articleSchema}
-      image={article.image} imageAlt={article.imageAlt}
+      image={article.image} imageAlt={article.imageAlt} imageDimensions={article.imageDimensions} alignHeaderWithContent
       relatedPosts={[{ title: "Inteligencia artificial en la verificación de identidad: aplicaciones, riesgos y límites", slug: "inteligencia-artificial-verificacion-identidad", category: "IA" }]}>
       <section className="article-band article-band--light" aria-label="Introducción">
         <p className="text-gray-600 leading-relaxed mb-4">{"El reconocimiento facial o Face Recognition compara o identifica personas mediante características del rostro. La prueba de vida facial o Face Liveness Detection evalúa señales de presencia genuina durante la captura. Ambos se relacionan con la biometría, pero cumplen funciones diferentes dentro de la verificación de identidad."}</p>

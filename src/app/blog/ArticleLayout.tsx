@@ -28,6 +28,8 @@ interface ArticleLayoutProps {
   slug: string;
   image?: string;
   imageAlt?: string;
+  imageDimensions?: { width: number; height: number };
+  alignHeaderWithContent?: boolean;
   jsonLd?: object;
   relatedPosts?: RelatedPost[];
   children: ReactNode;
@@ -129,12 +131,14 @@ export default function ArticleLayout({
   slug,
   image,
   imageAlt,
+  imageDimensions,
   jsonLd,
   relatedPosts,
   children,
   showAuthor = true,
   organizationAuthor,
   showBottomCta = true,
+  alignHeaderWithContent = false,
 }: Readonly<ArticleLayoutProps>) {
   const colors = categoryColors[category] || {
     bg: "bg-white/10",
@@ -224,67 +228,69 @@ export default function ArticleLayout({
               "radial-gradient(ellipse 70% 60% at 50% 0%, rgba(30,202,211,0.08) 0%, transparent 65%), #202945",
           }}
         >
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            {/* Back link */}
-            <div className="article-fade mb-7">
-              <Link
-                href="/blog"
-                className="inline-flex items-center gap-1.5 text-xs font-bold transition-colors duration-150 hover:text-[#1ECAD3]"
-                style={{ color: "rgba(255,255,255,0.40)", fontFamily: FONT }}
-              >
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
-                </svg>
-                Blog JAAK
-              </Link>
-            </div>
+          <div className={`${alignHeaderWithContent ? "max-w-6xl" : "max-w-3xl"} mx-auto px-4 sm:px-6 lg:px-8`}>
+            <div className={alignHeaderWithContent ? "lg:mr-[264px]" : undefined}>
+              {/* Back link */}
+              <div className="article-fade mb-7">
+                <Link
+                  href="/blog"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold transition-colors duration-150 hover:text-[#1ECAD3]"
+                  style={{ color: "rgba(255,255,255,0.40)", fontFamily: FONT }}
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
+                  </svg>
+                  Blog JAAK
+                </Link>
+              </div>
 
-            {/* Meta row */}
-            <div className="article-fade-1 flex flex-wrap items-center gap-3 mb-6">
-              <span
-                className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wide uppercase ${colors.bg} ${colors.text}`}
-                style={{ fontFamily: FONT }}
-              >
-                {category}
-              </span>
-              <span
-                className="flex items-center gap-1 text-xs font-medium"
-                style={{ color: "#1ECAD3", fontFamily: FONT }}
-              >
-                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                {readTime}
-              </span>
-              {date && (
-                <span className="text-xs" style={{ color: "rgba(255,255,255,0.28)", fontFamily: FONT }}>
-                  {date}
+              {/* Meta row */}
+              <div className="article-fade-1 flex flex-wrap items-center gap-3 mb-6">
+                <span
+                  className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wide uppercase ${colors.bg} ${colors.text}`}
+                  style={{ fontFamily: FONT }}
+                >
+                  {category}
                 </span>
+                <span
+                  className="flex items-center gap-1 text-xs font-medium"
+                  style={{ color: "#1ECAD3", fontFamily: FONT }}
+                >
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  {readTime}
+                </span>
+                {date && (
+                  <span className="text-xs" style={{ color: "rgba(255,255,255,0.28)", fontFamily: FONT }}>
+                    {date}
+                  </span>
+                )}
+              </div>
+
+              {/* Title */}
+              <h1
+                className="article-fade-2 font-black text-white leading-tight mb-5"
+                style={{
+                  fontFamily: FONT,
+                  fontSize: "clamp(26px,3.5vw,44px)",
+                  letterSpacing: "-1.2px",
+                  lineHeight: 1.15,
+                }}
+              >
+                {title}
+              </h1>
+
+              {/* Subtitle */}
+              {subtitle && (
+                <p
+                  className="article-fade-3 text-base leading-relaxed"
+                  style={{ color: "rgba(255,255,255,0.55)", fontFamily: FONT, lineHeight: 1.8 }}
+                >
+                  {subtitle}
+                </p>
               )}
             </div>
-
-            {/* Title */}
-            <h1
-              className="article-fade-2 font-black text-white leading-tight mb-5"
-              style={{
-                fontFamily: FONT,
-                fontSize: "clamp(26px,3.5vw,44px)",
-                letterSpacing: "-1.2px",
-                lineHeight: 1.15,
-              }}
-            >
-              {title}
-            </h1>
-
-            {/* Subtitle */}
-            {subtitle && (
-              <p
-                className="article-fade-3 text-base leading-relaxed"
-                style={{ color: "rgba(255,255,255,0.55)", fontFamily: FONT, lineHeight: 1.8 }}
-              >
-                {subtitle}
-              </p>
-            )}
           </div>
 
           {/* Bottom fade */}
@@ -296,22 +302,28 @@ export default function ArticleLayout({
 
         {/* ── FEATURED IMAGE ─────────────────────────────── */}
         {image && (
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 -mt-2 mb-0">
-            <div
-              className="rounded-2xl overflow-hidden"
-              style={{
-                boxShadow: "0 24px 48px rgba(0,0,0,0.35)",
-                border: "1px solid rgba(255,255,255,0.06)",
-              }}
-            >
-              <Image
-                src={image}
-                alt={imageAlt ?? title}
-                width={1200}
-                height={630}
-                className="w-full h-auto"
-                priority
-              />
+          <div className={`${alignHeaderWithContent ? "max-w-6xl" : "max-w-3xl"} mx-auto px-4 sm:px-6 lg:px-8 -mt-2 mb-0`}>
+            <div className={alignHeaderWithContent ? "lg:mr-[264px]" : undefined}>
+              <div
+                className="rounded-2xl overflow-hidden mx-auto"
+                style={{
+                  maxWidth: imageDimensions?.width,
+                  boxShadow: "0 24px 48px rgba(0,0,0,0.35)",
+                  border: "1px solid rgba(255,255,255,0.06)",
+                }}
+              >
+                <Image
+                  src={image}
+                  alt={imageAlt ?? title}
+                  width={imageDimensions?.width ?? 1200}
+                  height={imageDimensions?.height ?? 630}
+                  className="w-full h-auto"
+                  sizes={alignHeaderWithContent
+                    ? `(min-width: 1152px) ${Math.min(imageDimensions?.width ?? 824, 824)}px, (min-width: 1024px) min(${imageDimensions?.width ?? 824}px, calc(100vw - 328px)), (min-width: 640px) min(${imageDimensions?.width ?? 1088}px, calc(100vw - 48px)), calc(100vw - 32px)`
+                    : undefined}
+                  priority
+                />
+              </div>
             </div>
           </div>
         )}

@@ -13,5 +13,6 @@ export const facialRecognitionArticle = {
   date: "12 de octubre, 2026",
   dateISO: "2026-10-12",
   image: "/images/blog/reconocimiento-facial-biometria-prueba-de-vida.png",
+  imageDimensions: { width: 617, height: 324 },
   imageAlt: "Reconocimiento facial, biometría y prueba de vida: diferencias clave — JAAK",
 };
