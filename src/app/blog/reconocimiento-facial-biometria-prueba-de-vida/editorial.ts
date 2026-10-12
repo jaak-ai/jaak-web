@@ -33,7 +33,7 @@ export const articleSchema = {
       "@type": "Article",
       headline: article.title,
       datePublished: article.dateISO,
-      author: { "@type": "Organization", name: article.authorName, url: "https://jaak.ai" },
+      author: { "@type": "Organization", "@id": "https://jaak.ai/#organization", name: article.authorName, url: "https://jaak.ai" },
       description: article.description,
       inLanguage: "es-MX",
       image: `https://jaak.ai${article.image}`,
