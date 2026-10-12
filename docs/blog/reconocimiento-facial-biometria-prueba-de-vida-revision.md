@@ -48,3 +48,7 @@ La protección de borrador y sus 404 correspondían a la etapa inicial, anterior
 ## Vista previa de revisión
 
 Despliegue Preview confirmado por GitHub/Vercel para la preparación de producción: https://jaak-1zza7jc5i-jaak-ai.vercel.app/blog/reconocimiento-facial-biometria-prueba-de-vida. El PR está listo para revisión y la fusión automática se mantiene sujeta a Itera, SonarQube Code Analysis y JAAK Structural Quality. La vista previa no acredita publicación en el dominio de producción.
+
+## Corrección final de SonarQube
+
+Se corrigieron las dos anotaciones del primer análisis: la ruta reexporta metadata directamente desde editorial y editorial reexporta article directamente desde su módulo de datos. El autor usa el @id de la organización JAAK ya declarada en el layout. Build, tipos, lint (solo las dos advertencias previas), 68 pruebas y revisión completa de Chromium/Playwright del build de producción correctos tras la corrección. El reanálisis de GitHub debe usar el último commit estable; los resultados de revisiones previas no sustituyen sus controles.

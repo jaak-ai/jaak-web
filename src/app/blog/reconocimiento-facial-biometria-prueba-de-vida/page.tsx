@@ -1,8 +1,8 @@
 import ArticleLayout from "../ArticleLayout";
 import ScrollableArticleTable from "../ScrollableArticleTable";
-import { article, articleMetadata, articleSchema } from "./editorial";
+import { article, articleSchema } from "./editorial";
 
-export const metadata = articleMetadata;
+export { articleMetadata as metadata } from "./editorial";
 
 export default function Page() {
   return (

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { facialRecognitionArticle as article } from "@/lib/blog/facialRecognitionArticle";
 
-export { article };
+export { facialRecognitionArticle as article } from "@/lib/blog/facialRecognitionArticle";
 
 const url = `https://jaak.ai/blog/${article.slug}`;
 
