@@ -1,3 +1,4 @@
+import "./article-bands.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import NewsletterForm from "@/components/NewsletterForm";

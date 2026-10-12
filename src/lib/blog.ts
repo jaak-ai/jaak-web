@@ -1,3 +1,4 @@
+import { facialRecognitionArticle } from "./blog/facialRecognitionArticle";
 import { identityAiArticle } from "./blog/identityAiArticle";
 
 export interface BlogPost {
@@ -12,6 +13,7 @@ export interface BlogPost {
 }
 
 export const blogPosts: BlogPost[] = [
+  facialRecognitionArticle,
   {
     title: "Biometría y CNBV en 2026: el reto ya no es reconocer un rostro",
     excerpt:
