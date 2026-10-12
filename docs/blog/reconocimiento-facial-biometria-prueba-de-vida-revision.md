@@ -13,7 +13,7 @@ Portada: página 2 del diseño de Canva compartido, obtenida como PNG original d
 ## Datos pendientes
 
 - Autor y revisor: **JAAK**, confirmados por el usuario. La autoría se muestra como organización, sin atribución a una persona por categoría, cargo ni biografía inventados. Metadata, Open Graph y Article usan el autor institucional. La revisión institucional queda registrada en los datos editoriales y en esta nota, sin añadir propiedades de schema ajenas a Article.
-- Fechas de publicación y actualización: no asignadas; ausentes de cabecera, Open Graph y Article. La investigación del 12 de octubre de 2026 no se utiliza como fecha editorial.
+- Fecha de publicación: **12 de octubre de 2026**, confirmada explícitamente por el usuario; se muestra en cabecera y se configura como 2026-10-12 en Open Graph y Article. La coincidencia con la investigación no es el criterio de asignación. Fecha de actualización: no confirmada, sin dateModified.
 - Código Volo de este artículo: pendiente de recibir; requiere una tarea propia, sin reutilizar TO-1292 del artículo anterior.
 - Producto: validación aprobada por el usuario para las descripciones vigentes del artículo. No se amplían afirmaciones sobre implementación interna o configuración.
 - Técnica: validación aprobada por el usuario para terminología PAD/liveness, puntuaciones y alcance. Se conservan los límites del texto, sin atribuir capacidad 1:N a JAAK ni cobertura universal.
@@ -52,6 +52,10 @@ No hacer merge ni desplegar este borrador a producción. Tras aprobar datos y co
 
 ## Confirmación editorial posterior
 
-El usuario confirmó autor y revisor JAAK y aprobó las validaciones. Se configuró la autoría institucional en la plantilla, metadata, Open Graph y Article. No se crea una persona ni cargo para representar a la organización. El revisor se conserva como dato editorial aprobado; no se utiliza reviewedBy en Article, cuyo dominio schema no corresponde a esa propiedad. Fechas y código Volo siguen pendientes y el estado de borrador no cambia.
+El usuario confirmó autor y revisor JAAK y aprobó las validaciones. Se configuró la autoría institucional en la plantilla, metadata, Open Graph y Article. No se crea una persona ni cargo para representar a la organización. El revisor se conserva como dato editorial aprobado; no se utiliza reviewedBy en Article, cuyo dominio schema no corresponde a esa propiedad. La fecha se confirmó posteriormente; el código Volo sigue pendiente y el estado de borrador no cambia.
 
 Validación de la asignación: build (tipos incluidos), 77 pruebas y lint sin errores con dos advertencias previas. Chromium/Playwright confirma autor visible JAAK, schema Organization, metadata author y Open Graph JAAK, sin fecha de publicación/actualización ni persona atribuida automáticamente; el noindex y las tablas/FAQ se mantienen.
+
+## Fecha editorial confirmada
+
+El usuario confirmó como fecha editorial hoy, 12 de octubre de 2026 (Ciudad de México). Se configura como fecha de publicación 2026-10-12, sin deducir una fecha de actualización. El registro en blogPosts, la retirada del guard/noindex y la publicación siguen pendientes de autorización y controles.

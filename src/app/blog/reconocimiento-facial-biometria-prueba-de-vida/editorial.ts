@@ -7,6 +7,8 @@ export const article = {
   slug: "reconocimiento-facial-biometria-prueba-de-vida",
   authorName: "JAAK",
   reviewerName: "JAAK",
+  date: "12 de octubre, 2026",
+  dateISO: "2026-10-12",
   image: "/images/blog/reconocimiento-facial-biometria-prueba-de-vida.png",
   imageAlt: "Reconocimiento facial, biometría y prueba de vida: diferencias clave — JAAK",
 };
@@ -28,6 +30,7 @@ export const articleMetadata: Metadata = {
     locale: "es_MX",
     siteName: "JAAK",
     authors: [article.authorName],
+    publishedTime: article.dateISO,
     images: [{ url: article.image, width: 617, height: 324, alt: article.imageAlt }],
   },
   twitter: { card: "summary_large_image", title: article.seoTitle, description: article.description, images: [{ url: article.image, alt: article.imageAlt }] },
@@ -39,6 +42,7 @@ export const articleSchema = {
     {
       "@type": "Article",
       headline: article.title,
+      datePublished: article.dateISO,
       author: { "@type": "Organization", name: article.authorName, url: "https://jaak.ai" },
       description: article.description,
       inLanguage: "es-MX",

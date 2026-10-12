@@ -11,7 +11,7 @@ export default function Page() {
   if (!isBlogDraftPreview(process.env)) notFound();
   return (
     <ArticleLayout title={article.title} slug={article.slug} category="IA" readTime="10 min"
-      organizationAuthor={article.authorName} showBottomCta={false} jsonLd={articleSchema}
+      organizationAuthor={article.authorName} date={article.date} showBottomCta={false} jsonLd={articleSchema}
       image={article.image} imageAlt={article.imageAlt}
       relatedPosts={[{ title: "Inteligencia artificial en la verificación de identidad: aplicaciones, riesgos y límites", slug: "inteligencia-artificial-verificacion-identidad", category: "IA" }]}>
       <section className="article-band article-band--light" aria-label="Introducción">
