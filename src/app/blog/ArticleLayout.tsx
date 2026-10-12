@@ -3,7 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import NewsletterForm from "@/components/NewsletterForm";
 import Link from "next/link";
-import Image from "next/image";
+import { ArticleHeaderFrame, ArticleCover, ARTICLE_COLUMNS, ARTICLE_SIDEBAR, type ArticleImageDimensions } from "./ArticleHeader";
 import { blogPosts, categoryColors } from "@/lib/blog";
 import ReadingProgress from "./ReadingProgress";
 import ArticleTOC from "./ArticleTOC";
@@ -28,6 +28,8 @@ interface ArticleLayoutProps {
   slug: string;
   image?: string;
   imageAlt?: string;
+  imageDimensions?: ArticleImageDimensions;
+  alignHeaderWithContent?: boolean;
   jsonLd?: object;
   relatedPosts?: RelatedPost[];
   children: ReactNode;
@@ -129,12 +131,14 @@ export default function ArticleLayout({
   slug,
   image,
   imageAlt,
+  imageDimensions,
   jsonLd,
   relatedPosts,
   children,
   showAuthor = true,
   organizationAuthor,
   showBottomCta = true,
+  alignHeaderWithContent = false,
 }: Readonly<ArticleLayoutProps>) {
   const colors = categoryColors[category] || {
     bg: "bg-white/10",
@@ -224,7 +228,7 @@ export default function ArticleLayout({
               "radial-gradient(ellipse 70% 60% at 50% 0%, rgba(30,202,211,0.08) 0%, transparent 65%), #202945",
           }}
         >
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <ArticleHeaderFrame aligned={alignHeaderWithContent}>
             {/* Back link */}
             <div className="article-fade mb-7">
               <Link
@@ -285,7 +289,7 @@ export default function ArticleLayout({
                 {subtitle}
               </p>
             )}
-          </div>
+          </ArticleHeaderFrame>
 
           {/* Bottom fade */}
           <div
@@ -296,30 +300,18 @@ export default function ArticleLayout({
 
         {/* ── FEATURED IMAGE ─────────────────────────────── */}
         {image && (
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 -mt-2 mb-0">
-            <div
-              className="rounded-2xl overflow-hidden"
-              style={{
-                boxShadow: "0 24px 48px rgba(0,0,0,0.35)",
-                border: "1px solid rgba(255,255,255,0.06)",
-              }}
-            >
-              <Image
-                src={image}
-                alt={imageAlt ?? title}
-                width={1200}
-                height={630}
-                className="w-full h-auto"
-                priority
-              />
-            </div>
-          </div>
+          <ArticleCover
+            src={image}
+            alt={imageAlt ?? title}
+            dimensions={imageDimensions}
+            aligned={alignHeaderWithContent}
+          />
         )}
 
         {/* ── ARTICLE BODY ───────────────────────────────── */}
         <section className="py-12" style={{ background: "#202945" }}>
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col lg:flex-row gap-14">
+            <div className={ARTICLE_COLUMNS}>
               {/* Main content */}
               <article className="min-w-0 flex-1">
                 <div
@@ -331,7 +323,7 @@ export default function ArticleLayout({
               </article>
 
               {/* TOC sidebar — hidden on mobile */}
-              <div className="hidden lg:block w-52 shrink-0">
+              <div className={ARTICLE_SIDEBAR}>
                 <ArticleTOC />
               </div>
             </div>

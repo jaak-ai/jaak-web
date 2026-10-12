@@ -21,7 +21,7 @@ export const articleMetadata: Metadata = {
     siteName: "JAAK",
     authors: [article.authorName],
     publishedTime: article.dateISO,
-    images: [{ url: article.image, width: 617, height: 324, alt: article.imageAlt }],
+    images: [{ url: article.image, ...article.imageDimensions, alt: article.imageAlt }],
   },
   twitter: { card: "summary_large_image", title: article.seoTitle, description: article.description, images: [{ url: article.image, alt: article.imageAlt }] },
 };
