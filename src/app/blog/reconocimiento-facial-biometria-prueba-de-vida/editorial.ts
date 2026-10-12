@@ -1,17 +1,7 @@
 import type { Metadata } from "next";
+import { facialRecognitionArticle as article } from "@/lib/blog/facialRecognitionArticle";
 
-export const article = {
-  title: "Reconocimiento facial, biometría y prueba de vida: diferencias clave",
-  seoTitle: "Reconocimiento facial y prueba de vida: diferencias | JAAK",
-  description: "Conoce para qué sirven el reconocimiento facial y la prueba de vida de JAAK, sus diferencias y cómo se complementan en la verificación de identidad.",
-  slug: "reconocimiento-facial-biometria-prueba-de-vida",
-  authorName: "JAAK",
-  reviewerName: "JAAK",
-  date: "12 de octubre, 2026",
-  dateISO: "2026-10-12",
-  image: "/images/blog/reconocimiento-facial-biometria-prueba-de-vida.png",
-  imageAlt: "Reconocimiento facial, biometría y prueba de vida: diferencias clave — JAAK",
-};
+export { article };
 
 const url = `https://jaak.ai/blog/${article.slug}`;
 
@@ -21,7 +11,7 @@ export const articleMetadata: Metadata = {
   authors: [{ name: article.authorName }],
   keywords: ["biometría facial", "reconocimiento facial", "comparación facial", "prueba de vida", "KYC", "PAD"],
   alternates: { canonical: url },
-  robots: { index: false, follow: false },
+  robots: { index: true, follow: true },
   openGraph: {
     title: article.seoTitle,
     description: article.description,

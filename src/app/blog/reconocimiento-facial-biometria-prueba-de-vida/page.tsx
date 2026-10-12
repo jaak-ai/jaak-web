@@ -1,16 +1,12 @@
-import { notFound } from "next/navigation";
 import ArticleLayout from "../ArticleLayout";
 import ScrollableArticleTable from "../ScrollableArticleTable";
-import { isBlogDraftPreview } from "../draftPreview";
 import { article, articleMetadata, articleSchema } from "./editorial";
 
-export const dynamic = "force-dynamic";
 export const metadata = articleMetadata;
 
 export default function Page() {
-  if (!isBlogDraftPreview(process.env)) notFound();
   return (
-    <ArticleLayout title={article.title} slug={article.slug} category="IA" readTime="10 min"
+    <ArticleLayout title={article.title} slug={article.slug} category={article.category} readTime={article.readTime}
       organizationAuthor={article.authorName} date={article.date} showBottomCta={false} jsonLd={articleSchema}
       image={article.image} imageAlt={article.imageAlt}
       relatedPosts={[{ title: "Inteligencia artificial en la verificación de identidad: aplicaciones, riesgos y límites", slug: "inteligencia-artificial-verificacion-identidad", category: "IA" }]}>
