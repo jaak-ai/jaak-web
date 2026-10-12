@@ -49,28 +49,6 @@ export default function Page() {
       date={identityAiArticle.date} organizationAuthor={identityAiAuthor.name}
       image={image} imageAlt={imageAlt}
       showBottomCta={false} relatedPosts={[]} jsonLd={jsonLd}>
-      <style>{`
-        .jaak-article-body .article-band {
-          padding: clamp(20px, 3vw, 32px);
-          margin-bottom: 24px;
-          border-radius: 20px;
-          border: 1px solid rgba(255,255,255,0.12);
-        }
-        .jaak-article-body .article-band > :first-child { margin-top: 0; }
-        .jaak-article-body .article-band > :last-child { margin-bottom: 0; }
-        .jaak-article-body .article-band--blue { background: #212A45; }
-        .jaak-article-body .article-band--blue :is(p, li, td) { color: #C5CEDC !important; }
-        .jaak-article-body .article-band--light { background: #FFFFFF; border-color: #D9E2EC; }
-        .jaak-article-body .article-band--light :is(h2, h3, strong, b) { color: #212A45 !important; }
-        .jaak-article-body .article-band--light :is(p, li, td, em) { color: #4A5568 !important; }
-        .jaak-article-body .article-band--light :is(a, button) { color: #007880 !important; }
-        .jaak-article-body .article-band--light a:hover { color: #212A45 !important; }
-        .jaak-article-body .article-band--light :focus-visible { outline-color: #007880; }
-        .jaak-article-body .article-band--light [data-table-scroll] { border-color: #D9E2EC !important; }
-        .jaak-article-body .article-band--light table th { background: #EDF5F8 !important; color: #212A45 !important; border-color: #D9E2EC !important; }
-        .jaak-article-body .article-band--light table td { color: #4A5568 !important; border-color: #D9E2EC !important; }
-        .jaak-article-body .article-band--light table tr:nth-child(even) { background: #F7F9FC !important; }
-      `}</style>
       <section className="article-band article-band--light" aria-label="Introducción">
         <p className="text-gray-600 leading-relaxed mb-4">{"La inteligencia artificial puede apoyar la verificación de identidad mediante la extracción de datos documentales, la comparación facial y el análisis de señales de suplantación. Cada tarea aporta evidencia distinta: leer una identificación, encontrar semejanza entre rostros y evaluar la captura responden preguntas diferentes."}</p>
         <p className="text-gray-600 leading-relaxed mb-4">{"Pensemos en un ejemplo hipotético: una persona solicita un crédito desde su celular. Envía una identificación y captura su rostro. Antes de continuar, la empresa necesita evaluar el documento, relacionarlo con la persona solicitante y determinar si la interacción presenta señales de manipulación."}</p>
