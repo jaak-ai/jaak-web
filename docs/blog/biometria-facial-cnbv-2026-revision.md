@@ -28,7 +28,7 @@ Canonical propio: https://jaak.ai/blog/biometria-facial-cnbv-2026-plazos-requisi
 
 ## Seguimiento de producción
 
-Publicación y merge autorizados por la usuaria. El PR TO-1354 #211 se deja listo para revisión y sujeto a los controles obligatorios itera/quality-gate, SonarQube Code Analysis y JAAK Structural Quality. No se omiten protecciones ni se considera publicado antes de confirmar fusión, despliegue y artículo en el dominio público.
+Publicación y merge autorizados por la usuaria. El PR de publicación TO-1354 se deja listo para revisión y sujeto a los controles obligatorios itera/quality-gate, SonarQube Code Analysis y JAAK Structural Quality. No se omiten protecciones ni se considera publicado antes de confirmar fusión, despliegue y artículo en el dominio público.
 
 La fuente oficial enlazada no pudo comprobarse por HTTP desde este entorno: el proxy rechazó el acceso a sidof.segob.gob.mx con 403. Se conserva el enlace suministrado y la aprobación jurídica de la usuaria; no se presenta esta limitación de red como una comprobación jurídica independiente aprobada.
 
@@ -45,7 +45,7 @@ La fuente oficial enlazada no pudo comprobarse por HTTP desde este entorno: el p
 
 ## Portada original y TO-1354
 
-Se incorporó la tarea TO-1354 al título y descripción del PR #211. Build/tipos y lint correctos tras incorporar la portada; Chromium comprobó imagen decodificada, proporción 2400/1260 y centro alineado con la columna de lectura en 1440, 1024, 768, 390 y 320 píxeles. Open Graph declara recurso propio y dimensiones reales; Twitter utiliza summary_large_image; Article incluye el recurso confirmado. Se repitieron el cotejo completo del texto, ocho FAQ, HTML sin JavaScript, enlaces relacionados, ausencia en listado/sitemap/RSS y el 404 de producción; todos correctos.
+Se incorporó la tarea TO-1354 al título y descripción del PR de publicación. Build/tipos y lint correctos tras incorporar la portada; Chromium comprobó imagen decodificada, proporción 2400/1260 y centro alineado con la columna de lectura en 1440, 1024, 768, 390 y 320 píxeles. Open Graph declara recurso propio y dimensiones reales; Twitter utiliza summary_large_image; Article incluye el recurso confirmado. Se repitieron el cotejo completo del texto, ocho FAQ, HTML sin JavaScript, enlaces relacionados, ausencia en listado/sitemap/RSS y el 404 de producción; todos correctos.
 
 ## Validación de publicación autorizada
 
