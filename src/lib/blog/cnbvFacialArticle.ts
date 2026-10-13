@@ -8,5 +8,11 @@ export const cnbvFacialArticle = {
   "readTime": "19 min",
   "slug": "biometria-facial-cnbv-2026-plazos-requisitos-bancos-mexico",
   "date": "13 de octubre, 2026",
-  "dateISO": "2026-10-13"
+  "dateISO": "2026-10-13",
+  "image": "/images/blog/biometria-facial-cnbv-2026-plazos-requisitos-bancos-mexico.png",
+  "imageDimensions": {
+    "width": 2400,
+    "height": 1260
+  },
+  "imageAlt": "Biometría facial y CNBV 2026: plazos, requisitos y acciones que deben tomar los bancos en México — JAAK"
 };

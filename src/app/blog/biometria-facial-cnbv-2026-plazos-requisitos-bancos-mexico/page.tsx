@@ -10,6 +10,7 @@ export default function Page() {
   if (!isBlogDraftPreview(process.env)) notFound();
   return (
     <ArticleLayout title={article.title} slug={article.slug} category={article.category} readTime={article.readTime}
+      image={article.image} imageAlt={article.imageAlt} imageDimensions={article.imageDimensions}
       date={article.date} organizationAuthor={article.authorName} showBottomCta={false} alignHeaderWithContent jsonLd={articleSchema}
       relatedPosts={[
         { title: "Biometría y CNBV en 2026: el reto ya no es reconocer un rostro", slug: "biometria-cnbv-2026-identidad-autenticacion", category: "Seguridad" },
