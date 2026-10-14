@@ -26,6 +26,10 @@ describe("redactText", () => {
     it("keeps plain text", () => {
         expect(redactText("Solicitud creada")).toBe("Solicitud creada");
     });
+
+    it("redacts every occurrence of a pattern in one string", () => {
+        expect(redactText("tel +52 55 1234 5678 y +52 55 8765 4321")).toBe("tel [phone] y [phone]");
+    });
 });
 
 describe("redactDeep", () => {

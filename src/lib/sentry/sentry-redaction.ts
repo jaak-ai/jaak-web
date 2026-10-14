@@ -30,7 +30,7 @@ export function stripUrl(url: string): string {
 const WORD_TOKEN = /\S+/g;
 
 export function redactText(text: string): string {
-    const ruled = REDACTION_RULES.reduce((result, [pattern, replacement]) => result.replace(pattern, replacement), text);
+    const ruled = REDACTION_RULES.reduce((result, [pattern, replacement]) => result.replaceAll(pattern, replacement), text);
     return ruled.replace(WORD_TOKEN, (token) => (token.includes("@") ? "[email]" : token));
 }
 
