@@ -31,7 +31,7 @@ const WORD_TOKEN = /\S+/g;
 
 export function redactText(text: string): string {
     const ruled = REDACTION_RULES.reduce((result, [pattern, replacement]) => result.replaceAll(pattern, replacement), text);
-    return ruled.replace(WORD_TOKEN, (token) => (token.includes("@") ? "[email]" : token));
+    return ruled.replaceAll(WORD_TOKEN, (token) => (token.includes("@") ? "[email]" : token));
 }
 
 /** Fails closed: anything nested deeper than MAX_DEPTH is replaced, never sent raw. */

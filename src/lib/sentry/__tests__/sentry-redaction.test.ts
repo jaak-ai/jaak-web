@@ -30,6 +30,10 @@ describe("redactText", () => {
     it("redacts every occurrence of a pattern in one string", () => {
         expect(redactText("tel +52 55 1234 5678 y +52 55 8765 4321")).toBe("tel [phone] y [phone]");
     });
+
+    it("redacts every email address in one string", () => {
+        expect(redactText("a@x.com y b@y.org")).toBe("[email] y [email]");
+    });
 });
 
 describe("redactDeep", () => {
