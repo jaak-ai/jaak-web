@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import LumaEventButton from "./LumaEventButton";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { gtmEvent } from "./GoogleTagManager";
@@ -185,6 +186,10 @@ export default function HomepageHero() {
               >
                 Hablar con un especialista
               </Link>
+            </div>
+
+            <div className="mb-6">
+              <LumaEventButton />
             </div>
 
             <div className="flex flex-wrap items-center gap-x-5 gap-y-1 mb-6">
