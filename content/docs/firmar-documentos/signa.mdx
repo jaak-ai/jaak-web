@@ -138,16 +138,12 @@ curl -X POST https://api.sandbox.jaak.ai/api/v1/submitters/4812/signing-link \
 |--------|-------|---------|
 | 400 | `:id` no es numérico, o el submitter está en un estado bloqueado | `invalid submitter id` / `submitter already signed or declined (status: ...)` |
 | 401 | Token ausente, inválido o expirado | — |
-| 403 | Rol no permitido por el gateway (por ejemplo `viewer`) | `insufficient permissions` |
+| 403 | Rol no permitido para esta operación (por ejemplo `viewer`) | `insufficient permissions` |
 | 403 | La función no está habilitada para la empresa | `signing link is not enabled for this account` |
-| 403 | Rol `manager` (pasa el gateway, pero no tiene permiso para emitir) | `role not allowed to issue signing links` |
+| 403 | Rol `manager` (no tiene permiso para emitir) | `role not allowed to issue signing links` |
 | 404 | El submitter no existe o pertenece a otra empresa | `submitter not found` |
 | 429 | Se superó el límite de 5 emisiones por hora para ese submitter | `signing link rate limit exceeded for this submitter` |
 | 500 | Error interno al emitir o al registrar la auditoría; no se entrega ningún enlace | `failed to regenerate signing link` / `audit unavailable; link withheld` |
-
-<Callout type="info" title="Sobre el 403">
-Un `403` con `insufficient permissions` indica un rol que no puede emitir enlaces. Si un `owner` o `administrator` recibe `403` en un ambiente donde la función está activa, verifica que el gateway esté en una versión que reenvía el rol del usuario a Signa. Una versión anterior a esa corrección responde `403` a todos los usuarios en estas rutas, incluidos `owner` y `administrator`.
-</Callout>
 
 ### 7.5 Firma Pública
 Endpoints del firmante - solo requieren identificadores slug, sin bearer tokens.
@@ -197,8 +193,4 @@ Notificaciones de terceros para cambios de estado KYC.
 | 400 | Solicitud inválida |
 | 401 | Fallo de autenticación |
 | 404 | No encontrado |
-| 501 | Endpoint no implementado vía REST (usar gRPC) |
-
-## Nota Técnica
-
-El sistema internamente traduce solicitudes HTTP a servicios gRPC, pero los clientes trabajan exclusivamente con endpoints REST. Las cargas de archivos vía REST no están implementadas; se requiere streaming gRPC directo.
+| 501 | Operación no disponible |
