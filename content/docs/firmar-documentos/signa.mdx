@@ -63,6 +63,92 @@ Sistema de organización para agrupar plantillas.
 Flujo de trabajo principal para distribución de documentos:
 - Estados: `pending`, `in_progress`, `completed`, `declined`, `expired`, `cancelled`
 
+#### 7.4.1 Enlace de firma para el firmante (`signing_url`)
+
+Cuando la función de enlace de firma está habilitada para tu empresa, puedes pedir un enlace de firma nuevo para un submitter específico. El enlace se entrega al firmante por tu propio canal (por ejemplo, un mensaje de tu sistema) en lugar de depender del correo que envía Signa.
+
+<Callout type="warning" title="Disponibilidad">
+La función se habilita por ambiente. Si el endpoint no responde como se describe en tu ambiente, consulta con tu contacto de JAAK antes de integrarla.
+</Callout>
+
+**Autenticación:** Bearer token (JWT) de un usuario con rol `owner` o `administrator` de la empresa. Otros roles reciben `403`.
+
+**Requisito previo:** la empresa debe haber activado la función. Un `owner` o `administrator` la activa con `PUT /api/v1/settings/signing-link`, aceptando el texto de consentimiento vigente. El texto y su versión se consultan antes con `GET /api/v1/settings/signing-link`.
+
+```bash
+curl -X PUT https://api.sandbox.jaak.ai/api/v1/settings/signing-link \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "enabled": true,
+    "consent": {
+      "accepted": true,
+      "text_version": "<version del GET>",
+      "text_sha256": "<sha256 del GET>"
+    }
+  }'
+```
+
+#### Emitir el enlace
+
+<Endpoint
+  method="POST"
+  path="/api/v1/submitters/:id/signing-link"
+  description="Revoca los códigos vivos del submitter y devuelve un enlace de firma nuevo"
+/>
+
+El `:id` es el identificador numérico del submitter (`submitters[].id`) que devuelve la creación del envío. La solicitud no lleva body.
+
+```bash
+curl -X POST https://api.sandbox.jaak.ai/api/v1/submitters/4812/signing-link \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+**Respuesta (200 OK):**
+
+```json
+{
+  "signing_url": "https://signa.sandbox.jaak.ai/ejemplo-firmante-7f3a?code=ejemplo-codigo-ficticio-no-real",
+  "expires_at": "2026-10-16T18:45:00Z"
+}
+```
+
+**Campos de la respuesta:**
+
+| Campo | Descripción |
+|-------|-------------|
+| `signing_url` | Enlace de firma del submitter. El código de un solo uso va en el parámetro `code`; no hay un campo `token` aparte. |
+| `expires_at` | Fecha de expiración del enlace en formato RFC 3339. Vence 24 horas después de emitirse. |
+
+**Comportamiento:**
+
+- Cada emisión **revoca los enlaces vivos anteriores** del mismo submitter. Usa solo el último `signing_url` que recibiste.
+- El enlace deja de funcionar cuando vence, cuando se emite uno nuevo o cuando la empresa desactiva la función. Al desactivarla, Signa revoca los enlaces vivos de la empresa.
+- Trata el `signing_url` como un secreto: no lo registres en logs ni lo expongas en el frontend. La respuesta lleva `Cache-Control: no-store`.
+- Cada emisión queda registrada en la auditoría de la empresa (`signing_link_issued`) sin guardar el código ni el enlace.
+
+**Límites:**
+
+- Máximo **5 emisiones por submitter por hora**. La sexta responde `429`.
+- No se puede emitir si el submitter ya firmó o fue rechazado (estados `completed`, `signed_awaiting_kyc`, `kyc_verified`, `kyc_failed` o `declined`).
+
+#### Errores
+
+| Código | Causa | Mensaje |
+|--------|-------|---------|
+| 400 | `:id` no es numérico, o el submitter está en un estado bloqueado | `invalid submitter id` / `submitter already signed or declined (status: ...)` |
+| 401 | Token ausente, inválido o expirado | — |
+| 403 | Rol no permitido por el gateway (por ejemplo `viewer`) | `insufficient permissions` |
+| 403 | La función no está habilitada para la empresa | `signing link is not enabled for this account` |
+| 403 | Rol `manager` (pasa el gateway, pero no tiene permiso para emitir) | `role not allowed to issue signing links` |
+| 404 | El submitter no existe o pertenece a otra empresa | `submitter not found` |
+| 429 | Se superó el límite de 5 emisiones por hora para ese submitter | `signing link rate limit exceeded for this submitter` |
+| 500 | Error interno al emitir o al registrar la auditoría; no se entrega ningún enlace | `failed to regenerate signing link` / `audit unavailable; link withheld` |
+
+<Callout type="info" title="Sobre el 403">
+Un `403` con `insufficient permissions` indica un rol que no puede emitir enlaces. Si un `owner` o `administrator` recibe `403` en un ambiente donde la función está activa, verifica que el gateway esté en una versión que reenvía el rol del usuario a Signa. Una versión anterior a esa corrección responde `403` a todos los usuarios en estas rutas, incluidos `owner` y `administrator`.
+</Callout>
+
 ### 7.5 Firma Pública
 Endpoints del firmante - solo requieren identificadores slug, sin bearer tokens.
 
