@@ -11,6 +11,7 @@ export default function Page() {
   if (!isBlogDraftPreview(process.env)) notFound();
   return (
     <ArticleLayout title={article.title} slug={article.slug} category={article.category} readTime={article.readTime}
+      image={article.image} imageAlt={article.imageAlt} imageDimensions={article.imageDimensions}
       date={article.date} organizationAuthor={article.authorName} showBottomCta={false} alignHeaderWithContent jsonLd={articleSchema}
       relatedPosts={[
         { title: "¿Qué es la NOM-151 y por qué importa en tus contratos digitales?", slug: "que-es-nom-151-contratos-digitales", category: "Firma Electrónica" },

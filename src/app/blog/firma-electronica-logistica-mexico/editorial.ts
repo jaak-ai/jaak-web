@@ -11,14 +11,14 @@ export const articleMetadata: Metadata = {
   keywords: ["firma electrónica en logística", "firma electrónica en transporte", "documentos de transporte", "acuse de entrega electrónico", "contratos de transporte", "validación de operadores", "NOM-151", "Carta Porte", "verificación de identidad", "QR del INE"],
   alternates: { canonical: url },
   robots: { index: false, follow: false },
-  openGraph: { title: article.seoTitle, description: article.description, type: "article", url, locale: "es_MX", siteName: "JAAK", authors: [article.authorName], publishedTime: article.dateISO, images: [] },
-  twitter: { card: "summary", title: article.seoTitle, description: article.description, images: [] },
+  openGraph: { title: article.seoTitle, description: article.description, type: "article", url, locale: "es_MX", siteName: "JAAK", authors: [article.authorName], publishedTime: article.dateISO, images: [{ url: article.image, ...article.imageDimensions, alt: article.imageAlt }] },
+  twitter: { card: "summary_large_image", title: article.seoTitle, description: article.description, images: [article.image] },
 };
 
 export const articleSchema = {
   "@context": "https://schema.org",
   "@graph": [
-    { "@type": "Article", headline: article.title, description: article.description, inLanguage: "es-MX", datePublished: article.dateISO, author: { "@type": "Organization", "@id": "https://jaak.ai/#organization", name: article.authorName, url: "https://jaak.ai" }, mainEntityOfPage: { "@type": "WebPage", "@id": url }, publisher: { "@id": "https://jaak.ai/#organization" } },
+    { "@type": "Article", headline: article.title, description: article.description, inLanguage: "es-MX", datePublished: article.dateISO, image: `https://jaak.ai${article.image}`, author: { "@type": "Organization", "@id": "https://jaak.ai/#organization", name: article.authorName, url: "https://jaak.ai" }, mainEntityOfPage: { "@type": "WebPage", "@id": url }, publisher: { "@id": "https://jaak.ai/#organization" } },
     { "@type": "BreadcrumbList", itemListElement: [
       { name: "Inicio", item: "https://jaak.ai" },
       { name: "Blog", item: "https://jaak.ai/blog" },

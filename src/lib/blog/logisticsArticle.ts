@@ -9,5 +9,11 @@ export const logisticsArticle = {
   "reviewerName": "JAAK",
   "date": "16 de octubre, 2026",
   "dateISO": "2026-10-16",
-  "excerpt": "Conoce qué documentos logísticos pueden firmarse electrónicamente, cómo validar operadores y qué evidencia conservar sin confundir Carta Porte con NOM-151."
+  "excerpt": "Conoce qué documentos logísticos pueden firmarse electrónicamente, cómo validar operadores y qué evidencia conservar sin confundir Carta Porte con NOM-151.",
+  "image": "/images/blog/firma-electronica-logistica-mexico.png",
+  "imageDimensions": {
+    "width": 2400,
+    "height": 1260
+  },
+  "imageAlt": "Firma electrónica en logística: documentos, identidad y NOM-151 en México — JAAK"
 };

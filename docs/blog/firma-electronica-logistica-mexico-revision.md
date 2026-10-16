@@ -1,6 +1,6 @@
 # Firma electrónica en logística: borrador para revisión
 
-Ruta: `/blog/firma-electronica-logistica-mexico`. Categoría existente: **Firma Electrónica**. Autor y revisor: **JAAK**, confirmados por la usuaria. Fecha editorial: **16 de octubre de 2026**, confirmada como «hoy». Código Volo y portada pendientes; no se inventan.
+Ruta: `/blog/firma-electronica-logistica-mexico`. Categoría existente: **Firma Electrónica**. Autor y revisor: **JAAK**, confirmados por la usuaria. Fecha editorial: **16 de octubre de 2026**, confirmada como «hoy». Tarea Volo: **TO-1363**, confirmada por la usuaria; portada original de la página 4 de Canva recibida.
 
 ## Contenido público y SEO
 
@@ -38,7 +38,11 @@ Enlaces internos públicos comprobados HTTP 200 y contenido pertinente: firma el
 
 ## Pendientes de entrega
 
-Crear el ticket Volo y asociar su código al PR. La usuaria pidió un título antes de preparar la portada: se propone «Firma electrónica en logística» para la portada y «Documentos, identidad y NOM-151 en México» como subtítulo. Incorporar el recurso que proporcione, sin inventar imagen ni reconstruir logotipo. Mantener el PR en borrador para revisión; no hay autorización de merge/producción de este artículo.
+Tarea TO-1363 asociada al PR #216. Mantener el PR en borrador para revisión; no hay autorización de merge/producción de este artículo.
+
+## Portada original
+
+Página 4 del Canva proporcionado (DAHXiZEo-dI), obtenida del visor público autorizado a **2400 × 1260 píxeles** tras confirmar la carga de las fuentes originales. Texto: «Firma electrónica en logística» y «Documentos, identidad y NOM-151 en México». Se conserva el diseño original, incluido fondo y logotipo, sin reconstrucción ni imagen generada. Archivo local `public/images/blog/firma-electronica-logistica-mexico.png`, proporción completa y alineación con la columna de lectura. Open Graph, Twitter y Article utilizan el recurso confirmado; no se cambia texto, autor, fecha ni estado del borrador.
 
 ## Validación ejecutada
 
@@ -48,6 +52,10 @@ Crear el ticket Volo y asociar su código al PR. La usuaria pidió un título an
 - npm test: **134 pruebas / 16 archivos**, todas pasan; incluye nueve casos de protección del borrador.
 - Chromium sobre build local: cotejo completo del artículo Markdown, incluidos todos los encabezados, párrafos, listas y celdas; un H1, nueve H2, catorce H3, una tabla y seis FAQ. Texto completo también sin JavaScript.
 - Cinco anchos (1440/1024/768/390/320): sin desbordamiento de página; tabla desplazable en móvil mediante botones activados con teclado.
-- Título SEO absoluto, canonical propio, robots noindex/nofollow, fecha 2026-10-16 y autor Organization JAAK comprobados; sin imagen ni dateModified inventadas.
+- Título SEO absoluto, canonical propio, robots noindex/nofollow, fecha 2026-10-16 y autor Organization JAAK comprobados; portada original y sin dateModified inventada.
 - Todos los enlaces internos del cuerpo y ambos relacionados responden 200. Sin errores JavaScript locales.
 - El slug no aparece en /blog, /sitemap.xml ni /rss.xml; producción devuelve 404 incluso con JAAK_BLOG_DRAFT_PREVIEW=true y no contiene el cuerpo del artículo.
+
+### Comprobación de la portada
+
+Tras incorporar la portada se ejecutaron nuevamente build (incluidos tipos) y lint, con los mismos resultados anteriores. Chromium comprobó carga y proporción 2400 × 1260, alineación con la columna de lectura y ausencia de desbordamiento a 1440, 1024, 768, 390 y 320 px. Se revisaron las capturas de escritorio y móvil. Se cotejó de nuevo el contenido completo y seis FAQ, Open Graph, Twitter, Article, canonical y exclusión del borrador; producción sigue devolviendo 404. La suite de 134 pruebas corresponde a la validación inicial del borrador, no se repitió para este cambio de imagen.
