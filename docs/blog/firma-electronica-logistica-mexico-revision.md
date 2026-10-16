@@ -38,7 +38,7 @@ Enlaces internos públicos comprobados HTTP 200 y contenido pertinente: firma el
 
 ## Seguimiento de entrega
 
-Tarea **TO-1363**. El PR de borrador #216 fue sustituido por el PR de publicación #217 (https://github.com/jaak-ai/jaak-web/pull/217) tras la autorización explícita de la solicitante. Itera aprobó ambos sin bloqueos y Vercel Preview está listo. La publicación espera los controles obligatorios SonarQube Code Analysis y JAAK Structural Quality; merge automático habilitado sujeto a las políticas del repositorio. No se omiten protecciones.
+Tarea **TO-1363**. El PR de borrador #216 fue sustituido por el PR de publicación #217 (https://github.com/jaak-ai/jaak-web/pull/217) tras la autorización explícita de la solicitante. Itera aprobó ambos sin bloqueos y Vercel Preview está listo. El flujo central registró controles en el commit de apertura; el PR definitivo se abrirá con el ajuste de duplicación ya incorporado. Publicación sujeta a SonarQube Code Analysis y JAAK Structural Quality, sin saltar las políticas del repositorio. No se omiten protecciones.
 
 ## Portada original
 
@@ -71,3 +71,5 @@ Validación para publicación: build y tipos correctos; lint sin errores (dos ad
 La primera ejecución de SonarQube reportó 13.36 % de duplicación. Se extrae createInstitutionalArticleSeo para compartir la configuración institucional entre este artículo y el de CNBV, conservando sus valores, y se pasan los datos confirmados al layout mediante props compartidas. No cambia el contenido editorial ni se omite el control de calidad.
 
 Tras el ajuste: build/tipos correctos, lint sin errores y 134 pruebas correctas. Cotejo exacto de todas las etiquetas meta/canonical y objetos JSON-LD del HTML de CNBV antes y después: iguales. Chromium sobre el build final confirma íntegramente contenido, portada a cinco anchos, metadatos, indexabilidad y presencia de logística en listado/sitemap/RSS.
+
+Los relacionados se declaran una sola vez como datos de la página y se pasan al layout, completando la eliminación de la cabecera repetida.

@@ -4,14 +4,16 @@ import { article, articleSchema } from "./editorial";
 
 export { articleMetadata as metadata } from "./editorial";
 
+const relatedPosts = [
+  { title: "¿Qué es la NOM-151 y por qué importa en tus contratos digitales?", slug: "que-es-nom-151-contratos-digitales", category: "Firma Electrónica" },
+  { title: "Reconocimiento facial, biometría y prueba de vida: diferencias clave", slug: "reconocimiento-facial-biometria-prueba-de-vida", category: "IA" },
+];
+
 export default function Page() {
   return (
     <ArticleLayout {...article} organizationAuthor={article.authorName}
       showBottomCta={false} alignHeaderWithContent jsonLd={articleSchema}
-      relatedPosts={[
-        { title: "¿Qué es la NOM-151 y por qué importa en tus contratos digitales?", slug: "que-es-nom-151-contratos-digitales", category: "Firma Electrónica" },
-        { title: "Reconocimiento facial, biometría y prueba de vida: diferencias clave", slug: "reconocimiento-facial-biometria-prueba-de-vida", category: "IA" },
-      ]}>
+      relatedPosts={relatedPosts}>
       <section className="article-band article-band--light" aria-label="Introducción">
         <p className="text-gray-600 leading-relaxed mb-4">{"Una entrega puede completarse y dejar un problema abierto: el acuse es ilegible, falta una firma o nadie puede explicar quién recibió. En un almacén ocurre algo parecido cuando una persona presenta una INE, pero la autorización para retirar mercancía corresponde a otro operador."}</p>
         <p className="text-gray-600 leading-relaxed mb-4">{"La firma electrónica en logística ayuda a documentar acuerdos y aceptaciones. Su utilidad aumenta cuando el proceso relaciona el documento con la persona, la operación y la evidencia necesaria para atender una reclamación."}</p>
