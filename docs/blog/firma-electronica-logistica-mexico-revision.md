@@ -1,4 +1,4 @@
-# Firma electrónica en logística: borrador para revisión
+# Firma electrónica en logística: publicación autorizada
 
 Ruta: `/blog/firma-electronica-logistica-mexico`. Categoría existente: **Firma Electrónica**. Autor y revisor: **JAAK**, confirmados por la usuaria. Fecha editorial: **16 de octubre de 2026**, confirmada como «hoy». Tarea Volo: **TO-1363**, confirmada por la usuaria; portada original de la página 4 de Canva recibida.
 
@@ -14,7 +14,7 @@ Descripción: Conoce qué documentos logísticos pueden firmarse electrónicamen
 
 Keyword principal: firma electrónica en logística. Investigación cualitativa; sin volúmenes, dificultad SEO ni resultados comerciales inventados. El artículo mantiene ejemplos hipotéticos, separación entre firma/identidad/autorización, firma avanzada y conservación NOM-151, lectura QR/consulta oficial y Carta Porte fiscal.
 
-## Arquitectura y protección
+## Arquitectura y etapa de borrador
 
 Reutiliza ArticleLayout, ScrollableArticleTable y article-bands.css. Diez bandas blanco/azul; cabecera alineada con la columna de lectura; sin imagen inventada ni recurso social heredado. Autor institucional explícito, fecha aprobada y Article/BreadcrumbList; sin dateModified. El revisor se conserva como dato editorial.
 
@@ -36,9 +36,9 @@ Este contraste documental no es un dictamen jurídico ni una auditoría exhausti
 
 Enlaces internos públicos comprobados HTTP 200 y contenido pertinente: firma electrónica, verificación de identidad, documentación One-to-One, Liveness y contacto. Relacionados NOM-151 y reconocimiento facial/prueba de vida responden 200. Se describen únicamente capacidades comprobadas; no se trasladan métricas ni garantías absolutas de las landings comerciales al artículo.
 
-## Pendientes de entrega
+## Seguimiento de entrega
 
-Tarea TO-1363 asociada al PR #216. Mantener el PR en borrador para revisión; no hay autorización de merge/producción de este artículo.
+Tarea **TO-1363**. El PR de borrador #216 fue sustituido por el PR de publicación #217 (https://github.com/jaak-ai/jaak-web/pull/217) tras la autorización explícita de la solicitante. Itera aprobó ambos sin bloqueos y Vercel Preview está listo. La publicación espera los controles obligatorios SonarQube Code Analysis y JAAK Structural Quality; merge automático habilitado sujeto a las políticas del repositorio. No se omiten protecciones.
 
 ## Portada original
 
