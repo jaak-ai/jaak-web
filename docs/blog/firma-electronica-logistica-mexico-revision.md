@@ -59,3 +59,9 @@ Página 4 del Canva proporcionado (DAHXiZEo-dI), obtenida del visor público aut
 ### Comprobación de la portada
 
 Tras incorporar la portada se ejecutaron nuevamente build (incluidos tipos) y lint, con los mismos resultados anteriores. Chromium comprobó carga y proporción 2400 × 1260, alineación con la columna de lectura y ausencia de desbordamiento a 1440, 1024, 768, 390 y 320 px. Se revisaron las capturas de escritorio y móvil. Se cotejó de nuevo el contenido completo y seis FAQ, Open Graph, Twitter, Article, canonical y exclusión del borrador; producción sigue devolviendo 404. La suite de 134 pruebas corresponde a la validación inicial del borrador, no se repitió para este cambio de imagen.
+
+## Publicación autorizada
+
+El 16 de octubre de 2026 la solicitante autorizó llevar este artículo a producción. Se retira el guard de la ruta y force-dynamic, se habilita index/follow y se registra logisticsArticle en blogPosts para incluirlo mediante la arquitectura existente en listado, sitemap y RSS. Se conservan autor/revisor JAAK, fecha, portada y contenido aprobados. La sección de protección anterior describe la etapa de borrador, ya concluida.
+
+Validación para publicación: build y tipos correctos; lint sin errores (dos advertencias previas); 134 pruebas / 16 archivos correctos. Chromium ejecutado con VERCEL_ENV=production: artículo HTTP 200, contenido completo, un H1, tabla y seis FAQ, canonical, index/follow, OG/Twitter/Article correctos. Portada centrada y proporcional a cinco anchos, sin desbordamiento ni errores JavaScript. Slug presente en listado, sitemap y RSS.

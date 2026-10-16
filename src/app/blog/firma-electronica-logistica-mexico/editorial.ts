@@ -10,7 +10,7 @@ export const articleMetadata: Metadata = {
   authors: [{ name: article.authorName }],
   keywords: ["firma electrónica en logística", "firma electrónica en transporte", "documentos de transporte", "acuse de entrega electrónico", "contratos de transporte", "validación de operadores", "NOM-151", "Carta Porte", "verificación de identidad", "QR del INE"],
   alternates: { canonical: url },
-  robots: { index: false, follow: false },
+  robots: { index: true, follow: true },
   openGraph: { title: article.seoTitle, description: article.description, type: "article", url, locale: "es_MX", siteName: "JAAK", authors: [article.authorName], publishedTime: article.dateISO, images: [{ url: article.image, ...article.imageDimensions, alt: article.imageAlt }] },
   twitter: { card: "summary_large_image", title: article.seoTitle, description: article.description, images: [article.image] },
 };

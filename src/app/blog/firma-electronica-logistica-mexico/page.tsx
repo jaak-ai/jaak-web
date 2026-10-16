@@ -1,14 +1,10 @@
-import { notFound } from "next/navigation";
 import ArticleLayout from "../ArticleLayout";
 import ScrollableArticleTable from "../ScrollableArticleTable";
-import { isBlogDraftPreview } from "../draftPreview";
 import { article, articleSchema } from "./editorial";
 
 export { articleMetadata as metadata } from "./editorial";
-export const dynamic = "force-dynamic";
 
 export default function Page() {
-  if (!isBlogDraftPreview(process.env)) notFound();
   return (
     <ArticleLayout title={article.title} slug={article.slug} category={article.category} readTime={article.readTime}
       image={article.image} imageAlt={article.imageAlt} imageDimensions={article.imageDimensions}
