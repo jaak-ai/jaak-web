@@ -65,3 +65,9 @@ Tras incorporar la portada se ejecutaron nuevamente build (incluidos tipos) y li
 El 16 de octubre de 2026 la solicitante autorizó llevar este artículo a producción. Se retira el guard de la ruta y force-dynamic, se habilita index/follow y se registra logisticsArticle en blogPosts para incluirlo mediante la arquitectura existente en listado, sitemap y RSS. Se conservan autor/revisor JAAK, fecha, portada y contenido aprobados. La sección de protección anterior describe la etapa de borrador, ya concluida.
 
 Validación para publicación: build y tipos correctos; lint sin errores (dos advertencias previas); 134 pruebas / 16 archivos correctos. Chromium ejecutado con VERCEL_ENV=production: artículo HTTP 200, contenido completo, un H1, tabla y seis FAQ, canonical, index/follow, OG/Twitter/Article correctos. Portada centrada y proporcional a cinco anchos, sin desbordamiento ni errores JavaScript. Slug presente en listado, sitemap y RSS.
+
+### Ajuste de duplicación SEO
+
+La primera ejecución de SonarQube reportó 13.36 % de duplicación. Se extrae createInstitutionalArticleSeo para compartir la configuración institucional entre este artículo y el de CNBV, conservando sus valores, y se pasan los datos confirmados al layout mediante props compartidas. No cambia el contenido editorial ni se omite el control de calidad.
+
+Tras el ajuste: build/tipos correctos, lint sin errores y 134 pruebas correctas. Cotejo exacto de todas las etiquetas meta/canonical y objetos JSON-LD del HTML de CNBV antes y después: iguales. Chromium sobre el build final confirma íntegramente contenido, portada a cinco anchos, metadatos, indexabilidad y presencia de logística en listado/sitemap/RSS.

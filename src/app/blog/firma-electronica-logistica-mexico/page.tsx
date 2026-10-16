@@ -6,9 +6,8 @@ export { articleMetadata as metadata } from "./editorial";
 
 export default function Page() {
   return (
-    <ArticleLayout title={article.title} slug={article.slug} category={article.category} readTime={article.readTime}
-      image={article.image} imageAlt={article.imageAlt} imageDimensions={article.imageDimensions}
-      date={article.date} organizationAuthor={article.authorName} showBottomCta={false} alignHeaderWithContent jsonLd={articleSchema}
+    <ArticleLayout {...article} organizationAuthor={article.authorName}
+      showBottomCta={false} alignHeaderWithContent jsonLd={articleSchema}
       relatedPosts={[
         { title: "¿Qué es la NOM-151 y por qué importa en tus contratos digitales?", slug: "que-es-nom-151-contratos-digitales", category: "Firma Electrónica" },
         { title: "Reconocimiento facial, biometría y prueba de vida: diferencias clave", slug: "reconocimiento-facial-biometria-prueba-de-vida", category: "IA" },
