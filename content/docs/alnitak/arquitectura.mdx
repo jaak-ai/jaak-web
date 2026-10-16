@@ -6,6 +6,21 @@ order: 2
 unlisted: true
 ---
 
+<Orientation
+  audience="Arquitectura del cliente · Seguridad · Integradores que necesitan el modelo mental antes de la API"
+  goal="Explicar qué componentes hay, qué ocurre en una consulta y por qué se decidió así."
+  before={{ title: "Introducción", href: "/docs/alnitak" }}
+  outOfScope={[
+    { title: "Cómo lanzar tu primera consulta", href: "/docs/alnitak/inicio-rapido" },
+    { title: "Esquemas de petición y respuesta", href: "/docs/alnitak/api" },
+    { title: "Cifras medidas de latencia y caudal", href: "/docs/alnitak/rendimiento" },
+    { title: "Cómo se instala en el clúster", href: "/docs/alnitak/instalacion" },
+  ]}
+/>
+
+
+Términos que no reconozcas: [Glosario](/docs/alnitak/glosario).
+
 Arquitectura de extremo a extremo de **JAAK Alnitak**: qué componentes hay, qué
 hace cada uno, qué ocurre en una consulta y por qué se tomaron las decisiones
 tecnológicas principales.
@@ -17,7 +32,7 @@ tecnológicas principales.
 | **Consola de operación** | Interfaz para operadores autorizados: consulta manual 1:N, KPIs de latencia y caudal, alertas y trazabilidad. Acceso por SSO corporativo. |
 | **API orquestadora** | Punto de entrada de todos los canales. Autentica, valida la imagen, orquesta el pipeline, aplica el veredicto, registra la auditoría y expone métricas por etapa. Sin estado, escalable horizontalmente. |
 | **Servicio de vectorización facial** (GPU) | Detecta y alinea el rostro y produce el vector de 512 dimensiones. Ejecución acelerada por GPU. |
-| **Almacén vectorial** | Guarda la galería como vectores de 512 dimensiones con cuantificación a 8 bits sobre grafo HNSW. Resuelve la búsqueda kNN y aplica los filtros de metadatos dentro de la misma consulta. |
+| **Galería vectorial** (Elasticsearch) | Guarda la galería como `dense_vector` de 512 dimensiones con cuantificación `int8` sobre grafo HNSW. Resuelve la búsqueda kNN y aplica los filtros de metadatos dentro de la misma consulta. Se despliega con el operador **ECK** en el clúster del cliente. |
 | **Almacenamiento de objetos** | Custodia los recortes faciales alineados del enrolamiento, **cifrados y fuera del índice de búsqueda**. |
 
 <iframe
@@ -29,16 +44,18 @@ tecnológicas principales.
 
 La custodia de los recortes cifrados es lo que permite **re-vectorizar la
 galería completa ante un cambio de modelo** sin volver a pedir las imágenes
-originales al cliente. El procedimiento está en el manual de mantenimiento de
-la entrega.
+originales al cliente. El procedimiento está en
+[Mantenimiento](/docs/alnitak/mantenimiento).
 
 ## Pipeline de una consulta
 
 Cinco etapas, todas medidas con reloj real en cada petición:
 
 1. **Recepción y decodificación** — la API recibe la imagen, valida formato,
-   tamaño y calidad, y la decodifica. **La imagen se procesa en memoria y no se
-   persiste.**
+   tamaño y calidad, y la decodifica. En la configuración de referencia **la
+   imagen se procesa en memoria y no se guarda como parte de la consulta**; el
+   tratamiento exacto está en
+   [Seguridad → Custodia de la biometría](/docs/alnitak/seguridad#custodia-de-la-biometría).
 2. **Detección y alineación** — el vectorizador detecta el rostro y lo alinea.
    Una imagen sin rostro se rechaza por calidad; una imagen con varios rostros
    se procesa con el rostro mayor y la consulta queda marcada con esa condición
@@ -60,7 +77,7 @@ consulta si el tiempo se va a detección, vectorización o búsqueda.
 La etapa de búsqueda crece con el tamaño de la galería; el resto del pipeline
 no depende de él. Dentro del servidor, el coste de trabajo lo dominan
 **detección + vectorización (GPU)**; la búsqueda kNN se mantiene en el orden
-de ~10 ms p50 a 50 M. El reloj del integrador añade además red y TLS hasta la
+de ~10 ms a 50 M. El reloj del integrador añade además red y TLS hasta la
 API (ver [Rendimiento y capacidad](/docs/alnitak/rendimiento)).
 
 ## Score y veredicto de tres estados
@@ -90,9 +107,17 @@ conversión adicional.
 ## Alta con control antiduplicado
 
 En el alta de una identidad nueva el sistema **ejecuta primero una búsqueda 1:N
-con el vector del enrolamiento**. Si esa búsqueda produce una coincidencia, el
+con el vector del enrolamiento**. Si el veredicto de esa búsqueda es `match`, el
 alta se rechaza con `409 duplicate_or_fraud` y la respuesta incluye los
 candidatos que la provocaron.
+
+<Callout type="warning" title="Solo `match` rechaza el alta">
+Un veredicto `review` —el candidato cae en la banda `[t, t+0.06)`— **no rechaza
+el alta**: se completa con `201`, y el `verdict` de la respuesta lo indica. Si tu
+flujo exige intervención humana en esa banda, la integración tiene que leer el
+`verdict` del `201`. Ver
+[Referencia de API → Alta en galería](/docs/alnitak/api#alta-en-galería).
+</Callout>
 
 Es una comprobación previa orientada a:
 
@@ -100,7 +125,7 @@ Es una comprobación previa orientada a:
 - **Antifraude** — señalar altas que podrían corresponder a un expediente ya
   existente.
 
-## Criterios del almacén vectorial
+## Criterios de la galería vectorial
 
 La galería usa un almacén vectorial con estas cuatro características. Son las
 que sostienen la latencia y el caudal en régimen:
@@ -115,6 +140,21 @@ que sostienen la latencia y el caudal en régimen:
 - **Replicación y redistribución de datos** nativas, que dan redundancia y
   capacidad de lectura sin componentes adicionales.
 
+En esta entrega on-premise esas cuatro condiciones **se instancian con
+Elasticsearch**, desplegado con el operador ECK dentro del clúster del cliente:
+
+| Condición | Cómo se cumple |
+|---|---|
+| kNN sobre HNSW maduro | `dense_vector` con `index_options.type: int8_hnsw`, GA desde 8.x |
+| Cuantificación a 8 bits | `int8_hnsw` indexa el vector cuantificado y hace rescoring sobre el original |
+| Filtrado en la misma consulta | `knn.filter`, no un `post_filter` |
+| Replicación y redistribución | Shards y réplicas nativas del clúster |
+
+**Versión soportada: Elasticsearch 8.15 o posterior de la rama 8.x.** El
+dimensionado de nodos, memoria y disco está en
+[Instalación](/docs/alnitak/instalacion); el esquema del índice, en
+[Galería, vectores e índice](/docs/alnitak/galeria).
+
 El cuello de botella de latencia no está en el motor vectorial: está en la GPU
 de vectorización y en la disciplina de operación del índice (compactación de
 segmentos, memoria residente, número de candidatos explorados).
@@ -127,7 +167,7 @@ segmentos, memoria residente, número de candidatos explorados).
 | Rechazo explícito por calidad | Una imagen sin rostro no genera una identificación dudosa: se rechaza y queda en auditoría |
 | Marcado de consultas multirrostro | La consulta se resuelve con el rostro mayor y queda señalada para revisión |
 | API sin estado tras balanceador | Cualquier réplica atiende cualquier consulta |
-| Galería replicada en el almacén vectorial | Aporta redundancia; el comportamiento ante fallo depende del quórum y de la configuración del despliegue |
+| Galería replicada en Elasticsearch | Aporta redundancia; el comportamiento ante fallo depende del quórum y de la configuración del despliegue |
 | Vectorizador replicado | Aporta capacidad de recuperación; validar el comportamiento ante fallo en cada despliegue |
 
 ## Esquema de alias de la galería
@@ -137,5 +177,5 @@ indirección permite reconstruir la galería con un modelo nuevo en un índice
 paralelo y preparar una conmutación blue/green. La conmutación y su impacto se
 validan con el procedimiento de cada despliegue.
 
-El procedimiento de conmutación y los casos de migración están en el manual de
-mantenimiento de la entrega.
+El procedimiento de conmutación y los casos de migración están en
+[Mantenimiento](/docs/alnitak/mantenimiento).
