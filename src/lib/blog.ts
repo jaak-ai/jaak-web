@@ -1,3 +1,4 @@
+import { providerSelectionArticle } from "./blog/providerSelectionArticle";
 import { logisticsArticle } from "./blog/logisticsArticle";
 import { cnbvFacialArticle } from "./blog/cnbvFacialArticle";
 import { facialRecognitionArticle } from "./blog/facialRecognitionArticle";
@@ -15,6 +16,7 @@ export interface BlogPost {
 }
 
 export const blogPosts: BlogPost[] = [
+  providerSelectionArticle,
   logisticsArticle,
   cnbvFacialArticle,
   facialRecognitionArticle,
