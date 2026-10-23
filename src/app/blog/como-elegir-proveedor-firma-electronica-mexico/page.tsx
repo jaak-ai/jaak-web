@@ -1,19 +1,15 @@
 import type { ReactNode } from "react";
-import { notFound } from "next/navigation";
 import ArticleLayout from "../ArticleLayout";
 import ScrollableArticleTable from "../ScrollableArticleTable";
-import { isBlogDraftPreview } from "../draftPreview";
 import { article, articleSchema } from "./editorial";
 
 export { articleMetadata as metadata } from "./editorial";
-export const dynamic = "force-dynamic";
 
 function Paragraph({ children }: Readonly<{ children: ReactNode }>) {
   return <p className="text-gray-600 leading-relaxed mb-4">{children}</p>;
 }
 
 export default function Page() {
-  if (!isBlogDraftPreview(process.env)) notFound();
   return (
     <ArticleLayout {...article} organizationAuthor={article.authorName} showBottomCta={false}
       alignHeaderWithContent jsonLd={articleSchema} relatedPosts={[]}>
