@@ -11,7 +11,7 @@ const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent
 
 // KYC usa el checkout unificado /register con el plan pre-seleccionado
 // (TO-809 Fase 3 / AUTO-20).
-const KYC_REGISTER_URL = buildKycRegisterUrl("gratis");
+const KYC_REGISTER_URL = buildKycRegisterUrl("cobre");
 
 // Agrega el cupón (AUTO-4) a un deep-link ya construido, dentro del hash para que
 // /register o /onboarding lo lean del query. Vacío = deja el link igual.
