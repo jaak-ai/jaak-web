@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { buildCheckoutUrl, productos, KYC_PLAN_CODE_BY_TIER } from "./autoservicio-catalogo";
+import { buildCheckoutUrl, buildKycRegisterUrl, productos, KYC_PLAN_CODE_BY_TIER } from "./autoservicio-catalogo";
 
 const firma = productos.find((p) => p.id === "firma-simple")!;
 const cobre = firma.paquetes.find((q) => q.id === "cobre")!;
@@ -95,6 +95,18 @@ describe("buildCheckoutUrl KYC/plan routing", () => {
     const amatista = { id: "amatista", nombre: "Amatista", cantidad: 750, precio: 18000 };
     const p = decodePayload(buildCheckoutUrl([{ producto: kyc, paquete: amatista }]));
     expect(p.k.pc).toBe("amatista");
+  });
+});
+
+describe("buildKycRegisterUrl planCode cobre (SD-597)", () => {
+  it("codifica pc: 'cobre' en el deep-link de registro", () => {
+    const p = decodePayload(buildKycRegisterUrl("cobre"));
+    expect(p.k.pc).toBe("cobre");
+    expect(p.k.m).toBe("once");
+  });
+
+  it("el mapa de tiers devuelve 'cobre' para el tier cobre", () => {
+    expect(KYC_PLAN_CODE_BY_TIER["cobre"]).toBe("cobre");
   });
 });
 

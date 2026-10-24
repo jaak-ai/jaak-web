@@ -76,13 +76,14 @@ const tiers = (
 // (checkout unificado TO-809 Fase 3 / AUTO-20). Reemplaza los CTAs viejos a
 // /onboarding/*. El register reconstruye precio/nombre del plan en vivo; aquí solo
 // viaja el código de plan + modo "once".
-// Remaps SOLO cuando el `code` del plan difiere del id de tier del catálogo. El
-// único caso real es el tier libre (Cobre), que el backend guarda como "gratis".
+// Remaps SOLO cuando el `code` del plan difiere del id de tier del catálogo.
+// El tier libre (Cobre) ya usa "cobre" como code canónico en producción
+// (SD-597: antes se enviaba "gratis" y el register no resolvía el plan).
 // Todo lo demás es identidad: el id de tier del endpoint YA es el code del plan
 // (p.ej. "platino1"). Cualquier tier no listado cae a su propio id (data-driven),
 // para no inventar un code que el webhook resolvería mal (GetPlanByCode es exacto).
 export const KYC_PLAN_CODE_BY_TIER: Record<string, string> = {
-  cobre: "gratis", bronce: "bronce", plata: "plata", oro: "oro", platino: "platino", platino1: "platino1",
+  cobre: "cobre", bronce: "bronce", plata: "plata", oro: "oro", platino: "platino", platino1: "platino1",
 };
 export function buildKycRegisterUrl(
   planCode: string,
