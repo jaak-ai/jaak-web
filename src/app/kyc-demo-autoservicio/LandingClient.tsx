@@ -91,7 +91,7 @@ const productLabel = (id: string) => PRODUCT_OPTIONS.find((p) => p.id === id)?.l
 
 // KYC usa el checkout unificado /register con el plan pre-seleccionado
 // (TO-809 Fase 3 / AUTO-20).
-const KYC_REGISTER_URL = buildKycRegisterUrl("gratis");
+const KYC_REGISTER_URL = buildKycRegisterUrl("cobre");
 
 // Mapeo id de esta landing → id real del catálogo de autoservicio (paquete
 // "cobre" = entrada de prueba). INE/CURP y OCR se dejan fuera a propósito:
