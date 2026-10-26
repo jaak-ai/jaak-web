@@ -121,6 +121,13 @@ export default async function AutoservicioPage() {
                 <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
               </Link>
             </div>
+            <p className="mt-6 text-center text-sm lg:text-left" style={{ color: "#64748B" }}>
+              ¿Ya eres cliente y necesitas ayuda?{" "}
+              <Link href="/soporte/autoservicio" className="font-semibold underline underline-offset-4 hover:no-underline" style={{ color: "#212A45" }}>
+                Visita el centro de soporte de Autoservicio
+              </Link>
+              .
+            </p>
           </div>
         </section>
       </main>
