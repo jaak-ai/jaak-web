@@ -34,8 +34,12 @@ export const MODALIDADES_COPY = {
   /** Aclaración breve para home/landings. */
   integracionCorta:
     "¿Necesitas integrar JAAK a tus sistemas o aplicaciones? Evaluamos una integración por API o SDK, con personalización White Label según contratación. La integración requiere setup fee.",
-  /** Esquemas de pago de Enterprise y Alianzas (sin importes ni condiciones). */
-  esquemasPago: "Pago mensual durante un año o pago anual, según propuesta y contrato.",
+  /**
+   * Crecimiento, Enterprise y Alianzas: bolsa anual de consumo (no es una suscripción
+   * mensual de precio fijo). Sin cuotas, tarifas, mínimos ni reglas de excedentes.
+   */
+  esquemasPago:
+    "Bolsa anual de consumo definida en la propuesta comercial, con pagos mensuales conforme al consumo.",
 } as const;
 
 /**

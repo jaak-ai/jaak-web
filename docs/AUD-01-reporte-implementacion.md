@@ -148,3 +148,99 @@ Revisión visual humana pendiente: tabla comparativa de `/precios` en móvil (ce
 2. QA visual móvil/escritorio en preview de Vercel.
 3. No publicar hasta que AUD-04 se defina, para no dejar "activación inmediata" junto al nuevo mensaje.
 4. Estado AUD-01: **En validación**.
+
+---
+
+# Continuación 3 — Cierre de decisiones comerciales (2026-11-02)
+
+## D1. Decisiones confirmadas por Dirección comercial
+1. **Crecimiento:** Web, API, SDK y White Label posible según contratación; setup fee en integración. White Label depende del alcance acordado.
+2. **Crecimiento, Enterprise y Alianzas:** pueden trabajar con **bolsa anual de consumo** definida en la propuesta, con pagos mensuales conforme al consumo. No es suscripción mensual de precio fijo. Sin cuotas, tarifas, mínimos ni excedentes publicados.
+3. **Autoservicio Enterprise** (plan recurrente mensual, costo anual total, pago directo) es distinto de la contratación asistida Enterprise. `/autoservicio-enterprise` **no se modificó** (paquetes inactivos).
+4. **Facturación 80/20:** eliminar de textos comerciales.
+5. **Setup fee:** se conserva para integración API/SDK; "cuota de activación única" no se asume equivalente.
+6. **Sandbox:** fuera de Autoservicio; se evalúa con un especialista; no se promociona. Aviso de docs y "Sandbox Status" del footer sin tocar.
+7. **SLA / soporte 24×7:** sustituir por textos prudentes, **sujetos a aprobación de Producto/Comercial**.
+8. **AUD-04:** sin cambios.
+
+## D2. Archivos modificados
+`src/app/precios/PreciosClient.tsx`, `src/app/precios/page.tsx` (JSON-LD FAQ), `src/config/commercial-copy.ts` (`esquemasPago`) y este reporte. Sin cambios en `/autoservicio-enterprise`, docs, checkout, precios ni backend (verificado con `git diff`).
+
+## D3. Textos anteriores → nuevos (`/precios`)
+| Elemento | Anterior | Nuevo |
+|---|---|---|
+| Tabla: Plataforma Web (Crecimiento) | "Según modalidad contratada" | "Disponible" |
+| Tabla: API (Crecimiento) | "Con setup fee" | "Disponible, con setup fee" |
+| Tabla: SDK (Crecimiento) | "Consultar con ventas" | "Disponible, con setup fee" |
+| Tabla: White Label (Crecimiento / Enterprise / Alianzas) | "Consultar con ventas" / "Según propuesta contratada" | "Opcional, según alcance acordado" / "Opcional, según propuesta" |
+| Tabla: nueva fila | — | "Esquema de contratación": Autoservicio "Compra en línea; paquetes con vigencia de un año"; resto "Bolsa anual de consumo, pagos mensuales según consumo" |
+| Tarjeta Crecimiento | "Acceso… panel web o integración API"; "Integración API sujeta a… setup fee" | "Uso mediante plataforma Web, integración API o integración SDK, según contratación"; "White Label opcional, según el alcance acordado"; "Integración API o SDK sujeta a una cuota de configuración (setup fee)"; "Bolsa anual de consumo con pagos mensuales según consumo, conforme a la propuesta" |
+| Tarjeta Enterprise (precio) | "pago mensual durante un año o anual, según contrato · volumen desde 5k/mes" | "bolsa anual de consumo · pagos mensuales según consumo · volumen desde 5k/mes" |
+| Tarjeta Enterprise (White Label / setup) | "White Label según la propuesta contratada"; "Setup fee cuando hay integración API o SDK" | "White Label opcional, según la propuesta contratada"; "Integración API o SDK sujeta a una cuota de configuración (setup fee)" |
+| Tarjeta Alianzas | esquema "mensual durante un año o anual"; sin setup | bolsa anual con pagos mensuales según consumo, según el acuerdo; White Label opcional; integración API/SDK sujeta a setup fee |
+| **Soporte Enterprise (SUJETO A APROBACIÓN)** | "Equipo dedicado + SLA garantizado" | "Acompañamiento especializado y niveles de servicio conforme a la propuesta contratada" |
+| **Soporte Alianzas (SUJETO A APROBACIÓN)** | "Equipo comercial + soporte 24×7" | "Soporte comercial y técnico según las condiciones del acuerdo" |
+| FAQ y JSON-LD "facturación Enterprise" | "Mensual: 80% del estimado del mes actual + 20% real del mes anterior. Neto 30 días. Descuento 15%… Cobro mínimo…" | Pregunta "¿Cómo funciona la contratación de Crecimiento, Enterprise y Alianzas?": bolsa anual de consumo definida en la propuesta, pagos mensuales conforme al consumo, no es suscripción mensual de precio fijo, condiciones en propuesta y contrato |
+| FAQ y JSON-LD setup | "¿Hay cuota de activación (setup fee)? … Los planes Enterprise incluyen una cuota de activación única…" | "¿Hay cuota de configuración (setup fee)?" Autoservicio no la requiere (solo web); la integración API o SDK en Crecimiento, Enterprise y Alianzas considera una cuota de configuración conforme a la propuesta |
+| FAQ y JSON-LD reembolsos | "…La cuota de activación única (setup fee) de Enterprise tampoco es reembolsable." | "Vencen a 12 meses desde la compra. No son reembolsables." (se retiró la afirmación sobre reembolso del setup: no hay condición confirmada) |
+
+## D4. Referencias a 80/20 eliminadas
+`src/app/precios/PreciosClient.tsx` (FAQ) y `src/app/precios/page.tsx` (JSON-LD FAQPage). Búsqueda final en `src/` y `content/`: 0 coincidencias de "80%", "80/20", "20% real" en textos comerciales. Con ello también se retiraron "Descuento 15% si se paga días 1–10" y "Cobro mínimo = tier inicial" que formaban parte de esa respuesta; **confirmar si esas condiciones siguen vigentes**. No se tocó lógica de facturación ni registros.
+
+## D5. Setup fee vs. "cuota de activación única"
+- `/precios`: unificado a "cuota de configuración (setup fee)" solo en contexto de integración API/SDK.
+- **Sin cambios** (no equivalencia validada): `src/data/autoservicio-catalogo.ts` y `CatalogoAutoservicio.tsx` ("+ $X de activación única", solo SKUs enterprise), `autoservicio-enterprise/schema.tsx` ("tarifa de activación única por empresa"). Pendiente: Comercial debe indicar si es el mismo concepto.
+
+## D6. Validaciones de Crecimiento y White Label
+Crecimiento muestra Web/API/SDK y White Label como "Opcional, según alcance acordado" (nunca incluido por defecto). Autoservicio: White Label "No incluido". Enterprise/Alianzas: "Opcional, según propuesta"; sin checks.
+
+## D7. Pendientes (nuevos y vigentes)
+- **Aprobación de Producto/Comercial** de los textos prudentes de SLA/soporte (Enterprise, Alianzas).
+- Otros textos de SLA/soporte absolutos **fuera de `/precios`** (no modificados por alcance): `firma-electronica/page.tsx` y `FirmaThemeShell.tsx` ("SLA garantizado"), `signa/*` ("soporte 24/7"), `bancos/page.tsx` ("Disponibilidad SLA 99.99%"), `SimuladorPLD.tsx` ("SLAs personalizados"), `RegulatoryProof.tsx` ("24/7").
+- En `/precios`: "Soporte comercial dedicado" (feature de Alianzas), fila "Soporte: Dedicado" (Enterprise) y "migración a Enterprise es obligatoria" (FAQ de volumen) son preexistentes y no se tocaron; validar.
+- Vigencia de descuento 15% y cobro mínimo (D4).
+- Equivalencia de "activación única" (D5).
+- `/comprar`: la tarjeta "Enterprise" (self-service) solo se renderiza si el catálogo expone SKUs enterprise; hoy es inactiva y no se modificó. Al activarse, revisar su copy ("Pago anual") contra el esquema Autoservicio Enterprise.
+- AUD-04 (activación inmediata) sin cambios: inventario previo vigente.
+- Sandbox: aviso de docs y "Sandbox Status" del footer, sin tocar por instrucción.
+
+## D8. QA
+| Prueba | Resultado |
+|---|---|
+| `tsc --noEmit` | OK |
+| `npm run lint` | 0 errores; 2 warnings preexistentes |
+| `npm test` | 136/136 OK |
+| `npm run build` | OK |
+| `git diff` de `/autoservicio-enterprise`, docs, checkout | Vacío |
+| `/precios` scrollWidth a 375 px y 1280 px | 375 / 1280 (sin desbordamiento) |
+| Tabla de Precios móvil (captura revisada) | Legible: tarjetas por fila en 2 columnas, textos largos ("Bolsa anual de consumo, pagos mensuales según consumo") saltan de línea sin cortarse |
+| Tabla de Precios escritorio (captura revisada) | Legible; celdas con 2–4 líneas, sin desbordes |
+| Tarjetas Crecimiento / Enterprise / Alianzas móvil | Sin desbordes; las listas son más largas (Crecimiento 7 puntos) |
+| Home, tarjeta Autoservicio móvil | Correcta; aclaración legible; CTA principal visible |
+| `/autoservicio`, nota móvil | Visible antes del catálogo, legible |
+| Revisión de la FAQ de Precios | Verificada por contenido (código y JSON-LD); no se capturó visualmente el acordeón |
+Las capturas están en el scratchpad de la sesión (no en el repositorio). Los cortes que se ven en ellas (barra de demo, header fijo) son elementos fijos del sitio sobre capturas de sección, no problemas del contenido. Pendiente de revisión humana en dispositivo real.
+
+## D9. Subtareas AUD-01.1 a AUD-01.17
+La numeración 1–17 no estaba definida en las instrucciones; se asignó la siguiente según el trabajo realizado. Ajustar si el plan oficial difiere.
+| ID | Página / alcance | Cambio realizado | Estado | Evidencia |
+|---|---|---|---|---|
+| AUD-01.1 | Repo | Inventario de expresiones y páginas afectadas | Completado | Reporte §6 y D7 |
+| AUD-01.2 | `/` tarjeta Autoservicio | Sin "Credenciales API en minutos"; Web; integración API/SDK + White Label + setup | Implementado | `HomepageFinalCTA.tsx` |
+| AUD-01.3 | `/` productos | Web vs. API/SDK; White Label como opción | Implementado | `HomepageProducts.tsx` |
+| AUD-01.4 | `/` bloque de compra | Sin activación inmediata; integración API/SDK con setup | Implementado | `HomepageAutoservicioCTA.tsx` |
+| AUD-01.5 | `/precios` tarjetas y tabla | Crecimiento Web/API/SDK/WL; filas separadas; esquema de contratación | Implementado, pendiente aprobación | `PreciosClient.tsx` |
+| AUD-01.6 | `/autoservicio` | Nota Web exclusiva; metadatos; leyenda del resumen | Implementado | `autoservicio/page.tsx` |
+| AUD-01.7 | `/comprar` | Contratación directa vs. asistida | Implementado | `comprar/page.tsx` |
+| AUD-01.8 | `/kyc-demo-autoservicio` | Escalamiento a API/SDK con setup fee | Implementado | `LandingClient.tsx`, `layout.tsx` |
+| AUD-01.9 | Docs | Avisos de la 1.ª ejecución; sin cambios posteriores | Implementado (congelado); mención a sandbox pendiente | `IntegrationAccessNotice.tsx` |
+| AUD-01.10 | Copy compartido | `commercial-copy.ts` con modalidades y bolsa anual | Implementado | `commercial-copy.ts` |
+| AUD-01.11 | SEO / metadatos | Metadatos y JSON-LD de las páginas intervenidas sin promesas contradictorias | Implementado en páginas intervenidas; resto fuera de alcance | build OK |
+| AUD-01.12 | Enterprise y Alianzas | Modalidades, White Label opcional, bolsa anual, setup | Implementado, pendiente aprobación | `PreciosClient.tsx` |
+| AUD-01.13 | Facturación 80/20 | Eliminada de FAQ y JSON-LD | Implementado; confirmar descuento 15% / cobro mínimo | `PreciosClient.tsx`, `page.tsx` |
+| AUD-01.14 | Setup fee | Terminología unificada en `/precios`; equivalencias no validadas sin tocar | Parcial (pendiente decisión Comercial) | D5 |
+| AUD-01.15 | SLA / soporte | Textos prudentes en Enterprise y Alianzas | Implementado, **sujeto a aprobación**; otras páginas pendientes | D3, D7 |
+| AUD-01.16 | `/autoservicio-enterprise` | Sin modificaciones (paquetes inactivos) | Sin cambios por decisión | diff vacío |
+| AUD-01.17 | QA y reporte | Técnico y visual (capturas) ejecutados; dispositivo real y publicación pendientes | En validación | D8 |
+
+**Estado general de AUD-01: En validación.** No está completada: faltan aprobación comercial (SLA/soporte, setup, descuentos), revisión de QA en dispositivos reales y confirmación de publicación. AUD-04 no ejecutada.
