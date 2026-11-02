@@ -187,8 +187,8 @@ export default function SignaComparacion() {
                     <td className="px-6 py-4 text-center text-red-600 font-semibold">$2,500 MXN</td>
                     <td className="px-6 py-4 text-center text-blue-600 font-semibold">$200 USD</td>
                     <td className="px-6 py-4 text-center bg-[#00d4aa]/5">
-                      <span className="text-[#00d4aa] font-bold">GRATIS</span>
-                      <div className="text-xs text-[#00d4aa]">$2,500 ahorro</div>
+                      <span className="text-[#00d4aa] font-bold">Según contratación</span>
+                      <div className="text-xs text-[#00d4aa]">Configuración y acompañamiento</div>
                     </td>
                   </tr>
 
@@ -281,8 +281,8 @@ export default function SignaComparacion() {
                     <td className="px-6 py-4 text-center text-gray-500">No disponible</td>
                     <td className="px-6 py-4 text-center text-blue-600">Limitada</td>
                     <td className="px-6 py-4 text-center bg-[#00d4aa]/5">
-                      <span className="text-[#00d4aa] font-bold">Gratis + 24h</span>
-                      <div className="text-xs text-[#00d4aa]">Servicio completo</div>
+                      <span className="text-[#00d4aa] font-bold">Según contratación</span>
+                      <div className="text-xs text-[#00d4aa]">Acompañamiento en la migración</div>
                     </td>
                   </tr>
                 </tbody>
@@ -448,16 +448,16 @@ export default function SignaComparacion() {
                 <div className="w-16 h-16 bg-[#10b981] rounded-full flex items-center justify-center mx-auto mb-6">
                   <span className="text-2xl">🔄</span>
                 </div>
-                <h3 className="text-xl font-bold text-white mb-4">Migración Gratis</h3>
-                <p className="text-white/70">Te ayudamos a migrar todos tus documentos y configuraciones en 24 horas. Sin costo.</p>
+                <h3 className="text-xl font-bold text-white mb-4">Migración acompañada</h3>
+                <p className="text-white/70">Te acompañamos en la migración de tus documentos y configuraciones conforme al alcance y las condiciones acordadas.</p>
               </div>
 
               <div className="bg-white/5 border border-white/10 rounded-xl p-8 text-center hover:bg-white/10 transition-all">
                 <div className="w-16 h-16 bg-[#f59e0b] rounded-full flex items-center justify-center mx-auto mb-6">
                   <span className="text-2xl">🛡️</span>
                 </div>
-                <h3 className="text-xl font-bold text-white mb-4">Garantía Total</h3>
-                <p className="text-white/70">30 días de garantía. Si no ahorras como prometemos, devolvemos 100% tu dinero.</p>
+                <h3 className="text-xl font-bold text-white mb-4">Configuración y acompañamiento</h3>
+                <p className="text-white/70">Definimos contigo el alcance de la configuración y el acompañamiento según tu contratación.</p>
               </div>
             </div>
           </div>
@@ -470,8 +470,7 @@ export default function SignaComparacion() {
               🚀 ¿Listo para Unirte a los 1,000+ que ya Ahorran?
             </h2>
             <p className="text-xl text-white/90 mb-8">
-              La migración es <strong>gratis</strong>, el ahorro es <strong>inmediato</strong>, 
-              y la garantía es <strong>total</strong>.
+              Habla con nuestro equipo para evaluar tu caso, la migración y el acompañamiento según tu contratación.
             </p>
             
             <div className="flex flex-wrap gap-4 justify-center mb-8">
@@ -487,13 +486,6 @@ export default function SignaComparacion() {
               >
                 📞 Hablar con un Experto
               </Link>
-            </div>
-            
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 inline-block max-w-2xl">
-              <p className="text-white">
-                🛡️ <strong>Garantía 30 días:</strong> Si no ahorras dinero como prometemos, 
-                te devolvemos el 100% sin hacer preguntas.
-              </p>
             </div>
           </div>
         </section>

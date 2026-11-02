@@ -125,10 +125,10 @@ export const signaFAQSchema = {
     },
     {
       "@type": "Question",
-      "name": "¿Cuánto tiempo toma migrar de Mifiel a Signa?",
+      "name": "¿Cómo es el proceso para migrar de Mifiel a Signa?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "La migración de Mifiel a Signa toma entre 24-48 horas y es completamente gratuita. Te ayudamos con todo el proceso."
+        "text": "El alcance, los tiempos y las condiciones de la migración de Mifiel a Signa se definen con nuestro equipo según tu caso y contratación."
       }
     },
     {

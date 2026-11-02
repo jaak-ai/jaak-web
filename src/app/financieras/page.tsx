@@ -443,7 +443,7 @@ export default function FinancierasPage() {
                   {status === "success" && (
                     <div className="p-4 bg-green-50 border border-green-200 rounded-lg text-center">
                       <p className="text-green-700 font-medium">
-                        ✓ Solicitud enviada. Un especialista te contacta en menos de 24h.
+                        ✓ Solicitud enviada. Nuestro equipo comercial se pondrá en contacto contigo para conocer las necesidades de tu empresa.
                       </p>
                     </div>
                   )}

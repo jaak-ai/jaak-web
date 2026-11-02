@@ -57,6 +57,12 @@ export const metadata: Metadata = {
   }
 };
 
+/**
+ * AUD-01: "Casos de éxito por industria" oculto temporalmente (cifras de ahorro de empresas
+ * sin respaldo validado). Contenido conservado; poner en true tras validación comercial.
+ */
+const SHOW_CASOS_EXITO = false;
+
 export default function SignaCalculadora() {
   return (
     <>
@@ -213,8 +219,8 @@ export default function SignaCalculadora() {
                 <div className="grid grid-cols-3 gap-4 mb-8">
                   <div className="text-center p-4 bg-white/50 rounded-lg">
                     <div className="text-xs text-gray-500 mb-1">Tiempo ROI</div>
-                    <div className="text-lg font-bold text-[#00d4aa]">Inmediato</div>
-                    <div className="text-xs text-gray-500">Desde día 1</div>
+                    <div className="text-lg font-bold text-[#00d4aa]">Variable</div>
+                    <div className="text-xs text-gray-500">Según tu caso</div>
                   </div>
                   <div className="text-center p-4 bg-white/50 rounded-lg">
                     <div className="text-xs text-gray-500 mb-1">% Ahorro</div>
@@ -223,15 +229,15 @@ export default function SignaCalculadora() {
                   </div>
                   <div className="text-center p-4 bg-white/50 rounded-lg">
                     <div className="text-xs text-gray-500 mb-1">Migración</div>
-                    <div className="text-lg font-bold text-[#00d4aa]">Gratis</div>
-                    <div className="text-xs text-gray-500">Sin costo</div>
+                    <div className="text-lg font-bold text-[#00d4aa]">Asistida</div>
+                    <div className="text-xs text-gray-500">Según contrato</div>
                   </div>
                 </div>
 
                 {/* CTA */}
                 <div className="bg-gradient-to-r from-[#00d4aa] to-[#0066ff] rounded-xl p-6 text-center text-white">
                   <h3 className="text-lg font-bold mb-2">🚀 ¿Listo para Ahorrar?</h3>
-                  <p className="text-sm mb-4 opacity-90">Con estos ahorros, la migración se paga sola desde el primer día.</p>
+                  <p className="text-sm mb-4 opacity-90">Habla con nuestro equipo para evaluar tu caso, la migración y el acompañamiento según tu contratación.</p>
                   <div className="flex flex-wrap gap-2 justify-center">
                     <Link
                       href="/contacto"
@@ -252,7 +258,8 @@ export default function SignaCalculadora() {
           </div>
         </section>
 
-        {/* Industry Examples */}
+        {/* Industry Examples: oculta temporalmente (AUD-01), resultados de ahorro sin respaldo; ver SHOW_CASOS_EXITO */}
+        {SHOW_CASOS_EXITO && (
         <section className="py-16 bg-gray-50">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
@@ -302,6 +309,7 @@ export default function SignaCalculadora() {
             </div>
           </div>
         </section>
+        )}
 
         {/* FAQ */}
         <section className="py-16 bg-white">
@@ -312,13 +320,13 @@ export default function SignaCalculadora() {
 
             <div className="grid md:grid-cols-2 gap-8">
               <div className="bg-gray-50 rounded-xl p-6">
-                <h3 className="text-lg font-bold text-gray-900 mb-3">¿La migración realmente es gratis?</h3>
-                <p className="text-gray-600">Sí, completamente. Te ayudamos a exportar tus documentos e importarlos a Signa sin ningún costo.</p>
+                <h3 className="text-lg font-bold text-gray-900 mb-3">¿Hay acompañamiento para migrar?</h3>
+                <p className="text-gray-600">Nuestro equipo te orienta en la migración de tus documentos. El alcance y las condiciones se definen según tu contratación.</p>
               </div>
 
               <div className="bg-gray-50 rounded-xl p-6">
                 <h3 className="text-lg font-bold text-gray-900 mb-3">¿Cuánto tiempo toma migrar?</h3>
-                <p className="text-gray-600">Entre 24-48 horas. La mayoría de clientes están operando completamente en menos de 2 días.</p>
+                <p className="text-gray-600">Depende del volumen de documentos y de la configuración requerida. Los tiempos se definen con nuestro equipo según tu caso.</p>
               </div>
 
               <div className="bg-gray-50 rounded-xl p-6">
@@ -327,8 +335,8 @@ export default function SignaCalculadora() {
               </div>
 
               <div className="bg-gray-50 rounded-xl p-6">
-                <h3 className="text-lg font-bold text-gray-900 mb-3">¿Qué pasa si no estoy satisfecho?</h3>
-                <p className="text-gray-600">Garantía de 30 días. Si no ahorras dinero como prometemos, te devolvemos el 100% sin preguntas.</p>
+                <h3 className="text-lg font-bold text-gray-900 mb-3">¿Cuáles son las condiciones comerciales?</h3>
+                <p className="text-gray-600">Las condiciones de contratación, configuración y soporte se definen con nuestro equipo comercial según tu caso.</p>
               </div>
             </div>
           </div>

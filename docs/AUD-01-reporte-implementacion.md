@@ -342,3 +342,119 @@ Las capturas están en el scratchpad de la sesión, no en el repositorio. No se 
 
 **Estado de publicación:** no publicado. Para integrar esta rama también se publicaría el landing de soporte con sus cambios en sitemap, footer y `/autoservicio` (E2).
 **Estado general de AUD-01: En validación.** No cumple aún los criterios de cierre: faltan aprobación de Producto/Comercial, resolución del testimonio y promesas de Signa, QA en dispositivos reales y confirmación de publicación. AUD-04 fuera de alcance.
+
+---
+
+# Continuación 5 — Cierre: Signa, testimonios, Bancos, formularios (2026-11-02)
+
+## F1. Decisiones autorizadas
+1. Signa y Signa/Comparación: retirar soporte 24/7, setup gratuito, migración gratuita o en 24 h y garantía de 30 días (sin condiciones vigentes aprobadas) → texto neutral de configuración, soporte y acompañamiento según contratación. **No** se aplica a Signa la política de reembolsos de Autoservicio.
+2. Testimonios: no editar citas; ocultar temporalmente las tarjetas con promesas/resultados no respaldados, conservando su contenido.
+3. Bancos: indicador "A medida" con "Niveles de servicio según acuerdo".
+4. Formularios comerciales: sustituir "contacto en menos de 24 horas" por "Nuestro equipo comercial se pondrá en contacto contigo para conocer las necesidades de tu empresa."
+5. Autoservicio Enterprise: sin cambios. 6. AUD-04: sin cambios. 7. Desbordamiento de tabla de firma electrónica: actividad CRO independiente.
+
+## F2. Archivos modificados
+`src/app/signa/page.tsx`, `signa/calculadora/page.tsx`, `signa/comparacion/page.tsx`, `signa/SignaSavingsCalculator.tsx`, `signa/schema.tsx`, `signa/seo-content.tsx`, `src/app/bancos/page.tsx`, `contacto/page.tsx`, `contacto/layout.tsx`, `chronos/page.tsx`, `financieras/page.tsx`, `inmobiliarias/page.tsx`, `salud/LandingClient.tsx`, `soluciones/recursos-humanos/LandingClient.tsx`, `webinar/page.tsx`. Sin cambios: `/autoservicio-enterprise`, post-compra (`AutoservicioPostCompra`, `orden-confirmada-autoservicio`), docs, precios/checkout (`git diff` vacío).
+
+## F3. Textos anteriores → nuevos
+### Signa (`/signa`)
+| Elemento | Anterior | Nuevo |
+|---|---|---|
+| OG y Twitter description | "…NOM-151 certificado, migración gratis." | "…NOM-151 certificado, soporte especializado (en español) según contratación." |
+| Lista Signa | "Setup gratis" | "Configuración y acompañamiento según contratación" |
+| Bullets del hero | "Migración gratis desde cualquier plataforma"; "Deploy en 24 horas, vs. semanas con otros proveedores"; "Garantía de 30 días: si no ahorras, te devolvemos tu dinero" | "Acompañamiento en la migración según contratación"; "Configuración y acompañamiento según el alcance acordado"; (eliminado) |
+| Sección "Lo que dicen nuestros clientes" (3 tarjetas) | visible | **Oculta** con `SHOW_TESTIMONIALS = false`; datos y citas intactos en `TESTIMONIALS` |
+| CTA final | "…soporte… Garantía de 30 días o te devolvemos tu dinero." + caja "Garantía de 30 días: si no ahorras… 100% sin hacer preguntas" | Solo "Soporte especializado en español según contratación." (caja eliminada) |
+| Calculadora embebida | "Garantía de 30 días: si no ahorras como prometemos, te devolvemos el 100% sin preguntas." | Eliminado |
+### Signa JSON-LD y SEO
+| Archivo | Anterior | Nuevo |
+|---|---|---|
+| `schema.tsx` FAQ | "¿Cuánto tiempo toma migrar…? …toma entre 24-48 horas y es completamente gratuita." | "¿Cómo es el proceso para migrar…? El alcance, los tiempos y las condiciones de la migración… se definen con nuestro equipo según tu caso y contratación." |
+| `seo-content.tsx` | FAQ de migración "24-48 horas… gratuita"; keywords "migración gratuita…", "migrar gratis"; "Sin costos de setup ni mensualidades mínimas."; metaDesc "Proceso de 24 horas, migración gratuita, sin riesgo de pérdida de datos." | FAQ neutral; keyword "migración de mifiel a signa"; frase de setup/mínimos eliminada; "Acompañamiento según contratación." |
+### Signa calculadora
+| Anterior | Nuevo |
+|---|---|
+| Tarjeta "Tiempo ROI: Inmediato / Desde día 1" | "Variable / Según tu caso" |
+| "Migración: Gratis / Sin costo" | "Asistida / Según contrato" |
+| "Con estos ahorros, la migración se paga sola desde el primer día." | "Habla con nuestro equipo para evaluar tu caso, la migración y el acompañamiento según tu contratación." |
+| FAQ "¿La migración realmente es gratis?" / "…24-48 horas…" / "¿Qué pasa si no estoy satisfecho? Garantía de 30 días…" | "¿Hay acompañamiento para migrar?" (según contratación) / tiempos "se definen… según tu caso" / "¿Cuáles son las condiciones comerciales?" (se definen con el equipo comercial) |
+| Sección "Casos de Éxito por Industria" (3 tarjetas con cifras de ahorro) | **Oculta** con `SHOW_CASOS_EXITO = false`; contenido conservado |
+### Signa comparación
+| Anterior | Nuevo |
+|---|---|
+| Fila Setup (Signa): "GRATIS / $2,500 ahorro" | "Según contratación / Configuración y acompañamiento" |
+| Fila Migración (Signa): "Gratis + 24h / Servicio completo" | "Según contratación / Acompañamiento en la migración" |
+| Tarjeta "Migración Gratis… en 24 horas. Sin costo." | "Migración acompañada… conforme al alcance y las condiciones acordadas." |
+| Tarjeta "Garantía Total… 30 días… devolvemos 100%" | "Configuración y acompañamiento… según tu contratación" (misma posición, grid de 6) |
+| CTA: "La migración es gratis, el ahorro es inmediato, y la garantía es total." + caja "Garantía 30 días…" | "Habla con nuestro equipo para evaluar tu caso, la migración y el acompañamiento según tu contratación." (caja eliminada) |
+### Bancos
+Tile "A medida · Niveles de servicio según contratación" → "A medida · **Niveles de servicio según acuerdo**". Sin porcentajes.
+### Formularios comerciales (contacto en 24 h)
+Nuevo texto único: "Nuestro equipo comercial se pondrá en contacto contigo para conocer las necesidades de tu empresa." Reemplaza: `bancos` ("Un arquitecto de soluciones te contacta en menos de 24 horas"), `chronos`, `contacto/page.tsx` (+ "Completa el formulario."), `contacto/layout.tsx` (meta: "Respuesta en menos de 24 horas" → "Nuestro equipo comercial se pondrá en contacto contigo."), `soluciones/recursos-humanos`, `salud`, `financieras` (mensaje de éxito), `inmobiliarias` (texto + mensaje de éxito), `webinar` (confirmación). Formularios, campos, envíos e integraciones sin cambios.
+**Conservado:** "respuesta en menos de un minuto/segundos" (rendimiento del producto), plazos regulatorios de 24 h en el blog y `uif`, "24 horas hábiles" post-compra (AUD-04), códigos que expiran en 24 horas.
+
+## F4. Pendientes de revisión comercial (afirmaciones marcadas, sin sustituto cuantitativo)
+**Signa — cifras y tarifas no confirmadas (no modificadas):** "$15 por firma", "$29.90 Mifiel", "50% más barata/ahorro", "Pago por uso, sin mínimos", "No requiere contratos anuales" (schema), "Setup fee: $2,500 MXN" y cuota/soporte de competidores, "2.5x más rápida", "Más de 1,000 empresas ya migraron" / "1,000+ que ya ahorran", "Promedio $26,000 anuales" (meta de la calculadora), "50% más económico que DocuSign", titles/OG con "50% Más Barata que Mifiel", fila de cuota mensual en comparación y resultados de la calculadora. Requieren validar tarifas vigentes, base de comparación y respaldo de las comparativas con competidores antes de publicar.
+- Los **testimonios y casos de éxito** ocultos (F3) deben validarse (fuente, consentimiento, cifras) antes de restituir.
+- Texto de soporte y de acompañamiento "según contratación" en Signa: Producto/Comercial.
+- Si Signa tiene soporte o contrato propios no documentados en el repositorio, validarlos antes de afirmar algo específico.
+
+## F5. Referencias pendientes de Autoservicio Enterprise (sin modificar, para futura activación)
+| Referencia | Ubicación |
+|---|---|
+| "tarifa de activación única por empresa" | `autoservicio-enterprise/schema.tsx:24` (FAQ JSON-LD); `catalog.ts`/`CatalogoAutoservicio.tsx` ("+ $X de activación única") |
+| "Pago anual" | `page.tsx` metadatos, hero y bullets; `schema.tsx` |
+| "Activación inmediata" | `page.tsx:18, 22, 96, 99`; `schema.tsx:32` |
+Homologar al activar con el copy aprobado: "recurrente mensual, costo anual total definido… sujeta a una cuota de configuración (setup fee)".
+
+## F6. Actividad independiente (CRO / UX móvil) — no incluida en AUD-01
+- `/firma-electronica`: tabla "Tipo de firma" (`min-w-[900px]`) desborda en móvil (scrollWidth 1378 a 375 px).
+- `/signa/calculadora`: desborda 26 px en móvil (401 vs 375); **verificado idéntico en la versión anterior a esta ronda**, es preexistente.
+Registrar como actividad CRO independiente; no se rediseñó nada.
+
+## F7. QA
+| Prueba | Resultado |
+|---|---|
+| `tsc --noEmit`, `npm run lint`, `npm test`, `npm run build` | OK; lint 0 errores (2 warnings preexistentes); 136/136 tests |
+| Render 375 y 1280 px de `/signa`, `/signa/comparacion`, `/signa/calculadora`, `/bancos`, `/contacto`, `/financieras`, `/inmobiliarias`, `/chronos`, `/webinar`, `/salud`, `/soluciones/recursos-humanos` | Todas 200; sin 24/7, "setup gratis", garantía de 30 días ni "24 horas" en texto visible, metadatos (description/OG/Twitter) ni JSON-LD de las páginas intervenidas. Coincidencias residuales revisadas y conservadas: "demo gratuita/webinar gratis/Probar gratis" (ofertas distintas, no soporte ni migración) y "Atención al Cliente 24/7" en `/chronos` (caso de uso del producto, no soporte JAAK) |
+| Captura móvil de `/signa` | Hero correcto, sin testimonios; la sección de testimonios ya no se renderiza |
+| `git diff` de Autoservicio Enterprise, post-compra, docs, precios/checkout | Vacío |
+| Dispositivo real | **Pendiente** |
+Capturas en el scratchpad de la sesión (no en el repositorio).
+
+## F8. Checklist final
+**Corregido**
+- [x] Signa/Comparación/Calculadora: 24/7, setup gratis, migración gratis/24 h, garantía 30 días retirados (visible, meta/OG, FAQ, JSON-LD, SEO)
+- [x] Testimonios y casos de éxito de Signa ocultos, contenido conservado, citas sin editar
+- [x] Bancos: "A medida · Niveles de servicio según acuerdo"
+- [x] Contacto "en menos de 24 horas" sustituido en 9 páginas; formularios e integraciones intactos
+- [x] Autoservicio Enterprise, post-compra y docs sin modificar; referencias registradas (F5)
+- [x] Desbordamientos móviles registrados como CRO (F6)
+- [x] tsc, lint, tests, build
+
+**Necesita aprobación / decisión**
+- [ ] Textos nuevos de soporte/acompañamiento en Signa y los formularios (Producto/Comercial)
+- [ ] Cifras y tarifas de Signa (F4) y comparativas con Mifiel/DocuSign
+- [ ] Validación y restitución (o descarte) de testimonios y casos de éxito de Signa
+- [ ] Soporte/contrato propio de Signa, si existe
+- [ ] Homologación de Autoservicio Enterprise al activarse (F5)
+- [ ] AUD-04 (activación inmediata y "24 horas hábiles" post-compra)
+- [ ] QA en dispositivos reales y confirmación de publicación
+- [ ] Pendientes previos: aviso de docs con sandbox, "Sandbox Status" del footer, "Soporte comercial dedicado"/"Soporte: Dedicado" en `/precios`, FAQ "migración a Enterprise obligatoria"
+
+## F9. Tabla final de subtareas
+| ID | URL | Sección | Cambio | Archivo | Estado | Evidencia | Aprobación pendiente |
+|---|---|---|---|---|---|---|---|
+| AUD-01.28 | `/signa` | Hero, listas, CTA, calculadora, meta/OG | Promesas 24/7, setup/migración gratis, 24 h y garantía retiradas | `signa/page.tsx`, `SignaSavingsCalculator.tsx` | Implementado | render, build | Cifras $15/50% (F4) |
+| AUD-01.29 | `/signa` | Testimonios | Ocultos con flag; contenido conservado | `signa/page.tsx` | Implementado | captura | Validación y restitución |
+| AUD-01.30 | `/signa/comparacion` | Tabla, tarjetas, CTA | Setup/migración/garantía neutralizados | `signa/comparacion/page.tsx` | Implementado | render | Cifras y comparativas |
+| AUD-01.31 | `/signa/calculadora` | ROI, FAQ, casos | Neutralizado; casos ocultos con flag | `signa/calculadora/page.tsx` | Implementado | render | Cifras de ahorro |
+| AUD-01.32 | `/signa*` | JSON-LD y SEO | FAQ de migración y metadatos neutrales | `schema.tsx`, `seo-content.tsx` | Implementado | render (JSON-LD) | Producto/Comercial |
+| AUD-01.33 | `/bancos` | Stats | "Niveles de servicio según acuerdo" | `bancos/page.tsx` | Implementado | render | — |
+| AUD-01.34 | 9 páginas con formulario | Mensajes de contacto | Texto único sin plazo | ver F3 | Implementado | render | Comercial |
+| AUD-01.35 | `/autoservicio-enterprise` | Registro | Sin cambios; referencias en F5 | — | Documentado | diff vacío | Comercial (activación) |
+| AUD-01.36 | Post-compra | AUD-04 | Sin cambios | — | Fuera de alcance | diff vacío | AUD-04 |
+| AUD-01.37 | `/firma-electronica`, `/signa/calculadora` | Desbordamiento móvil | Registrado como CRO | — | Registrado | mediciones | Actividad CRO |
+
+**Estado general de AUD-01: En validación.** No se marca completada: faltan aprobación de Producto/Comercial, validación de cifras de Signa, QA en dispositivos reales y confirmación de publicación. No se publicó a producción.

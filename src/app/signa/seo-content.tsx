@@ -31,7 +31,7 @@ export const signaKeywords = {
     "cuál es la mejor alternativa a mifiel",
     "firma electrónica barata con validez legal",
     "proveedor firma digital méxico económico",
-    "migración gratuita de mifiel a signa",
+    "migración de mifiel a signa",
     "calculadora ahorro firma electrónica méxico"
   ]
 };
@@ -40,7 +40,7 @@ export const signaFAQContent = {
   questions: [
     {
       question: "¿Signa es más barato que Mifiel?",
-      answer: "Sí, Signa cuesta $15 MXN por firma vs $29.90 MXN de Mifiel, lo que representa un ahorro del 50%. Sin costos de setup ni mensualidades mínimas.",
+      answer: "Sí, Signa cuesta $15 MXN por firma vs $29.90 MXN de Mifiel, lo que representa un ahorro del 50%.",
       keywords: ["signa vs mifiel precio", "más barato que mifiel", "ahorro 50%"]
     },
     {
@@ -49,9 +49,9 @@ export const signaFAQContent = {
       keywords: ["validez legal signa", "NOM-151 signa", "legal igual que mifiel"]
     },
     {
-      question: "¿Cuánto tiempo toma migrar de Mifiel a Signa?",
-      answer: "La migración de Mifiel a Signa toma 24-48 horas y es completamente gratuita. Te ayudamos a exportar todos tus documentos y configuraciones.",
-      keywords: ["migración mifiel signa", "cambiar de mifiel", "migrar gratis"]
+      question: "¿Cómo es el proceso para migrar de Mifiel a Signa?",
+      answer: "El alcance, los tiempos y las condiciones de la migración se definen con nuestro equipo según tu caso y contratación.",
+      keywords: ["migración mifiel signa", "cambiar de mifiel"]
     },
     {
       question: "¿Por qué Signa es más rápido que Mifiel?",
@@ -77,7 +77,7 @@ export const signaBlogTopics = [
     title: "Guía completa: Cómo migrar de Mifiel a Signa sin perder documentos",
     slug: "guia-migrar-mifiel-signa-sin-perder-documentos", 
     keywords: ["migrar mifiel signa", "guía migración", "sin perder documentos"],
-    metaDesc: "Guía paso a paso para migrar de Mifiel a Signa de forma segura. Proceso de 24 horas, migración gratuita, sin riesgo de pérdida de datos."
+    metaDesc: "Guía paso a paso para migrar de Mifiel a Signa de forma segura. Acompañamiento según contratación."
   },
   {
     title: "Calculadora: Cuánto ahorras cambiando de Mifiel a Signa",

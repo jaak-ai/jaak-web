@@ -59,7 +59,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Signa - Firma Electrónica México | 50% Más Barata que Mifiel",
-    description: "Firma electrónica profesional para México. $15 vs $29.90 de Mifiel (50% de ahorro). NOM-151 certificado, migración gratis.",
+    description: "Firma electrónica profesional para México. $15 vs $29.90 de Mifiel (50% de ahorro). NOM-151 certificado, soporte especializado en español según contratación.",
     type: "website",
     url: "https://jaak.ai/signa",
     siteName: "JAAK",
@@ -76,7 +76,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Signa - Firma Electrónica México | 50% Más Barata que Mifiel",
-    description: "$15 vs $29.90 de Mifiel (50% de ahorro). NOM-151 certificado, migración gratis.",
+    description: "$15 vs $29.90 de Mifiel (50% de ahorro). NOM-151 certificado, soporte especializado según contratación.",
     images: ["https://jaak.ai/signa-twitter-image.jpg"],
     creator: "@jaak_ai"
   },
@@ -120,7 +120,7 @@ const COMPETITOR_POINTS = [
 
 const SIGNA_POINTS = [
   "$15.00 por firma (50% menos)",
-  "Setup gratis",
+  "Configuración y acompañamiento según contratación",
   "Pago por uso, sin mínimos",
   "Soporte especializado en español según contratación",
   "Interfaz 2026",
@@ -135,6 +135,14 @@ const OTHERS_POINTS = [
   "No especializado en México",
   "Compliance complejo",
 ];
+
+/**
+ * AUD-01: tarjetas de testimonios ocultas temporalmente. Incluyen promesas de servicio o
+ * resultados (migración en 24 h, soporte 24/7, ahorros/ROI) sin respaldo validado.
+ * El contenido se conserva intacto para su restitución tras la validación comercial:
+ * poner SHOW_TESTIMONIALS en true. NO editar las citas atribuidas.
+ */
+const SHOW_TESTIMONIALS = false;
 
 const TESTIMONIALS = [
   {
@@ -233,16 +241,13 @@ export default function SignaHome() {
 
                 <div className="mt-8 flex flex-col gap-2.5 text-sm">
                   <div className="flex items-center gap-2.5 text-white/70">
-                    <CheckIcon /> Migración gratis desde cualquier plataforma
+                    <CheckIcon /> Acompañamiento en la migración según contratación
                   </div>
                   <div className="flex items-center gap-2.5 text-white/70">
-                    <CheckIcon /> Deploy en 24 horas, vs. semanas con otros proveedores
+                    <CheckIcon /> Configuración y acompañamiento según el alcance acordado
                   </div>
                   <div className="flex items-center gap-2.5 text-white/70">
                     <CheckIcon /> NOM-151 certificado, validez legal completa
-                  </div>
-                  <div className="flex items-center gap-2.5 text-white/70">
-                    <CheckIcon /> Garantía de 30 días: si no ahorras, te devolvemos tu dinero
                   </div>
                 </div>
               </header>
@@ -309,7 +314,8 @@ export default function SignaHome() {
           </div>
         </section>
 
-        {/* Success Stories */}
+        {/* Success Stories (oculta temporalmente: ver SHOW_TESTIMONIALS) */}
+        {SHOW_TESTIMONIALS && (
         <section className="py-20 bg-[#202945]">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div data-sr className="text-center mb-16">
@@ -349,6 +355,7 @@ export default function SignaHome() {
             </div>
           </div>
         </section>
+        )}
 
         {/* CTA Section */}
         <section className="py-20 bg-gradient-to-r from-[#1ECAD3] to-[#0066ff]">
@@ -358,7 +365,6 @@ export default function SignaHome() {
             </h2>
             <p className="text-xl text-white/90 mb-8">
               Soporte especializado en español según contratación.
-              <strong> Garantía de 30 días o te devolvemos tu dinero.</strong>
             </p>
 
             <div className="flex flex-wrap gap-4 justify-center mb-8">
@@ -376,11 +382,6 @@ export default function SignaHome() {
               </Link>
             </div>
 
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 inline-block">
-              <p className="text-white text-sm">
-                <strong>Garantía de 30 días:</strong> si no ahorras dinero como prometemos, te devolvemos el 100% sin hacer preguntas.
-              </p>
-            </div>
           </div>
         </section>
       </main>

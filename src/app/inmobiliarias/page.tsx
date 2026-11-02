@@ -356,7 +356,7 @@ export default function InmobiliariasPage() {
                   Solicita información
                 </h3>
                 <p className="text-gray-500 mb-8">
-                  Te respondemos en menos de 24 horas.
+                  Nuestro equipo comercial se pondrá en contacto contigo para conocer las necesidades de tu empresa.
                 </p>
 
                 <form onSubmit={handleSubmit} className="space-y-5">
@@ -441,7 +441,7 @@ export default function InmobiliariasPage() {
                   {status === "success" && (
                     <div className="p-4 bg-green-50 border border-green-200 rounded-lg text-center">
                       <p className="text-green-700 font-medium">
-                        ✓ Solicitud enviada. Te contactamos en menos de 24h.
+                        ✓ Solicitud enviada. Nuestro equipo comercial se pondrá en contacto contigo para conocer las necesidades de tu empresa.
                       </p>
                     </div>
                   )}

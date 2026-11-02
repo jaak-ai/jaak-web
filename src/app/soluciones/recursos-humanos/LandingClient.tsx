@@ -1569,7 +1569,7 @@ function LeadFormSection() {
             <CheckIcon color="#0A6870" />
           </div>
           <h3 className="text-xl font-bold mb-2" style={{ color: NAVY }}>Solicitud enviada</h3>
-          <p style={{ color: TEXT_MUTED }}>Un especialista de JAAK te contacta en menos de 24 horas para revisar tu caso de uso.</p>
+          <p style={{ color: TEXT_MUTED }}>Nuestro equipo comercial se pondrá en contacto contigo para conocer las necesidades de tu empresa.</p>
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-5" aria-label="Formulario de contacto para Firma Digital de Recursos Humanos">

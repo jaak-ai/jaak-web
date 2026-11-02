@@ -74,12 +74,6 @@ export default function SignaSavingsCalculator() {
           </div>
         )}
       </div>
-
-      <div className="mt-6 pt-6 border-t border-white/10">
-        <p className="text-white/60 text-sm text-center">
-          <strong className="text-white">Garantía de 30 días:</strong> si no ahorras como prometemos, te devolvemos el 100% sin preguntas.
-        </p>
-      </div>
     </div>
   );
 }

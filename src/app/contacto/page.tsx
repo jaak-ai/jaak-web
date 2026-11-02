@@ -221,7 +221,7 @@ export default function ContactoPage() {
                     Solicita una demostración
                   </h2>
                   <p className="text-gray-600 mb-8">
-                    Completa el formulario y un especialista te contactará en menos de 24 horas.
+                    Completa el formulario. Nuestro equipo comercial se pondrá en contacto contigo para conocer las necesidades de tu empresa.
                   </p>
 
                   <form onSubmit={handleSubmit} className="space-y-6">
