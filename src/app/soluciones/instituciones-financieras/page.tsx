@@ -195,8 +195,8 @@ export default function InstitucionesFinancieras() {
                     <div className="text-white/50 text-sm">tiempo promedio</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-[#00d4aa]">99.9%</div>
-                    <div className="text-white/50 text-sm">disponibilidad</div>
+                    <div className="text-3xl font-bold text-[#00d4aa]">A medida</div>
+                    <div className="text-white/50 text-sm">niveles de servicio según contratación</div>
                   </div>
                 </div>
               </div>

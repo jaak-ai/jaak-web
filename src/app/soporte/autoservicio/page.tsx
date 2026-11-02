@@ -16,7 +16,7 @@ const SURVEY_URL = "https://bp1y5.share.hsforms.com/2etOZTsmuR5qgMd3NMOVXIw";
 
 const TITLE = "Soporte JAAK Autoservicio | Centro de ayuda";
 const DESCRIPTION =
-  "¿Necesitas ayuda con JAAK Autoservicio? Conoce nuestros canales de soporte básico, cómo reportar un problema y dónde evaluar tu experiencia.";
+  "¿Necesitas ayuda con JAAK Autoservicio? Conoce nuestros canales de soporte básico, horario de atención (lunes a viernes, 9:00 a 18:00 h, Ciudad de México), cómo reportar un problema y dónde evaluar tu experiencia.";
 
 export const metadata: Metadata = {
   title: { absolute: TITLE },
@@ -177,7 +177,25 @@ export default function SoporteAutoservicioPage() {
                 canal que prefieras y comparte los detalles de tu caso.
               </p>
             </div>
-            <div className="mt-12 grid gap-6 md:grid-cols-2">
+            {/* Horario de atención (AUD-01): sin promesas de tiempos de respuesta */}
+            <div
+              id="horario"
+              className="mt-8 max-w-2xl rounded-2xl border-l-4 p-6"
+              style={{ background: GRAY, borderColor: TEAL }}
+            >
+              <h3 className="text-lg font-semibold" style={{ color: NAVY }}>
+                Horario de soporte JAAK Autoservicio
+              </h3>
+              <p className="mt-2 text-[15px] font-semibold" style={{ color: NAVY }}>
+                Lunes a viernes · 9:00 a 18:00 h
+              </p>
+              <p className="text-sm text-[#3D4A5F]">Zona horaria: Ciudad de México.</p>
+              <p className="mt-3 text-[15px] leading-relaxed text-[#3D4A5F]">
+                Nuestro equipo de Customer Success ofrece orientación básica sobre el uso de la plataforma, productos,
+                compras y reportes de funcionamiento. Puedes enviar tu solicitud por correo electrónico o WhatsApp.
+              </p>
+            </div>
+            <div className="mt-8 grid gap-6 md:grid-cols-2">
               <article className="flex flex-col rounded-2xl border border-[#02132D]/10 bg-white p-8">
                 <span style={{ color: TEAL }}>
                   <Icon>
@@ -283,7 +301,8 @@ export default function SoporteAutoservicioPage() {
               <p className="mt-4 text-base leading-relaxed text-[#3D4A5F]">
                 JAAK Autoservicio está diseñado para que puedas contratar y utilizar nuestros productos de forma
                 autogestionada. El soporte básico está orientado a brindar orientación sobre el uso de la plataforma y
-                recibir reportes relacionados con su funcionamiento.
+                recibir reportes relacionados con su funcionamiento, de lunes a viernes de 9:00 a 18:00 h (horario de Ciudad
+                de México).
               </p>
             </div>
             <div>
@@ -312,7 +331,8 @@ export default function SoporteAutoservicioPage() {
               </ul>
               <p className="mt-6 border-t pt-6 text-sm leading-relaxed text-[#3D4A5F]" style={{ borderColor: `${NAVY}1F` }}>
                 Las solicitudes que requieran configuraciones particulares, desarrollo, integración o revisión técnica
-                especializada podrán ser evaluadas para determinar los siguientes pasos.
+                especializada podrán ser evaluadas para determinar los siguientes pasos. El soporte básico no incluye
+                desarrollo de integraciones, soporte técnico especializado ilimitado ni un SLA personalizado.
               </p>
             </div>
           </div>

@@ -30,7 +30,7 @@ export default function ContactoPage() {
     },
     {
       title: "Implementación rápida",
-      description: "Integración en días, no meses. Con soporte técnico dedicado.",
+      description: "Integración en días, no meses. Con soporte especializado según contratación.",
     },
     {
       title: "Tecnología certificada",

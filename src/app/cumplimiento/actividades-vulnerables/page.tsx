@@ -277,8 +277,8 @@ export default function ActividadesVulnerablesPage() {
                 <ul className="space-y-3 mb-6">
                   {[
                     "Integracion por API REST",
-                    "SLAs de disponibilidad personalizados",
-                    "Soporte tecnico dedicado",
+                    "Niveles de servicio conforme a la propuesta contratada",
+                    "Soporte especializado según contratación",
                     "Configuracion de flujos a medida",
                     "Reporteria avanzada y exportacion",
                     "Onboarding asistido",

@@ -323,7 +323,7 @@ export default function InmobiliariasPage() {
                     "Verificación de identidad en 30 segundos",
                     "Firma electrónica NOM-151 con evidencia legal",
                     "Integración sin fricción con tus sistemas actuales",
-                    "Soporte técnico dedicado desde el día uno",
+                    "Soporte especializado según contratación",
                     "+1,000 empresas en México ya lo usan",
                   ].map((item, i) => (
                     <div key={i} className="flex items-start gap-3">

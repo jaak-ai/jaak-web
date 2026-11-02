@@ -43,7 +43,7 @@ export default function Trust() {
     { value: "2M+", label: "Verificaciones" },
     { value: "99.8%", label: "Precisión" },
     { value: "<3s", label: "Tiempo" },
-    { value: "24/7", label: "Disponibilidad" },
+    { value: "Español", label: "Soporte según contratación" },
   ];
 
   return (

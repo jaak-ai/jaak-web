@@ -52,7 +52,7 @@ export const signaServiceSchema = {
   "@context": "https://schema.org",
   "@type": "Service",
   "name": "Signa · Firma Electrónica Profesional",
-  "description": "Servicio de firma electrónica con validez legal en México. NOM-151 certificado, tecnología 2026, soporte 24/7.",
+  "description": "Servicio de firma electrónica con validez legal en México. NOM-151 certificado, tecnología 2026, soporte especializado en español según contratación.",
   "provider": {
     "@type": "Organization",
     "name": "JAAK",
@@ -136,7 +136,7 @@ export const signaFAQSchema = {
       "name": "¿Qué ventajas tiene Signa sobre DocuSign?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Signa es 50% más económico que DocuSign, está optimizado para México con NOM-151, soporte en español 24/7, y no requiere contratos anuales."
+        "text": "Signa es 50% más económico que DocuSign, está optimizado para México con NOM-151, soporte especializado en español según contratación, y no requiere contratos anuales."
       }
     }
   ]

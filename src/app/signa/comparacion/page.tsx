@@ -249,8 +249,8 @@ export default function SignaComparacion() {
                     <td className="px-6 py-4 text-center text-gray-600">Lun-Vie 9-18h</td>
                     <td className="px-6 py-4 text-center text-gray-600">24/5 (Inglés)</td>
                     <td className="px-6 py-4 text-center bg-[#00d4aa]/5">
-                      <span className="text-[#00d4aa] font-bold">24/7/365</span>
-                      <div className="text-xs text-[#00d4aa]">En español</div>
+                      <span className="text-[#00d4aa] font-bold">Según contratación</span>
+                      <div className="text-xs text-[#00d4aa]">En español, desde México</div>
                     </td>
                   </tr>
 
@@ -440,8 +440,8 @@ export default function SignaComparacion() {
                 <div className="w-16 h-16 bg-[#8b5cf6] rounded-full flex items-center justify-center mx-auto mb-6">
                   <span className="text-2xl">🎧</span>
                 </div>
-                <h3 className="text-xl font-bold text-white mb-4">Soporte 24/7</h3>
-                <p className="text-white/70">Ayuda cuando la necesitas, no solo en horario de oficina. Respuesta promedio: 2 minutos.</p>
+                <h3 className="text-xl font-bold text-white mb-4">Soporte especializado</h3>
+                <p className="text-white/70">Soporte y acompañamiento en español, desde México, conforme al plan y las condiciones acordadas.</p>
               </div>
 
               <div className="bg-white/5 border border-white/10 rounded-xl p-8 text-center hover:bg-white/10 transition-all">

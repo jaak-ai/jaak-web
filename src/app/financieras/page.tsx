@@ -293,7 +293,7 @@ export default function FinancierasPage() {
             <div data-sr-grid className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6">
               {[
                 { value: "Horas", label: "Tiempo de integración" },
-                { value: "99.9%", label: "Uptime garantizado" },
+                { value: "A medida", label: "Niveles de servicio según contratación" },
                 { value: "AML/KYC", label: "Evidencia regulatoria" },
                 { value: "iBeta L1", label: "Certificación Liveness" },
               ].map((stat, i) => (
@@ -358,7 +358,7 @@ export default function FinancierasPage() {
                   Habla con un especialista
                 </h3>
                 <p className="text-gray-500 mb-8">
-                  Respuesta garantizada en menos de 24 horas.
+                  Un especialista de JAAK te contactará para revisar tu caso.
                 </p>
 
                 <form onSubmit={handleSubmit} className="space-y-5">

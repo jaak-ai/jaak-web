@@ -244,3 +244,101 @@ La numeración 1–17 no estaba definida en las instrucciones; se asignó la sig
 | AUD-01.17 | QA y reporte | Técnico y visual (capturas) ejecutados; dispositivo real y publicación pendientes | En validación | D8 |
 
 **Estado general de AUD-01: En validación.** No está completada: faltan aprobación comercial (SLA/soporte, setup, descuentos), revisión de QA en dispositivos reales y confirmación de publicación. AUD-04 no ejecutada.
+
+---
+
+# Continuación 4 — Soporte, SLA, descuentos retirados y setup fee Autoservicio Enterprise (2026-11-02)
+
+## E1. Definiciones comerciales finales
+- **Soporte Autoservicio (básico):** lunes a viernes, 9:00 a 18:00 h (Ciudad de México); `soporte@jaak.ai` y WhatsApp oficial (enlace existente, sin cambios). Alcance: acceso y uso general, dudas de productos, reportes de errores, compras/paquetes/consumo. No incluye desarrollo de integraciones, soporte técnico especializado ilimitado ni SLA personalizado. Sin tiempos de respuesta prometidos.
+- **Soporte Crecimiento / Enterprise / Alianzas:** según evaluación comercial y contrato. Texto estándar: "Soporte y acompañamiento especializado en español, desde México, conforme al plan y las condiciones acordadas con nuestro equipo comercial." Versión breve: "Soporte especializado según contratación." Sin 24/7, SLA universal, horarios extendidos, tiempos ni uptime.
+- **Retirados:** descuento 15% por pago temprano, facturación 80/20 y cobro mínimo anterior.
+- **Autoservicio Enterprise:** plan recurrente mensual, costo anual total definido, pago directo, **con setup fee** (periodicidad del setup no confirmada).
+- Modalidades (Autoservicio, Crecimiento, Enterprise/Alianzas) y sandbox: sin cambios respecto a la ronda anterior.
+
+## E2. Landing de soporte `/soporte/autoservicio`
+La ruta **no existía en esta rama**: está en `claude/exciting-bardeen-9qwwaw` (commit `d8eee1f`, 1 commit, 4 archivos). Se integró con `git merge` (limpio) en la rama de trabajo para poder editarla; **la rama original no se modificó**. El merge trae además cambios de esa rama en `src/app/autoservicio/page.tsx` (enlace a soporte), `src/app/sitemap.ts` (alta de la ruta) y `Footer.tsx` (enlace). Al integrarse esta rama, `/soporte/autoservicio` se publica junto con ellos.
+Cambios en `src/app/soporte/autoservicio/page.tsx` (guía KYC, canales, indicaciones de reporte, encuesta, formularios y enlaces sin cambios):
+| Elemento | Anterior | Nuevo |
+|---|---|---|
+| Bloque nuevo `#horario` (sobre las tarjetas de correo/WhatsApp) | — | "Horario de soporte JAAK Autoservicio · Lunes a viernes · 9:00 a 18:00 h · Zona horaria: Ciudad de México" + descripción de Customer Success aprobada; sin promesas de respuesta |
+| Sección "Soporte básico" | "…recibir reportes relacionados con su funcionamiento." | + "de lunes a viernes de 9:00 a 18:00 h (horario de Ciudad de México)" |
+| Nota de alcance | "…podrán ser evaluadas…" | + "El soporte básico no incluye desarrollo de integraciones, soporte técnico especializado ilimitado ni un SLA personalizado." |
+| Meta/OG/Twitter description | sin horario | incluye horario (L–V, 9:00 a 18:00 h, CDMX) |
+
+## E3. Revisión de 24/7, SLA y "dedicado"
+Corregidas (promesa comercial de soporte/servicio → texto según contratación). *Anterior → nuevo*:
+| Archivo | Anterior | Nuevo |
+|---|---|---|
+| `components/FirmaThemeShell.tsx`, `app/firma-electronica/page.tsx` | "Soporte técnico dedicado", "SLA garantizado", "soporte dedicado" | "Soporte especializado según contratación", "Niveles de servicio según la propuesta" |
+| `app/bancos/page.tsx` | tile "99.99% Disponibilidad SLA" | "A medida · Niveles de servicio según contratación" (sin cifra nueva) |
+| `app/financieras/page.tsx` | "99.9% Uptime garantizado"; "Respuesta garantizada en menos de 24 horas." | "A medida · Niveles de servicio según contratación"; "Un especialista de JAAK te contactará para revisar tu caso." |
+| `app/nosotros/page.tsx` | "99.9% Uptime garantizado" | "A medida · Niveles de servicio según contratación" |
+| `app/soluciones/instituciones-financieras/page.tsx` | "99.9% disponibilidad" | "A medida · niveles de servicio según contratación" |
+| `app/soluciones/onboarding-digital/page.tsx` | "99.9% Disponibilidad del servicio" | "Web · API · SDK · Modalidades según contratación" |
+| `components/Trust.tsx` | "24/7 Disponibilidad" | "Español · Soporte según contratación" |
+| `components/RegulatoryProof.tsx` | "24/7 operación continua" | "México · soporte especializado en español · según el plan y las condiciones acordadas" |
+| `components/SimuladorPLD.tsx` | "soporte tecnico dedicado, SLAs personalizados"; "soporte dedicado" | "soporte especializado y niveles de servicio conforme a la propuesta contratada"; "soporte especializado según contratación" |
+| `cumplimiento/actividades-vulnerables/page.tsx` | "SLAs de disponibilidad personalizados"; "Soporte tecnico dedicado" | "Niveles de servicio conforme a la propuesta contratada"; "Soporte especializado según contratación" |
+| `app/inmobiliarias/page.tsx` | "Soporte técnico dedicado desde el día uno" | "Soporte especializado según contratación" |
+| `app/contacto/page.tsx` | "Con soporte técnico dedicado." | "Con soporte especializado según contratación." |
+| Signa: `signa/page.tsx` (meta, lista, hero, CTA), `seo-content.tsx` (FAQ, servicios), `schema.tsx` (description y FAQ JSON-LD), `comparacion/page.tsx` (tabla y tarjeta) | "soporte 24/7", "24/7/365", "Respuesta promedio: 2 minutos", "migración gratis" en meta | "soporte especializado en español según contratación"; tarjeta "Soporte especializado… conforme al plan y las condiciones acordadas" |
+
+**Conservadas (indicador técnico o contractual, no promesa de soporte):** `terminos/page.tsx` (SLA específicos "según su contrato"); `firma-electronica-nom-151/page.tsx` y `firma-nom151-demo-autoservicio` ("SLAs" como tipo de documento firmado); `seguridad/page.tsx` ("Monitoreo de seguridad 24/7/365"); `guardian/page.tsx` ("24/7 operación"); `prevencion-fraude` ("Monitoreo continuo 24/7"); `chronos/*` ("atención al cliente 24/7 con IA", caso de uso del producto); "99.9% precisión" (métrica biométrica).
+
+## E4. Descuentos y cobros retirados
+Búsqueda global (`pago temprano`, `15% descuento`, `80/20`, `80% … mes`, `cobro mínimo`, `tier inicial`, `días 1–10`, `neto 30`) en `src/` y `content/`: **0 coincidencias**. Ya habían salido de la FAQ y JSON-LD de `/precios` en la ronda anterior. "Descuentos progresivos por volumen" (Crecimiento) y el descuento anual del catálogo de Autoservicio Enterprise se conservaron: no son los retirados. Sin cambios en facturación ni registros.
+
+## E5. Autoservicio Enterprise: setup fee (solo documentado)
+`src/app/autoservicio-enterprise/` **sin cambios** (0 archivos modificados). Hallazgos de la inspección, a homologar cuando se apruebe su publicación:
+- `schema.tsx:24` (FAQ JSON-LD): "…pago anual y una **tarifa de activación única por empresa**…".
+- `page.tsx:18-22, 96, 99` y `schema.tsx:32`: "**activación inmediata**" (AUD-04) y "Pago anual"; el hero tiene toggle Anual/Mensual alimentado por catálogo.
+- Catálogo (`autoservicio-catalogo.ts`, `catalog.ts`, `CatalogoAutoservicio.tsx`): `setupFee` mostrado como "+ $X de activación única" (solo SKUs enterprise, hoy sin SKUs activos).
+- Relación: la "cuota/tarifa de activación única" corresponde presumiblemente al setup fee ahora confirmado, pero **no se unificó** hasta decisión de activación; la periodicidad del setup no está confirmada (no afirmar "única vez").
+- Copy propuesto para el momento de publicación: "Autoservicio Enterprise contempla un esquema de contratación recurrente mensual, con un costo anual total definido. Su habilitación está sujeta a una cuota de configuración (setup fee), conforme a las condiciones del plan contratado." Sustituiría "pago anual" y "tarifa de activación única".
+Pendiente homologar con "cuota de configuración (setup fee)" en el momento de activación: términos "activación única" (catálogo y FAQ), "pago anual" y "activación inmediata".
+
+## E6. Coherencia de modalidades
+Sin cambios en `/precios`, home, `/autoservicio`, `/comprar` ni en `commercial-copy.ts` en esta ronda; se verificó que `/precios` no contiene 80/20, SLA ni 24×7. Documentación técnica sin cambios (diff vacío sobre `content/`, `src/app/docs`, `src/app/documentacion`, `src/components/docs`). Sandbox: único texto visible es el enlace "Sandbox Status" del footer (decisión previa: no tocar).
+
+## E7. Pendientes / hallazgos (sin cambios por alcance)
+1. **Testimonio de Signa** (`signa/page.tsx:153`): "El soporte 24/7 es increíble…" sigue visible. Es una cita atribuida; no se editó. Requiere validar la fuente o retirarla. **Mientras permanezca, Signa conserva una mención 24/7 visible.**
+2. **Signa — otras promesas comerciales** no relacionadas con soporte pero contradictorias con las reglas AUD-01: "Setup gratis", "setup/deploy en 24 horas", "migración gratis/en 24 horas", "Garantía de 30 días… devolvemos tu dinero". Requieren decisión de Producto/Comercial.
+3. Si Signa tiene un servicio o contrato de soporte propio, validarlo antes de publicar una afirmación específica.
+4. Promesas de tiempo de contacto comercial ("en menos de 24 horas": bancos, contacto, inmobiliarias, webinar, salud, RR.HH.) y "24 horas hábiles" en post-compra/orden confirmada: no son soporte/SLA; revisar (post-compra → AUD-04).
+5. Aprobación de Producto/Comercial de todos los textos de soporte y de los tiles "A medida · Niveles de servicio según contratación" (si se prefiere eliminar el tile en lugar de sustituirlo).
+6. `/firma-electronica` en móvil: desbordamiento horizontal preexistente (tabla `min-w-[900px]` de "Tipo de firma"; scrollWidth 1378 a 375 px). No relacionado con AUD-01; recomendable corregir en otra actividad.
+7. Soporte básico Autoservicio fuera del landing: `orden-confirmada-autoservicio` muestra `soporte@jaak.ai` sin horario; evaluar añadirlo (no se modificó por ser flujo post-compra).
+8. Pendientes previos vigentes: AUD-04; aviso de docs con mención a sandbox; "Sandbox Status" del footer; FAQ de `/precios` "migración a Enterprise obligatoria"; "Soporte comercial dedicado" (Alianzas) y "Soporte: Dedicado" (tabla, Enterprise) en `/precios`.
+
+## E8. QA
+| Prueba | Resultado |
+|---|---|
+| `tsc --noEmit` | OK |
+| `npm run lint` | 0 errores; 2 warnings preexistentes |
+| `npm test` | 136/136 OK |
+| `npm run build` | OK; `/soporte/autoservicio` generada |
+| Render (`next start`, Playwright) en 375 y 1280 px: `/soporte/autoservicio`, `/precios`, `/bancos`, `/signa`, `/`, `/autoservicio`, `/firma-electronica` | Todas 200. Sin desbordamiento horizontal salvo `/firma-electronica` (preexistente, E7.6). Texto "24/7" visible solo en `/signa` (testimonio, E7.1). "SLA" visible solo en soporte (frase negativa "ni un SLA personalizado") |
+| Captura móvil de `#canales` de soporte | Horario legible, jerarquía clara, botones de correo/WhatsApp intactos |
+| Tabla de Precios móvil, tarjeta Autoservicio de la home y nota de `/autoservicio` | Revisadas en la ronda anterior; sin cambios posteriores |
+| Metadatos/JSON-LD revisados | Signa (meta, OG vía description, schema FAQ y descripción), soporte (meta/OG/Twitter), precios (sin cambios): sin 24/7 ni SLA genéricos |
+| CTA | Soporte: correo y WhatsApp conservan enlaces originales; resto sin cambios |
+| Dispositivo real / verificación de publicación | **Pendiente** |
+Las capturas están en el scratchpad de la sesión, no en el repositorio. No se revisó visualmente cada página tocada (p. ej. tiles de bancos/financieras/nosotros): verificación por render, scrollWidth y texto.
+
+## E9. Tabla final
+| ID | URL | Sección | Cambio | Archivo | Estado | Evidencia | Aprobación pendiente |
+|---|---|---|---|---|---|---|---|
+| AUD-01.18 | `/soporte/autoservicio` | Canales + alcance + metadatos | Bloque de horario L–V 9:00–18:00 CDMX; exclusión de integración/SLA | `soporte/autoservicio/page.tsx` | Implementado | Captura móvil, build | Producto/Comercial (texto) |
+| AUD-01.19 | `/firma-electronica`, componente Firma | Enterprise | "Soporte especializado según contratación"; sin SLA garantizado | `firma-electronica/page.tsx`, `FirmaThemeShell.tsx` | Implementado | grep + render | Producto/Comercial |
+| AUD-01.20 | `/bancos` | Stats | Tile 99.99% → "A medida / niveles de servicio según contratación" | `bancos/page.tsx` | Implementado | grep + render | Producto (¿eliminar tile o cifra con respaldo?) |
+| AUD-01.21 | `/financieras`, `/nosotros`, `/soluciones/instituciones-financieras`, `/soluciones/onboarding-digital` | Stats/CTA | Uptime/disponibilidad 99.9% y "respuesta garantizada" retirados | archivos respectivos | Implementado | grep | Producto/Comercial |
+| AUD-01.22 | Home y varias (Trust, RegulatoryProof) | Métricas | "24/7" → soporte según contratación | `Trust.tsx`, `RegulatoryProof.tsx` | Implementado | grep | Producto/Comercial |
+| AUD-01.23 | `/inmobiliarias`, `/contacto`, `/cumplimiento/actividades-vulnerables`, simulador PLD | Listas Enterprise | "Soporte dedicado"/"SLAs personalizados" → según contratación | archivos respectivos | Implementado | grep | Producto/Comercial |
+| AUD-01.24 | `/signa`, `/signa/comparacion` | Visible, SEO, JSON-LD | Soporte 24/7 → según contratación | `signa/*` | Parcial: testimonio y otras promesas pendientes | grep, render | Producto/Comercial (E7.1–E7.3) |
+| AUD-01.25 | Sitio | Descuentos/cobros retirados | Verificado: 0 apariciones | — | Completado | grep | — |
+| AUD-01.26 | `/autoservicio-enterprise` | Setup fee | Documentado; sin cambios públicos | — | Documentado (sin cambios por decisión) | E5 | Comercial (activación y copy) |
+| AUD-01.27 | Sitio | QA técnico y visual | tsc, lint, test, build, render | — | Parcial (dispositivo real pendiente) | E8 | — |
+
+**Estado de publicación:** no publicado. Para integrar esta rama también se publicaría el landing de soporte con sus cambios en sitemap, footer y `/autoservicio` (E2).
+**Estado general de AUD-01: En validación.** No cumple aún los criterios de cierre: faltan aprobación de Producto/Comercial, resolución del testimonio y promesas de Signa, QA en dispositivos reales y confirmación de publicación. AUD-04 fuera de alcance.

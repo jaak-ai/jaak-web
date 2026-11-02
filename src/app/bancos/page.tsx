@@ -89,7 +89,7 @@ const stats = [
   { value: "100%", label: "Infraestructura propia" },
   { value: "<100ms", label: "Latencia biométrica" },
   { value: "iBeta L1", label: "Certificación Liveness" },
-  { value: "99.99%", label: "Disponibilidad SLA" },
+  { value: "A medida", label: "Niveles de servicio según contratación" },
 ];
 
 export default function BancosPage() {

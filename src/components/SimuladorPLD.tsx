@@ -440,7 +440,7 @@ export default function SimuladorPLD() {
       return `Su volumen estimado de ${va} verificaciones anuales y perfil de integracion lo posiciona para el programa de Alianza Estrategica de JAAK. Este modelo esta disenado para organizaciones que integran verificacion de identidad dentro de su propia plataforma o la ofrecen como servicio a terceros.`;
     }
     if (resultado.modalidadJAAK === "Enterprise") {
-      return `Con un volumen estimado de ${vm} verificaciones mensuales (${va} al ano), su organizacion requiere la modalidad Enterprise de JAAK. Esto incluye integracion por API, soporte tecnico dedicado, SLAs personalizados y condiciones comerciales ajustadas a su volumen.`;
+      return `Con un volumen estimado de ${vm} verificaciones mensuales (${va} al ano), su organizacion requiere la modalidad Enterprise de JAAK. Esto incluye integracion por API, soporte especializado y niveles de servicio conforme a la propuesta contratada y condiciones comerciales ajustadas a su volumen.`;
     }
     return `Con un volumen estimado de ${vm} verificaciones mensuales (${va} al ano), su organizacion se ubica en la modalidad de Autoservicio de JAAK. Puede iniciar de forma autonoma desde la plataforma, sin necesidad de integracion tecnica ni contrato Enterprise.`;
   };
@@ -451,7 +451,7 @@ export default function SimuladorPLD() {
       case "Bronce": return "Volumen Bronce — Ideal para sujetos obligados con operaciones esporadicas que superan umbrales.";
       case "Plata": return "Volumen Plata — Para organizaciones con flujo constante pero moderado de clientes nuevos.";
       case "Oro": return "Volumen Oro — Volumen significativo. Considere Enterprise si proyecta crecimiento sostenido.";
-      case "Pre-Enterprise": return "Su volumen se acerca al umbral Enterprise. Si proyecta crecimiento, le recomendamos evaluar un plan Enterprise para acceder a mejores condiciones y soporte dedicado.";
+      case "Pre-Enterprise": return "Su volumen se acerca al umbral Enterprise. Si proyecta crecimiento, le recomendamos evaluar un plan Enterprise para acceder a mejores condiciones y soporte especializado según contratación.";
       default: return "";
     }
   };

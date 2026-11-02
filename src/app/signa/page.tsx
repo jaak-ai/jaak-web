@@ -11,7 +11,7 @@ const BLUE = "#0066ff";
 
 export const metadata: Metadata = {
   title: "Signa - Firma Electrónica México | 50% Más Barata que Mifiel | NOM-151",
-  description: "Firma electrónica profesional para México. $15 vs $29.90 de Mifiel (50% de ahorro). NOM-151 certificado, soporte 24/7, migración gratis.",
+  description: "Firma electrónica profesional para México. $15 vs $29.90 de Mifiel (50% de ahorro). NOM-151 certificado, soporte especializado en español según contratación.",
   keywords: [
     "firma electrónica méxico",
     "mifiel alternativa",
@@ -122,7 +122,7 @@ const SIGNA_POINTS = [
   "$15.00 por firma (50% menos)",
   "Setup gratis",
   "Pago por uso, sin mínimos",
-  "Soporte 24/7",
+  "Soporte especializado en español según contratación",
   "Interfaz 2026",
   "API moderna GraphQL + REST",
 ];
@@ -196,7 +196,7 @@ export default function SignaHome() {
                 </h1>
                 <p className="text-xl text-white/70 mb-8" role="text">
                   <strong className="text-white">Firma electrónica profesional para México</strong> con tecnología 2026.
-                  Certificado <strong className="text-[#1ECAD3]">NOM-151</strong>, soporte 24/7.
+                  Certificado <strong className="text-[#1ECAD3]">NOM-151</strong>, soporte especializado según contratación.
                   <strong className="text-white"> 50% más barata que Mifiel</strong> — solo $15 por documento.
                 </p>
 
@@ -357,7 +357,7 @@ export default function SignaHome() {
               ¿Listo para ahorrar 50% en firma electrónica?
             </h2>
             <p className="text-xl text-white/90 mb-8">
-              Migración gratis, setup en 24 horas, soporte 24/7.
+              Soporte especializado en español según contratación.
               <strong> Garantía de 30 días o te devolvemos tu dinero.</strong>
             </p>
 

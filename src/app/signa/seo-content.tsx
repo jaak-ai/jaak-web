@@ -60,7 +60,7 @@ export const signaFAQContent = {
     },
     {
       question: "¿Qué ventajas tiene Signa sobre DocuSign?", 
-      answer: "Signa es específico para México con NOM-151, soporte en español 24/7, precios en pesos mexicanos, y 50% más económico que DocuSign.",
+      answer: "Signa es específico para México con NOM-151, soporte especializado en español según contratación, precios en pesos mexicanos, y 50% más económico que DocuSign.",
       keywords: ["signa vs docusign", "ventajas sobre docusign", "méxico específico"]
     }
   ]
@@ -117,7 +117,7 @@ export const signaLocalSEO = {
     "Contratos empresariales",
     "Migración desde Mifiel",
     "API de firma electrónica",
-    "Soporte técnico 24/7"
+    "Soporte especializado según contratación"
   ],
   targetAudiences: [
     "Pequeñas y medianas empresas (PyMEs)",
