@@ -55,7 +55,7 @@ export default async function HomepageAutoservicioCTA() {
                 compra en línea y utiliza los servicios desde JAAK Autoservicio, sin necesidad de integrar una API.
               </p>
               <p className="mt-3 max-w-lg text-[13px] leading-relaxed" style={{ color: "var(--hp-text-lo)" }}>
-                Si buscas conectar JAAK con tus propios sistemas, solicita una propuesta de integración con setup adicional.
+                Si buscas conectar JAAK con tus sistemas o aplicaciones, solicita una propuesta de integración por API o SDK (requiere setup fee).
               </p>
               <div className="mt-7 flex flex-wrap gap-3">
                 <Link

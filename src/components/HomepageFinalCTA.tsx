@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { AUTOSERVICIO_HREF, INTEGRATION_CONTACT_HREF } from "@/config/commercial-copy";
+import { AUTOSERVICIO_HREF, INTEGRATION_CONTACT_HREF, MODALIDADES_COPY } from "@/config/commercial-copy";
 
 export default function HomepageFinalCTA() {
   return (
@@ -82,9 +82,9 @@ export default function HomepageFinalCTA() {
               className="text-sm leading-relaxed mb-6 flex-1"
               style={{ color: "var(--hp-text-md)" }}
             >
-              Contrata tus paquetes de KYC, firma electrónica, validaciones y OCR
-              directamente en línea. Opera desde la plataforma web de JAAK, sin
-              necesidad de una integración técnica.
+              Contrata tus paquetes de JAAK y utiliza nuestras soluciones
+              directamente desde la plataforma web, sin necesidad de integración
+              técnica.
             </p>
 
             <div className="space-y-2 mb-6">
@@ -119,11 +119,7 @@ export default function HomepageFinalCTA() {
               className="text-xs leading-relaxed mb-5"
               style={{ color: "var(--hp-text-lo)" }}
             >
-              <span className="font-semibold" style={{ color: "var(--hp-text-md)" }}>
-                ¿Necesitas API o sandbox?
-              </span>{" "}
-              Su habilitación requiere una cuota de configuración adicional (setup fee).
-              Nuestro equipo puede ayudarte a evaluar la integración.
+              {MODALIDADES_COPY.integracionCorta}
             </p>
 
             <Link

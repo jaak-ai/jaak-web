@@ -7,7 +7,7 @@ import { getAutoservicioCatalog } from "@/lib/catalog";
 export const metadata: Metadata = {
   title: "Comprar JAAK — Elige cómo contratar tus servicios",
   description:
-    "Elige la forma de contratar: autoservicio para operar desde la plataforma web, paquetes Enterprise de alto volumen, o contratación asistida con nuestro equipo para evaluar integración API y sandbox.",
+    "Elige la forma de contratar: autoservicio para operar desde la plataforma web, paquetes Enterprise de alto volumen, o contratación asistida con nuestro equipo para evaluar una integración API o SDK.",
   alternates: { canonical: "/comprar" },
   openGraph: {
     type: "website",
@@ -75,8 +75,8 @@ export default async function ComprarPage() {
         "Arma tu paquete de KYC, firma electrónica, validaciones y OCR. Compra en línea y opera desde la plataforma web de JAAK.",
       bullets: [
         "Uso exclusivo desde la plataforma web",
-        "No incluye API ni sandbox",
-        "Integración disponible mediante contratación adicional",
+        "No incluye API, SDK ni White Label en el paquete estándar",
+        "Integración API o SDK disponible mediante contratación asistida",
         "Paquetes con vigencia de un año",
       ],
       ctaLabel: "Explorar el catálogo",
@@ -110,8 +110,9 @@ export default async function ComprarPage() {
         : "¿Alto volumen, Enterprise o un esquema de alianza? Nuestro equipo diseña un plan a la medida de tu operación.",
       bullets: [
         "Volumen a la medida",
-        "Evaluación de integración API y sandbox",
-        "Setup adicional según alcance y volumen",
+        "Evaluación de integración API o SDK",
+        "Setup fee para integración, según alcance y volumen",
+        "Opciones de White Label según la propuesta contratada",
         "Acompañamiento técnico conforme a la propuesta contratada",
       ],
       ctaLabel: "Hablar con ventas",

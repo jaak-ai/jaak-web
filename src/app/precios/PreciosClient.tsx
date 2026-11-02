@@ -43,7 +43,7 @@ const PLANS = [
       "KYC con biometría",
       "Expediente digital auditable",
       "Paquetes con vigencia de un año",
-      "Modalidad exclusivamente web: no incluye API, SDK ni sandbox",
+      "Modalidad exclusivamente Web: no incluye API, SDK ni White Label",
     ],
     forWhom: ["Equipos pequeños", "Operaciones manuales", "Sin integración API"],
     support: "Onboarding grupal + soporte básico",
@@ -66,7 +66,7 @@ const PLANS = [
       "Firma electrónica incluida",
       "Acceso mediante panel web o integración API, según la modalidad contratada",
       "Gestión de expedientes centralizada",
-      "Acceso API y sandbox sujetos a una cuota de configuración adicional (setup fee)",
+      "Integración API sujeta a una cuota de configuración (setup fee)",
     ],
     forWhom: ["Flujo constante de onboarding", "Fintech · Inmobiliarias · Automotriz", "Operaciones recurrentes"],
     support: "Onboarding guiado",
@@ -82,14 +82,15 @@ const PLANS = [
     badge: "Infraestructura crítica",
     badgeColor: "#655dc6",
     price: "Personalizado",
-    priceSub: "contrato anual · volumen desde 5k/mes · cuota de activación única",
+    priceSub: "pago mensual durante un año o anual, según contrato · volumen desde 5k/mes",
     desc: "Diseñado para operaciones reguladas con alto volumen y requerimientos específicos de cumplimiento.",
     features: [
-      "Integración API / SDK / Whitelabel",
+      "Modalidades Web, API o SDK según el proyecto",
       "Infraestructura dedicada",
       "Cumplimiento avanzado (CNBV, UIF)",
       "Personalización completa de flujos",
-      "Cuota de activación única por empresa",
+      "White Label según la propuesta contratada",
+      "Setup fee cuando hay integración API o SDK",
     ],
     forWhom: ["Bancos · Fintech reguladas", "Telco · Grandes corporativos", "Volumen ≥ 5,000 verif/mes"],
     support: "Equipo dedicado + SLA garantizado",
@@ -105,11 +106,11 @@ const PLANS = [
     badge: "Para partners",
     badgeColor: "#d97706",
     price: "Revenue share",
-    priceSub: "pricing especial por volumen",
+    priceSub: "pricing especial por volumen · pago mensual durante un año o anual, según contrato",
     desc: "Integra JAAK como parte de tu oferta y genera ingresos adicionales. Esquema comercial adaptado a tu modelo.",
     features: [
-      "Acceso a toda la plataforma",
-      "Marca compartida / white-label",
+      "Modalidades Web, API o SDK según el proyecto",
+      "White Label según la propuesta contratada",
       "Modelo de distribución flexible",
       "Soporte comercial dedicado",
     ],
@@ -127,8 +128,10 @@ const COMPARISON = [
   { feature: "Firma electrónica",          auto: "✔️", growth: "✔️", enterprise: "✔️", alliance: "✔️" },
   { feature: "KYC biométrico",             auto: "✔️", growth: "✔️", enterprise: "✔️", alliance: "✔️" },
   { feature: "Expediente auditable NOM-151",auto: "✔️", growth: "✔️", enterprise: "✔️", alliance: "✔️" },
-  { feature: "API / SDK / Sandbox",         auto: "No incluido. Modalidad exclusivamente web.",  growth: "Disponible con setup adicional", enterprise: "✔️", alliance: "✔️" },
-  { feature: "Whitelabel",                 auto: "❌",  growth: "Opcional", enterprise: "✔️", alliance: "✔️" },
+  { feature: "Plataforma Web",             auto: "Incluido", growth: "Según modalidad contratada", enterprise: "Según propuesta", alliance: "Según propuesta" },
+  { feature: "Integración API",            auto: "No incluido", growth: "Con setup fee", enterprise: "Según propuesta (con setup fee)", alliance: "Según propuesta (con setup fee)" },
+  { feature: "Integración SDK",            auto: "No incluido", growth: "Consultar con ventas", enterprise: "Según propuesta (con setup fee)", alliance: "Según propuesta (con setup fee)" },
+  { feature: "White Label",                auto: "No incluido", growth: "Consultar con ventas", enterprise: "Según propuesta contratada", alliance: "Según propuesta contratada" },
   { feature: "Volumen mensual",            auto: "Bajo", growth: "Medio", enterprise: "Alto", alliance: "Variable" },
   { feature: "Soporte",                    auto: "Base", growth: "Guiado", enterprise: "Dedicado", alliance: "Comercial" },
 ];
@@ -478,7 +481,7 @@ export default function PreciosClient() {
             </span>
           </h2>
           <p className="text-white/75 text-lg mb-10">
-            Compra en línea y opera desde la plataforma web. Si necesitas API o sandbox, nuestro equipo te ayuda a evaluar la integración (con cuota de configuración adicional).
+            Compra en línea y opera desde la plataforma web. Si necesitas integración por API o SDK, nuestro equipo te ayuda a evaluarla (requiere setup fee).
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/autoservicio"

@@ -74,7 +74,7 @@ const faqSchema = {
       name: "¿Necesito integración API para probar?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "No. Autoservicio está diseñado para comenzar desde la plataforma sin desarrollo inicial. Autoservicio no incluye credenciales API, SDK ni sandbox; la integración vía API se evalúa con nuestro equipo y requiere una cuota de configuración adicional.",
+        text: "No. Autoservicio está diseñado para comenzar desde la plataforma sin desarrollo inicial. Autoservicio no incluye API ni SDK; la integración se evalúa con nuestro equipo y requiere una cuota de configuración (setup fee).",
       },
     },
     {

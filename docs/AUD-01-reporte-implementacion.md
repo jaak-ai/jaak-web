@@ -1,7 +1,7 @@
 # AUD-01 — Reporte de implementación
 
 **Actividad:** Corrección integral de comunicación Autoservicio vs. API/sandbox · **Prioridad:** P0 · **Fecha:** 2026-11-02 · **Rama:** `claude/compassionate-pascal-26uj4m`
-**Estado:** implementado en código, **pendiente de aprobación (Producto y Comercial), publicación y validación visual.**
+**Estado general: En validación** (hasta aprobación de Producto y Comercial, QA completo y confirmación de publicación).
 
 ## 1. Problema
 La home y otras páginas comunicaban que comprar Autoservicio daba "Credenciales API en minutos", activación inmediata y soporte técnico. Regla comercial vigente: **Autoservicio es exclusivamente web; API y sandbox requieren setup adicional.**
@@ -61,3 +61,90 @@ Aprobación de Producto y Comercial del copy; confirmación del alcance de Creci
 
 ## 10. Recomendaciones de despliegue
 Publicar tras aprobación; desplegar en preview de Vercel primero; resolver AUD-04 en paralelo para no dejar promesas de activación contradictorias.
+
+---
+
+# Continuación 2 — Ajustes comerciales finales (2026-11-02)
+
+Las nuevas precisiones **reemplazan** lo anterior sobre API/SDK/sandbox/marca blanca. Definición vigente: modalidades **Web / API / SDK**; **White Label** = opción de personalización según contratación (no es un acceso ni está incluido por defecto); **Autoservicio = solo Web** (sin API, SDK ni White Label estándar); la integración API/SDK requiere **setup fee**; **sandbox no se promociona públicamente** (decisión de comunicación; no se tocó infraestructura ni documentación).
+
+## C1. Archivos modificados en esta continuación
+`src/config/commercial-copy.ts`, `src/components/HomepageFinalCTA.tsx`, `HomepageAutoservicioCTA.tsx`, `HomepageProducts.tsx`, `src/components/autoservicio/CarritoAutoservicio.tsx` (solo leyenda), `src/app/autoservicio/page.tsx`, `src/app/comprar/page.tsx`, `src/app/precios/PreciosClient.tsx`, `src/app/kyc-demo-autoservicio/LandingClient.tsx` y `layout.tsx`, y este reporte.
+**Documentación técnica: sin cambios** (`git diff` vacío sobre `content/`, `src/app/docs`, `src/app/documentacion`, `src/components/docs`). Los avisos de la primera ejecución permanecen tal cual.
+
+## C2. Copy compartido (`commercial-copy.ts`)
+- Nuevo `MODALIDADES_COPY` (Web, API, SDK, White Label, setup fee, aclaración corta y esquemas de pago "mensual durante un año o anual, según propuesta y contrato", sin importes ni condiciones).
+- `AUTOSERVICIO_COPY.notaCatalogo` ahora: web exclusiva, sin API, SDK ni White Label estándar; integración contratada por separado con setup fee. Sin sandbox.
+- Eliminados `INTEGRACION_COPY.aclaracion` y `AUTOSERVICIO_COPY.apiSandbox` (sin consumidores).
+- `INTEGRACION_COPY` (claves de docs) **congelado**: lo consume `IntegrationAccessNotice` (docs, fuera de alcance). Contiene una mención a sandbox → ver pendiente P1.
+- Consumidores revisados: HomepageFinalCTA, HomepageAutoservicioCTA, `/autoservicio`, `IntegrationAccessNotice`. Ninguno fuera de alcance.
+
+## C3. Textos anteriores → nuevos
+| Página | Anterior (1.ª ejecución) | Nuevo |
+|---|---|---|
+| `/` tarjeta Autoservicio | "Contrata tus paquetes de KYC, firma electrónica, validaciones y OCR directamente en línea. Opera desde la plataforma web de JAAK, sin necesidad de una integración técnica." | "Contrata tus paquetes de JAAK y utiliza nuestras soluciones directamente desde la plataforma web, sin necesidad de integración técnica." |
+| `/` aclaración de integración | "¿Necesitas API o sandbox? Su habilitación requiere una cuota de configuración adicional (setup fee)…" | "¿Necesitas integrar JAAK a tus sistemas o aplicaciones? Evaluamos una integración por API o SDK, con personalización White Label según contratación. La integración requiere setup fee." (CTA → `/contacto`) |
+| `/` "Compra en línea…" | "…solicita una propuesta de integración con setup adicional." | "…integración por API o SDK (requiere setup fee)." |
+| `/` "Flexibles…" | "integración mediante API… cuota de configuración adicional" | "API o SDK… cuota de configuración (setup fee)" |
+| `/` banner marca blanca (preexistente) | "Todos los productos disponibles en marca blanca… Hablar sobre marca blanca" | "Personalización White Label… conforme al alcance comercial contratado. Consulta la disponibilidad…" / "Consultar opciones White Label" |
+| `/precios` Autoservicio | "no incluye API, SDK ni sandbox" | "Modalidad exclusivamente Web: no incluye API, SDK ni White Label" |
+| `/precios` Crecimiento | "Acceso API y sandbox sujetos a… setup fee" | "Integración API sujeta a una cuota de configuración (setup fee)" |
+| `/precios` Enterprise | "Integración API / SDK / Whitelabel"; "contrato anual"; "Cuota de activación única por empresa" | "Modalidades Web, API o SDK según el proyecto"; "White Label según la propuesta contratada"; "Setup fee cuando hay integración API o SDK"; "pago mensual durante un año o anual, según contrato" |
+| `/precios` Alianzas | "Acceso a toda la plataforma"; "Marca compartida / white-label" | "Modalidades Web, API o SDK según el proyecto"; "White Label según la propuesta contratada"; esquema de pago mensual/anual según contrato |
+| `/precios` tabla | 1 fila "API / SDK / Sandbox" + "Whitelabel" con ✔️/❌ | 4 filas: Plataforma Web, Integración API, Integración SDK, White Label (sin ✔️ en Enterprise/Alianzas; sin sandbox) |
+| `/precios` cierre | "Si necesitas API o sandbox…" | "Si necesitas integración por API o SDK… (requiere setup fee)" |
+| `/autoservicio` metadatos y leyenda del resumen | "No incluye API ni sandbox" | "No incluye API ni SDK" (la nota visible vía copy compartido) |
+| `/comprar` | "No incluye API ni sandbox"; "Evaluación de integración API y sandbox" | Autoservicio: "No incluye API, SDK ni White Label en el paquete estándar", "Integración API o SDK… contratación asistida". A la medida: "Evaluación de integración API o SDK", "Setup fee para integración…", "Opciones de White Label según la propuesta contratada" |
+| `/kyc-demo-autoservicio` | "API y sandbox… cuota de configuración adicional" | "API o SDK… setup fee" (bloque, 2 FAQ y JSON-LD) |
+
+Tabla `/precios` (valores): Web → Autoservicio "Incluido", Crecimiento "Según modalidad contratada", Enterprise/Alianzas "Según propuesta". API → "No incluido" / "Con setup fee" / "Según propuesta (con setup fee)". SDK y White Label → "No incluido" / **"Consultar con ventas"** / "Según propuesta…". "Consultar con ventas" es una formulación neutral para SDK/White Label de Crecimiento; no afirma inclusión.
+
+## C4. Sandbox
+Retirado de todo copy comercial intervenido (home, precios, autoservicio, comprar, landing demo, copy compartido). No se agregó ningún CTA. Sin cambios técnicos. Verificación en el navegador: el texto visible de `/`, `/precios`, `/autoservicio` y `/comprar` solo contiene "Sandbox" en el enlace del **footer global** (preexistente) — ver P2.
+
+## C5. Enterprise y Alianzas
+- `/precios`: modalidades diferenciadas, White Label sujeto a propuesta, setup fee para integración, esquema mensual-1 año/anual sin importes ni condiciones nuevas.
+- `/autoservicio-enterprise`: **sin cambios**. Es un catálogo de compra en línea con Stripe y toggle Anual/Mensual alimentado por el catálogo; el alcance (Web/API/SDK/White Label) de ese catálogo no está definido en las instrucciones, así que no se afirmó ni se negó (P3).
+
+## C6. Pendientes de aprobación comercial
+- **P1.** Aviso de docs (`IntegrationAccessNotice`, primera ejecución) menciona "ambiente sandbox". Se dejó intacto por estar la documentación fuera de alcance; requiere decisión en la revisión específica de docs.
+- **P2.** Enlace "Sandbox Status" en el footer global (preexistente, no tocado).
+- **P3.** Alcance de `/autoservicio-enterprise` (Web/API/SDK/White Label) y su FAQ/metadatos de "activación inmediata" (AUD-04).
+- **P4.** Crecimiento: confirmar SDK y White Label con Producto (hoy "Consultar con ventas").
+- **P5.** Reconciliar la FAQ de `/precios` ("cuota de activación única Enterprise", también en JSON-LD de `page.tsx`) con el "setup fee" de integración API/SDK; podrían ser el mismo concepto o no. FAQ de facturación Enterprise ("Mensual: 80%/20%…", descuentos) no se modificó y debe alinearse con los esquemas "mensual 1 año / anual".
+- **P6.** "SLA garantizado" en la tarjeta Enterprise (preexistente) y "soporte 24×7" en Alianzas: confirmar.
+- **P7.** Marca de verificación en filas "Firma / KYC / Expediente" sin cambios.
+- **AUD-04 (no ejecutada):** inventario de promesas de activación inmediata sin cambios (ver §6 de la primera ejecución).
+
+## C7. Pruebas
+| Prueba | Resultado |
+|---|---|
+| `npx tsc --noEmit` | OK |
+| `npm run lint` | 0 errores; 2 warnings preexistentes |
+| `npm test` | 16 archivos / 136 tests OK |
+| `npm run build` | OK |
+| `git diff` sobre docs (`content/`, `src/app/docs`, `src/app/documentacion`, `src/components/docs`) | Vacío |
+| Render con `next start` (Playwright, 375 px y 1280 px) en `/`, `/precios`, `/autoservicio`, `/comprar` | Responden 200 (la home reportó estado nulo en la primera carga por scripts de terceros bloqueados en el sandbox de ejecución; se recargó sin error); sin desbordamiento horizontal (scrollWidth = ancho de viewport). **No se revisó el diseño a ojo** (capturas no incluidas en el repo) |
+| Precios, checkout, backend y autenticación | Sin cambios (solo texto/presentación; revisión de diff) |
+
+Revisión visual humana pendiente: tabla comparativa de `/precios` en móvil (celdas con texto más largo), tarjeta Autoservicio de la home y nota de `/autoservicio`.
+
+## C8. Tabla final de subtareas
+| ID | Página | Cambio realizado | Estado | Evidencia | Aprobación pendiente |
+|---|---|---|---|---|---|
+| AUD-01.2b | `/` | Descripción Autoservicio alineada; integración API/SDK + White Label + setup fee | Implementado | `HomepageFinalCTA.tsx` | Producto/Comercial |
+| AUD-01.3b | `/` | Productos y banner White Label sin promesa de inclusión automática | Implementado | `HomepageProducts.tsx` | Producto/Comercial |
+| AUD-01.4b | `/` | Bloque de compra con API/SDK + setup fee | Implementado | `HomepageAutoservicioCTA.tsx` | Comercial |
+| AUD-01.5b | `/precios` | Tabla en 4 filas; tarjetas Crecimiento/Enterprise/Alianzas; sin sandbox | Implementado | `PreciosClient.tsx` | Producto (SDK/WL Crecimiento, P4, P5, P6) |
+| AUD-01.6c | `/autoservicio` | Nota y metadatos sin sandbox; Web exclusiva | Implementado | `page.tsx`, `commercial-copy.ts` | — |
+| AUD-01.7b | `/comprar` | Distinción Web vs. integración asistida; White Label sujeto a propuesta | Implementado | `comprar/page.tsx` | Comercial |
+| AUD-01.8b | `/kyc-demo-autoservicio` | Escalamiento a API/SDK con setup fee; sin sandbox | Implementado | `LandingClient.tsx`, `layout.tsx` | — |
+| AUD-01.11 | `/autoservicio-enterprise` | Revisada; sin cambios | Pendiente de decisión | P3 | Producto/Comercial |
+| AUD-01.12 | Docs | Sin cambios (excluidas) | No aplica | diff vacío | Revisión específica (P1) |
+| AUD-04 | Varias | No ejecutada | No iniciada | Inventario §6 | — |
+
+## C9. Recomendaciones antes de publicar
+1. Producto/Comercial: resolver P1–P7.
+2. QA visual móvil/escritorio en preview de Vercel.
+3. No publicar hasta que AUD-04 se defina, para no dejar "activación inmediata" junto al nuevo mensaje.
+4. Estado AUD-01: **En validación**.

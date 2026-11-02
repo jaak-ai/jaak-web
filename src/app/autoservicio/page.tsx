@@ -11,7 +11,7 @@ import { autoservicioBreadcrumbSchema, buildAutoservicioProductsSchema } from ".
 export const metadata = buildAutoservicioMetadata({
   title: "Autoservicio — Compra en línea y opera desde la plataforma web | JAAK",
   description:
-    "Compra KYC, firma electrónica NOM-151, validaciones INE/CURP y OCR en línea y utilízalos desde la plataforma web de JAAK. Paquetes con vigencia de un año. No incluye API ni sandbox.",
+    "Compra KYC, firma electrónica NOM-151, validaciones INE/CURP y OCR en línea y utilízalos desde la plataforma web de JAAK. Paquetes con vigencia de un año. Modalidad exclusivamente web: no incluye API ni SDK.",
   path: "/autoservicio",
   socialTitle: "Autoservicio JAAK — Compra en línea y opera desde la plataforma web",
   ogDescription:

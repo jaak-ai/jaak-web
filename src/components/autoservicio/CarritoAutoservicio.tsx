@@ -190,7 +190,7 @@ function ResumenPanel({
           >
             Continuar al pago
           </a>
-          <p className="mt-2 text-center text-[11px]" style={{ color: "#64748B" }}>Pago seguro con Stripe · Uso desde la plataforma web · No incluye API ni sandbox</p>
+          <p className="mt-2 text-center text-[11px]" style={{ color: "#64748B" }}>Pago seguro con Stripe · Uso desde la plataforma web · No incluye API ni SDK</p>
         </>
       )}
     </div>

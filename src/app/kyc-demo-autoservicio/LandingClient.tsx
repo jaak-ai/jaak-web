@@ -167,9 +167,9 @@ const FAQ_ITEMS = [
   { q: "¿Qué incluye el paquete de $99?", a: "El paquete inicial de KYC biométrico incluye verificaciones de identidad con biometría facial, prueba de vida, OCR de identificación oficial y consulta en listas de riesgo, con expediente digital descargable. Otros productos de autoservicio tienen su propio precio y alcance." },
   { q: "¿Puedo elegir cualquier producto JAAK?", a: "La prueba está pensada para que elijas un producto disponible en autoservicio y valides si se adapta a tu operación antes de escalar." },
   { q: "¿Qué pasa después de comprar?", a: "Creas tu cuenta, realizas el pago en línea y activas tu paquete para comenzar a operar." },
-  { q: "¿Necesito integración API para probar?", a: "No. Autoservicio se utiliza exclusivamente desde la plataforma web, sin desarrollo. No incluye credenciales API, SDK ni sandbox; la integración requiere una cuota de configuración adicional." },
+  { q: "¿Necesito integración API para probar?", a: "No. Autoservicio se utiliza exclusivamente desde la plataforma web, sin desarrollo. No incluye API ni SDK; la integración se contrata por separado y requiere una cuota de configuración (setup fee)." },
   { q: "¿Cuánto tarda en activarse?", a: "La activación es automática: al completar el pago, tu acceso queda disponible en minutos." },
-  { q: "¿Puedo escalar después a más volumen?", a: "Sí. Puedes adquirir más créditos o subir de plan desde el portal. Si necesitas integración API o sandbox, se requiere una cuota de configuración adicional." },
+  { q: "¿Puedo escalar después a más volumen?", a: "Sí. Puedes adquirir más créditos o subir de plan desde el portal. Si necesitas integración por API o SDK, se requiere una cuota de configuración (setup fee)." },
   { q: "¿Qué diferencia hay entre autoservicio y enterprise?", a: "Autoservicio permite comprar y activar paquetes de inmediato para volúmenes bajos o pruebas. Enterprise está pensado para volumen alto, integración a medida y acompañamiento dedicado." },
   { q: "¿Puedo ver la demo completa después de registrarme?", a: "Sí. Al registrarte, el video se desbloquea por completo y puedes ver el flujo íntegro de la sesión KYC." },
 ];
@@ -689,7 +689,7 @@ function ProductTrialSelector({ onSelect }: { onSelect: (id: ProductId) => void 
           <p className="mt-4 text-[15px] leading-relaxed" style={{ color: "#5B6472" }}>
             Comienza con un paquete de JAAK Autoservicio y conoce nuestras soluciones desde la plataforma web.
             Si posteriormente necesitas conectar los servicios con tus propios sistemas, nuestro equipo podrá ayudarte
-            a evaluar una integración mediante API y sandbox, sujeta a una cuota de configuración adicional.
+            a evaluar una integración mediante API o SDK, sujeta a una cuota de configuración (setup fee).
           </p>
           <p className="mt-6 text-lg font-bold" style={{ color: NAVY }}>
             Elige el producto que quieres probar
