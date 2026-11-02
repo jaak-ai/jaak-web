@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { formatMXN } from "@/data/autoservicio-catalogo";
 import { getAutoservicioCatalog } from "@/lib/catalog";
+import { AUTOSERVICIO_HREF, INTEGRATION_CONTACT_HREF } from "@/config/commercial-copy";
 
 const TEAL = "#2DB6C1";
 
@@ -37,7 +38,7 @@ export default async function HomepageAutoservicioCTA() {
                 Autoservicio
               </span>
               <h2 className="mt-5 text-3xl font-bold leading-tight tracking-tight text-white lg:text-4xl">
-                Cómpralo tú mismo y actívalo{" "}
+                Compra en línea y opera desde la{" "}
                 <span
                   style={{
                     background: "linear-gradient(90deg, #1ECAD3, #2AD796)",
@@ -46,23 +47,26 @@ export default async function HomepageAutoservicioCTA() {
                     backgroundClip: "text",
                   }}
                 >
-                  en minutos
+                  plataforma web.
                 </span>
               </h2>
               <p className="mt-4 max-w-lg text-[15px] leading-relaxed" style={{ color: "var(--hp-text-md)" }}>
-                Arma tu paquete combinando KYC, firma electrónica, validaciones y OCR. Sin vendedores, sin esperas:
-                eliges, pagas en línea y empiezas a operar el mismo día.
+                Elige los paquetes de KYC, firma electrónica, validaciones u OCR que necesita tu empresa. Realiza tu
+                compra en línea y utiliza los servicios desde JAAK Autoservicio, sin necesidad de integrar una API.
+              </p>
+              <p className="mt-3 max-w-lg text-[13px] leading-relaxed" style={{ color: "var(--hp-text-lo)" }}>
+                Si buscas conectar JAAK con tus propios sistemas, solicita una propuesta de integración con setup adicional.
               </p>
               <div className="mt-7 flex flex-wrap gap-3">
                 <Link
-                  href="/autoservicio"
+                  href={AUTOSERVICIO_HREF}
                   className="rounded-xl px-6 py-3.5 text-[15px] font-semibold text-white transition-all"
                   style={{ background: "linear-gradient(135deg, #1ECAD3, #17a8b0)", boxShadow: "0 8px 28px rgba(30,202,211,0.28)" }}
                 >
-                  Ir a Autoservicio
+                  Comprar en Autoservicio
                 </Link>
                 <Link
-                  href="/precios"
+                  href={INTEGRATION_CONTACT_HREF}
                   className="rounded-xl px-6 py-3.5 text-[15px] font-semibold transition-all"
                   style={{
                     color: "var(--hp-ghost-btn-color)",
@@ -70,7 +74,7 @@ export default async function HomepageAutoservicioCTA() {
                     border: "1px solid var(--hp-ghost-btn-border)",
                   }}
                 >
-                  Ver precios
+                  Conocer opciones de integración
                 </Link>
               </div>
             </div>

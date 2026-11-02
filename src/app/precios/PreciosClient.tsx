@@ -33,19 +33,20 @@ const PLANS = [
   {
     id: "autoservicio",
     name: "Autoservicio",
-    badge: "Empieza en minutos",
+    badge: "Compra en línea",
     badgeColor: "#1ecad3",
     price: `Desde ${formatMXN(minAutoPrecio)} MXN`,
     priceSub: "por paquete · sin suscripción",
-    desc: "Arma tu paquete combinando KYC, firma, validaciones y OCR, y actívalo en minutos. Compra en línea, sin contratos ni volumen mínimo.",
+    desc: "Arma tu paquete combinando KYC, firma, validaciones y OCR. Compra en línea y opera desde la plataforma web de JAAK, sin contratos ni volumen mínimo.",
     features: [
       "Firma electrónica (Simple y NOM-151)",
       "KYC con biometría",
       "Expediente digital auditable",
-      "Acceso inmediato sin equipo de ventas",
+      "Paquetes con vigencia de un año",
+      "Modalidad exclusivamente web: no incluye API, SDK ni sandbox",
     ],
     forWhom: ["Equipos pequeños", "Operaciones manuales", "Sin integración API"],
-    support: "Onboarding grupal + soporte base",
+    support: "Onboarding grupal + soporte básico",
     cta: "Empezar ahora",
     ctaLink: "/autoservicio",
     ctaExternal: false,
@@ -59,16 +60,17 @@ const PLANS = [
     badgeColor: "#2a60d4",
     price: "Desde $18 MXN",
     priceSub: "por verificación · escala progresiva",
-    desc: "Optimiza costos conforme aumentas tu volumen de operación. Modelo por volumen mensual con descuentos progresivos.",
+    desc: "Optimiza tu operación conforme aumenta tu volumen de verificaciones. Descuentos progresivos por volumen.",
     features: [
       "Todos los módulos de KYC",
       "Firma electrónica incluida",
-      "Integración API o panel web",
+      "Acceso mediante panel web o integración API, según la modalidad contratada",
       "Gestión de expedientes centralizada",
+      "Acceso API y sandbox sujetos a una cuota de configuración adicional (setup fee)",
     ],
     forWhom: ["Flujo constante de onboarding", "Fintech · Inmobiliarias · Automotriz", "Operaciones recurrentes"],
     support: "Onboarding guiado",
-    cta: "Ver opciones",
+    cta: "Solicitar propuesta de Crecimiento",
     ctaLink: CONTACTO_URL,
     ctaExternal: false,
     color: "#2a60d4",
@@ -125,7 +127,7 @@ const COMPARISON = [
   { feature: "Firma electrónica",          auto: "✔️", growth: "✔️", enterprise: "✔️", alliance: "✔️" },
   { feature: "KYC biométrico",             auto: "✔️", growth: "✔️", enterprise: "✔️", alliance: "✔️" },
   { feature: "Expediente auditable NOM-151",auto: "✔️", growth: "✔️", enterprise: "✔️", alliance: "✔️" },
-  { feature: "API / SDK",                  auto: "❌",  growth: "✔️", enterprise: "✔️", alliance: "✔️" },
+  { feature: "API / SDK / Sandbox",         auto: "No incluido. Modalidad exclusivamente web.",  growth: "Disponible con setup adicional", enterprise: "✔️", alliance: "✔️" },
   { feature: "Whitelabel",                 auto: "❌",  growth: "Opcional", enterprise: "✔️", alliance: "✔️" },
   { feature: "Volumen mensual",            auto: "Bajo", growth: "Medio", enterprise: "Alto", alliance: "Variable" },
   { feature: "Soporte",                    auto: "Base", growth: "Guiado", enterprise: "Dedicado", alliance: "Comercial" },
@@ -470,13 +472,13 @@ export default function PreciosClient() {
         </div>
         <div className={`max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 ${reveal(ctaReveal.isVisible)}`}>
           <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4 leading-tight">
-            Activa tu operación{" "}
+            Empieza con Autoservicio{" "}
             <span style={{ backgroundImage: "linear-gradient(90deg,#1ecad3,#655dc6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-              en minutos
+              o integra con asistencia
             </span>
           </h2>
           <p className="text-white/75 text-lg mb-10">
-            Sin integración si no la necesitas. Con toda la infraestructura si la requieres.
+            Compra en línea y opera desde la plataforma web. Si necesitas API o sandbox, nuestro equipo te ayuda a evaluar la integración (con cuota de configuración adicional).
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/autoservicio"

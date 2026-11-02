@@ -1,6 +1,7 @@
 import { allDocs } from 'contentlayer2/generated'
 import { notFound } from 'next/navigation'
 import { MDXContent } from '@/components/docs/MDXContent'
+import { IntegrationAccessNotice } from '@/components/docs/IntegrationAccessNotice'
 import { TableOfContents } from '@/components/docs/TableOfContents'
 import { findPrevNext } from '@/lib/docs/navigation'
 import Link from 'next/link'
@@ -9,6 +10,21 @@ import type { Metadata } from 'next'
 interface PageProps {
   params: Promise<{ slug?: string[] }>
 }
+
+// AUD-01: páginas introductorias (aclaración general) y pasos que piden credenciales (requisito previo).
+const INTEGRATION_NOTICE_INTRO = new Set([
+  '',
+  'jaak/inicio-sesion',
+  'consultas-oficiales',
+  'verificar-identidad/api',
+  'firmar-documentos',
+  'recursos/sandbox',
+])
+const INTEGRATION_NOTICE_REQUISITO = new Set([
+  'verificar-identidad/api/paso-1-crear-sesion',
+  'firmar-documentos/guia-rapida',
+  'firmar-documentos/api/autenticacion',
+])
 
 function getDocFromParams(slug?: string[]) {
   const slugPath = slug?.join('/') || ''
@@ -64,6 +80,8 @@ export default async function DocPage({ params }: PageProps) {
         )}
 
         <div className="docs-prose prose prose-gray max-w-4xl">
+          {INTEGRATION_NOTICE_INTRO.has(slugPath) && <IntegrationAccessNotice />}
+          {INTEGRATION_NOTICE_REQUISITO.has(slugPath) && <IntegrationAccessNotice variant="requisito" />}
           <MDXContent code={doc.body.code} />
         </div>
 
