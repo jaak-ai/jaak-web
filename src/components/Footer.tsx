@@ -39,6 +39,7 @@ export default function Footer() {
       links: [
         { name: "Guía de captura KYC", href: "/guia-captura-kyc" },
         { name: "Documentación", href: "/documentacion" },
+        { name: "Soporte Autoservicio", href: "/soporte/autoservicio" },
         { name: "Blog", href: "/blog" },
         { name: "RSS Feed", href: "/rss.xml" },
         { name: "API Reference", href: "https://docs.jaak.ai/api" },

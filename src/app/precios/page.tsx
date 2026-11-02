@@ -65,15 +65,15 @@ const faqSchema = {
       name: "¿Los paquetes caducan o son reembolsables?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Vencen a 12 meses desde la compra. No son reembolsables. La cuota de activación única (setup fee) de Enterprise tampoco es reembolsable.",
+        text: "Vencen a 12 meses desde la compra. No son reembolsables.",
       },
     },
     {
       "@type": "Question",
-      name: "¿Hay cuota de activación (setup fee)?",
+      name: "¿Hay cuota de configuración (setup fee)?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "El Autoservicio no tiene cuota de activación. Los planes Enterprise incluyen una cuota de activación única por empresa, que se cobra solo la primera vez; las compras posteriores no la vuelven a pagar.",
+        text: "Autoservicio no la requiere, porque se utiliza exclusivamente desde la plataforma web. La integración mediante API o SDK en Crecimiento, Enterprise y Alianzas considera una cuota de configuración (setup fee), conforme a la propuesta comercial.",
       },
     },
     {
@@ -86,10 +86,10 @@ const faqSchema = {
     },
     {
       "@type": "Question",
-      name: "¿Cómo funciona la facturación Enterprise?",
+      name: "¿Cómo funciona la contratación de Crecimiento, Enterprise y Alianzas?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Mensual: 80% del estimado del mes actual + 20% real del mes anterior. Neto 30 días. Descuento 15% si se paga días 1–10. Cobro mínimo = tier inicial contratado aunque el consumo sea menor.",
+        text: "Estas modalidades pueden trabajar con una bolsa anual de consumo, definida de acuerdo con la propuesta comercial, que permite realizar pagos mensuales conforme al consumo. No es una suscripción mensual de precio fijo. Las condiciones específicas se establecen en la propuesta y el contrato.",
       },
     },
   ],

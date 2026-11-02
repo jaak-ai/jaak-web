@@ -2,7 +2,7 @@ export default function RegulatoryProof() {
   const stats = [
     { value: "Millones", label: "de verificaciones procesadas", sub: "en entornos regulados", icon: "⚡" },
     { value: "100%", label: "de clientes activos", sub: "en banca y servicios financieros", icon: "🏦" },
-    { value: "24/7", label: "operación continua", sub: "bajo marcos regulatorios estrictos", icon: "🛡️" },
+    { value: "México", label: "soporte especializado en español", sub: "según el plan y las condiciones acordadas", icon: "🛡️" },
   ];
 
   return (

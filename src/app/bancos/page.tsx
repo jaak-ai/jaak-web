@@ -89,7 +89,7 @@ const stats = [
   { value: "100%", label: "Infraestructura propia" },
   { value: "<100ms", label: "Latencia biométrica" },
   { value: "iBeta L1", label: "Certificación Liveness" },
-  { value: "99.99%", label: "Disponibilidad SLA" },
+  { value: "A medida", label: "Niveles de servicio según acuerdo" },
 ];
 
 export default function BancosPage() {
@@ -368,7 +368,7 @@ export default function BancosPage() {
                   Agenda tu demo técnica
                 </h3>
                 <p className="text-gray-500 mb-8">
-                  Un arquitecto de soluciones te contacta en menos de 24 horas.
+                  Nuestro equipo comercial se pondrá en contacto contigo para conocer las necesidades de tu empresa.
                 </p>
 
                 <form onSubmit={handleSubmit} className="space-y-5">

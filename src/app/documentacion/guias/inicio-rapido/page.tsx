@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import { IntegrationAccessNotice } from "@/components/docs/IntegrationAccessNotice";
 
 export const metadata: Metadata = {
   title: "Inicio Rápido - Guía de Integración | JAAK",
-  description: "Configura tu primera verificación de identidad con JAAK en menos de 10 minutos. Guía paso a paso con ejemplos de código.",
+  description: "Guía paso a paso con ejemplos de código para integrar tu primera verificación de identidad con JAAK. Requiere una integración habilitada.",
 };
 
 export default function InicioRapido() {
@@ -30,7 +31,7 @@ export default function InicioRapido() {
               Inicio rápido
             </h1>
             <p className="text-xl text-white/60">
-              Configura tu primera verificación de identidad con JAAK en menos de 10 minutos.
+              Configura tu primera verificación de identidad con JAAK.
             </p>
           </div>
         </section>
@@ -39,6 +40,8 @@ export default function InicioRapido() {
         <section className="py-16 bg-white">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="prose prose-lg max-w-none">
+
+              <IntegrationAccessNotice variant="requisito" />
 
               {/* Step 1 */}
               <div className="mb-12">

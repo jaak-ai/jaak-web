@@ -711,7 +711,7 @@ export default function WebinarPage() {
                     <p className="text-sm" style={{ color: "var(--hp-text-md)" }}>
                       {followUpIsRepeat
                         ? "Hemos actualizado tu expediente con la nueva información. Un ejecutivo te contactará pronto."
-                        : "Un ejecutivo de JAAK se pondrá en contacto contigo en menos de 24 horas."}
+                        : "Nuestro equipo comercial se pondrá en contacto contigo para conocer las necesidades de tu empresa."}
                     </p>
                   </div>
                 ) : (

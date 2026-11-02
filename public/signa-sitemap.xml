@@ -15,16 +15,6 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://jaak.ai/signa"/>
   </url>
 
-  <!-- Signa Calculator - High Value -->
-  <url>
-    <loc>https://jaak.ai/signa/calculadora</loc>
-    <lastmod>2026-02-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-    <mobile:mobile/>
-    <xhtml:link rel="alternate" hreflang="es-MX" href="https://jaak.ai/signa/calculadora"/>
-  </url>
-
   <!-- Signa Comparison - Competitive Content -->
   <url>
     <loc>https://jaak.ai/signa/comparacion</loc>

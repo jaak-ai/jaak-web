@@ -4,18 +4,19 @@ import Footer from "@/components/Footer";
 import AutoservicioVariantes from "@/components/autoservicio/AutoservicioVariantes";
 import ComoFuncionaBanner from "@/components/autoservicio/ComoFuncionaBanner";
 import { getAutoservicioCatalog } from "@/lib/catalog";
+import { AUTOSERVICIO_COPY } from "@/config/commercial-copy";
 import { buildAutoservicioMetadata } from "@/lib/autoservicioMetadata";
 import { autoservicioBreadcrumbSchema, buildAutoservicioProductsSchema } from "./schema";
 
 export const metadata = buildAutoservicioMetadata({
-  title: "Autoservicio — Compra y activa servicios JAAK en minutos",
+  title: "Autoservicio — Compra en línea y opera desde la plataforma web | JAAK",
   description:
-    "Compra KYC, firma electrónica NOM-151, validaciones INE/CURP y OCR en línea. Arma tu paquete, paga seguro y activa al instante. Sin vendedores, sin esperas.",
+    "Compra KYC, firma electrónica NOM-151, validaciones INE/CURP y OCR en línea y utilízalos desde la plataforma web de JAAK. Paquetes con vigencia de un año. Modalidad exclusivamente web: no incluye API ni SDK.",
   path: "/autoservicio",
-  socialTitle: "Autoservicio JAAK — Compra y activa tus servicios en minutos",
+  socialTitle: "Autoservicio JAAK — Compra en línea y opera desde la plataforma web",
   ogDescription:
-    "Arma tu paquete de KYC, firma electrónica, validaciones y OCR. Paga en línea y actívalo al instante, sin vendedores ni esperas.",
-  twitterDescription: "Arma tu paquete de KYC, firma electrónica, validaciones y OCR. Paga en línea y actívalo al instante.",
+    "Selecciona tus paquetes de KYC, firma electrónica, validaciones u OCR y utilízalos desde la plataforma web de JAAK, sin desarrollar una integración.",
+  twitterDescription: "Compra paquetes de KYC, firma electrónica, validaciones y OCR y utilízalos desde la plataforma web de JAAK.",
   imageAlt: "Autoservicio JAAK",
 });
 
@@ -63,7 +64,7 @@ export default async function AutoservicioPage() {
                 Autoservicio JAAK
               </span>
               <h1 className="mt-5 text-4xl font-bold leading-[1.08] tracking-tight text-white lg:text-5xl">
-                Compra y activa tus servicios{" "}
+                JAAK Autoservicio: compra en línea y opera desde{" "}
                 <span
                   style={{
                     backgroundImage: "linear-gradient(90deg, #1ecad3, #655dc6)",
@@ -72,15 +73,26 @@ export default async function AutoservicioPage() {
                     backgroundClip: "text",
                   }}
                 >
-                  en minutos
+                  nuestra plataforma web.
                 </span>
               </h1>
               <p className="mt-5 max-w-xl text-[16px] leading-relaxed" style={{ color: "rgba(255,255,255,0.72)" }}>
-                Arma tu paquete combinando KYC, firma electrónica, validaciones y OCR. Paga en línea con seguridad
-                y empieza a operar de inmediato. Sin vendedores, sin esperas.
+                Selecciona tus paquetes de KYC, firma electrónica, validaciones u OCR y utiliza los servicios
+                directamente desde JAAK, sin necesidad de desarrollar una integración. Los paquetes tienen una
+                vigencia de un año.
+              </p>
+              <p
+                className="mt-4 max-w-xl rounded-xl px-4 py-3 text-[13.5px] leading-relaxed"
+                style={{ background: "rgba(30,202,211,0.08)", border: "1px solid rgba(30,202,211,0.28)", color: "rgba(255,255,255,0.82)" }}
+              >
+                <span className="font-semibold text-white">Nota: </span>
+                {AUTOSERVICIO_COPY.notaCatalogo}{" "}
+                <Link href="/contacto" className="font-semibold underline underline-offset-2" style={{ color: "#7FE0E8" }}>
+                  Solicitar información de integración
+                </Link>
               </p>
               <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-[13px]" style={{ color: "rgba(255,255,255,0.6)" }}>
-                {["Activación inmediata", "Pago seguro con Stripe", "Selección múltiple", "Sin contratos"].map((t) => (
+                {["Uso desde la plataforma web", "Pago seguro con Stripe", "Selección múltiple", "Sin contratos"].map((t) => (
                   <li key={t} className="flex items-center gap-2">
                     <svg className="h-4 w-4" style={{ color: TEAL }} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
                     {t}
@@ -121,6 +133,13 @@ export default async function AutoservicioPage() {
                 <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
               </Link>
             </div>
+            <p className="mt-6 text-center text-sm lg:text-left" style={{ color: "#64748B" }}>
+              ¿Ya eres cliente y necesitas ayuda?{" "}
+              <Link href="/soporte/autoservicio" className="font-semibold underline underline-offset-4 hover:no-underline" style={{ color: "#212A45" }}>
+                Visita el centro de soporte de Autoservicio
+              </Link>
+              .
+            </p>
           </div>
         </section>
       </main>

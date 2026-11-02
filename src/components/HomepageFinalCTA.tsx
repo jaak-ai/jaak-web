@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AUTOSERVICIO_HREF, INTEGRATION_CONTACT_HREF, MODALIDADES_COPY } from "@/config/commercial-copy";
 
 export default function HomepageFinalCTA() {
   return (
@@ -75,21 +76,22 @@ export default function HomepageFinalCTA() {
               Autoservicio
             </div>
             <h3 className="text-xl font-black text-white mb-3">
-              Prueba el producto en minutos
+              Comienza con JAAK Autoservicio
             </h3>
             <p
               className="text-sm leading-relaxed mb-6 flex-1"
               style={{ color: "var(--hp-text-md)" }}
             >
-              Sin vendedor, sin esperas, sin compromiso. Configura tu primer flujo
-              de verificación y genera tu primer expediente hoy mismo.
+              Contrata tus paquetes de JAAK y utiliza nuestras soluciones
+              directamente desde la plataforma web, sin necesidad de integración
+              técnica.
             </p>
 
             <div className="space-y-2 mb-6">
               {[
-                "Acceso inmediato a la plataforma",
-                "Credenciales API en minutos",
-                "Soporte técnico incluido",
+                "Compra en línea y utiliza la plataforma web",
+                "Paquetes con vigencia de un año",
+                "Soporte básico incluido",
               ].map((item, i) => (
                 <div
                   key={i}
@@ -113,15 +115,22 @@ export default function HomepageFinalCTA() {
               ))}
             </div>
 
+            <p
+              className="text-xs leading-relaxed mb-5"
+              style={{ color: "var(--hp-text-lo)" }}
+            >
+              {MODALIDADES_COPY.integracionCorta}
+            </p>
+
             <Link
-              href="/autoservicio"
+              href={AUTOSERVICIO_HREF}
               className="inline-flex items-center justify-center px-7 py-4 text-white font-bold text-base rounded-xl transition-all duration-200 group"
               style={{
                 background: "linear-gradient(135deg, #1ECAD3, #17a8b0)",
                 boxShadow: "0 8px 28px rgba(30,202,211,0.28)",
               }}
             >
-              Comenzar ahora
+              Explorar Autoservicio
               <svg
                 className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform"
                 fill="none"
@@ -135,6 +144,13 @@ export default function HomepageFinalCTA() {
                   d="M13 7l5 5m0 0l-5 5m5-5H6"
                 />
               </svg>
+            </Link>
+            <Link
+              href={INTEGRATION_CONTACT_HREF}
+              className="mt-3 text-center text-sm font-semibold underline-offset-4 hover:underline"
+              style={{ color: "#1ECAD3" }}
+            >
+              Solicitar integración API
             </Link>
           </div>
 

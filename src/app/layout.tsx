@@ -66,15 +66,8 @@ const jsonLd = {
       operatingSystem: "Web, API",
       description: "Plataforma integral de KYC (verificación de identidad), KYB (validación de empresas) y firma electrónica avanzada con evidencia auditable y valor legal.",
       provider: { "@id": "https://jaak.ai/#organization" },
-      offers: {
-        "@type": "AggregateOffer",
-        url: "https://jaak.ai/precios",
-        priceCurrency: "MXN",
-        lowPrice: "14",
-        highPrice: "25375",
-        offerCount: 45,
-        availability: "https://schema.org/InStock"
-      },
+      // Sin `offers`: los precios del catálogo se declaran solo en las páginas que los muestran
+      // (/precios y /autoservicio). No reintroducir Offer/AggregateOffer en el JSON-LD global (AUD-01).
       featureList: [
         "Verificación biométrica con prueba de vida",
         "OCR de documentos oficiales",

@@ -449,7 +449,7 @@ function LeadFormSection() {
             Solicitud enviada
           </h3>
           <p style={{ color: TEXT_MUTED }}>
-            Un especialista de JAAK te contacta en menos de 24 horas para revisar tu caso de uso.
+            Nuestro equipo comercial se pondrá en contacto contigo para conocer las necesidades de tu empresa.
           </p>
         </div>
       ) : (

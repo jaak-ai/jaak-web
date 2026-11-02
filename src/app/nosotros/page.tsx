@@ -404,10 +404,10 @@ export default function NosotrosPage() {
                     </div>
                     <div className="bg-white rounded-2xl p-6 shadow-sm">
                       <div className="text-4xl font-bold text-[#00d4aa] mb-2">
-                        99.9%
+                        A medida
                       </div>
                       <div className="text-sm text-gray-600">
-                        Uptime garantizado
+                        Niveles de servicio según contratación
                       </div>
                     </div>
                     <div className="bg-white rounded-2xl p-6 shadow-sm">

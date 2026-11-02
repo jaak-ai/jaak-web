@@ -87,12 +87,22 @@ export default function HomepageProducts() {
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white leading-tight mb-4">
             Flexibles, modulares y{" "}
             <span style={{ background: "linear-gradient(90deg, #1ECAD3, #2AD796)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-              disponibles hoy.
+              adaptados a tu operación.
             </span>
           </h2>
           <p className="text-lg max-w-xl mx-auto" style={{ color: "var(--hp-text-md)" }}>
-            Usa solo lo que necesitas. Escala cuando quieras. Todo disponible en autoservicio o con integración asistida.
+            Elige las soluciones de identidad digital, firma electrónica y validaciones que necesita tu empresa.
+            Puedes contratar paquetes para operar directamente desde la plataforma web de JAAK o solicitar una propuesta
+            de integración mediante API o SDK, con configuración y condiciones específicas según tu volumen y necesidades técnicas.
           </p>
+          <ul className="mt-5 mx-auto max-w-xl space-y-1.5 text-left text-sm" style={{ color: "var(--hp-text-md)" }}>
+            <li>
+              <strong className="text-white">Autoservicio:</strong> contratación en línea y uso desde la plataforma web.
+            </li>
+            <li>
+              <strong className="text-white">Integración API o SDK:</strong> contratación asistida, sujeta a una cuota de configuración (setup fee).
+            </li>
+          </ul>
         </div>
 
         {/* ── Block 1: Verificación ── */}
@@ -266,14 +276,14 @@ export default function HomepageProducts() {
           </div>
           <div className="flex-1">
             <div className="font-black text-lg mb-1" style={{ color: "var(--hp-text-hi)" }}>
-              Todos los productos disponibles en{" "}
+              Personalización{" "}
               <span style={{ background: "linear-gradient(90deg, #1ECAD3, #2AD796)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-                marca blanca
+                White Label
               </span>
             </div>
             <p className="text-sm" style={{ color: "var(--hp-text-md)" }}>
-              Tu logo, tus colores y mensajes personalizados. Tus clientes ven tu marca,
-              no la de JAAK. Disponible para KYC, firma y expediente digital.
+              Tu logo, tus colores y mensajes personalizados, conforme al alcance comercial contratado.
+              Consulta la disponibilidad para KYC, firma y expediente digital.
             </p>
           </div>
           <Link
@@ -281,7 +291,7 @@ export default function HomepageProducts() {
             className="inline-flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-bold text-white transition-all flex-shrink-0"
             style={{ background: "linear-gradient(135deg, #1ECAD3, #17a8b0)", boxShadow: "0 4px 16px rgba(30,202,211,0.25)" }}
           >
-            Hablar sobre marca blanca
+            Consultar opciones White Label
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>
@@ -294,7 +304,7 @@ export default function HomepageProducts() {
           style={{ background: "rgba(255,255,255,0.02)", border: "1px solid var(--hp-divider)" }}
         >
           <p className="text-sm" style={{ color: "var(--hp-text-lo)" }}>
-            Todos los productos disponibles en autoservicio o con integración asistida.
+            Autoservicio: uso desde la plataforma web. Integración API o SDK: contratación asistida con setup fee.
           </p>
           <Link href="/precios" className="inline-flex items-center gap-2 text-sm font-semibold whitespace-nowrap" style={{ color: "#1ECAD3" }}>
             Ver precios y planes

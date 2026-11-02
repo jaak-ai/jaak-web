@@ -3,37 +3,29 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
 import ScrollReveal from "@/components/ScrollReveal";
-import SignaSavingsCalculator from "./SignaSavingsCalculator";
-import { signaOrganizationSchema, signaServiceSchema, signaFAQSchema, signaBreadcrumbSchema } from "./schema";
+import SignaTrackedLink from "@/components/signa/SignaTrackedLink";
+import SignaSolutionFinder from "@/components/signa/SignaSolutionFinder";
+import { signaOrganizationSchema, signaServiceSchema, signaFAQSchema, signaBreadcrumbSchema, signaFaqItems } from "./schema";
 
 const TEAL = "#1ECAD3";
-const BLUE = "#0066ff";
+
+const TITLE = "Firma electrónica para empresas en México | Signa JAAK";
+const DESCRIPTION =
+  "Conoce las soluciones de firma electrónica de JAAK para empresas: NOM-151, biometría, KYC, evidencia digital y opciones de integración.";
 
 export const metadata: Metadata = {
-  title: "Signa - Firma Electrónica México | 50% Más Barata que Mifiel | NOM-151",
-  description: "Firma electrónica profesional para México. $15 vs $29.90 de Mifiel (50% de ahorro). NOM-151 certificado, soporte 24/7, migración gratis.",
+  title: { absolute: TITLE },
+  description: DESCRIPTION,
   keywords: [
     "firma electrónica méxico",
-    "mifiel alternativa",
-    "firma digital barata méxico",
-    "signa firma electrónica",
-    "NOM-151 firma",
-    "firma electrónica más barata que mifiel",
-    "alternativa mifiel méxico",
-    "firma digital profesional méxico",
-    "documento electrónico méxico",
-    "signatura digital méxico",
-    "firma online méxico",
-    "e-signature méxico",
-    "firma legal méxico",
-    "mifiel vs signa",
-    "precio mifiel alternativa",
-    "migrar de mifiel",
-    "cambiar mifiel por signa",
-    "firma electrónica empresas",
-    "firma digital pymes",
-    "contratos digitales méxico",
-    "documentos legales online"
+    "firma electrónica para empresas",
+    "firma electrónica NOM-151",
+    "firma electrónica con biometría",
+    "firma electrónica con KYC",
+    "plataforma de firma electrónica méxico",
+    "alternativas a Mifiel",
+    "alternativas a DocuSign",
+    "comparación de firma electrónica",
   ],
   authors: [{ name: "JAAK", url: "https://jaak.ai" }],
   creator: "JAAK",
@@ -41,9 +33,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://jaak.ai/signa",
     languages: {
-      'es-MX': 'https://jaak.ai/signa',
-      'es': 'https://jaak.ai/signa'
-    }
+      "es-MX": "https://jaak.ai/signa",
+      es: "https://jaak.ai/signa",
+    },
   },
   robots: {
     index: true,
@@ -52,45 +44,36 @@ export const metadata: Metadata = {
       index: true,
       follow: true,
       noimageindex: false,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
   },
   openGraph: {
-    title: "Signa - Firma Electrónica México | 50% Más Barata que Mifiel",
-    description: "Firma electrónica profesional para México. $15 vs $29.90 de Mifiel (50% de ahorro). NOM-151 certificado, migración gratis.",
+    title: TITLE,
+    description: DESCRIPTION,
     type: "website",
     url: "https://jaak.ai/signa",
     siteName: "JAAK",
     locale: "es_MX",
-    images: [
-      {
-        url: "https://jaak.ai/signa-og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Signa - Firma Electrónica 50% Más Barata que Mifiel"
-      }
-    ]
+    images: [{ url: "/images/logos/jaak-logo-azul.png", width: 800, height: 400, alt: "Firma electrónica para empresas · Signa JAAK" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Signa - Firma Electrónica México | 50% Más Barata que Mifiel",
-    description: "$15 vs $29.90 de Mifiel (50% de ahorro). NOM-151 certificado, migración gratis.",
-    images: ["https://jaak.ai/signa-twitter-image.jpg"],
-    creator: "@jaak_ai"
+    title: TITLE,
+    description: DESCRIPTION,
+    images: ["/images/logos/jaak-logo-azul.png"],
+    creator: "@jaak_ai",
   },
   category: "Technology",
   classification: "Firma Electrónica, Tecnología, Software Empresarial",
   other: {
-    'geo.region': 'MX',
-    'geo.country': 'México',
-    'geo.placename': 'México',
-    'language': 'Spanish',
-    'target-audience': 'Empresas, PyMEs, Profesionales',
-    'distribution': 'global',
-    'revisit-after': '7 days'
-  }
+    "geo.region": "MX",
+    "geo.country": "México",
+    "geo.placename": "México",
+    language: "Spanish",
+    "target-audience": "Empresas",
+  },
 };
 
 function CheckIcon() {
@@ -101,285 +84,256 @@ function CheckIcon() {
   );
 }
 
-function DashIcon() {
-  return (
-    <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="#94A3B8" viewBox="0 0 24 24" aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 12h14" />
-    </svg>
-  );
-}
+const BTN_PRIMARY =
+  "px-7 py-3.5 bg-[#1ECAD3] text-[#0E2233] font-bold rounded-lg hover:bg-[#19b3bb] transition-all text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white";
+const BTN_SECONDARY =
+  "px-7 py-3.5 bg-white/10 text-white font-semibold rounded-lg hover:bg-white/20 transition-all border border-white/20 text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white";
 
-const COMPETITOR_POINTS = [
-  "$29.90 por firma",
-  "Setup fee: $2,500 MXN",
-  "Cuota mensual mínima",
-  "Soporte en horario de oficina",
-  "Interfaz desactualizada",
-  "API limitada",
-];
-
-const SIGNA_POINTS = [
-  "$15.00 por firma (50% menos)",
-  "Setup gratis",
-  "Pago por uso, sin mínimos",
-  "Soporte 24/7",
-  "Interfaz 2026",
-  "API moderna GraphQL + REST",
-];
-
-const OTHERS_POINTS = [
-  "$25–35 por firma",
-  "Contratos anuales",
-  "Implementación de 2 a 6 meses",
-  "Soporte en inglés",
-  "No especializado en México",
-  "Compliance complejo",
-];
-
-const TESTIMONIALS = [
+// Modalidades (fuente de contenido: capacidades confirmadas en las páginas de producto de firma).
+const MODALITIES = [
   {
-    initials: "CM",
-    color: TEAL,
-    name: "Carlos Mendoza",
-    role: "Director, Inmobiliaria Premium",
-    quote: "Migramos en 24 horas y ahorramos $85,320 anuales. La API es 2.5x más rápida que la anterior. Nuestros clientes notan la diferencia.",
-    tags: ["450 docs/mes", "$85K ahorro/año"],
+    name: "Firma Simple",
+    text: "Consentimiento digital ágil para documentos internos y acuerdos de bajo riesgo, sin verificación de identidad.",
+    href: "/firma-electronica-simple",
+    cta: "Ver Firma Simple",
   },
   {
-    initials: "AL",
-    color: BLUE,
-    name: "Ana López",
-    role: "Socia, Bufete López & Asociados",
-    quote: "El soporte 24/7 es increíble. Antes esperábamos días, ahora obtenemos respuestas en minutos. El ahorro anual es de $44,700.",
-    tags: ["250 docs/mes", "$44K ahorro/año"],
+    name: "Firma Digital NOM-151",
+    text: "Modalidad que incorpora sello de tiempo y constancia de conservación NOM-151, con expediente digital y bitácora de la operación. No incluye verificación de identidad.",
+    href: "/firma-electronica-nom-151",
+    cta: "Ver Firma NOM-151",
   },
   {
-    initials: "RS",
-    color: "#655DC6",
-    name: "Roberto Silva",
-    role: "CEO, Consultoría Silva",
-    quote: "La interfaz moderna convenció a nuestros clientes inmediatamente. ROI positivo desde el primer mes. Ahorro del 52%.",
-    tags: ["180 docs/mes", "$32K ahorro/año"],
+    name: "NOM-151 + Biometría",
+    text: "Suma biometría facial con prueba de vida a la modalidad NOM-151. No incluye la verificación KYC completa.",
+    href: "/firma-electronica-biometrica",
+    cta: "Ver NOM-151 + Biometría",
   },
+  {
+    name: "NOM-151 + KYC",
+    text: "Suma la verificación KYC completa (identificación oficial, CURP, biometría y consulta de listas) a la modalidad NOM-151, para procesos con requisitos de verificación ampliados.",
+    href: "/firma-electronica-kyc",
+    cta: "Ver NOM-151 + KYC",
+  },
+];
+
+const CAPABILITIES = [
+  { title: "Firma electrónica para documentos empresariales", text: "Contratos, autorizaciones, acuerdos y documentos operativos firmados de forma digital." },
+  { title: "Alternativas con NOM-151", text: "Modalidades que incorporan sello de tiempo y constancia de conservación NOM-151; la pertinencia para cada documento debe validarse con tu área legal." },
+  { title: "Biometría y verificación KYC", text: "Opciones para verificar la identidad del firmante, desde biometría facial hasta KYC completo." },
+  { title: "Evidencia y trazabilidad", text: "Modalidades que registran bitácora de eventos y expediente digital; el alcance varía según la modalidad." },
+  { title: "Web, API o SDK", text: "Uso desde la plataforma web o integración por API o SDK, según contratación." },
+  { title: "White Label", text: "Posibilidad de personalización de marca conforme a la propuesta comercial." },
+  { title: "Atención en español desde México", text: "Soporte y acompañamiento especializado según el plan y las condiciones acordadas." },
+];
+
+const SECTORS = [
+  { name: "Recursos humanos", text: "Contratos laborales, cartas y autorizaciones del personal, con registro de la operación de firma.", href: "/soluciones/recursos-humanos" },
+  { name: "Servicios financieros", text: "Contratos y documentos de procesos regulados, con opciones de verificación de identidad y evidencia.", href: "/soluciones/instituciones-financieras" },
+  { name: "Inmobiliarias", text: "Contratos de compraventa y arrendamiento, con opciones de verificación de las partes.", href: "/inmobiliarias" },
+  { name: "Contratos empresariales", text: "Acuerdos con clientes y proveedores, con opciones de sello de tiempo y expediente digital.", href: "/firma-electronica-nom-151" },
+  { name: "Procesos de onboarding", text: "Alta de clientes con opciones de verificación de identidad y firma en un mismo flujo.", href: "/soluciones/onboarding-digital" },
 ];
 
 export default function SignaHome() {
   return (
     <>
       <ScrollReveal />
-      {/* Structured Data for SEO */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify([
-            signaOrganizationSchema,
-            signaServiceSchema,
-            signaFAQSchema,
-            signaBreadcrumbSchema
-          ])
+          __html: JSON.stringify([signaOrganizationSchema, signaServiceSchema, signaFAQSchema, signaBreadcrumbSchema]),
         }}
       />
 
       <Header />
       <main>
-        {/* Hero Section */}
-        <section className="pt-32 pb-20 bg-[#202945] relative overflow-hidden" role="banner">
+        {/* Hero */}
+        <section className="pt-32 pb-20 bg-[#202945] relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <header data-sr>
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#1ECAD3]/10 border border-[#1ECAD3]/20 rounded-full mb-6">
-                  <span className="w-2 h-2 bg-[#1ECAD3] rounded-full"></span>
-                  <span className="text-[#1ECAD3] text-sm font-medium">Signa · Firma electrónica de JAAK</span>
+              <header data-sr="left">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/80 text-sm mb-6">
+                  <span className="w-2 h-2 rounded-full" style={{ background: TEAL }} />
+                  Signa · Firma electrónica de JAAK
                 </div>
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6">
-                  <span className="text-[#0066ff]">Firma Electrónica México</span>
+                <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight mb-6">
+                  Firma electrónica para empresas en México
                 </h1>
-                <p className="text-xl text-white/70 mb-8" role="text">
-                  <strong className="text-white">Firma electrónica profesional para México</strong> con tecnología 2026.
-                  Certificado <strong className="text-[#1ECAD3]">NOM-151</strong>, soporte 24/7.
-                  <strong className="text-white"> 50% más barata que Mifiel</strong> — solo $15 por documento.
+                <p className="text-xl text-white/70 mb-8">
+                  Digitaliza la firma de documentos y fortalece tus procesos con soluciones de firma electrónica,
+                  verificación de identidad y evidencia digital, según las necesidades de tu operación.
                 </p>
-
-                {/* Price Comparison */}
-                <div className="flex flex-wrap gap-4 mb-8">
-                  <div className="bg-white/5 border border-white/15 rounded-lg p-4 flex-1 min-w-[140px]">
-                    <div className="text-white/50 text-sm font-medium">Competencia</div>
-                    <div className="text-white/70 text-2xl font-bold">$29.90</div>
-                    <div className="text-white/40 text-sm">por firma</div>
-                  </div>
-                  <div className="flex items-center text-white/50 text-2xl font-bold px-2">VS</div>
-                  <div className="bg-[#1ECAD3]/10 border border-[#1ECAD3]/30 rounded-lg p-4 flex-1 min-w-[140px] relative">
-                    <div className="absolute -top-2 -right-2 bg-[#1ECAD3] text-[#0E2233] text-xs font-bold px-2 py-1 rounded-full">50% MENOS</div>
-                    <div className="text-[#1ECAD3] text-sm font-medium">Signa</div>
-                    <div className="text-[#1ECAD3] text-2xl font-bold">$15.00</div>
-                    <div className="text-[#1ECAD3]/70 text-sm">por firma</div>
-                  </div>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <SignaTrackedLink href="/contacto" source="signa_hero_demo" className={BTN_PRIMARY}>
+                    Solicitar una demo
+                  </SignaTrackedLink>
+                  <SignaTrackedLink href="/signa/comparacion" source="signa_hero_comparar" className={BTN_SECONDARY}>
+                    Comparar modalidades
+                  </SignaTrackedLink>
                 </div>
-
-                <div className="flex flex-wrap gap-4">
-                  <Link
-                    href="/signa/calculadora"
-                    className="px-6 py-3 bg-[#1ECAD3] text-[#0E2233] font-bold rounded-lg hover:bg-[#19b3bb] transition-all"
-                  >
-                    Calcular mi ahorro
-                  </Link>
-                  <Link
-                    href="/signa/comparacion"
-                    className="px-6 py-3 bg-white/10 text-white font-semibold rounded-lg hover:bg-white/20 transition-all border border-white/20"
-                  >
-                    Ver comparación
-                  </Link>
-                </div>
-
-                <div className="mt-8 flex flex-col gap-2.5 text-sm">
-                  <div className="flex items-center gap-2.5 text-white/70">
-                    <CheckIcon /> Migración gratis desde cualquier plataforma
-                  </div>
-                  <div className="flex items-center gap-2.5 text-white/70">
-                    <CheckIcon /> Deploy en 24 horas, vs. semanas con otros proveedores
-                  </div>
-                  <div className="flex items-center gap-2.5 text-white/70">
-                    <CheckIcon /> NOM-151 certificado, validez legal completa
-                  </div>
-                  <div className="flex items-center gap-2.5 text-white/70">
-                    <CheckIcon /> Garantía de 30 días: si no ahorras, te devolvemos tu dinero
-                  </div>
-                </div>
+                <ul className="mt-8 flex flex-col gap-2.5 text-sm text-white/70">
+                  <li className="flex items-center gap-2.5"><CheckIcon /> Modalidades con NOM-151, biometría y KYC</li>
+                  <li className="flex items-center gap-2.5"><CheckIcon /> Uso Web o integración API/SDK según contratación</li>
+                  <li className="flex items-center gap-2.5"><CheckIcon /> Atención en español desde México, según contrato</li>
+                </ul>
               </header>
 
-              <div data-sr="right">
-                <SignaSavingsCalculator />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Comparison Grid */}
-        <section className="py-20 bg-white" role="region" aria-labelledby="why-choose-signa">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div data-sr className="text-center mb-16">
-              <h2 id="why-choose-signa" className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
-                ¿Por qué <span className="text-[#1ECAD3]">Signa</span> es la
-                <span className="text-[#0066ff]"> mejor firma electrónica en México</span>?
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                <strong>Más de 1,000 empresas ya migraron</strong> de Mifiel a Signa.
-                Descubre por qué es la <strong>mejor alternativa a Mifiel</strong> en México:
-                50% más barata, tecnología 2026 y validez legal NOM-151.
-              </p>
-            </div>
-
-            <div data-sr-grid className="grid md:grid-cols-3 gap-8">
-              <div className="bg-gray-50 rounded-xl p-8">
-                <h3 className="text-xl font-bold text-gray-900 mb-6 text-center">Competencia actual</h3>
-                <div className="space-y-3">
-                  {COMPETITOR_POINTS.map((point) => (
-                    <div key={point} className="flex items-center gap-2.5 text-sm text-gray-600">
-                      <DashIcon /> {point}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="bg-gradient-to-br from-[#1ECAD3]/5 to-[#0066ff]/5 border-2 border-[#1ECAD3] rounded-xl p-8 relative">
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-[#1ECAD3] text-[#0E2233] text-xs font-bold px-3 py-1 rounded-full">
-                  RECOMENDADO
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-6 text-center">Signa (nosotros)</h3>
-                <div className="space-y-3">
-                  {SIGNA_POINTS.map((point) => (
-                    <div key={point} className="flex items-center gap-2.5 text-sm text-gray-900 font-medium">
-                      <CheckIcon /> {point}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="bg-gray-50 rounded-xl p-8">
-                <h3 className="text-xl font-bold text-gray-900 mb-6 text-center">Otros proveedores</h3>
-                <div className="space-y-3">
-                  {OTHERS_POINTS.map((point) => (
-                    <div key={point} className="flex items-center gap-2.5 text-sm text-gray-600">
-                      <DashIcon /> {point}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Success Stories */}
-        <section className="py-20 bg-[#202945]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div data-sr className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
-                Lo que dicen nuestros clientes
-              </h2>
-              <p className="text-xl text-white/60">
-                Empresas que ya migraron y están ahorrando en su operación mensual.
-              </p>
-            </div>
-
-            <div data-sr-grid className="grid md:grid-cols-3 gap-8">
-              {TESTIMONIALS.map((t) => (
-                <div key={t.name} className="bg-white/5 border border-white/10 rounded-xl p-6">
-                  <div className="flex items-start mb-4">
-                    <div className="flex-shrink-0">
-                      <div
-                        className="w-12 h-12 rounded-full flex items-center justify-center"
-                        style={{ background: t.color }}
+              <div data-sr="right" className="rounded-2xl border border-white/10 bg-white/5 p-6">
+                <h2 className="text-lg font-bold text-white mb-1">Modalidades de firma</h2>
+                <p className="text-sm text-white/60 mb-4">Elige el nivel de evidencia y verificación que requiere tu operación.</p>
+                <ul className="divide-y divide-white/10">
+                  {MODALITIES.map((m) => (
+                    <li key={m.name}>
+                      <Link
+                        href={m.href}
+                        className="flex items-center justify-between gap-3 py-3 text-white hover:text-[#1ECAD3] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1ECAD3] rounded"
                       >
-                        <span className="text-[#0E2233] font-bold">{t.initials}</span>
-                      </div>
-                    </div>
-                    <div className="ml-4">
-                      <div className="text-white font-semibold">{t.name}</div>
-                      <div className="text-white/60 text-sm">{t.role}</div>
-                    </div>
-                  </div>
-                  <p className="text-white/80 text-sm mb-4">&ldquo;{t.quote}&rdquo;</p>
-                  <div className="flex gap-3 text-xs flex-wrap">
-                    {t.tags.map((tag) => (
-                      <span key={tag} className="bg-white/10 text-white/80 px-2 py-1 rounded">{tag}</span>
-                    ))}
-                  </div>
+                        <span className="font-semibold">{m.name}</span>
+                        <span aria-hidden="true">→</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Modalidades */}
+        <section className="py-20 bg-white" aria-labelledby="modalidades-title">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div data-sr className="text-center mb-14 max-w-3xl mx-auto">
+              <h2 id="modalidades-title" className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
+                Modalidades de firma electrónica para empresas
+              </h2>
+              <p className="text-lg text-gray-600">
+                Cada modalidad incorpora capacidades distintas. Elige la que corresponde al tipo de documento y a los
+                requisitos de tu proceso; no todas las capacidades están incluidas en todas las modalidades.
+              </p>
+            </div>
+            <div data-sr-grid className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {MODALITIES.map((m) => (
+                <div key={m.name} className="flex flex-col rounded-xl border border-gray-200 p-6">
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">{m.name}</h3>
+                  <p className="text-sm text-gray-600 flex-1">{m.text}</p>
+                  <Link href={m.href} className="mt-4 text-sm font-semibold text-[#0066ff] hover:underline">
+                    {m.cta} →
+                  </Link>
+                </div>
+              ))}
+            </div>
+            <p className="mt-8 text-center text-sm text-gray-600">
+              ¿Necesitas contrastar modalidades?{" "}
+              <Link href="/signa/comparacion" className="font-semibold text-[#0066ff] hover:underline">
+                Revisa la comparación de firma electrónica para empresas
+              </Link>
+              .
+            </p>
+          </div>
+        </section>
+
+        {/* Capacidades */}
+        <section className="py-20 bg-gray-50" aria-labelledby="capacidades-title">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div data-sr className="text-center mb-14 max-w-3xl mx-auto">
+              <h2 id="capacidades-title" className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
+                Capacidades de la plataforma de firma electrónica de JAAK
+              </h2>
+              <p className="text-lg text-gray-600">
+                Una plataforma mexicana de firma electrónica con opciones de verificación, evidencia e integración.
+              </p>
+            </div>
+            <div data-sr-grid className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {CAPABILITIES.map((c) => (
+                <div key={c.title} className="rounded-xl bg-white p-6 border border-gray-100">
+                  <h3 className="text-base font-bold text-gray-900 mb-2">{c.title}</h3>
+                  <p className="text-sm text-gray-600">{c.text}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* CTA Section */}
+        {/* Selector de orientación */}
+        <section id="orientacion" className="py-20 bg-[#202945] scroll-mt-24" aria-labelledby="orientacion-title">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div data-sr className="text-center mb-10">
+              <h2 id="orientacion-title" className="text-3xl md:text-4xl font-black text-white mb-4">
+                Encuentra la solución de firma electrónica para tu empresa
+              </h2>
+              <p className="text-lg text-white/60">
+                Responde cinco preguntas y conoce qué modalidades conviene evaluar con nuestro equipo.
+              </p>
+            </div>
+            <SignaSolutionFinder />
+          </div>
+        </section>
+
+        {/* Sectores */}
+        <section className="py-20 bg-white" aria-labelledby="sectores-title">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div data-sr className="text-center mb-14 max-w-3xl mx-auto">
+              <h2 id="sectores-title" className="text-3xl md:text-4xl font-black text-gray-900 mb-4">
+                Firma electrónica para las necesidades de tu sector
+              </h2>
+            </div>
+            <div data-sr-grid className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {SECTORS.map((s) => (
+                <Link key={s.name} href={s.href} className="block rounded-xl border border-gray-200 p-6 hover:border-[#1ECAD3] transition-colors">
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">{s.name}</h3>
+                  <p className="text-sm text-gray-600">{s.text}</p>
+                  <span className="mt-3 inline-block text-sm font-semibold text-[#0066ff]">Conocer más →</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section className="py-20 bg-gray-50" aria-labelledby="faq-title">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 id="faq-title" className="text-3xl md:text-4xl font-black text-gray-900 mb-10 text-center">
+              Preguntas frecuentes sobre firma electrónica para empresas
+            </h2>
+            <div className="space-y-4">
+              {signaFaqItems.map((f) => (
+                <details key={f.q} className="group rounded-xl bg-white border border-gray-200 p-5">
+                  <summary className="cursor-pointer font-semibold text-gray-900 list-none flex justify-between gap-4">
+                    <h3 className="text-base font-semibold">{f.q}</h3>
+                    <span aria-hidden="true" className="text-[#1ECAD3] group-open:rotate-45 transition-transform">+</span>
+                  </summary>
+                  <p className="mt-3 text-sm text-gray-600 leading-relaxed">{f.a}</p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CTA final */}
         <section className="py-20 bg-gradient-to-r from-[#1ECAD3] to-[#0066ff]">
           <div data-sr className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl md:text-4xl font-black text-white mb-6">
-              ¿Listo para ahorrar 50% en firma electrónica?
+            <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
+              Conversemos sobre la firma electrónica de tu operación
             </h2>
             <p className="text-xl text-white/90 mb-8">
-              Migración gratis, setup en 24 horas, soporte 24/7.
-              <strong> Garantía de 30 días o te devolvemos tu dinero.</strong>
+              Nuestro equipo comercial se pondrá en contacto contigo para conocer las necesidades de tu empresa.
             </p>
-
-            <div className="flex flex-wrap gap-4 justify-center mb-8">
-              <Link
-                href="/signa/calculadora"
-                className="px-8 py-4 bg-white text-[#0066ff] font-bold rounded-lg hover:bg-gray-50 transition-all shadow-lg"
-              >
-                Ver mi ahorro exacto
-              </Link>
-              <Link
+            <div className="flex flex-wrap gap-4 justify-center">
+              <SignaTrackedLink
                 href="/contacto"
-                className="px-8 py-4 bg-transparent border-2 border-white text-white font-bold rounded-lg hover:bg-white hover:text-[#0066ff] transition-all"
+                source="signa_cierre_propuesta"
+                className="px-8 py-4 bg-white text-[#0066ff] font-bold rounded-lg hover:bg-gray-50 transition-all shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
               >
-                Hablar con un experto
-              </Link>
-            </div>
-
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 inline-block">
-              <p className="text-white text-sm">
-                <strong>Garantía de 30 días:</strong> si no ahorras dinero como prometemos, te devolvemos el 100% sin hacer preguntas.
-              </p>
+                Solicitar una propuesta para mi operación
+              </SignaTrackedLink>
+              <SignaTrackedLink
+                href="/signa/comparacion"
+                source="signa_cierre_comparar"
+                className="px-8 py-4 bg-transparent border-2 border-white text-white font-bold rounded-lg hover:bg-white hover:text-[#0066ff] transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+              >
+                Comparar modalidades
+              </SignaTrackedLink>
             </div>
           </div>
         </section>

@@ -752,7 +752,7 @@ export default function ChronosPage() {
                   Agenda tu demo
                 </h3>
                 <p className="text-gray-500 mb-8">
-                  Un especialista en IA te contacta en menos de 24 horas.
+                  Nuestro equipo comercial se pondrá en contacto contigo para conocer las necesidades de tu empresa.
                 </p>
 
                 <form onSubmit={handleSubmit} className="space-y-5">

@@ -33,19 +33,20 @@ const PLANS = [
   {
     id: "autoservicio",
     name: "Autoservicio",
-    badge: "Empieza en minutos",
+    badge: "Compra en línea",
     badgeColor: "#1ecad3",
     price: `Desde ${formatMXN(minAutoPrecio)} MXN`,
     priceSub: "por paquete · sin suscripción",
-    desc: "Arma tu paquete combinando KYC, firma, validaciones y OCR, y actívalo en minutos. Compra en línea, sin contratos ni volumen mínimo.",
+    desc: "Arma tu paquete combinando KYC, firma, validaciones y OCR. Compra en línea y opera desde la plataforma web de JAAK, sin contratos ni volumen mínimo.",
     features: [
       "Firma electrónica (Simple y NOM-151)",
       "KYC con biometría",
       "Expediente digital auditable",
-      "Acceso inmediato sin equipo de ventas",
+      "Paquetes con vigencia de un año",
+      "Modalidad exclusivamente Web: no incluye API, SDK ni White Label",
     ],
     forWhom: ["Equipos pequeños", "Operaciones manuales", "Sin integración API"],
-    support: "Onboarding grupal + soporte base",
+    support: "Onboarding grupal + soporte básico",
     cta: "Empezar ahora",
     ctaLink: "/autoservicio",
     ctaExternal: false,
@@ -59,16 +60,19 @@ const PLANS = [
     badgeColor: "#2a60d4",
     price: "Desde $18 MXN",
     priceSub: "por verificación · escala progresiva",
-    desc: "Optimiza costos conforme aumentas tu volumen de operación. Modelo por volumen mensual con descuentos progresivos.",
+    desc: "Optimiza tu operación conforme aumenta tu volumen de verificaciones. Descuentos progresivos por volumen.",
     features: [
       "Todos los módulos de KYC",
       "Firma electrónica incluida",
-      "Integración API o panel web",
+      "Uso mediante plataforma Web, integración API o integración SDK, según contratación",
       "Gestión de expedientes centralizada",
+      "White Label opcional, según el alcance acordado",
+      "Integración API o SDK sujeta a una cuota de configuración (setup fee)",
+      "Bolsa anual de consumo con pagos mensuales según consumo, conforme a la propuesta",
     ],
     forWhom: ["Flujo constante de onboarding", "Fintech · Inmobiliarias · Automotriz", "Operaciones recurrentes"],
     support: "Onboarding guiado",
-    cta: "Ver opciones",
+    cta: "Solicitar propuesta de Crecimiento",
     ctaLink: CONTACTO_URL,
     ctaExternal: false,
     color: "#2a60d4",
@@ -80,17 +84,18 @@ const PLANS = [
     badge: "Infraestructura crítica",
     badgeColor: "#655dc6",
     price: "Personalizado",
-    priceSub: "contrato anual · volumen desde 5k/mes · cuota de activación única",
+    priceSub: "bolsa anual de consumo · pagos mensuales según consumo · volumen desde 5k/mes",
     desc: "Diseñado para operaciones reguladas con alto volumen y requerimientos específicos de cumplimiento.",
     features: [
-      "Integración API / SDK / Whitelabel",
+      "Modalidades Web, API o SDK según el proyecto",
       "Infraestructura dedicada",
       "Cumplimiento avanzado (CNBV, UIF)",
       "Personalización completa de flujos",
-      "Cuota de activación única por empresa",
+      "White Label opcional, según la propuesta contratada",
+      "Integración API o SDK sujeta a una cuota de configuración (setup fee)",
     ],
     forWhom: ["Bancos · Fintech reguladas", "Telco · Grandes corporativos", "Volumen ≥ 5,000 verif/mes"],
-    support: "Equipo dedicado + SLA garantizado",
+    support: "Acompañamiento especializado y niveles de servicio conforme a la propuesta contratada",
     cta: "Hablar con ventas",
     ctaLink: CONTACTO_URL,
     ctaExternal: false,
@@ -103,16 +108,17 @@ const PLANS = [
     badge: "Para partners",
     badgeColor: "#d97706",
     price: "Revenue share",
-    priceSub: "pricing especial por volumen",
+    priceSub: "pricing especial por volumen · bolsa anual de consumo con pagos mensuales según consumo, según el acuerdo",
     desc: "Integra JAAK como parte de tu oferta y genera ingresos adicionales. Esquema comercial adaptado a tu modelo.",
     features: [
-      "Acceso a toda la plataforma",
-      "Marca compartida / white-label",
+      "Modalidades Web, API o SDK según el proyecto",
+      "White Label opcional, según la propuesta contratada",
+      "Integración API o SDK sujeta a una cuota de configuración (setup fee)",
       "Modelo de distribución flexible",
       "Soporte comercial dedicado",
     ],
     forWhom: ["Brokers · Consultoras", "Integradores tecnológicos", "Volumen ≥ 500K verif/año"],
-    support: "Equipo comercial + soporte 24×7",
+    support: "Soporte comercial y técnico según las condiciones del acuerdo",
     cta: "Convertirme en partner",
     ctaLink: CONTACTO_URL,
     ctaExternal: false,
@@ -125,8 +131,11 @@ const COMPARISON = [
   { feature: "Firma electrónica",          auto: "✔️", growth: "✔️", enterprise: "✔️", alliance: "✔️" },
   { feature: "KYC biométrico",             auto: "✔️", growth: "✔️", enterprise: "✔️", alliance: "✔️" },
   { feature: "Expediente auditable NOM-151",auto: "✔️", growth: "✔️", enterprise: "✔️", alliance: "✔️" },
-  { feature: "API / SDK",                  auto: "❌",  growth: "✔️", enterprise: "✔️", alliance: "✔️" },
-  { feature: "Whitelabel",                 auto: "❌",  growth: "Opcional", enterprise: "✔️", alliance: "✔️" },
+  { feature: "Plataforma Web",             auto: "Incluido", growth: "Disponible", enterprise: "Según propuesta", alliance: "Según propuesta" },
+  { feature: "Integración API",            auto: "No incluido", growth: "Disponible, con setup fee", enterprise: "Según propuesta (con setup fee)", alliance: "Según propuesta (con setup fee)" },
+  { feature: "Integración SDK",            auto: "No incluido", growth: "Disponible, con setup fee", enterprise: "Según propuesta (con setup fee)", alliance: "Según propuesta (con setup fee)" },
+  { feature: "White Label",                auto: "No incluido", growth: "Opcional, según alcance acordado", enterprise: "Opcional, según propuesta", alliance: "Opcional, según propuesta" },
+  { feature: "Esquema de contratación",    auto: "Compra en línea; paquetes con vigencia de un año", growth: "Bolsa anual de consumo, pagos mensuales según consumo", enterprise: "Bolsa anual de consumo, pagos mensuales según consumo", alliance: "Bolsa anual de consumo, pagos mensuales según consumo" },
   { feature: "Volumen mensual",            auto: "Bajo", growth: "Medio", enterprise: "Alto", alliance: "Variable" },
   { feature: "Soporte",                    auto: "Base", growth: "Guiado", enterprise: "Dedicado", alliance: "Comercial" },
 ];
@@ -146,19 +155,19 @@ const faqItems = [
   },
   {
     question: "¿Los paquetes caducan o son reembolsables?",
-    answer: "Vencen a 12 meses desde la compra. No son reembolsables. La cuota de activación única (setup fee) de Enterprise tampoco es reembolsable.",
+    answer: "Vencen a 12 meses desde la compra. No son reembolsables.",
   },
   {
-    question: "¿Hay cuota de activación (setup fee)?",
-    answer: "El Autoservicio no tiene cuota de activación. Los planes Enterprise incluyen una cuota de activación única por empresa, que se cobra solo la primera vez; las compras posteriores no la vuelven a pagar.",
+    question: "¿Hay cuota de configuración (setup fee)?",
+    answer: "Autoservicio no la requiere, porque se utiliza exclusivamente desde la plataforma web. La integración mediante API o SDK en Crecimiento, Enterprise y Alianzas considera una cuota de configuración (setup fee), conforme a la propuesta comercial.",
   },
   {
     question: "¿JAAK cumple con LFPIORPI, CNBV y UIF?",
     answer: "Sí. LFPIORPI Art. 17, identificación remota CNBV, evidencia para UIF, NOM-151 con PSC certificado. Certificaciones: ISO 27001, ISO 9001, iBeta Liveness Nivel 2.",
   },
   {
-    question: "¿Cómo funciona la facturación Enterprise?",
-    answer: "Mensual: 80% del estimado del mes actual + 20% real del mes anterior. Neto 30 días. Descuento 15% si se paga días 1–10. Cobro mínimo = tier inicial contratado aunque el consumo sea menor.",
+    question: "¿Cómo funciona la contratación de Crecimiento, Enterprise y Alianzas?",
+    answer: "Estas modalidades pueden trabajar con una bolsa anual de consumo, definida de acuerdo con la propuesta comercial, que permite realizar pagos mensuales conforme al consumo. No es una suscripción mensual de precio fijo. Las condiciones específicas se establecen en la propuesta y el contrato.",
   },
 ];
 
@@ -470,13 +479,13 @@ export default function PreciosClient() {
         </div>
         <div className={`max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 ${reveal(ctaReveal.isVisible)}`}>
           <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4 leading-tight">
-            Activa tu operación{" "}
+            Empieza con Autoservicio{" "}
             <span style={{ backgroundImage: "linear-gradient(90deg,#1ecad3,#655dc6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-              en minutos
+              o integra con asistencia
             </span>
           </h2>
           <p className="text-white/75 text-lg mb-10">
-            Sin integración si no la necesitas. Con toda la infraestructura si la requieres.
+            Compra en línea y opera desde la plataforma web. Si necesitas integración por API o SDK, nuestro equipo te ayuda a evaluarla (requiere setup fee).
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/autoservicio"

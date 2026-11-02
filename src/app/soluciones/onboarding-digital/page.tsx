@@ -19,7 +19,7 @@ export default function OnboardingDigital() {
     { value: "< 30s", label: "Tiempo promedio de verificación" },
     { value: "95%", label: "Tasa de aprobación automática" },
     { value: "3x", label: "Aumento en conversión vs presencial" },
-    { value: "99.9%", label: "Disponibilidad del servicio" },
+    { value: "Web · API · SDK", label: "Modalidades según contratación" },
   ];
 
   const channels = [

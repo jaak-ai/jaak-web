@@ -7,7 +7,7 @@ import { getAutoservicioCatalog } from "@/lib/catalog";
 export const metadata: Metadata = {
   title: "Comprar JAAK — Elige cómo contratar tus servicios",
   description:
-    "Elige la forma de comprar que se ajusta a tu operación: autoservicio estándar, paquetes Enterprise de alto volumen con pago anual, o un plan a la medida con nuestro equipo de ventas.",
+    "Elige la forma de contratar: autoservicio para operar desde la plataforma web, paquetes Enterprise de alto volumen, o contratación asistida con nuestro equipo para evaluar una integración API o SDK.",
   alternates: { canonical: "/comprar" },
   openGraph: {
     type: "website",
@@ -72,8 +72,13 @@ export default async function ComprarPage() {
       eyebrow: "Self-service",
       titulo: "Autoservicio",
       descripcion:
-        "Arma tu paquete de KYC, firma electrónica, validaciones y OCR. Paga en línea y actívalo al instante, sin vendedores.",
-      bullets: ["Paquetes estándar", "Pago único por paquete", "Activación inmediata", "Sin contratos"],
+        "Arma tu paquete de KYC, firma electrónica, validaciones y OCR. Compra en línea y opera desde la plataforma web de JAAK.",
+      bullets: [
+        "Uso exclusivo desde la plataforma web",
+        "No incluye API, SDK ni White Label en el paquete estándar",
+        "Integración API o SDK disponible mediante contratación asistida",
+        "Paquetes con vigencia de un año",
+      ],
       ctaLabel: "Explorar el catálogo",
       href: "/autoservicio",
       accent: TEAL,
@@ -88,7 +93,7 @@ export default async function ComprarPage() {
             titulo: "Enterprise",
             descripcion:
               "Los mismos productos, empaquetados para operaciones de alto volumen con pago anual y más consumo incluido.",
-            bullets: ["Volumen alto incluido", "Pago anual", "Activación inmediata"],
+            bullets: ["Volumen alto incluido", "Pago anual"],
             ctaLabel: "Ver paquetes Enterprise",
             href: "/autoservicio-enterprise",
             accent: GOLD,
@@ -103,7 +108,13 @@ export default async function ComprarPage() {
       descripcion: hayEnterprise
         ? "Volúmenes especiales, esquemas de alianza o necesidades fuera del catálogo. Te acompaña un especialista."
         : "¿Alto volumen, Enterprise o un esquema de alianza? Nuestro equipo diseña un plan a la medida de tu operación.",
-      bullets: ["Volumen a la medida", "Precio negociado", "Onboarding asistido"],
+      bullets: [
+        "Volumen a la medida",
+        "Evaluación de integración API o SDK",
+        "Setup fee para integración, según alcance y volumen",
+        "Opciones de White Label según la propuesta contratada",
+        "Acompañamiento técnico conforme a la propuesta contratada",
+      ],
       ctaLabel: "Hablar con ventas",
       href: "/contacto",
       accent: NAVY,
@@ -143,7 +154,7 @@ export default async function ComprarPage() {
             </h1>
             <p className="mx-auto mt-5 max-w-xl text-[16px] leading-relaxed" style={{ color: "rgba(255,255,255,0.72)" }}>
               El mismo catálogo de identidad, firma y validaciones, con el empaque que se ajusta a tu operación.
-              Elige tu camino y empieza en minutos.
+              Elige tu camino: compra directa en la plataforma web o contratación asistida para integración API.
             </p>
           </div>
         </section>

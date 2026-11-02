@@ -1,10 +1,43 @@
-// Structured Data for Signa SEO
+// Structured Data de Signa (SEO). Decisión editorial permanente (AUD-01): sin precios, ofertas,
+// tarifas, comparaciones económicas ni cifras de clientes. No agregar tipos `Offer`/`price`.
+
+export const signaFaqItems = [
+  {
+    q: "¿Qué tipos de firma electrónica ofrece JAAK para empresas?",
+    a: "JAAK ofrece modalidades que van de la firma simple a la firma digital con sello de tiempo conforme a NOM-151, con opciones que incorporan verificación biométrica o KYC. La modalidad adecuada depende del tipo de documento y de los requisitos de tu operación.",
+  },
+  {
+    q: "¿Qué es la NOM-151 y cuándo conviene usarla?",
+    a: "La NOM-151-SCFI-2016 establece requisitos para la conservación de mensajes de datos y documentos digitalizados. Algunas modalidades de JAAK incorporan constancia de conservación y sello de tiempo conforme a esta norma. La pertinencia para cada documento debe validarse con tu área legal o de cumplimiento.",
+  },
+  {
+    q: "¿Puedo verificar la identidad de los firmantes?",
+    a: "Sí. Existen modalidades que incorporan biometría facial con prueba de vida o verificación KYC completa (identificación oficial, CURP, biometría y consulta de listas), según la contratación.",
+  },
+  {
+    q: "¿Puedo usar la firma electrónica de JAAK por Web, API o SDK?",
+    a: "Puedes utilizarla desde la plataforma web de JAAK o evaluar una integración por API o SDK con tus sistemas y aplicaciones. Las integraciones se definen con el equipo comercial y consideran una cuota de configuración (setup fee).",
+  },
+  {
+    q: "¿Existe una opción White Label?",
+    a: "Existe la posibilidad de personalización White Label conforme al alcance de la propuesta comercial contratada.",
+  },
+  {
+    q: "¿Qué soporte ofrece JAAK?",
+    a: "Soporte y acompañamiento especializado en español, desde México, conforme al plan y las condiciones acordadas con nuestro equipo comercial.",
+  },
+  {
+    q: "¿Cómo comparo JAAK con otros proveedores como Mifiel o DocuSign?",
+    a: "Te recomendamos comparar capacidades funcionales: modalidades de firma, verificación de identidad, evidencia digital, NOM-151, modalidades de integración y alcance del soporte, consultando las fuentes oficiales de cada proveedor. Nuestra página de comparación incluye una lista de criterios para evaluar proveedores.",
+  },
+];
+
 export const signaOrganizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "JAAK",
   "alternateName": ["Signa", "Signa Firma Electrónica"],
-  "description": "Firma electrónica profesional para México con tecnología 2026. 50% más económica que la competencia.",
+  "description": "JAAK ofrece soluciones de firma electrónica para empresas en México, con modalidades de firma, verificación de identidad, evidencia digital y opciones de integración.",
   "url": "https://jaak.ai/signa",
   "logo": "https://jaak.ai/images/logos/jaak-logo-azul.png",
   "contactPoint": {
@@ -17,42 +50,15 @@ export const signaOrganizationSchema = {
   "areaServed": {
     "@type": "Country",
     "name": "México"
-  },
-  "hasOfferingCatalog": {
-    "@type": "OfferingCatalog",
-    "name": "Servicios de Firma Electrónica",
-    "itemListElement": [
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Signa · Firma Electrónica Profesional",
-          "description": "Firma electrónica válida en México con NOM-151",
-          "provider": "JAAK",
-          "areaServed": "MX"
-        }
-      }
-    ]
-  },
-  "makesOffer": {
-    "@type": "Offer",
-    "itemOffered": {
-      "@type": "Service",
-      "name": "Firma Electrónica",
-      "description": "Servicio de firma electrónica profesional para México"
-    },
-    "price": "15.00",
-    "priceCurrency": "MXN",
-    "availability": "https://schema.org/InStock",
-    "validFrom": "2026-02-19"
   }
 };
 
 export const signaServiceSchema = {
   "@context": "https://schema.org",
   "@type": "Service",
-  "name": "Signa · Firma Electrónica Profesional",
-  "description": "Servicio de firma electrónica con validez legal en México. NOM-151 certificado, tecnología 2026, soporte 24/7.",
+  "name": "Firma electrónica para empresas · Signa JAAK",
+  "serviceType": "Firma electrónica",
+  "description": "Soluciones de firma electrónica para empresas en México: NOM-151, biometría, KYC, evidencia digital y opciones de integración por Web, API o SDK.",
   "provider": {
     "@type": "Organization",
     "name": "JAAK",
@@ -62,40 +68,9 @@ export const signaServiceSchema = {
     "@type": "Country",
     "name": "México"
   },
-  "offers": {
-    "@type": "Offer",
-    "price": "15.00",
-    "priceCurrency": "MXN",
-    "priceValidUntil": "2026-12-31",
-    "availability": "https://schema.org/InStock",
-    "url": "https://jaak.ai/signa",
-    "description": "50% más económico que la competencia"
-  },
-  "hasOfferingCatalog": {
-    "@type": "OfferingCatalog",
-    "name": "Servicios de Firma Digital",
-    "itemListElement": [
-      {
-        "@type": "Offer",
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Firma de Contratos",
-          "description": "Firma electrónica para contratos empresariales"
-        }
-      },
-      {
-        "@type": "Offer", 
-        "itemOffered": {
-          "@type": "Service",
-          "name": "Documentos Legales",
-          "description": "Firma de documentos con validez legal NOM-151"
-        }
-      }
-    ]
-  },
   "audience": {
     "@type": "BusinessAudience",
-    "audienceType": "Pequeñas y medianas empresas",
+    "audienceType": "Empresas",
     "geographicArea": {
       "@type": "Country",
       "name": "México"
@@ -106,57 +81,18 @@ export const signaServiceSchema = {
 export const signaFAQSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "¿Cuánto cuesta Signa vs Mifiel?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Signa cuesta $15 MXN por firma vs $29.90 MXN de Mifiel. Esto representa un ahorro del 50% con la misma validez legal NOM-151."
-      }
-    },
-    {
-      "@type": "Question", 
-      "name": "¿Signa tiene validez legal en México?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Sí, Signa cumple con NOM-151-SCFI-2016 y tiene plena validez legal en México para todo tipo de documentos empresariales y contratos."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "¿Cuánto tiempo toma migrar de Mifiel a Signa?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "La migración de Mifiel a Signa toma entre 24-48 horas y es completamente gratuita. Te ayudamos con todo el proceso."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "¿Qué ventajas tiene Signa sobre DocuSign?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Signa es 50% más económico que DocuSign, está optimizado para México con NOM-151, soporte en español 24/7, y no requiere contratos anuales."
-      }
-    }
-  ]
+  "mainEntity": signaFaqItems.map((f) => ({
+    "@type": "Question",
+    "name": f.q,
+    "acceptedAnswer": { "@type": "Answer", "text": f.a },
+  })),
 };
 
 export const signaBreadcrumbSchema = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Jaak.ai",
-      "item": "https://jaak.ai"
-    },
-    {
-      "@type": "ListItem", 
-      "position": 2,
-      "name": "Signa",
-      "item": "https://jaak.ai/signa"
-    }
-  ]
+    { "@type": "ListItem", "position": 1, "name": "Jaak.ai", "item": "https://jaak.ai" },
+    { "@type": "ListItem", "position": 2, "name": "Signa", "item": "https://jaak.ai/signa" },
+  ],
 };
