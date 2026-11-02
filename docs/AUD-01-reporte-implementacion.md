@@ -394,7 +394,9 @@ Tile "A medida · Niveles de servicio según contratación" → "A medida · **N
 Nuevo texto único: "Nuestro equipo comercial se pondrá en contacto contigo para conocer las necesidades de tu empresa." Reemplaza: `bancos` ("Un arquitecto de soluciones te contacta en menos de 24 horas"), `chronos`, `contacto/page.tsx` (+ "Completa el formulario."), `contacto/layout.tsx` (meta: "Respuesta en menos de 24 horas" → "Nuestro equipo comercial se pondrá en contacto contigo."), `soluciones/recursos-humanos`, `salud`, `financieras` (mensaje de éxito), `inmobiliarias` (texto + mensaje de éxito), `webinar` (confirmación). Formularios, campos, envíos e integraciones sin cambios.
 **Conservado:** "respuesta en menos de un minuto/segundos" (rendimiento del producto), plazos regulatorios de 24 h en el blog y `uif`, "24 horas hábiles" post-compra (AUD-04), códigos que expiran en 24 horas.
 
-## F4. Pendientes de revisión comercial (afirmaciones marcadas, sin sustituto cuantitativo)
+## F4. (SUPERADO por la Continuación 6) Pendientes de revisión comercial de cifras de Signa
+> Las cifras, tarifas y comparativas económicas de Signa listadas aquí fueron eliminadas de forma permanente en la Continuación 6; ya no hay validación ni restitución pendiente. Los banderas `SHOW_TESTIMONIALS` y `SHOW_CASOS_EXITO` dejaron de existir.
+
 **Signa — cifras y tarifas no confirmadas (no modificadas):** "$15 por firma", "$29.90 Mifiel", "50% más barata/ahorro", "Pago por uso, sin mínimos", "No requiere contratos anuales" (schema), "Setup fee: $2,500 MXN" y cuota/soporte de competidores, "2.5x más rápida", "Más de 1,000 empresas ya migraron" / "1,000+ que ya ahorran", "Promedio $26,000 anuales" (meta de la calculadora), "50% más económico que DocuSign", titles/OG con "50% Más Barata que Mifiel", fila de cuota mensual en comparación y resultados de la calculadora. Requieren validar tarifas vigentes, base de comparación y respaldo de las comparativas con competidores antes de publicar.
 - Los **testimonios y casos de éxito** ocultos (F3) deben validarse (fuente, consentimiento, cifras) antes de restituir.
 - Texto de soporte y de acompañamiento "según contratación" en Signa: Producto/Comercial.
@@ -435,8 +437,8 @@ Capturas en el scratchpad de la sesión (no en el repositorio).
 
 **Necesita aprobación / decisión**
 - [ ] Textos nuevos de soporte/acompañamiento en Signa y los formularios (Producto/Comercial)
-- [ ] Cifras y tarifas de Signa (F4) y comparativas con Mifiel/DocuSign
-- [ ] Validación y restitución (o descarte) de testimonios y casos de éxito de Signa
+- ~~Cifras y tarifas de Signa (F4) y comparativas con Mifiel/DocuSign~~ → **Superado por la Continuación 6: se eliminaron de forma permanente.**
+- ~~Validación y restitución de testimonios y casos de éxito de Signa~~ → **Superado por la Continuación 6: eliminados; no hay restitución pendiente.**
 - [ ] Soporte/contrato propio de Signa, si existe
 - [ ] Homologación de Autoservicio Enterprise al activarse (F5)
 - [ ] AUD-04 (activación inmediata y "24 horas hábiles" post-compra)
@@ -458,3 +460,89 @@ Capturas en el scratchpad de la sesión (no en el repositorio).
 | AUD-01.37 | `/firma-electronica`, `/signa/calculadora` | Desbordamiento móvil | Registrado como CRO | — | Registrado | mediciones | Actividad CRO |
 
 **Estado general de AUD-01: En validación.** No se marca completada: faltan aprobación de Producto/Comercial, validación de cifras de Signa, QA en dispositivos reales y confirmación de publicación. No se publicó a producción.
+
+
+---
+
+# Continuación 6 — Reestructuración estratégica de Signa (SEO, SEM y conversión sin precios públicos) (2026-11-02)
+
+## G1. Decisión comercial definitiva
+> **Las páginas comerciales de Signa no publicarán tarifas propias ni precios de competidores y no utilizarán comparaciones económicas como propuesta de valor. Su posicionamiento SEO/SEM se centrará en capacidades funcionales, modalidades de firma, evidencia, integración y necesidades empresariales.**
+
+Es una decisión editorial permanente: no se dejaron banderas ni componentes ocultos para reactivar precios o ahorros, y la restauración de precios **no** es una tarea pendiente. No aplica a Autoservicio ni a su catálogo, tarifas o checkout (sin cambios). Esta sección **sustituye** los puntos de Signa de las continuaciones 4 y 5 (cifras por validar, restitución de testimonios).
+
+## G2. Textos y componentes eliminados
+- **Eliminados del repositorio** (permanecen solo en el historial de git): `signa/SignaSavingsCalculator.tsx` (calculadora de ahorro), `signa/calculadora/page.tsx` (calculadora, casos de éxito con cifras, FAQ de migración/garantía) y `signa/seo-content.tsx` (contenido SEO con precios; no se importaba en ningún lugar).
+- **Retirado de `/signa` y `/signa/comparacion`:** "$15 por firma", "$29.90 de Mifiel", "50% más barata/menos/ahorro", "ahorro promedio $26,000", tarifas de setup y cuotas de competidores, tablas y gráficas de ahorro, "sin mínimos", "sin contratos anuales", "Más de 1,000 empresas ya migraron", "1,000+", "2.5x más rápida", "mejor firma electrónica en México", testimonios con cifras, "tecnología 2026 vs legacy", afirmaciones de superioridad sobre competidores y las cruces/checks que implicaban carencias de terceros.
+- **JSON-LD:** eliminados `Offer`, `price`/`priceCurrency`, `priceValidUntil`, `OfferingCatalog`, "50% más económica" y el FAQ de "¿Cuánto cuesta Signa vs Mifiel?". Las imágenes OG que no existían en `public/` (`signa-og-image.jpg`, etc., con alt de precio) se sustituyeron por el logo existente.
+- **Sitemap:** retirada la URL `/signa/calculadora` de `src/app/sitemap.ts` y de `public/signa-sitemap.xml`. **Redirect permanente (308)** `/signa/calculadora → /signa` en `next.config.ts` para conservar el tráfico y evitar un 404.
+- **Navegación:** "Comparación de planes (Signa) — Compara niveles de firma y precio" → "Comparación de firma electrónica (Signa) — Compara modalidades, evidencia e integración" (`src/config/navigation.ts`).
+
+## G3. Componentes y páginas reestructurados
+| Archivo | Qué es |
+|---|---|
+| `src/app/signa/page.tsx` | Landing reescrita: Hero, Modalidades de firma, Capacidades, Selector de orientación, Sectores, FAQ, CTA final |
+| `src/components/signa/SignaSolutionFinder.tsx` (nuevo) | Selector interactivo de 5 preguntas; reutiliza `getRecommendation` y `signatureLevels` (`src/lib/firma/levels.ts`); orienta a una modalidad y a un modo de uso, **sin** determinar validez legal, capacidad técnica ni precios |
+| `src/components/signa/SignaTrackedLink.tsx` (nuevo) | Enlace con evento `cta_click` (GTM) para medir conversiones por ubicación |
+| `src/app/signa/comparacion/page.tsx` | Comparación funcional reescrita |
+| `src/app/signa/schema.tsx` | JSON-LD sin ofertas; FAQ compartido entre contenido visible y JSON-LD (`signaFaqItems`) |
+
+## G4. Nuevos mensajes
+**/signa** — H1 "Firma electrónica para empresas en México"; descripción: "Digitaliza la firma de documentos y fortalece tus procesos con soluciones de firma electrónica, verificación de identidad y evidencia digital, según las necesidades de tu operación." CTA principal "Solicitar una demo" (→ `/contacto`), secundario "Comparar modalidades" (→ `/signa/comparacion`). Beneficios: NOM-151, biometría/KYC, evidencia y trazabilidad, Web/API/SDK según contratación, White Label según propuesta, atención en español desde México según contrato; las 4 modalidades (Firma Simple, NOM-151, NOM-151 + Biometría, NOM-151 + KYC) se presentan por separado con sus capacidades. Selector: "Encuentra la solución de firma electrónica para tu empresa" con las 5 preguntas pedidas y CTA "Solicitar una propuesta para mi operación". Sectores: recursos humanos, servicios financieros, inmobiliarias, contratos empresariales y onboarding (necesidades, sin cifras de clientes). FAQ de 7 preguntas sin precios ni garantías absolutas.
+**/signa/comparacion** — H1 "Comparación de firma electrónica para empresas en México"; tabla de capacidades de las modalidades de JAAK (generada desde `signatureLevels`, sin datos nuevos; en móvil se muestra como tarjetas, sin desbordamiento); 9 criterios de evaluación (modalidades, identidad, evidencia, NOM-151, Web/API/SDK, White Label, implementación, soporte, documentación) con "Qué revisar" y "En JAAK"; sección "Alternativas a Mifiel y DocuSign: cómo comparar proveedores" **neutral**: no se atribuyen prestaciones, carencias ni precios a terceros, con preguntas para evaluar a cualquier proveedor.
+
+## G5. Metadatos
+| Página | Title | Meta description |
+|---|---|---|
+| `/signa` | Firma electrónica para empresas en México \| Signa JAAK (`absolute`, sin sufijo duplicado) | Conoce las soluciones de firma electrónica de JAAK para empresas: NOM-151, biometría, KYC, evidencia digital y opciones de integración. |
+| `/signa/comparacion` | Comparación de firma electrónica para empresas \| JAAK (`absolute`) | Compara modalidades, evidencia, verificación de identidad e integración para elegir una solución de firma electrónica empresarial en México. |
+OG y Twitter: mismos title/description e imagen (logo existente); canonicals y URLs sin cambios; keywords naturales (firma electrónica México/para empresas/NOM-151/con biometría/con KYC, alternativas a Mifiel/DocuSign, comparación, plataforma). JSON-LD: Organization, Service, FAQPage y BreadcrumbList en `/signa`; BreadcrumbList en `/signa/comparacion`; **ninguno con precios u ofertas**.
+
+## G6. Enlaces internos y CTA
+Producto: `/firma-electronica-simple`, `/firma-electronica-nom-151`, `/firma-electronica-biometrica`, `/firma-electronica-kyc`, `/firma-electronica`, `/docs`. Sectores: `/soluciones/recursos-humanos`, `/soluciones/instituciones-financieras`, `/inmobiliarias`, `/soluciones/onboarding-digital`. Conversión: "Solicitar una demo" y "Solicitar una propuesta para mi operación" → `/contacto` (formulario HubSpot existente, sin cambios); "Comparar modalidades" → `/signa/comparacion`; "Encontrar mi modalidad" → `/signa#orientacion`. Cada CTA emite `cta_click` con `source`, `destination` y `page_path`; el selector añade `signa_recommendation`. El botón "Agendar demo" global (HubSpot Meetings) se conserva en el banner.
+
+## G7. Preparación SEM
+Propuesta de valor y CTA visibles en el primer bloque (también en móvil); navegación móvil intacta; sin formularios nuevos (el contacto usa el formulario existente); sin promesas de ahorro, precios ni resultados; medición por eventos de CTA. **No se modificaron campañas ni se activaron anuncios.** Propuestas de grupos de anuncios y mensajes: documento separado `docs/AUD-01-signa-sem-propuesta.md`.
+
+## G8. Archivos modificados
+Nuevos: `src/components/signa/SignaTrackedLink.tsx`, `src/components/signa/SignaSolutionFinder.tsx`, `docs/AUD-01-signa-sem-propuesta.md`. Reescritos: `src/app/signa/page.tsx`, `src/app/signa/comparacion/page.tsx`, `src/app/signa/schema.tsx`. Eliminados: `src/app/signa/SignaSavingsCalculator.tsx`, `src/app/signa/calculadora/page.tsx`, `src/app/signa/seo-content.tsx`. Editados: `next.config.ts` (redirect), `src/app/sitemap.ts`, `public/signa-sitemap.xml`, `src/config/navigation.ts`. Sin cambios: Autoservicio (catálogo, tarifas, checkout), Autoservicio Enterprise, post-compra, documentación técnica y autenticación (`git diff` vacío).
+
+## G9. Validaciones
+| Prueba | Resultado |
+|---|---|
+| `npm run lint` | 0 errores; 2 warnings preexistentes |
+| `tsc --noEmit` | OK tras `npm run build` (un error previo provenía de tipos obsoletos en `.next` de la página eliminada) |
+| `npm test` | 136/136 |
+| `npm run build` | OK; `/signa` y `/signa/comparacion` generadas |
+| Redirect `/signa/calculadora` | 308 → `/signa` |
+| Render a 375 y 1280 px | Sin desbordamiento horizontal en ambas páginas; 1 H1 por página, H2/H3 jerárquicos |
+| Texto visible | Sin importes ("$"), "ahorro", 24/7, gratis, garantía ni "más barata" |
+| JSON-LD propio de las páginas | Sin `Offer`/`price` |
+| Selector (prueba interactiva) | Respuestas "contratos / biometría / NOM-151 / API / cientos" → "Firma Digital NOM-151 + Biometría", modo API con setup fee, aviso informativo y CTA |
+| CTA | Verificados los destinos (arriba) |
+| Búsqueda global de cifras/claims antiguos en `src/app/signa`, `src/components/signa`, navegación y sitemaps | 0 coincidencias (solo un comentario que declara la política) |
+| Títulos | Se corrigió el sufijo duplicado "\| JAAK \| JAAK" |
+| Capturas revisadas | Hero móvil, selector (escritorio), cabecera y tabla de comparación (escritorio). En el scratchpad de la sesión, no en el repositorio |
+No se revisó a ojo cada sección (solo las capturas citadas); dispositivo real pendiente.
+
+## G10. Hallazgos y pendientes (solo validaciones técnicas, legales, editoriales o de UX)
+1. **JSON-LD global del sitio** (`src/app/layout.tsx`): contiene un `AggregateOffer` (MXN, rango de precios del catálogo de Autoservicio hacia `/precios`) que se emite en todas las páginas, incluidas las de Signa. No es una oferta de Signa ni se tocó (sitio completo, fuera de alcance); decisión técnica de SEO: moverlo a las páginas donde se muestren esos precios o mantenerlo.
+2. **Revisión legal/editorial** de los textos sobre NOM-151, de los descriptores de modalidades y de la sección neutral sobre Mifiel y DocuSign (uso de marcas de terceros como palabras clave).
+3. **Imágenes OG propias de Signa** (con contenido alineado a la nueva propuesta de valor): hoy se usa el logo existente; diseño editorial.
+4. **UX:** validar el selector (copy de preguntas, resultado y presencia de la nota informativa) con usuarios y confirmar si "Solicitar una demo" debe apuntar a `/contacto` (formulario) o al enlace de agenda de HubSpot Meetings, según la meta de conversión SEM.
+5. **Páginas de producto enlazadas** (`/firma-electronica-*`, `/firma-electronica`): no se auditaron en esta ronda; se enlazan tal cual.
+6. Pendientes vigentes de rondas anteriores que no dependen de Signa: AUD-04, homologación de Autoservicio Enterprise al activarse, aviso de docs con sandbox y "Sandbox Status" del footer, actividad CRO (desbordamiento de tabla en `/firma-electronica`), QA en dispositivos reales y confirmación de publicación.
+
+## G11. Tabla de subtareas
+| ID | URL | Sección | Cambio | Archivo | Estado | Aprobación pendiente |
+|---|---|---|---|---|---|---|
+| AUD-01.38 | `/signa` | Hero, modalidades, capacidades, sectores, FAQ, CTA | Reestructurada sin precios ni ahorros | `signa/page.tsx` | Implementado | Producto/Comercial (copy) |
+| AUD-01.39 | `/signa` | Selector de orientación | Componente interactivo sin precios | `SignaSolutionFinder.tsx` | Implementado | UX |
+| AUD-01.40 | `/signa/comparacion` | Comparación funcional | Tabla de capacidades + criterios + sección neutral | `signa/comparacion/page.tsx` | Implementado | Legal/Editorial |
+| AUD-01.41 | `/signa*` | Metadatos y JSON-LD | Title/description/OG nuevos; sin ofertas | `page.tsx`, `comparacion/page.tsx`, `schema.tsx` | Implementado | — |
+| AUD-01.42 | `/signa/calculadora` | Calculadora de ahorro | Eliminada; redirect 308; fuera de sitemaps | `next.config.ts`, sitemaps | Implementado | — |
+| AUD-01.43 | Navegación | Enlace a comparación | Texto sin "precio" | `navigation.ts` | Implementado | — |
+| AUD-01.44 | `/signa*` | Medición SEM | Eventos `cta_click` | `SignaTrackedLink.tsx` | Implementado | Analítica (verificar en GTM) |
+| AUD-01.45 | SEM | Propuesta de campañas | Documento separado | `docs/AUD-01-signa-sem-propuesta.md` | Documentado (sin activar) | Marketing |
+
+**Estado general de AUD-01: En validación.** No se marca completada: faltan validación comercial y legal/editorial de los textos, QA final en dispositivos reales y confirmación de publicación. No se publicó a producción.

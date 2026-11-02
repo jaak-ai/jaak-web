@@ -12,6 +12,8 @@ const nextConfig: NextConfig = {
       { source: "/consulta-listas-riesgo", destination: "/listas-de-riesgo-pld-aml", permanent: true },
       { source: "/listas-de-riesgo", destination: "/listas-de-riesgo-pld-aml", permanent: true },
       { source: "/listas-pld", destination: "/listas-de-riesgo-pld-aml", permanent: true },
+      // Calculadora de ahorro de Signa retirada de forma permanente (AUD-01): sin cálculos económicos.
+      { source: "/signa/calculadora", destination: "/signa", permanent: true },
     ];
   },
 };
