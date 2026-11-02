@@ -10,6 +10,7 @@ import {
   type QuizIdentity,
   type QuizIntegrity,
   type QuizRisk,
+  type SignatureLevel,
 } from "@/lib/firma/levels";
 
 /**
@@ -49,6 +50,25 @@ const VOLUME: Option<string>[] = [
   { value: "high", label: "Miles de documentos al mes" },
   { value: "unsure", label: "No lo sé todavía" },
 ];
+
+/**
+ * Capacidades de la modalidad sugerida, derivadas de la matriz de `signatureLevels` (misma fuente
+ * que la tabla de /signa/comparacion). Se muestran "incluye" y "no incluye" para que ninguna
+ * recomendación sugiera funciones que pertenecen a otra modalidad.
+ */
+function capabilities(level: SignatureLevel) {
+  const m = level.matrix;
+  const all = [
+    { label: "Sello de tiempo", on: m.timestamp },
+    { label: "Constancia NOM-151", on: m.nom151 },
+    { label: "Biometría facial con prueba de vida", on: m.biometria },
+    { label: "Verificación KYC completa", on: m.kyc },
+  ];
+  return {
+    includes: all.filter((c) => c.on).map((c) => c.label),
+    excludes: all.filter((c) => !c.on).map((c) => c.label),
+  };
+}
 
 const MODE_TEXT: Record<string, string> = {
   web: "Uso desde la plataforma web de JAAK, sin desarrollar una integración.",
@@ -118,14 +138,18 @@ export default function SignaSolutionFinder() {
 
   const level = useMemo(() => {
     if (!complete) return null;
+    // El tipo de documento NO se usa como atajo hacia KYC: la recomendación respeta lo que la
+    // persona indicó sobre identidad y sello de tiempo. Si no está segura de requerir NOM-151,
+    // se sugiere evaluar NOM-151 (sin atribuirle funciones de identidad).
     const answers: QuizAnswers = {
-      risk,
       identity,
-      integrity: integrity === "unsure" ? "datetime" : integrity,
+      integrity: integrity === "unsure" ? "nom151" : integrity,
     };
     const id = getRecommendation(answers);
     return signatureLevels.find((l) => l.id === id) ?? null;
-  }, [complete, risk, identity, integrity]);
+  }, [complete, identity, integrity]);
+
+  const caps = level ? capabilities(level) : null;
 
   return (
     <div className="rounded-2xl border border-white/10 bg-white/5 p-6 sm:p-8">
@@ -142,7 +166,29 @@ export default function SignaSolutionFinder() {
           <>
             <p className="text-xs font-semibold uppercase tracking-widest text-[#1ECAD3]">Modalidad sugerida para evaluar</p>
             <h3 className="mt-2 text-xl font-bold text-white">{level.name}</h3>
-            <p className="mt-2 text-sm text-white/75">{level.description}</p>
+            {caps && (
+              <ul className="mt-3 space-y-1 text-sm text-white/75">
+                <li>
+                  <strong className="text-white">Incluye:</strong>{" "}
+                  {caps.includes.length ? caps.includes.join(", ") : "firma con aceptación y bitácora básica"}
+                </li>
+                {caps.excludes.length > 0 && (
+                  <li>
+                    <strong className="text-white">No incluye:</strong> {caps.excludes.join(", ")}
+                  </li>
+                )}
+              </ul>
+            )}
+            {integrity === "unsure" && (
+              <p className="mt-2 text-sm text-white/75">
+                Como no estás seguro de requerir sello de tiempo o NOM-151, te sugerimos evaluarlo con tu área legal y con nuestro equipo.
+              </p>
+            )}
+            {risk === "regulated" && (
+              <p className="mt-2 text-sm text-white/75">
+                Si tu proceso es regulado, valida con tu área de cumplimiento los requisitos de identidad y evidencia aplicables.
+              </p>
+            )}
             <p className="mt-3 text-sm text-white/75">
               <strong className="text-white">Modalidad de uso:</strong> {MODE_TEXT[mode]}
             </p>

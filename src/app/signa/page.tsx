@@ -99,19 +99,19 @@ const MODALITIES = [
   },
   {
     name: "Firma Digital NOM-151",
-    text: "Sello de tiempo y constancia de conservación conforme a NOM-151, con expediente digital y bitácora para contratos y documentos que requieren evidencia de integridad.",
+    text: "Modalidad que incorpora sello de tiempo y constancia de conservación NOM-151, con expediente digital y bitácora de la operación. No incluye verificación de identidad.",
     href: "/firma-electronica-nom-151",
     cta: "Ver Firma NOM-151",
   },
   {
     name: "NOM-151 + Biometría",
-    text: "Suma reconocimiento facial con prueba de vida a la firma, para contar con evidencia de la identidad del firmante.",
+    text: "Suma biometría facial con prueba de vida a la modalidad NOM-151. No incluye la verificación KYC completa.",
     href: "/firma-electronica-biometrica",
     cta: "Ver NOM-151 + Biometría",
   },
   {
     name: "NOM-151 + KYC",
-    text: "Verificación de identidad completa (identificación oficial, CURP, biometría y consulta de listas) integrada con la firma, para procesos regulados.",
+    text: "Suma la verificación KYC completa (identificación oficial, CURP, biometría y consulta de listas) a la modalidad NOM-151, para procesos con requisitos de verificación ampliados.",
     href: "/firma-electronica-kyc",
     cta: "Ver NOM-151 + KYC",
   },
@@ -119,20 +119,20 @@ const MODALITIES = [
 
 const CAPABILITIES = [
   { title: "Firma electrónica para documentos empresariales", text: "Contratos, autorizaciones, acuerdos y documentos operativos firmados de forma digital." },
-  { title: "Alternativas con NOM-151", text: "Modalidades que incorporan sello de tiempo y constancia de conservación conforme a NOM-151." },
+  { title: "Alternativas con NOM-151", text: "Modalidades que incorporan sello de tiempo y constancia de conservación NOM-151; la pertinencia para cada documento debe validarse con tu área legal." },
   { title: "Biometría y verificación KYC", text: "Opciones para verificar la identidad del firmante, desde biometría facial hasta KYC completo." },
-  { title: "Evidencia y trazabilidad", text: "Bitácora de eventos y expediente digital de cada operación de firma." },
+  { title: "Evidencia y trazabilidad", text: "Modalidades que registran bitácora de eventos y expediente digital; el alcance varía según la modalidad." },
   { title: "Web, API o SDK", text: "Uso desde la plataforma web o integración por API o SDK, según contratación." },
   { title: "White Label", text: "Posibilidad de personalización de marca conforme a la propuesta comercial." },
   { title: "Atención en español desde México", text: "Soporte y acompañamiento especializado según el plan y las condiciones acordadas." },
 ];
 
 const SECTORS = [
-  { name: "Recursos humanos", text: "Contratos laborales, cartas y autorizaciones del personal, con trazabilidad de cada firma.", href: "/soluciones/recursos-humanos" },
+  { name: "Recursos humanos", text: "Contratos laborales, cartas y autorizaciones del personal, con registro de la operación de firma.", href: "/soluciones/recursos-humanos" },
   { name: "Servicios financieros", text: "Contratos y documentos de procesos regulados, con opciones de verificación de identidad y evidencia.", href: "/soluciones/instituciones-financieras" },
-  { name: "Inmobiliarias", text: "Contratos de compraventa y arrendamiento, con evidencia de firma y verificación de las partes.", href: "/inmobiliarias" },
-  { name: "Contratos empresariales", text: "Acuerdos con clientes y proveedores, con sello de tiempo y expediente digital.", href: "/firma-electronica-nom-151" },
-  { name: "Procesos de onboarding", text: "Alta de clientes con verificación de identidad y firma en un mismo flujo.", href: "/soluciones/onboarding-digital" },
+  { name: "Inmobiliarias", text: "Contratos de compraventa y arrendamiento, con opciones de verificación de las partes.", href: "/inmobiliarias" },
+  { name: "Contratos empresariales", text: "Acuerdos con clientes y proveedores, con opciones de sello de tiempo y expediente digital.", href: "/firma-electronica-nom-151" },
+  { name: "Procesos de onboarding", text: "Alta de clientes con opciones de verificación de identidad y firma en un mismo flujo.", href: "/soluciones/onboarding-digital" },
 ];
 
 export default function SignaHome() {

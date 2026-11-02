@@ -73,12 +73,12 @@ const CRITERIA = [
   {
     name: "Evidencia digital",
     check: "¿Qué evidencia se genera y puede descargarse?",
-    jaak: "Bitácora de eventos y expediente digital; el nivel varía según la modalidad.",
+    jaak: "Modalidades con bitácora de eventos y expediente digital; el alcance varía según la modalidad.",
   },
   {
     name: "NOM-151",
     check: "Cuando tu caso lo requiera: ¿incorpora constancia de conservación y sello de tiempo?",
-    jaak: "Modalidades con NOM-151. La pertinencia para cada documento debe validarse con tu área legal.",
+    jaak: "Modalidades que incorporan sello de tiempo y constancia de conservación NOM-151. La pertinencia para cada documento debe validarse con tu área legal.",
   },
   {
     name: "Modalidades Web, API y SDK",
@@ -129,7 +129,6 @@ export default function SignaComparacion() {
     nom151: yesNo(l.matrix.nom151),
     biometria: yesNo(l.matrix.biometria),
     kyc: yesNo(l.matrix.kyc),
-    evidence: l.matrix.evidenceLevel,
     useCase: l.matrix.useCase,
   }));
 
@@ -177,7 +176,7 @@ export default function SignaComparacion() {
               Modalidades de firma electrónica de JAAK
             </h2>
             <p className="text-gray-600 mb-8 max-w-3xl">
-              Cada modalidad incorpora capacidades distintas de identidad, sello de tiempo y evidencia. Elige según el
+              Cada modalidad incorpora capacidades distintas de identidad y sello de tiempo. Elige según el
               tipo de documento y los requisitos de tu proceso.
             </p>
 
@@ -186,7 +185,7 @@ export default function SignaComparacion() {
               <table className="w-full text-sm text-left" aria-label="Comparación de modalidades de firma electrónica de JAAK">
                 <thead className="bg-gray-50 text-gray-700">
                   <tr>
-                    {["Modalidad", "Verificación de identidad", "Sello de tiempo", "NOM-151", "Biometría", "KYC", "Nivel de evidencia", "Uso típico"].map((h) => (
+                    {["Modalidad", "Verificación de identidad", "Sello de tiempo", "NOM-151", "Biometría", "KYC", "Ejemplos de uso"].map((h) => (
                       <th key={h} scope="col" className="px-4 py-3 font-semibold">{h}</th>
                     ))}
                   </tr>
@@ -202,7 +201,6 @@ export default function SignaComparacion() {
                       <td className="px-4 py-3 text-gray-700">{r.nom151}</td>
                       <td className="px-4 py-3 text-gray-700">{r.biometria}</td>
                       <td className="px-4 py-3 text-gray-700">{r.kyc}</td>
-                      <td className="px-4 py-3 text-gray-700">{r.evidence}</td>
                       <td className="px-4 py-3 text-gray-700">{r.useCase}</td>
                     </tr>
                   ))}
@@ -224,7 +222,6 @@ export default function SignaComparacion() {
                       ["NOM-151", r.nom151],
                       ["Biometría", r.biometria],
                       ["KYC", r.kyc],
-                      ["Nivel de evidencia", r.evidence],
                     ].map(([k, v]) => (
                       <div key={k}>
                         <dt className="text-xs text-gray-500">{k}</dt>
@@ -232,7 +229,7 @@ export default function SignaComparacion() {
                       </div>
                     ))}
                   </dl>
-                  <p className="mt-3 text-xs text-gray-500">Uso típico: {r.useCase}</p>
+                  <p className="mt-3 text-xs text-gray-500">Ejemplos de uso: {r.useCase}</p>
                 </div>
               ))}
             </div>

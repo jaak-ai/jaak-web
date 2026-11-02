@@ -546,3 +546,102 @@ No se revisó a ojo cada sección (solo las capturas citadas); dispositivo real 
 | AUD-01.45 | SEM | Propuesta de campañas | Documento separado | `docs/AUD-01-signa-sem-propuesta.md` | Documentado (sin activar) | Marketing |
 
 **Estado general de AUD-01: En validación.** No se marca completada: faltan validación comercial y legal/editorial de los textos, QA final en dispositivos reales y confirmación de publicación. No se publicó a producción.
+
+
+---
+
+# Continuación 7 — Preparación de cierre, validación y publicación controlada (2026-11-02)
+
+## H1. JSON-LD global
+`src/app/layout.tsx`: se **retiró el `AggregateOffer`** de `SoftwareApplication` ("JAAK Platform": MXN, 14–25,375, 45 ofertas). Se conservan los datos institucionales (Organization con dirección y contacto, WebSite, SoftwareApplication sin `offers`, `featureList`). No se trasladó nada: `/precios` y `/autoservicio` **ya** emiten sus propios `Product` + `AggregateOffer` del catálogo visible, que es donde corresponden. Catálogo, tarifas y compra sin cambios.
+Validación (render de producción, 5 rutas): todos los bloques JSON-LD son JSON válido; `/`, `/signa` y `/signa/comparacion` **sin** `offers`/`Offer`/`price*`; `/precios` y `/autoservicio` conservan sus ofertas. Nota SEO: sin `offers`, `SoftwareApplication` deja de ser elegible para el resultado enriquecido de producto/precio en la home; es lo esperado.
+
+## H2. Afirmaciones NOM-151 y relacionadas
+Reformuladas en `/signa` y `/signa/comparacion` (ver tabla completa en `docs/AUD-01-signa-afirmaciones-revision.md`, 13 filas + hallazgos fuera de Signa): se retiró "conforme a NOM-151", "para procesos regulados", "evidencia de la identidad", la trazabilidad de alcance uniforme y la columna "Nivel de evidencia" (calificaciones Baja…Máxima); cada tarjeta indica qué **no** incluye. **Ninguna afirmación jurídica se declara aprobada.**
+
+## H3. Competidores
+Mifiel y DocuSign aparecen solo como alternativas del mercado (sección neutral, FAQ y palabras clave "alternativas a…"). Sin precios, capacidades, carencias, desempeño ni condiciones. Revisado con búsqueda en `src/app/signa` y `src/components/signa`.
+
+## H4. Selector: lógica y matriz de pruebas
+Cambios de lógica (`SignaSolutionFinder.tsx`):
+- La recomendación **ya no usa el tipo de documento** como atajo hacia KYC (antes, "documentos regulados" recomendaba KYC aunque la persona respondiera que no necesitaba verificar identidad). Ahora respeta identidad y sello de tiempo; si el proceso es regulado se muestra la nota "valida con tu área de cumplimiento…".
+- "No estoy seguro" sobre NOM-151 ya no recomienda Firma Simple: sugiere **evaluar NOM-151** con nota para validarlo con el área legal y el equipo.
+- El resultado muestra **Incluye / No incluye** derivados de la matriz `signatureLevels` (misma fuente que la tabla de comparación), de modo que ninguna modalidad aparente incluir funciones de otra. Se retiró la descripción libre del nivel.
+Pruebas con la UI real (Playwright, build de producción):
+| # | Entradas (docs / identidad / sello / modo / volumen) | Esperado | Obtenido | Incluye | No incluye | Modo | Nota |
+|---|---|---|---|---|---|---|---|
+| S1 | bajo riesgo / no / no / Web / pocos | Firma Simple | Firma Simple ✔ | firma con aceptación y bitácora básica | sello, NOM-151, biometría, KYC | Web | — |
+| S2 | contratos / no / solo sello / Web / cientos | Firma Certificada con Sellos de Tiempo | ✔ | sello de tiempo | NOM-151, biometría, KYC | Web | — |
+| S3 | contratos / no / NOM-151 / Web / cientos | Firma Digital NOM-151 | ✔ | sello, NOM-151 | biometría, KYC | Web | — |
+| S4 | contratos / no / NOM-151 / **API** / miles | Firma Digital NOM-151 | ✔ | sello, NOM-151 | biometría, KYC | API: evaluación comercial + setup fee | — |
+| S5 | otros / biometría / NOM-151 / **SDK** / cientos | NOM-151 + Biometría | ✔ | sello, NOM-151, biometría | KYC | SDK: evaluación comercial + setup fee | — |
+| S6 | regulados / KYC / NOM-151 / Web / miles | NOM-151 + KYC | ✔ | las 4 | — | Web | nota de proceso regulado |
+| S7 | regulados / no / no / no sé / no sé | Firma Simple (respeta respuestas) | ✔ | básica | las 4 | ayuda a definir | nota de proceso regulado |
+| S8 | contratos / no / **no estoy seguro** / Web / no sé | NOM-151 (a evaluar) | ✔ | sello, NOM-151 | biometría, KYC | Web | nota "no estás seguro" |
+| S9 | otros / KYC / **no** / API / pocos | NOM-151 + KYC | ✔ | las 4 | — | API (setup fee) | ver observación |
+**Resultado: 9/9 como se esperaba; ningún resultado contiene precios, tarifas, garantías ni promesas de validez legal; todos muestran el aviso informativo ("no determina la validez legal…, la capacidad técnica requerida ni las condiciones comerciales").** Observación: en S9 la persona respondió "No" a sello/NOM-151 pero eligió KYC; la modalidad KYC incluye NOM-151 según la matriz, y así se muestra. El volumen no cambia la modalidad (solo se menciona que ayuda a preparar la propuesta). "Disponibilidad técnica" de API/SDK se expresa solo como "se evalúa con el equipo comercial". Tras la prueba se agregó el cambio de lógica; no hay pruebas automatizadas del componente (el repo solo tiene tests unitarios de `src/lib`).
+
+## H5. CTA "Solicitar una demo"
+Se mantiene hacia `/contacto`. Verificado con clic real en `/signa`: `href="/contacto"`, la navegación termina en `/contacto` y el evento se emite antes de navegar. La integración futura con la agenda de HubSpot Meetings (`SCHEDULE_DEMO_URL`) queda como mejora CRO independiente que **no bloquea AUD-01**.
+
+## H6. GTM — eventos `cta_click`
+Todas las ubicaciones emiten `cta_click` con `source`, `destination` y `page_path` (el selector añade `signa_recommendation`). Eventos observados (cliente, `dataLayer` inyectado en la prueba):
+| source | destination | página | Extra |
+|---|---|---|---|
+| signa_hero_demo | /contacto | /signa | — |
+| signa_hero_comparar | /signa/comparacion | /signa | — |
+| signa_selector | /contacto | /signa | `signa_recommendation` (p. ej. `biometrica`) |
+| signa_cierre_propuesta | /contacto | /signa | — |
+| signa_cierre_comparar | /signa/comparacion | /signa | — |
+| signa_comparacion_hero_demo | /contacto | /signa/comparacion | — |
+| signa_comparacion_hero_selector | /signa#orientacion | /signa/comparacion | — |
+| signa_comparacion_cierre_propuesta | /contacto | /signa/comparacion | — |
+| signa_comparacion_cierre_signa | /signa | /signa/comparacion | — |
+**Limitaciones y condición:** (1) `gtmEvent` solo escribe si existe `window.dataLayer`, que solo se crea cuando `NEXT_PUBLIC_GTM_ID` está definido en el build; el entorno de pruebas no lo tiene, así que el `dataLayer` se simuló y en esta sesión **no se verificó recepción en el contenedor**. (2) Sin `dataLayer` el clic no genera errores (probado). **Medición no declarada funcional.** Pendiente únicamente: confirmar recepción con GTM Preview / Tag Assistant en preview o producción, con el ID configurado, y mapear los eventos como conversiones si aplica.
+
+## H7. QA técnico y visual
+| Prueba | Resultado |
+|---|---|
+| `tsc --noEmit` | OK |
+| `npm run lint` | 0 errores; 2 warnings preexistentes |
+| `npm test` | 136/136 |
+| `npm run build` | OK |
+| JSON-LD | Ver H1 |
+| Selector | 9/9 escenarios (H4) |
+| CTA | Verificados (H5, H6) |
+| Responsive (Playwright) a 375, 768 y 1280 px | `scrollWidth` = ancho de viewport en `/signa` y `/signa/comparacion` (sin desbordamiento) |
+| Capturas revisadas | Selector en móvil (375 px) con resultado; hero móvil y comparación de la ronda anterior |
+| Diff fuera de alcance | Vacío en catálogo/tarifas (`src/data`, `src/lib/catalog.ts`), Autoservicio, Autoservicio Enterprise, docs |
+**Limitación:** no se dispuso de un dispositivo físico. Las capturas y mediciones provienen de un navegador de escritorio emulado a esos anchos; **no sustituyen una validación en dispositivos reales**, que sigue pendiente. No se revisó a ojo cada sección de ambas páginas.
+
+## H8. Archivos modificados en esta ronda
+`src/app/layout.tsx`, `src/app/signa/page.tsx`, `src/app/signa/comparacion/page.tsx`, `src/components/signa/SignaSolutionFinder.tsx`, `docs/AUD-01-reporte-implementacion.md`, `docs/AUD-01-signa-afirmaciones-revision.md` (nuevo).
+
+## H9. Checklist de preparación para producción
+**A. Implementado y probado**
+- [x] Páginas de Signa sin precios, tarifas de competidores, ahorros ni calculadoras; redirect 308 de `/signa/calculadora`; sin Offer/price en el JSON-LD de Signa
+- [x] JSON-LD global sin `AggregateOffer`; `/precios` y `/autoservicio` conservan las ofertas del catálogo visible; JSON-LD válido en 5 rutas
+- [x] Afirmaciones NOM-151/identidad/evidencia reformuladas en código (tabla de revisión generada)
+- [x] Competidores tratados de forma informativa
+- [x] Selector corregido y probado (9 escenarios); aviso informativo; Incluye/No incluye desde la matriz
+- [x] CTA "Solicitar una demo" → `/contacto` verificado; eventos `cta_click` emitidos con los parámetros esperados (en entorno simulado)
+- [x] tsc, lint, tests, build; sin desbordamiento horizontal a 375/768/1280 px
+- [x] Soporte, descuentos retirados, setup fee, contacto sin plazos y modalidades (rondas previas)
+**B. Pendiente de aprobación de Producto y Legal**
+- [ ] Tabla `docs/AUD-01-signa-afirmaciones-revision.md` (13 filas): descripción de NOM-151, constancia/sello, identidad, evidencia, ausencia de afirmaciones de efectos legales y uso de marcas de terceros como keywords
+- [ ] Valores Sí/No de la matriz por modalidad (incl. fila e.firma) y copy de capacidades
+- [ ] Textos comerciales de soporte/SLA/contacto de rondas anteriores (Producto/Comercial)
+- [ ] Revisión de afirmaciones equivalentes fuera de Signa (`levels.ts`, `FirmaProductCards`, `featureList` del layout), en actividad aparte
+**C. Pendiente de validación externa**
+- [ ] Recepción de `cta_click` en GTM Preview / Tag Assistant (requiere `NEXT_PUBLIC_GTM_ID` en el entorno y acceso al contenedor)
+- [ ] QA en dispositivos reales (móvil y escritorio) de `/signa`, `/signa/comparacion` y el resto de páginas intervenidas
+- [ ] Revisión de las páginas públicas tras el despliegue (preview/producción)
+**D. Mejoras futuras que no bloquean AUD-01**
+- [ ] CRO: integrar agenda de HubSpot Meetings como alternativa al formulario de `/contacto`
+- [ ] CRO/UX: desbordamiento móvil de la tabla de `/firma-electronica`; desbordamiento de 26 px en móvil de otras páginas heredadas
+- [ ] Imágenes OG propias para Signa
+- [ ] Pruebas automatizadas del selector (componente) y de JSON-LD
+- [ ] Homologación de Autoservicio Enterprise al activarse; AUD-04 (activación inmediata y post-compra); aviso de docs con sandbox y "Sandbox Status" del footer
+
+## H10. Estado
+El código está validado técnicamente. **AUD-01 permanece "En validación"**: no pasa a "Lista para publicar" hasta que Producto y Legal aprueben las afirmaciones comerciales y jurídicas (B). El cierre definitivo requiere confirmar el despliegue y revisar las páginas públicas (C). No se publicó a producción.
