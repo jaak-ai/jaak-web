@@ -48,6 +48,21 @@ export default function CurpDevelopers() {
             SOLICITAR INTEGRACIÓN
           </Link>
         </div>
+
+        {/* Ruta de compra Web (Autoservicio): identificación propia (evento curp_autoservicio),
+            independiente del CTA comercial de integración (curp_contacto). */}
+        <p className="mt-6 text-sm text-white/60">
+          ¿Prefieres usar la validación desde la plataforma web?{" "}
+          <Link
+            href="/autoservicio"
+            onClick={() => gtmEvent("curp_autoservicio", { destination: "/autoservicio", source: "developers", page_path: window.location.pathname })}
+            data-cta="comprar-web-autoservicio"
+            data-source="curp_developers"
+            className="font-semibold text-[#1ECAD3] underline underline-offset-4 hover:no-underline"
+          >
+            Validar CURP en Autoservicio
+          </Link>
+        </p>
       </div>
     </section>
   );

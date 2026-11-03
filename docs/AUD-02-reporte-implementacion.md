@@ -75,7 +75,7 @@ Copy centralizado: `src/config/commercial-copy.ts` (`SOPORTE_COPY`, `FAQ_ACCESO_
 2. Footer: el enlace retirado apuntaba a `https://platform.dev.jaak.ai/#/signup` (registro abierto en un entorno de desarrollo). Confirmar si ese registro público es intencional.
 3. Confirmar con Ingeniería y Privacidad si los ambientes de prueba aceptan identidades reales; la afirmación se retiró del mensaje comercial y queda como **pendiente de revisión técnica** (no se afirma ni se niega).
 4. Analítica: en `CurpDevelopers` el evento GTM `curp_autoservicio` (source `developers`) pasó a `curp_contacto`, con `destination: /contacto` y `data-cta="solicitar-integracion"`. Revisar disparadores de GTM atados al nombre anterior.
-5. `IntegrationAccessNotice`/`INTEGRACION_COPY` (AUD-01, páginas de documentación profunda) dicen que el ambiente sandbox "requiere contratación y habilitación técnica mediante una cuota de configuración adicional"; la definición actual es *evaluación con especialista*. No se tocó por estar la documentación profunda fuera de alcance (ver H).
+5. ~~`IntegrationAccessNotice` asociaba el sandbox a la cuota de configuración~~ → **Resuelto en la corrección final (sección J).**
 
 ## F. Pruebas (resultados reales)
 
@@ -113,7 +113,7 @@ A = correcta · B = corregida en AUD-02 · C = pendiente comercial · D = pendie
 | C | `Hero.tsx`, `Integration.tsx`, `Implementation.tsx` | "lista para producción en días", "Integración en días, no meses", "Producción en días, no meses" | Plazos universales en la home |
 | C | `/contacto`, `FirmaThemeShell.tsx`, `/efisys-lab-connect`, `/webinar` | "Integración en días", "implementar en días", "integran vía API en días" | Plazos no aprobados |
 | C | `/firma-electronica-simple` | "implementación en minutos" | Plazo no aprobado |
-| C | `commercial-copy.ts` (`INTEGRACION_COPY`) y avisos de docs | Sandbox "requiere … cuota de configuración adicional" | Alinear con "evaluación con especialista" |
+| B | `commercial-copy.ts` (`INTEGRACION_COPY`) y aviso de docs | Sandbox "requiere … cuota de configuración adicional" | Corregido en la corrección final (sección J) |
 | D | `/terminos` | Ver sección D | Sin intervención |
 | E | `/documentacion/guias/inicio-rapido`, `/documentacion/guias/flujo-onboarding`, `/docs/**` | Referencias a sandbox y credenciales | Documentación profunda/guías legacy |
 | E | `/autoservicio/prueba` | "activación automática", "acceso inmediato en producción" | AUD-04 |
@@ -136,3 +136,66 @@ Los plazos marcados C no son afirmaciones de permisos de acceso y no existe un t
 | AUD-02 | Agrupador | — | Marketing | P0 | **En validación** (no cerrado) | Alcance web/comercial implementado y probado | Este reporte | AUD-02.L, plazos C, GTM, QA en dispositivos reales, publicación | Producto, Comercial y Legal |
 
 **Estado de AUD-02:** implementado en su alcance web/comercial y validado técnicamente; preparado para revisión y publicación. No se declara cerrado mientras la revisión de Términos y las aprobaciones sigan abiertas. No se realizó despliegue.
+
+
+---
+
+## J. Corrección final de avisos comerciales y validación de seguimiento (2026-11-03)
+
+### J.1 Aviso comercial de documentación (único cambio de contenido)
+Componente compartido: `src/components/docs/IntegrationAccessNotice.tsx`, con textos en `INTEGRACION_COPY` (`src/config/commercial-copy.ts`). Se muestra en las páginas introductorias de `/docs` (variante *intro*) y, con la variante *requisito*, en pasos que piden credenciales.
+
+| Elemento | Anterior | Nuevo |
+|---|---|---|
+| Título (*intro*) | "Documentación para integraciones JAAK" | "Acceso a integraciones y ambientes de prueba" |
+| Descripción (*intro*) | "Consulta nuestros recursos técnicos de API, SDK y webhooks. El acceso operativo a API y al ambiente sandbox requiere contratación y habilitación técnica mediante una cuota de configuración adicional. Los paquetes de Autoservicio están destinados exclusivamente al uso desde la plataforma web de JAAK." | Cuatro párrafos: (1) "La documentación técnica de JAAK está disponible como referencia para proyectos de integración." (2) "El acceso a API y SDK requiere habilitación conforme a las condiciones contratadas, incluyendo la cuota de configuración aplicable." (3) "La disponibilidad de ambientes de prueba se evalúa con un especialista comercial de JAAK, de acuerdo con el tipo de cliente, paquete y necesidades del proyecto." (4) "Los paquetes estándar de Autoservicio son exclusivamente Web y no incluyen acceso automático a API, SDK o sandbox." |
+| Variante *requisito* ("Requisito previo… credenciales API") y CTA "Solicitar información de integración" | — | Sin cambios (ya coherentes) |
+
+El componente pasó de un párrafo a renderizar los cuatro párrafos (`docsDescripcion` es ahora una lista). No se modificaron endpoints, documentación funcional, SDK, ejemplos de código, autenticación, infraestructura ni los MDX/páginas de docs. Verificado en render: `/docs`, `/docs/verificar-identidad/api` y `/docs/recursos/sandbox` (*intro*); `/docs/firmar-documentos/guia-rapida` y `/documentacion/guias/inicio-rapido` (*requisito*, sin cambios).
+
+### J.2 Consistencia entre páginas intervenidas (sin cambios innecesarios)
+Se revisaron `/precios`, `/documentacion`, `/validar-curp-renapo`, `/validar-ine`, `/consultas-oficiales`, `/plataforma/verificacion-identidad` y las páginas de docs con aviso. Resultado (render): ninguna cadena prohibida ("SANDBOX", "¿Existe sandbox?", "menos de una semana", "Sandbox disponible", "credenciales de prueba", "identidades reales", "acceso inmediato a sandbox"); presentes las frases esperadas. Autoservicio sigue siendo exclusivamente Web; API y SDK se comunican sujetos a contratación y setup fee; White Label como personalización según acuerdo; sandbox solo por evaluación con especialista. **No se modificó ninguna otra página.**
+
+### J.3 GTM — eventos de CURP (validación en código y en navegador)
+Eventos observados al hacer clic (navegador, `dataLayer` simulado):
+
+| CTA | Destino | Evento | Parámetros | `data-cta` / `data-source` |
+|---|---|---|---|---|
+| Hero · "Validar CURP en Autoservicio" (compra Web) | `/autoservicio` | `curp_hero_probar` | source `hero`, destination `autoservicio` | `probar-curp` / `hero` |
+| Integración · "SOLICITAR INTEGRACIÓN" (comercial) | `/contacto` | **`curp_contacto`** | source `developers`, destination `/contacto`, page_path | `solicitar-integracion` / `curp_developers` |
+| Integración · "Validar CURP en Autoservicio" (compra Web, enlace nuevo) | `/autoservicio` | **`curp_autoservicio`** | source `developers`, destination `/autoservicio`, page_path | `comprar-web-autoservicio` / `curp_developers` |
+| CTA final · "Validar CURP en Autoservicio" | `/autoservicio` | (sin `gtmEvent`) | — | `probar-curp` / `cta_final` |
+| CTA final · "Hablar con un especialista" | `/contacto` | (sin `gtmEvent`) | — | `curp_contacto` / `cta_final` |
+
+Hallazgo y ajuste: tras AUD-02, `curp_autoservicio` ya no lo emitía ningún CTA (solo lo emitía el botón "Solicitar acceso" que pasó a ser comercial), por lo que el evento histórico habría dejado de generarse. Se añadió un enlace discreto de compra Web ("¿Prefieres usar la validación desde la plataforma web? Validar CURP en Autoservicio") que lo conserva con su identificación independiente de `curp_contacto`. No se eliminó ningún evento ni se tocó el contenedor GTM.
+Notas: los CTA del bloque final solo llevan atributos `data-*` (no emiten `gtmEvent`); si GTM los captura por clic con esos atributos, depende del contenedor. El `data-cta` del botón comercial cambió de `solicitar-acceso` a `solicitar-integracion` (AUD-02).
+**Pendiente (externo):** verificar en GTM Preview / Tag Assistant la recepción de `curp_contacto`, `curp_autoservicio` y `curp_hero_probar`, y que no existan disparadores atados a `data-cta="solicitar-acceso"`. No se ejecutó (sin acceso al contenedor; además, `gtmEvent` solo escribe si `NEXT_PUBLIC_GTM_ID` está definido en el entorno).
+
+### J.4 Sandbox y entorno `platform.dev.jaak.ai`
+No se modificó el entorno ni ningún acceso. El enlace retirado del footer era solo un cambio de navegación comercial y **no equivale a restringir el acceso**: el registro seguía existiendo en `https://platform.dev.jaak.ai/#/signup`.
+**Pendiente de Ingeniería:** validar si el registro público de ese entorno es intencional y cuáles son los permisos reales de las cuentas creadas.
+**Pendiente de Ingeniería y Privacidad:** confirmar si los ambientes de prueba aceptan identidades reales (afirmación retirada del mensaje comercial).
+
+### J.5 Términos y Condiciones
+Sin cambios en `/terminos` ni en textos contractuales. Se conservan las siete observaciones de la sección D (T1–T7) para la actividad independiente.
+
+### J.6 Archivos
+Modificados en esta ronda: `src/components/docs/IntegrationAccessNotice.tsx`, `src/config/commercial-copy.ts` (`INTEGRACION_COPY`), `src/components/CurpDevelopers.tsx` y este reporte. Revisados sin cambios: páginas listadas en J.2, `CurpHero.tsx`, `validar-curp-renapo/page.tsx`, `GoogleTagManager.tsx`, `/terminos`.
+
+### J.7 QA
+| Prueba | Resultado |
+|---|---|
+| `tsc --noEmit` | Correcto |
+| `npm run lint` | 0 errores; 2 advertencias que ya existían |
+| `npm test` | 16 archivos, 136/136 |
+| `npm run build` | Correcto |
+| `git diff` en áreas prohibidas (Términos, Autoservicio Enterprise, MDX/páginas de docs, catálogo, API) | Vacío |
+| Aviso en 5 páginas de documentación | Texto nuevo en las de variante *intro*; variante *requisito* sin cambios |
+| Eventos CURP | Ver J.3 |
+| Responsive 375 / 768 / 1280 px (`/docs`, `/documentacion`, `/validar-curp-renapo`, `/plataforma/verificacion-identidad`, `/precios`) | `scrollWidth` igual al ancho del viewport en todos |
+| QA visual (navegador de escritorio emulado) | Aviso en móvil (375 px) y sección de integración de CURP en escritorio (1280 px). No se revisó cada página completa |
+| Limitaciones | Sin dispositivo físico; GTM no verificado contra el contenedor |
+Evidencias (sesión, no versionadas): `/tmp/claude-0/-home-user-jaak-web/2a998c70-c810-5be4-af10-3dbd491f0779/scratchpad/aud02b/` (`m_aviso.png`, `d_aviso.png`, `m_curp_dev.png`, `d_curp_dev.png`); registros de eventos y consistencia en J.2 y J.3.
+
+### J.8 Estado de publicación
+Implementado en el alcance editorial y comercial; **sin desplegar**. AUD-02 permanece **En validación**: pendientes de aprobación de Producto y Comercial, revisión legal de Términos (AUD-02.L), verificación en GTM Preview, validaciones de Ingeniería y Privacidad (sandbox, registro público y permisos), plazos de integración sin copy aprobado (sección H, clase C) y QA en dispositivos reales.

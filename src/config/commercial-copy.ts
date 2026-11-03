@@ -45,17 +45,21 @@ export const MODALIDADES_COPY = {
 } as const;
 
 /**
- * Textos del aviso de documentación (`IntegrationAccessNotice`). Congelados:
- * la documentación técnica está fuera del alcance de esta continuación y
- * requiere una revisión específica (incluye una mención a sandbox pendiente de
- * decidir).
+ * Textos del aviso de documentación (`IntegrationAccessNotice`), compartido por las páginas de
+ * documentación. AUD-02: el aviso ya no asocia el sandbox a la cuota de configuración; los
+ * ambientes de prueba se evalúan con un especialista comercial.
  */
 export const INTEGRACION_COPY = {
   requisitoCredenciales:
     "Para generar y utilizar credenciales API debes contar con una integración habilitada conforme a las condiciones de contratación correspondientes. La adquisición de un paquete de Autoservicio no incluye este acceso.",
-  docsTitulo: "Documentación para integraciones JAAK",
-  docsDescripcion:
-    "Consulta nuestros recursos técnicos de API, SDK y webhooks. El acceso operativo a API y al ambiente sandbox requiere contratación y habilitación técnica mediante una cuota de configuración adicional. Los paquetes de Autoservicio están destinados exclusivamente al uso desde la plataforma web de JAAK.",
+  docsTitulo: "Acceso a integraciones y ambientes de prueba",
+  /** Párrafos del aviso (cada elemento se muestra en su propio párrafo). */
+  docsDescripcion: [
+    "La documentación técnica de JAAK está disponible como referencia para proyectos de integración.",
+    "El acceso a API y SDK requiere habilitación conforme a las condiciones contratadas, incluyendo la cuota de configuración aplicable.",
+    "La disponibilidad de ambientes de prueba se evalúa con un especialista comercial de JAAK, de acuerdo con el tipo de cliente, paquete y necesidades del proyecto.",
+    "Los paquetes estándar de Autoservicio son exclusivamente Web y no incluyen acceso automático a API, SDK o sandbox.",
+  ],
   docsCta: "Solicitar información de integración",
 } as const;
 
