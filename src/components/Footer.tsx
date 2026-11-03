@@ -43,7 +43,6 @@ export default function Footer() {
         { name: "Blog", href: "/blog" },
         { name: "RSS Feed", href: "/rss.xml" },
         { name: "API Reference", href: "https://docs.jaak.ai/api" },
-        { name: "Sandbox", href: "https://platform.dev.jaak.ai/#/signup" },
         { name: "Status", href: "https://status.jaak.ai" },
       ],
     },

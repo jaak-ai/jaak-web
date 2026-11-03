@@ -1,10 +1,11 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import { DOCS_INDEX_COPY, INTEGRATION_CONTACT_HREF, SANDBOX_COPY } from "@/config/commercial-copy";
 
 export const metadata = {
   title: "Documentacion | JAAK",
-  description: "Documentacion tecnica de JAAK: API Reference, SDKs para iOS, Android y Web, guias de integracion y webhooks para verificacion de identidad.",
+  description: "Documentación para integraciones JAAK: API Reference, SDKs para iOS, Android y Web, guías de integración y webhooks. El acceso a credenciales y ambientes de prueba está sujeto a contratación y habilitación.",
 };
 
 export default function Documentacion() {
@@ -89,7 +90,7 @@ export default function Documentacion() {
   const integrationGuides = [
     {
       title: "Inicio rápido",
-      description: "Configura tu primera verificación de identidad en menos de 10 minutos.",
+      description: "Configura tu primera verificación de identidad con una integración habilitada.",
       time: "10 min",
       href: "/documentacion/guias/inicio-rapido",
     },
@@ -147,10 +148,13 @@ export default function Documentacion() {
                 <span className="text-[#0066ff] text-sm font-medium">Recursos para desarrolladores</span>
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6">
-                Documentacion tecnica
+                {DOCS_INDEX_COPY.titulo}
               </h1>
-              <p className="text-xl text-white/60 mb-8">
-                Todo lo que necesitas para integrar JAAK en tu aplicacion: API Reference, SDKs nativos, guias de integracion y documentacion de webhooks.
+              <p className="text-xl text-white/60 mb-4">
+                {DOCS_INDEX_COPY.descripcion}
+              </p>
+              <p className="text-base text-white/50 mb-8 max-w-3xl mx-auto">
+                {DOCS_INDEX_COPY.acceso}
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <Link
@@ -165,6 +169,12 @@ export default function Documentacion() {
                 >
                   Ver SDKs
                 </Link>
+                <Link
+                  href={INTEGRATION_CONTACT_HREF}
+                  className="px-6 py-3 border border-[#1ECAD3] text-[#1ECAD3] font-semibold rounded-lg hover:bg-[#1ECAD3]/10 transition-all"
+                >
+                  {DOCS_INDEX_COPY.cta}
+                </Link>
               </div>
             </div>
           </div>
@@ -178,7 +188,7 @@ export default function Documentacion() {
                 API Reference
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                API RESTful con documentacion completa, ejemplos de codigo y ambiente sandbox para pruebas.
+                API RESTful con documentación completa y ejemplos de código para integrar los servicios contratados.
               </p>
             </div>
             <div className="grid md:grid-cols-2 gap-8 mb-12">
@@ -374,15 +384,15 @@ export default function Documentacion() {
               </h2>
             </div>
             <div className="grid md:grid-cols-3 gap-8">
-              <Link href="#" className="group bg-white rounded-xl p-8 hover:shadow-lg transition-shadow border border-gray-100">
+              <div className="bg-white rounded-xl p-8 border border-gray-100">
                 <div className="w-12 h-12 bg-[#0066ff]/10 rounded-xl flex items-center justify-center mb-6">
                   <svg className="w-6 h-6 text-[#0066ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-[#0066ff] transition-colors">Sandbox</h3>
-                <p className="text-gray-600">Ambiente de pruebas con datos ficticios para desarrollar sin riesgo.</p>
-              </Link>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Ambientes de prueba</h3>
+                <p className="text-gray-600">{SANDBOX_COPY.tarjeta}</p>
+              </div>
               <Link href="#" className="group bg-white rounded-xl p-8 hover:shadow-lg transition-shadow border border-gray-100">
                 <div className="w-12 h-12 bg-[#0066ff]/10 rounded-xl flex items-center justify-center mb-6">
                   <svg className="w-6 h-6 text-[#0066ff]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -412,7 +422,7 @@ export default function Documentacion() {
               Necesitas ayuda tecnica?
             </h2>
             <p className="text-xl text-white/60 mb-8">
-              Nuestro equipo de ingenieria esta disponible para ayudarte con tu integracion.
+              Nuestro equipo comercial y técnico puede ayudarte a evaluar tu integración.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link

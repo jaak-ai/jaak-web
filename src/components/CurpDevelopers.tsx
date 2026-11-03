@@ -2,16 +2,20 @@
 
 import Link from "next/link";
 import { gtmEvent } from "./GoogleTagManager";
+import { CURP_INTEGRACION_COPY, INTEGRATION_CONTACT_HREF } from "@/config/commercial-copy";
 
-const features = ["API REST", "Autenticación Bearer", "Sandbox", "Respuestas estructuradas", "Event ID / trazabilidad", "Integración con otras Consultas Oficiales"];
+const features = ["API REST", "Autenticación Bearer", "Habilitación conforme a la contratación", "Respuestas estructuradas", "Event ID / trazabilidad", "Integración con otras Consultas Oficiales"];
 
 export default function CurpDevelopers() {
   return (
     <section className="py-20" style={{ background: "#02132D" }} aria-labelledby="curp-dev-heading">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 id="curp-dev-heading" data-sr className="text-3xl md:text-4xl font-black text-white mb-10">
-          Diseñada para integrarse a tu operación
+          {CURP_INTEGRACION_COPY.titulo}
         </h2>
+        <p data-sr className="text-white/70 max-w-2xl mx-auto mb-10">
+          {CURP_INTEGRACION_COPY.descripcion}
+        </p>
 
         <div data-sr-grid className="grid sm:grid-cols-2 gap-3 mb-10 text-left">
           {features.map((f) => (
@@ -35,13 +39,13 @@ export default function CurpDevelopers() {
             VER DOCUMENTACIÓN
           </Link>
           <Link
-            href="/autoservicio"
-            onClick={() => gtmEvent("curp_autoservicio", { destination: "/autoservicio", source: "developers", page_path: window.location.pathname })}
-            data-cta="solicitar-acceso"
+            href={INTEGRATION_CONTACT_HREF}
+            onClick={() => gtmEvent("curp_contacto", { destination: INTEGRATION_CONTACT_HREF, source: "developers", page_path: window.location.pathname })}
+            data-cta="solicitar-integracion"
             data-source="curp_developers"
             className="px-6 py-3.5 min-h-[48px] flex items-center bg-white/10 border border-white/20 text-white font-semibold rounded-lg hover:bg-white/20 transition-all"
           >
-            SOLICITAR ACCESO
+            SOLICITAR INTEGRACIÓN
           </Link>
         </div>
       </div>

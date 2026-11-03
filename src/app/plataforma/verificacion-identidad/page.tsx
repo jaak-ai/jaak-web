@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 import KycBiometricAnimation from "@/components/KycBiometricAnimation";
 import ScrollReveal from "@/components/ScrollReveal";
+import { INTEGRATION_CONTACT_HREF, KYC_INTEGRACION_COPY } from "@/config/commercial-copy";
 
 export const metadata: Metadata = {
   title: "Verificación de Identidad (KYC) | JAAK",
@@ -816,29 +817,23 @@ export default function VerificacionIdentidad() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 items-start">
               {/* Left — timeline */}
-              <div data-sr="left">
+              <div data-sr="left" className="min-w-0">
                 <div
                   className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6 md:mb-7"
                   style={{ color: "#2AD796", border: "1px solid rgba(42,215,150,0.22)", background: "rgba(42,215,150,0.08)" }}
                 >
-                  Integración técnica
+                  {KYC_INTEGRACION_COPY.etiqueta}
                 </div>
                 <h2 className="text-3xl md:text-4xl font-black text-white leading-tight mb-5">
-                  Integración lista en{" "}
-                  <span style={{ color: "#2AD796" }}>menos de una semana.</span>
+                  {KYC_INTEGRACION_COPY.titulo}
                 </h2>
                 <p className="text-lg mb-10" style={{ color: "rgba(255,255,255,0.50)" }}>
-                  SDK para iOS, Android y Web. API REST documentada. Sandbox disponible desde el primer día.
+                  {KYC_INTEGRACION_COPY.descripcion}
                 </p>
 
                 {/* Timeline */}
                 <div data-sr-grid className="space-y-6">
-                  {[
-                    { days: "Día 1–2", title: "Acceso a sandbox", body: "Credenciales de prueba + entorno aislado listo para explorar." },
-                    { days: "Día 3–4", title: "Integración SDK / API REST", body: "Documentación guiada paso a paso. Soporte técnico incluido." },
-                    { days: "Día 5", title: "Pruebas con identidades reales", body: "Sandbox acepta documentos e identidades reales para validar flujos." },
-                    { days: "Semana 2", title: "Activación en producción", body: "Firma contrato, activa credenciales de prod. Empieza a generar evidencia." },
-                  ].map((t, i) => (
+                  {KYC_INTEGRACION_COPY.etapas.map((e) => ({ days: e.etapa, title: e.titulo, body: e.cuerpo })).map((t, i) => (
                     <div key={i} className="flex gap-5 items-start">
                       <div
                         className="text-xs font-bold px-2.5 py-1.5 rounded-lg whitespace-nowrap flex-shrink-0"
@@ -854,9 +849,17 @@ export default function VerificacionIdentidad() {
                   ))}
                 </div>
 
+                <div className="mt-10 flex flex-col items-start gap-5">
+                <Link
+                  href={INTEGRATION_CONTACT_HREF}
+                  className="inline-flex items-center justify-center px-6 py-3.5 rounded-xl text-sm font-bold transition-all"
+                  style={{ background: "linear-gradient(135deg, #1ECAD3, #17a8b0)", color: "#02132D" }}
+                >
+                  {KYC_INTEGRACION_COPY.cta}
+                </Link>
                 <Link
                   href="/docs"
-                  className="inline-flex items-center gap-2 mt-10 text-sm font-semibold transition-colors"
+                  className="inline-flex items-center gap-2 text-sm font-semibold transition-colors"
                   style={{ color: "#2AD796" }}
                 >
                   Ver documentación completa
@@ -864,10 +867,11 @@ export default function VerificacionIdentidad() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                   </svg>
                 </Link>
+                </div>
               </div>
 
               {/* Right — JSON response mockup */}
-              <div data-sr="right">
+              <div data-sr="right" className="min-w-0">
                 <div
                   className="rounded-2xl overflow-hidden"
                   style={{ border: "1px solid rgba(45,182,193,0.20)" }}

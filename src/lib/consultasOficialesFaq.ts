@@ -1,3 +1,5 @@
+import { SANDBOX_COPY } from "@/config/commercial-copy";
+
 // Datos del FAQ de /consultas-oficiales. Vive fuera de ConsultasOficialesFAQ.tsx
 // (que es "use client") para que page.tsx (server component) pueda construir
 // el JSON-LD FAQPage a partir de la misma fuente que el texto visible.
@@ -42,7 +44,7 @@ export const consultasOficialesFaqItems: FAQItem[] = [
     id: "api",
     question: "¿Las consultas se pueden integrar vía API?",
     answer:
-      "Sí. Cada consulta es un endpoint REST autenticado con API Key (Bearer token) que puedes invocar directamente desde tu backend o desde la Plataforma JAAK sin desarrollar una integración.",
+      "Sí. Cada consulta es un endpoint REST autenticado con API Key (Bearer token) que puedes invocar directamente desde tu backend o desde la Plataforma JAAK sin desarrollar una integración. La integración vía API requiere una cuota de configuración (setup fee) y habilitación conforme a las condiciones contratadas; el uso desde la plataforma web no requiere integración.",
   },
   {
     id: "combinar",
@@ -52,8 +54,7 @@ export const consultasOficialesFaqItems: FAQItem[] = [
   },
   {
     id: "sandbox",
-    question: "¿Existe un ambiente sandbox?",
-    answer:
-      "Sí, con cuotas separadas del ambiente de producción para que puedas probar la integración sin consumir tu cuota productiva.",
+    question: SANDBOX_COPY.consultasQuestion,
+    answer: SANDBOX_COPY.answer,
   },
 ];

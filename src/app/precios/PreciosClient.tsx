@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { productos, formatMXN } from "@/data/autoservicio-catalogo";
+import { FAQ_ACCESO_API_SDK, SOPORTE_COPY } from "@/config/commercial-copy";
 
 // Precio "desde" del autoservicio = paquete más económico del catálogo (fuente única).
 const minAutoPrecio = Math.min(...productos.flatMap((p) => p.paquetes.map((q) => q.precio)));
@@ -131,13 +132,13 @@ const COMPARISON = [
   { feature: "Firma electrónica",          auto: "✔️", growth: "✔️", enterprise: "✔️", alliance: "✔️" },
   { feature: "KYC biométrico",             auto: "✔️", growth: "✔️", enterprise: "✔️", alliance: "✔️" },
   { feature: "Expediente auditable NOM-151",auto: "✔️", growth: "✔️", enterprise: "✔️", alliance: "✔️" },
-  { feature: "Plataforma Web",             auto: "Incluido", growth: "Disponible", enterprise: "Según propuesta", alliance: "Según propuesta" },
+  { feature: "Plataforma Web",             auto: "Incluido", growth: "Disponible según contratación", enterprise: "Según propuesta", alliance: "Según propuesta" },
   { feature: "Integración API",            auto: "No incluido", growth: "Disponible, con setup fee", enterprise: "Según propuesta (con setup fee)", alliance: "Según propuesta (con setup fee)" },
   { feature: "Integración SDK",            auto: "No incluido", growth: "Disponible, con setup fee", enterprise: "Según propuesta (con setup fee)", alliance: "Según propuesta (con setup fee)" },
   { feature: "White Label",                auto: "No incluido", growth: "Opcional, según alcance acordado", enterprise: "Opcional, según propuesta", alliance: "Opcional, según propuesta" },
   { feature: "Esquema de contratación",    auto: "Compra en línea; paquetes con vigencia de un año", growth: "Bolsa anual de consumo, pagos mensuales según consumo", enterprise: "Bolsa anual de consumo, pagos mensuales según consumo", alliance: "Bolsa anual de consumo, pagos mensuales según consumo" },
   { feature: "Volumen mensual",            auto: "Bajo", growth: "Medio", enterprise: "Alto", alliance: "Variable" },
-  { feature: "Soporte",                    auto: "Base", growth: "Guiado", enterprise: "Dedicado", alliance: "Comercial" },
+  { feature: "Soporte",                    auto: SOPORTE_COPY.autoservicioTabla, growth: SOPORTE_COPY.especializadoTabla, enterprise: SOPORTE_COPY.especializadoTabla, alliance: SOPORTE_COPY.especializadoTabla },
 ];
 
 const faqItems = [
@@ -156,6 +157,10 @@ const faqItems = [
   {
     question: "¿Los paquetes caducan o son reembolsables?",
     answer: "Vencen a 12 meses desde la compra. No son reembolsables.",
+  },
+  {
+    question: FAQ_ACCESO_API_SDK.question,
+    answer: FAQ_ACCESO_API_SDK.answer,
   },
   {
     question: "¿Hay cuota de configuración (setup fee)?",

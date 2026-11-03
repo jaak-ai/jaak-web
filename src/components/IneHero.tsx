@@ -5,7 +5,7 @@ import Breadcrumbs from "./Breadcrumbs";
 import { gtmEvent } from "./GoogleTagManager";
 
 const NAVY = "#02132D";
-const badges = ["API", "SANDBOX", "INTEGRABLE A KYC", "RESULTADO ESTRUCTURADO"];
+const badges = ["API", "INTEGRABLE A KYC", "RESULTADO ESTRUCTURADO"];
 
 export default function IneHero() {
   const track = (eventName: string, destination: string) => {
