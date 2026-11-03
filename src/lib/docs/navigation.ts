@@ -16,6 +16,7 @@ export const docsNavigation: NavItem[] = [
       { title: 'Conceptos clave', href: '/docs/jaak/conceptos-clave' },
       { title: 'Plataforma JAAK', href: '/docs/jaak/plataforma' },
       { title: 'Inicio de sesión', href: '/docs/jaak/inicio-sesion' },
+      { title: 'Una cuenta en varias empresas', href: '/docs/jaak/multiempresa' },
     ],
   },
   {
