@@ -1,0 +1,162 @@
+---
+title: Suscripción y consumo
+description: Cómo revisar tu suscripción, el consumo de tu empresa por periodo, qué significan las cuotas y cómo exportar el reporte de consumo en la plataforma JAAK.
+category: guia
+order: 6
+---
+
+En la plataforma JAAK puedes revisar **qué tiene contratado tu empresa** y **cuánto has usado** de cada servicio: verificaciones KYC, firma electrónica y los demás productos incluidos en tu plan. Todo está en el **Centro de suscripción**.
+
+## Dónde encontrarlo
+
+En el menú lateral, haz clic en **Suscripción**. Se abre el **Centro de suscripción** con tres pestañas:
+
+| Pestaña | Qué muestra |
+| :-- | :-- |
+| **Mi suscripción** | El plan contratado, las verificaciones que te quedan y el estado de cada producto. Es la pestaña que se abre primero. |
+| **Consumo** | El uso de tu empresa por producto y por periodo, con la tabla de cuotas y la exportación. |
+| **Facturación** | Pagos y facturas. |
+
+![Centro de suscripción con las pestañas Mi suscripción, Consumo y Facturación](/docs/jaak/suscripcion-pestanas.png)
+
+<Callout type="info" title="¿No ves la pestaña Consumo?">
+La pestaña **Consumo** aparece solo para los roles **Owner**, **Administrador**, **Manager** y **Lector**. Si tu rol no está en esta lista, no la verás. Pide a un administrador de tu empresa que revise tu rol.
+</Callout>
+
+## Mi suscripción
+
+Esta pestaña muestra solo lo que tu empresa tiene contratado.
+
+- **Estado de tu cuenta**: el nombre de tu plan, cuántas verificaciones te quedan de las totales, cuántos productos activos tienes con cuota vigente y la fecha de tu próxima renovación. Si tu empresa no tiene un plan activo, la tarjeta dice **Sin plan activo**.
+- **Tarjetas por producto**: una por cada servicio. La de **Verificación KYC** muestra una barra con las verificaciones usadas. Si un producto no está activo, su tarjeta dice **Sin suscripción activa**.
+- **Ampliar capacidad**: si necesitas más verificaciones o firmas sin cambiar de plan, **Ver paquetes disponibles** te lleva a la compra de paquetes.
+
+![Mi suscripción con el estado de la cuenta y las tarjetas por producto](/docs/jaak/suscripcion-mi-suscripcion.png)
+
+## Consumo
+
+La pestaña **Consumo** responde tres preguntas: qué incluye tu plan, cuánto has usado y cómo va el consumo en el periodo que elijas.
+
+### Plan contratado y paquetes
+
+- **Plan contratado**: el nombre de tu plan, con su **Periodo**, los **Días restantes**, el **Precio**, el **Próximo cobro** y la **Renovación**.
+- **Paquetes contratados**: los paquetes que tu empresa compró en la plataforma, con las columnas **Paquete**, **Incluye** y **Comprado**. Si hay más de los que se muestran, usa **Ver más**. Esta sección solo aparece si tu empresa tiene paquetes.
+
+![Consumo con la tarjeta Plan contratado y la lista de Paquetes contratados](/docs/jaak/suscripcion-consumo-plan.png)
+
+### Tabla de consumo
+
+Debajo está la tarjeta **Consumo**. Su título cambia según el periodo elegido y tiene dos controles: el selector **Periodo** y el botón **Exportar**.
+
+La tabla agrupa las líneas por producto y muestra, para cada una:
+
+- **Incluido en tu plan**: cuántas unidades incluye tu plan.
+- **Usaste**: lo que has consumido, según nuestro cálculo.
+- **Te quedan**: lo que resta del cupo.
+- **Avance**: la barra y el porcentaje del cupo usado.
+
+![Tabla de consumo agrupada por producto](/docs/jaak/suscripcion-consumo-tabla.png)
+
+Si un producto llega al 80 % de su cupo, aparece un aviso en la parte superior de la tabla con el detalle, por ejemplo: *KYC: 420 de 500 (84 %), cerca del límite*. Si llega al 100 % o lo supera, el aviso dice **excede el cupo**. Estos avisos y sus estados se explican en la sección [¿Qué significan las cuotas?](#que-significan-las-cuotas).
+
+Si no hubo consumo en el periodo, la tabla dice **No hay consumo en este periodo.**
+
+### Desglose de un producto
+
+Cada producto con detalle tiene el botón **Ver desglose de [producto]**. Al desplegarlo:
+
+1. Una barra muestra la proporción de cada estado. Por ejemplo, en KYC: **Aprobadas**, **Rechazadas**, **En revisión**, **En proceso**, **Expiradas**, **Caducadas (motor)**, **Caducadas (servicio)** y **Sin estado**. En servicios: **Exitosas**, **Fallidas**, **Rechazadas**, **En proceso** y **Sin estado**.
+2. Debajo, la lista con el número de cada estado. Si los estados no suman el total, verás la nota *El desglose suma X de Y*.
+3. Haz clic en un estado para ver el listado de sesiones o llamadas que lo tienen, con su fecha y su estado.
+
+![Fila desplegada con el desglose por estado](/docs/jaak/suscripcion-desglose.png)
+
+En el listado, **Volver a Consumo** regresa a la tabla y **Anterior** y **Siguiente** cambian de página.
+
+![Listado de sesiones KYC con el enlace Volver a Consumo](/docs/jaak/suscripcion-sesiones.png)
+
+Una marca **Calculado** junto a un número indica sesiones vencidas que todavía no se cierran. Su estado es una estimación con la regla de cierre automático.
+
+<Callout type="info" title="Sobre las cifras">
+Las cifras son informativas y pueden variar. Si necesitas los números exactos, por ejemplo para facturación, escribe a soporte@jaak.ai y te los compartimos.
+</Callout>
+
+## Periodos
+
+El selector **Periodo** de la tarjeta **Consumo** tiene tres grupos:
+
+| Grupo | Qué elegir | Qué muestra |
+| :-- | :-- | :-- |
+| **Por periodo** (predeterminado) | Tu periodo vigente | El consumo dentro del periodo de tu plan. Cada servicio cuenta dentro del periodo de su cupo. |
+| **Por mes** | Un mes de la lista | Solo el consumo de ese mes. |
+| **Personalizado** | Fecha **Desde** y fecha **Hasta**, y luego **Aplicar** | Solo el consumo de las fechas que elijas. |
+
+![Selector de periodo abierto con los grupos Por periodo, Por mes y Personalizado](/docs/jaak/suscripcion-periodo.png)
+
+Con **Por periodo** la tabla muestra todas las columnas de cupo: **Incluido en tu plan**, **Usaste**, **Te quedan** y **Avance**. Con **Por mes** o **Personalizado** solo aparecen **Servicio** y **Usaste**, junto con una nota con el rango de fechas, porque el cupo se mide en el periodo de tu plan.
+
+<Callout type="warning" title="La firma electrónica no se ve por mes ni por rango">
+El consumo de firma electrónica solo está disponible con **Por periodo**. Si eliges **Por mes** o **Personalizado**, las líneas de firma no aparecen.
+</Callout>
+
+Si tu empresa no tiene un plan contratado, la opción **Por periodo** aparece con la nota **Sin plan contratado**.
+
+## ¿Qué significan las cuotas?
+
+### Columnas de la tabla
+
+| Columna | Qué significa |
+| :-- | :-- |
+| **Incluido en tu plan** | Cantidad que incluye tu plan contratado para ese servicio en el periodo. |
+| **Usaste** | Lo consumido en el periodo, según nuestro cálculo con los registros de JAAK. |
+| **Te quedan** | Lo incluido menos lo usado. Si ya superaste el cupo, muestra las unidades de más, por ejemplo **12 extra**. |
+| **Avance** | El porcentaje del cupo usado, con su barra. |
+
+### Valores especiales
+
+- **Ilimitado**: tu plan no tiene límite para ese servicio.
+- **No incluido**: ese servicio no forma parte de tu plan.
+- **—**: no hay cupo contratado o no hay un cálculo confiable.
+
+### Avisos por porcentaje usado
+
+| Estado | Porcentaje del cupo | Qué verás |
+| :-- | :-- | :-- |
+| Normal | Menos de 80 % | Sin aviso. |
+| **Cerca del límite** | De 80 % a 99 % | Aviso en la parte superior de la tabla. |
+| **Excede el cupo** | 100 % o más | Aviso en la parte superior de la tabla. |
+
+Si el periodo de cupo ya terminó, su consumo se muestra como historial y no genera ningún aviso.
+
+### Comparación con el menú de verificaciones
+
+En la vista **Por periodo**, junto a **Usaste** aparece una pastilla con el número del menú de verificaciones del encabezado:
+
+- **Verde**: coincide con nuestro cálculo.
+- **Ámbar**: difiere. Al pasar el cursor verás la diferencia, por ejemplo *+5 respecto al menú*.
+- **Gris**: no hay comparación disponible.
+
+<Callout type="info" title="Dos semáforos distintos">
+Los avisos de la pantalla (**Cerca del límite** y **Excede el cupo**) no son el mismo semáforo que aparece en el reporte exportado. En el reporte, cada paquete se marca como **Óptimo** (0 a 30 %), **Advertencia** (31 a 60 %) o **Crítico** (más de 60 %).
+</Callout>
+
+## Exportar el reporte
+
+El reporte se genera con el periodo que tengas seleccionado en ese momento.
+
+**Paso 1**: Elige el periodo en el selector **Periodo**.
+
+**Paso 2**: Haz clic en **Exportar** en la tarjeta **Consumo**.
+
+**Paso 3**: Elige el formato y el nivel de detalle:
+
+| Opción | Qué incluye |
+| :-- | :-- |
+| **PDF compacto** | Lo mismo que ves en pantalla. |
+| **PDF con estados** | Lo mismo, más el desglose por estado de cada línea. |
+| **Excel compacto** | Lo mismo que ves en pantalla, en formato Excel. |
+| **Excel con estados** | Lo mismo, con el desglose por estado de cada línea. |
+
+![Menú Exportar con las cuatro opciones](/docs/jaak/suscripcion-exportar.png)
+
+**Resultado**: se descarga el archivo. Su encabezado incluye el título **Consumo**, el **Periodo reportado**, la **Fecha de corte**, el **Paquete contratado** y la hora de Ciudad de México. Si la tabla tiene paquetes, el reporte también los lista, y en Excel aparecen en una hoja llamada **Paquetes**. Si hay algún aviso activo, el reporte lo incluye como **Aviso**.
