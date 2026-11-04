@@ -264,7 +264,7 @@ export default function SoftwareClinicoClient() {
                 primaryTitle="Llamada de 30 minutos con nuestro equipo técnico"
                 primaryText="Revisamos su arquitectura actual, qué de KYC, Firma NOM-151 o Firma NOM-151 + Biometría le conviene integrar vía API, y cómo se vería la integración. Incluye el esquema comercial de canal."
                 primaryCtaLabel="Agendar la llamada"
-                primaryCtaHref="https://meetings.hubspot.com/jose-andres-yllescas-lira"
+                primaryCtaHref="https://meetings.hubspot.com/jaak-ai/reunion-jaak"
                 secondaryEyebrow="Para ingeniería"
                 secondaryTitle="Documentación técnica"
                 secondaryText="Documentación de API, diagrama de integración, manejo de huellas criptográficas y sello de tiempo, y formato de exportación de evidencia. Demos de noventa segundos de cada capa."

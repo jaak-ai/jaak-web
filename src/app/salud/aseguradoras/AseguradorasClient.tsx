@@ -280,7 +280,7 @@ export default function AseguradorasClient() {
                 primaryTitle="Sesión de 30 minutos con un especialista de producto de JAAK"
                 primaryText="Revisamos su expediente de siniestro y le mostramos cómo configurar KYC para verificar al asegurado y Firma NOM-151 para conservar la evidencia. No damos asesoría legal: los plazos y criterios normativos debe validarlos su propio equipo jurídico."
                 primaryCtaLabel="Agendar la sesión"
-                primaryCtaHref="https://meetings.hubspot.com/jose-andres-yllescas-lira"
+                primaryCtaHref="https://meetings.hubspot.com/jaak-ai/reunion-jaak"
                 secondaryEyebrow="Para siniestros y antifraude"
                 secondaryTitle="Verificación de identidad del asegurado"
                 secondaryText="Verificación documental y biométrica con prueba de vida en el alta de siniestro, más constancia de conservación sobre el expediente integrado. Dos demos de noventa segundos, sin agendar nada."

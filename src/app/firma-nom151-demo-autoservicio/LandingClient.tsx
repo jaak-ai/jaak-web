@@ -31,7 +31,7 @@ const WHATSAPP_NUMBER = "5215535091788";
 const WHATSAPP_MESSAGE =
   "Hola, te contactamos de JAAK IT. Vimos que te interesó nuestra Firma Digital NOM-151 con validez legal. ¿Tienes 5 minutos para platicar sobre tu caso de uso?";
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
-const MEETINGS_URL = "https://meetings.hubspot.com/jose-andres-yllescas-lira";
+const MEETINGS_URL = "https://meetings.hubspot.com/jaak-ai/reunion-jaak";
 
 // Producto/paquete real del catálogo de autoservicio: fuente única de verdad
 // para precio, cantidad y bullets del Plan Cobre (evita duplicar copy/precio).

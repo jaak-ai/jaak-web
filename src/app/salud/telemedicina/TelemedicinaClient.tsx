@@ -219,7 +219,7 @@ export default function TelemedicinaClient() {
                 primaryTitle="Sesión de 30 minutos con un especialista de producto de JAAK"
                 primaryText="Revisamos su flujo de teleconsulta y le mostramos cómo configurar KYC con prueba de vida para identificar al paciente antes de la sesión. No damos asesoría legal: los criterios normativos, incluida la teleconsulta interestatal, debe validarlos su propio abogado."
                 primaryCtaLabel="Agendar la sesión"
-                primaryCtaHref="https://meetings.hubspot.com/jose-andres-yllescas-lira"
+                primaryCtaHref="https://meetings.hubspot.com/jaak-ai/reunion-jaak"
                 secondaryEyebrow="Para ingeniería"
                 secondaryTitle="Identidad remota y firma en el flujo"
                 secondaryText="Verificación documental y biométrica con prueba de vida antes de la consulta, validación de cédula del profesional y nota firmada con sello de tiempo al cierre. Demos de noventa segundos y documentación de API."

@@ -365,7 +365,7 @@ export default function HospitalesClient() {
                 primaryTitle="Sesión de 30 minutos con un especialista de producto de JAAK"
                 primaryText="Revisamos su matriz de firmantes y le mostramos cómo configurar KYC, Firma NOM-151 o Firma NOM-151 + Biometría para consentimiento, ingreso hospitalario y la ruta de urgencia e incapacidad. No damos asesoría legal: las preguntas jurídicas quedan para su propio abogado."
                 primaryCtaLabel="Agendar la sesión"
-                primaryCtaHref="https://meetings.hubspot.com/jose-andres-yllescas-lira"
+                primaryCtaHref="https://meetings.hubspot.com/jaak-ai/reunion-jaak"
                 secondaryEyebrow="Para TI, calidad y compras"
                 secondaryTitle="Consentimiento multirrol y evidencia exportable"
                 secondaryText="Flujo con paciente o representante, médico y dos testigos sobre una versión identificable, con sello de tiempo, bitácora y exportación para auditoría o juicio. Demos de noventa segundos y ficha de arquitectura."

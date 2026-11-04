@@ -18,7 +18,7 @@ const VIOLET = "#655DC6";
 const VIDEO_ID = "q6Xug6_kms0";
 const LOCK_SECONDS = 20;
 
-const HUBSPOT_MEETING_URL = "https://meetings.hubspot.com/people-jaak/autoserviciojaak";
+const HUBSPOT_MEETING_URL = "https://meetings.hubspot.com/jaak-ai/reunion-jaak";
 const KYC_ONBOARDING_URL = "https://platform.jaak.ai/#/onboarding/user-info?plan=cobre";
 const AUTOSERVICIO_URL = "/autoservicio";
 const FIRMA_ELECTRONICA_URL = "/plataforma/firma-electronica";

@@ -23,7 +23,7 @@ const STOP_TINT = { bg: "rgba(168,30,30,0.05)", border: "rgba(168,30,30,0.18)" }
 const WARN_TINT = { bg: "rgba(214,158,46,0.07)", border: "rgba(214,158,46,0.22)" };
 
 const VIDEO_ID = "q0Iliu1wK-g";
-const MEETINGS_URL = "https://meetings.hubspot.com/jose-andres-yllescas-lira";
+const MEETINGS_URL = "https://meetings.hubspot.com/jaak-ai/reunion-jaak";
 const WHATSAPP_NUMBER = "5215535091788";
 const WHATSAPP_MESSAGE =
   "Hola, quiero conocer la solución de firma digital y evidencia de JAAK para el sector salud.";
