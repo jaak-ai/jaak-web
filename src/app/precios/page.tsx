@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PreciosClient from "./PreciosClient";
+import { FAQ_ACCESO_API_SDK } from "@/config/commercial-copy";
 import { buildKycRegisterUrl, KYC_PLAN_CODE_BY_TIER } from "@/data/autoservicio-catalogo";
 
 export const metadata: Metadata = {
   title: "Precios – KYC Biométrico y Firma Digital NOM-151 | JAAK",
   description:
-    "KYC biométrico desde $99 MXN/año. Firma Digital NOM-151 desde $49 MXN/año. Sin setup fee. Para empresas reguladas en México. ISO 27001 · iBeta Nivel 2.",
+    "KYC biométrico desde $99 MXN/año. Firma Digital NOM-151 desde $49 MXN/año. Autoservicio sin setup fee. Para empresas reguladas en México. ISO 27001 · iBeta Nivel 2.",
   keywords: [
     "precios KYC México",
     "KYC biométrico precio",
@@ -23,7 +24,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Precios – KYC Biométrico y Firma Digital NOM-151 | JAAK",
     description:
-      "KYC biométrico desde $99 MXN/año. Firma Digital NOM-151 desde $49 MXN/año. Sin setup fee. Autoservicio, Enterprise y Alianzas para empresas reguladas en México.",
+      "KYC biométrico desde $99 MXN/año. Firma Digital NOM-151 desde $49 MXN/año. Autoservicio sin setup fee. Autoservicio, Enterprise y Alianzas para empresas reguladas en México.",
     url: "https://jaak.ai/precios",
   },
   alternates: {
@@ -66,6 +67,14 @@ const faqSchema = {
       acceptedAnswer: {
         "@type": "Answer",
         text: "Vencen a 12 meses desde la compra. No son reembolsables.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: FAQ_ACCESO_API_SDK.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: FAQ_ACCESO_API_SDK.answer,
       },
     },
     {

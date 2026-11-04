@@ -148,7 +148,7 @@ export default function ValidarCurpRenapoPage() {
                 data-source="cta_final"
                 className="px-6 py-3.5 min-h-[48px] flex items-center bg-[#1ECAD3] text-[#02132D] font-bold rounded-lg hover:bg-[#17b5bd] transition-all"
               >
-                Probar validación CURP
+                Validar CURP en Autoservicio
               </Link>
               <Link
                 href="/contacto"

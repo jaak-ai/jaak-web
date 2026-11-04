@@ -1,3 +1,5 @@
+import { SANDBOX_COPY } from "@/config/commercial-copy";
+
 // Datos del FAQ de /validar-curp-renapo. Separado de CurpFAQ.tsx ("use client")
 // para que page.tsx pueda construir el JSON-LD FAQPage desde la misma fuente.
 export interface FAQItem {
@@ -41,7 +43,7 @@ export const curpFaqItems: FAQItem[] = [
     id: "integrar-api",
     question: "¿Puedo integrar la validación CURP vía API?",
     answer:
-      "Sí, es un endpoint REST autenticado con API Key (Bearer token) que puedes invocar directamente desde tu backend.",
+      "Sí, es un endpoint REST autenticado con API Key (Bearer token) que puedes invocar directamente desde tu backend. La integración requiere una cuota de configuración (setup fee) y habilitación conforme a las condiciones contratadas.",
   },
   {
     id: "kyc-completo",
@@ -63,8 +65,7 @@ export const curpFaqItems: FAQItem[] = [
   },
   {
     id: "sandbox",
-    question: "¿Existe sandbox?",
-    answer:
-      "Sí, con cuotas independientes del ambiente de producción para probar tu integración.",
+    question: SANDBOX_COPY.curpQuestion,
+    answer: SANDBOX_COPY.answer,
   },
 ];

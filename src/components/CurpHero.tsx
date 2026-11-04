@@ -5,7 +5,8 @@ import Breadcrumbs from "./Breadcrumbs";
 import { gtmEvent } from "./GoogleTagManager";
 
 const NAVY = "#02132D";
-const badges = ["API REST", "SANDBOX", "RESULTADO ESTRUCTURADO", "INTEGRABLE A KYC"];
+// "VALIDACIÓN CURP" ya aparece en el eyebrow del hero; se retiró "SANDBOX" (AUD-02).
+const badges = ["API REST", "RESULTADO ESTRUCTURADO", "INTEGRABLE A KYC"];
 
 export default function CurpHero() {
   const track = (eventName: string, destination: string) => {
@@ -55,7 +56,7 @@ export default function CurpHero() {
                 data-source="hero"
                 className="px-6 py-3.5 min-h-[48px] flex items-center bg-[#1ECAD3] text-[#02132D] font-bold rounded-lg hover:bg-[#17b5bd] transition-all"
               >
-                Probar validación CURP
+                Validar CURP en Autoservicio
               </Link>
               <Link
                 href="/docs/consultas-oficiales/api/renapo-curp"

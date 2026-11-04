@@ -1,3 +1,5 @@
+import { SANDBOX_COPY } from "@/config/commercial-copy";
+
 // Datos del FAQ de /validar-ine. Separado de IneFAQ.tsx ("use client") para
 // que page.tsx pueda construir el JSON-LD FAQPage desde la misma fuente.
 export interface FAQItem {
@@ -53,13 +55,12 @@ export const ineFaqItems: FAQItem[] = [
     id: "integra-api",
     question: "¿La validación se integra vía API?",
     answer:
-      "Sí, es un endpoint REST autenticado con API Key (Bearer token) que puedes invocar directamente desde tu backend.",
+      "Sí, es un endpoint REST autenticado con API Key (Bearer token) que puedes invocar directamente desde tu backend. La integración requiere una cuota de configuración (setup fee) y habilitación conforme a las condiciones contratadas.",
   },
   {
     id: "sandbox",
-    question: "¿Existe sandbox?",
-    answer:
-      "Sí, con cuotas independientes del ambiente de producción para probar tu integración.",
+    question: SANDBOX_COPY.ineQuestion,
+    answer: SANDBOX_COPY.answer,
   },
   {
     id: "volumen",
