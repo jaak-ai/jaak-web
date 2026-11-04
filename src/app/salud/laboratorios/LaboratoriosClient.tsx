@@ -185,7 +185,7 @@ export default function LaboratoriosClient() {
                 primaryTitle="Sesión de 30 minutos con un especialista de producto de JAAK"
                 primaryText="Revisamos su proceso de alta de paciente y le mostramos cómo configurar KYC para resolver identidad en recepción y reducir duplicados. No damos asesoría legal: los criterios de auditoría de certificación debe definirlos su propio equipo de calidad."
                 primaryCtaLabel="Agendar la sesión"
-                primaryCtaHref="https://meetings.hubspot.com/jose-andres-yllescas-lira"
+                primaryCtaHref="https://meetings.hubspot.com/jaak-ai/reunion-jaak"
                 secondaryEyebrow="Para operaciones y tecnología"
                 secondaryTitle="Identidad resuelta en recepción"
                 secondaryText="Verificación documental y biométrica que resuelve identidad antes de crear el registro, más constancia de integridad sobre el resultado emitido. Demos de noventa segundos y documentación de API."

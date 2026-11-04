@@ -352,7 +352,7 @@ export default function BancosPage() {
                 <div className="mt-10 p-6 bg-[#1ECAD3]/10 border border-[#1ECAD3]/20 rounded-xl">
                   <p className="text-[#1ECAD3] font-bold text-lg mb-1">Agenda directo</p>
                   <a
-                    href="https://meetings.hubspot.com/jose-andres-yllescas-lira"
+                    href="https://meetings.hubspot.com/jaak-ai/reunion-jaak"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-white/80 hover:text-white underline"

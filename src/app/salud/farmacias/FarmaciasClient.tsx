@@ -263,7 +263,7 @@ export default function FarmaciasClient() {
                 primaryTitle="Sesión de 30 minutos con un especialista de producto de JAAK"
                 primaryText="Revisamos su proceso de dispensación y le mostramos cómo configurar KYC para verificar identidad del paciente y prescriptor en el mostrador. No damos asesoría legal: los criterios de validación por fracción debe definirlos su propio equipo regulatorio."
                 primaryCtaLabel="Agendar la sesión"
-                primaryCtaHref="https://meetings.hubspot.com/jose-andres-yllescas-lira"
+                primaryCtaHref="https://meetings.hubspot.com/jaak-ai/reunion-jaak"
                 secondaryEyebrow="Para tecnología y punto de venta"
                 secondaryTitle="Validación en el mostrador"
                 secondaryText="Verificación de identidad del paciente, validación de cédula del prescriptor y control central de surtimientos. Demos de noventa segundos y documentación de API para integrar al punto de venta."

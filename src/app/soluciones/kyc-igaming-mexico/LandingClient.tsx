@@ -44,7 +44,7 @@ const COBRE_CHECKOUT_URL = "https://platform.jaak.ai/#/onboarding/user-info?plan
 const WHATSAPP_URL_GAMING = `https://wa.me/525614390780?text=${encodeURIComponent(
   "Hola, vi la landing de KYC para Gaming e iGaming en México de JAAK. Quiero revisar cómo adaptar el flujo de verificación a nuestra operación. Referencia: Landing Gaming JAAK."
 )}`;
-const DEMO_ANDRES_URL = "https://meetings.hubspot.com/jose-andres-yllescas-lira?uuid=ddd51283-09f7-4350-a62f-b923e4fe5f2d";
+const DEMO_ANDRES_URL = "https://meetings.hubspot.com/jaak-ai/reunion-jaak";
 
 /** Envoltura con degradado teal→verde JAAK detrás de una imagen enmarcada. */
 function FramedImage({ src, alt, priority }: { src: string; alt: string; priority?: boolean }) {

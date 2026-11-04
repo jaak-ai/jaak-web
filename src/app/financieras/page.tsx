@@ -342,7 +342,7 @@ export default function FinancierasPage() {
                 <div className="mt-10 p-6 bg-[#655DC6]/10 border border-[#655DC6]/20 rounded-xl">
                   <p className="text-[#a99df0] font-bold text-lg mb-1">¿Urgente?</p>
                   <a
-                    href="https://meetings.hubspot.com/jose-andres-yllescas-lira"
+                    href="https://meetings.hubspot.com/jaak-ai/reunion-jaak"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-white/80 hover:text-white underline"

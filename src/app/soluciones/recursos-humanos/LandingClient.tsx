@@ -27,7 +27,7 @@ const RH_ACCENT = "#FF6B4A";
 const RH_ACCENT_DARK = "#C2410C";
 
 const VIDEO_ID = "q0Iliu1wK-g";
-const MEETING_URL = "https://meetings.hubspot.com/jose-andres-yllescas-lira?uuid=996cf1ff-68fa-42ac-9bc6-c03c8aa7aee6";
+const MEETING_URL = "https://meetings.hubspot.com/jaak-ai/reunion-jaak";
 const WHATSAPP_URL =
   "https://wa.me/525535091788?text=Hola%2C%20me%20interesa%20conocer%20m%C3%A1s%20sobre%20la%20firma%20digital%20de%20JAAK%20para%20contratos%20y%20documentaci%C3%B3n%20de%20Recursos%20Humanos.%20%C2%BFMe%20pueden%20compartir%20m%C3%A1s%20informaci%C3%B3n%3F";
 
