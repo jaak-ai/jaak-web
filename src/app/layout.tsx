@@ -7,6 +7,7 @@ import { MicrosoftClarity } from "@/components/MicrosoftClarity";
 import { TurnstileScript } from "@/components/CloudflareTurnstile";
 import { KairosSalesChat } from "@/components/KairosSalesChat";
 import FloatingDemoWidget from "@/components/FloatingDemoWidget";
+import { buildConsentBootstrapScript } from "@/lib/consent";
 import "./globals.css";
 
 const jsonLd = {
@@ -182,6 +183,10 @@ export default function RootLayout({
   return (
     <html lang="es">
       <head>
+        {/* Consent Mode por defecto: solo actúa en rutas con gating (ver src/lib/consent.ts). Debe ir antes de GTM. */}
+        <Script id="consent-bootstrap" strategy="beforeInteractive">
+          {buildConsentBootstrapScript()}
+        </Script>
         <GoogleTagManagerHead />
         <script
           type="application/ld+json"
@@ -208,6 +213,7 @@ export default function RootLayout({
             t.src=v;s=b.getElementsByTagName(e)[0];
             s.parentNode.insertBefore(t,s)}(window, document,'script',
             'https://connect.facebook.net/en_US/fbevents.js');
+            if(window.__jaakAdsConsent==='denied'){fbq('consent','revoke');}
             fbq('init', '863305889229368');
             fbq('init', '770606279476254');
             fbq('track', 'PageView');
