@@ -53,11 +53,11 @@ export const AGENDA = [
 ];
 
 export const APPLICATIONS = [
-  { title: "Servicios financieros", text: "Contratos de crédito, apertura de cuentas y consentimientos, donde la identidad del firmante y la trazabilidad del expediente son parte de la revisión." },
-  { title: "Inmobiliario", text: "Promesas de compraventa, arrendamientos y mandatos, con múltiples partes y documentos que deben conservar su integridad en el tiempo." },
-  { title: "Recursos humanos", text: "Contratos laborales, acuerdos de confidencialidad y políticas internas firmados a distancia y a volumen." },
-  { title: "Legal", text: "Contratos comerciales y poderes cuya eventual defensa depende de la evidencia que se haya generado al firmar." },
-  { title: "Cumplimiento", text: "Expedientes que deben poder presentarse ante auditorías y autoridades, con evidencia ordenada de quién firmó y cuándo." },
+  { icon: "finanzas" as const, title: "Servicios financieros", text: "Contratos de crédito, apertura de cuentas y consentimientos, donde la identidad del firmante y la trazabilidad del expediente son parte de la revisión." },
+  { icon: "inmobiliario" as const, title: "Inmobiliario", text: "Promesas de compraventa, arrendamientos y mandatos, con múltiples partes y documentos que deben conservar su integridad en el tiempo." },
+  { icon: "rrhh" as const, title: "Recursos humanos", text: "Contratos laborales, acuerdos de confidencialidad y políticas internas firmados a distancia y a volumen." },
+  { icon: "legal" as const, title: "Legal", text: "Contratos comerciales y poderes cuya eventual defensa depende de la evidencia que se haya generado al firmar." },
+  { icon: "cumplimiento" as const, title: "Cumplimiento", text: "Expedientes que deben poder presentarse ante auditorías y autoridades, con evidencia ordenada de quién firmó y cuándo." },
 ];
 
 export const LAYERS = [

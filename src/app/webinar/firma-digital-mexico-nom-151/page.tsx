@@ -14,7 +14,7 @@ import {
 import AdsConsentBanner from "./AdsConsentBanner";
 import BrandLogos from "./BrandLogos";
 import Countdown from "./Countdown";
-import { Glyph, NetworkBackdrop, NetworkDecor } from "./Decor";
+import { SectorGlyph, NetworkBackdrop, NetworkDecor } from "./Decor";
 import { ExternalLink, RegisterButton } from "./Links";
 import StickyRegisterBar from "./StickyRegisterBar";
 import WebinarProvider from "./WebinarProvider";
@@ -260,9 +260,9 @@ export default function FirmaDigitalWebinarPage() {
               <p className={EYEBROW}>{BAR}Casos de uso</p>
               <h2 id="aplicaciones" className={H2}>Aplicaciones por sector</h2>
               <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                {APPLICATIONS.map((a, i) => (
+                {APPLICATIONS.map((a) => (
                   <li key={a.title} className="rounded-md bg-white p-6 shadow-[0_8px_24px_rgba(2,19,45,0.08)] ring-1 ring-[var(--wb-navy)]/5">
-                    <Glyph index={i} />
+                    <SectorGlyph kind={a.icon} />
                     <h3 className="mt-4 text-lg font-bold text-[var(--wb-navy)]">{a.title}</h3>
                     <p className="mt-2 text-sm leading-relaxed">{a.text}</p>
                   </li>
