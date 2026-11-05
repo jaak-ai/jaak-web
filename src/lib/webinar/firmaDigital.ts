@@ -91,6 +91,7 @@ export const LINKS = {
   jaak: "https://jaak.ai",
   jaakLinkedin: "https://mx.linkedin.com/company/jaakmx",
   psc: "https://psccodex.com",
+  pscPrivacy: "https://psccodex.com/aviso-de-privacidad",
   pscLinkedin: "https://mx.linkedin.com/company/psc-codex",
   ariannaLinkedin: "https://mx.linkedin.com/in/ariannaquezada",
   benjaminLinkedin: "https://mx.linkedin.com/in/benjaminglez1",

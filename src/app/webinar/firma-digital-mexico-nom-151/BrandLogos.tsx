@@ -2,12 +2,15 @@ import Image from "next/image";
 
 /**
  * Logos con la misma jerarquía: mismo alto y misma caja.
- * JAAK usa el logo oficial del sitio. PSC Codex: PENDIENTE de recibir el
- * archivo oficial; hasta entonces se muestra su nombre en tipografía neutra.
- * Para activarlo: guardar el logo en public/images/webinar/firma-digital/ y
- * completar PSC_LOGO.
+ * JAAK usa el logo oficial del sitio; PSC Codex, el logo oficial entregado
+ * (versión azul sobre fondo claro). Existe también psc-codex-logo-blanco.webp
+ * para fondos oscuros.
  */
-const PSC_LOGO: { src: string; width: number; height: number } | null = null;
+const PSC_LOGO: { src: string; width: number; height: number } | null = {
+  src: "/images/webinar/firma-digital/psc-codex-logo.webp",
+  width: 1739,
+  height: 1014,
+};
 
 const BOX = "flex h-12 w-32 items-center justify-center sm:w-40";
 

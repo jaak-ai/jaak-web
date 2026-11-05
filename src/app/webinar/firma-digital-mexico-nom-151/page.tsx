@@ -66,8 +66,8 @@ const jsonLd = {
         { "@type": "Organization", name: "PSC Codex", url: LINKS.psc, sameAs: [LINKS.pscLinkedin] },
       ],
       performer: [
-        { "@type": "Person", name: "Arianna Quezada", sameAs: [LINKS.ariannaLinkedin] },
-        { "@type": "Person", name: "Benjamín González", sameAs: [LINKS.benjaminLinkedin] },
+        { "@type": "Person", name: "Arianna Quezada", jobTitle: "CEO y cofundadora de JAAK", worksFor: { "@type": "Organization", name: "JAAK", url: LINKS.jaak }, sameAs: [LINKS.ariannaLinkedin] },
+        { "@type": "Person", name: "Benjamín González", jobTitle: "Director de Operaciones de PSC Codex", worksFor: { "@type": "Organization", name: "PSC Codex", url: LINKS.psc }, sameAs: [LINKS.benjaminLinkedin] },
       ],
       // Sin `offers` con precio: no se declaran precios no verificados.
     },
@@ -263,7 +263,7 @@ export default function FirmaDigitalWebinarPage() {
                 {SPEAKERS.map((s) => (
                   <li key={s.name} className="flex flex-col gap-5 rounded-md border border-[var(--wb-gray)] p-6 sm:flex-row">
                     {s.photo ? (
-                      <Image src={s.photo.src} alt={s.photo.alt} width={s.photo.width} height={s.photo.height} className="h-28 w-28 flex-none rounded-full object-cover" />
+                      <Image src={s.photo.src} alt={s.photo.alt} width={s.photo.width} height={s.photo.height} className="h-28 w-28 flex-none rounded-full object-cover ring-2 ring-[var(--wb-teal)]" />
                     ) : (
                       <div aria-hidden="true" className="flex h-28 w-28 flex-none items-center justify-center rounded-full bg-[var(--wb-navy)] text-3xl font-extrabold text-white ring-4 ring-[var(--wb-teal)]">
                         {initials(s.name)}
@@ -360,6 +360,14 @@ export default function FirmaDigitalWebinarPage() {
               <div className="mt-8">
                 <RegisterButton id="registro-final" location="cta_final" className="w-full sm:w-auto" />
               </div>
+              <p className="mt-6 text-xs leading-relaxed text-white/80">
+                Al registrarse, sus datos serán tratados conforme a los avisos de privacidad de{" "}
+                <Link href="/privacidad" className="underline hover:no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">JAAK</Link>
+                ,{" "}
+                <ExternalLink href={LINKS.pscPrivacy} location="cta_final_privacidad" label="Aviso de privacidad de PSC Codex" className="underline hover:no-underline">PSC Codex</ExternalLink>
+                {" "}y{" "}
+                <ExternalLink href={LINKS.gotoPrivacy} location="cta_final_privacidad" label="Aviso de privacidad de GoTo" className="underline hover:no-underline">GoToWebinar</ExternalLink>.
+              </p>
             </div>
           </section>
         </main>
@@ -381,7 +389,7 @@ export default function FirmaDigitalWebinarPage() {
               <ul className="mt-3 space-y-2">
                 <li><ExternalLink href={LINKS.psc} location="footer" className="underline hover:no-underline">Sitio oficial</ExternalLink></li>
                 <li><ExternalLink href={LINKS.pscLinkedin} location="footer" label="LinkedIn de PSC Codex" className="underline hover:no-underline">LinkedIn</ExternalLink></li>
-                <li className="text-white/70">Consulte el aviso de privacidad de PSC Codex en su sitio oficial.</li>
+                <li><ExternalLink href={LINKS.pscPrivacy} location="footer" label="Aviso de privacidad de PSC Codex" className="underline hover:no-underline">Aviso de privacidad de PSC Codex</ExternalLink></li>
               </ul>
             </div>
             <div>

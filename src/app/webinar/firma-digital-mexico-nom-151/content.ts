@@ -2,7 +2,7 @@
 // pueda ajustarlo sin tocar componentes.
 //
 // PENDIENTE DE VALIDACIÓN (no provino del brief): agenda por bloques, ejemplos
-// por sector, biografías y preguntas frecuentes están redactados con criterio
+// por sector y preguntas frecuentes están redactados con criterio
 // conservador (sin cifras, precios ni acreditaciones). Confirmar con JAAK y PSC
 // Codex antes de publicar.
 
@@ -17,19 +17,22 @@ export interface Speaker {
   photo?: { src: string; alt: string; width: number; height: number };
 }
 
+const PHOTO_DIR = "/images/webinar/firma-digital";
+
 export const SPEAKERS: Speaker[] = [
   {
     name: "Arianna Quezada",
-    role: "Fundadora y CEO de JAAK",
-    bio: "Lidera JAAK, empresa mexicana de identidad digital y firma electrónica para organizaciones de sectores regulados.",
+    role: "CEO y cofundadora de JAAK",
+    bio: "Su trayectoria profesional se ha enfocado en impulsar la adopción de tecnologías de identidad digital, verificación biométrica y firma electrónica, acercando la innovación a las necesidades de seguridad y cumplimiento de las empresas. Durante el webinar compartirá cómo la verificación de identidad y la trazabilidad de la evidencia permiten fortalecer los procesos de contratación digital, así como los aspectos que deben considerarse al elegir una solución de firma electrónica.",
     linkedin: LINKS.ariannaLinkedin,
+    photo: { src: `${PHOTO_DIR}/arianna-quezada.webp`, alt: "Retrato de Arianna Quezada, CEO y cofundadora de JAAK", width: 640, height: 640 },
   },
   {
     name: "Benjamín González",
-    role: "Ponente invitado",
-    // TODO(contenido): sustituir por cargo y biografía aprobados por PSC Codex.
-    bio: "Participa como ponente del webinar. Conozca su trayectoria y experiencia profesional en su perfil de LinkedIn.",
+    role: "Director de Operaciones de PSC Codex",
+    bio: "Su trayectoria profesional se ha orientado a la gestión de operaciones y procesos de certificación digital, con especial atención a los mecanismos que permiten respaldar la integridad, autenticidad y conservación de documentos electrónicos. Durante el webinar abordará el papel de los Prestadores de Servicios de Certificación, los sellos digitales de tiempo y la NOM-151, explicando cómo estos elementos contribuyen a fortalecer la evidencia documental en las operaciones digitales.",
     linkedin: LINKS.benjaminLinkedin,
+    photo: { src: `${PHOTO_DIR}/benjamin-gonzalez.webp`, alt: "Retrato de Benjamín González, Director de Operaciones de PSC Codex", width: 640, height: 640 },
   },
 ];
 
