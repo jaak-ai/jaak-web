@@ -262,6 +262,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.85,
     },
     {
+      url: `${baseUrl}/webinar/firma-digital-mexico-nom-151`,
+      lastModified: new Date("2026-11-05"),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
       url: `${baseUrl}/lfpiorpi-2027`,
       lastModified: now,
       changeFrequency: "monthly",

@@ -25,6 +25,8 @@ const HIDDEN_PREFIXES = [
   "/gracias",
   "/soluciones/kyc-igaming-mexico",
   "/lfpiorpi-2027",
+  // Landing del webinar JAAK × PSC Codex: un único CTA (registro) + barra sticky propia.
+  "/webinar/firma-digital-mexico-nom-151",
 ];
 const DISMISS_STORAGE_KEY = "jaak_floating_demo_dismissed_until";
 const DISMISS_DAYS = 7;
