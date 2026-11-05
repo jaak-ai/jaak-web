@@ -14,6 +14,7 @@ import {
 import AdsConsentBanner from "./AdsConsentBanner";
 import BrandLogos from "./BrandLogos";
 import Countdown from "./Countdown";
+import { Glyph, NetworkBackdrop, NetworkDecor } from "./Decor";
 import { ExternalLink, RegisterButton } from "./Links";
 import StickyRegisterBar from "./StickyRegisterBar";
 import WebinarProvider from "./WebinarProvider";
@@ -90,10 +91,12 @@ const THEME = {
   "--wb-text": "#2B3550",
 } as React.CSSProperties;
 
+const H2_DARK = "text-2xl font-extrabold leading-tight text-white sm:text-3xl";
 const H2 = "text-2xl font-extrabold leading-tight text-[var(--wb-navy)] sm:text-3xl";
-const SECTION = "px-4 py-14 sm:px-6 sm:py-20";
+const SECTION = "relative overflow-hidden px-4 py-14 sm:px-6 sm:py-20";
 const INNER = "mx-auto max-w-5xl";
 const EYEBROW = "mb-3 flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-[var(--wb-navy)]";
+const EYEBROW_DARK = "mb-3 flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-[var(--wb-teal)]";
 const BAR = <span aria-hidden="true" className="h-0.5 w-8 bg-[var(--wb-teal)]" />;
 const LINK_ON_LIGHT = "font-semibold text-[var(--wb-navy)] underline underline-offset-2 hover:no-underline";
 
@@ -115,33 +118,40 @@ export default function FirmaDigitalWebinarPage() {
           Saltar al contenido
         </a>
 
-        <header className="border-b border-[var(--wb-gray)] bg-white px-4 py-3 sm:px-6">
+        <header className="bg-white px-4 py-3 sm:px-6">
           <div className={`${INNER} flex items-center justify-between`}>
             <BrandLogos />
           </div>
         </header>
+        <div aria-hidden="true" className="h-1 bg-gradient-to-r from-[var(--wb-navy)] via-[var(--wb-teal)] to-[var(--wb-navy-dark)]" />
 
         <main id="contenido" className="pb-24 md:pb-0">
           {/* 1. Hero */}
-          <section aria-labelledby="titulo" className="wb-dark bg-[var(--wb-navy-dark)] px-4 py-14 text-white sm:px-6 sm:py-20">
-            <div className={`${INNER} grid gap-10 lg:grid-cols-[1.2fr_1fr] lg:items-center`}>
+          <section aria-labelledby="titulo" className="wb-dark relative isolate overflow-hidden bg-[var(--wb-navy-dark)] px-4 py-14 text-white sm:px-6 sm:py-24">
+            <NetworkBackdrop opacity="opacity-100" position="object-[75%_center]" />
+            {/* Velo: oscuro a la izquierda (texto) y más total en móvil para el contraste */}
+            <div aria-hidden="true" className="absolute inset-0 bg-[var(--wb-navy-dark)]/75 lg:bg-gradient-to-r lg:from-[var(--wb-navy-dark)] lg:via-[var(--wb-navy-dark)]/70 lg:to-transparent" />
+            <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[var(--wb-navy-dark)]/80 to-transparent" />
+            <div className={`${INNER} relative grid gap-10 lg:grid-cols-[1.2fr_1fr] lg:items-center`}>
               <div>
-                <p className="mb-4 flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-[var(--wb-teal)]">
-                  <span aria-hidden="true" className="h-0.5 w-8 bg-[var(--wb-teal)]" />
+                <p className="mb-4 inline-flex items-center gap-3 rounded-full bg-[var(--wb-teal)]/15 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[var(--wb-teal)] ring-1 ring-[var(--wb-teal)]/40">
+                  <span aria-hidden="true" className="h-2 w-2 rounded-full bg-[var(--wb-teal)]" />
                   Webinar gratuito · JAAK × PSC Codex
                 </p>
-                <h1 id="titulo" className="text-4xl font-extrabold leading-[1.1] sm:text-5xl">
-                  El mapa de la firma digital en México.
+                <h1 id="titulo" className="text-4xl font-extrabold leading-[1.1] sm:text-5xl lg:text-6xl">
+                  El mapa de la{" "}
+                  <span className="text-[var(--wb-teal)]">firma digital</span>{" "}
+                  en México.
                 </h1>
                 <p className="mt-5 text-lg font-semibold leading-snug text-white sm:text-xl">
                   Cómo elegir el nivel de seguridad, identidad y evidencia adecuado para cada contrato.
                 </p>
-                <p className="mt-4 max-w-xl text-base leading-relaxed text-white/85">
+                <p className="mt-4 max-w-xl text-base leading-relaxed text-white/90">
                   Un encuentro entre JAAK y PSC Codex para explorar cómo la identidad verificada, la integridad
                   documental y la certificación fortalecen los procesos de contratación digital.
                 </p>
                 <div className="mt-8">
-                  <RegisterButton id="registro-hero" location="hero" className="w-full sm:w-auto" />
+                  <RegisterButton id="registro-hero" location="hero" className="w-full shadow-lg shadow-[var(--wb-teal)]/25 sm:w-auto" />
                 </div>
               </div>
 
@@ -153,7 +163,7 @@ export default function FirmaDigitalWebinarPage() {
                     ["Modalidad", "En línea"],
                     ["Duración", "60 minutos"],
                   ].map(([k, v]) => (
-                    <div key={k} className="rounded-md bg-white/10 p-3 ring-1 ring-white/20">
+                    <div key={k} className="rounded-md border-t-2 border-t-[var(--wb-teal)] bg-[var(--wb-navy-dark)]/70 p-3 ring-1 ring-white/15 backdrop-blur-sm">
                       <dt className="text-xs font-semibold uppercase tracking-wider text-[var(--wb-teal)]">{k}</dt>
                       <dd className="mt-1 font-semibold leading-snug text-white">{v}</dd>
                     </div>
@@ -165,8 +175,9 @@ export default function FirmaDigitalWebinarPage() {
           </section>
 
           {/* 2. Firmar vs. demostrar */}
-          <section aria-labelledby="demostrar" className={`${SECTION} bg-white`}>
-            <div className={INNER}>
+          <section aria-labelledby="demostrar" className={`${SECTION} bg-gradient-to-b from-white to-[var(--wb-gray)]`}>
+            <div aria-hidden="true" className="absolute -right-24 top-10 h-72 w-72 rounded-full bg-[var(--wb-teal)]/15 blur-3xl" />
+            <div className={`${INNER} relative`}>
               <p className={EYEBROW}>{BAR}El problema</p>
               <h2 id="demostrar" className={`${H2} max-w-3xl`}>
                 Por qué firmar no siempre equivale a poder demostrar
@@ -178,22 +189,24 @@ export default function FirmaDigitalWebinarPage() {
               </p>
               <ul className="mt-10 grid gap-5 md:grid-cols-3">
                 {LAYERS.map((l, i) => (
-                  <li key={l.title} className="rounded-md border border-[var(--wb-gray)] bg-[var(--wb-gray)] p-6">
-                    <span className="text-sm font-extrabold text-[var(--wb-navy)]">0{i + 1}</span>
-                    <h3 className="mt-2 text-lg font-bold text-[var(--wb-navy)]">{l.title}</h3>
+                  <li key={l.title} className="relative rounded-md border-t-4 border-t-[var(--wb-teal)] bg-white p-6 shadow-[0_8px_24px_rgba(2,19,45,0.08)]">
+                    <span aria-hidden="true" className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[var(--wb-navy-dark)] to-[var(--wb-navy)] text-sm font-extrabold text-[var(--wb-teal)] ring-2 ring-[var(--wb-teal)]/40">
+                      0{i + 1}
+                    </span>
+                    <h3 className="mt-4 text-lg font-bold text-[var(--wb-navy)]">{l.title}</h3>
                     <p className="mt-2 text-sm leading-relaxed">{l.text}</p>
                   </li>
                 ))}
               </ul>
-              <p className="mt-8 max-w-3xl border-l-4 border-[var(--wb-teal)] pl-4 text-sm leading-relaxed">
+              <p className="wb-dark mt-8 max-w-3xl rounded-md border-l-4 border-[var(--wb-teal)] bg-gradient-to-r from-[var(--wb-navy-dark)] to-[var(--wb-navy)] p-5 text-sm leading-relaxed text-white">
                 <strong>Importante:</strong> la NOM-151, por sí sola, no prueba la identidad de quien firma ni garantiza
                 automáticamente el resultado de un juicio. Fortalece la evidencia sobre la integridad y la existencia del
                 documento; su valoración corresponde a la autoridad. Consulte las fuentes oficiales:{" "}
-                <ExternalLink href={LINKS.nom151Dof} location="problema_fuentes" className={LINK_ON_LIGHT}>
+                <ExternalLink href={LINKS.nom151Dof} location="problema_fuentes" className="font-semibold text-[var(--wb-teal)] underline underline-offset-2 hover:no-underline">
                   NOM-151-SCFI-2016 en el DOF
                 </ExternalLink>{" "}
                 y el{" "}
-                <ExternalLink href={LINKS.codigoComercio} location="problema_fuentes" className={LINK_ON_LIGHT}>
+                <ExternalLink href={LINKS.codigoComercio} location="problema_fuentes" className="font-semibold text-[var(--wb-teal)] underline underline-offset-2 hover:no-underline">
                   Código de Comercio
                 </ExternalLink>
                 .
@@ -202,17 +215,20 @@ export default function FirmaDigitalWebinarPage() {
           </section>
 
           {/* 3. Qué descubrirán */}
-          <section aria-labelledby="descubriran" className={`${SECTION} bg-[var(--wb-gray)]`}>
-            <div className={INNER}>
-              <p className={EYEBROW}>{BAR}Contenido</p>
-              <h2 id="descubriran" className={H2}>Qué descubrirán los asistentes</h2>
+          <section aria-labelledby="descubriran" className={`${SECTION} wb-dark bg-gradient-to-br from-[var(--wb-navy-dark)] via-[var(--wb-navy)] to-[var(--wb-navy-dark)] text-white`}>
+            <NetworkDecor className="-right-10 -top-6 w-[26rem] opacity-60" />
+            <div className={`${INNER} relative`}>
+              <p className={EYEBROW_DARK}><span aria-hidden="true" className="h-0.5 w-8 bg-[var(--wb-teal)]" />Contenido</p>
+              <h2 id="descubriran" className={H2_DARK}>Qué descubrirán los asistentes</h2>
               <ul className="mt-8 grid gap-4 md:grid-cols-2">
                 {LEARNINGS.map((t) => (
-                  <li key={t} className="flex gap-3 rounded-md bg-white p-5 text-base leading-relaxed">
-                    <svg aria-hidden="true" viewBox="0 0 20 20" className="mt-1 h-5 w-5 flex-none text-[var(--wb-navy)]" fill="none" stroke="currentColor" strokeWidth="2.5">
-                      <path d="M4 10.5l4 4 8-9" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                    <span>{t}</span>
+                  <li key={t} className="flex gap-4 rounded-md bg-white/[0.07] p-5 text-base leading-relaxed ring-1 ring-white/15 backdrop-blur-sm">
+                    <span aria-hidden="true" className="mt-0.5 flex h-7 w-7 flex-none items-center justify-center rounded-full bg-[var(--wb-teal)] text-[var(--wb-navy-dark)]">
+                      <svg viewBox="0 0 20 20" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="3">
+                        <path d="M4 10.5l4 4 8-9" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </span>
+                    <span className="text-white/95">{t}</span>
                   </li>
                 ))}
               </ul>
@@ -224,14 +240,13 @@ export default function FirmaDigitalWebinarPage() {
             <div className={INNER}>
               <p className={EYEBROW}>{BAR}60 minutos</p>
               <h2 id="agenda" className={H2}>Agenda</h2>
-              <ol className="mt-8 divide-y divide-[var(--wb-gray)] border-y border-[var(--wb-gray)]">
+              <ol className="relative mt-10 space-y-6 before:absolute before:bottom-2 before:left-[0.6875rem] before:top-2 before:w-0.5 before:bg-gradient-to-b before:from-[var(--wb-teal)] before:to-[var(--wb-navy)] sm:before:left-[0.6875rem]">
                 {AGENDA.map((a) => (
-                  <li key={a.time} className="grid gap-1 py-5 sm:grid-cols-[9rem_1fr] sm:gap-6">
-                    <span className="text-sm font-extrabold tabular-nums text-[var(--wb-navy)]">{a.time}</span>
-                    <div>
-                      <h3 className="text-base font-bold text-[var(--wb-navy)]">{a.title}</h3>
-                      <p className="mt-1 text-sm leading-relaxed">{a.text}</p>
-                    </div>
+                  <li key={a.time} className="relative pl-10">
+                    <span aria-hidden="true" className="absolute left-0 top-1.5 h-6 w-6 rounded-full border-4 border-white bg-[var(--wb-navy)] ring-2 ring-[var(--wb-teal)]" />
+                    <span className="inline-block rounded-full bg-[var(--wb-navy)] px-3 py-1 text-xs font-extrabold tabular-nums text-white">{a.time}</span>
+                    <h3 className="mt-2 text-lg font-bold text-[var(--wb-navy)]">{a.title}</h3>
+                    <p className="mt-1 max-w-2xl text-sm leading-relaxed">{a.text}</p>
                   </li>
                 ))}
               </ol>
@@ -239,14 +254,16 @@ export default function FirmaDigitalWebinarPage() {
           </section>
 
           {/* 5. Aplicaciones */}
-          <section aria-labelledby="aplicaciones" className={`${SECTION} bg-[var(--wb-gray)]`}>
-            <div className={INNER}>
+          <section aria-labelledby="aplicaciones" className={`${SECTION} bg-gradient-to-b from-[var(--wb-gray)] to-white`}>
+            <div aria-hidden="true" className="absolute -left-24 bottom-0 h-72 w-72 rounded-full bg-[var(--wb-navy)]/10 blur-3xl" />
+            <div className={`${INNER} relative`}>
               <p className={EYEBROW}>{BAR}Casos de uso</p>
               <h2 id="aplicaciones" className={H2}>Aplicaciones por sector</h2>
               <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                {APPLICATIONS.map((a) => (
-                  <li key={a.title} className="rounded-md bg-white p-6">
-                    <h3 className="text-lg font-bold text-[var(--wb-navy)]">{a.title}</h3>
+                {APPLICATIONS.map((a, i) => (
+                  <li key={a.title} className="rounded-md bg-white p-6 shadow-[0_8px_24px_rgba(2,19,45,0.08)] ring-1 ring-[var(--wb-navy)]/5">
+                    <Glyph index={i} />
+                    <h3 className="mt-4 text-lg font-bold text-[var(--wb-navy)]">{a.title}</h3>
                     <p className="mt-2 text-sm leading-relaxed">{a.text}</p>
                   </li>
                 ))}
@@ -259,18 +276,21 @@ export default function FirmaDigitalWebinarPage() {
             <div className={INNER}>
               <p className={EYEBROW}>{BAR}Quiénes participan</p>
               <h2 id="ponentes" className={H2}>Ponentes</h2>
-              <ul className="mt-8 grid gap-6 md:grid-cols-2">
+              <ul className="mt-10 grid gap-8 md:grid-cols-2">
                 {SPEAKERS.map((s) => (
-                  <li key={s.name} className="flex flex-col gap-5 rounded-md border border-[var(--wb-gray)] p-6 sm:flex-row">
-                    {s.photo ? (
-                      <Image src={s.photo.src} alt={s.photo.alt} width={s.photo.width} height={s.photo.height} className="h-28 w-28 flex-none rounded-full object-cover ring-2 ring-[var(--wb-teal)]" />
-                    ) : (
-                      <div aria-hidden="true" className="flex h-28 w-28 flex-none items-center justify-center rounded-full bg-[var(--wb-navy)] text-3xl font-extrabold text-white ring-4 ring-[var(--wb-teal)]">
-                        {initials(s.name)}
-                      </div>
-                    )}
-                    <div>
-                      <h3 className="text-xl font-bold text-[var(--wb-navy)]">{s.name}</h3>
+                  <li key={s.name} className="overflow-hidden rounded-md bg-white shadow-[0_8px_24px_rgba(2,19,45,0.1)] ring-1 ring-[var(--wb-navy)]/10">
+                    <div className="relative h-24 overflow-hidden bg-gradient-to-r from-[var(--wb-navy-dark)] via-[var(--wb-navy)] to-[var(--wb-teal)]">
+                      <NetworkDecor className="-right-4 -top-8 w-72 opacity-70" />
+                    </div>
+                    <div className="relative z-10 px-6 pb-6">
+                      {s.photo ? (
+                        <Image src={s.photo.src} alt={s.photo.alt} width={s.photo.width} height={s.photo.height} className="-mt-14 h-28 w-28 rounded-full object-cover ring-4 ring-white" />
+                      ) : (
+                        <div aria-hidden="true" className="-mt-14 flex h-28 w-28 items-center justify-center rounded-full bg-[var(--wb-navy)] text-3xl font-extrabold text-white ring-4 ring-white">
+                          {initials(s.name)}
+                        </div>
+                      )}
+                      <h3 className="mt-4 text-xl font-bold text-[var(--wb-navy)]">{s.name}</h3>
                       <p className="mt-1 text-sm font-semibold">{s.role}</p>
                       <p className="mt-3 text-sm leading-relaxed">{s.bio}</p>
                       <ExternalLink href={s.linkedin} location={`ponente_${initials(s.name).toLowerCase()}`} label={`LinkedIn de ${s.name}`} className={`${LINK_ON_LIGHT} mt-4 inline-block text-sm`}>
@@ -284,16 +304,19 @@ export default function FirmaDigitalWebinarPage() {
           </section>
 
           {/* 7. Alianza */}
-          <section aria-labelledby="alianza" className={`${SECTION} bg-[var(--wb-gray)]`}>
-            <div className={INNER}>
-              <p className={EYEBROW}>{BAR}La alianza</p>
-              <h2 id="alianza" className={H2}>JAAK × PSC Codex: dos capas que se complementan</h2>
-              <p className="mt-5 max-w-3xl text-base leading-relaxed">
+          <section aria-labelledby="alianza" className={`${SECTION} wb-dark isolate bg-[var(--wb-navy-dark)] text-white`}>
+            <NetworkBackdrop opacity="opacity-40" position="object-center" />
+            <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-b from-[var(--wb-navy-dark)]/80 via-[var(--wb-navy)]/70 to-[var(--wb-navy-dark)]/90" />
+            <div className={`${INNER} relative`}>
+              <p className={EYEBROW_DARK}><span aria-hidden="true" className="h-0.5 w-8 bg-[var(--wb-teal)]" />La alianza</p>
+              <h2 id="alianza" className={`${H2_DARK} max-w-3xl`}>JAAK × PSC Codex: dos capas que se complementan</h2>
+              <p className="mt-5 max-w-3xl text-base leading-relaxed text-white/90">
                 Una contratación digital sólida requiere saber quién firma y poder respaldar el documento en el tiempo.
                 Cada organización aporta una parte distinta de esa respuesta.
               </p>
-              <div className="mt-8 grid gap-5 md:grid-cols-2">
-                <article className="rounded-md bg-white p-6">
+              <div className="relative mt-10 grid gap-5 md:grid-cols-2">
+                <span aria-hidden="true" className="absolute left-1/2 top-1/2 z-10 hidden h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[var(--wb-teal)] text-xl font-extrabold text-[var(--wb-navy-dark)] ring-4 ring-[var(--wb-navy-dark)] md:flex">×</span>
+                <article className="rounded-md border-t-4 border-t-[var(--wb-teal)] bg-white p-6 text-[var(--wb-text)] shadow-xl">
                   <h3 className="text-lg font-bold text-[var(--wb-navy)]">JAAK · identidad y flujo de firma</h3>
                   <p className="mt-2 text-sm leading-relaxed">
                     Verificación de la identidad de la persona que firma y flujo de firma electrónica con evidencia
@@ -305,7 +328,7 @@ export default function FirmaDigitalWebinarPage() {
                     <ExternalLink href={LINKS.jaakLinkedin} location="alianza" label="LinkedIn de JAAK" className={LINK_ON_LIGHT}>LinkedIn</ExternalLink>
                   </p>
                 </article>
-                <article className="rounded-md bg-white p-6">
+                <article className="rounded-md border-t-4 border-t-[var(--wb-teal)] bg-white p-6 text-[var(--wb-text)] shadow-xl">
                   <h3 className="text-lg font-bold text-[var(--wb-navy)]">PSC Codex · certificación</h3>
                   <p className="mt-2 text-sm leading-relaxed">
                     Certificación y constancias que fortalecen la integridad y la conservación del documento en el
@@ -318,9 +341,9 @@ export default function FirmaDigitalWebinarPage() {
                   </p>
                 </article>
               </div>
-              <p className="mt-6 text-sm leading-relaxed">
+              <p className="mt-6 text-sm leading-relaxed text-white/90">
                 Puede verificar a cualquier prestador en el{" "}
-                <ExternalLink href={LINKS.pscDirectorio} location="alianza_directorio" className={LINK_ON_LIGHT}>
+                <ExternalLink href={LINKS.pscDirectorio} location="alianza_directorio" className="font-semibold text-[var(--wb-teal)] underline underline-offset-2 hover:no-underline">
                   directorio oficial de PSC de la Secretaría de Economía
                 </ExternalLink>
                 .
@@ -329,16 +352,16 @@ export default function FirmaDigitalWebinarPage() {
           </section>
 
           {/* 8. FAQ */}
-          <section aria-labelledby="faq" className={`${SECTION} bg-white`}>
-            <div className="mx-auto max-w-3xl">
+          <section aria-labelledby="faq" className={`${SECTION} bg-gradient-to-b from-white to-[var(--wb-gray)]`}>
+            <div className="relative mx-auto max-w-3xl">
               <p className={EYEBROW}>{BAR}Dudas frecuentes</p>
               <h2 id="faq" className={H2}>Preguntas frecuentes</h2>
-              <div className="mt-8 divide-y divide-[var(--wb-gray)] border-y border-[var(--wb-gray)]">
+              <div className="mt-8 space-y-3">
                 {FAQ.map((f) => (
-                  <details key={f.q} className="group py-4">
+                  <details key={f.q} className="group rounded-md border-l-4 border-l-[var(--wb-teal)] bg-white px-5 py-4 shadow-[0_4px_16px_rgba(2,19,45,0.07)]">
                     <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 text-base font-bold text-[var(--wb-navy)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--wb-navy)] [&::-webkit-details-marker]:hidden">
                       {f.q}
-                      <span aria-hidden="true" className="text-xl transition-transform group-open:rotate-45">+</span>
+                      <span aria-hidden="true" className="flex h-7 w-7 flex-none items-center justify-center rounded-full bg-[var(--wb-navy)] text-lg leading-none text-white transition-transform group-open:rotate-45">+</span>
                     </summary>
                     <p className="mt-2 text-sm leading-relaxed">{f.a}</p>
                   </details>
@@ -348,9 +371,11 @@ export default function FirmaDigitalWebinarPage() {
           </section>
 
           {/* 9. CTA final */}
-          <section aria-labelledby="cta-final" className="wb-dark bg-[var(--wb-navy)] px-4 py-14 text-center text-white sm:px-6 sm:py-20">
-            <div className="mx-auto max-w-2xl">
-              <h2 id="cta-final" className="text-2xl font-extrabold leading-tight sm:text-3xl">
+          <section aria-labelledby="cta-final" className="wb-dark relative isolate overflow-hidden bg-[var(--wb-navy-dark)] px-4 py-16 text-center text-white sm:px-6 sm:py-24">
+            <NetworkBackdrop opacity="opacity-80" position="object-center" />
+            <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-b from-[var(--wb-navy-dark)]/85 via-[var(--wb-navy)]/75 to-[var(--wb-navy-dark)]/90" />
+            <div className="relative mx-auto max-w-2xl">
+              <h2 id="cta-final" className="text-3xl font-extrabold leading-tight sm:text-4xl">
                 Reserve su lugar en el webinar
               </h2>
               <p className="mt-4 text-base leading-relaxed text-white/90">
@@ -358,9 +383,9 @@ export default function FirmaDigitalWebinarPage() {
                 GoToWebinar.
               </p>
               <div className="mt-8">
-                <RegisterButton id="registro-final" location="cta_final" className="w-full sm:w-auto" />
+                <RegisterButton id="registro-final" location="cta_final" className="w-full shadow-lg shadow-[var(--wb-teal)]/25 sm:w-auto" />
               </div>
-              <p className="mt-6 text-xs leading-relaxed text-white/80">
+              <p className="mt-6 text-xs leading-relaxed text-white/85">
                 Al registrarse, sus datos serán tratados conforme a los avisos de privacidad de{" "}
                 <Link href="/privacidad" className="underline hover:no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white">JAAK</Link>
                 ,{" "}
