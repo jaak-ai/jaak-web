@@ -55,7 +55,7 @@ export function RegisterButton({
     return (
       <a
         href="/recursos"
-        className={`${FOCUS} inline-flex min-h-12 items-center justify-center rounded-md border-2 border-current px-6 py-3 text-base font-bold ${className}`}
+        className={`${FOCUS} inline-flex min-h-12 items-center justify-center rounded-lg border-2 border-current px-6 py-3 text-base font-bold ${className}`}
       >
         El webinar ya finalizó · Ver más recursos
       </a>
@@ -74,7 +74,7 @@ export function RegisterButton({
       target="_blank"
       rel="noopener noreferrer"
       onClick={() => trackRegistrationClick(location)}
-      className={`${FOCUS} ${palette} inline-flex min-h-12 items-center justify-center rounded-md px-7 py-3 text-base font-bold shadow-sm transition-colors ${className}`}
+      className={`${FOCUS} ${palette} inline-flex min-h-12 items-center justify-center rounded-lg px-7 py-3 text-base font-bold shadow-sm transition-colors ${className}`}
     >
       {phase === "live" ? "Registrarme ahora" : "Reservar mi lugar"}
       <span className="sr-only"> (se abre en GoToWebinar, en una pestaña nueva)</span>
