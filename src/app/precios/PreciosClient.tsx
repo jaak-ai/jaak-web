@@ -3,7 +3,14 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { productos, formatMXN } from "@/data/autoservicio-catalogo";
-import { FAQ_ACCESO_API_SDK, SOPORTE_COPY } from "@/config/commercial-copy";
+import {
+  FAQ_ACCESO_API_SDK,
+  FAQ_SANDBOX_PRECIOS,
+  FAQ_SETUP_FEE,
+  FAQ_VIGENCIA_REEMBOLSO,
+  PRECIOS_SETUP_COPY,
+  SOPORTE_COPY,
+} from "@/config/commercial-copy";
 
 // Precio "desde" del autoservicio = paquete más económico del catálogo (fuente única).
 const minAutoPrecio = Math.min(...productos.flatMap((p) => p.paquetes.map((q) => q.precio)));
@@ -44,7 +51,7 @@ const PLANS = [
       "KYC con biometría",
       "Expediente digital auditable",
       "Paquetes con vigencia de un año",
-      "Modalidad exclusivamente Web: no incluye API, SDK ni White Label",
+      "Uso exclusivo en la plataforma web, con marca blanca (White Label). No incluye API ni SDK",
     ],
     forWhom: ["Equipos pequeños", "Operaciones manuales", "Sin integración API"],
     support: "Onboarding grupal + soporte básico",
@@ -135,7 +142,8 @@ const COMPARISON = [
   { feature: "Plataforma Web",             auto: "Incluido", growth: "Disponible según contratación", enterprise: "Según propuesta", alliance: "Según propuesta" },
   { feature: "Integración API",            auto: "No incluido", growth: "Disponible, con setup fee", enterprise: "Según propuesta (con setup fee)", alliance: "Según propuesta (con setup fee)" },
   { feature: "Integración SDK",            auto: "No incluido", growth: "Disponible, con setup fee", enterprise: "Según propuesta (con setup fee)", alliance: "Según propuesta (con setup fee)" },
-  { feature: "White Label",                auto: "No incluido", growth: "Opcional, según alcance acordado", enterprise: "Opcional, según propuesta", alliance: "Opcional, según propuesta" },
+  PRECIOS_SETUP_COPY.fila,
+  { feature: "White Label",                auto: "Incluido, solo en la plataforma Web", growth: "Opcional, según alcance acordado", enterprise: "Opcional, según propuesta", alliance: "Opcional, según propuesta" },
   { feature: "Esquema de contratación",    auto: "Compra en línea; paquetes con vigencia de un año", growth: "Bolsa anual de consumo, pagos mensuales según consumo", enterprise: "Bolsa anual de consumo, pagos mensuales según consumo", alliance: "Bolsa anual de consumo, pagos mensuales según consumo" },
   { feature: "Volumen mensual",            auto: "Bajo", growth: "Medio", enterprise: "Alto", alliance: "Variable" },
   { feature: "Soporte",                    auto: SOPORTE_COPY.autoservicioTabla, growth: SOPORTE_COPY.especializadoTabla, enterprise: SOPORTE_COPY.especializadoTabla, alliance: SOPORTE_COPY.especializadoTabla },
@@ -155,16 +163,20 @@ const faqItems = [
     answer: "Bronce a Platino pueden comprar paquetes adicionales al 120% del precio unitario. Cobre se bloquea al superar el límite. Si superas 1,000 verif/mes consistentemente, la migración a Enterprise es obligatoria.",
   },
   {
-    question: "¿Los paquetes caducan o son reembolsables?",
-    answer: "Vencen a 12 meses desde la compra. No son reembolsables.",
+    question: FAQ_VIGENCIA_REEMBOLSO.question,
+    answer: FAQ_VIGENCIA_REEMBOLSO.answer,
   },
   {
     question: FAQ_ACCESO_API_SDK.question,
     answer: FAQ_ACCESO_API_SDK.answer,
   },
   {
-    question: "¿Hay cuota de configuración (setup fee)?",
-    answer: "Autoservicio no la requiere, porque se utiliza exclusivamente desde la plataforma web. La integración mediante API o SDK en Crecimiento, Enterprise y Alianzas considera una cuota de configuración (setup fee), conforme a la propuesta comercial.",
+    question: FAQ_SETUP_FEE.question,
+    answer: FAQ_SETUP_FEE.answer,
+  },
+  {
+    question: FAQ_SANDBOX_PRECIOS.question,
+    answer: FAQ_SANDBOX_PRECIOS.answer,
   },
   {
     question: "¿JAAK cumple con LFPIORPI, CNBV y UIF?",
@@ -388,6 +400,10 @@ export default function PreciosClient() {
               </div>
             ))}
           </div>
+
+          {/* AUD-02.1: setup fee y sandbox junto a API/SDK (sin importes ni plazos) */}
+          <p className="mt-6 text-sm text-gray-500 leading-relaxed">{PRECIOS_SETUP_COPY.nota}</p>
+          <p className="mt-2 text-xs text-gray-400 leading-relaxed">{PRECIOS_SETUP_COPY.letraPequena}</p>
         </div>
       </section>
 
@@ -490,7 +506,7 @@ export default function PreciosClient() {
             </span>
           </h2>
           <p className="text-white/75 text-lg mb-10">
-            Compra en línea y opera desde la plataforma web. Si necesitas integración por API o SDK, nuestro equipo te ayuda a evaluarla (requiere setup fee).
+            Compra en línea y opera desde la plataforma web. Si necesitas integración por API o SDK, nuestro equipo comercial te ayuda a evaluarla.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/autoservicio"

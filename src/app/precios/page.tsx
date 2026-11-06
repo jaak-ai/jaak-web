@@ -2,7 +2,12 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PreciosClient from "./PreciosClient";
-import { FAQ_ACCESO_API_SDK } from "@/config/commercial-copy";
+import {
+  FAQ_ACCESO_API_SDK,
+  FAQ_SANDBOX_PRECIOS,
+  FAQ_SETUP_FEE,
+  FAQ_VIGENCIA_REEMBOLSO,
+} from "@/config/commercial-copy";
 import { buildKycRegisterUrl, KYC_PLAN_CODE_BY_TIER } from "@/data/autoservicio-catalogo";
 
 export const metadata: Metadata = {
@@ -63,10 +68,10 @@ const faqSchema = {
     },
     {
       "@type": "Question",
-      name: "¿Los paquetes caducan o son reembolsables?",
+      name: FAQ_VIGENCIA_REEMBOLSO.question,
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Vencen a 12 meses desde la compra. No son reembolsables.",
+        text: FAQ_VIGENCIA_REEMBOLSO.answer,
       },
     },
     {
@@ -79,10 +84,18 @@ const faqSchema = {
     },
     {
       "@type": "Question",
-      name: "¿Hay cuota de configuración (setup fee)?",
+      name: FAQ_SETUP_FEE.question,
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Autoservicio no la requiere, porque se utiliza exclusivamente desde la plataforma web. La integración mediante API o SDK en Crecimiento, Enterprise y Alianzas considera una cuota de configuración (setup fee), conforme a la propuesta comercial.",
+        text: FAQ_SETUP_FEE.answer,
+      },
+    },
+    {
+      "@type": "Question",
+      name: FAQ_SANDBOX_PRECIOS.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: FAQ_SANDBOX_PRECIOS.answer,
       },
     },
     {
@@ -144,13 +157,9 @@ const SELLER_REF = {
   url: "https://jaak.ai",
 };
 
-// Política de no-reembolso (alineada con FAQ): satisface el requisito de
-// hasMerchantReturnPolicy de Google Merchant Listings sin inventar política.
-const RETURN_POLICY = {
-  "@type": "MerchantReturnPolicy" as const,
-  applicableCountry: "MX",
-  returnPolicyCategory: "https://schema.org/MerchantReturnNotPermitted",
-};
+// AUD-02.1: se retiró hasMerchantReturnPolicy (MerchantReturnNotPermitted). Declaraba «sin
+// reembolsos», lo que contradice los Términos y Condiciones de Autoservicio (cláusula 3.6).
+// No reintroducir una política de devoluciones en el JSON-LD sin validación legal.
 
 // Imágenes por categoría visual (URLs absolutas, ≥696px lado largo).
 const IMG_IDENTIDAD = "https://jaak.ai/images/jaak-face-recognition.png";   // 1232×1044
@@ -342,7 +351,6 @@ function buildProductSchema(p: ProductDefinition) {
         url: pkg.url,
         description: `${pkg.qty.toLocaleString("es-MX")} ${pkg.qty === 1 ? pkg.unit : pkg.unitPlural} por año`,
         seller: SELLER_REF,
-        hasMerchantReturnPolicy: RETURN_POLICY,
         priceSpecification: {
           "@type": "UnitPriceSpecification",
           price: (pkg.price / pkg.qty).toFixed(2),
