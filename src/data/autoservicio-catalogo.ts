@@ -133,7 +133,7 @@ export const productos: Producto[] = [
       "Flujo de firma 100% digital, sin instalar nada",
       "Notificaciones automáticas a firmantes",
       "Evidencia y trazabilidad de cada firma",
-      "Disponible en minutos en web con marca blanca",
+      "Disponible en minutos desde la plataforma web",
       "No incluye sello de tiempo ni verificación de identidad.",
     ],
     recomendado: "plata",

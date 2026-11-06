@@ -2,9 +2,9 @@
  * Fuente única de copy comercial (AUD-01).
  *
  * Modalidades de consumo: Web, API, SDK. White Label es una opción de
- * personalización (no es un tipo de acceso). Autoservicio es exclusivamente Web
- * y su White Label aplica solo en la plataforma web. En Crecimiento, Enterprise y
- * Alianzas, el White Label y las integraciones se definen en la propuesta comercial.
+ * personalización (no es un tipo de acceso). Autoservicio estándar es exclusivamente Web y no
+ * incluye API, SDK, White Label ni sandbox (AUD-02.2). En Crecimiento, Enterprise y
+ * Alianzas, el White Label y las integraciones se definen según alcance contratado o propuesta.
  *
  * Sandbox NO es un beneficio automático ni se promociona como oferta: su disponibilidad se
  * evalúa con un especialista comercial de JAAK (ver `SANDBOX_COPY`). No hay acceso gratuito,
@@ -25,7 +25,7 @@ export const AUTOSERVICIO_COPY = {
   exclusionCorta: "No incluye API ni SDK",
   /** Nota informativa del catálogo /autoservicio. */
   notaCatalogo:
-    "Autoservicio se utiliza exclusivamente desde la plataforma web, con marca blanca (White Label) en la plataforma. No incluye API ni SDK: si deseas integrarlos, el setup fee es opcional y el acompañamiento técnico se evalúa con nuestro equipo comercial.",
+    "Autoservicio se utiliza exclusivamente desde la plataforma web. No incluye API, SDK ni White Label. Para integrar mediante API o SDK se requiere una contratación adicional con setup fee, que se evalúa con nuestro equipo comercial.",
 } as const;
 
 export const MODALIDADES_COPY = {
@@ -56,7 +56,7 @@ export const INTEGRACION_COPY = {
   docsTitulo: "Acceso a integraciones y ambientes de prueba",
   /** Párrafos del aviso (cada elemento se muestra en su propio párrafo). */
   docsDescripcion: [
-    "La documentación técnica de JAAK está disponible como referencia para proyectos de integración.",
+    "La documentación técnica de JAAK está disponible para consulta como referencia en proyectos de integración. Su consulta pública no otorga credenciales ni derechos de acceso.",
     "El acceso a API y SDK requiere habilitación conforme a las condiciones contratadas, incluyendo la cuota de configuración aplicable.",
     "La disponibilidad de ambientes de prueba se evalúa con un especialista comercial de JAAK, de acuerdo con el tipo de cliente, paquete y necesidades del proyecto.",
     "Los paquetes estándar de Autoservicio son exclusivamente Web y no incluyen acceso automático a API, SDK o sandbox.",
@@ -76,7 +76,7 @@ export const SOPORTE_COPY = {
 export const FAQ_ACCESO_API_SDK = {
   question: "¿Puedo utilizar API o SDK al comprar un paquete de Autoservicio?",
   answer:
-    "Los paquetes de Autoservicio se utilizan desde nuestra plataforma web y no incluyen API ni SDK. Si deseas integrar los servicios, el setup fee es opcional en Autoservicio y no incluye acompañamiento técnico; para acompañamiento o condiciones particulares, nuestro equipo comercial puede orientarte.",
+    "Los paquetes de Autoservicio se utilizan desde nuestra plataforma web y no incluyen API ni SDK. Para integrar mediante API o SDK se requiere una contratación adicional con setup fee, conforme al alcance que acuerdes con nuestro equipo comercial.",
 } as const;
 
 /** Introducción comercial del índice de documentación (/documentacion). */
@@ -132,13 +132,13 @@ export const KYC_INTEGRACION_COPY = {
 export const PRECIOS_SETUP_COPY = {
   fila: {
     feature: "Setup fee (integración API/SDK)",
-    auto: "Opcional, si deseas integrar",
+    auto: "No aplica al paquete Web; API/SDK requieren contratación adicional con setup fee",
     growth: "Aplica a la integración API/SDK",
     enterprise: "Aplica a la integración API/SDK, según propuesta",
     alliance: "Aplica a la integración API/SDK, según propuesta",
   },
   nota:
-    "En Autoservicio el setup fee es opcional, si deseas integrar. En Crecimiento, Enterprise y Alianzas, la integración por API o SDK lo requiere y se define en la propuesta comercial. El sandbox no se habilita automáticamente: su disponibilidad se evalúa con un especialista comercial de JAAK.",
+    "El setup fee no aplica al paquete Web de Autoservicio: para integrar mediante API o SDK se requiere una contratación adicional con setup fee. En Crecimiento, Enterprise y Alianzas, la integración por API o SDK lo requiere y se define según el alcance contratado o la propuesta comercial. El sandbox no se habilita automáticamente: su disponibilidad se evalúa con un especialista comercial de JAAK.",
   /** Letra pequeña: condiciones de compra de Autoservicio. */
   letraPequena:
     "Autoservicio: vigencia, reembolsos y demás condiciones de compra conforme a los Términos y Condiciones de Autoservicio, que se aceptan al comprar. El soporte de Crecimiento, Enterprise y Alianzas se define con el especialista comercial.",
@@ -148,7 +148,7 @@ export const PRECIOS_SETUP_COPY = {
 export const FAQ_SETUP_FEE = {
   question: "¿Hay cuota de configuración (setup fee)?",
   answer:
-    "En Autoservicio es opcional, si deseas integrar por API o SDK. En Crecimiento, Enterprise y Alianzas, la integración por API o SDK requiere una cuota de configuración (setup fee), cuyo importe y condiciones se definen en la propuesta comercial.",
+    "No aplica al paquete Web de Autoservicio: para integrar mediante API o SDK se requiere una contratación adicional con setup fee. En Crecimiento, Enterprise y Alianzas, la integración por API o SDK requiere una cuota de configuración (setup fee), cuyo importe y condiciones se definen según el alcance contratado o la propuesta comercial.",
 } as const;
 
 export const FAQ_SANDBOX_PRECIOS = {
