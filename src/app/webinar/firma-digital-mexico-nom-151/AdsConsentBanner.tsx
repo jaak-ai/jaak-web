@@ -42,7 +42,7 @@ export default function AdsConsentBanner() {
   };
 
   const btn =
-    "min-h-11 flex-1 rounded-md border-2 border-[var(--wb-navy)] px-4 py-2 text-sm font-bold text-[var(--wb-navy)] hover:bg-[var(--wb-navy)] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--wb-navy)] sm:flex-none sm:px-6";
+    "min-h-11 flex-1 rounded-lg border-2 border-[var(--wb-navy)] px-4 py-2 text-sm font-bold text-[var(--wb-navy)] hover:bg-[var(--wb-navy)] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--wb-navy)] sm:flex-none sm:px-6";
 
   return (
     <div

@@ -82,7 +82,7 @@ const ICONS: Record<SectorIcon, React.ReactNode> = {
 /** Ícono de sector (trazo turquesa sobre mosaico navy). Decorativo: el título ya nombra el sector. */
 export function SectorGlyph({ kind }: { kind: SectorIcon }) {
   return (
-    <span className="flex h-12 w-12 items-center justify-center rounded-md bg-gradient-to-br from-[var(--wb-navy-dark)] to-[var(--wb-navy)] shadow-sm">
+    <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[var(--wb-navy-dark)] to-[var(--wb-navy)] shadow-sm">
       <svg aria-hidden="true" viewBox="0 0 24 24" className="h-7 w-7" fill="none" stroke="var(--wb-teal)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
         {ICONS[kind]}
       </svg>

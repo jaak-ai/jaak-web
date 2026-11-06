@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import PageViewTracker from "@/components/PageViewTracker";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import {
   LINKS,
   WEBINAR_SEO_DESCRIPTION,
@@ -118,12 +120,14 @@ export default function FirmaDigitalWebinarPage() {
           Saltar al contenido
         </a>
 
-        <header className="bg-white px-4 py-3 sm:px-6">
+        {/* Header global del sitio (banner + navegación + CTA), igual que /documentacion */}
+        <Header />
+        {/* Co-branding JAAK × PSC Codex bajo el header fijo (banner 42 px + barra de navegación) */}
+        <div className="border-b border-gray-100 bg-white px-4 pb-2 pt-[122px] sm:px-6">
           <div className={`${INNER} flex items-center justify-between`}>
             <BrandLogos />
           </div>
-        </header>
-        <div aria-hidden="true" className="h-1 bg-gradient-to-r from-[var(--wb-navy)] via-[var(--wb-teal)] to-[var(--wb-navy-dark)]" />
+        </div>
 
         <main id="contenido" className="pb-24 md:pb-0">
           {/* 1. Hero */}
@@ -163,7 +167,7 @@ export default function FirmaDigitalWebinarPage() {
                     ["Modalidad", "En línea"],
                     ["Duración", "60 minutos"],
                   ].map(([k, v]) => (
-                    <div key={k} className="rounded-md border-t-2 border-t-[var(--wb-teal)] bg-[var(--wb-navy-dark)]/70 p-3 ring-1 ring-white/15 backdrop-blur-sm">
+                    <div key={k} className="rounded-xl border-t-2 border-t-[var(--wb-teal)] bg-[var(--wb-navy-dark)]/70 p-3 ring-1 ring-white/15 backdrop-blur-sm">
                       <dt className="text-xs font-semibold uppercase tracking-wider text-[var(--wb-teal)]">{k}</dt>
                       <dd className="mt-1 font-semibold leading-snug text-white">{v}</dd>
                     </div>
@@ -189,7 +193,7 @@ export default function FirmaDigitalWebinarPage() {
               </p>
               <ul className="mt-10 grid gap-5 md:grid-cols-3">
                 {LAYERS.map((l, i) => (
-                  <li key={l.title} className="relative rounded-md border-t-4 border-t-[var(--wb-teal)] bg-white p-6 shadow-[0_8px_24px_rgba(2,19,45,0.08)]">
+                  <li key={l.title} className="transition-shadow hover:shadow-lg relative rounded-xl border-t-4 border-t-[var(--wb-teal)] bg-white p-6 shadow-[0_8px_24px_rgba(2,19,45,0.08)]">
                     <span aria-hidden="true" className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[var(--wb-navy-dark)] to-[var(--wb-navy)] text-sm font-extrabold text-[var(--wb-teal)] ring-2 ring-[var(--wb-teal)]/40">
                       0{i + 1}
                     </span>
@@ -198,7 +202,7 @@ export default function FirmaDigitalWebinarPage() {
                   </li>
                 ))}
               </ul>
-              <p className="wb-dark mt-8 max-w-3xl rounded-md border-l-4 border-[var(--wb-teal)] bg-gradient-to-r from-[var(--wb-navy-dark)] to-[var(--wb-navy)] p-5 text-sm leading-relaxed text-white">
+              <p className="wb-dark mt-8 max-w-3xl rounded-xl border-l-4 border-[var(--wb-teal)] bg-gradient-to-r from-[var(--wb-navy-dark)] to-[var(--wb-navy)] p-5 text-sm leading-relaxed text-white">
                 <strong>Importante:</strong> la NOM-151, por sí sola, no prueba la identidad de quien firma ni garantiza
                 automáticamente el resultado de un juicio. Fortalece la evidencia sobre la integridad y la existencia del
                 documento; su valoración corresponde a la autoridad. Consulte las fuentes oficiales:{" "}
@@ -222,7 +226,7 @@ export default function FirmaDigitalWebinarPage() {
               <h2 id="descubriran" className={H2_DARK}>Qué descubrirán los asistentes</h2>
               <ul className="mt-8 grid gap-4 md:grid-cols-2">
                 {LEARNINGS.map((t) => (
-                  <li key={t} className="flex gap-4 rounded-md bg-white/[0.07] p-5 text-base leading-relaxed ring-1 ring-white/15 backdrop-blur-sm">
+                  <li key={t} className="flex gap-4 rounded-xl bg-white/[0.07] p-5 text-base leading-relaxed ring-1 ring-white/15 backdrop-blur-sm">
                     <span aria-hidden="true" className="mt-0.5 flex h-7 w-7 flex-none items-center justify-center rounded-full bg-[var(--wb-teal)] text-[var(--wb-navy-dark)]">
                       <svg viewBox="0 0 20 20" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="3">
                         <path d="M4 10.5l4 4 8-9" strokeLinecap="round" strokeLinejoin="round" />
@@ -261,7 +265,7 @@ export default function FirmaDigitalWebinarPage() {
               <h2 id="aplicaciones" className={H2}>Aplicaciones por sector</h2>
               <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {APPLICATIONS.map((a) => (
-                  <li key={a.title} className="rounded-md bg-white p-6 shadow-[0_8px_24px_rgba(2,19,45,0.08)] ring-1 ring-[var(--wb-navy)]/5">
+                  <li key={a.title} className="transition-shadow hover:shadow-lg rounded-xl bg-white p-6 shadow-[0_8px_24px_rgba(2,19,45,0.08)] ring-1 ring-[var(--wb-navy)]/5">
                     <SectorGlyph kind={a.icon} />
                     <h3 className="mt-4 text-lg font-bold text-[var(--wb-navy)]">{a.title}</h3>
                     <p className="mt-2 text-sm leading-relaxed">{a.text}</p>
@@ -278,7 +282,7 @@ export default function FirmaDigitalWebinarPage() {
               <h2 id="ponentes" className={H2}>Ponentes</h2>
               <ul className="mt-10 grid gap-8 md:grid-cols-2">
                 {SPEAKERS.map((s) => (
-                  <li key={s.name} className="overflow-hidden rounded-md bg-white shadow-[0_8px_24px_rgba(2,19,45,0.1)] ring-1 ring-[var(--wb-navy)]/10">
+                  <li key={s.name} className="transition-shadow hover:shadow-lg overflow-hidden rounded-xl bg-white shadow-[0_8px_24px_rgba(2,19,45,0.1)] ring-1 ring-[var(--wb-navy)]/10">
                     <div className="relative h-24 overflow-hidden bg-gradient-to-r from-[var(--wb-navy-dark)] via-[var(--wb-navy)] to-[var(--wb-teal)]">
                       <NetworkDecor className="-right-4 -top-8 w-72 opacity-70" />
                     </div>
@@ -316,7 +320,7 @@ export default function FirmaDigitalWebinarPage() {
               </p>
               <div className="relative mt-10 grid gap-5 md:grid-cols-2">
                 <span aria-hidden="true" className="absolute left-1/2 top-1/2 z-10 hidden h-12 w-12 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[var(--wb-teal)] text-xl font-extrabold text-[var(--wb-navy-dark)] ring-4 ring-[var(--wb-navy-dark)] md:flex">×</span>
-                <article className="rounded-md border-t-4 border-t-[var(--wb-teal)] bg-white p-6 text-[var(--wb-text)] shadow-xl">
+                <article className="rounded-xl border-t-4 border-t-[var(--wb-teal)] bg-white p-6 text-[var(--wb-text)] shadow-xl">
                   <h3 className="text-lg font-bold text-[var(--wb-navy)]">JAAK · identidad y flujo de firma</h3>
                   <p className="mt-2 text-sm leading-relaxed">
                     Verificación de la identidad de la persona que firma y flujo de firma electrónica con evidencia
@@ -328,7 +332,7 @@ export default function FirmaDigitalWebinarPage() {
                     <ExternalLink href={LINKS.jaakLinkedin} location="alianza" label="LinkedIn de JAAK" className={LINK_ON_LIGHT}>LinkedIn</ExternalLink>
                   </p>
                 </article>
-                <article className="rounded-md border-t-4 border-t-[var(--wb-teal)] bg-white p-6 text-[var(--wb-text)] shadow-xl">
+                <article className="rounded-xl border-t-4 border-t-[var(--wb-teal)] bg-white p-6 text-[var(--wb-text)] shadow-xl">
                   <h3 className="text-lg font-bold text-[var(--wb-navy)]">PSC Codex · certificación</h3>
                   <p className="mt-2 text-sm leading-relaxed">
                     Certificación y constancias que fortalecen la integridad y la conservación del documento en el
@@ -358,7 +362,7 @@ export default function FirmaDigitalWebinarPage() {
               <h2 id="faq" className={H2}>Preguntas frecuentes</h2>
               <div className="mt-8 space-y-3">
                 {FAQ.map((f) => (
-                  <details key={f.q} className="group rounded-md border-l-4 border-l-[var(--wb-teal)] bg-white px-5 py-4 shadow-[0_4px_16px_rgba(2,19,45,0.07)]">
+                  <details key={f.q} className="group rounded-xl border-l-4 border-l-[var(--wb-teal)] bg-white px-5 py-4 shadow-[0_4px_16px_rgba(2,19,45,0.07)]">
                     <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-4 text-base font-bold text-[var(--wb-navy)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--wb-navy)] [&::-webkit-details-marker]:hidden">
                       {f.q}
                       <span aria-hidden="true" className="flex h-7 w-7 flex-none items-center justify-center rounded-full bg-[var(--wb-navy)] text-lg leading-none text-white transition-transform group-open:rotate-45">+</span>
@@ -433,6 +437,7 @@ export default function FirmaDigitalWebinarPage() {
           </p>
         </footer>
 
+        <Footer />
         <StickyRegisterBar />
         <AdsConsentBanner />
       </div>

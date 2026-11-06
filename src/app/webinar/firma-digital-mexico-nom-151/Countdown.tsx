@@ -27,7 +27,7 @@ export default function Countdown() {
 
   if (phase === "live") {
     return (
-      <div role="status" className="rounded-md border border-[var(--wb-teal)] bg-[var(--wb-navy-dark)]/70 px-5 py-4 backdrop-blur-sm">
+      <div role="status" className="rounded-lg border border-[var(--wb-teal)] bg-[var(--wb-navy-dark)]/70 px-5 py-4 backdrop-blur-sm">
         <p className="text-lg font-bold text-white">El evento ya inició</p>
         <p className="mt-1 text-sm text-white/85">
           La transmisión está en curso. Regístrese en GoToWebinar para recibir el acceso.
@@ -37,7 +37,7 @@ export default function Countdown() {
   }
   if (phase === "ended") {
     return (
-      <div role="status" className="rounded-md border border-white/40 bg-[var(--wb-navy-dark)]/70 px-5 py-4 backdrop-blur-sm">
+      <div role="status" className="rounded-lg border border-white/40 bg-[var(--wb-navy-dark)]/70 px-5 py-4 backdrop-blur-sm">
         <p className="text-lg font-bold text-white">El evento ha finalizado</p>
         <p className="mt-1 text-sm text-white/85">Gracias a quienes nos acompañaron.</p>
       </div>
@@ -57,7 +57,7 @@ export default function Countdown() {
       {/* aria-live apagado: un lector de pantalla no debe leer cada segundo. */}
       <div role="timer" aria-live="off" aria-label="Tiempo restante para el inicio del webinar" className="grid grid-cols-4 gap-2 sm:gap-3">
         {cells.map(([label, value]) => (
-          <div key={label} className="rounded-md border-t-2 border-t-[var(--wb-teal)] bg-[var(--wb-navy-dark)]/70 px-2 py-3 text-center ring-1 ring-white/15 backdrop-blur-sm">
+          <div key={label} className="rounded-lg border-t-2 border-t-[var(--wb-teal)] bg-[var(--wb-navy-dark)]/70 px-2 py-3 text-center ring-1 ring-white/15 backdrop-blur-sm">
             <span className="block text-3xl font-extrabold tabular-nums text-white sm:text-4xl">
               {value === null ? "--" : pad(value)}
             </span>
