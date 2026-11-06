@@ -1124,9 +1124,21 @@ export default function KycDemoAutoservicioLandingClient({
                 {/* Tarjeta de oferta compacta: precio protagonista, datos clave en chips y condiciones en detalle */}
                 <div
                   id="oferta"
-                  className="mt-7 max-w-md rounded-2xl p-5"
+                  className="relative mt-9 max-w-md rounded-2xl p-5 pt-7"
                   style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(30,202,211,0.3)", boxShadow: "0 12px 40px rgba(0,0,0,0.25)" }}
                 >
+                  {offer && (
+                    // Pestaña de promoción: paquete promocional de un solo uso por usuario.
+                    <span
+                      className="absolute -top-3.5 left-5 inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[11px] font-extrabold uppercase tracking-wider shadow-lg"
+                      style={{ background: `linear-gradient(90deg, ${TEAL}, #2AD796)`, color: NAVY_DARK }}
+                    >
+                      <svg className="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                        <path d="M10 1.5l2.4 4.9 5.4.8-3.9 3.8.9 5.4L10 13.9l-4.8 2.5.9-5.4L2.2 7.2l5.4-.8L10 1.5z" />
+                      </svg>
+                      Paquete promocional
+                    </span>
+                  )}
                   {offer ? (
                     <>
                       <div className="flex items-start justify-between gap-4">
@@ -1161,7 +1173,10 @@ export default function KycDemoAutoservicioLandingClient({
                         ))}
                       </ul>
 
-                      <p className="mt-3 text-[12.5px] leading-snug text-white/60">
+                      <p className="mt-3 text-[12.5px] font-semibold leading-snug" style={{ color: "#7FE8EC" }}>
+                        Promoción de un solo uso por usuario.
+                      </p>
+                      <p className="mt-1 text-[12.5px] leading-snug text-white/60">
                         No incluye API, SDK, White Label estándar ni sandbox automático.
                       </p>
 
@@ -1170,6 +1185,7 @@ export default function KycDemoAutoservicioLandingClient({
                           <span className="underline underline-offset-2">Ver condiciones del paquete</span>
                         </summary>
                         <ul className="mt-2 space-y-1.5 text-[12.5px] leading-snug text-white/65">
+                          <li><span className="font-semibold text-white/85">Promoción:</span> paquete promocional de un solo uso por usuario.</li>
                           <li><span className="font-semibold text-white/85">Vigencia:</span> un año, conforme a las condiciones del paquete.</li>
                           <li><span className="font-semibold text-white/85">Acceso:</span> plataforma Web de JAAK.</li>
                           <li><span className="font-semibold text-white/85">Soporte:</span> lunes a viernes de 9:00 a 18:00 h, horario CDMX.</li>

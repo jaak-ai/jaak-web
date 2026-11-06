@@ -61,6 +61,8 @@ Nota visible en la tarjeta: «Importes según el catálogo vigente de Autoservic
 
 **Presentación visual (ajuste de diseño):** la tarjeta es compacta para que el CTA quede visible sin desplazarse en escritorio: el total con IVA es el dato protagonista ($114.84 MXN, con el desglose $99.00 + IVA $15.84 en una línea), tres chips (5 verificaciones, 1 año de vigencia, Web), una línea visible con lo que no incluye y un desplegable «Ver condiciones del paquete» con vigencia, acceso, soporte y la nota de importes. Todo el contenido sigue en la página y es legible a 375, 768 y 1280 px.
 
+**Pestaña de promoción:** a solicitud de Marketing, la tarjeta lleva una pestaña «Paquete promocional» (degradado turquesa-verde de la marca) y la línea «Promoción de un solo uso por usuario», repetida en las condiciones y en una pregunta nueva de la FAQ («¿Puedo comprar el paquete Cobre KYC más de una vez?», visible y JSON-LD). **Pendiente de confirmar por Comercial/Producto:** el repositorio no contiene evidencia de que el uso único esté limitado en el catálogo o en el registro (AUD-16 lista el «bloqueo de Cobre» como regla por confirmar); el texto comunica la condición comercial indicada por Marketing, no una validación técnica.
+
 Paleta: navy #202945, azul oscuro, turquesa #1ECAD3, off-white, Montserrat (ya vigentes en la landing).
 
 ## 6. CTA y formulario (flujo real)

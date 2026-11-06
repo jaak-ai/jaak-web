@@ -47,5 +47,6 @@ describe("kycTrialOffer (AUD-03)", () => {
     const texto = faq.map((f) => `${f.q} ${f.a}`).join(" ").toLowerCase();
     expect(texto).not.toMatch(/inmediat|en minutos|40%|sin vendedor/);
     expect(faq.find((f) => f.q.includes("IVA"))!.a).toContain("$114.84 MXN");
+    expect(faq.find((f) => f.q.includes("más de una vez"))!.a).toContain("un solo uso por usuario");
   });
 });

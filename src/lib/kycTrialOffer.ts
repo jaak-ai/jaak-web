@@ -69,6 +69,10 @@ export function buildKycTrialFaq(offer: KycTrialOffer | null): FaqItem[] {
         : "Los precios de Autoservicio se muestran en MXN antes de IVA. El importe final se confirma en el proceso de compra.",
     },
     {
+      q: "¿Puedo comprar el paquete Cobre KYC más de una vez?",
+      a: "No. Es un paquete promocional de un solo uso por usuario. Si necesitas más verificaciones, consulta los demás paquetes del catálogo de JAAK Autoservicio.",
+    },
+    {
       q: "¿Durante cuánto tiempo puedo utilizarlo?",
       a: "Los paquetes de Autoservicio tienen vigencia de un año, conforme a las condiciones del paquete.",
     },
