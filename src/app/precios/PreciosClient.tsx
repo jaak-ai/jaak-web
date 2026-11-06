@@ -506,7 +506,7 @@ export default function PreciosClient() {
             </span>
           </h2>
           <p className="text-white/75 text-lg mb-10">
-            Compra en línea y opera desde la plataforma web. Si necesitas integración por API o SDK, nuestro equipo te ayuda a evaluarla (requiere setup fee).
+            Compra en línea y opera desde la plataforma web. Si necesitas integración por API o SDK, nuestro equipo comercial te ayuda a evaluarla.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/autoservicio"

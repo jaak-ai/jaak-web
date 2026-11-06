@@ -31,6 +31,7 @@ Sin importes, SLA, plazos ni condiciones no aprobadas. No se tocaron `/terminos`
 | .10 | JSON-LD de `/precios` | `hasMerchantReturnPolicy: MerchantReturnNotPermitted` en las ofertas | Retirado (declaraba «sin reembolsos», contrario a los T&C). Con comentario para no reintroducirlo sin validación legal | `precios/page.tsx` |
 | .11 | `/autoservicio` · nota | «No incluye API, SDK ni White Label…» | Web con marca blanca; sin API ni SDK; setup opcional y acompañamiento con el equipo comercial | `commercial-copy.ts` |
 | .12 | `/comprar` · tarjeta Autoservicio | «No incluye API, SDK ni White Label en el paquete estándar»; «…mediante contratación asistida» | «Con marca blanca (White Label) en la plataforma web; no incluye API ni SDK»; «Para integrar por API o SDK, consulta con nuestro equipo comercial» | `comprar/page.tsx` |
+| .13 | `/precios` · CTA final | «…nuestro equipo te ayuda a evaluarla (requiere setup fee).» | «…nuestro equipo comercial te ayuda a evaluarla.» (la advertencia genérica contradecía el setup opcional de Autoservicio; observación de la revisión automática) | `PreciosClient.tsx` |
 
 Se había propuesto una FAQ adicional sobre cómo se habilita la API; se **retiró** para no mostrar de más.
 
