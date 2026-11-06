@@ -3,6 +3,7 @@ import { logisticsArticle } from "./blog/logisticsArticle";
 import { cnbvFacialArticle } from "./blog/cnbvFacialArticle";
 import { facialRecognitionArticle } from "./blog/facialRecognitionArticle";
 import { identityAiArticle } from "./blog/identityAiArticle";
+import { digitalIdentityArticle } from "./blog/digitalIdentityArticle";
 
 export interface BlogPost {
   title: string;
@@ -16,6 +17,7 @@ export interface BlogPost {
 }
 
 export const blogPosts: BlogPost[] = [
+  digitalIdentityArticle,
   providerSelectionArticle,
   logisticsArticle,
   cnbvFacialArticle,
