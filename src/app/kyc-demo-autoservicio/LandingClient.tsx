@@ -1177,7 +1177,7 @@ export default function KycDemoAutoservicioLandingClient({
                         Promoción de un solo uso por usuario.
                       </p>
                       <p className="mt-1 text-[12.5px] leading-snug text-white/60">
-                        No incluye API, SDK, White Label estándar ni sandbox automático.
+                        No incluye API, SDK ni sandbox automático.
                       </p>
 
                       <details className="group mt-3 border-t border-white/10 pt-3">

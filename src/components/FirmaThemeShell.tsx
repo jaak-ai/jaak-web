@@ -132,10 +132,12 @@ export default function FirmaThemeShell() {
                     </div>
                     <div>
                       <p className="text-sm font-semibold text-white leading-tight">
-                        Personalizable con tu logo y marca
+                        Firma electrónica con la identidad de tu empresa
                       </p>
                       <p className="text-xs text-gray-500 mt-0.5">
-                        Tus clientes ven tu identidad, no la nuestra.
+                        Personaliza la experiencia de firma con tu logotipo, colores corporativos, correos y mensajes.
+                        JAAK Autoservicio incluye funciones White Label para ofrecer una experiencia alineada con tu marca.
+                        Las integraciones API y SDK se contratan por separado, conforme a las necesidades del proyecto.
                       </p>
                     </div>
                   </div>
@@ -160,7 +162,7 @@ export default function FirmaThemeShell() {
                         </span>
                       </div>
                       <p className="text-xs text-gray-400 leading-relaxed">
-                        Usa la plataforma web desde el día uno. Sin integración técnica ni costos adicionales.
+                        Usa la plataforma web desde el día uno, con White Label incluido. Sin integración técnica ni costos adicionales.
                       </p>
                       <Link
                         href="/autoservicio"

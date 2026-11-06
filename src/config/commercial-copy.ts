@@ -1,10 +1,11 @@
 /**
  * Fuente única de copy comercial (AUD-01).
  *
- * Modalidades de consumo: Web, API, SDK. White Label es una opción de
- * personalización (no es un tipo de acceso). Autoservicio estándar es exclusivamente Web y no
- * incluye API, SDK, White Label ni sandbox (AUD-02.2). En Crecimiento, Enterprise y
- * Alianzas, el White Label y las integraciones se definen según alcance contratado o propuesta.
+ * Modalidades de consumo: Web, API, SDK. White Label es una capacidad de personalización de marca
+ * (no es un tipo de acceso ni una integración API/SDK). Autoservicio es exclusivamente Web, INCLUYE
+ * White Label (logotipo, colores, correos, mensajes y experiencia de firma sin marca visible de
+ * JAAK; AUD-05) y no incluye API, SDK ni sandbox automático. En Crecimiento, Enterprise y
+ * Alianzas, la personalización y las integraciones se definen según alcance contratado o propuesta.
  *
  * Sandbox NO es un beneficio automático ni se promociona como oferta: su disponibilidad se
  * evalúa con un especialista comercial de JAAK (ver `SANDBOX_COPY`). No hay acceso gratuito,
@@ -25,18 +26,19 @@ export const AUTOSERVICIO_COPY = {
   exclusionCorta: "No incluye API ni SDK",
   /** Nota informativa del catálogo /autoservicio. */
   notaCatalogo:
-    "Autoservicio se utiliza exclusivamente desde la plataforma web. No incluye API, SDK ni White Label. Para integrar mediante API o SDK se requiere una contratación adicional con setup fee, que se evalúa con nuestro equipo comercial.",
+    "Autoservicio se utiliza exclusivamente desde la plataforma web e incluye White Label (logotipo, colores, correos y mensajes personalizados). No incluye API ni SDK: para integrar mediante API o SDK se requiere una contratación adicional con setup fee, que se evalúa con nuestro equipo comercial.",
 } as const;
 
 export const MODALIDADES_COPY = {
   web: "Web: uso de los servicios desde la plataforma web de JAAK, sin desarrollar una integración.",
   api: "API: integración de los servicios de JAAK con tus sistemas empresariales.",
   sdk: "SDK: integración de capacidades de JAAK en tus propias aplicaciones y experiencias digitales.",
-  whiteLabel: "White Label: opción de personalización conforme al alcance comercial contratado.",
+  whiteLabel:
+    "White Label: personalización de marca (logotipo, colores, correos y mensajes). Incluido en Autoservicio; en Crecimiento, Enterprise y Alianzas se define conforme al alcance contratado.",
   setup: "La integración API o SDK requiere una cuota de configuración (setup fee).",
   /** Aclaración breve para home/landings. */
   integracionCorta:
-    "¿Necesitas integrar JAAK a tus sistemas o aplicaciones? Evaluamos una integración por API o SDK, con personalización White Label según contratación. La integración requiere setup fee.",
+    "¿Necesitas integrar JAAK a tus sistemas o aplicaciones? Evaluamos una integración por API o SDK conforme al alcance del proyecto. La integración requiere setup fee; el White Label es una personalización de marca que no depende de ella.",
   /**
    * Crecimiento, Enterprise y Alianzas: bolsa anual de consumo (no es una suscripción
    * mensual de precio fijo). Sin cuotas, tarifas, mínimos ni reglas de excedentes.
@@ -161,4 +163,46 @@ export const FAQ_VIGENCIA_REEMBOLSO = {
   question: "¿Los paquetes caducan o son reembolsables?",
   answer:
     "Los paquetes de Autoservicio tienen una vigencia de 12 meses a partir de que el saldo está habilitado; las unidades no utilizadas al vencer se pierden. Los reembolsos se rigen por los Términos y Condiciones de Autoservicio que se aceptan al comprar.",
+} as const;
+
+// ───────────────────────── AUD-05 · White Label en Autoservicio ─────────────────────────
+// Definición de Producto: Autoservicio INCLUYE White Label. Es una capacidad de personalización de
+// marca, no una integración API/SDK, y no lleva tarifa ni condición comercial adicional. Las capacidades
+// confirmadas corresponden a la experiencia de firma electrónica; no se extienden a KYC u OCR sin
+// verificación de Producto. Crecimiento, Enterprise y Alianzas conservan sus condiciones vigentes.
+
+export const WHITE_LABEL_COPY = {
+  /** Capacidades confirmadas, en el orden de la definición de Producto. */
+  capacidades: [
+    "Logotipo de tu empresa",
+    "Colores corporativos",
+    "Marca personalizada durante la experiencia de firma",
+    "Correos electrónicos personalizados",
+    "Mensajes personalizados",
+    "Experiencia de firma sin marca visible de JAAK",
+  ],
+  /** Versión corta (tarjetas, tablas). */
+  corto: "White Label incluido",
+  /** Tarjeta de Firma Simple (versión corta). */
+  firmaSimpleCorto: "Firma electrónica Web con White Label incluido.",
+  /** Tarjeta de Firma Simple (versión completa). */
+  firmaSimple:
+    "Firma documentos desde JAAK Autoservicio con una experiencia personalizada con tu logotipo, colores corporativos, correos y mensajes de marca.",
+  /** Celda de la tabla comparativa de /precios (columna Autoservicio). */
+  tablaAutoservicio: "Incluido: logotipo, colores, correos, mensajes y experiencia de firma personalizada",
+  /** Bloque de /autoservicio. */
+  bloqueTitulo: "Tu marca en cada experiencia de firma.",
+  bloqueDescripcion:
+    "Personaliza el logotipo, los colores, los correos y los mensajes que acompañan tus procesos de firma electrónica. Ofrece a tus firmantes una experiencia alineada con la identidad de tu empresa.",
+  bloqueBeneficio: "White Label incluido en Autoservicio.",
+  /** Aclaración que separa personalización de integración. */
+  noEsIntegracion:
+    "White Label es una personalización de marca: no requiere integración API o SDK y no tiene un cargo adicional. Las integraciones API y SDK se contratan por separado, con setup fee.",
+} as const;
+
+/** FAQ de /precios (visible y JSON-LD). */
+export const FAQ_WHITE_LABEL = {
+  question: "¿Autoservicio incluye White Label?",
+  answer:
+    "Sí. Autoservicio incluye White Label para la experiencia de firma electrónica: personalizas el logotipo, los colores corporativos, los correos y los mensajes, y tus firmantes viven una experiencia sin marca visible de JAAK. Se utiliza desde la plataforma web, sin integración API o SDK y sin cargo adicional. En Crecimiento, Enterprise y Alianzas, la personalización se define conforme al alcance contratado.",
 } as const;
