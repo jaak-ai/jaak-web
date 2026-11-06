@@ -64,6 +64,21 @@ Revisadas con observación para Producto (no modificadas, fuera de alcance): `/s
 | /kyc-demo-autoservicio, tarjeta y FAQ | «No incluye API, SDK, White Label estándar ni sandbox automático» | «No incluye API, SDK ni sandbox automático» (no se afirma ni se niega White Label para KYC) |
 | Constantes comerciales | «White Label: opción de personalización conforme al alcance comercial contratado» y notas con «ni White Label» | Texto de personalización de marca incluida en Autoservicio; White Label separado de la integración API/SDK |
 
+## 6.1 Ajuste de UX posterior (ventana flotante)
+
+Para no saturar las páginas de texto, el detalle de White Label pasó a una **ventana flotante** con el estilo del modal de «¿Cómo funciona?» (componente `WhiteLabelInfo`, fuente `WHITE_LABEL_COPY`; se cierra con la X, «Entendido», clic fuera o Escape). En la página queda solo un aviso corto:
+
+| Ubicación | Antes (AUD-05, PR #242) | Ahora |
+|---|---|---|
+| /autoservicio | Sección con título, descripción, aclaración y seis recuadros | Franja compacta «White Label incluido en Autoservicio. Tu marca en cada experiencia de firma.» con botón «Ver qué incluye» |
+| /precios, tabla | «Incluido: logotipo, colores, correos, mensajes y experiencia de firma personalizada» | «Incluido» y enlace «Ver qué incluye» |
+| /precios, tarjeta | «White Label incluido: logotipo, colores, correos y mensajes» | «White Label incluido en la firma electrónica» |
+| /plataforma/firma-electronica | Párrafo largo con la nota de API y SDK | Una línea («Tu logotipo, colores, correos y mensajes en la experiencia de firma. White Label incluido en Autoservicio.») y «Ver qué incluye» |
+| /autoservicio, Firma Simple | «Firma electrónica Web con White Label incluido: tu logotipo, colores corporativos, correos y mensajes de marca» | «Firma electrónica Web con White Label incluido» |
+| Home (banner), Signa, marca blanca, nota del catálogo y FAQ | Frases más largas | Frases acortadas |
+
+El contenido completo (seis capacidades y la aclaración de que no requiere API/SDK ni cargo adicional) sigue disponible en la ventana flotante.
+
 ## 7. Matriz White Label
 
 Ver `docs/AUD-05-matriz-white-label.md`: seis capacidades incluidas en Autoservicio, lo publicado para Crecimiento, Enterprise y Alianzas, diferencias por confirmar (D1–D5) y la separación entre producto y condiciones comerciales.

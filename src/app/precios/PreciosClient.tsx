@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import WhiteLabelInfo from "@/components/WhiteLabelInfo";
 import { productos, formatMXN } from "@/data/autoservicio-catalogo";
 import {
   FAQ_ACCESO_API_SDK,
@@ -53,7 +54,7 @@ const PLANS = [
       "KYC con biometría",
       "Expediente digital auditable",
       "Paquetes con vigencia de un año",
-      "White Label incluido: logotipo, colores, correos y mensajes",
+      "White Label incluido en la firma electrónica",
       "Uso exclusivo en la plataforma web. No incluye API ni SDK",
     ],
     forWhom: ["Equipos pequeños", "Operaciones manuales", "Sin integración API"],
@@ -385,6 +386,9 @@ export default function PreciosClient() {
                 {[row.auto, row.growth, row.enterprise, row.alliance].map((val, j) => (
                   <div key={j} className="px-4 py-4 text-center text-sm" style={{ color: val === "✔️" ? "#1ecad3" : val === "❌" ? "#ef4444" : "#374151" }}>
                     {val}
+                    {row.feature === "White Label" && j === 0 && (
+                      <div className="mt-1"><WhiteLabelInfo variant="link" /></div>
+                    )}
                   </div>
                 ))}
               </div>
@@ -401,6 +405,7 @@ export default function PreciosClient() {
                     <div key={l}>
                       <p className="text-gray-400 text-xs mb-0.5">{l}</p>
                       <p style={{ color: v === "✔️" ? "#1ecad3" : v === "❌" ? "#ef4444" : "#374151" }}>{v}</p>
+                      {row.feature === "White Label" && l === "Autoservicio" && <WhiteLabelInfo variant="link" />}
                     </div>
                   ))}
                 </div>

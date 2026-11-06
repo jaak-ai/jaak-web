@@ -123,7 +123,7 @@ const CAPABILITIES = [
   { title: "Biometría y verificación KYC", text: "Opciones para verificar la identidad del firmante, desde biometría facial hasta KYC completo." },
   { title: "Evidencia y trazabilidad", text: "Modalidades que registran bitácora de eventos y expediente digital; el alcance varía según la modalidad." },
   { title: "Web, API o SDK", text: "Uso desde la plataforma web o integración por API o SDK, según contratación." },
-  { title: "White Label", text: "JAAK dispone de personalización White Label (logotipo, colores, correos y mensajes), incluida en Autoservicio. En proyectos con propuesta comercial, el alcance se define conforme a la propuesta." },
+  { title: "White Label", text: "Personalización White Label, incluida en Autoservicio; en propuestas comerciales, según su alcance." },
   { title: "Atención en español desde México", text: "Soporte y acompañamiento especializado según el plan y las condiciones acordadas." },
 ];
 

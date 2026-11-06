@@ -133,7 +133,7 @@ export const productos: Producto[] = [
       "Flujo de firma 100% digital, sin instalar nada",
       "Notificaciones automáticas a firmantes",
       "Evidencia y trazabilidad de cada firma",
-      "Firma electrónica Web con White Label incluido: tu logotipo, colores corporativos, correos y mensajes de marca",
+      "Firma electrónica Web con White Label incluido",
       "Disponible en minutos desde la plataforma web",
       "No incluye sello de tiempo ni verificación de identidad.",
     ],

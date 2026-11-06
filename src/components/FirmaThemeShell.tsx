@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import FirmaComparisonTable from "@/components/FirmaComparisonTable";
+import WhiteLabelInfo from "@/components/WhiteLabelInfo";
 import FirmaProductCards from "@/components/FirmaProductCards";
 import FirmaHowItWorks from "@/components/FirmaHowItWorks";
 import FirmaDifferentiation from "@/components/FirmaDifferentiation";
@@ -135,9 +136,8 @@ export default function FirmaThemeShell() {
                         Firma electrónica con la identidad de tu empresa
                       </p>
                       <p className="text-xs text-gray-500 mt-0.5">
-                        Personaliza la experiencia de firma con tu logotipo, colores corporativos, correos y mensajes.
-                        JAAK Autoservicio incluye funciones White Label para ofrecer una experiencia alineada con tu marca.
-                        Las integraciones API y SDK se contratan por separado, conforme a las necesidades del proyecto.
+                        Tu logotipo, colores, correos y mensajes en la experiencia de firma. White Label incluido en Autoservicio.{" "}
+                        <WhiteLabelInfo variant="link" tone="dark" />
                       </p>
                     </div>
                   </div>

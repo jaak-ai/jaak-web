@@ -20,7 +20,7 @@ export const signaFaqItems = [
   },
   {
     q: "¿Existe una opción White Label?",
-    a: "Sí. JAAK dispone de personalización White Label (logotipo, colores, correos y mensajes), incluida en Autoservicio. En proyectos con propuesta comercial, el alcance se define conforme a la propuesta.",
+    a: "Sí. Personalización White Label, incluida en Autoservicio; en propuestas comerciales, según su alcance.",
   },
   {
     q: "¿Qué soporte ofrece JAAK?",

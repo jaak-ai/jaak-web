@@ -26,7 +26,7 @@ export const AUTOSERVICIO_COPY = {
   exclusionCorta: "No incluye API ni SDK",
   /** Nota informativa del catálogo /autoservicio. */
   notaCatalogo:
-    "Autoservicio se utiliza exclusivamente desde la plataforma web e incluye White Label (logotipo, colores, correos y mensajes personalizados). No incluye API ni SDK: para integrar mediante API o SDK se requiere una contratación adicional con setup fee, que se evalúa con nuestro equipo comercial.",
+    "Autoservicio se utiliza exclusivamente desde la plataforma web e incluye White Label. No incluye API ni SDK: integrarlos requiere una contratación adicional con setup fee, que se evalúa con nuestro equipo comercial.",
 } as const;
 
 export const MODALIDADES_COPY = {
@@ -189,7 +189,7 @@ export const WHITE_LABEL_COPY = {
   firmaSimple:
     "Firma documentos desde JAAK Autoservicio con una experiencia personalizada con tu logotipo, colores corporativos, correos y mensajes de marca.",
   /** Celda de la tabla comparativa de /precios (columna Autoservicio). */
-  tablaAutoservicio: "Incluido: logotipo, colores, correos, mensajes y experiencia de firma personalizada",
+  tablaAutoservicio: "Incluido",
   /** Bloque de /autoservicio. */
   bloqueTitulo: "Tu marca en cada experiencia de firma.",
   bloqueDescripcion:
@@ -204,5 +204,5 @@ export const WHITE_LABEL_COPY = {
 export const FAQ_WHITE_LABEL = {
   question: "¿Autoservicio incluye White Label?",
   answer:
-    "Sí. Autoservicio incluye White Label para la experiencia de firma electrónica: personalizas el logotipo, los colores corporativos, los correos y los mensajes, y tus firmantes viven una experiencia sin marca visible de JAAK. Se utiliza desde la plataforma web, sin integración API o SDK y sin cargo adicional. En Crecimiento, Enterprise y Alianzas, la personalización se define conforme al alcance contratado.",
+    "Sí. Autoservicio incluye White Label en la experiencia de firma: logotipo, colores, correos y mensajes personalizados, sin integración API o SDK y sin cargo adicional. En Crecimiento, Enterprise y Alianzas se define conforme al alcance contratado.",
 } as const;

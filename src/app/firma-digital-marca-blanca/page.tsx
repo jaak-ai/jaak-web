@@ -10,7 +10,7 @@ import SectorSelector from "./SectorSelector";
 export const metadata: Metadata = {
   title: "Firma Digital Marca Blanca y Personalizada | JAAK",
   description:
-    "Personaliza tu firma digital con los colores, logotipo y mensajes de tu empresa. Configura correos y portal de firma con tecnología JAAK. White Label incluido en Autoservicio.",
+    "Personaliza tu firma digital con los colores, logotipo y mensajes de tu empresa. Configura correos y portal de firma con tecnología JAAK. Incluido en Autoservicio.",
   keywords:
     "firma digital marca blanca, firma electrónica marca blanca, firma digital personalizada, firma electrónica con logo, personalizar portal de firma, branding para firma digital, correos de firma personalizados, plataforma de firma personalizable, firma digital con identidad de marca",
   openGraph: {
@@ -644,7 +644,7 @@ export default function FirmaDigitalMarcaBlancaPage() {
                 </div>
                 <p className="text-sm text-gray-400 leading-relaxed">
                   Configuras colores, logotipo, textos y mensajes directamente desde la sección Branding de JAAK, sin
-                  necesidad de desarrollo. White Label está incluido en JAAK Autoservicio, sin integración API o SDK ni cargo adicional. Ideal para empezar a personalizar tu experiencia de firma de inmediato.
+                  necesidad de desarrollo. White Label está incluido en JAAK Autoservicio. Ideal para empezar a personalizar tu experiencia de firma de inmediato.
                 </p>
               </div>
               <div
