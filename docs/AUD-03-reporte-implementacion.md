@@ -59,6 +59,8 @@ Nota visible en la tarjeta: «Importes según el catálogo vigente de Autoservic
 | Oferta | «Paquete inicial JAAK $99 MXN · 40% de descuento por lanzamiento» | Tarjeta «Cobre KYC · Paquete de prueba»: 5 verificaciones; subtotal, IVA y total; vigencia de un año conforme a las condiciones del paquete; acceso por plataforma Web; no incluye API, SDK, White Label estándar ni sandbox automático; soporte L–V 9:00–18:00 h CDMX. |
 | Texto de apoyo | «Compra en línea, activa en minutos y comienza a operar desde autoservicio.» | «El paquete se utiliza desde la plataforma Web de JAAK. ¿Prefieres que te contactemos? Solicita información.» |
 
+**Presentación visual (ajuste de diseño):** la tarjeta es compacta para que el CTA quede visible sin desplazarse en escritorio: el total con IVA es el dato protagonista ($114.84 MXN, con el desglose $99.00 + IVA $15.84 en una línea), tres chips (5 verificaciones, 1 año de vigencia, Web), una línea visible con lo que no incluye y un desplegable «Ver condiciones del paquete» con vigencia, acceso, soporte y la nota de importes. Todo el contenido sigue en la página y es legible a 375, 768 y 1280 px.
+
 Paleta: navy #202945, azul oscuro, turquesa #1ECAD3, off-white, Montserrat (ya vigentes en la landing).
 
 ## 6. CTA y formulario (flujo real)

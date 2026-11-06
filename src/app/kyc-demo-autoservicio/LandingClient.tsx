@@ -1121,34 +1121,61 @@ export default function KycDemoAutoservicioLandingClient({
                   de vida y evidencia digital desde nuestra plataforma Web.
                 </p>
 
-                {/* Tarjeta de oferta: datos del catálogo vigente de Autoservicio */}
+                {/* Tarjeta de oferta compacta: precio protagonista, datos clave en chips y condiciones en detalle */}
                 <div
                   id="oferta"
                   className="mt-7 max-w-md rounded-2xl p-5"
-                  style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.14)" }}
+                  style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(30,202,211,0.3)", boxShadow: "0 12px 40px rgba(0,0,0,0.25)" }}
                 >
                   {offer ? (
                     <>
-                      <span className="text-[12px] font-semibold uppercase tracking-wide" style={{ color: "#7FE8EC" }}>
-                        {offer.nombre}
-                      </span>
-                      <p className="mt-2 text-lg font-bold text-white">
-                        {offer.cantidad} {offer.unidad}
-                      </p>
-                      <dl className="mt-3 space-y-1.5 text-[13.5px] text-white/75">
-                        <div className="flex justify-between gap-4"><dt>Subtotal</dt><dd className="font-semibold text-white">{formatMxn(offer.subtotal)}</dd></div>
-                        <div className="flex justify-between gap-4"><dt>IVA (16%)</dt><dd className="font-semibold text-white">{formatMxn(offer.iva)}</dd></div>
-                        <div className="flex justify-between gap-4 border-t border-white/15 pt-1.5"><dt className="font-semibold text-white">Total</dt><dd className="font-bold text-white">{formatMxn(offer.total)}</dd></div>
-                      </dl>
-                      <ul className="mt-4 space-y-1.5 text-[13px] leading-snug text-white/70">
-                        <li><span className="font-semibold text-white/90">Vigencia:</span> un año, conforme a las condiciones del paquete.</li>
-                        <li><span className="font-semibold text-white/90">Acceso:</span> plataforma Web de JAAK.</li>
-                        <li><span className="font-semibold text-white/90">No incluye:</span> API, SDK, White Label estándar ni sandbox automático.</li>
-                        <li><span className="font-semibold text-white/90">Soporte:</span> lunes a viernes de 9:00 a 18:00 h, horario CDMX.</li>
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <span className="text-[11.5px] font-semibold uppercase tracking-wide" style={{ color: "#7FE8EC" }}>
+                            {offer.nombre}
+                          </span>
+                          <p className="mt-1 text-[12.5px] text-white/60">
+                            {formatMxn(offer.subtotal)} + IVA {formatMxn(offer.iva)}
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-3xl font-bold leading-none text-white">{formatMxn(offer.total).replace(" MXN", "")}</p>
+                          <p className="mt-1 text-[11.5px] font-medium text-white/60">MXN, IVA incluido</p>
+                        </div>
+                      </div>
+
+                      <ul className="mt-4 grid grid-cols-3 gap-2 text-center">
+                        {[
+                          { k: `${offer.cantidad}`, v: offer.unidad },
+                          { k: "1 año", v: "de vigencia" },
+                          { k: "Web", v: "plataforma JAAK" },
+                        ].map((c) => (
+                          <li
+                            key={c.v}
+                            className="rounded-xl px-2 py-2.5"
+                            style={{ background: "rgba(30,202,211,0.1)", border: "1px solid rgba(30,202,211,0.25)" }}
+                          >
+                            <span className="block text-lg font-bold leading-tight text-white">{c.k}</span>
+                            <span className="block text-[11.5px] leading-tight text-white/65">{c.v}</span>
+                          </li>
+                        ))}
                       </ul>
-                      <p className="mt-3 text-[11.5px] leading-snug text-white/40">
-                        Importes según el catálogo vigente de Autoservicio; el importe final se confirma en el proceso de compra.
+
+                      <p className="mt-3 text-[12.5px] leading-snug text-white/60">
+                        No incluye API, SDK, White Label estándar ni sandbox automático.
                       </p>
+
+                      <details className="group mt-3 border-t border-white/10 pt-3">
+                        <summary className="cursor-pointer list-none text-[12.5px] font-semibold text-[#7FE8EC] marker:hidden">
+                          <span className="underline underline-offset-2">Ver condiciones del paquete</span>
+                        </summary>
+                        <ul className="mt-2 space-y-1.5 text-[12.5px] leading-snug text-white/65">
+                          <li><span className="font-semibold text-white/85">Vigencia:</span> un año, conforme a las condiciones del paquete.</li>
+                          <li><span className="font-semibold text-white/85">Acceso:</span> plataforma Web de JAAK.</li>
+                          <li><span className="font-semibold text-white/85">Soporte:</span> lunes a viernes de 9:00 a 18:00 h, horario CDMX.</li>
+                          <li className="text-white/45">Importes según el catálogo vigente de Autoservicio; el importe final se confirma en el proceso de compra.</li>
+                        </ul>
+                      </details>
                     </>
                   ) : (
                     <p className="text-[14px] leading-relaxed text-white/75">
