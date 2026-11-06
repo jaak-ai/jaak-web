@@ -2,7 +2,12 @@ import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PreciosClient from "./PreciosClient";
-import { FAQ_ACCESO_API_SDK } from "@/config/commercial-copy";
+import {
+  FAQ_ACCESO_API_SDK,
+  FAQ_HABILITACION_API,
+  FAQ_SANDBOX_PRECIOS,
+  FAQ_SETUP_FEE,
+} from "@/config/commercial-copy";
 import { buildKycRegisterUrl, KYC_PLAN_CODE_BY_TIER } from "@/data/autoservicio-catalogo";
 
 export const metadata: Metadata = {
@@ -79,10 +84,26 @@ const faqSchema = {
     },
     {
       "@type": "Question",
-      name: "¿Hay cuota de configuración (setup fee)?",
+      name: FAQ_SETUP_FEE.question,
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Autoservicio no la requiere, porque se utiliza exclusivamente desde la plataforma web. La integración mediante API o SDK en Crecimiento, Enterprise y Alianzas considera una cuota de configuración (setup fee), conforme a la propuesta comercial.",
+        text: FAQ_SETUP_FEE.answer,
+      },
+    },
+    {
+      "@type": "Question",
+      name: FAQ_HABILITACION_API.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: FAQ_HABILITACION_API.answer,
+      },
+    },
+    {
+      "@type": "Question",
+      name: FAQ_SANDBOX_PRECIOS.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: FAQ_SANDBOX_PRECIOS.answer,
       },
     },
     {

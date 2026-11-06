@@ -3,7 +3,14 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { productos, formatMXN } from "@/data/autoservicio-catalogo";
-import { FAQ_ACCESO_API_SDK, SOPORTE_COPY } from "@/config/commercial-copy";
+import {
+  FAQ_ACCESO_API_SDK,
+  FAQ_HABILITACION_API,
+  FAQ_SANDBOX_PRECIOS,
+  FAQ_SETUP_FEE,
+  PRECIOS_SETUP_COPY,
+  SOPORTE_COPY,
+} from "@/config/commercial-copy";
 
 // Precio "desde" del autoservicio = paquete más económico del catálogo (fuente única).
 const minAutoPrecio = Math.min(...productos.flatMap((p) => p.paquetes.map((q) => q.precio)));
@@ -135,6 +142,7 @@ const COMPARISON = [
   { feature: "Plataforma Web",             auto: "Incluido", growth: "Disponible según contratación", enterprise: "Según propuesta", alliance: "Según propuesta" },
   { feature: "Integración API",            auto: "No incluido", growth: "Disponible, con setup fee", enterprise: "Según propuesta (con setup fee)", alliance: "Según propuesta (con setup fee)" },
   { feature: "Integración SDK",            auto: "No incluido", growth: "Disponible, con setup fee", enterprise: "Según propuesta (con setup fee)", alliance: "Según propuesta (con setup fee)" },
+  PRECIOS_SETUP_COPY.fila,
   { feature: "White Label",                auto: "No incluido", growth: "Opcional, según alcance acordado", enterprise: "Opcional, según propuesta", alliance: "Opcional, según propuesta" },
   { feature: "Esquema de contratación",    auto: "Compra en línea; paquetes con vigencia de un año", growth: "Bolsa anual de consumo, pagos mensuales según consumo", enterprise: "Bolsa anual de consumo, pagos mensuales según consumo", alliance: "Bolsa anual de consumo, pagos mensuales según consumo" },
   { feature: "Volumen mensual",            auto: "Bajo", growth: "Medio", enterprise: "Alto", alliance: "Variable" },
@@ -163,8 +171,16 @@ const faqItems = [
     answer: FAQ_ACCESO_API_SDK.answer,
   },
   {
-    question: "¿Hay cuota de configuración (setup fee)?",
-    answer: "Autoservicio no la requiere, porque se utiliza exclusivamente desde la plataforma web. La integración mediante API o SDK en Crecimiento, Enterprise y Alianzas considera una cuota de configuración (setup fee), conforme a la propuesta comercial.",
+    question: FAQ_SETUP_FEE.question,
+    answer: FAQ_SETUP_FEE.answer,
+  },
+  {
+    question: FAQ_HABILITACION_API.question,
+    answer: FAQ_HABILITACION_API.answer,
+  },
+  {
+    question: FAQ_SANDBOX_PRECIOS.question,
+    answer: FAQ_SANDBOX_PRECIOS.answer,
   },
   {
     question: "¿JAAK cumple con LFPIORPI, CNBV y UIF?",
@@ -388,6 +404,9 @@ export default function PreciosClient() {
               </div>
             ))}
           </div>
+
+          {/* AUD-02.1: setup fee y sandbox junto a API/SDK (sin importes ni plazos) */}
+          <p className="mt-6 text-sm text-gray-500 leading-relaxed">{PRECIOS_SETUP_COPY.nota}</p>
         </div>
       </section>
 

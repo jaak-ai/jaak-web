@@ -122,3 +122,39 @@ export const KYC_INTEGRACION_COPY = {
   ],
   cta: "Solicitar evaluación de integración",
 } as const;
+
+// ───────────────────────── AUD-02.1 · Precios: setup fee de API/SDK ─────────────────────────
+// Sin importes, plazos ni SLA: el setup fee y el esquema de consumo se definen en la propuesta comercial.
+
+/** Fila y nota de la comparativa de modalidades de /precios. */
+export const PRECIOS_SETUP_COPY = {
+  fila: {
+    feature: "Setup fee (integración API/SDK)",
+    auto: "No aplica (uso Web)",
+    growth: "Aplica a la integración API/SDK",
+    enterprise: "Aplica a la integración API/SDK, según propuesta",
+    alliance: "Aplica a la integración API/SDK, según propuesta",
+  },
+  nota:
+    "Setup fee: la integración por API o SDK requiere una cuota de configuración que se define en la propuesta comercial según el alcance contratado, junto con el esquema de consumo de Crecimiento, Enterprise y Alianzas (bolsa anual con pagos mensuales según consumo). Autoservicio es exclusivamente Web y no requiere setup fee. El ambiente de pruebas (sandbox) no se habilita automáticamente en ningún plan: su disponibilidad se evalúa con un especialista comercial de JAAK.",
+} as const;
+
+/** FAQ de /precios (visible y JSON-LD). */
+export const FAQ_SETUP_FEE = {
+  question: "¿Hay cuota de configuración (setup fee)?",
+  answer:
+    "Autoservicio no la requiere, porque se utiliza exclusivamente desde la plataforma web. En Crecimiento, Enterprise y Alianzas, la integración por API o SDK requiere una cuota de configuración (setup fee). Su importe y condiciones se definen en la propuesta comercial, junto con el esquema de consumo (bolsa anual con pagos mensuales según consumo).",
+} as const;
+
+export const FAQ_HABILITACION_API = {
+  question: "¿Cómo se habilita la API o el SDK en Crecimiento, Enterprise o Alianzas?",
+  answer:
+    "Parte de una evaluación con nuestro equipo comercial: se define el alcance de la integración (API y/o SDK), la cuota de configuración (setup fee) aplicable y el esquema de consumo del plan. Con la propuesta aceptada, los accesos se habilitan conforme a lo contratado.",
+} as const;
+
+export const FAQ_SANDBOX_PRECIOS = {
+  question: "¿Incluye algún plan un ambiente de pruebas (sandbox)?",
+  answer:
+    "No de forma automática. La disponibilidad de un ambiente de pruebas se evalúa con un especialista comercial de JAAK, de acuerdo con el tipo de cliente, el paquete contratado y las necesidades del proyecto. Los paquetes de Autoservicio no incluyen acceso automático a sandbox.",
+} as const;
+
