@@ -88,7 +88,7 @@ const CRITERIA = [
   {
     name: "White Label",
     check: "¿Permite personalizar la experiencia con tu marca?",
-    jaak: "Posibilidad de White Label conforme al alcance de la propuesta comercial.",
+    jaak: "Personalización White Label (logotipo, colores, correos y mensajes), incluida en Autoservicio; en propuestas comerciales, conforme a su alcance.",
   },
   {
     name: "Requisitos de implementación",

@@ -93,7 +93,7 @@ const serviceSchema = {
     "Firma biométrica con liveness",
     "Firma Digital NOM-151 + KYC completo",
     "Expediente digital auditable",
-    "Personalizable con marca propia",
+    "White Label incluido en Autoservicio: logotipo, colores, correos y mensajes personalizados",
   ],
 };
 

@@ -54,7 +54,7 @@ export function buildKycTrialFaq(offer: KycTrialOffer | null): FaqItem[] {
   return [
     {
       q: "¿Qué incluye el paquete Cobre KYC?",
-      a: `Incluye ${cantidad} de identidad con captura de documento, biometría facial, prueba de vida y expediente digital consultable, para usar desde la plataforma Web de JAAK. No incluye API, SDK, White Label estándar ni acceso automático a sandbox.`,
+      a: `Incluye ${cantidad} de identidad con captura de documento, biometría facial, prueba de vida y expediente digital consultable, para usar desde la plataforma Web de JAAK. No incluye API ni SDK, ni acceso automático a sandbox.`,
     },
     {
       q: "¿Cuántas verificaciones incluye?",

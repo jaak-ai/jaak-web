@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import AutoservicioVariantes from "@/components/autoservicio/AutoservicioVariantes";
 import ComoFuncionaBanner from "@/components/autoservicio/ComoFuncionaBanner";
 import { getAutoservicioCatalog } from "@/lib/catalog";
-import { AUTOSERVICIO_COPY } from "@/config/commercial-copy";
+import { AUTOSERVICIO_COPY, WHITE_LABEL_COPY } from "@/config/commercial-copy";
 import { buildAutoservicioMetadata } from "@/lib/autoservicioMetadata";
 import { autoservicioBreadcrumbSchema, buildAutoservicioProductsSchema } from "./schema";
 
@@ -105,6 +105,45 @@ export default async function AutoservicioPage() {
 
         {/* ─── Cómo funciona: banner + modal con el detalle completo ───── */}
         <ComoFuncionaBanner />
+
+        {/* ─── White Label incluido (AUD-05): personalización de marca en la firma ─── */}
+        <section aria-labelledby="white-label-heading" style={{ background: "#F5F7FA" }}>
+          <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-14">
+            <div className="grid items-center gap-8 lg:grid-cols-[1.1fr_1fr]">
+              <div>
+                <span
+                  className="inline-flex items-center rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide"
+                  style={{ background: "rgba(45,182,193,0.12)", border: "1px solid rgba(45,182,193,0.35)", color: "#1F8F99" }}
+                >
+                  {WHITE_LABEL_COPY.bloqueBeneficio}
+                </span>
+                <h2 id="white-label-heading" className="mt-4 text-2xl font-bold tracking-tight lg:text-3xl" style={{ color: "#212A45" }}>
+                  {WHITE_LABEL_COPY.bloqueTitulo}
+                </h2>
+                <p className="mt-3 max-w-xl text-[15px] leading-relaxed" style={{ color: "#64748B" }}>
+                  {WHITE_LABEL_COPY.bloqueDescripcion}
+                </p>
+                <p className="mt-3 max-w-xl text-[13px] leading-relaxed" style={{ color: "#8A94A6" }}>
+                  {WHITE_LABEL_COPY.noEsIntegracion}
+                </p>
+              </div>
+              <ul className="grid gap-2.5 sm:grid-cols-2">
+                {WHITE_LABEL_COPY.capacidades.map((c) => (
+                  <li
+                    key={c}
+                    className="flex items-start gap-2.5 rounded-xl border bg-white px-4 py-3 text-[13.5px] font-medium leading-snug"
+                    style={{ borderColor: "#E6E8EF", color: "#212A45" }}
+                  >
+                    <svg className="mt-0.5 h-4 w-4 flex-shrink-0" style={{ color: TEAL }} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                    </svg>
+                    {c}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
 
         {/* ─── Experiencia: agregar productos (Catálogo / Guía) ─────────── */}
         <AutoservicioVariantes productos={productos} categorias={categorias} pricingIndex={pricingIndex} productKeys={productKeys} />

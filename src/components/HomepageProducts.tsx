@@ -282,8 +282,8 @@ export default function HomepageProducts() {
               </span>
             </div>
             <p className="text-sm" style={{ color: "var(--hp-text-md)" }}>
-              Tu logo, tus colores y mensajes personalizados, conforme al alcance comercial contratado.
-              Consulta la disponibilidad para KYC, firma y expediente digital.
+              Autoservicio incluye White Label para la firma electrónica: tu logotipo, colores, correos y mensajes personalizados.
+              En Crecimiento, Enterprise y Alianzas se define conforme al alcance contratado. Consulta la disponibilidad para KYC y expediente digital.
             </p>
           </div>
           <Link

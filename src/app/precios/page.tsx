@@ -7,6 +7,7 @@ import {
   FAQ_SANDBOX_PRECIOS,
   FAQ_SETUP_FEE,
   FAQ_VIGENCIA_REEMBOLSO,
+  FAQ_WHITE_LABEL,
 } from "@/config/commercial-copy";
 import { buildKycRegisterUrl, KYC_PLAN_CODE_BY_TIER } from "@/data/autoservicio-catalogo";
 
@@ -80,6 +81,14 @@ const faqSchema = {
       acceptedAnswer: {
         "@type": "Answer",
         text: FAQ_ACCESO_API_SDK.answer,
+      },
+    },
+    {
+      "@type": "Question",
+      name: FAQ_WHITE_LABEL.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: FAQ_WHITE_LABEL.answer,
       },
     },
     {

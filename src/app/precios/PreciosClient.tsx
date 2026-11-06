@@ -8,8 +8,10 @@ import {
   FAQ_SANDBOX_PRECIOS,
   FAQ_SETUP_FEE,
   FAQ_VIGENCIA_REEMBOLSO,
+  FAQ_WHITE_LABEL,
   PRECIOS_SETUP_COPY,
   SOPORTE_COPY,
+  WHITE_LABEL_COPY,
 } from "@/config/commercial-copy";
 
 // Precio "desde" del autoservicio = paquete más económico del catálogo (fuente única).
@@ -51,7 +53,8 @@ const PLANS = [
       "KYC con biometría",
       "Expediente digital auditable",
       "Paquetes con vigencia de un año",
-      "Uso exclusivo en la plataforma web. No incluye API, SDK ni White Label",
+      "White Label incluido: logotipo, colores, correos y mensajes",
+      "Uso exclusivo en la plataforma web. No incluye API ni SDK",
     ],
     forWhom: ["Equipos pequeños", "Operaciones manuales", "Sin integración API"],
     support: "Onboarding grupal + soporte básico",
@@ -143,7 +146,7 @@ const COMPARISON = [
   { feature: "Integración API",            auto: "No incluido", growth: "Disponible, con setup fee", enterprise: "Según propuesta (con setup fee)", alliance: "Según propuesta (con setup fee)" },
   { feature: "Integración SDK",            auto: "No incluido", growth: "Disponible, con setup fee", enterprise: "Según propuesta (con setup fee)", alliance: "Según propuesta (con setup fee)" },
   PRECIOS_SETUP_COPY.fila,
-  { feature: "White Label",                auto: "No incluido", growth: "Opcional, según alcance acordado", enterprise: "Opcional, según propuesta", alliance: "Opcional, según propuesta" },
+  { feature: "White Label",                auto: WHITE_LABEL_COPY.tablaAutoservicio, growth: "Opcional, según alcance acordado", enterprise: "Opcional, según propuesta", alliance: "Opcional, según propuesta" },
   { feature: "Esquema de contratación",    auto: "Compra en línea; paquetes con vigencia de un año", growth: "Bolsa anual de consumo, pagos mensuales según consumo", enterprise: "Bolsa anual de consumo, pagos mensuales según consumo", alliance: "Bolsa anual de consumo, pagos mensuales según consumo" },
   { feature: "Volumen mensual",            auto: "Bajo", growth: "Medio", enterprise: "Alto", alliance: "Variable" },
   { feature: "Soporte",                    auto: SOPORTE_COPY.autoservicioTabla, growth: SOPORTE_COPY.especializadoTabla, enterprise: SOPORTE_COPY.especializadoTabla, alliance: SOPORTE_COPY.especializadoTabla },
@@ -169,6 +172,10 @@ const faqItems = [
   {
     question: FAQ_ACCESO_API_SDK.question,
     answer: FAQ_ACCESO_API_SDK.answer,
+  },
+  {
+    question: FAQ_WHITE_LABEL.question,
+    answer: FAQ_WHITE_LABEL.answer,
   },
   {
     question: FAQ_SETUP_FEE.question,
