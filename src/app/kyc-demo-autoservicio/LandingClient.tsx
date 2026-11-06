@@ -9,6 +9,8 @@ import { gtmEvent } from "@/components/GoogleTagManager";
 import { getUtmParams } from "@/components/CloudflareTurnstile";
 import { productos, buildCheckoutUrl, buildKycRegisterUrl } from "@/data/autoservicio-catalogo";
 import type { PricingIndex } from "@/lib/pricing";
+import { formatMxn, type FaqItem, type KycTrialOffer } from "@/lib/kycTrialOffer";
+import { AUTOSERVICIO_COPY } from "@/config/commercial-copy";
 
 /* ─────────────────────────────────────────────────────────────────────────
  * Constantes de marca e identidad visual (paleta de esta campaña)
@@ -40,46 +42,18 @@ interface TrialProduct {
   id: ProductId;
   nombre: string;
   tagline: string;
-  desde: string;
 }
 
+// AUD-03: el producto principal de la landing es Cobre KYC (oferta del catálogo).
+// Los demás productos se listan sin importes: cada uno tiene su precio y unidades en el
+// catálogo de Autoservicio y aquí no hay ficha promocional aprobada.
 const PRODUCTS: TrialProduct[] = [
-  {
-    id: "kyc",
-    nombre: "KYC biométrico",
-    tagline: "Valida identidad con documento, biometría facial, prueba de vida y evidencia.",
-    desde: "Desde $99 MXN",
-  },
-  {
-    id: "firma",
-    nombre: "Firma electrónica",
-    tagline: "Firma documentos de forma digital con trazabilidad del proceso.",
-    desde: "Desde $49 MXN",
-  },
-  {
-    id: "firma-nom151-kyc",
-    nombre: "Firma NOM-151 + KYC",
-    tagline: "Une identidad, firma y expediente auditable en un solo flujo.",
-    desde: "Desde $174 MXN",
-  },
-  {
-    id: "ine-curp",
-    nombre: "Validación INE / CURP",
-    tagline: "Consulta y valida información contra fuentes oficiales.",
-    desde: "Desde $14 MXN",
-  },
-  {
-    id: "ocr",
-    nombre: "OCR de documentos",
-    tagline: "Extrae datos de documentos para reducir captura manual.",
-    desde: "Desde $99 MXN",
-  },
-  {
-    id: "listas",
-    nombre: "Listas de riesgo",
-    tagline: "Consulta coincidencias relevantes para procesos de prevención y control.",
-    desde: "Desde $99 MXN",
-  },
+  { id: "kyc", nombre: "KYC biométrico", tagline: "Valida identidad con documento, biometría facial, prueba de vida y evidencia." },
+  { id: "firma", nombre: "Firma electrónica", tagline: "Firma documentos de forma digital con trazabilidad del proceso." },
+  { id: "firma-nom151-kyc", nombre: "Firma NOM-151 + KYC", tagline: "Une identidad, firma y expediente auditable en un solo flujo." },
+  { id: "ine-curp", nombre: "Validación INE / CURP", tagline: "Consulta y valida información contra fuentes oficiales." },
+  { id: "ocr", nombre: "OCR de documentos", tagline: "Extrae datos de documentos para reducir captura manual." },
+  { id: "listas", nombre: "Listas de riesgo", tagline: "Consulta coincidencias relevantes para procesos de prevención y control." },
 ];
 
 const PRODUCT_OPTIONS: { id: ProductId; label: string }[] = [
@@ -124,12 +98,13 @@ function buildTrialCheckoutHref(
 /* ─────────────────────────────────────────────────────────────────────────
  * Datos de contenido estático
  * ───────────────────────────────────────────────────────────────────────── */
-const FUNNEL_STEPS = [
-  { label: "usuarios llegan", value: 100 },
-  { label: "inician KYC", value: 78 },
-  { label: "suben documentos", value: 52 },
-  { label: "esperan revisión", value: 38 },
-  { label: "se convierten en clientes", value: 22 },
+// Etapas conceptuales del proceso manual (sin cifras: no son resultados medidos de JAAK).
+const MANUAL_STAGES = [
+  "Los usuarios llegan",
+  "Inician el proceso",
+  "Suben documentos",
+  "Esperan revisión",
+  "Se convierten en clientes",
 ];
 
 const HOW_IT_WORKS = [
@@ -142,10 +117,10 @@ const HOW_IT_WORKS = [
 
 const COMPARISON_ROWS = [
   ["Documentos por correo o WhatsApp", "Sesiones digitales estructuradas"],
-  ["Revisión en horas o días", "Flujo automatizado en minutos"],
+  ["Revisión manual caso por caso", "Flujo automatizado desde la plataforma"],
   ["Evidencia dispersa", "Expediente consultable"],
   ["Validación visual", "Documento + biometría + prueba de vida"],
-  ["Difícil de escalar", "Paquetes activables desde autoservicio"],
+  ["Difícil de escalar", "Paquetes disponibles en autoservicio"],
   ["Requiere seguimiento manual", "Estados y resultados desde plataforma"],
 ];
 
@@ -161,17 +136,6 @@ const USE_CASES = [
 const TRUST_BADGES = [
   "KYC biométrico", "Prueba de vida", "Expediente auditable", "Firma digital",
   "NOM-151", "LFPIORPI", "CNBV", "PLD/FT", "OFAC", "SAT 69-B",
-];
-
-const FAQ_ITEMS = [
-  { q: "¿Qué incluye el paquete de $99?", a: "El paquete inicial de KYC biométrico incluye verificaciones de identidad con biometría facial, prueba de vida, OCR de identificación oficial y consulta en listas de riesgo, con expediente digital descargable. Otros productos de autoservicio tienen su propio precio y alcance." },
-  { q: "¿Puedo elegir cualquier producto JAAK?", a: "La prueba está pensada para que elijas un producto disponible en autoservicio y valides si se adapta a tu operación antes de escalar." },
-  { q: "¿Qué pasa después de comprar?", a: "Creas tu cuenta, realizas el pago en línea y activas tu paquete para comenzar a operar." },
-  { q: "¿Necesito integración API para probar?", a: "No. Autoservicio se utiliza exclusivamente desde la plataforma web, sin desarrollo. No incluye API ni SDK; la integración se contrata por separado y requiere una cuota de configuración (setup fee)." },
-  { q: "¿Cuánto tarda en activarse?", a: "La activación es automática: al completar el pago, tu acceso queda disponible en minutos." },
-  { q: "¿Puedo escalar después a más volumen?", a: "Sí. Puedes adquirir más créditos o subir de plan desde el portal. Si necesitas integración por API o SDK, se requiere una cuota de configuración (setup fee)." },
-  { q: "¿Qué diferencia hay entre autoservicio y enterprise?", a: "Autoservicio permite comprar y activar paquetes de inmediato para volúmenes bajos o pruebas. Enterprise está pensado para volumen alto, integración a medida y acompañamiento dedicado." },
-  { q: "¿Puedo ver la demo completa después de registrarme?", a: "Sí. Al registrarte, el video se desbloquea por completo y puedes ver el flujo íntegro de la sesión KYC." },
 ];
 
 /* ─────────────────────────────────────────────────────────────────────────
@@ -209,6 +173,18 @@ declare global {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
+ * Link a la compra del paquete Cobre KYC (flujo de registro/compra en la plataforma
+ * de JAAK, el mismo que ya usa el formulario). Incluye los UTM vigentes.
+ * ───────────────────────────────────────────────────────────────────────── */
+function useKycPurchaseHref(): string {
+  const [href, setHref] = useState(KYC_REGISTER_URL);
+  useEffect(() => {
+    setHref(buildKycRegisterUrl("cobre", { utm: getUtmParams() }));
+  }, []);
+  return href;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
  * Icono de check reutilizable
  * ───────────────────────────────────────────────────────────────────────── */
 function CheckIcon({ color = TEAL }: { color?: string }) {
@@ -222,7 +198,7 @@ function CheckIcon({ color = TEAL }: { color?: string }) {
 /* ─────────────────────────────────────────────────────────────────────────
  * LandingHeader — nav sticky específico de esta campaña
  * ───────────────────────────────────────────────────────────────────────── */
-function LandingHeader() {
+function LandingHeader({ offer, purchaseHref }: { offer: KycTrialOffer | null; purchaseHref: string }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -237,7 +213,7 @@ function LandingHeader() {
     { label: "Demo", href: "#demo" },
     { label: "Productos", href: "#productos" },
     { label: "Casos de uso", href: "#casos-de-uso" },
-    { label: "Comprar por $99", href: "#registro" },
+    { label: "Paquete Cobre KYC", href: "#oferta" },
   ];
 
   return (
@@ -275,14 +251,24 @@ function LandingHeader() {
           </nav>
 
           <div className="hidden lg:flex items-center gap-3">
-            <a
-              href="#registro"
-              onClick={() => gtmEvent("click_buy_99", { location: "header" })}
-              className="inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-[13.5px] font-bold transition-transform hover:-translate-y-px"
-              style={{ background: TEAL, color: NAVY_DARK }}
-            >
-              Probar por $99
-            </a>
+            {offer ? (
+              <a
+                href={purchaseHref}
+                onClick={() => gtmEvent("click_buy_99", { location: "header" })}
+                className="inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-[13.5px] font-bold transition-transform hover:-translate-y-px"
+                style={{ background: TEAL, color: NAVY_DARK }}
+              >
+                Seleccionar paquete Cobre KYC
+              </a>
+            ) : (
+              <Link
+                href="/autoservicio"
+                className="inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-[13.5px] font-bold transition-transform hover:-translate-y-px"
+                style={{ background: TEAL, color: NAVY_DARK }}
+              >
+                Ver catálogo de Autoservicio
+              </Link>
+            )}
           </div>
 
           <button
@@ -322,10 +308,14 @@ function VideoLockOverlay({
   secondsWatched,
   onRegisterClick,
   onBuyClick,
+  offer,
+  purchaseHref,
 }: {
   secondsWatched: number;
   onRegisterClick: () => void;
   onBuyClick: () => void;
+  offer: KycTrialOffer | null;
+  purchaseHref: string;
 }) {
   return (
     <div
@@ -358,28 +348,31 @@ function VideoLockOverlay({
           ¿Quieres ver el flujo completo?
         </h3>
         <p className="text-[14px] leading-relaxed text-white/70 mb-6">
-          Crea tu cuenta y activa un paquete inicial de JAAK por $99 MXN para probar la plataforma con tu propio caso de uso.
+          Deja tus datos para desbloquear la demo completa.{offer ? " También puedes seleccionar el paquete Cobre KYC para probar la plataforma con tu propio caso de uso." : ""}
         </p>
 
         <div className="flex flex-col gap-3">
           <button
-            onClick={onBuyClick}
+            onClick={onRegisterClick}
             className="w-full rounded-xl px-5 py-3.5 text-[14px] font-bold transition-transform hover:-translate-y-px"
             style={{ background: TEAL, color: NAVY_DARK }}
           >
-            Activar paquete por $99
+            Desbloquear demo completa
           </button>
-          <button
-            onClick={onRegisterClick}
-            className="w-full rounded-xl px-5 py-3 text-[14px] font-semibold text-white border transition-colors"
-            style={{ borderColor: "rgba(255,255,255,0.25)", background: "rgba(255,255,255,0.05)" }}
-          >
-            Registrarme y continuar
-          </button>
+          {offer && (
+            <a
+              href={purchaseHref}
+              onClick={onBuyClick}
+              className="block w-full rounded-xl px-5 py-3 text-center text-[14px] font-semibold text-white border transition-colors"
+              style={{ borderColor: "rgba(255,255,255,0.25)", background: "rgba(255,255,255,0.05)" }}
+            >
+              Seleccionar paquete Cobre KYC
+            </a>
+          )}
         </div>
 
         <p className="mt-5 text-[12px] leading-relaxed text-white/40">
-          Elige entre productos de identidad, firma, validaciones u OCR disponibles en autoservicio.
+          Autoservicio se utiliza desde la plataforma Web de JAAK.
         </p>
       </div>
     </div>
@@ -393,10 +386,14 @@ function VideoGatePlayer({
   registered,
   onRegisterCta,
   onBuyCta,
+  offer,
+  purchaseHref,
 }: {
   registered: boolean;
   onRegisterCta: () => void;
   onBuyCta: () => void;
+  offer: KycTrialOffer | null;
+  purchaseHref: string;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<YTPlayer | null>(null);
@@ -589,7 +586,7 @@ function VideoGatePlayer({
       )}
 
       {locked && (
-        <VideoLockOverlay secondsWatched={secondsWatched} onRegisterClick={onRegisterCta} onBuyClick={onBuyCta} />
+        <VideoLockOverlay secondsWatched={secondsWatched} onRegisterClick={onRegisterCta} onBuyClick={onBuyCta} offer={offer} purchaseHref={purchaseHref} />
       )}
     </div>
   );
@@ -599,7 +596,6 @@ function VideoGatePlayer({
  * KycFunnelVisual — sección 5
  * ───────────────────────────────────────────────────────────────────────── */
 function KycFunnelVisual() {
-  const max = FUNNEL_STEPS[0].value;
   return (
     <section id="embudo" className="py-20 px-4 sm:px-6 lg:px-8" style={{ background: NAVY_DARK }}>
       <div className="mx-auto max-w-6xl">
@@ -611,7 +607,7 @@ function KycFunnelVisual() {
             El problema
           </span>
           <h2 className="mt-4 text-3xl sm:text-4xl font-bold text-white tracking-tight">
-            El costo real del KYC lento
+            Del proceso manual al flujo digital
           </h2>
           <p className="mt-4 text-[15px] leading-relaxed text-white/60">
             Cuando la verificación depende de revisión manual, cada paso agrega fricción: usuarios que no
@@ -621,42 +617,36 @@ function KycFunnelVisual() {
         </div>
 
         <div className="grid lg:grid-cols-[1.4fr_1fr] gap-8 items-stretch">
-          {/* Embudo */}
+          {/* Etapas conceptuales (sin cifras) */}
           <div className="rounded-2xl p-6 sm:p-8" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)" }}>
-            <div className="space-y-3">
-              {FUNNEL_STEPS.map((step) => {
-                const widthPct = 15 + (step.value / max) * 85;
-                return (
-                  <div key={step.label} className="flex items-center gap-4">
-                    <div className="w-10 text-right text-sm font-bold text-white/80 flex-shrink-0">{step.value}</div>
-                    <div className="flex-1 h-9 rounded-lg overflow-hidden" style={{ background: "rgba(255,255,255,0.05)" }}>
-                      <div
-                        className="h-full rounded-lg flex items-center px-3"
-                        style={{
-                          width: `${widthPct}%`,
-                          background: `linear-gradient(90deg, ${TEAL}, rgba(30,202,211,0.55))`,
-                        }}
-                      >
-                        <span className="text-[12px] font-semibold whitespace-nowrap" style={{ color: NAVY_DARK }}>
-                          {step.label}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+            <p className="text-[12px] font-semibold uppercase tracking-wide text-white/50">Etapas de un proceso manual</p>
+            <ol className="mt-5 space-y-3">
+              {MANUAL_STAGES.map((stage, i) => (
+                <li key={stage} className="flex items-center gap-4">
+                  <span
+                    className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full text-sm font-bold"
+                    style={{ background: "rgba(30,202,211,0.15)", border: "1px solid rgba(30,202,211,0.35)", color: TEAL }}
+                  >
+                    {i + 1}
+                  </span>
+                  <span className="text-[14.5px] font-semibold text-white/85">{stage}</span>
+                </li>
+              ))}
+            </ol>
+            <p className="mt-6 text-[12px] leading-relaxed text-white/40">
+              Ilustración conceptual del proceso. No representa resultados medidos de JAAK.
+            </p>
           </div>
 
-          {/* Comparativo lateral */}
+          {/* Comparativo lateral, sin tiempos */}
           <div className="flex flex-col gap-4">
             <div className="flex-1 rounded-2xl p-6 flex flex-col justify-center items-center text-center" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)" }}>
-              <p className="text-3xl sm:text-4xl font-bold text-white/70">72 hrs</p>
-              <p className="mt-2 text-[13px] text-white/50">Proceso manual</p>
+              <p className="text-xl sm:text-2xl font-bold text-white/70">Proceso manual</p>
+              <p className="mt-2 text-[13px] text-white/50">Revisión y seguimiento dispersos</p>
             </div>
             <div className="flex-1 rounded-2xl p-6 flex flex-col justify-center items-center text-center" style={{ background: "rgba(30,202,211,0.08)", border: `1px solid rgba(30,202,211,0.35)` }}>
-              <p className="text-3xl sm:text-4xl font-bold" style={{ color: TEAL }}>1 min</p>
-              <p className="mt-2 text-[13px] text-white/70">KYC automatizado</p>
+              <p className="text-xl sm:text-2xl font-bold" style={{ color: TEAL }}>KYC automatizado</p>
+              <p className="mt-2 text-[13px] text-white/70">Sesión estructurada con resultado y expediente en la plataforma</p>
             </div>
           </div>
         </div>
@@ -672,60 +662,48 @@ function KycFunnelVisual() {
 /* ─────────────────────────────────────────────────────────────────────────
  * ProductTrialSelector — sección 7
  * ───────────────────────────────────────────────────────────────────────── */
-function ProductTrialSelector({ onSelect }: { onSelect: (id: ProductId) => void }) {
+function ProductTrialSelector() {
+  const otros = PRODUCTS.filter((p) => p.id !== "kyc");
   return (
     <section id="productos" className="py-20 px-4 sm:px-6 lg:px-8" style={{ background: GRAY_LIGHT }}>
       <div className="mx-auto max-w-6xl">
         <div className="text-center max-w-2xl mx-auto mb-4">
-          <span
-            className="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold"
-            style={{ background: "rgba(30,202,211,0.1)", border: "1px solid rgba(30,202,211,0.3)", color: "#0F8E96" }}
-          >
-            Oferta de lanzamiento
-          </span>
-          <h2 className="mt-4 text-3xl sm:text-4xl font-bold tracking-tight" style={{ color: NAVY }}>
-            Empieza con un paquete inicial de $99 MXN
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight" style={{ color: NAVY }}>
+            Explora otros productos de JAAK Autoservicio
           </h2>
           <p className="mt-4 text-[15px] leading-relaxed" style={{ color: "#5B6472" }}>
-            Comienza con un paquete de JAAK Autoservicio y conoce nuestras soluciones desde la plataforma web.
-            Si posteriormente necesitas conectar los servicios con tus propios sistemas, nuestro equipo podrá ayudarte
-            a evaluar una integración mediante API o SDK, sujeta a una cuota de configuración (setup fee).
-          </p>
-          <p className="mt-6 text-lg font-bold" style={{ color: NAVY }}>
-            Elige el producto que quieres probar
+            El paquete de prueba de esta página es Cobre KYC. Cada producto de Autoservicio tiene su propio
+            precio, unidades y condiciones en el catálogo. {AUTOSERVICIO_COPY.notaCatalogo}
           </p>
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-10">
-          {PRODUCTS.map((p) => (
-            <button
+          {otros.map((p) => (
+            <Link
               key={p.id}
-              onClick={() => {
-                gtmEvent("select_trial_product", { product: p.id });
-                onSelect(p.id);
-              }}
-              className="text-left rounded-2xl p-6 bg-white transition-all hover:-translate-y-1"
+              href="/autoservicio"
+              onClick={() => gtmEvent("select_trial_product", { product: p.id })}
+              className="block text-left rounded-2xl p-6 bg-white transition-all hover:-translate-y-1"
               style={{ border: "1px solid #E2E8EF" }}
             >
               <h3 className="font-bold text-[15px]" style={{ color: NAVY }}>{p.nombre}</h3>
               <p className="mt-2 text-[13.5px] leading-relaxed" style={{ color: "#6B7686" }}>{p.tagline}</p>
-              <div className="mt-5 flex items-center justify-between">
-                <span className="text-[13px] font-bold" style={{ color: "#0F8E96" }}>{p.desde}</span>
-                <span className="text-[13px] font-semibold" style={{ color: TEAL }}>Elegir →</span>
+              <div className="mt-5">
+                <span className="text-[13px] font-semibold" style={{ color: "#0F8E96" }}>Ver en el catálogo →</span>
               </div>
-            </button>
+            </Link>
           ))}
         </div>
 
         <div className="text-center mt-10">
-          <a
-            href="#registro"
-            onClick={() => gtmEvent("click_buy_99", { location: "product_selector" })}
+          <Link
+            href="/autoservicio"
+            onClick={() => gtmEvent("click_catalog", { location: "product_selector" })}
             className="inline-flex items-center gap-2 rounded-xl px-7 py-3.5 text-[15px] font-bold text-white transition-transform hover:-translate-y-px"
             style={{ background: NAVY }}
           >
-            Elegir producto y comprar por $99
-          </a>
+            Ver catálogo de Autoservicio
+          </Link>
         </div>
       </div>
     </section>
@@ -750,7 +728,7 @@ const LEAD_INITIAL: LeadFormState = {
   correo: "",
   empresa: "",
   telefono: "",
-  producto: "",
+  producto: "kyc",
   volumen: "",
   comentario: "",
 };
@@ -874,14 +852,15 @@ function LeadRegistrationForm({
         </div>
         <h3 className="text-2xl font-bold" style={{ color: NAVY }}>¡Listo, {form.nombre.split(" ")[0]}!</h3>
         <p className="mt-3 text-[14.5px] leading-relaxed max-w-md mx-auto" style={{ color: "#5B6472" }}>
-          Tu registro quedó completo y el video demo ya está desbloqueado por completo. El siguiente paso es
-          activar tu paquete inicial y comenzar a operar.
+          Recibimos tu solicitud y la demo completa ya está desbloqueada. Si quieres continuar con la compra,
+          te llevamos a la página de compra del paquete en la plataforma de JAAK, donde creas tu cuenta y
+          completas el pago.
         </p>
 
         {redirecting && (
           <div className="mt-6 max-w-xs mx-auto">
             <p className="text-[13px] font-semibold" style={{ color: "#0F8E96" }}>
-              Te llevamos a tu compra en {autoRedirectSeconds}s…
+              Te llevamos a la página de compra en {autoRedirectSeconds}s…
             </p>
             <div className="mt-2 h-1 rounded-full overflow-hidden" style={{ background: "rgba(30,202,211,0.15)" }}>
               <div
@@ -907,7 +886,7 @@ function LeadRegistrationForm({
             className="inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-[14.5px] font-bold text-white transition-transform hover:-translate-y-px"
             style={{ background: NAVY }}
           >
-            Comprar mi paquete por $99 ahora
+            Continuar a la compra del paquete
           </Link>
           <a
             href="#demo"
@@ -929,9 +908,9 @@ function LeadRegistrationForm({
       className="rounded-3xl p-6 sm:p-9"
       style={{ background: "#fff", border: "1px solid #E2E8EF", boxShadow: "0 20px 50px rgba(7,20,38,0.06)" }}
     >
-      <h3 className="text-2xl font-bold" style={{ color: NAVY }}>Crea tu acceso de prueba</h3>
+      <h3 className="text-2xl font-bold" style={{ color: NAVY }}>Solicita información de la prueba KYC</h3>
       <p className="mt-2 text-[14px]" style={{ color: "#6B7686" }}>
-        Un formulario corto. Después de registrarte, activas tu paquete de $99 MXN.
+        Déjanos tus datos para que el equipo de JAAK te contacte. Al enviarlo se desbloquea la demo completa y te llevamos a la página de compra del paquete elegido.
       </p>
 
       <div className="mt-7 grid sm:grid-cols-2 gap-4">
@@ -1000,10 +979,11 @@ function LeadRegistrationForm({
         className="mt-6 w-full rounded-xl px-6 py-3.5 text-[15px] font-bold text-white transition-transform hover:-translate-y-px disabled:opacity-60"
         style={{ background: TEAL, color: NAVY_DARK }}
       >
-        {status === "loading" ? "Enviando…" : "Crear mi acceso y continuar →"}
+        {status === "loading" ? "Enviando…" : "Solicitar información de la prueba KYC"}
       </button>
       <p className="mt-3 text-center text-[11.5px]" style={{ color: "#9AA3B1" }}>
-        Al continuar, aceptas ser contactado por el equipo de JAAK para activar tu paquete.
+        Al enviar este formulario, autorizas que el equipo de JAAK use tus datos para contactarte sobre tu solicitud. Consulta el{" "}
+        <Link href="/privacidad" className="underline">Aviso de privacidad</Link>. El formulario no crea una cuenta ni realiza ningún cobro.
       </p>
     </form>
   );
@@ -1012,14 +992,14 @@ function LeadRegistrationForm({
 /* ─────────────────────────────────────────────────────────────────────────
  * FAQAccordion — sección 15
  * ───────────────────────────────────────────────────────────────────────── */
-function FAQAccordion() {
+function FAQAccordion({ items }: { items: FaqItem[] }) {
   const [open, setOpen] = useState<number | null>(0);
   return (
     <div className="rounded-2xl overflow-hidden" style={{ border: "1px solid #E2E8EF" }}>
-      {FAQ_ITEMS.map((item, i) => {
+      {items.map((item, i) => {
         const isOpen = open === i;
         return (
-          <div key={item.q} style={{ borderBottom: i === FAQ_ITEMS.length - 1 ? "none" : "1px solid #EEF2F5" }}>
+          <div key={item.q} style={{ borderBottom: i === items.length - 1 ? "none" : "1px solid #EEF2F5" }}>
             <button
               className="w-full text-left px-6 py-5 flex items-start gap-4"
               onClick={() => setOpen(isOpen ? null : i)}
@@ -1039,7 +1019,7 @@ function FAQAccordion() {
                 {item.q}
               </span>
             </button>
-            <div className="overflow-hidden transition-all duration-300" style={{ maxHeight: isOpen ? "300px" : "0" }}>
+            <div className="overflow-hidden transition-all duration-300" style={{ maxHeight: isOpen ? "600px" : "0" }}>
               <p className="px-6 pb-6 pl-16 text-[14px] leading-relaxed" style={{ color: "#6B7686" }}>
                 {item.a}
               </p>
@@ -1056,11 +1036,16 @@ function FAQAccordion() {
  * ───────────────────────────────────────────────────────────────────────── */
 export default function KycDemoAutoservicioLandingClient({
   pricingIndex,
+  offer,
+  faqItems,
 }: {
   pricingIndex: PricingIndex;
+  offer: KycTrialOffer | null;
+  faqItems: FaqItem[];
 }) {
   const [registered, setRegistered] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<ProductId | "">("");
+  const [selectedProduct, setSelectedProduct] = useState<ProductId | "">("kyc");
+  const purchaseHref = useKycPurchaseHref();
 
   useEffect(() => {
     gtmEvent("view_kyc_autoservicio_landing");
@@ -1075,30 +1060,15 @@ export default function KycDemoAutoservicioLandingClient({
     document.getElementById("registro")?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const scrollToProductos = () => {
-    document.getElementById("productos")?.scrollIntoView({ behavior: "smooth" });
-  };
-
   const handleOverlayRegister = () => {
     gtmEvent("click_unlock_demo");
     gtmEvent("unlock_form_started");
     scrollToRegistro();
   };
 
+  // Clic en "Seleccionar paquete Cobre KYC" desde el video bloqueado (va a la compra).
   const handleOverlayBuy = () => {
     gtmEvent("click_buy_99_from_video");
-    // Aún no sabemos qué producto quiere: lo llevamos a elegirlo, de ahí el
-    // flujo continúa solo (selección → registro → redirect automático).
-    if (selectedProduct) {
-      scrollToRegistro();
-    } else {
-      scrollToProductos();
-    }
-  };
-
-  const handleSelectProduct = (id: ProductId) => {
-    setSelectedProduct(id);
-    scrollToRegistro();
   };
 
   const handleRegistered = (_name: string, producto: ProductId | "") => {
@@ -1108,7 +1078,7 @@ export default function KycDemoAutoservicioLandingClient({
 
   return (
     <div style={{ fontFamily: "var(--font-montserrat, 'Montserrat'), sans-serif" }}>
-      <LandingHeader />
+      <LandingHeader offer={offer} purchaseHref={purchaseHref} />
       <GuiaCapturaTab />
 
       <main>
@@ -1139,61 +1109,87 @@ export default function KycDemoAutoservicioLandingClient({
                   className="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold tracking-wide"
                   style={{ background: "rgba(30,202,211,0.12)", border: "1px solid rgba(30,202,211,0.35)", color: "#7FE8EC" }}
                 >
-                  Demo KYC + Autoservicio JAAK
+                  Paquete de prueba · JAAK Autoservicio
                 </span>
 
                 <h1 className="mt-5 text-4xl sm:text-5xl font-bold leading-[1.08] tracking-tight text-white">
-                  Verifica identidades en minutos y prueba JAAK por{" "}
-                  <span
-                    style={{
-                      backgroundImage: `linear-gradient(90deg, ${TEAL}, #7C6EDB)`,
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                      backgroundClip: "text",
-                    }}
-                  >
-                    $99
-                  </span>
+                  Prueba la verificación de identidad KYC de JAAK.
                 </h1>
 
                 <p className="mt-5 max-w-xl text-[16px] leading-relaxed" style={{ color: "rgba(255,255,255,0.7)" }}>
-                  Conoce cómo funciona una sesión KYC en JAAK: captura de documento, biometría facial,
-                  prueba de vida, resultado de validación y expediente consultable.
+                  Conoce cómo funciona una verificación de identidad con documento, biometría facial, prueba
+                  de vida y evidencia digital desde nuestra plataforma Web.
                 </p>
 
+                {/* Tarjeta de oferta: datos del catálogo vigente de Autoservicio */}
                 <div
-                  className="mt-7 inline-flex flex-col gap-1 rounded-2xl px-5 py-4"
-                  style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.12)" }}
+                  id="oferta"
+                  className="mt-7 max-w-md rounded-2xl p-5"
+                  style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.14)" }}
                 >
-                  <span className="text-[12px] font-semibold uppercase tracking-wide" style={{ color: "#7FE8EC" }}>
-                    Paquete inicial JAAK
-                  </span>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-3xl font-bold text-white">$99 MXN</span>
-                    <span className="text-[12px] font-medium text-white/50">40% de descuento por lanzamiento</span>
-                  </div>
+                  {offer ? (
+                    <>
+                      <span className="text-[12px] font-semibold uppercase tracking-wide" style={{ color: "#7FE8EC" }}>
+                        {offer.nombre}
+                      </span>
+                      <p className="mt-2 text-lg font-bold text-white">
+                        {offer.cantidad} {offer.unidad}
+                      </p>
+                      <dl className="mt-3 space-y-1.5 text-[13.5px] text-white/75">
+                        <div className="flex justify-between gap-4"><dt>Subtotal</dt><dd className="font-semibold text-white">{formatMxn(offer.subtotal)}</dd></div>
+                        <div className="flex justify-between gap-4"><dt>IVA (16%)</dt><dd className="font-semibold text-white">{formatMxn(offer.iva)}</dd></div>
+                        <div className="flex justify-between gap-4 border-t border-white/15 pt-1.5"><dt className="font-semibold text-white">Total</dt><dd className="font-bold text-white">{formatMxn(offer.total)}</dd></div>
+                      </dl>
+                      <ul className="mt-4 space-y-1.5 text-[13px] leading-snug text-white/70">
+                        <li><span className="font-semibold text-white/90">Vigencia:</span> un año, conforme a las condiciones del paquete.</li>
+                        <li><span className="font-semibold text-white/90">Acceso:</span> plataforma Web de JAAK.</li>
+                        <li><span className="font-semibold text-white/90">No incluye:</span> API, SDK, White Label estándar ni sandbox automático.</li>
+                        <li><span className="font-semibold text-white/90">Soporte:</span> lunes a viernes de 9:00 a 18:00 h, horario CDMX.</li>
+                      </ul>
+                      <p className="mt-3 text-[11.5px] leading-snug text-white/40">
+                        Importes según el catálogo vigente de Autoservicio; el importe final se confirma en el proceso de compra.
+                      </p>
+                    </>
+                  ) : (
+                    <p className="text-[14px] leading-relaxed text-white/75">
+                      Consulta los paquetes disponibles, sus unidades y precios vigentes en el catálogo de
+                      JAAK Autoservicio.
+                    </p>
+                  )}
                 </div>
 
                 <div className="mt-7 flex flex-wrap gap-3">
+                  {offer ? (
+                    <a
+                      href={purchaseHref}
+                      onClick={() => gtmEvent("click_buy_99", { location: "hero" })}
+                      className="inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-[15px] font-bold transition-transform hover:-translate-y-px"
+                      style={{ background: TEAL, color: NAVY_DARK }}
+                    >
+                      Seleccionar paquete Cobre KYC
+                    </a>
+                  ) : (
+                    <Link
+                      href="/autoservicio"
+                      onClick={() => gtmEvent("click_catalog", { location: "hero" })}
+                      className="inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-[15px] font-bold transition-transform hover:-translate-y-px"
+                      style={{ background: TEAL, color: NAVY_DARK }}
+                    >
+                      Ver catálogo de Autoservicio
+                    </Link>
+                  )}
                   <a
                     href="#demo-player"
                     className="inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-[15px] font-semibold text-white border transition-colors"
                     style={{ borderColor: "rgba(255,255,255,0.25)" }}
                   >
-                    Ver demo de 20 segundos
-                  </a>
-                  <a
-                    href="#registro"
-                    onClick={() => gtmEvent("click_buy_99", { location: "hero" })}
-                    className="inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-[15px] font-bold transition-transform hover:-translate-y-px"
-                    style={{ background: TEAL, color: NAVY_DARK }}
-                  >
-                    Activar paquete por $99
+                    Ver demostración
                   </a>
                 </div>
 
                 <p className="mt-5 text-[13px]" style={{ color: "rgba(255,255,255,0.45)" }}>
-                  Compra en línea, activa en minutos y comienza a operar desde autoservicio.
+                  El paquete se utiliza desde la plataforma Web de JAAK. ¿Prefieres que te contactemos?{" "}
+                  <a href="#registro" className="underline">Solicita información</a>.
                 </p>
               </div>
 
@@ -1203,6 +1199,8 @@ export default function KycDemoAutoservicioLandingClient({
                   registered={registered}
                   onRegisterCta={handleOverlayRegister}
                   onBuyCta={handleOverlayBuy}
+                  offer={offer}
+                  purchaseHref={purchaseHref}
                 />
                 <p className="mt-4 text-center text-[13px]" style={{ color: "rgba(255,255,255,0.45)" }}>
                   Reproduce los primeros segundos de la demo y conoce cómo se crea una sesión, cómo avanza
@@ -1217,7 +1215,7 @@ export default function KycDemoAutoservicioLandingClient({
         <KycFunnelVisual />
 
         {/* ── 6-7. Oferta + selector de producto ─────────────────────────── */}
-        <ProductTrialSelector onSelect={handleSelectProduct} />
+        <ProductTrialSelector />
 
         {/* ── 8-9. Registro corto ─────────────────────────────────────────── */}
         <section id="registro" className="py-20 px-4 sm:px-6 lg:px-8" style={{ background: OFFWHITE }}>
@@ -1369,7 +1367,7 @@ export default function KycDemoAutoservicioLandingClient({
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-center mb-10" style={{ color: NAVY }}>
               Preguntas frecuentes
             </h2>
-            <FAQAccordion />
+            <FAQAccordion items={faqItems} />
           </div>
         </section>
 
@@ -1377,20 +1375,33 @@ export default function KycDemoAutoservicioLandingClient({
         <section className="py-20 px-4 sm:px-6 lg:px-8" style={{ background: `linear-gradient(135deg, ${NAVY_DARK} 0%, ${NAVY} 100%)` }}>
           <div className="mx-auto max-w-3xl text-center">
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
-              Activa tu paquete inicial por $99 MXN
+              {offer ? "Selecciona el paquete Cobre KYC" : "Conoce el catálogo de JAAK Autoservicio"}
             </h2>
             <p className="mt-4 text-[15px] leading-relaxed text-white/60 max-w-xl mx-auto">
-              Ve el flujo, elige tu producto y empieza a operar desde autoservicio, sin vendedores ni esperas.
+              {offer
+                ? `Utiliza ${offer.cantidad} ${offer.unidad} durante un año desde la plataforma Web de JAAK. Importes en MXN, más IVA.`
+                : "Consulta los paquetes, unidades y precios vigentes de Autoservicio."}
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <a
-                href="#registro"
-                onClick={() => gtmEvent("click_buy_99", { location: "final_cta" })}
-                className="inline-flex items-center gap-2 rounded-xl px-7 py-3.5 text-[15px] font-bold transition-transform hover:-translate-y-px"
-                style={{ background: TEAL, color: NAVY_DARK }}
-              >
-                Activar paquete por $99
-              </a>
+              {offer ? (
+                <a
+                  href={purchaseHref}
+                  onClick={() => gtmEvent("click_buy_99", { location: "final_cta" })}
+                  className="inline-flex items-center gap-2 rounded-xl px-7 py-3.5 text-[15px] font-bold transition-transform hover:-translate-y-px"
+                  style={{ background: TEAL, color: NAVY_DARK }}
+                >
+                  Seleccionar paquete Cobre KYC
+                </a>
+              ) : (
+                <Link
+                  href="/autoservicio"
+                  onClick={() => gtmEvent("click_catalog", { location: "final_cta" })}
+                  className="inline-flex items-center gap-2 rounded-xl px-7 py-3.5 text-[15px] font-bold transition-transform hover:-translate-y-px"
+                  style={{ background: TEAL, color: NAVY_DARK }}
+                >
+                  Ver catálogo de Autoservicio
+                </Link>
+              )}
               <a
                 href={WHATSAPP_URL}
                 target="_blank"
@@ -1410,14 +1421,25 @@ export default function KycDemoAutoservicioLandingClient({
 
       {/* CTA sticky móvil */}
       <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 px-4 py-3" style={{ background: NAVY_DARK, borderTop: "1px solid rgba(30,202,211,0.3)" }}>
-        <a
-          href="#registro"
-          onClick={() => gtmEvent("click_buy_99", { location: "mobile_sticky" })}
-          className="flex items-center justify-center gap-2 w-full rounded-xl px-5 py-3 text-[14.5px] font-bold"
-          style={{ background: TEAL, color: NAVY_DARK }}
-        >
-          Probar por $99
-        </a>
+        {offer ? (
+          <a
+            href={purchaseHref}
+            onClick={() => gtmEvent("click_buy_99", { location: "mobile_sticky" })}
+            className="flex items-center justify-center gap-2 w-full rounded-xl px-5 py-3 text-[14.5px] font-bold"
+            style={{ background: TEAL, color: NAVY_DARK }}
+          >
+            Seleccionar paquete Cobre KYC
+          </a>
+        ) : (
+          <Link
+            href="/autoservicio"
+            onClick={() => gtmEvent("click_catalog", { location: "mobile_sticky" })}
+            className="flex items-center justify-center gap-2 w-full rounded-xl px-5 py-3 text-[14.5px] font-bold"
+            style={{ background: TEAL, color: NAVY_DARK }}
+          >
+            Ver catálogo de Autoservicio
+          </Link>
+        )}
       </div>
       <div className="lg:hidden h-16" aria-hidden="true" />
     </div>
