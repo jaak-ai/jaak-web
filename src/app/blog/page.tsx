@@ -7,7 +7,7 @@ import { blogPosts } from "@/lib/blog";
 import BlogFilter from "./BlogFilter";
 
 export const metadata = {
-  title: "Blog | JAAK — Infraestructura de Confianza Digital",
+  title: { absolute: "Blog | JAAK — Infraestructura de Confianza Digital" },
   description:
     "Perspectivas, tendencias y análisis sobre identidad digital, firma digital, cumplimiento regulatorio, prevención de fraude e inteligencia artificial.",
 };

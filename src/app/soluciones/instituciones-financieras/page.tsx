@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "KYC para Instituciones Financieras | JAAK",
+  title: "KYC para Instituciones Financieras",
   description: "Verificación de identidad para bancos, fintechs y entidades financieras. Cumple CNBV, UIF, LFPIORPI y regulación antilavado en México.",
   keywords: ["KYC bancos", "verificación identidad fintech", "CNBV", "UIF", "LFPIORPI", "antilavado", "onboarding bancario", "compliance financiero"],
   openGraph: {

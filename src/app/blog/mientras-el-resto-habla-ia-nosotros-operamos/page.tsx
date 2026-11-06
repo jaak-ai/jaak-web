@@ -2,7 +2,7 @@ import ArticleLayout from "../ArticleLayout";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Mientras el resto habla de IA, nosotros la operamos | JAAK",
+  title: "Mientras el resto habla de IA, nosotros la operamos",
   description:
     "La mayoría de las empresas prometen transformación digital con IA. JAAK la opera en producción, hoy. Descubre por qué esa diferencia lo cambia todo para el fintech mexicano.",
   keywords: [

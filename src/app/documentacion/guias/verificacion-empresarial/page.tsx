@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Verificación Empresarial KYB - Guía de Integración | JAAK",
+  title: "Verificación Empresarial KYB - Guía de Integración",
   description: "Implementa KYB para verificar personas morales, beneficiarios finales y representantes legales.",
 };
 

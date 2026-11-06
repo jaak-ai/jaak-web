@@ -6,7 +6,7 @@ import Image from "next/image";
 import ScrollReveal from "@/components/ScrollReveal";
 
 export const metadata: Metadata = {
-  title: "Cumplimiento Regulatorio | JAAK",
+  title: "Cumplimiento Regulatorio",
   description:
     "Verificación de identidad que cumple con CNBV, LFPIORPI, UIF, NOM-151 y otras regulaciones mexicanas. Evidencia auditable para instituciones financieras y empresas reguladas.",
   keywords: [

@@ -2,7 +2,7 @@ import ArticleLayout from "../ArticleLayout";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Por qué la CNBV aplicó +696 sanciones en 2025: el problema no es el fraude, son los expedientes | JAAK",
+  title: "Por qué la CNBV aplicó +696 sanciones en 2025: el problema no es el fraude, son los expedientes",
   description:
     "En 2025, la CNBV alcanzó un récord histórico de sanciones PLD: 696 multas y $411.8 millones de pesos. Analizamos las 9 causas reales, el caso FinCEN y qué cambió con la reforma LFPIORPI.",
   keywords: [

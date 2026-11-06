@@ -4,7 +4,7 @@ const CANONICAL_URL = "https://jaak.ai/salud/aseguradoras";
 const LOGO = "https://jaak.ai/images/logos/jaak-logo-azul.png";
 
 export const metadata: Metadata = {
-  title: "Expediente de siniestro de gastos médicos: identidad, evidencia y retención | JAAK",
+  title: "Expediente de siniestro de gastos médicos: identidad, evidencia y retención",
   description:
     "Cómo construir un expediente de siniestro defendible: verificación de identidad del asegurado, correlación con el servicio prestado y conservación con integridad demostrable. Base en CUSF, Código de Comercio y LFPDPPP 2025.",
   alternates: { canonical: CANONICAL_URL },

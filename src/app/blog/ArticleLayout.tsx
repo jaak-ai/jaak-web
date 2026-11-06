@@ -154,8 +154,26 @@ export default function ArticleLayout({
       .sort((a, b) => (a.category === category ? -1 : b.category === category ? 1 : 0))
       .slice(0, 3);
 
+  // AUD-SEO-01.6: BreadcrumbList generado solo si el JSON-LD del artículo aún no lo incluye.
+  const hasBreadcrumb = jsonLd ? JSON.stringify(jsonLd).includes("BreadcrumbList") : false;
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Inicio", item: "https://jaak.ai" },
+      { "@type": "ListItem", position: 2, name: "Blog JAAK", item: "https://jaak.ai/blog" },
+      { "@type": "ListItem", position: 3, name: title, item: `https://jaak.ai/blog/${slug}` },
+    ],
+  };
+
   return (
     <>
+      {!hasBreadcrumb && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+        />
+      )}
       {jsonLd && (
         <script
           type="application/ld+json"
@@ -229,19 +247,25 @@ export default function ArticleLayout({
           }}
         >
           <ArticleHeaderFrame aligned={alignHeaderWithContent}>
-            {/* Back link */}
-            <div className="article-fade mb-7">
-              <Link
-                href="/blog"
-                className="inline-flex items-center gap-1.5 text-xs font-bold transition-colors duration-150 hover:text-[#1ECAD3]"
+            {/* Migas de pan visibles (coinciden con el BreadcrumbList JSON-LD) */}
+            <nav aria-label="Migas de pan" className="article-fade mb-7">
+              <ol
+                className="flex flex-wrap items-center gap-1.5 text-xs font-bold"
                 style={{ color: "rgba(255,255,255,0.40)", fontFamily: FONT }}
               >
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
-                </svg>
-                Blog JAAK
-              </Link>
-            </div>
+                <li>
+                  <Link href="/" className="transition-colors duration-150 hover:text-[#1ECAD3]">
+                    Inicio
+                  </Link>
+                </li>
+                <li aria-hidden="true">›</li>
+                <li>
+                  <Link href="/blog" className="transition-colors duration-150 hover:text-[#1ECAD3]">
+                    Blog JAAK
+                  </Link>
+                </li>
+              </ol>
+            </nav>
 
             {/* Meta row */}
             <div className="article-fade-1 flex flex-wrap items-center gap-3 mb-6">

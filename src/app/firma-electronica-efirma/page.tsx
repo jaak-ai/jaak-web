@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
 
 export const metadata: Metadata = {
-  title: "e.firma (SAT) en México | JAAK",
+  title: "e.firma (SAT) en México",
   description:
     "Firma documentos electrónicos usando la e.firma SAT vigente del firmante dentro de un flujo auditable con evidencia, trazabilidad y expediente digital.",
   keywords:

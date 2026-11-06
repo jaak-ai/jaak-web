@@ -60,7 +60,7 @@ const cnbvSchema = {
 };
 
 export const metadata: Metadata = {
-  title: "Cumplimiento CNBV - Identificación Remota No Presencial | JAAK",
+  title: "Cumplimiento CNBV - Identificación Remota No Presencial",
   description:
     "Verificación de identidad conforme a lineamientos CNBV para instituciones financieras. Identificación remota no presencial, biometría certificada y expedientes auditables.",
   keywords: [

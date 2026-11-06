@@ -4,7 +4,7 @@ const CANONICAL_URL = "https://jaak.ai/salud/hospitales";
 const LOGO = "https://jaak.ai/images/logos/jaak-logo-azul.png";
 
 export const metadata: Metadata = {
-  title: "Consentimiento informado y expediente clínico electrónico en hospitales | JAAK",
+  title: "Consentimiento informado y expediente clínico electrónico en hospitales",
   description:
     "Qué exige la NOM-004 y el Reglamento de la LGS en firmantes, testigos y versionado del consentimiento, y por qué la carga de probar que se informó recae en el prestador.",
   alternates: { canonical: CANONICAL_URL },

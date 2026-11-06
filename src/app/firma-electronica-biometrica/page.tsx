@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
 
 export const metadata: Metadata = {
-  title: "Firma Electrónica Biométrica | Verificación Facial en México | JAAK",
+  title: "Firma Electrónica Biométrica | Verificación Facial en México",
   description:
     "Firma electrónica con reconocimiento facial biométrico y detección de vida (liveness). Verifica la identidad del firmante en tiempo real. NOM-151 incluida. Para onboarding digital, créditos y seguros en México.",
   keywords:

@@ -4,7 +4,7 @@ const CANONICAL_URL = "https://jaak.ai/salud/laboratorios";
 const LOGO = "https://jaak.ai/images/logos/jaak-logo-azul.png";
 
 export const metadata: Metadata = {
-  title: "Identidad del paciente y registros duplicados en laboratorios | JAAK",
+  title: "Identidad del paciente y registros duplicados en laboratorios",
   description:
     "Por qué la identidad maestra del paciente es un tema de seguridad y no de alta de registro, qué exige la NOM-024 sobre identificadores de intercambio y cómo demostrar que el resultado entregado es idéntico al emitido.",
   alternates: { canonical: CANONICAL_URL },

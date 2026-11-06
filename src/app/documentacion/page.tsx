@@ -4,7 +4,7 @@ import Link from "next/link";
 import { DOCS_INDEX_COPY, INTEGRATION_CONTACT_HREF, SANDBOX_COPY } from "@/config/commercial-copy";
 
 export const metadata = {
-  title: "Documentacion | JAAK",
+  title: "Documentacion",
   description: "Documentación para integraciones JAAK: API Reference, SDKs para iOS, Android y Web, guías de integración y webhooks. El acceso a credenciales y ambientes de prueba está sujeto a contratación y habilitación.",
 };
 

@@ -4,7 +4,7 @@ const CANONICAL_URL = "https://jaak.ai/kyc-automotriz-lfpiorpi";
 const LOGO = "https://jaak.ai/images/logos/jaak-logo-azul.png";
 
 export const metadata: Metadata = {
-  title: "LFPIORPI para agencias automotrices | KYC y expediente | JAAK",
+  title: "LFPIORPI para agencias automotrices | KYC y expediente",
   description:
     "Conoce los umbrales de identificación y aviso para comercialización de vehículos y digitaliza la identificación de clientes con KYC, biometría y expediente integrado.",
   keywords:

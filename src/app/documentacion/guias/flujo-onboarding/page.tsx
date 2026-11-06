@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Flujo de Onboarding KYC - Guía de Integración | JAAK",
+  title: "Flujo de Onboarding KYC - Guía de Integración",
   description: "Implementa un flujo completo de KYC con verificación de documentos y biometría facial. Guía paso a paso.",
 };
 

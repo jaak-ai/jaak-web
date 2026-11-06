@@ -4,7 +4,7 @@ const CANONICAL_URL = "https://jaak.ai/salud/software-clinico";
 const LOGO = "https://jaak.ai/images/logos/jaak-logo-azul.png";
 
 export const metadata: Metadata = {
-  title: "Capa probatoria para sistemas de expediente clínico | JAAK",
+  title: "Capa probatoria para sistemas de expediente clínico",
   description:
     "Las cinco preguntas que un área jurídica hospitalaria hará a su sistema de expediente clínico, y cómo integrar identidad, firma y constancia de conservación por API sin construirlas.",
   alternates: { canonical: CANONICAL_URL },

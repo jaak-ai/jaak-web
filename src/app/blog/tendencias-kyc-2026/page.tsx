@@ -2,7 +2,7 @@ import ArticleLayout from "../ArticleLayout";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Tendencias KYC 2026: Lo que toda institución financiera debe saber | JAAK",
+  title: "Tendencias KYC 2026: Lo que toda institución financiera debe saber",
   description: "Descubre las principales tendencias en Know Your Customer para 2026: IA generativa, verificación biométrica avanzada, regulación actualizada y más. Prepara tu organización para el futuro del KYC.",
   keywords: ["KYC 2026", "tendencias KYC", "verificación de identidad", "inteligencia artificial KYC", "biometría", "regulación financiera México"],
   openGraph: {

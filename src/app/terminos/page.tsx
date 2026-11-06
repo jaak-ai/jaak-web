@@ -3,7 +3,7 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 
 export const metadata = {
-  title: "Términos y Condiciones | JAAK",
+  title: "Términos y Condiciones",
   description:
     "Términos y condiciones de uso de los servicios de verificación de identidad de JAAK. Conoce tus derechos y responsabilidades.",
 };

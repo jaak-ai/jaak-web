@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Firma Electrónica - Guía de Integración | JAAK",
+  title: "Firma Electrónica - Guía de Integración",
   description: "Integra firma electrónica con validez legal en México. Cumple NOM-151 y Código de Comercio.",
 };
 

@@ -3,7 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "La inteligencia artificial como infraestructura de confianza: liderazgo, gobernanza y tecnología responsable | JAAK",
+  title: "La inteligencia artificial como infraestructura de confianza: liderazgo, gobernanza y tecnología responsable",
   description: "La IA en sectores estratégicos exige más que eficiencia: requiere gobernanza, trazabilidad y liderazgo responsable. Analizamos los Principios de Chapultepec y cómo JAAK integra ética y tecnología.",
   keywords: ["inteligencia artificial", "gobernanza IA", "Principios de Chapultepec", "tecnología responsable", "liderazgo tecnológico", "protección de datos", "IA ética", "JAAK"],
   openGraph: {

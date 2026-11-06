@@ -2,7 +2,7 @@ import ArticleLayout from "../ArticleLayout";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Guía completa de las disposiciones CNBV para verificación de identidad | JAAK",
+  title: "Guía completa de las disposiciones CNBV para verificación de identidad",
   description: "Análisis detallado de los requisitos de la Comisión Nacional Bancaria y de Valores para identificación de clientes. Conoce las obligaciones específicas y cómo cumplirlas.",
   keywords: ["CNBV", "disposiciones CNBV", "verificación de identidad", "regulación financiera", "KYC México", "identificación de clientes"],
   openGraph: {

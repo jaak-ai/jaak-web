@@ -6,7 +6,7 @@ import SimuladorPLD from "@/components/SimuladorPLD";
 import TablaUmbrales from "@/components/TablaUmbrales";
 
 export const metadata: Metadata = {
-  title: "Simulador de Cumplimiento LFPIORPI | Actividades Vulnerables 2026 | JAAK",
+  title: "Simulador de Cumplimiento LFPIORPI | Actividades Vulnerables 2026",
   description:
     "Calcule si su operacion activa obligaciones de identificacion y aviso segun la LFPIORPI. Simulador PLD gratuito con umbrales 2026, expediente KYC y clasificador comercial. UMA 2026: $117.31 MXN.",
   keywords: [

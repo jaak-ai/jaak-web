@@ -3,7 +3,7 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 
 export const metadata = {
-  title: "Gestión de Evidencia | JAAK",
+  title: "Gestión de Evidencia",
   description: "Auditoría y trazabilidad completa de cada verificación. Evidencia legal defendible para reguladores.",
 };
 

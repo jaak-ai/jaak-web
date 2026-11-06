@@ -6,7 +6,7 @@ import ScrollReveal from "@/components/ScrollReveal";
 import EvidenceFlow from "@/components/EvidenceFlow";
 
 export const metadata: Metadata = {
-  title: "Firma certificada con sello de tiempo y NOM-151 | JAAK",
+  title: "Firma certificada con sello de tiempo y NOM-151",
   description:
     "Agrega sello digital de tiempo, hash, NOM-151 y expediente auditable a tus documentos firmados digitalmente con JAAK.",
   keywords:

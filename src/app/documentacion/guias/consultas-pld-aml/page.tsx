@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Consultas PLD/AML - Guía de Integración | JAAK",
+  title: "Consultas PLD/AML - Guía de Integración",
   description: "Configura consultas automáticas a listas de personas bloqueadas, PEP y sanciones internacionales.",
 };
 

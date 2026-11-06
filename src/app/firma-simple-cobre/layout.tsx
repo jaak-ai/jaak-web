@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 
-const CANONICAL = "https://www.jaak.ai/firma-simple-cobre";
-const LOGO = "https://www.jaak.ai/images/logos/jaak-logo-azul.png";
+const CANONICAL = "https://jaak.ai/firma-simple-cobre";
+const LOGO = "https://jaak.ai/images/logos/jaak-logo-azul.png";
 const TITLE = "Firma Simple Cobre — 10 firmas por $49 + IVA | JAAK";
 const DESCRIPTION =
   "Firma electrónica simple en minutos. 10 firmas por $49 MXN + IVA. Pago seguro con tarjeta. Sin instalación. Marca JAAK.";
 
 export const metadata: Metadata = {
-  title: TITLE,
+  title: { absolute: TITLE },
   description: DESCRIPTION,
   keywords:
     "firma electrónica simple, firma digital México, plan cobre, 10 firmas, JAAK firma, autoservicio firma",

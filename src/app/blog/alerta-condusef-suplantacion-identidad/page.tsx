@@ -3,7 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Alerta CONDUSEF 2026: suplantación de instituciones financieras en México | JAAK",
+  title: "Alerta CONDUSEF 2026: suplantación de instituciones financieras en México",
   description: "CONDUSEF alerta sobre nuevos fraudes por suplantación de bancos e instituciones financieras en México. JAAK analiza por qué persiste, cómo operan los suplantadores con IA y deepfakes, y cómo la identidad digital verificable previene el fraude.",
   keywords: ["CONDUSEF alerta 2026", "suplantación instituciones financieras", "fraude bancario México", "CONDUSEF JAAK", "suplantación de identidad", "fraude financiero México", "identidad digital verificable", "verificación de identidad CONDUSEF", "deepfakes fraude", "prevención fraude bancario", "protección datos personales", "JAAK verificación identidad"],
   openGraph: {

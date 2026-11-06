@@ -2,7 +2,7 @@ import ArticleLayout from "../ArticleLayout";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Seguridad biométrica: Cómo la prueba de vida previene el fraude | JAAK",
+  title: "Seguridad biométrica: Cómo la prueba de vida previene el fraude",
   description: "La tecnología de liveness detection es fundamental para prevenir ataques de presentación. Conoce cómo funciona la certificación iBeta y por qué es esencial para tu proceso de onboarding.",
   keywords: ["prueba de vida", "liveness detection", "biometría", "iBeta", "seguridad biométrica", "anti-spoofing", "verificación facial"],
   openGraph: {

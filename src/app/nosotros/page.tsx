@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
 
 export const metadata: Metadata = {
-  title: "Nosotros | JAAK - Plataforma de Verificación de Identidad",
+  title: { absolute: "Nosotros | JAAK - Plataforma de Verificación de Identidad" },
   description:
     "Conoce a JAAK, la plataforma de verificación de identidad 100% mexicana. Tecnología biométrica certificada para empresas reguladas en México y Latinoamérica.",
 };

@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "NOM-151 - Firma Electrónica con Validez Legal | JAAK",
+  title: "NOM-151 - Firma Electrónica con Validez Legal",
   description:
     "Firma electrónica conforme a NOM-151-SCFI-2016. Conservación de mensajes de datos, sellado de tiempo y certificación de documentos con validez legal en México.",
   keywords: [

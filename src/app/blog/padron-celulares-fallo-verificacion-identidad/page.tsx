@@ -2,7 +2,7 @@ import ArticleLayout from "../ArticleLayout";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "El registro obligatorio de celulares: cuando la identidad se diseña mal, el sistema colapsa | JAAK",
+  title: "El registro obligatorio de celulares: cuando la identidad se diseña mal, el sistema colapsa",
   description: "Análisis del fallo crítico en el padrón de telefonía móvil en México: suplantación de identidad, deepfakes y por qué la verificación sin prueba de vida real no funciona.",
   keywords: ["padrón celulares México", "registro telefonía móvil", "suplantación identidad", "deepfakes", "prueba de vida", "verificación identidad", "CURP", "INE"],
   openGraph: {

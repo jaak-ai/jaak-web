@@ -5,7 +5,7 @@ import Link from "next/link";
 import { IntegrationAccessNotice } from "@/components/docs/IntegrationAccessNotice";
 
 export const metadata: Metadata = {
-  title: "Inicio Rápido - Guía de Integración | JAAK",
+  title: "Inicio Rápido - Guía de Integración",
   description: "Guía paso a paso con ejemplos de código para integrar tu primera verificación de identidad con JAAK. Requiere una integración habilitada.",
 };
 

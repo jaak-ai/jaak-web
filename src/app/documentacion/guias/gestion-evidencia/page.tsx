@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Gestión de Evidencia - Guía de Integración | JAAK",
+  title: "Gestión de Evidencia - Guía de Integración",
   description: "Almacena y recupera expedientes digitales con trazabilidad completa para auditorías y compliance.",
 };
 

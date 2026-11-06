@@ -21,7 +21,7 @@ import { SCHEDULE_DEMO_URL } from "@/lib/scheduling";
 const CANONICAL_URL = "https://jaak.ai/listas-de-riesgo-pld-aml";
 
 export const metadata: Metadata = {
-  title: "Listas de riesgo PLD/AML: más de 40 fuentes | JAAK",
+  title: "Listas de riesgo PLD/AML: más de 40 fuentes",
   description:
     "Consulta personas y empresas contra más de 40 fuentes de sanciones, PEP, riesgo fiscal y alertas. Integra listas de riesgo con KYC y expediente digital.",
   keywords: [

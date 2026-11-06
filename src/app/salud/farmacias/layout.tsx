@@ -4,7 +4,7 @@ const CANONICAL_URL = "https://jaak.ai/salud/farmacias";
 const LOGO = "https://jaak.ai/images/logos/jaak-logo-azul.png";
 
 export const metadata: Metadata = {
-  title: "Receta digital y validación en el punto de dispensación | JAAK",
+  title: "Receta digital y validación en el punto de dispensación",
   description:
     "Qué exige la Ley General de Salud según la fracción del medicamento, cómo impedir el reuso de una receta digital y por qué validar la cédula del prescriptor no equivale a verificar su identidad.",
   alternates: { canonical: CANONICAL_URL },

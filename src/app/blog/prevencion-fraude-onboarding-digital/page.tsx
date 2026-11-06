@@ -2,7 +2,7 @@ import ArticleLayout from "../ArticleLayout";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Prevención de fraude en el onboarding digital: Mejores prácticas | JAAK",
+  title: "Prevención de fraude en el onboarding digital: Mejores prácticas",
   description: "El fraude por suplantación de identidad representa pérdidas millonarias. Conoce las estrategias más efectivas para detectar y prevenir intentos de fraude durante la verificación de clientes.",
   keywords: ["prevención de fraude", "onboarding digital", "suplantación de identidad", "fraude financiero", "KYC", "verificación de identidad"],
   openGraph: {

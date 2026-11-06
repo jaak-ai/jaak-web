@@ -4,7 +4,7 @@ const CANONICAL_URL = "https://jaak.ai/salud/telemedicina";
 const LOGO = "https://jaak.ai/images/logos/jaak-logo-azul.png";
 
 export const metadata: Metadata = {
-  title: "Telemedicina en México: identidad, consentimiento y nota clínica | JAAK",
+  title: "Telemedicina en México: identidad, consentimiento y nota clínica",
   description:
     "El proyecto de norma para atención médica a distancia fue cancelado en 2018 y no existe una norma general final. Qué marco aplica realmente y qué cuatro evidencias deben sobrevivir a la videollamada.",
   alternates: { canonical: CANONICAL_URL },

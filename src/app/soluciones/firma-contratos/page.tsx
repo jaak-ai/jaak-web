@@ -3,7 +3,7 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 
 export const metadata = {
-  title: "Firma de Contratos | JAAK",
+  title: "Firma de Contratos",
   description: "Firma electrónica con identidad verificada. Contratos con validez legal y evidencia de quién firmó.",
 };
 

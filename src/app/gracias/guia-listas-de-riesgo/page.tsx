@@ -7,7 +7,7 @@ import { EBOOK_DOWNLOAD_URL, EBOOK_TITLE } from "@/lib/ebook";
 import { SCHEDULE_DEMO_URL } from "@/lib/scheduling";
 
 export const metadata: Metadata = {
-  title: "Gracias — Descarga tu guía 2026 | JAAK",
+  title: "Gracias — Descarga tu guía 2026",
   description: "Descarga la guía \"43 fuentes de riesgo, una sola consulta\" de JAAK.",
   robots: { index: false, follow: true },
 };

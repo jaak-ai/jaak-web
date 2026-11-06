@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title:
-    "Ley Antilavado en México: por qué el sector inmobiliario no puede seguir operando como hace diez años | JAAK",
+    "Ley Antilavado en México: por qué el sector inmobiliario no puede seguir operando como hace diez años",
   description:
     "La reforma a la LFPIORPI de julio 2025 creó la fracción V Bis, eliminó el umbral de habitualidad y puso al desarrollo inmobiliario en el centro del radar de la UIF. Qué cambió y cómo cumplir con un expediente digital defendible.",
   keywords: [

@@ -3,7 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "iGaming en México: el onboarding ya no es solo registro, es cumplimiento | JAAK",
+  title: "iGaming en México: el onboarding ya no es solo registro, es cumplimiento",
   description:
     "Los operadores de iGaming en México deben conectar lo que la ley exige con infraestructura capaz de demostrar cumplimiento en cada etapa del onboarding. Arianna Quezada, CEO de JAAK, analiza el reto.",
   keywords: [

@@ -6,7 +6,7 @@ import type { ReactNode } from "react";
 const FONT = "var(--font-montserrat), Montserrat, sans-serif";
 
 export const metadata: Metadata = {
-  title: "Biometría CNBV 2026: identidad, 1:1, 1:N y seguridad | JAAK",
+  title: "Biometría CNBV 2026: identidad, 1:1, 1:N y seguridad",
   description:
     "Analizamos qué cambia con la regulación biométrica de CNBV en 2026: rostro, 1:1, 1:N, liveness, bases propias, seguridad, evidencia y tecnología.",
   keywords: [

@@ -2,7 +2,7 @@ import ArticleLayout from "../ArticleLayout";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Umbrales LFPIORPI 2026 para Juegos y Apuestas | JAAK",
+  title: "Umbrales LFPIORPI 2026 para Juegos y Apuestas",
   description:
     "Conoce los umbrales de identificación y aviso al SAT (Art. 17 LFPIORPI) para casinos y sorteos en 2026. Automatiza tu cumplimiento PLD y evita multas millonarias.",
   keywords: [

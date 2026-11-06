@@ -3,7 +3,7 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 
 export const metadata = {
-  title: "Empresas Reguladas | JAAK",
+  title: "Empresas Reguladas",
   description: "Verificación de identidad para empresas sujetas a regulación. Evidencia auditable para supervisores.",
 };
 

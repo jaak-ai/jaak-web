@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 const CANONICAL_URL = "https://jaak.ai/efisys-lab-connect";
 
 export const metadata: Metadata = {
-  title: "EFISYS Lab Connect 2026 | JAAK",
+  title: "EFISYS Lab Connect 2026",
   description:
     "Evento del sector tecnológico financiero en Oaxaca. JAAK como co-anfitrión. 07 de mayo de 2026, Hotel Fortín Plaza. Registro gratuito.",
   alternates: {

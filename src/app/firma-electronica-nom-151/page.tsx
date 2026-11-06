@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
 
 export const metadata: Metadata = {
-  title: "Firma Electrónica NOM-151 | Sello de Tiempo Certificado México | JAAK",
+  title: "Firma Electrónica NOM-151 | Sello de Tiempo Certificado México",
   description:
     "Firma electrónica con sello de tiempo certificado NOM-151-SCFI-2016. Integridad del documento garantizada, válida ante CNBV, SAT y tribunales. Para contratos financieros y comerciales en México.",
   keywords:

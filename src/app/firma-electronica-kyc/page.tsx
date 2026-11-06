@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
 
 export const metadata: Metadata = {
-  title: "Firma Electrónica con KYC | Verificación de Identidad Completa México | JAAK",
+  title: "Firma Electrónica con KYC | Verificación de Identidad Completa México",
   description:
     "Firma electrónica con KYC completo: OCR de INE/pasaporte, CURP en Renapo, biometría facial, listas PLD/OFAC/SAT y expediente digital auditable. Cumplimiento CNBV y LFPIORPI para instituciones financieras en México.",
   keywords:

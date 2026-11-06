@@ -7,7 +7,7 @@ import ScrollReveal from "@/components/ScrollReveal";
 import { INTEGRATION_CONTACT_HREF, KYC_INTEGRACION_COPY } from "@/config/commercial-copy";
 
 export const metadata: Metadata = {
-  title: "Verificación de Identidad (KYC) | JAAK",
+  title: "Verificación de Identidad (KYC)",
   description: "KYC biométrico con prueba de vida certificada iBeta. Verifica identidad en segundos con IA. Cumple LFPIORPI, CNBV y regulación antilavado.",
   keywords: ["KYC", "verificación de identidad", "prueba de vida", "biometría facial", "iBeta", "LFPIORPI", "onboarding digital", "anti-spoofing"],
   openGraph: {

@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "LFPIORPI y Actividades Vulnerables Art. 17 | JAAK",
+  title: "LFPIORPI y Actividades Vulnerables Art. 17",
   description:
     "Cumple con LFPIORPI y Artículo 17 de Actividades Vulnerables. Verificación de identidad para inmobiliarias, activos virtuales, vehículos y más. Evidencia auditable para UIF.",
   keywords: [

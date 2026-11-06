@@ -2,7 +2,7 @@ import ArticleLayout from "../ArticleLayout";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Firma Simple vs Firma Digital con Validez NOM-151: ¿Cuál necesita tu empresa? | JAAK",
+  title: "Firma Simple vs Firma Digital con Validez NOM-151: ¿Cuál necesita tu empresa?",
   description:
     "Descubre la diferencia entre firma electrónica simple y firma digital con validez NOM-151 en México. No son lo mismo, y elegir mal puede costarle muy caro a tu empresa.",
   keywords: [

@@ -3,7 +3,7 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 
 export const metadata = {
-  title: "Politica de Cookies | JAAK",
+  title: "Politica de Cookies",
   description:
     "Conoce como JAAK utiliza cookies y tecnologias similares para mejorar tu experiencia de navegacion.",
 };

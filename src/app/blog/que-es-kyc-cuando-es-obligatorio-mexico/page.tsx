@@ -3,7 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "¿Qué es KYC y cuándo es obligatorio en México? | JAAK",
+  title: "¿Qué es KYC y cuándo es obligatorio en México?",
   description:
     "Entiende qué es el proceso KYC (Know Your Customer), qué dice la regulación mexicana (LFPIORPI, CNBV, UIF) y en qué sectores es obligatorio implementarlo.",
   keywords: [

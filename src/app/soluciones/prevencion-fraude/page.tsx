@@ -3,7 +3,7 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 
 export const metadata = {
-  title: "Prevención de Fraude | JAAK",
+  title: "Prevención de Fraude",
   description: "Detección de fraude por suplantación de identidad en tiempo real. Biometría y validación documental.",
 };
 

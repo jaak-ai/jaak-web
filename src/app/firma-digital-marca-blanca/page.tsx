@@ -8,7 +8,7 @@ import BrandingPreview from "./BrandingPreview";
 import SectorSelector from "./SectorSelector";
 
 export const metadata: Metadata = {
-  title: "Firma Digital Marca Blanca y Personalizada | JAAK",
+  title: "Firma Digital Marca Blanca y Personalizada",
   description:
     "Personaliza tu firma digital con los colores, logotipo y mensajes de tu empresa. Configura correos y portal de firma con tecnología JAAK.",
   keywords:

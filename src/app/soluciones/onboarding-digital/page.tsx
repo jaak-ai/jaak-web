@@ -3,7 +3,7 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 
 export const metadata = {
-  title: "Onboarding Digital | JAAK",
+  title: "Onboarding Digital",
   description: "Alta de clientes 100% remoto con verificación de identidad. Reduce fricción y aumenta conversión.",
 };
 

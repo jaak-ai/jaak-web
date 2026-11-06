@@ -20,7 +20,7 @@ import { ineFaqItems } from "@/lib/ineFaq";
 const CANONICAL_URL = "https://jaak.ai/validar-ine";
 
 export const metadata: Metadata = {
-  title: "Validar INE vía API para empresas | JAAK",
+  title: "Validar INE vía API para empresas",
   description:
     "Integra validación de credencial INE vía API con JAAK. Agrega la consulta a tus procesos y combínala con CURP, AML o KYC cuando necesites más capas.",
   keywords: [

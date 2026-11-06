@@ -3,7 +3,7 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 
 export const metadata = {
-  title: "Aviso de Privacidad | JAAK",
+  title: "Aviso de Privacidad",
   description:
     "Aviso de privacidad de JAAK. Conoce como recopilamos, usamos y protegemos tus datos personales conforme a la LFPDPPP.",
 };

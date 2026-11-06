@@ -2,7 +2,7 @@ import ArticleLayout from "../ArticleLayout";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Mejores prácticas de compliance para empresas reguladas en México | JAAK",
+  title: "Mejores prácticas de compliance para empresas reguladas en México",
   description: "Desde LFPIORPI hasta las disposiciones de la UIF, esta guía te ayuda a implementar un programa de cumplimiento robusto y auditable para empresas reguladas en México.",
   keywords: ["compliance México", "LFPIORPI", "UIF", "cumplimiento regulatorio", "PLD", "prevención lavado de dinero", "empresas reguladas"],
   openGraph: {

@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import FirmaThemeShell from "@/components/FirmaThemeShell";
 
 export const metadata: Metadata = {
-  title: "Firma Electrónica en México | Legal, Biométrica y NOM-151 | JAAK",
+  title: "Firma Electrónica en México | Legal, Biométrica y NOM-151",
   description:
     "Firma electrónica con validez legal en México. NOM-151, biometría facial, KYC completo y expediente digital auditable. La solución más robusta para bancos, financieras e inmobiliarias.",
   keywords:

@@ -19,7 +19,7 @@ import { curpFaqItems } from "@/lib/curpFaq";
 const CANONICAL_URL = "https://jaak.ai/validar-curp-renapo";
 
 export const metadata: Metadata = {
-  title: "Validar CURP contra RENAPO vía API | JAAK",
+  title: "Validar CURP contra RENAPO vía API",
   description:
     "Valida CURP contra RENAPO vía API con JAAK. Confirma existencia, estatus y datos asociados e integra el resultado directamente en tus procesos.",
   keywords: [

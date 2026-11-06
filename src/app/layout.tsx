@@ -168,7 +168,9 @@ export const metadata: Metadata = {
     site: "@jaak_ai",
   },
   alternates: {
-    canonical: "https://jaak.ai",
+    // AUD-SEO-01.2: canonical relativo a metadataBase. Cada ruta que no declare el suyo
+    // se autorreferencia (sin query string) en lugar de heredar la home.
+    canonical: "./",
     types: {
       "application/rss+xml": "https://jaak.ai/rss.xml",
     },

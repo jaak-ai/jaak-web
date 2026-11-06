@@ -2,7 +2,7 @@ import ArticleLayout from "../ArticleLayout";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Onboarding digital: De días a minutos sin sacrificar cumplimiento | JAAK",
+  title: "Onboarding digital: De días a minutos sin sacrificar cumplimiento",
   description: "Descubre cómo las instituciones financieras están logrando verificaciones en menos de 30 segundos manteniendo el 100% de cumplimiento regulatorio.",
   keywords: ["onboarding digital", "verificación rápida", "cumplimiento regulatorio", "KYC", "alta de clientes", "experiencia de usuario"],
   openGraph: {

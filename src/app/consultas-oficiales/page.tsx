@@ -18,7 +18,7 @@ import { consultasOficialesFaqItems } from "@/lib/consultasOficialesFaq";
 const CANONICAL_URL = "https://jaak.ai/consultas-oficiales";
 
 export const metadata: Metadata = {
-  title: "Consultas Oficiales API: INE, CURP, RFC y AML | JAAK",
+  title: "Consultas Oficiales API: INE, CURP, RFC y AML",
   description:
     "Valida CURP, INE, RFC y listas de cumplimiento mediante las Consultas Oficiales JAAK. Integra validaciones puntuales vía API sin ejecutar un KYC completo.",
   keywords: [

@@ -13,7 +13,7 @@ import {
 } from "./schema";
 
 export const metadata = buildAutoservicioMetadata({
-  title: "Autoservicio Enterprise — Alto volumen con pago anual | JAAK",
+  title: "Autoservicio Enterprise — Alto volumen con pago anual",
   description:
     "Paquetes Enterprise de KYC, firma electrónica NOM-151, validaciones y OCR para operaciones de alto volumen. Pago anual, activación inmediata y compra en línea sin vendedores.",
   path: "/autoservicio-enterprise",

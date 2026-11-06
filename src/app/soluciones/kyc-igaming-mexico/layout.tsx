@@ -7,7 +7,7 @@ const DESCRIPTION =
   "Verifica identidad, mayoría de edad y riesgo de jugadores con biometría, documentos, INE, RENAPO, listas y evidencia desde el onboarding.";
 
 export const metadata: Metadata = {
-  title: TITLE,
+  title: { absolute: TITLE },
   description: DESCRIPTION,
   keywords:
     "KYC para gaming en México, KYC iGaming México, verificación de identidad para casinos, onboarding de jugadores, KYC para apuestas deportivas, verificación de edad gaming, KYC casinos online, LFPIORPI juegos con apuesta, identificación de jugadores en México",

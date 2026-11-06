@@ -4,7 +4,7 @@ import Link from "next/link";
 import ScrollReveal from "@/components/ScrollReveal";
 
 export const metadata = {
-  title: "Seguridad | JAAK",
+  title: "Seguridad",
   description:
     "Conoce las medidas de seguridad, certificaciones y estándares que JAAK implementa para proteger tu información. ISO 27001, ISO 9001, iBeta y NIST.",
 };

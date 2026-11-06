@@ -17,7 +17,7 @@ const CANONICAL_URL = "https://jaak.ai/ocr-documental";
 const LOGO = "https://jaak.ai/images/logos/jaak-logo-azul.png";
 
 export const metadata: Metadata = {
-  title: "OCR Documental para Identificaciones y Documentos | JAAK",
+  title: "OCR Documental para Identificaciones y Documentos",
   description:
     "Extrae información estructurada de identificaciones oficiales y documentos empresariales con OCR de JAAK. Autoservicio o integración por API.",
   keywords: [

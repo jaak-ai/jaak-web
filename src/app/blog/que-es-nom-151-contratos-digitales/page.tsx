@@ -2,7 +2,7 @@ import ArticleLayout from "../ArticleLayout";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "¿Qué es la NOM-151 y por qué importa en contratos digitales? | JAAK",
+  title: "¿Qué es la NOM-151 y por qué importa en contratos digitales?",
   description:
     "Descubre qué es la NOM-151-SCFI-2016, cómo funciona el sello de tiempo certificado y por qué es el estándar legal indispensable para contratos digitales en México.",
   keywords: [

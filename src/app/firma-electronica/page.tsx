@@ -15,7 +15,7 @@ import SignatureRecommendationQuiz from "@/components/SignatureRecommendationQui
 import EvidenceFlow from "@/components/EvidenceFlow";
 
 export const metadata: Metadata = {
-  title: "Firma electrónica en México con e.firma, NOM-151 y biometría | JAAK",
+  title: "Firma electrónica en México con e.firma, NOM-151 y biometría",
   description:
     "Firma documentos digitales con JAAK usando firma simple, e.firma SAT, NOM-151, sello de tiempo, biometría, KYC y expediente auditable. Elige el nivel de evidencia que tu operación necesita.",
   keywords:

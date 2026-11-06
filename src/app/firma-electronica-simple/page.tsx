@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
 
 export const metadata: Metadata = {
-  title: "Firma Simple en México | Sin Fricción y Legal | JAAK",
+  title: "Firma Simple en México | Sin Fricción y Legal",
   description:
     "Firma electrónica simple para acuerdos internos, NDAs y documentos de bajo riesgo. Implementación inmediata, sin instalación, con trazabilidad básica. Válida legalmente en México.",
   keywords:

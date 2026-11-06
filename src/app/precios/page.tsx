@@ -11,7 +11,7 @@ import {
 import { buildKycRegisterUrl, KYC_PLAN_CODE_BY_TIER } from "@/data/autoservicio-catalogo";
 
 export const metadata: Metadata = {
-  title: "Precios – KYC Biométrico y Firma Digital NOM-151 | JAAK",
+  title: "Precios – KYC Biométrico y Firma Digital NOM-151",
   description:
     "KYC biométrico desde $99 MXN/año. Firma Digital NOM-151 desde $49 MXN/año. Autoservicio sin setup fee. Para empresas reguladas en México. ISO 27001 · iBeta Nivel 2.",
   keywords: [

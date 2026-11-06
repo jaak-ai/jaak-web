@@ -3,7 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "La protección de datos personales: un compromiso que va más allá del cumplimiento | JAAK",
+  title: "La protección de datos personales: un compromiso que va más allá del cumplimiento",
   description: "La protección de datos ya no es solo un requisito legal, es un pilar de confianza, reputación y continuidad operativa. Descubre cómo fortalecer tu estrategia de protección desde la verificación de identidad.",
   keywords: ["protección de datos", "datos personales", "privacidad", "cumplimiento normativo", "verificación de identidad", "seguridad de datos", "JAAK"],
   openGraph: {

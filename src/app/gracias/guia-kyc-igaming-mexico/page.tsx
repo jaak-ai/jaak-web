@@ -7,7 +7,7 @@ import { KYC_IGAMING_EBOOK_DOWNLOAD_URL, KYC_IGAMING_EBOOK_TITLE } from "@/lib/k
 import { SCHEDULE_DEMO_URL } from "@/lib/scheduling";
 
 export const metadata: Metadata = {
-  title: "Gracias — Descarga tu guía KYC para Gaming | JAAK",
+  title: "Gracias — Descarga tu guía KYC para Gaming",
   description: `Descarga la guía "${KYC_IGAMING_EBOOK_TITLE}".`,
   robots: { index: false, follow: true },
 };

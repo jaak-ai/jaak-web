@@ -60,7 +60,7 @@ const uifSchema = {
 };
 
 export const metadata: Metadata = {
-  title: "Cumplimiento UIF - Unidad de Inteligencia Financiera | JAAK",
+  title: "Cumplimiento UIF - Unidad de Inteligencia Financiera",
   description:
     "Evidencia auditable para requerimientos de la UIF. Expedientes digitales, reportes de operaciones y documentación lista para presentar ante la autoridad.",
   keywords: [

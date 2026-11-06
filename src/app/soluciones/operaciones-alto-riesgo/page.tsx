@@ -3,7 +3,7 @@ import Footer from "@/components/Footer";
 import Link from "next/link";
 
 export const metadata = {
-  title: "Operaciones de Alto Riesgo | JAAK",
+  title: "Operaciones de Alto Riesgo",
   description: "Verificación reforzada para transacciones críticas. Due diligence mejorado para operaciones de alto valor.",
 };
 
