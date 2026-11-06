@@ -51,12 +51,23 @@ Limitaciones: sin dispositivo físico; FAQ verificadas en HTML/JSON-LD, no con c
 |---|---|---|
 | 1 | Aprobación de Producto y Comercial de la comparativa, nota, letra pequeña y FAQ | Pendiente |
 | 2 | **JSON-LD:** al retirar la política de devoluciones se pierde un campo recomendado de Google para listados de producto; no afecta a la página. Reversible si Legal define una política declarable | Informativo |
-| 3 | **Canal de soporte de Autoservicio:** los T&C indican correo y portal como único medio de reporte de incidencias; `/soporte/autoservicio` ofrece también WhatsApp | Pendiente de decisión |
+| 3 | **Canal de soporte de Autoservicio:** Marketing decidió **mantener WhatsApp** (5531071620, número ya vigente) junto con el correo, solicitando al cliente datos de identificación (ver sección E). Los T&C (cl. 6.4) indican correo y portal como único medio de reporte: **alinear en la revisión legal de T&C (AUD-02)** | Decidido en web; T&C pendiente de alinear |
 | 4 | **Atención 24/7:** los T&C la describen como servicio adicional por cotización; el sitio no la menciona | Sin cambio (opcional) |
 | 5 | **Vigencia en `/autoservicio/prueba`:** «12 meses desde la compra» vs «desde que el saldo está habilitado» (T&C) | Fuera de alcance (AUD-04); alinear después |
 | 6 | **Autoservicio Enterprise:** cifras, horas y plazos del T&C no se publican; página sin cambios | Sin cambio |
 | 7 | Crecimiento y Alianzas no aparecen en los T&C de Autoservicio: sus condiciones dependen del contrato | Informativo |
 | 8 | Publicación y verificación en móvil y escritorio tras el despliegue | Pendiente |
 | 9 | AUD-02 (Términos y Condiciones): en pausa hasta nuevo aviso | En pausa |
+
+## E. Soporte de Autoservicio: datos para identificar la solicitud (`/soporte/autoservicio`)
+Decisión de Marketing: se mantiene WhatsApp (5531071620) como canal; se pide al cliente información para saber **de quién es el paquete contratado** y entender el requerimiento.
+
+| Elemento | Antes | Ahora |
+|---|---|---|
+| Mensaje precargado de WhatsApp | «Hola equipo de CS de JAAK, soy cliente de JAAK Autoservicio y necesito apoyo.» | Mismo saludo + plantilla con 8 campos por completar: persona que contrató el paquete; empresa o razón social; correo registrado en JAAK; producto y paquete contratado; identificador de compra (del comprobante); descripción de la solicitud; fecha y hora (con zona horaria); mensaje de error o captura |
+| Correo (`soporte@jaak.ai`) | Solo asunto | Asunto + el mismo cuerpo con los 8 campos |
+| Bloque visible nuevo | — | «Datos que debes incluir en tu solicitud» (lista de los 8 campos, misma fuente que el mensaje) |
+| Textos de las tarjetas y paso 1 de la guía | «…datos necesarios para identificar tu solicitud» / «Nombre, empresa y correo asociado a JAAK» | Indican que el mensaje se abre con los datos y que se completen antes de enviar; el paso 1 incluye persona que contrató, correo registrado, paquete e identificador de compra |
+Sin cambios: horario, guía, encuesta, enlaces e integraciones. Número de WhatsApp sin cambio. Verificado: ambos enlaces llevan el mensaje con los 8 campos; los 2 enlaces de WhatsApp apuntan al mismo número; sin desbordamiento a 375/768/1280 px.
 
 **Estado:** implementado y probado en la rama; AUD-02.1 queda **En validación**.

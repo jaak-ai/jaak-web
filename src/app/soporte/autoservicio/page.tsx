@@ -9,9 +9,32 @@ const TEAL = "#1ECAD3";
 const OFFWHITE = "#F5F5F3";
 const GRAY = "#EEF2F5";
 
-const EMAIL_URL = "mailto:soporte@jaak.ai?subject=Soporte%20JAAK%20Autoservicio";
-const WHATSAPP_URL =
-  "https://wa.me/525531071620?text=Hola%20equipo%20de%20CS%20de%20JAAK%2C%20soy%20cliente%20de%20JAAK%20Autoservicio%20y%20necesito%20apoyo.";
+/**
+ * Datos que se solicitan al cliente para identificar quién contrató el paquete y su requerimiento.
+ * Se usan en el mensaje precargado (correo y WhatsApp) y en la lista visible de la página.
+ */
+const SUPPORT_REQUEST_FIELDS = [
+  "Nombre de la persona que contrató el paquete",
+  "Empresa o razón social",
+  "Correo electrónico registrado en JAAK",
+  "Producto y paquete contratado",
+  "Identificador de compra (del comprobante)",
+  "Descripción de la solicitud o del problema",
+  "Fecha y hora en que ocurrió (con zona horaria)",
+  "Mensaje de error o captura de pantalla, si existe",
+];
+
+const SUPPORT_MESSAGE = [
+  "Hola equipo de Customer Success de JAAK, soy cliente de JAAK Autoservicio y necesito apoyo.",
+  "",
+  "Para identificar mi solicitud, comparto:",
+  ...SUPPORT_REQUEST_FIELDS.map((f) => `- ${f}: `),
+].join("\n");
+
+const EMAIL_URL = `mailto:soporte@jaak.ai?subject=${encodeURIComponent("Soporte JAAK Autoservicio")}&body=${encodeURIComponent(
+  SUPPORT_MESSAGE.replace(/\n/g, "\r\n"),
+)}`;
+const WHATSAPP_URL = `https://wa.me/525531071620?text=${encodeURIComponent(SUPPORT_MESSAGE)}`;
 const SURVEY_URL = "https://bp1y5.share.hsforms.com/2etOZTsmuR5qgMd3NMOVXIw";
 
 const TITLE = "Soporte JAAK Autoservicio | Centro de ayuda";
@@ -36,7 +59,10 @@ export const metadata: Metadata = {
 };
 
 const reportSteps = [
-  { title: "Datos de tu cuenta", text: "Nombre, empresa y correo asociado a JAAK." },
+  {
+    title: "Datos de tu cuenta",
+    text: "Persona que contrató el paquete, empresa, correo registrado en JAAK, paquete e identificador de compra.",
+  },
   { title: "Producto utilizado", text: "Indica el producto o servicio con el que necesitas ayuda." },
   { title: "Descripción del problema", text: "Explica qué intentabas realizar y qué ocurrió." },
   {
@@ -195,6 +221,39 @@ export default function SoporteAutoservicioPage() {
                 compras y reportes de funcionamiento. Puedes enviar tu solicitud por correo electrónico o WhatsApp.
               </p>
             </div>
+            {/* Datos para identificar la solicitud (mismos campos que el mensaje precargado) */}
+            <div
+              id="datos-solicitud"
+              className="mt-6 max-w-2xl rounded-2xl border border-[#02132D]/10 bg-white p-6"
+            >
+              <h3 className="text-lg font-semibold" style={{ color: NAVY }}>
+                Datos que debes incluir en tu solicitud
+              </h3>
+              <p className="mt-2 text-[15px] leading-relaxed text-[#3D4A5F]">
+                Al abrir el correo o WhatsApp, el mensaje ya incluye estos campos. Complétalos antes de enviarlo: nos
+                permiten identificar quién contrató el paquete y atender tu caso con la información correcta.
+              </p>
+              <ul className="mt-4 grid gap-x-6 gap-y-2 sm:grid-cols-2">
+                {SUPPORT_REQUEST_FIELDS.map((f) => (
+                  <li key={f} className="flex gap-2 text-sm leading-relaxed text-[#3D4A5F]">
+                    <svg
+                      aria-hidden="true"
+                      className="mt-1 h-3.5 w-3.5 flex-shrink-0"
+                      style={{ color: "#0E8A92" }}
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2.5}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M5 13l4 4L19 7" />
+                    </svg>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+            </div>
             <div className="mt-8 grid gap-6 md:grid-cols-2">
               <article className="flex flex-col rounded-2xl border border-[#02132D]/10 bg-white p-8">
                 <span style={{ color: TEAL }}>
@@ -207,7 +266,7 @@ export default function SoporteAutoservicioPage() {
                   Correo electrónico
                 </h3>
                 <p className="mt-3 text-[15px] leading-relaxed text-[#3D4A5F]">
-                  Envíanos una descripción detallada del problema y los datos necesarios para identificar tu solicitud.
+                  Envíanos una descripción detallada de tu solicitud junto con los datos para identificar tu paquete.
                 </p>
                 <p className="mt-4 text-[15px] font-semibold" style={{ color: NAVY }}>
                   soporte@jaak.ai
@@ -230,7 +289,8 @@ export default function SoporteAutoservicioPage() {
                   WhatsApp
                 </h3>
                 <p className="mt-3 text-[15px] leading-relaxed text-[#3D4A5F]">
-                  Contacta a nuestro equipo de Customer Success para compartir tu solicitud.
+                  Contacta a nuestro equipo de Customer Success. El mensaje se abre con los datos que necesitamos;
+                  complétalos antes de enviarlo.
                 </p>
                 <a
                   href={WHATSAPP_URL}
