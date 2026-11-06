@@ -75,8 +75,8 @@ export default async function ComprarPage() {
         "Arma tu paquete de KYC, firma electrónica, validaciones y OCR. Compra en línea y opera desde la plataforma web de JAAK.",
       bullets: [
         "Uso exclusivo desde la plataforma web",
-        "No incluye API, SDK ni White Label en el paquete estándar",
-        "Integración API o SDK disponible mediante contratación asistida",
+        "Con marca blanca (White Label) en la plataforma web; no incluye API ni SDK",
+        "Para integrar por API o SDK, consulta con nuestro equipo comercial",
         "Paquetes con vigencia de un año",
       ],
       ctaLabel: "Explorar el catálogo",

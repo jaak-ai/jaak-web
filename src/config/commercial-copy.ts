@@ -2,8 +2,9 @@
  * Fuente única de copy comercial (AUD-01).
  *
  * Modalidades de consumo: Web, API, SDK. White Label es una opción de
- * personalización según alcance contratado (no es un tipo de acceso ni está
- * incluido por defecto). Autoservicio es exclusivamente Web.
+ * personalización (no es un tipo de acceso). Autoservicio es exclusivamente Web
+ * y su White Label aplica solo en la plataforma web. En Crecimiento, Enterprise y
+ * Alianzas, el White Label y las integraciones se definen en la propuesta comercial.
  *
  * Sandbox NO es un beneficio automático ni se promociona como oferta: su disponibilidad se
  * evalúa con un especialista comercial de JAAK (ver `SANDBOX_COPY`). No hay acceso gratuito,
@@ -24,7 +25,7 @@ export const AUTOSERVICIO_COPY = {
   exclusionCorta: "No incluye API ni SDK",
   /** Nota informativa del catálogo /autoservicio. */
   notaCatalogo:
-    "Autoservicio es una modalidad exclusivamente web: no incluye API, SDK ni White Label en el paquete estándar. Para integrar JAAK a tus sistemas o aplicaciones, se requiere una integración contratada por separado, que considera una cuota de configuración (setup fee).",
+    "Autoservicio se utiliza exclusivamente desde la plataforma web, con marca blanca (White Label) en la plataforma. No incluye API ni SDK: si deseas integrarlos, el setup fee es opcional y el acompañamiento técnico se evalúa con nuestro equipo comercial.",
 } as const;
 
 export const MODALIDADES_COPY = {
@@ -75,7 +76,7 @@ export const SOPORTE_COPY = {
 export const FAQ_ACCESO_API_SDK = {
   question: "¿Puedo utilizar API o SDK al comprar un paquete de Autoservicio?",
   answer:
-    "No. Los paquetes estándar de JAAK Autoservicio se utilizan exclusivamente desde nuestra plataforma web. Si tu empresa necesita integrar los servicios mediante API o SDK, nuestro equipo comercial puede ayudarte a evaluar las modalidades de Crecimiento, Enterprise o Alianzas. La integración requiere una cuota de configuración (setup fee) conforme al alcance contratado.",
+    "Los paquetes de Autoservicio se utilizan desde nuestra plataforma web y no incluyen API ni SDK. Si deseas integrar los servicios, el setup fee es opcional en Autoservicio y no incluye acompañamiento técnico; para acompañamiento o condiciones particulares, nuestro equipo comercial puede orientarte.",
 } as const;
 
 /** Introducción comercial del índice de documentación (/documentacion). */
@@ -124,37 +125,40 @@ export const KYC_INTEGRACION_COPY = {
 } as const;
 
 // ───────────────────────── AUD-02.1 · Precios: setup fee de API/SDK ─────────────────────────
-// Sin importes, plazos ni SLA: el setup fee y el esquema de consumo se definen en la propuesta comercial.
+// Sin importes, plazos ni SLA. Criterio editorial: información breve y clara; el detalle contractual
+// de Autoservicio vive en sus Términos y Condiciones y se menciona en letra pequeña.
 
 /** Fila y nota de la comparativa de modalidades de /precios. */
 export const PRECIOS_SETUP_COPY = {
   fila: {
     feature: "Setup fee (integración API/SDK)",
-    auto: "No aplica (uso Web)",
+    auto: "Opcional, si deseas integrar",
     growth: "Aplica a la integración API/SDK",
     enterprise: "Aplica a la integración API/SDK, según propuesta",
     alliance: "Aplica a la integración API/SDK, según propuesta",
   },
   nota:
-    "Setup fee: la integración por API o SDK requiere una cuota de configuración que se define en la propuesta comercial según el alcance contratado, junto con el esquema de consumo de Crecimiento, Enterprise y Alianzas (bolsa anual con pagos mensuales según consumo). Autoservicio es exclusivamente Web y no requiere setup fee. El ambiente de pruebas (sandbox) no se habilita automáticamente en ningún plan: su disponibilidad se evalúa con un especialista comercial de JAAK.",
+    "En Autoservicio el setup fee es opcional, si deseas integrar. En Crecimiento, Enterprise y Alianzas, la integración por API o SDK lo requiere y se define en la propuesta comercial. El sandbox no se habilita automáticamente: su disponibilidad se evalúa con un especialista comercial de JAAK.",
+  /** Letra pequeña: condiciones de compra de Autoservicio. */
+  letraPequena:
+    "Autoservicio: vigencia, reembolsos y demás condiciones de compra conforme a los Términos y Condiciones de Autoservicio, que se aceptan al comprar. El soporte de Crecimiento, Enterprise y Alianzas se define con el especialista comercial.",
 } as const;
 
 /** FAQ de /precios (visible y JSON-LD). */
 export const FAQ_SETUP_FEE = {
   question: "¿Hay cuota de configuración (setup fee)?",
   answer:
-    "Autoservicio no la requiere, porque se utiliza exclusivamente desde la plataforma web. En Crecimiento, Enterprise y Alianzas, la integración por API o SDK requiere una cuota de configuración (setup fee). Su importe y condiciones se definen en la propuesta comercial, junto con el esquema de consumo (bolsa anual con pagos mensuales según consumo).",
-} as const;
-
-export const FAQ_HABILITACION_API = {
-  question: "¿Cómo se habilita la API o el SDK en Crecimiento, Enterprise o Alianzas?",
-  answer:
-    "Parte de una evaluación con nuestro equipo comercial: se define el alcance de la integración (API y/o SDK), la cuota de configuración (setup fee) aplicable y el esquema de consumo del plan. Con la propuesta aceptada, los accesos se habilitan conforme a lo contratado.",
+    "En Autoservicio es opcional, si deseas integrar por API o SDK. En Crecimiento, Enterprise y Alianzas, la integración por API o SDK requiere una cuota de configuración (setup fee), cuyo importe y condiciones se definen en la propuesta comercial.",
 } as const;
 
 export const FAQ_SANDBOX_PRECIOS = {
   question: "¿Incluye algún plan un ambiente de pruebas (sandbox)?",
   answer:
-    "No de forma automática. La disponibilidad de un ambiente de pruebas se evalúa con un especialista comercial de JAAK, de acuerdo con el tipo de cliente, el paquete contratado y las necesidades del proyecto. Los paquetes de Autoservicio no incluyen acceso automático a sandbox.",
+    "No de forma automática. Su disponibilidad se evalúa con un especialista comercial de JAAK, según el tipo de cliente, el paquete y las necesidades del proyecto.",
 } as const;
 
+export const FAQ_VIGENCIA_REEMBOLSO = {
+  question: "¿Los paquetes caducan o son reembolsables?",
+  answer:
+    "Los paquetes de Autoservicio tienen una vigencia de 12 meses a partir de que el saldo está habilitado; las unidades no utilizadas al vencer se pierden. Los reembolsos se rigen por los Términos y Condiciones de Autoservicio que se aceptan al comprar.",
+} as const;

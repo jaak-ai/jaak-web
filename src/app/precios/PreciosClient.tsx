@@ -5,9 +5,9 @@ import Link from "next/link";
 import { productos, formatMXN } from "@/data/autoservicio-catalogo";
 import {
   FAQ_ACCESO_API_SDK,
-  FAQ_HABILITACION_API,
   FAQ_SANDBOX_PRECIOS,
   FAQ_SETUP_FEE,
+  FAQ_VIGENCIA_REEMBOLSO,
   PRECIOS_SETUP_COPY,
   SOPORTE_COPY,
 } from "@/config/commercial-copy";
@@ -51,7 +51,7 @@ const PLANS = [
       "KYC con biometría",
       "Expediente digital auditable",
       "Paquetes con vigencia de un año",
-      "Modalidad exclusivamente Web: no incluye API, SDK ni White Label",
+      "Uso exclusivo en la plataforma web, con marca blanca (White Label). No incluye API ni SDK",
     ],
     forWhom: ["Equipos pequeños", "Operaciones manuales", "Sin integración API"],
     support: "Onboarding grupal + soporte básico",
@@ -143,7 +143,7 @@ const COMPARISON = [
   { feature: "Integración API",            auto: "No incluido", growth: "Disponible, con setup fee", enterprise: "Según propuesta (con setup fee)", alliance: "Según propuesta (con setup fee)" },
   { feature: "Integración SDK",            auto: "No incluido", growth: "Disponible, con setup fee", enterprise: "Según propuesta (con setup fee)", alliance: "Según propuesta (con setup fee)" },
   PRECIOS_SETUP_COPY.fila,
-  { feature: "White Label",                auto: "No incluido", growth: "Opcional, según alcance acordado", enterprise: "Opcional, según propuesta", alliance: "Opcional, según propuesta" },
+  { feature: "White Label",                auto: "Incluido, solo en la plataforma Web", growth: "Opcional, según alcance acordado", enterprise: "Opcional, según propuesta", alliance: "Opcional, según propuesta" },
   { feature: "Esquema de contratación",    auto: "Compra en línea; paquetes con vigencia de un año", growth: "Bolsa anual de consumo, pagos mensuales según consumo", enterprise: "Bolsa anual de consumo, pagos mensuales según consumo", alliance: "Bolsa anual de consumo, pagos mensuales según consumo" },
   { feature: "Volumen mensual",            auto: "Bajo", growth: "Medio", enterprise: "Alto", alliance: "Variable" },
   { feature: "Soporte",                    auto: SOPORTE_COPY.autoservicioTabla, growth: SOPORTE_COPY.especializadoTabla, enterprise: SOPORTE_COPY.especializadoTabla, alliance: SOPORTE_COPY.especializadoTabla },
@@ -163,8 +163,8 @@ const faqItems = [
     answer: "Bronce a Platino pueden comprar paquetes adicionales al 120% del precio unitario. Cobre se bloquea al superar el límite. Si superas 1,000 verif/mes consistentemente, la migración a Enterprise es obligatoria.",
   },
   {
-    question: "¿Los paquetes caducan o son reembolsables?",
-    answer: "Vencen a 12 meses desde la compra. No son reembolsables.",
+    question: FAQ_VIGENCIA_REEMBOLSO.question,
+    answer: FAQ_VIGENCIA_REEMBOLSO.answer,
   },
   {
     question: FAQ_ACCESO_API_SDK.question,
@@ -173,10 +173,6 @@ const faqItems = [
   {
     question: FAQ_SETUP_FEE.question,
     answer: FAQ_SETUP_FEE.answer,
-  },
-  {
-    question: FAQ_HABILITACION_API.question,
-    answer: FAQ_HABILITACION_API.answer,
   },
   {
     question: FAQ_SANDBOX_PRECIOS.question,
@@ -407,6 +403,7 @@ export default function PreciosClient() {
 
           {/* AUD-02.1: setup fee y sandbox junto a API/SDK (sin importes ni plazos) */}
           <p className="mt-6 text-sm text-gray-500 leading-relaxed">{PRECIOS_SETUP_COPY.nota}</p>
+          <p className="mt-2 text-xs text-gray-400 leading-relaxed">{PRECIOS_SETUP_COPY.letraPequena}</p>
         </div>
       </section>
 
