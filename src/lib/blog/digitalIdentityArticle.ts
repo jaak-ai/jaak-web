@@ -13,10 +13,8 @@ export const digitalIdentityArticle = {
   reviewerName: "JAAK",
   date: "6 de noviembre, 2026",
   dateISO: "2026-11-06",
-  // PENDIENTE: portada final (1920 × 1080). Al recibirla, copiarla a
-  // /public/images/blog/verificacion-identidad-digital-mexico.png y descomentar:
-  // image: "/images/blog/verificacion-identidad-digital-mexico.png",
-  // imageDimensions: { width: 1920, height: 1080 },
+  image: "/images/blog/verificacion-identidad-digital-mexico.webp",
+  imageDimensions: { width: 1736, height: 906 },
   imageAlt:
     "Persona utilizando un teléfono móvil durante un proceso de verificación de identidad digital con biometría facial",
 } as {
